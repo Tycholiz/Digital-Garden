@@ -10,16 +10,16 @@
 
   <link
     rel="shortcut icon"
-    href="https://tycholiz.github.io/favicon.ico"
+    href="https://tycholiz.github.io/Digital-Garden/favicon.ico"
     type="image/x-icon"
   />
   <link
     rel="stylesheet"
-    href="https://tycholiz.github.io/assets/css/just-the-docs-default.css"
+    href="https://tycholiz.github.io/Digital-Garden/assets/css/just-the-docs-default.css"
   />
   <script
     type="text/javascript"
-    src="https://tycholiz.github.io/assets/js/just-the-docs.js"
+    src="https://tycholiz.github.io/Digital-Garden/assets/js/just-the-docs.js"
   ></script>
   <link
     rel="stylesheet"
@@ -33,7 +33,7 @@
   />
   <script
     type="text/javascript"
-    src="https://tycholiz.github.io/assets/js/vendor/lunr.min.js"
+    src="https://tycholiz.github.io/Digital-Garden/assets/js/vendor/lunr.min.js"
   ></script>
   
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -98,7 +98,7 @@
 
     <div class="side-bar">
       <div class="site-header">
-        <a href="https://tycholiz.github.io" class="site-title lh-tight">
+        <a href="https://tycholiz.github.io/Digital-Garden" class="site-title lh-tight">
   Dendron
 
  </a>
@@ -130,7 +130,7 @@
       
         
           <nav aria-label="Breadcrumb" class="breadcrumb-nav">
-            <ol class="breadcrumb-nav-list"><li class="breadcrumb-nav-list-item"><a href="https://tycholiz.github.io">Root</a></li><li class="breadcrumb-nav-list-item"><a href="https://tycholiz.github.io/notes/f9503aa6-bceb-4b11-89cd-d7e6f50d5cb0.html">Sql</a></li><li class="breadcrumb-nav-list-item">Joins</li></ol>
+            <ol class="breadcrumb-nav-list"><li class="breadcrumb-nav-list-item"><a href="https://tycholiz.github.io/Digital-Garden">Root</a></li><li class="breadcrumb-nav-list-item"><a href="https://tycholiz.github.io/Digital-Garden/notes/f9503aa6-bceb-4b11-89cd-d7e6f50d5cb0.html">Sql</a></li><li class="breadcrumb-nav-list-item">Joins</li></ol>
           </nav>
         
       
@@ -210,7 +210,7 @@
 </ol>
 <ul>
 <li>Joins are fairly expensive, which might be a reason to denormalize.
-<img src=":/cad05cee711947d682fb8e53e85ab34c" alt="83fe4afa6ddc9f8d5b3665cfde631660.png"></li>
+<img src="/Digital-Garden/:/cad05cee711947d682fb8e53e85ab34c" alt="83fe4afa6ddc9f8d5b3665cfde631660.png"></li>
 </ul>
 <h2 id="inner-join"><a aria-hidden="true" class="anchor-heading" href="#inner-join"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Inner Join</h2>
 <ul>
@@ -231,7 +231,7 @@
 <li>if we made a venn diagram of table1 and table2, an inner join would give us the intersect.
 <pre><code>- ie., performing an inner join will give us the columns(?) in common between the 2 tables
 </code></pre>
-<img src=":/066d1e23ea0a45738633ae20ae3f38ee" alt="820988c3645cc0df3da155abc938228f.png"></li>
+<img src="/Digital-Garden/:/066d1e23ea0a45738633ae20ae3f38ee" alt="820988c3645cc0df3da155abc938228f.png"></li>
 <li>you can join a single table with itself. You may do this if you want to derive information from the table (that is not explicitly stored), while using it to determine  
 <ul>
 <li>ex. below we are getting "the members who have bee recommended by another member". since we are using data within the same table to do the determination, we need to join with itself.  </li>
@@ -265,7 +265,7 @@ recs<span class="token punctuation">.</span>surname <span class="token keyword">
 <li>there are times when we do want to include data where there isn't a match (ex. there is no matching FK for a given PK between 2 tables of a corresponding row). In these cases, we have to use an OUTER JOIN.
 <ul>
 <li>ex. we are doing a left join on "bucket", and we have buckets in our db that have no nuggets. this would result in a <code>null</code> value for the "nugget" column associated with that row.
-<img src=":/2af5c67cf5fb4b898d5323ce1cb0849b" alt="2890a1430af9f888455d50224e795554.png"></li>
+<img src="/Digital-Garden/:/2af5c67cf5fb4b898d5323ce1cb0849b" alt="2890a1430af9f888455d50224e795554.png"></li>
 </ul>
 </li>
 <li>It's the LEFT or RIGHT keyword that makes the JOIN an "OUTER" JOIN
@@ -299,7 +299,7 @@ recs<span class="token punctuation">.</span>surname <span class="token keyword">
 </ul>
 </li>
 <li>Venn diagram illustrates the left join that returns rows from the left table that do not have matching rows from the right table:
-<img src=":/69d6642385194490a8d62f93f8cf1bdb" alt="6457179c137a03db0dd9765c9cd6c988.png"></li>
+<img src="/Digital-Garden/:/69d6642385194490a8d62f93f8cf1bdb" alt="6457179c137a03db0dd9765c9cd6c988.png"></li>
 </ul>
 <h2 id="full-outer-join"><a aria-hidden="true" class="anchor-heading" href="#full-outer-join"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Full Outer Join</h2>
 <ul>
@@ -311,7 +311,7 @@ recs<span class="token punctuation">.</span>surname <span class="token keyword">
 <li>similar to the above techniques using <code>WHERE</code> clause to cut out the intersection, we can do the same here
 <pre><code>- This would give us the rows from one table that do not have the corresponding rows in another table
 </code></pre>
-<img src=":/56dbccd24a6d449fa4d6ba8a0427d96a" alt="9e04ed55193420bac12aa21a38c81141.png"></li>
+<img src="/Digital-Garden/:/56dbccd24a6d449fa4d6ba8a0427d96a" alt="9e04ed55193420bac12aa21a38c81141.png"></li>
 </ul>
 <h1 id="self-join"><a aria-hidden="true" class="anchor-heading" href="#self-join"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Self Join</h1>
 <ul>
@@ -388,26 +388,26 @@ recs<span class="token punctuation">.</span>surname <span class="token keyword">
 <li>The UNION operator by default removes all duplicate rows from the combined data set (<code>UNION ALL</code> will bring them back)</li>
 <li>In practice, you often use the UNION operator to combine data from similar tables, which are not perfectly normalized</li>
 <li>ex. with 2 tables: <code>popular_movies</code>, <code>top_rated_movies</code>, return the movies found in both tables, removing any duplicates along the way
-<img src=":/202885018e6045e4acd744771788c297" alt="8d2bb4d874e9ee042506b53f0a5eb8cd.png"></li>
+<img src="/Digital-Garden/:/202885018e6045e4acd744771788c297" alt="8d2bb4d874e9ee042506b53f0a5eb8cd.png"></li>
 </ul>
 <h2 id="intersect"><a aria-hidden="true" class="anchor-heading" href="#intersect"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>INTERSECT</h2>
 <ul>
 <li>returns only the rows that are available in both result sets.</li>
 <li>ex. with 2 tables: <code>popular_movies</code>, <code>top_rated_movies</code>, return only the movies that appear in both tables</li>
 </ul>
-<p><img src=":/da1f2c53c1e349bb944f4f33172bb9b6" alt="b4e5d3a9f4dd1214eb4273e9d24fa8c7.png"></p>
+<p><img src="/Digital-Garden/:/da1f2c53c1e349bb944f4f33172bb9b6" alt="b4e5d3a9f4dd1214eb4273e9d24fa8c7.png"></p>
 <h2 id="except"><a aria-hidden="true" class="anchor-heading" href="#except"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>EXCEPT</h2>
 <ul>
 <li>returns distinct rows from the first (left) query that are not in the output of the second (right) query.</li>
 <li>ex. with 2 tables: <code>popular_movies</code>, <code>top_rated_movies</code>, return the movies that are popular, but not top rated.
 <pre><code>- assuming we have `SELECT * FROM popular_movies` first
 </code></pre>
-<img src=":/d8dc07ccdd01418c816ddaf6951dfdd7" alt="daddae8a308e1bf9405e038b101affbd.png"></li>
+<img src="/Digital-Garden/:/d8dc07ccdd01418c816ddaf6951dfdd7" alt="daddae8a308e1bf9405e038b101affbd.png"></li>
 </ul>
 <hr>
 <h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
 <ol>
-<li><a href="https://tycholiz.github.io/notes/9e0dd223-c36b-49ad-a99d-7ee481430e68.html">Outer</a></li>
+<li><a href="https://tycholiz.github.io/Digital-Garden/notes/9e0dd223-c36b-49ad-a99d-7ee481430e68.html">Outer</a></li>
 </ol><span id="navId" data="94163eaa-91bf-4551-acd0-6286805571a6"></span>
 
                 

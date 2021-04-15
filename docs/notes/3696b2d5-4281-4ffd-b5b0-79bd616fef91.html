@@ -10,16 +10,16 @@
 
   <link
     rel="shortcut icon"
-    href="https://tycholiz.github.io/favicon.ico"
+    href="https://tycholiz.github.io/Digital-Garden/favicon.ico"
     type="image/x-icon"
   />
   <link
     rel="stylesheet"
-    href="https://tycholiz.github.io/assets/css/just-the-docs-default.css"
+    href="https://tycholiz.github.io/Digital-Garden/assets/css/just-the-docs-default.css"
   />
   <script
     type="text/javascript"
-    src="https://tycholiz.github.io/assets/js/just-the-docs.js"
+    src="https://tycholiz.github.io/Digital-Garden/assets/js/just-the-docs.js"
   ></script>
   <link
     rel="stylesheet"
@@ -33,7 +33,7 @@
   />
   <script
     type="text/javascript"
-    src="https://tycholiz.github.io/assets/js/vendor/lunr.min.js"
+    src="https://tycholiz.github.io/Digital-Garden/assets/js/vendor/lunr.min.js"
   ></script>
   
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -98,7 +98,7 @@
 
     <div class="side-bar">
       <div class="site-header">
-        <a href="https://tycholiz.github.io" class="site-title lh-tight">
+        <a href="https://tycholiz.github.io/Digital-Garden" class="site-title lh-tight">
   Dendron
 
  </a>
@@ -130,7 +130,7 @@
       
         
           <nav aria-label="Breadcrumb" class="breadcrumb-nav">
-            <ol class="breadcrumb-nav-list"><li class="breadcrumb-nav-list-item"><a href="https://tycholiz.github.io">Root</a></li><li class="breadcrumb-nav-list-item"><a href="https://tycholiz.github.io/notes/f9503aa6-bceb-4b11-89cd-d7e6f50d5cb0.html">Sql</a></li><li class="breadcrumb-nav-list-item">Keys</li></ol>
+            <ol class="breadcrumb-nav-list"><li class="breadcrumb-nav-list-item"><a href="https://tycholiz.github.io/Digital-Garden">Root</a></li><li class="breadcrumb-nav-list-item"><a href="https://tycholiz.github.io/Digital-Garden/notes/f9503aa6-bceb-4b11-89cd-d7e6f50d5cb0.html">Sql</a></li><li class="breadcrumb-nav-list-item">Keys</li></ol>
           </nav>
         
       
@@ -268,7 +268,7 @@
 </ul>
 <h3 id="shoestore-example"><a aria-hidden="true" class="anchor-heading" href="#shoestore-example"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Shoestore example</h3>
 <p>Lets start with a  sensible table: <code>product</code> (ex. Air, Jordans). Since we are going to keeping inventory in the store, we will need actual instances of those shoes, which we can call the <code>item</code> table. For instance, this table will hold the information about the shoe's size, its particular color, its price etc. (All of this information is specific to a shoe instance, and doesn't make sense to be included in the product table). Next, we might be tempted to add a column to the <code>product</code> table indicating what type of shoe it is (business, running etc). What we would find when querying data however, is that 'business' would be repeated many times, which is a sign that it should be its own table. So we create a table called <code>product_type</code> and relate it to the <code>product</code> table with ids. Next, we will have to consider that we will have to store data on the actual sale of the item (called <code>sales_item</code>). There is a distinct but important difference between difference between the <code>item</code> table and the <code>sales_item</code>. <code>item</code> is a table that includes the actual instances of the shoe in inventory. <code>sales_item</code> is the item that is being sold. Therefore, it is going to be part of another table <code>sales_order</code>. In <code>sales_item</code>, we will include information like the specific tax rate that was used (since different people are subject to different tax rates), the discount that was applied, the quantity bought etc. Next, in our <code>sales_order</code> table, we will include the form of payment (credit, cash), what time the order was placed etc.
-<img src=":/7d7f11b898814196afe51643fe2a6f8d" alt="8da5a5b7c2d3633de044d693884219ee.png"></p><span id="navId" data="3696b2d5-4281-4ffd-b5b0-79bd616fef91"></span>
+<img src="/Digital-Garden/:/7d7f11b898814196afe51643fe2a6f8d" alt="8da5a5b7c2d3633de044d693884219ee.png"></p><span id="navId" data="3696b2d5-4281-4ffd-b5b0-79bd616fef91"></span>
 
                 
       </section>
