@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+  
+  <title>Roles - Dendron</title>
+  
+
+  <link
+    rel="shortcut icon"
+    href="https://tycholiz.github.io/code-notes/favicon.ico"
+    type="image/x-icon"
+  />
+  <link
+    rel="stylesheet"
+    href="https://tycholiz.github.io/code-notes/assets/css/just-the-docs-default.css"
+  />
+  <script
+    type="text/javascript"
+    src="https://tycholiz.github.io/code-notes/assets/js/just-the-docs.js"
+  ></script>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.22.0/themes/prism.min.css"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+    integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X"
+    crossorigin="anonymous"
+  />
+  <script
+    type="text/javascript"
+    src="https://tycholiz.github.io/code-notes/assets/js/vendor/lunr.min.js"
+  ></script>
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+   
+  
+<meta name="description" content="Personal knowledge space">
+<meta name="author" content="">
+
+<link rel="canonical" href="https://foo/notes/5e1e6144-e2ef-4418-9846-1a7636e9334c.html">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://foo/notes/5e1e6144-e2ef-4418-9846-1a7636e9334c.html">
+<meta property="og:description" content="Personal knowledge space">
+<meta property="og:image" content="https://fooundefined">
+
+<meta name="twitter:card" content="summary">
+
+<meta name="twitter:url" content="https://foo/notes/5e1e6144-e2ef-4418-9846-1a7636e9334c.html">
+<meta name="twitter:description" content="Personal knowledge space">
+<meta name="twitter:image" content="https://fooundefined">
+
+
+  <meta property="og:title" content="Roles - Dendron" />
+  <meta name="twitter:title" content="Roles - Dendron" />
+  
+</head>
+
+
+<body>
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+      <symbol id="svg-link" viewBox="0 0 24 24">
+        <title>Link</title>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link">
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+        </svg>
+      </symbol>
+      <symbol id="svg-search" viewBox="0 0 24 24">
+        <title>Search</title>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
+          <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </symbol>
+      <symbol id="svg-menu" viewBox="0 0 24 24">
+        <title>Menu</title>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu">
+          <line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </symbol>
+      <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+        <title>Expand</title>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </symbol>
+      <symbol id="svg-doc" viewBox="0 0 24 24">
+        <title>Document</title>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file">
+          <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline>
+        </svg>
+      </symbol>
+    </svg>
+
+    <div class="side-bar">
+      <div class="site-header">
+        <a href="https://tycholiz.github.io/code-notes" class="site-title lh-tight">
+  Dendron
+
+ </a>
+        <a href="#" id="menu-button" class="site-button">
+          <svg viewBox="0 0 24 24" class="icon"><use xlink:href="#svg-menu"></use></svg>
+        </a>
+      </div>
+
+      <nav role="navigation" aria-label="Main" id="site-nav" class="site-nav">
+      </nav>
+      <footer class="site-footer">
+        🌱 with 💕 using <a href="https://www.dendron.so/"> Dendron 🌲 </a>
+      </footer>
+    </div>
+    <div class="main" id="top">
+        <div id="main-header" class="main-header">
+          
+            <div class="search">
+              <div class="search-input-wrap">
+                <input type="text" id="search-input" class="search-input" tabindex="0" placeholder="Search Dendron" aria-label="Search Dendron" autocomplete="off">
+                <label for="search-input" class="search-label"><svg viewBox="0 0 24 24" class="search-icon"><use xlink:href="#svg-search"></use></svg></label>
+              </div>
+              <div id="search-results" class="search-results"></div>
+            </div>
+          
+          
+    </div>
+    <div id="main-content-wrap" class="main-content-wrap">
+      
+        
+          <nav aria-label="Breadcrumb" class="breadcrumb-nav">
+            <ol class="breadcrumb-nav-list"><li class="breadcrumb-nav-list-item"><a href="https://tycholiz.github.io/code-notes">Root</a></li><li class="breadcrumb-nav-list-item"><a href="https://tycholiz.github.io/code-notes/notes/dff06309-f792-4ee2-a0ef-529972167027.html">Postgres</a></li><li class="breadcrumb-nav-list-item"><a href="https://tycholiz.github.io/code-notes/notes/d274a1e8-98a8-40f9-8667-be48d7c071a4.html">Lang</a></li><li class="breadcrumb-nav-list-item">Roles</li></ol>
+          </nav>
+        
+      
+      <div id="main-content" class="main-content" role="main">
+
+        
+        
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+        
+
+        <script>
+          $(function () {
+            $('[data-toggle="popover"]').popover({html: true})
+          })
+        </script>
+
+        
+
+<div id="main" role="main">
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Roles">
+    
+    <meta itemprop="datePublished" content="2021-03-04T16:30:49+00:00">
+    <meta itemprop="dateModified" content="2021-03-04T16:31:39+00:00">
+
+    <div class="page__inner-wrap">
+
+      
+
+      <section class="page__content" itemprop="text">
+
+        
+
+        <h1 id="roles"><a aria-hidden="true" class="anchor-heading" href="#roles"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Roles</h1>
+<h1 id="role"><a aria-hidden="true" class="anchor-heading" href="#role"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Role</h1>
+<ul>
+<li>A role is an entity that can own database objects and have database privileges
+<ul>
+<li>can be considered a "user", a "group", or both depending on how it is used
+<ul>
+<li>in other words, a user role can be part of a group role</li>
+</ul>
+</li>
+<li>must have CREATEROLE privilege or be a database superuser to create roles.</li>
+</ul>
+</li>
+<li>When a user logs in, we want them to make their queries using a specific role</li>
+<li>any time we are running <code>CREATE USER</code> or <code>CREATE GROUP</code>, we are running <code>CREATE ROLE</code> under the hood.
+<ul>
+<li>minor difference: <code>CREATE USER</code> also logs the user in, so a <code>role</code> having the LOGIN attribute can be thought of as a user 
+<ul>
+<li>the ability to log in just means the role can be input along with a password as part of the connection string: <code>postgres://admin@localhost/mydb</code></li>
+</ul>
+</li>
+<li>In the past, there were users and groups. Now, there are just roles. Roles have the ability to log in, have the ability to inherit from other roles, 
+<ul>
+<li>basically, we moved from the Unix paradigm of users and groups, to the OOP paradigm of having inheritance.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Attributes</p>
+<ul>
+<li>attributes define privileges and info for a role 
+<ul>
+<li>ex. login, perform superuser, database creation, role creation, password, etc
+<ul>
+<li>by default, roles don't get the ability to log in</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>the attributes are listed after the WITH clause, though that word is optional </li>
+</ul>
+<pre><code>CREATE ROLE kyletycholiz WITH
+LOGIN
+...
+</code></pre>
+<p>Default roles</p>
+<ul>
+<li>
+<p>the <code>postgres</code> user is automatically created when we install Postgres. It is a superuser that we log into postgres with</p>
+<ul>
+<li>all server processes work on behalf of this user</li>
+<li>all database files belong to this user</li>
+</ul>
+</li>
+<li>
+<p>roles that start with with pg_ are system roles.</p>
+</li>
+<li>
+<p>roles are defined at the database cluster level, and so are valid in all databases in the cluster.
+cluster → database → schema → table</p>
+</li>
+</ul>
+<h2 id="grant"><a aria-hidden="true" class="anchor-heading" href="#grant"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Grant</h2>
+<ul>
+<li>When an object is created, it is assigned an owner. 
+<ul>
+<li>The owner is normally the role that executed the creation statement.</li>
+<li>The right to modify or destroy an object is always the privilege of the owner only</li>
+</ul>
+</li>
+<li>When we use grant to grant access to a role, the now-empowered role can do 2 things: they can do everything that the source role could do, or they can actually control and become the role that it gained its powers from (this would mean that if an <code>admin</code> role became <code>user_login</code> role, it would no longer be able to perform any action that have admin-only privileges) </li>
+</ul>
+<p>GRANT has 2 variants:</p>
+<ol>
+<li>grant privileges on a database object
+<ul>
+<li>inc. table, column, view, sequence, database, foreign-data wrapper, foreign server, function, procedural language, schema, or tablespace</li>
+</ul>
+</li>
+<li>grant membership in a role</li>
+</ol>
+<ul>
+<li>below, we define a role <code>user_admin</code>, then give the role <code>postgres</code> the ability to do anything that <code>user_admin</code> can do.
+<ul>
+<li>from another viewpoint, <code>postgres</code> is gaining the power to do everything that <code>user_admin</code> can do.</li>
+</ul>
+</li>
+</ul>
+<pre><code>CREATE ROLE user_admin;
+GRANT user_admin to postgres;
+</code></pre>
+<ul>
+<li>GRANTing on a database doesn't grant rights to the schema within. Similarly, GRANTing on a schema doesnt grant rights to tables within.
+<ul>
+<li>ex. if we run <code>grant usage on schema app_public to user_guest</code>, we grant the role <code>user_guest</code> the right to know that the schema exists, but it doesn't give it the right to interact with the tables within.
+<ul>
+<li>if we want to grant read rights to a table, then we need to run <code>grant select on table &#x3C;TABLENAME> to user_guest</code></li>
+</ul>
+</li>
+<li>If you have rights to SELECT from a table, but not the right to see it in the schema that contains it, then you can't access the table
+<ul>
+<li>Therefore, the user must first be granted rights to the schema, otherwise the rights on the table are useless. </li>
+<li>Likewise, if the user had been granted rights to just the schema, but not the tables within, they would still be locked out. 
+<ul>
+<li>It's like a directory tree. If you create a directory somedir with file somefile within it then set it so that only your own user can access the directory or the file (mode rwx------ on the dir, mode rw------- on the file) then nobody else can list the directory to see that the file exists. If you were to grant world-read rights on the file (mode rw-r--r--) but not change the directory permissions it'd make no difference. Nobody could see the file in order to read it, because they don't have the rights to list the directory. If you instead set rwx-r-xr-x on the directory, setting it so people can list and traverse the directory but not changing the file permissions, people could list the file but could not read it because they'd have no access to the file. You need to set both permissions for people to actually be able to view the file. </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>the public schema has a default GRANT of all rights to the role public, which every user/group is a member of. So everyone already has usage on that schema.</li>
+<li>opposite of GRANT is REVOKE
+<em>GRANT USAGE</em> - grants access to objects contained in the specified schema </li>
+</ul>
+<h2 id="roles--auth"><a aria-hidden="true" class="anchor-heading" href="#roles--auth"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Roles &#x26; Auth</h2>
+<ul>
+<li>all auth happens through postgres roles and permissions. Postgres is in charge of authenticating requests. </li>
+<li>Postgres permissions work as a whitelist and not a blacklist (except for functions). 
+<ul>
+<li>There are very few defaults, and if we want to blow them away entirely, use <code>alter default privileges</code></li>
+</ul>
+</li>
+<li>when an authenticated user makes a request, the role will be changed for that user, having the effect of restricting queries (can be seen in <code>current_user</code> variable)
+<ul>
+<li><code>current_user</code> is the username of the current execution context </li>
+</ul>
+</li>
+<li>Because we have the concept of default roles, we set a default (such as <code>user_guest</code> that every user will get by default. When the user demonstrates a verified JWT token, that role gets changed to one with more authorization rights (such as <code>user_login</code>).</li>
+<li>JWTs can be generated in postgres with <code>pgjwt</code> extension</li>
+</ul><span id="navId" data="5e1e6144-e2ef-4418-9846-1a7636e9334c"></span>
+
+                
+      </section>
+
+      
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+
+        
+          <hr>
+          <footer>
+            
+            
+
+            
+                
+              </div>
+          </footer>
+        
+    </div>
+</div>
+
+
+  
+
+  <div class="search-overlay"></div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,23 @@
+version: 1
+vaults:
+    -
+        fsPath: ../main/code
+        name: code
+useFMTitle: true
+useNoteTitleForLink: true
+noAutoCreateOnDefinition: true
+noLegacyNoteRef: true
+site:
+    siteUrl: https://tycholiz.github.io/code-notes/
+    copyAssets: true
+    siteHierarchies:
+        - root
+    siteRootDir: docs
+    usePrettyRefs: true
+    title: Dendron
+    description: Publishable code notes
+    duplicateNoteBehavior:
+        action: useVault
+        payload:
+            - code
+initializeRemoteVaults: true

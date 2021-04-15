@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+  
+  <title>Osi Model - Dendron</title>
+  
+
+  <link
+    rel="shortcut icon"
+    href="https://tycholiz.github.io/code-notes/favicon.ico"
+    type="image/x-icon"
+  />
+  <link
+    rel="stylesheet"
+    href="https://tycholiz.github.io/code-notes/assets/css/just-the-docs-default.css"
+  />
+  <script
+    type="text/javascript"
+    src="https://tycholiz.github.io/code-notes/assets/js/just-the-docs.js"
+  ></script>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.22.0/themes/prism.min.css"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+    integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X"
+    crossorigin="anonymous"
+  />
+  <script
+    type="text/javascript"
+    src="https://tycholiz.github.io/code-notes/assets/js/vendor/lunr.min.js"
+  ></script>
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+   
+  
+<meta name="description" content="Personal knowledge space">
+<meta name="author" content="">
+
+<link rel="canonical" href="https://foo/notes/61c96e0c-ee3c-4d9f-bbf0-dc3ff9066b09.html">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://foo/notes/61c96e0c-ee3c-4d9f-bbf0-dc3ff9066b09.html">
+<meta property="og:description" content="Personal knowledge space">
+<meta property="og:image" content="https://fooundefined">
+
+<meta name="twitter:card" content="summary">
+
+<meta name="twitter:url" content="https://foo/notes/61c96e0c-ee3c-4d9f-bbf0-dc3ff9066b09.html">
+<meta name="twitter:description" content="Personal knowledge space">
+<meta name="twitter:image" content="https://fooundefined">
+
+
+  <meta property="og:title" content="Osi Model - Dendron" />
+  <meta name="twitter:title" content="Osi Model - Dendron" />
+  
+</head>
+
+
+<body>
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+      <symbol id="svg-link" viewBox="0 0 24 24">
+        <title>Link</title>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link">
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+        </svg>
+      </symbol>
+      <symbol id="svg-search" viewBox="0 0 24 24">
+        <title>Search</title>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
+          <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </symbol>
+      <symbol id="svg-menu" viewBox="0 0 24 24">
+        <title>Menu</title>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu">
+          <line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </symbol>
+      <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+        <title>Expand</title>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </symbol>
+      <symbol id="svg-doc" viewBox="0 0 24 24">
+        <title>Document</title>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file">
+          <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline>
+        </svg>
+      </symbol>
+    </svg>
+
+    <div class="side-bar">
+      <div class="site-header">
+        <a href="https://tycholiz.github.io/code-notes" class="site-title lh-tight">
+  Dendron
+
+ </a>
+        <a href="#" id="menu-button" class="site-button">
+          <svg viewBox="0 0 24 24" class="icon"><use xlink:href="#svg-menu"></use></svg>
+        </a>
+      </div>
+
+      <nav role="navigation" aria-label="Main" id="site-nav" class="site-nav">
+      </nav>
+      <footer class="site-footer">
+        🌱 with 💕 using <a href="https://www.dendron.so/"> Dendron 🌲 </a>
+      </footer>
+    </div>
+    <div class="main" id="top">
+        <div id="main-header" class="main-header">
+          
+            <div class="search">
+              <div class="search-input-wrap">
+                <input type="text" id="search-input" class="search-input" tabindex="0" placeholder="Search Dendron" aria-label="Search Dendron" autocomplete="off">
+                <label for="search-input" class="search-label"><svg viewBox="0 0 24 24" class="search-icon"><use xlink:href="#svg-search"></use></svg></label>
+              </div>
+              <div id="search-results" class="search-results"></div>
+            </div>
+          
+          
+    </div>
+    <div id="main-content-wrap" class="main-content-wrap">
+      
+        
+          <nav aria-label="Breadcrumb" class="breadcrumb-nav">
+            <ol class="breadcrumb-nav-list"><li class="breadcrumb-nav-list-item"><a href="https://tycholiz.github.io/code-notes">Root</a></li><li class="breadcrumb-nav-list-item"><a href="https://tycholiz.github.io/code-notes/notes/f7c590dc-921d-4b6f-8f8e-e075b0c16035.html">Network</a></li><li class="breadcrumb-nav-list-item">Osi Model</li></ol>
+          </nav>
+        
+      
+      <div id="main-content" class="main-content" role="main">
+
+        
+        
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+        
+
+        <script>
+          $(function () {
+            $('[data-toggle="popover"]').popover({html: true})
+          })
+        </script>
+
+        
+
+<div id="main" role="main">
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Osi Model">
+    
+    <meta itemprop="datePublished" content="2021-03-11T17:27:20+00:00">
+    <meta itemprop="dateModified" content="2021-03-11T17:27:29+00:00">
+
+    <div class="page__inner-wrap">
+
+      
+
+      <section class="page__content" itemprop="text">
+
+        
+
+        <h1 id="osi-model"><a aria-hidden="true" class="anchor-heading" href="#osi-model"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Osi Model</h1>
+<ul>
+<li>The OSI model is a framework for understanding how communications work in a computing system. It is an abstract representation, since no attention is paid to the implementation details of each layer. Instead, each layer simply describes its function and purpose. Put another way, it defines what input it expects, and what output it gives. 
+<ul>
+<li>Since each layer interfaces directly with the layers above and below it, the consistence of the input and output offered by each layer is the only thing that matters (ex. as long as L1 receives 0's and 1's and delivers frames, all other details are inconsequential)</li>
+</ul>
+</li>
+</ul>
+<h2 id="the-protocol-layers"><a aria-hidden="true" class="anchor-heading" href="#the-protocol-layers"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>The Protocol Layers</h2>
+<h3 id="l7-application"><a aria-hidden="true" class="anchor-heading" href="#l7-application"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>L7 Application</h3>
+<ul>
+<li>consists of network applications and their application-layer protocols</li>
+<li>primary user interface with communication system.</li>
+<li>PDU - messages</li>
+<li>HTTP, FTP, DNS, SMTP, POP3, SSH, IRC, TLS/SSL, NFS (network FS)</li>
+</ul>
+<h3 id="l6-presentation"><a aria-hidden="true" class="anchor-heading" href="#l6-presentation"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>L6 Presentation</h3>
+<ul>
+<li>Supports the functionality of the application layer by providing services such as formatting and translation of data.</li>
+<li>provide data encryption and data compression.</li>
+<li>Data representation (compression, decompression) and encryption</li>
+<li>ex. SSL, SSH, IMAP, FTP, TLS, MPEG, JPEG</li>
+</ul>
+<h3 id="l5-session"><a aria-hidden="true" class="anchor-heading" href="#l5-session"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>L5 Session</h3>
+<ul>
+<li>Maintains the transmission path by synchronizing packets and controlling access to the medium by the Application layer.</li>
+<li>controls the connections between computers</li>
+<li>provides for delimiting and synchronizing of data exchange, including the means to build </li>
+<li>ex. API, sockets, HTTP sessions</li>
+</ul>
+<h3 id="l4-transport"><a aria-hidden="true" class="anchor-heading" href="#l4-transport"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>L4 Transport</h3>
+<ul>
+<li>Ensures the quality of transmission and determines the best route for transmission of data using the Network layer below.</li>
+<li>concerned with providing reliable communication over an unsecured network</li>
+<li>PDU - segments (TCP), datagrams (UDP)</li>
+<li>goal: deliver the data to the right software application
+<ul>
+<li>ex. TCP, UDP</li>
+</ul>
+</li>
+</ul>
+<h3 id="l3-network"><a aria-hidden="true" class="anchor-heading" href="#l3-network"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>L3 Network</h3>
+<ul>
+<li>Finds a route for transmission of data (packets) between 2 routers, and establishes and maintains the connection between two connected nodes.</li>
+<li>goal: pass data chunks over multiple connected networks</li>
+<li>PDU - packet</li>
+<li>ex. IPv4, IPv6, ICMP, ARP, NAT</li>
+</ul>
+<h3 id="l2-data-link"><a aria-hidden="true" class="anchor-heading" href="#l2-data-link"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>L2 Data Link</h3>
+<ul>
+<li>Creates, transmits, and receives packets. Controls the Physical layer.</li>
+<li>Concerned with sharing multiple access channels</li>
+<li>They are used to deliver frames on a LAN</li>
+<li>PDU - frames</li>
+<li>goal: organize the 1s and 0s into chunks of data, and get them to the right place on the wire.</li>
+<li>ex. wifi, ethernet, bluetooth, VLAN, port forwarding procol</li>
+</ul>
+<h3 id="l1-physical"><a aria-hidden="true" class="anchor-heading" href="#l1-physical"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>L1 Physical</h3>
+<ul>
+<li>Converts data into bits for transmission and converts received bits into usable data for the layers above it.</li>
+<li>PDU - bits</li>
+<li>goal is to send 0s and 1s across a wire</li>
+<li>ex. fiber optic, copper wire, coaxial cable, wireless, modem, repeaters, ethernet (physical portion), USB</li>
+</ul>
+<h3 id="the-internet-protocol"><a aria-hidden="true" class="anchor-heading" href="#the-internet-protocol"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>The Internet Protocol</h3>
+<ul>
+<li>The IP stack consists of L1, L2, L3, L4, L7</li>
+<li>When an HTTP request is sent, the protocol is established by piggybacking on the TCP connection that had already been made. This TCP connection is enabled by following the internet protocol. This is the point at which the internet protocol determines which routes datagrams</li>
+<li>The fact that there are 2 layers that are openly missing from the internet stack poses an interesting question: why are they not there? The reason is that the internet leaves these layers up to the application developer. The application developer can use any implementation of L5 and L6 that they choose in order to achieve their goals.</li>
+</ul>
+<h4 id="routers"><a aria-hidden="true" class="anchor-heading" href="#routers"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Routers</h4>
+<ul>
+<li>As data is sent out, it starts at L7 and makes its way down to L1. At L1, it is connected to the link-layer switch and goes up to L2, before going back down to L1. Then it reaches the router, which goes up to L3, then back down to L1, to be repeated depending on the number of subsequent routers. At the final router, the the router's L1 communicates with the L1 of the destination host, as it makes its way back up to L7.</li>
+</ul>
+<h3 id="airplane-trip-analogy"><a aria-hidden="true" class="anchor-heading" href="#airplane-trip-analogy"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Airplane trip analogy</h3>
+<ul>
+<li>As we look at the process of planning and taking an airplane, it becomes apparent that there are different layers to the entire process. In fact, each layer appears two times in the whole process— in reverse order:</li>
+</ul>
+<ol>
+<li>buy ticket</li>
+<li>check baggage</li>
+<li>load at gate</li>
+<li>takeoff on runway</li>
+<li>airplane routing (travel)</li>
+<li>land of runway</li>
+<li>unload at gate</li>
+<li>pickup baggage</li>
+<li>complain about ticket.</li>
+</ol>
+<ul>
+<li>each layer implements some functionality, and we can see that the opposite action was performed in reverse order.</li>
+<li>We can also see that each layer provides service to the layer below it.
+<ul>
+<li>ex. the act of checking baggage only makes sense to a ticketed person. </li>
+<li>ex. the idea of unloading at a gate only makes sense to a person on a landed plane.</li>
+</ul>
+</li>
+<li>we notice that we can replace any layer in the model, as long as the functionality remains the same. In this way, layers are interfaces to each other, and don't care about each other's implementation— only the outcome (ie. output) it provides.</li>
+</ul>
+<h3 id="encapsulation"><a aria-hidden="true" class="anchor-heading" href="#encapsulation"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Encapsulation</h3>
+<ul>
+<li>as data travels each layer from L7 down to L1, additional information is added. As we pass the information encapsulated in the HTTP request down to L4, the transport layer takes the information of L7 and adds its own information to it. This information that was added is then used by the transport layer of the next node in the chain (likely the destination host). This process of encapsulation continues on down layer by layer until L1.
+<ul>
+<li>This idea of encapsulation thus demonstrates what is fundamentally different between each PDU: a message (L7) is an encapsulated datagram (L4). In other words, the datagram encapsulates the message. A datagram is fundamentally a message, plus some other information (provided by the layer). Therefore, at each layer, the PDU has 2 types of fields: header fields, and payload fields (the payload is just a packet from the layer above).</li>
+</ul>
+</li>
+</ul>
+<h3 id="protocol-data-unit-pdu"><a aria-hidden="true" class="anchor-heading" href="#protocol-data-unit-pdu"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Protocol Data Unit (PDU)</h3>
+<ul>
+<li>each layer has the concept of a Protocol Data Unit, which is the format that the data exists in within the current Layer. In other words, it is what an atomic unit of data is called at each layer.
+<ul>
+<li>All PDUs are composed of a header and payload</li>
+</ul>
+</li>
+</ul>
+<h3 id="miscelaneous"><a aria-hidden="true" class="anchor-heading" href="#miscelaneous"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Miscelaneous</h3>
+<ul>
+<li>the very fact that there are layers means that we can treat it as a modular chain, and swap out one L3 implementation for another (such as wifi for ethernet)
+<ul>
+<li>therefore L2 doesn't care if we are using IP or IPX on L3, just like L3 doesn't care if L2 uses wifi or ethernet</li>
+</ul>
+</li>
+<li>The price we pay by layering is that we have to map between 32 bit IP addresses (L3) and 48 bit MAC addresses (L2).
+<ul>
+<li>The ARP protocol exists to solve this very problem</li>
+</ul>
+</li>
+<li>The OS may be a participant in any or all of the layers
+<ul>
+<li>ex. at L1, signal processing can be offloaded to a host CPU and that requires a driver which interfaces with the operating system</li>
+</ul>
+</li>
+</ul><span id="navId" data="61c96e0c-ee3c-4d9f-bbf0-dc3ff9066b09"></span>
+
+                
+      </section>
+
+      
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+
+        
+          <hr>
+          <footer>
+            
+            
+
+            
+                
+              </div>
+          </footer>
+        
+    </div>
+</div>
+
+
+  
+
+  <div class="search-overlay"></div>
+
+</div>
+</body>
+</html>

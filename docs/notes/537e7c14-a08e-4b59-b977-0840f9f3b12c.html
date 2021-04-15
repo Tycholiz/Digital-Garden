@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+  
+  <title>Admin - Dendron</title>
+  
+
+  <link
+    rel="shortcut icon"
+    href="https://tycholiz.github.io/code-notes/favicon.ico"
+    type="image/x-icon"
+  />
+  <link
+    rel="stylesheet"
+    href="https://tycholiz.github.io/code-notes/assets/css/just-the-docs-default.css"
+  />
+  <script
+    type="text/javascript"
+    src="https://tycholiz.github.io/code-notes/assets/js/just-the-docs.js"
+  ></script>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.22.0/themes/prism.min.css"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+    integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X"
+    crossorigin="anonymous"
+  />
+  <script
+    type="text/javascript"
+    src="https://tycholiz.github.io/code-notes/assets/js/vendor/lunr.min.js"
+  ></script>
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+   
+  
+<meta name="description" content="Personal knowledge space">
+<meta name="author" content="">
+
+<link rel="canonical" href="https://foo/notes/537e7c14-a08e-4b59-b977-0840f9f3b12c.html">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://foo/notes/537e7c14-a08e-4b59-b977-0840f9f3b12c.html">
+<meta property="og:description" content="Personal knowledge space">
+<meta property="og:image" content="https://fooundefined">
+
+<meta name="twitter:card" content="summary">
+
+<meta name="twitter:url" content="https://foo/notes/537e7c14-a08e-4b59-b977-0840f9f3b12c.html">
+<meta name="twitter:description" content="Personal knowledge space">
+<meta name="twitter:image" content="https://fooundefined">
+
+
+  <meta property="og:title" content="Admin - Dendron" />
+  <meta name="twitter:title" content="Admin - Dendron" />
+  
+</head>
+
+
+<body>
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+      <symbol id="svg-link" viewBox="0 0 24 24">
+        <title>Link</title>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link">
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+        </svg>
+      </symbol>
+      <symbol id="svg-search" viewBox="0 0 24 24">
+        <title>Search</title>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
+          <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </symbol>
+      <symbol id="svg-menu" viewBox="0 0 24 24">
+        <title>Menu</title>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu">
+          <line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </symbol>
+      <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+        <title>Expand</title>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </symbol>
+      <symbol id="svg-doc" viewBox="0 0 24 24">
+        <title>Document</title>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file">
+          <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline>
+        </svg>
+      </symbol>
+    </svg>
+
+    <div class="side-bar">
+      <div class="site-header">
+        <a href="https://tycholiz.github.io/code-notes" class="site-title lh-tight">
+  Dendron
+
+ </a>
+        <a href="#" id="menu-button" class="site-button">
+          <svg viewBox="0 0 24 24" class="icon"><use xlink:href="#svg-menu"></use></svg>
+        </a>
+      </div>
+
+      <nav role="navigation" aria-label="Main" id="site-nav" class="site-nav">
+      </nav>
+      <footer class="site-footer">
+        🌱 with 💕 using <a href="https://www.dendron.so/"> Dendron 🌲 </a>
+      </footer>
+    </div>
+    <div class="main" id="top">
+        <div id="main-header" class="main-header">
+          
+            <div class="search">
+              <div class="search-input-wrap">
+                <input type="text" id="search-input" class="search-input" tabindex="0" placeholder="Search Dendron" aria-label="Search Dendron" autocomplete="off">
+                <label for="search-input" class="search-label"><svg viewBox="0 0 24 24" class="search-icon"><use xlink:href="#svg-search"></use></svg></label>
+              </div>
+              <div id="search-results" class="search-results"></div>
+            </div>
+          
+          
+    </div>
+    <div id="main-content-wrap" class="main-content-wrap">
+      
+        
+          <nav aria-label="Breadcrumb" class="breadcrumb-nav">
+            <ol class="breadcrumb-nav-list"><li class="breadcrumb-nav-list-item"><a href="https://tycholiz.github.io/code-notes">Root</a></li><li class="breadcrumb-nav-list-item"><a href="https://tycholiz.github.io/code-notes/notes/dff06309-f792-4ee2-a0ef-529972167027.html">Postgres</a></li><li class="breadcrumb-nav-list-item">Admin</li></ol>
+          </nav>
+        
+      
+      <div id="main-content" class="main-content" role="main">
+
+        
+        
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+        
+
+        <script>
+          $(function () {
+            $('[data-toggle="popover"]').popover({html: true})
+          })
+        </script>
+
+        
+
+<div id="main" role="main">
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Admin">
+    
+    <meta itemprop="datePublished" content="2021-03-09T16:47:56+00:00">
+    <meta itemprop="dateModified" content="2021-04-02T13:15:43+00:00">
+
+    <div class="page__inner-wrap">
+
+      
+
+      <section class="page__content" itemprop="text">
+
+        
+
+        <h1 id="admin"><a aria-hidden="true" class="anchor-heading" href="#admin"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Admin</h1>
+<h1 id="overview"><a aria-hidden="true" class="anchor-heading" href="#overview"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Overview</h1>
+<ul>
+<li>When you install an instance of Postgres (ex. in Node), there will be a corresponding Postgres server, since postgres uses a client/server model.
+<ul>
+<li>if we use different ports, we can have multiple Postgres servers on a single physical server</li>
+</ul>
+</li>
+</ul>
+<h2 id="processes"><a aria-hidden="true" class="anchor-heading" href="#processes"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Processes</h2>
+<h3 id="postgres-server"><a aria-hidden="true" class="anchor-heading" href="#postgres-server"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Postgres Server</h3>
+<ul>
+<li>the server program is called <code>postgres</code></li>
+<li>purposes:
+<ul>
+<li>manages database files</li>
+<li>accepts connections from clients</li>
+<li>performs operations on behalf of clients</li>
+</ul>
+</li>
+</ul>
+<h3 id="postgres-client"><a aria-hidden="true" class="anchor-heading" href="#postgres-client"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Postgres Client</h3>
+<ul>
+<li>
+<p>the client is the application that wants to perform database operations</p>
+</li>
+<li>
+<p>clients are diverse in nature, and could be a CLI, GUI, or a library within a web server (like <code>pg</code> in node.js)</p>
+</li>
+<li>
+<p>Postgres' value is about concurrency and isolation</p>
+<ul>
+<li>The idea: what happens when 2+ people are trying to do the same thing concurrently? how is that handled?
+<ul>
+<li>This value is provided by the concept of ACID</li>
+<li>The fact that we have transactions in postgres means that we are ACID-compliant.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="https://tycholiz.github.io/code-notes/notes/d7ae827f-7104-4b55-b9e2-42af4801d484.html">Auth</a></li>
+<li><a href="https://tycholiz.github.io/code-notes/notes/6bfcd8cc-9dc2-4a19-8038-b2d225a390b4.html">Dir</a></li>
+<li><a href="https://tycholiz.github.io/code-notes/notes/88b9e181-72f0-4147-8778-2420e5088abc.html">Search Path</a></li>
+<li><a href="https://tycholiz.github.io/code-notes/notes/7021e5e2-813c-42ec-ac07-5e05f2a83cae.html">Settings</a></li>
+<li><a href="https://tycholiz.github.io/code-notes/notes/5c6c2a9f-4177-4432-a713-e7be39121b3c.html">Users</a></li>
+</ol><span id="navId" data="537e7c14-a08e-4b59-b977-0840f9f3b12c"></span>
+
+                
+      </section>
+
+      
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+
+        
+          <hr>
+          <footer>
+            
+            
+
+            
+                
+              </div>
+          </footer>
+        
+    </div>
+</div>
+
+
+  
+
+  <div class="search-overlay"></div>
+
+</div>
+</body>
+</html>

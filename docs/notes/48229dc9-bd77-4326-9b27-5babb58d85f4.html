@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+  
+  <title>Jamstack - Dendron</title>
+  
+
+  <link
+    rel="shortcut icon"
+    href="https://tycholiz.github.io/code-notes/favicon.ico"
+    type="image/x-icon"
+  />
+  <link
+    rel="stylesheet"
+    href="https://tycholiz.github.io/code-notes/assets/css/just-the-docs-default.css"
+  />
+  <script
+    type="text/javascript"
+    src="https://tycholiz.github.io/code-notes/assets/js/just-the-docs.js"
+  ></script>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.22.0/themes/prism.min.css"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+    integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X"
+    crossorigin="anonymous"
+  />
+  <script
+    type="text/javascript"
+    src="https://tycholiz.github.io/code-notes/assets/js/vendor/lunr.min.js"
+  ></script>
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+   
+  
+<meta name="description" content="Personal knowledge space">
+<meta name="author" content="">
+
+<link rel="canonical" href="https://foo/notes/48229dc9-bd77-4326-9b27-5babb58d85f4.html">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://foo/notes/48229dc9-bd77-4326-9b27-5babb58d85f4.html">
+<meta property="og:description" content="Personal knowledge space">
+<meta property="og:image" content="https://fooundefined">
+
+<meta name="twitter:card" content="summary">
+
+<meta name="twitter:url" content="https://foo/notes/48229dc9-bd77-4326-9b27-5babb58d85f4.html">
+<meta name="twitter:description" content="Personal knowledge space">
+<meta name="twitter:image" content="https://fooundefined">
+
+
+  <meta property="og:title" content="Jamstack - Dendron" />
+  <meta name="twitter:title" content="Jamstack - Dendron" />
+  
+</head>
+
+
+<body>
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+      <symbol id="svg-link" viewBox="0 0 24 24">
+        <title>Link</title>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link">
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+        </svg>
+      </symbol>
+      <symbol id="svg-search" viewBox="0 0 24 24">
+        <title>Search</title>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
+          <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </symbol>
+      <symbol id="svg-menu" viewBox="0 0 24 24">
+        <title>Menu</title>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu">
+          <line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </symbol>
+      <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+        <title>Expand</title>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </symbol>
+      <symbol id="svg-doc" viewBox="0 0 24 24">
+        <title>Document</title>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file">
+          <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline>
+        </svg>
+      </symbol>
+    </svg>
+
+    <div class="side-bar">
+      <div class="site-header">
+        <a href="https://tycholiz.github.io/code-notes" class="site-title lh-tight">
+  Dendron
+
+ </a>
+        <a href="#" id="menu-button" class="site-button">
+          <svg viewBox="0 0 24 24" class="icon"><use xlink:href="#svg-menu"></use></svg>
+        </a>
+      </div>
+
+      <nav role="navigation" aria-label="Main" id="site-nav" class="site-nav">
+      </nav>
+      <footer class="site-footer">
+        🌱 with 💕 using <a href="https://www.dendron.so/"> Dendron 🌲 </a>
+      </footer>
+    </div>
+    <div class="main" id="top">
+        <div id="main-header" class="main-header">
+          
+            <div class="search">
+              <div class="search-input-wrap">
+                <input type="text" id="search-input" class="search-input" tabindex="0" placeholder="Search Dendron" aria-label="Search Dendron" autocomplete="off">
+                <label for="search-input" class="search-label"><svg viewBox="0 0 24 24" class="search-icon"><use xlink:href="#svg-search"></use></svg></label>
+              </div>
+              <div id="search-results" class="search-results"></div>
+            </div>
+          
+          
+    </div>
+    <div id="main-content-wrap" class="main-content-wrap">
+      
+        
+          <nav aria-label="Breadcrumb" class="breadcrumb-nav">
+            <ol class="breadcrumb-nav-list"><li class="breadcrumb-nav-list-item"><a href="https://tycholiz.github.io/code-notes">Root</a></li><li class="breadcrumb-nav-list-item"><a href="https://tycholiz.github.io/code-notes/notes/3b7ffbbf-762e-411f-8fad-5e2b1b95e384.html">Deploy</a></li><li class="breadcrumb-nav-list-item">Jamstack</li></ol>
+          </nav>
+        
+      
+      <div id="main-content" class="main-content" role="main">
+
+        
+        
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+        
+
+        <script>
+          $(function () {
+            $('[data-toggle="popover"]').popover({html: true})
+          })
+        </script>
+
+        
+
+<div id="main" role="main">
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Jamstack">
+    
+    <meta itemprop="datePublished" content="2021-03-20T18:22:26+00:00">
+    <meta itemprop="dateModified" content="2021-03-20T18:46:47+00:00">
+
+    <div class="page__inner-wrap">
+
+      
+
+      <section class="page__content" itemprop="text">
+
+        
+
+        <h1 id="jamstack"><a aria-hidden="true" class="anchor-heading" href="#jamstack"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Jamstack</h1>
+<h1 id="jamstack-1"><a aria-hidden="true" class="anchor-heading" href="#jamstack-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Jamstack</h1>
+<p>JAM: JavaScript, APIs, and markup</p>
+<ul>
+<li>JavaScript: any dynamic programming during the request/response cycle is handled by JS, running entirely on the client. This could be any frontend framework or library, or even vanilla JavaScript.</li>
+<li>APIs: all server-side processes or database actions are abstracted into reusable APIs, accessed over HTTPS with JavaScript. These can be custom-built or leverage third-party services.</li>
+<li>Markup: templated markup should be prebuilt at deploy time, usually using a site generator for content sites, or a build tool for web apps.</li>
+</ul>
+<p><img src="/assets/images/2021-03-20-18-45-27.png"></p>
+<h2 id="examples"><a aria-hidden="true" class="anchor-heading" href="#examples"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Examples</h2>
+<h3 id="site-generators"><a aria-hidden="true" class="anchor-heading" href="#site-generators"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Site Generators</h3>
+<p>Next.js, Gatsby, Jekyll</p>
+<h3 id="headless-cms"><a aria-hidden="true" class="anchor-heading" href="#headless-cms"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Headless CMS</h3>
+<p>Netflify</p>
+<h2 id="architecture"><a aria-hidden="true" class="anchor-heading" href="#architecture"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Architecture</h2>
+<p>Purpose is to make the web faster, more secure, and easier to scale</p>
+<ul>
+<li>core principles are pre-rendering, and decoupling
+<ul>
+<li>pre-render - to generate the markup which represents a view (front-end) in advance of when it is required. This happens during a build rather than on-demand so that web servers do not need to perform this activity for each request recieved.</li>
+</ul>
+</li>
+<li>entire front end is prebuilt into highly optimized static pages and assets during a build process. This process of pre-rendering results in sites which can be served directly from a CDN. Since the CDN only has to serve already-rendered markup, it can be delivered very quickly and securely
+<ul>
+<li>On this foundation, Jamstack sites can use JavaScript and APIs to talk to backend services, allowing experiences to be enhanced and personalized.</li>
+</ul>
+</li>
+<li>The Jamstack philosophy is to be modular and have a strong capacity to be able to hook into various 3rd party services/APIs</li>
+</ul>
+<h2 id="benefits"><a aria-hidden="true" class="anchor-heading" href="#benefits"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Benefits</h2>
+<h3 id="security"><a aria-hidden="true" class="anchor-heading" href="#security"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Security</h3>
+<ul>
+<li>Jamstack naturally results in less moving parts, meaning there are naturally less surfaces to have to protect against.</li>
+<li>Since CDNs only serve pre-generated files, meaning we can use read-only hosting, further reducing the damage that a third party can do.</li>
+</ul>
+<h3 id="scaling"><a aria-hidden="true" class="anchor-heading" href="#scaling"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Scaling</h3>
+<p>since everything is pre-generated, the CDN can cache the whole site.</p>
+<h3 id="performance"><a aria-hidden="true" class="anchor-heading" href="#performance"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Performance</h3>
+<p>Jamstack sites remove the need to generate page views on a server at request time by instead generating pages ahead of time during a build.</p>
+<h3 id="maintenance"><a aria-hidden="true" class="anchor-heading" href="#maintenance"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Maintenance</h3>
+<p>Jamstack apps are easier to maintain, as they only need to be served directly from a simple host (or CDN)</p>
+<ul>
+<li>The work was done during the build, so now the generated site is stable and can be hosted without servers which might require patching, updating and maintain.</li>
+</ul>
+<h2 id="approaches"><a aria-hidden="true" class="anchor-heading" href="#approaches"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Approaches</h2>
+<h4 id="thinking-from-cdn-perspective"><a aria-hidden="true" class="anchor-heading" href="#thinking-from-cdn-perspective"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Thinking from CDN perspective</h4>
+<p>Because Jamstack projects don’t rely on server-side code, they can be distributed instead of living on a single server. Serving directly from a CDN unlocks speeds and performance that can’t be beat. The more of your app you can push to the edge, the better the user experience.</p>
+<h4 id="automating-builds"><a aria-hidden="true" class="anchor-heading" href="#automating-builds"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Automating builds</h4>
+<p>Because Jamstack markup is prebuilt, content changes won’t go live until you run another build. Automating this process will save you lots of frustration. You can do this yourself with webhooks, or use a publishing platform that includes the service automatically.</p>
+<h4 id="atomic-deploys"><a aria-hidden="true" class="anchor-heading" href="#atomic-deploys"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Atomic Deploys</h4>
+<p>As Jamstack projects grow really large, new changes might require re-deploying hundreds of files. Uploading these one at a time can cause inconsistent state while the process completes. You can avoid this with a system that lets you do “atomic deploys,” where no changes go live until all changed files have been uploaded.</p>
+<h4 id="instant-cache-invalidation"><a aria-hidden="true" class="anchor-heading" href="#instant-cache-invalidation"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Instant Cache Invalidation</h4>
+<p>When the build-to-deploy cycle becomes a regular occurrence, you need to know that when a deploy goes live, it really goes live. Eliminate any doubt by making sure your CDN can handle instant cache purges.</p>
+<h4 id="everything-lives-in-git"><a aria-hidden="true" class="anchor-heading" href="#everything-lives-in-git"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Everything Lives in Git</h4>
+<p>With a Jamstack project, anyone should be able to do a git clone, install any needed dependencies with a standard procedure (like npm install), and be ready to run the full project locally. No databases to clone, no complex installs. This reduces contributor friction, and also simplifies staging and testing workflows.</p><span id="navId" data="48229dc9-bd77-4326-9b27-5babb58d85f4"></span>
+
+                
+      </section>
+
+      
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+
+        
+          <hr>
+          <footer>
+            
+            
+
+            
+                
+              </div>
+          </footer>
+        
+    </div>
+</div>
+
+
+  
+
+  <div class="search-overlay"></div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+  
+  <title>Custom - Dendron</title>
+  
+
+  <link
+    rel="shortcut icon"
+    href="https://tycholiz.github.io/code-notes/favicon.ico"
+    type="image/x-icon"
+  />
+  <link
+    rel="stylesheet"
+    href="https://tycholiz.github.io/code-notes/assets/css/just-the-docs-default.css"
+  />
+  <script
+    type="text/javascript"
+    src="https://tycholiz.github.io/code-notes/assets/js/just-the-docs.js"
+  ></script>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.22.0/themes/prism.min.css"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+    integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X"
+    crossorigin="anonymous"
+  />
+  <script
+    type="text/javascript"
+    src="https://tycholiz.github.io/code-notes/assets/js/vendor/lunr.min.js"
+  ></script>
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+   
+  
+<meta name="description" content="Personal knowledge space">
+<meta name="author" content="">
+
+<link rel="canonical" href="https://foo/notes/c360903e-4bd5-4d57-b717-0ffb5b057e5a.html">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://foo/notes/c360903e-4bd5-4d57-b717-0ffb5b057e5a.html">
+<meta property="og:description" content="Personal knowledge space">
+<meta property="og:image" content="https://fooundefined">
+
+<meta name="twitter:card" content="summary">
+
+<meta name="twitter:url" content="https://foo/notes/c360903e-4bd5-4d57-b717-0ffb5b057e5a.html">
+<meta name="twitter:description" content="Personal knowledge space">
+<meta name="twitter:image" content="https://fooundefined">
+
+
+  <meta property="og:title" content="Custom - Dendron" />
+  <meta name="twitter:title" content="Custom - Dendron" />
+  
+</head>
+
+
+<body>
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+      <symbol id="svg-link" viewBox="0 0 24 24">
+        <title>Link</title>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link">
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+        </svg>
+      </symbol>
+      <symbol id="svg-search" viewBox="0 0 24 24">
+        <title>Search</title>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
+          <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </symbol>
+      <symbol id="svg-menu" viewBox="0 0 24 24">
+        <title>Menu</title>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu">
+          <line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </symbol>
+      <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+        <title>Expand</title>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </symbol>
+      <symbol id="svg-doc" viewBox="0 0 24 24">
+        <title>Document</title>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file">
+          <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline>
+        </svg>
+      </symbol>
+    </svg>
+
+    <div class="side-bar">
+      <div class="site-header">
+        <a href="https://tycholiz.github.io/code-notes" class="site-title lh-tight">
+  Dendron
+
+ </a>
+        <a href="#" id="menu-button" class="site-button">
+          <svg viewBox="0 0 24 24" class="icon"><use xlink:href="#svg-menu"></use></svg>
+        </a>
+      </div>
+
+      <nav role="navigation" aria-label="Main" id="site-nav" class="site-nav">
+      </nav>
+      <footer class="site-footer">
+        🌱 with 💕 using <a href="https://www.dendron.so/"> Dendron 🌲 </a>
+      </footer>
+    </div>
+    <div class="main" id="top">
+        <div id="main-header" class="main-header">
+          
+            <div class="search">
+              <div class="search-input-wrap">
+                <input type="text" id="search-input" class="search-input" tabindex="0" placeholder="Search Dendron" aria-label="Search Dendron" autocomplete="off">
+                <label for="search-input" class="search-label"><svg viewBox="0 0 24 24" class="search-icon"><use xlink:href="#svg-search"></use></svg></label>
+              </div>
+              <div id="search-results" class="search-results"></div>
+            </div>
+          
+          
+    </div>
+    <div id="main-content-wrap" class="main-content-wrap">
+      
+        
+          <nav aria-label="Breadcrumb" class="breadcrumb-nav">
+            <ol class="breadcrumb-nav-list"><li class="breadcrumb-nav-list-item"><a href="https://tycholiz.github.io/code-notes">Root</a></li><li class="breadcrumb-nav-list-item"><a href="https://tycholiz.github.io/code-notes/notes/dff06309-f792-4ee2-a0ef-529972167027.html">Postgres</a></li><li class="breadcrumb-nav-list-item"><a href="https://tycholiz.github.io/code-notes/notes/d274a1e8-98a8-40f9-8667-be48d7c071a4.html">Lang</a></li><li class="breadcrumb-nav-list-item"><a href="https://tycholiz.github.io/code-notes/notes/89860ec0-4e8b-4ed5-9577-6ccf65cf72b0.html">Functions</a></li><li class="breadcrumb-nav-list-item">Custom</li></ol>
+          </nav>
+        
+      
+      <div id="main-content" class="main-content" role="main">
+
+        
+        
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+        
+
+        <script>
+          $(function () {
+            $('[data-toggle="popover"]').popover({html: true})
+          })
+        </script>
+
+        
+
+<div id="main" role="main">
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Custom">
+    
+    <meta itemprop="datePublished" content="2021-03-04T09:02:57+00:00">
+    <meta itemprop="dateModified" content="2021-03-22T20:14:59+00:00">
+
+    <div class="page__inner-wrap">
+
+      
+
+      <section class="page__content" itemprop="text">
+
+        
+
+        <h1 id="custom"><a aria-hidden="true" class="anchor-heading" href="#custom"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Custom</h1>
+<h1 id="custom-functions"><a aria-hidden="true" class="anchor-heading" href="#custom-functions"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Custom Functions</h1>
+<p>A function is a reusable block of SQL code that returns a scalar value of a set of rows.</p>
+<ul>
+<li>Functions are transactional by nature. If there is an error somewhere in the function, then the function will be rolled back.
+<ul>
+<li>If a function is called within a transaction block, and the executing code does not reach the concluding <code>COMMIT</code>, then all code executed within the function will roll back as well.</li>
+<li>Any <code>BEGIN...EXCEPT</code> blocks within the function operate like savepoints like the <code>SAVEPOINT</code> and <code>ROLLBACK TO &#x3C;SAVEPOINT></code> SQL statements.</li>
+</ul>
+</li>
+<li>SQL functions execute an arbitrary list of SQL statements, returning the result of the last query in the list.
+<ul>
+<li>In the simple (non-set) case, the first row of the last query's result will be returned</li>
+<li>Alternatively, an SQL function can be declared to return a set, which allows <em>all</em> rows of the last query's result to be returned</li>
+</ul>
+</li>
+<li>allows us to write functions that can interact on the database. For instance, we can create a function that combines <code>first_name</code> and <code>last_name</code> to give us <code>fullName</code></li>
+<li>Since PostgreSQL permits function overloading, the function name alone does not uniquely identify the function to be called;
+<ul>
+<li>the parser must select the rigt function based on the data types of the supplied arguments.</li>
+</ul>
+</li>
+<li>Functions and operators in PostgreSQL support polymorphism and almost every part of the system can be extended.</li>
+<li>By default, functions can be executable by public</li>
+<li>anonymous IIFEs(?) can be invoked anywhere in the SQL by escaping the function identifiers:</li>
+</ul>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">DO</span> \$\$
+<span class="token keyword">BEGIN</span>
+  <span class="token keyword">EXECUTE</span> <span class="token string">'GRANT appname TO '</span> <span class="token operator">||</span> <span class="token keyword">user</span><span class="token punctuation">;</span>
+  <span class="token keyword">EXECUTE</span> <span class="token string">'GRANT appname_authenticator TO '</span> <span class="token operator">||</span> <span class="token keyword">user</span><span class="token punctuation">;</span>
+<span class="token keyword">END</span><span class="token punctuation">;</span>
+\$\$ <span class="token keyword">LANGUAGE</span> PLPGSQL<span class="token punctuation">;</span>
+</code></pre>
+<h2 id="using-functions-in-queries"><a aria-hidden="true" class="anchor-heading" href="#using-functions-in-queries"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Using functions in queries</h2>
+<ul>
+<li>say we have a function that returns a composite type:</li>
+</ul>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">FUNCTION</span> new_emp<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">RETURNS</span> emp <span class="token keyword">AS</span> $$
+    <span class="token keyword">SELECT</span> <span class="token keyword">ROW</span><span class="token punctuation">(</span><span class="token string">'None'</span><span class="token punctuation">,</span> <span class="token number">1000</span><span class="token punctuation">,</span> <span class="token number">25</span><span class="token punctuation">,</span> <span class="token string">'yoyo'</span><span class="token punctuation">)</span>::emp<span class="token punctuation">;</span>
+$$ <span class="token keyword">LANGUAGE</span> <span class="token keyword">SQL</span><span class="token punctuation">;</span>
+</code></pre>
+<ul>
+<li>here we are returning a single column that is a composite type of the signature: string, int, int, string. We also coerce it to the composite type related to the whole <code>emp</code> table. This means that the <code>emp</code> table has all 4 of those rows, and the act of us coercing means the output of the function can be used anywhere that an explicit <code>emp</code> type is required.</li>
+<li>we could make a SELECT statement to get back a one-column table by using <code>SELECT new_emp()</code></li>
+<li>since the composite type is also a sort of virtual table, we can use the function as a "table function": <code>SELECT * FROM new_emp();</code>, which will return 4 columns.</li>
+</ul>
+<h2 id="syntax"><a aria-hidden="true" class="anchor-heading" href="#syntax"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Syntax</h2>
+<ul>
+<li>use <code>$$</code> to open and close the function:</li>
+<li>stable means that this function does not mutate the database</li>
+</ul>
+<p>Terms</p>
+<ul>
+<li><code>setof</code> - Sets emulate rows of tables.
+<ul>
+<li><code>returns setof</code> and <code>returns table(column)</code> are equivalent</li>
+<li>When an SQL function is declared as returning SETOF sometype, the function's final query is executed to completion, and each row it outputs is returned as an element of the result set.
+<ul>
+<li>This feature is normally used when calling the function in the FROM clause, since everything after FROM would get interpreted as if it were a base table. In other words, we can add some columns to a base table, and query it as if those added rows were permanent
+<ul>
+<li>ex. imagine having a function that determined if your salary was above $100,000. we can use a function to get the boolean result and attach it to the base table, so that we can use `FROM employee, getAboveHundred(emp1)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">FUNCTION</span> <span class="token keyword">add</span><span class="token punctuation">(</span>a <span class="token keyword">int</span><span class="token punctuation">,</span> b <span class="token keyword">int</span><span class="token punctuation">)</span> <span class="token keyword">returns</span> <span class="token keyword">int</span> <span class="token keyword">as</span> $$
+ <span class="token keyword">select</span> a <span class="token operator">+</span> b
+$$ <span class="token keyword">language</span> <span class="token keyword">sql</span> stable<span class="token punctuation">;</span>
+</code></pre>
+<h1 id="return-value"><a aria-hidden="true" class="anchor-heading" href="#return-value"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Return value</h1>
+<ul>
+<li>functions can return base types (string, int) and composite types (collection of columns), or sets of base types and composite types</li>
+<li>we can return any type from a function. Since the whole row of a table is by definition a composite type, we can specify <code>returns nugget</code>. This will specify that the function must return all columns in the <code>nugget</code> table.
+<ul>
+<li>If we don't want to return all columns, we can always use the <code>ROW</code> construct to specify which columns we want to include in the row signature</li>
+<li>The select list order in the query must be exactly the same as that in which the columns appear in the table associated with the composite type.</li>
+<li>You must typecast the expressions to match the definition of the composite type</li>
+</ul>
+</li>
+<li>If the function is defined to return a base table, the table function produces a one-column table (with the column named after the function. If the function is defined to return a composite type, the table function produces a column for each attribute of the composite type.
+<ul>
+<li>using <code>setof</code> will return multiple columns</li>
+</ul>
+</li>
+<li>the type that follows <code>returns</code> has to match up with whatever is SELECTed during the query.
+<ul>
+<li>ex. if we declare <code>returns bucket</code>, then we'd better be using <code>SELECT * FROM bucket</code>
+<ul>
+<li>since in this example we are returning a base table, a one-column table is the result.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="returning-a-set"><a aria-hidden="true" class="anchor-heading" href="#returning-a-set"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Returning a Set</h3>
+<ul>
+<li>we can also use <code>RETURNS TABLE(columns)</code> syntax to return a set
+<ul>
+<li>equivalent to using one or more <code>OUT</code> parameters plus marking the function as returning SETOF record (or SETOF a single output parameter's type, as appropriate)</li>
+<li>It is not allowed to use explicit OUT or INOUT parameters with the RETURNS TABLE notation — you must put all the output columns in the TABLE list.</li>
+</ul>
+</li>
+</ul>
+<h3 id="output-params"><a aria-hidden="true" class="anchor-heading" href="#output-params"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Output Params</h3>
+<ul>
+<li>an alternate way to define a function's signature (inputs and outputs)</li>
+<li>The value of output parameters is that they provide a convenient way of defining functions that return several columns, which is why functions can have multiple outputs</li>
+</ul>
+<pre><code>CREATE FUNCTION sum_and_product (IN x int, IN y int, OUT sum int, OUT product int)
+</code></pre>
+<ul>
+<li>What has essentially happened here is that we have created an anonymous composite type for the result of the function
+<ul>
+<li>if we wanted to be more explicit, we could have declared a composite type <code>sum_prod</code>, made up of the <code>sum</code> column and the <code>product</code> column, and declared that the function <code>returns sum_prod</code>.</li>
+</ul>
+</li>
+</ul>
+<h2 id="set-returning-function"><a aria-hidden="true" class="anchor-heading" href="#set-returning-function"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Set returning function</h2>
+<ul>
+<li><em>set returning functions</em> are functions that possibly return more than one row
+<ul>
+<li>currently, <code>series generating functions</code> are the only type of <code>set returning functions</code></li>
+</ul>
+</li>
+<li><code>generate_series(&#x3C;start>, &#x3C;stop>, &#x3C;step>)</code>
+<ul>
+<li>because this function returns a result set, we can use the function after FROM</li>
+</ul>
+</li>
+<li>ex. imagine running:</li>
+</ul>
+<pre><code>generate_series(date :'start',
+			    date :'start' + interval '1 month'
+							  - interval '1 day',
+				interval '1 day'
+) as calendar(entry)
+</code></pre>
+<p>which would return a set of dates, starting from <code>start</code> (a variable we defined earlier), and increasing by intervals of 1 day.</p>
+<pre><code>- this would be useful if we have a set of data by year, and have some years where there is no data. Instead of skipping those rows, we might want to display zeros instead. When we join this result set with our data, joining on the `date` column will result in `null` for the missing years. Using `coalesce`, we can default all nulls to zero.
+</code></pre>
+<h1 id="plpgsql"><a aria-hidden="true" class="anchor-heading" href="#plpgsql"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>PL/PGSQL</h1>
+<h3 id="declare"><a aria-hidden="true" class="anchor-heading" href="#declare"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Declare</h3>
+<ul>
+<li>Declare a variable of specified type</li>
+</ul>
+<h3 id="function-declarations"><a aria-hidden="true" class="anchor-heading" href="#function-declarations"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Function Declarations</h3>
+<h4 id="strict"><a aria-hidden="true" class="anchor-heading" href="#strict"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Strict</h4>
+<ul>
+<li>this means that if the function receives null input, then the function won't be called and the output will automatically be null as well.
+<ul>
+<li>ex. imagine we have a <code>register_user</code> function, that takes name, email and password as inputs. If the function does not receive <code>name</code>, we want it to fail.</li>
+</ul>
+</li>
+</ul>
+<h4 id="security-definerinvoker"><a aria-hidden="true" class="anchor-heading" href="#security-definerinvoker"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Security Definer/Invoker</h4>
+<ul>
+<li>Security Definer - "the privileges of the function use the privileges (security clearance) of the definer"</li>
+<li>Security invoker - "use privileges (security clearance) of the user who invoked the function</li>
+<li>this means that the function is created with the privileges of the pg role that created it.</li>
+<li>This is a way to heighten the rights of the function, and can be thought of similar to sudo, instead of rights being elevated to superuser, rights are only elevated to the creator of the function itself
+<ul>
+<li>ie. if we run our migrations with user <code>postgres</code>, then using <code>security definer</code> will give our function the rights of <code>postgres</code>. This is helpful if we want to insert into a table that is part of a very strict schema, such as <code>app_private</code></li>
+</ul>
+</li>
+<li>we can use <code>security definer</code> to by pass RLS</li>
+</ul>
+<h3 id="ue-resource"><a aria-hidden="true" class="anchor-heading" href="#ue-resource"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>UE Resource</h3>
+<p><a href="https://www.xspdf.com/resolution/50004699.html">insert returning into variable</a></p><span id="navId" data="c360903e-4bd5-4d57-b717-0ffb5b057e5a"></span>
+
+                
+      </section>
+
+      
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+
+        
+          <hr>
+          <footer>
+            
+            
+
+            
+                
+              </div>
+          </footer>
+        
+    </div>
+</div>
+
+
+  
+
+  <div class="search-overlay"></div>
+
+</div>
+</body>
+</html>
