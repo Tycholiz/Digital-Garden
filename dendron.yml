@@ -8,7 +8,7 @@ useNoteTitleForLink: true
 noAutoCreateOnDefinition: true
 noLegacyNoteRef: true
 site:
-    siteUrl: https://tycholiz.github.io/code-notes/
+    siteUrl: https://tycholiz.github.io
     copyAssets: true
     siteHierarchies:
         - root
