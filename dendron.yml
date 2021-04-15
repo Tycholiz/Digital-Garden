@@ -8,6 +8,7 @@ useNoteTitleForLink: true
 noAutoCreateOnDefinition: true
 noLegacyNoteRef: true
 site:
+    assetsPrefix: Digital-Garden
     siteUrl: https://tycholiz.github.io
     copyAssets: true
     siteHierarchies:
