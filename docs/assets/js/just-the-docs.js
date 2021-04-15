@@ -62,7 +62,7 @@
     }
   
     function initNavBar() {
-      return fetch("https://tycholiz.github.io/code-notes/nav.html").then(function (response) {
+      return fetch("https://tycholiz.github.io/nav.html").then(function (response) {
         return response.text().then((content) => {
           replaceNav(content);
           return;
@@ -80,7 +80,7 @@
     function initSearch() {
       var request = new XMLHttpRequest();
       // TODO: CHECK IF THIS WORKS WITHOUT ABSOLUTE_URL
-      request.open("GET", "https://tycholiz.github.io/code-notes/assets/js/search-data.json", true);
+      request.open("GET", "https://tycholiz.github.io/assets/js/search-data.json", true);
   
       request.onload = function () {
         if (request.status >= 200 && request.status < 400) {
@@ -514,7 +514,7 @@
       var cssFile = document.querySelector('[rel="stylesheet"]');
       cssFile.setAttribute(
         "href",
-        'https://tycholiz.github.io/code-notes/assets/css/just-the-docs-' + theme + ".css"
+        'https://tycholiz.github.io/assets/css/just-the-docs-' + theme + ".css"
       );
     };
   
