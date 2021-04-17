@@ -39,21 +39,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
    
   
-<meta name="description" content="Personal knowledge space">
+<meta name="description" content="Publishable code notes">
 <meta name="author" content="">
 
-<link rel="canonical" href="https://foo/notes/6e45644f-c45e-4dd7-999b-88ca60c098e4.html">
+<link rel="canonical" href="https://tycholiz.github.io/notes/6e45644f-c45e-4dd7-999b-88ca60c098e4.html">
 
 <meta property="og:type" content="article">
-<meta property="og:url" content="https://foo/notes/6e45644f-c45e-4dd7-999b-88ca60c098e4.html">
-<meta property="og:description" content="Personal knowledge space">
-<meta property="og:image" content="https://fooundefined">
+<meta property="og:url" content="https://tycholiz.github.io/notes/6e45644f-c45e-4dd7-999b-88ca60c098e4.html">
+<meta property="og:description" content="Publishable code notes">
+<meta property="og:image" content="https://tycholiz.github.ioundefined">
 
 <meta name="twitter:card" content="summary">
 
-<meta name="twitter:url" content="https://foo/notes/6e45644f-c45e-4dd7-999b-88ca60c098e4.html">
-<meta name="twitter:description" content="Personal knowledge space">
-<meta name="twitter:image" content="https://fooundefined">
+<meta name="twitter:url" content="https://tycholiz.github.io/notes/6e45644f-c45e-4dd7-999b-88ca60c098e4.html">
+<meta name="twitter:description" content="Publishable code notes">
+<meta name="twitter:image" content="https://tycholiz.github.ioundefined">
 
 
   <meta property="og:title" content="Listen/Notify - Dendron" />
@@ -160,7 +160,7 @@
     <meta itemprop="headline" content="Listen/Notify">
     
     <meta itemprop="datePublished" content="2021-04-13T13:09:57+00:00">
-    <meta itemprop="dateModified" content="2021-04-13T13:13:03+00:00">
+    <meta itemprop="dateModified" content="2021-04-16T11:13:07+00:00">
 
     <div class="page__inner-wrap">
 
@@ -171,10 +171,50 @@
         
 
         <h1 id="listennotify"><a aria-hidden="true" class="anchor-heading" href="#listennotify"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Listen/Notify</h1>
+<h1 id="overview"><a aria-hidden="true" class="anchor-heading" href="#overview"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Overview</h1>
 <p>Postgres has a system of asynchronous messages and notifications, implemented by <code>listen</code> and <code>notify</code> keywords.</p>
 <ul>
-<li>This means that as soon as a connection is established with PostgreSQL, the server can send messages to the client even when the client is idle.</li>
-</ul><span id="navId" data="6e45644f-c45e-4dd7-999b-88ca60c098e4"></span>
+<li>This means that as soon as a connection is established with PostgreSQL, the server can send messages to the client even when the client is idle.
+<ul>
+<li>This method of communication is also carried out with the <code>COPY</code> command.</li>
+</ul>
+</li>
+</ul>
+<p>Commonly, the channel name is the same as the name of some table in the database, and the notify event essentially means, "I changed this table, take a look at it to see what's new"</p>
+<h1 id="notify"><a aria-hidden="true" class="anchor-heading" href="#notify"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Notify</h1>
+<p><code>notify</code> provides a simple interprocess communication (IPC) mechanism for a collection of processes accessing the same PostgreSQL database.</p>
+<p>When <code>notify</code> is used to signal the occurrence of changes to a particular table, a useful programming technique is to put the <code>notify</code> in a rule that is triggered by table updates.</p>
+<ul>
+<li>In this way, notification happens automatically when the table is changed, and the application programmer cannot accidentally forget to do it.</li>
+</ul>
+<p>In a transaction, <code>notify</code> events are not delivered until the surrounding transaction has been committed.</p>
+<h1 id="listen"><a aria-hidden="true" class="anchor-heading" href="#listen"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Listen</h1>
+<p>When we execute <code>listen</code>, we are registering the current postgres session as a listener on the specified notification channel.</p>
+<ul>
+<li>when the specified channel is <code>notified</code> (either by the current session, or another one connected to the same db), all sessions subscribed to that channel will receive the message, and will in turn pass it on to the client whom it is connecting.</li>
+</ul>
+<p>The payload passed to the client includes 3 things:</p>
+<ol>
+<li>Notification channel name</li>
+<li>Session server's PID</li>
+<li>Payload string (<code>''</code> if unspecified)</li>
+</ol>
+<p>A session's listen registrations are automatically cleared when the session ends.</p>
+<p>The method a client application must use to detect notification events depends on which PostgreSQL API it uses (ie. libpq, libpgtcl)</p>
+<h1 id="pg_notifychannel_name-text-payload-text"><a aria-hidden="true" class="anchor-heading" href="#pg_notifychannel_name-text-payload-text"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>pg_notify(channel_name text, payload text)</code></h1>
+<p>We can also send a notification using the <code>pg_notify</code> function</p>
+<ul>
+<li>The function is much easier to use than the <code>notify</code> command if you need to work with non-constant channel names and payloads.</li>
+</ul>
+<h1 id="example"><a aria-hidden="true" class="anchor-heading" href="#example"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Example</h1>
+<pre><code>psql# listen my_notification_channel;
+LISTEN
+
+psql# notify my_notification_channel, 'foo';
+NOTIFY
+Asynchronous notification "my_notification_channel" with payload "foo"  ⏎
+received from server process with PID 40430.
+</code></pre><span id="navId" data="6e45644f-c45e-4dd7-999b-88ca60c098e4"></span>
 
                 
       </section>

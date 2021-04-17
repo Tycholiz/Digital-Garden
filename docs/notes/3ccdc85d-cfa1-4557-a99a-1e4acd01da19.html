@@ -39,21 +39,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
    
   
-<meta name="description" content="Personal knowledge space">
+<meta name="description" content="Publishable code notes">
 <meta name="author" content="">
 
-<link rel="canonical" href="https://foo/notes/3ccdc85d-cfa1-4557-a99a-1e4acd01da19.html">
+<link rel="canonical" href="https://tycholiz.github.io/notes/3ccdc85d-cfa1-4557-a99a-1e4acd01da19.html">
 
 <meta property="og:type" content="article">
-<meta property="og:url" content="https://foo/notes/3ccdc85d-cfa1-4557-a99a-1e4acd01da19.html">
-<meta property="og:description" content="Personal knowledge space">
-<meta property="og:image" content="https://fooundefined">
+<meta property="og:url" content="https://tycholiz.github.io/notes/3ccdc85d-cfa1-4557-a99a-1e4acd01da19.html">
+<meta property="og:description" content="Publishable code notes">
+<meta property="og:image" content="https://tycholiz.github.ioundefined">
 
 <meta name="twitter:card" content="summary">
 
-<meta name="twitter:url" content="https://foo/notes/3ccdc85d-cfa1-4557-a99a-1e4acd01da19.html">
-<meta name="twitter:description" content="Personal knowledge space">
-<meta name="twitter:image" content="https://fooundefined">
+<meta name="twitter:url" content="https://tycholiz.github.io/notes/3ccdc85d-cfa1-4557-a99a-1e4acd01da19.html">
+<meta name="twitter:description" content="Publishable code notes">
+<meta name="twitter:image" content="https://tycholiz.github.ioundefined">
 
 
   <meta property="og:title" content="Insert - Dendron" />
@@ -160,7 +160,7 @@
     <meta itemprop="headline" content="Insert">
     
     <meta itemprop="datePublished" content="2021-03-09T16:32:39+00:00">
-    <meta itemprop="dateModified" content="2021-03-22T20:03:23+00:00">
+    <meta itemprop="dateModified" content="2021-04-16T13:01:57+00:00">
 
     <div class="page__inner-wrap">
 
@@ -171,8 +171,17 @@
         
 
         <h1 id="insert"><a aria-hidden="true" class="anchor-heading" href="#insert"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Insert</h1>
-<h1 id="insert-1"><a aria-hidden="true" class="anchor-heading" href="#insert-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>INSERT</h1>
-<h2 id="returning"><a aria-hidden="true" class="anchor-heading" href="#returning"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>RETURNING</h2>
+<p>There are generally three methods in PostgreSQL with which you can fill a table with data:</p>
+<ol>
+<li>Use the <code>INSERT INTO</code> command with a grouped set of data to insert new values.</li>
+<li>Use the <code>INSERT INTO</code> command in conjunction with a <code>SELECT</code> statement to insert existing values from another table.</li>
+<li>Use the <code>COPY</code> (or <code>\copy</code>) command to insert values from a system file.</li>
+</ol>
+<h2 id="inserting-a-composite-type-a-whole-row-at-once"><a aria-hidden="true" class="anchor-heading" href="#inserting-a-composite-type-a-whole-row-at-once"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Inserting a composite type (a whole row at once)</h2>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">insert</span> <span class="token keyword">into</span> stats<span class="token punctuation">.</span>daily_registration_historical <span class="token punctuation">(</span>registration_date<span class="token punctuation">,</span> count_registrations<span class="token punctuation">)</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> app_private<span class="token punctuation">.</span>daily_registration<span class="token punctuation">;</span>
+</code></pre>
+<h3 id="returning"><a aria-hidden="true" class="anchor-heading" href="#returning"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>RETURNING</h3>
 <ul>
 <li>allows us to get back the columns that were successfully inserted into the table
 <ul>
@@ -182,14 +191,15 @@
 <li>Using this method, we can get back default values (like id or timestamps)</li>
 <li>This method is also useful to insert rows into a variable, which we can then simply return from the whole function</li>
 </ul>
-<pre><code>declare
-  v_person forum_example.person;
-begin
-	insert into forum_example.person (first_name, last_name) values
-		(first_name, last_name)
-		returning * into v_person;
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">declare</span>
+  v_person forum_example<span class="token punctuation">.</span>person<span class="token punctuation">;</span>
+<span class="token keyword">begin</span>
+	<span class="token keyword">insert</span> <span class="token keyword">into</span> forum_example<span class="token punctuation">.</span>person <span class="token punctuation">(</span>first_name<span class="token punctuation">,</span> last_name<span class="token punctuation">)</span> <span class="token keyword">values</span>
+		<span class="token punctuation">(</span>first_name<span class="token punctuation">,</span> last_name<span class="token punctuation">)</span>
+		<span class="token keyword">returning</span> <span class="token operator">*</span> <span class="token keyword">into</span> v_person<span class="token punctuation">;</span>
 </code></pre>
-<h4 id="insert-all-default-values"><a aria-hidden="true" class="anchor-heading" href="#insert-all-default-values"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Insert all default values</h4>
+<h2 id="misc"><a aria-hidden="true" class="anchor-heading" href="#misc"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Misc</h2>
+<h3 id="insert-all-default-values"><a aria-hidden="true" class="anchor-heading" href="#insert-all-default-values"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Insert all default values</h3>
 <p><code>insert into users default values</code></p><span id="navId" data="3ccdc85d-cfa1-4557-a99a-1e4acd01da19"></span>
 
                 

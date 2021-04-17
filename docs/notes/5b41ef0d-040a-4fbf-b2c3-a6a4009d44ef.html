@@ -39,21 +39,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
    
   
-<meta name="description" content="Personal knowledge space">
+<meta name="description" content="Publishable code notes">
 <meta name="author" content="">
 
-<link rel="canonical" href="https://foo/notes/5b41ef0d-040a-4fbf-b2c3-a6a4009d44ef.html">
+<link rel="canonical" href="https://tycholiz.github.io/notes/5b41ef0d-040a-4fbf-b2c3-a6a4009d44ef.html">
 
 <meta property="og:type" content="article">
-<meta property="og:url" content="https://foo/notes/5b41ef0d-040a-4fbf-b2c3-a6a4009d44ef.html">
-<meta property="og:description" content="Personal knowledge space">
-<meta property="og:image" content="https://fooundefined">
+<meta property="og:url" content="https://tycholiz.github.io/notes/5b41ef0d-040a-4fbf-b2c3-a6a4009d44ef.html">
+<meta property="og:description" content="Publishable code notes">
+<meta property="og:image" content="https://tycholiz.github.ioundefined">
 
 <meta name="twitter:card" content="summary">
 
-<meta name="twitter:url" content="https://foo/notes/5b41ef0d-040a-4fbf-b2c3-a6a4009d44ef.html">
-<meta name="twitter:description" content="Personal knowledge space">
-<meta name="twitter:image" content="https://fooundefined">
+<meta name="twitter:url" content="https://tycholiz.github.io/notes/5b41ef0d-040a-4fbf-b2c3-a6a4009d44ef.html">
+<meta name="twitter:description" content="Publishable code notes">
+<meta name="twitter:image" content="https://tycholiz.github.ioundefined">
 
 
   <meta property="og:title" content="Debugger - Dendron" />
@@ -160,7 +160,7 @@
     <meta itemprop="headline" content="Debugger">
     
     <meta itemprop="datePublished" content="2021-03-08T11:10:25+00:00">
-    <meta itemprop="dateModified" content="2021-03-08T11:54:40+00:00">
+    <meta itemprop="dateModified" content="2021-04-15T13:28:30+00:00">
 
     <div class="page__inner-wrap">
 
@@ -171,7 +171,7 @@
         
 
         <h1 id="debugger"><a aria-hidden="true" class="anchor-heading" href="#debugger"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Debugger</h1>
-<h1 id="setup"><a aria-hidden="true" class="anchor-heading" href="#setup"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Setup</h1>
+<h2 id="setup"><a aria-hidden="true" class="anchor-heading" href="#setup"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Setup</h2>
 <ol>
 <li>Create a Javascript Debug Terminal (from command palette)</li>
 <li>Run command to start servers (ie. <code>yarn start</code>)
@@ -186,15 +186,15 @@
 </ul>
 </li>
 </ol>
-<h1 id="analysis"><a aria-hidden="true" class="anchor-heading" href="#analysis"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Analysis</h1>
+<h2 id="analysis"><a aria-hidden="true" class="anchor-heading" href="#analysis"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Analysis</h2>
 <ul>
 <li>We can see what each variable evaluates to in the main window</li>
 </ul>
-<h2 id="debug-panel"><a aria-hidden="true" class="anchor-heading" href="#debug-panel"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Debug panel</h2>
+<h3 id="debug-panel"><a aria-hidden="true" class="anchor-heading" href="#debug-panel"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Debug panel</h3>
 <ul>
 <li>In the debugger left panel, we can see the variables</li>
 </ul>
-<h2 id="debug-console"><a aria-hidden="true" class="anchor-heading" href="#debug-console"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Debug Console</h2>
+<h3 id="debug-console"><a aria-hidden="true" class="anchor-heading" href="#debug-console"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Debug Console</h3>
 <ul>
 <li>We can open the Debug Console to get a Debug Console REPL (cmd+shift+y)</li>
 </ul>
@@ -202,6 +202,19 @@
 <p>the debugger will not work for client-side code, since this code is executed in a browser. We would need to use the browser debugging tool to accomplish this.</p>
 <ul>
 <li>alternatively, we can have a <code>launch.json</code> file to allow us to debug</li>
+</ul>
+<h1 id="chrome-debugger"><a aria-hidden="true" class="anchor-heading" href="#chrome-debugger"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Chrome Debugger</h1>
+<ul>
+<li>The vscode debugger can connect to Chrome via its Chrome Debugger protocol. Doing this allows us to map files loaded in the browser to the files open in Visual Studio Code.
+<ul>
+<li>This enables developers to debug in vscode, by...
+<ul>
+<li>setting breakpoints directly in their source code.</li>
+<li>setting up variables to watch and see the full call stack when debugging</li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 <hr>
 <h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>

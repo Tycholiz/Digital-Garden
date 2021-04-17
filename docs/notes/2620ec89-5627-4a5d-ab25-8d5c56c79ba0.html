@@ -39,21 +39,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
    
   
-<meta name="description" content="Personal knowledge space">
+<meta name="description" content="Publishable code notes">
 <meta name="author" content="">
 
-<link rel="canonical" href="https://foo/notes/2620ec89-5627-4a5d-ab25-8d5c56c79ba0.html">
+<link rel="canonical" href="https://tycholiz.github.io/notes/2620ec89-5627-4a5d-ab25-8d5c56c79ba0.html">
 
 <meta property="og:type" content="article">
-<meta property="og:url" content="https://foo/notes/2620ec89-5627-4a5d-ab25-8d5c56c79ba0.html">
-<meta property="og:description" content="Personal knowledge space">
-<meta property="og:image" content="https://fooundefined">
+<meta property="og:url" content="https://tycholiz.github.io/notes/2620ec89-5627-4a5d-ab25-8d5c56c79ba0.html">
+<meta property="og:description" content="Publishable code notes">
+<meta property="og:image" content="https://tycholiz.github.ioundefined">
 
 <meta name="twitter:card" content="summary">
 
-<meta name="twitter:url" content="https://foo/notes/2620ec89-5627-4a5d-ab25-8d5c56c79ba0.html">
-<meta name="twitter:description" content="Personal knowledge space">
-<meta name="twitter:image" content="https://fooundefined">
+<meta name="twitter:url" content="https://tycholiz.github.io/notes/2620ec89-5627-4a5d-ab25-8d5c56c79ba0.html">
+<meta name="twitter:description" content="Publishable code notes">
+<meta name="twitter:image" content="https://tycholiz.github.ioundefined">
 
 
   <meta property="og:title" content="Cname - Dendron" />
@@ -160,7 +160,7 @@
     <meta itemprop="headline" content="Cname">
     
     <meta itemprop="datePublished" content="2021-03-07T15:04:09+00:00">
-    <meta itemprop="dateModified" content="2021-03-07T15:04:09+00:00">
+    <meta itemprop="dateModified" content="2021-04-14T22:56:47+00:00">
 
     <div class="page__inner-wrap">
 
@@ -173,22 +173,33 @@
         <h1 id="cname"><a aria-hidden="true" class="anchor-heading" href="#cname"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Cname</h1>
 <h3 id="cname-1"><a aria-hidden="true" class="anchor-heading" href="#cname-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>CNAME</h3>
 <ul>
-<li>Canonical name record</li>
-<li>points to a domain, not an IP address</li>
-<li>map an alias name to a true (canonical) domain name</li>
-<li>typically used to map a subdomain, like <code>www.stuff.com</code> to <code>stuff.com</code>, or <code>stuff.com</code> to <code>blog.stuff.com</code>)
+<li>
+<p>Canonical name record</p>
+</li>
+<li>
+<p>points to a domain, not an IP address</p>
+</li>
+<li>
+<p>map an alias name to a true (canonical) domain name</p>
+</li>
+<li>
+<p>typically used to map a subdomain, like <code>www.stuff.com</code> to <code>stuff.com</code>, or <code>stuff.com</code> to <code>blog.stuff.com</code>)</p>
 <ul>
 <li>This is good, because if the host IP address changes, then we only need to change the A record. The CNAME record depends on the domain, not the IP address it's associated with.</li>
 </ul>
 </li>
-<li>anal. Imagine a scavenger hunt where each clue points to another clue, and the final clue points to the treasure. A domain with a CNAME record is like a clue that can point you to another clue (another domain with a CNAME record) or to the treasure (a domain with an A record).</li>
-<li>ex. imagine we give <code>blog.tycholiz.com</code> a CNAME with value <code>tycholiz.com</code>. This means that any time a DNS server hits the DNS records for <code>blog.tycholiz.com</code>, it actually triggers another DNS lookup to <code>tycholiz.com</code>, since we specified that as the CNAME
+<li>
+<p>anal. Imagine a scavenger hunt where each clue points to another clue, and the final clue points to the treasure. A domain with a CNAME record is like a clue that can point you to another clue (another domain with a CNAME record) or to the treasure (a domain with an A record).</p>
+</li>
+<li>
+<p>ex. imagine we give <code>blog.tycholiz.com</code> a CNAME with value <code>tycholiz.com</code>. This means that any time a DNS server hits the DNS records for <code>blog.tycholiz.com</code>, it actually triggers another DNS lookup to <code>tycholiz.com</code>, since we specified that as the CNAME</p>
 <ul>
 <li>in this example, the canonical name (true name) is <code>tycholiz.com</code></li>
 <li>from this example, you can see how CNAMEs are kind of like relays, since they don't map to an IP at all, but point to a domain name, which maps to an IP. In other words, CNAME records cause A records to resolve domain names. </li>
 </ul>
 </li>
-<li>The CNAME record only points the client to the same IP address as the root domain
+<li>
+<p>The CNAME record only points the client to the same IP address as the root domain</p>
 <ul>
 <li>Therefore, the CNAME record does not have to resolve to the same website as the domain it points to.</li>
 <li>ex. in the case where we hit <code>blog.example.com</code>, the DNS will return us the same IP as if we hit <code>example.com</code>.  
@@ -198,7 +209,10 @@
 </li>
 </ul>
 </li>
-<li>Pointing a CNAME to another CNAME is possible, but there is no point</li>
+<li>
+<p>Pointing a CNAME to another CNAME is possible, but there is no point</p>
+<p>TEST</p>
+</li>
 </ul><span id="navId" data="2620ec89-5627-4a5d-ab25-8d5c56c79ba0"></span>
 
                 

@@ -39,21 +39,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
    
   
-<meta name="description" content="Personal knowledge space">
+<meta name="description" content="Publishable code notes">
 <meta name="author" content="">
 
-<link rel="canonical" href="https://foo/notes/4780a23f-7e92-4f4c-ae85-ac5f6fe6c02c.html">
+<link rel="canonical" href="https://tycholiz.github.io/notes/4780a23f-7e92-4f4c-ae85-ac5f6fe6c02c.html">
 
 <meta property="og:type" content="article">
-<meta property="og:url" content="https://foo/notes/4780a23f-7e92-4f4c-ae85-ac5f6fe6c02c.html">
-<meta property="og:description" content="Personal knowledge space">
-<meta property="og:image" content="https://fooundefined">
+<meta property="og:url" content="https://tycholiz.github.io/notes/4780a23f-7e92-4f4c-ae85-ac5f6fe6c02c.html">
+<meta property="og:description" content="Publishable code notes">
+<meta property="og:image" content="https://tycholiz.github.ioundefined">
 
 <meta name="twitter:card" content="summary">
 
-<meta name="twitter:url" content="https://foo/notes/4780a23f-7e92-4f4c-ae85-ac5f6fe6c02c.html">
-<meta name="twitter:description" content="Personal knowledge space">
-<meta name="twitter:image" content="https://fooundefined">
+<meta name="twitter:url" content="https://tycholiz.github.io/notes/4780a23f-7e92-4f4c-ae85-ac5f6fe6c02c.html">
+<meta name="twitter:description" content="Publishable code notes">
+<meta name="twitter:image" content="https://tycholiz.github.ioundefined">
 
 
   <meta property="og:title" content="Agg - Dendron" />
@@ -160,7 +160,7 @@
     <meta itemprop="headline" content="Agg">
     
     <meta itemprop="datePublished" content="2021-03-04T16:16:08+00:00">
-    <meta itemprop="dateModified" content="2021-04-12T08:45:25+00:00">
+    <meta itemprop="dateModified" content="2021-04-16T11:36:31+00:00">
 
     <div class="page__inner-wrap">
 
@@ -235,29 +235,30 @@ from (select * from "nugget") as nugget
 <li>we could use <code>json_agg(json_build_object())</code> if we wanted to build an array of objects</li>
 </ul>
 <p>Before</p>
-<pre><code>Select title,
-first_name || ' ' || last_name as name
-from film
-join film_actor using (film_id)
-join actor using (actor_id)
-group by title, first_name, last_name
-order by title;
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">Select</span>
+    title<span class="token punctuation">,</span>
+    first_name <span class="token operator">||</span> <span class="token string">' '</span> <span class="token operator">||</span> last_name <span class="token keyword">as</span> name
+<span class="token keyword">from</span> film
+<span class="token keyword">join</span> film_actor <span class="token keyword">using</span> <span class="token punctuation">(</span>film_id<span class="token punctuation">)</span>
+<span class="token keyword">join</span> actor <span class="token keyword">using</span> <span class="token punctuation">(</span>actor_id<span class="token punctuation">)</span>
+<span class="token keyword">group</span> <span class="token keyword">by</span> title<span class="token punctuation">,</span> first_name<span class="token punctuation">,</span> last_name
+<span class="token keyword">order</span> <span class="token keyword">by</span> title<span class="token punctuation">;</span>
 </code></pre>
 <p>After</p>
-<pre><code>SELECT
-     title,
-     ARRAY_AGG (
-	     first_name || ' ' || last_name
-	     ORDER BY first_name
-     ) actors
- FROM
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">SELECT</span>
+     title<span class="token punctuation">,</span>
+     ARRAY_AGG <span class="token punctuation">(</span>
+	     first_name <span class="token operator">||</span> <span class="token string">' '</span> <span class="token operator">||</span> last_name
+	     <span class="token keyword">ORDER</span> <span class="token keyword">BY</span> first_name
+     <span class="token punctuation">)</span> actors
+ <span class="token keyword">FROM</span>
      film
- INNER JOIN film_actor USING (film_id)
- INNER JOIN actor USING (actor_id)
- GROUP BY
+ <span class="token keyword">INNER</span> <span class="token keyword">JOIN</span> film_actor <span class="token keyword">USING</span> <span class="token punctuation">(</span>film_id<span class="token punctuation">)</span>
+ <span class="token keyword">INNER</span> <span class="token keyword">JOIN</span> actor <span class="token keyword">USING</span> <span class="token punctuation">(</span>actor_id<span class="token punctuation">)</span>
+ <span class="token keyword">GROUP</span> <span class="token keyword">BY</span>
      title
- ORDER BY
-     title;
+ <span class="token keyword">ORDER</span> <span class="token keyword">BY</span>
+     title<span class="token punctuation">;</span>
 </code></pre>
 <h3 id="json_build_object"><a aria-hidden="true" class="anchor-heading" href="#json_build_object"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>json_build_object</h3>
 <ul>
