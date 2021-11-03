@@ -1,8 +1,8 @@
 version: 1
 vaults:
     -
-        fsPath: ../main/code
-        name: code
+        fsPath: ../main/tech
+        name: tech
 useFMTitle: true
 useNoteTitleForLink: true
 noAutoCreateOnDefinition: true
@@ -36,10 +36,10 @@ site:
     siteRootDir: docs
     usePrettyRefs: true
     title: Dendron
-    description: Publishable code notes
+    description: Publishable tech notes
     duplicateNoteBehavior:
         action: useVault
         payload:
-            - code
+            - tech
 initializeRemoteVaults: true
 dendronVersion: 0.55.1
