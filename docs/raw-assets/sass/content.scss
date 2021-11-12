@@ -24,6 +24,23 @@
     // white-space: nowrap;
   }
 
+  // For links to tag notes where we want to display a tag color.
+  // The supports media query is to skip Internet Explorer, where
+  // the `var()` is not supported (https://stackoverflow.com/a/48422293).
+  @supports not (-ms-high-contrast: none) {
+    .color-tag::before {
+      // Need these to force the browser into rendering this empty box
+      content: " ";
+      display: inline-block;
+      // The actual style of the tag color box
+      width: 0.8rem;
+      height: 0.8rem;
+      border: 1px solid $body-text-color;
+      margin: auto 0.2rem;
+      background-color: var(--tag-color); // Set when generating the link
+    }
+  }
+
   ul,
   ol {
     padding-left: 1.5em;
@@ -131,9 +148,14 @@
 
   .anchor-heading {
     position: absolute;
+
+    :not(.block-anchor) {
+      // Breaks block anchors, making them extremely tall
+      height: 100%;
+    }
+
     right: -$sp-4;
     width: $sp-5;
-    height: 100%;
     padding-right: $sp-1;
     padding-left: $sp-1;
     overflow: visible;
@@ -152,6 +174,11 @@
     }
   }
 
+  // Otherwise anchor heading rules push these anchors too far left
+  .anchor-heading.block-anchor {
+    left: 0;
+  }
+
   .anchor-heading:hover,
   h1:hover > .anchor-heading,
   h2:hover > .anchor-heading,
@@ -162,6 +189,11 @@
     svg {
       visibility: visible;
     }
+  }
+
+  *:hover > .block-anchor svg,
+  table:hover .block-anchor svg  {
+    visibility: visible;
   }
 
   summary {
