@@ -9,6 +9,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+    - name: clone Dendron(main) repo
+      uses: actions/checkout@v2
+      with:
+        name: Tycholiz/Dendron
+        token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+
     - name: Checkout source
       uses: actions/checkout@v2
 
@@ -16,13 +22,13 @@ jobs:
       run: npm install
 
     - name: Build pod
-      run: npm run dendron-cli -- buildSiteV2 --wsRoot .  --stage prod
+      run: npm run dendron-cli publish export --target github
 
-    - name: Deploy site
+    - name: Deploy site to GH Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_branch: pages
+        publish_branch: master
         publish_dir: docs/
         force_orphan: true
         cname: "tycholiz.github.io"
