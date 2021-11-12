@@ -16,14 +16,14 @@ jobs:
         token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
         path: 'dendronMain'
 
-    - name: Checkout source
+    - name: Checkout publishable repo
       uses: actions/checkout@v2
 
-    - name: Install npm dependencies
-      run: npm install
+    - name: Install node dependencies
+      run: yarn
 
     - name: Build pod
-      run: npm run dendron-cli publish export --target github
+      run: yarn dendron-cli publish export --target github
 
     - name: Deploy site to GH Pages
       uses: peaceiris/actions-gh-pages@v3
