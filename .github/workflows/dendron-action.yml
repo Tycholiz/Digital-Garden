@@ -14,9 +14,11 @@ jobs:
       with:
         name: Tycholiz/Dendron
         token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+        path: 'dendronMain'
 
     - name: Checkout source
       uses: actions/checkout@v2
+        name: Tycholiz/Digital-Garden
 
     - name: Install npm dependencies
       run: npm install
