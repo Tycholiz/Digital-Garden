@@ -12,8 +12,8 @@
       "links": [],
       "anchors": {},
       "fname": "403",
-      "updated": 1636742999512,
-      "created": 1636742999512,
+      "updated": 1636743645612,
+      "created": 1636743645612,
       "parent": null,
       "children": [],
       "data": {}
@@ -175,7 +175,7 @@
         "3577d6e8-1437-4f7b-9da2-c353ed232038"
       ],
       "data": {},
-      "contentHash": "b5a875cede0b3b4abe401df717960205",
+      "contentHash": "7730693db0d19d3a73665766d9c0a1c5",
       "custom": {
         "nav_order": 0,
         "permalink": "/"
@@ -42073,12 +42073,12 @@
         "3577d6e8-1437-4f7b-9da2-c353ed232038"
       ],
       "data": {},
-      "contentHash": "b5a875cede0b3b4abe401df717960205",
+      "contentHash": "7730693db0d19d3a73665766d9c0a1c5",
       "custom": {
         "nav_order": 0,
         "permalink": "/"
       },
-      "body": "\n# Digital Garden\n\nThis Wiki of Personal Information is organized according to domains and their\nsub-domains, along with specific implementation of those domains.\n\nFor instance, Git itself is a domain. Sub-domains of Git, would be `commit`,\n`tags`, `reflog` etc. implementations of each of those could be `cli`, `strat`\n(strategies), `inner` etc.\n\nThe goal of the wiki is to present data in a manner that is from the perspective\nof a querying user. Here, a user is a programmer wanting to get key information\nfrom a specific domain. For instance, if a user wants to use postgres functions\nand hasn't done them in a while, they should be able to query\n`postgres.functions` to see what information is available to them.\n\nThis wiki has been written with myself in mind. While learning each of these\ndomains, I have been sensitive to the aha moments and have noted down my\ninsights as they arose. I have refrained from capturing information that I\nconsidered obvious or otherwise non-beneficial to my own understanding.\n\nThe ability I hope to gain from this wiki is the ability to step away from any\ngiven domain for a long period of time, and be able to be passably useful for\nwhatever my goals are within a short period of time. Of course, this is all\nvague sounding, and really depends on the domain, along with the ends I am\ntrying to reach.\n"
+      "body": "\n# Digital Garden\n\nThis Wiki of Personal Information is organized according to domains and their\nsub-domains, along with specific implementation of those domains.\n\nFor instance, Git itself is a domain. Sub-domains of Git, would be `commit`,\n`tags`, `reflog` etc. implementations of each of those could be `cli`, `strat`\n(strategies), `inner` etc.\n\nThe goal of the wiki is to present data in a manner that is from the perspective\nof a querying user. Here, a user is a programmer wanting to get key information\nfrom a specific domain. For instance, if a user wants to use postgres functions\nand hasn't done them in a while, they should be able to query\n`postgres.functions` to see what information is available to them.\n\nThis wiki has been written with myself in mind. While learning each of these\ndomains, I have been sensitive to the \"aha\" moments and have noted down my\ninsights as they arose. I have refrained from capturing information that I\nconsidered obvious or otherwise non-beneficial to my own understanding.\n\nThe ability I hope to gain from this wiki is the ability to step away from any\ngiven domain for a long period of time, and be able to be passably useful for\nwhatever my goals are within a short period of time. Of course, this is all\nvague sounding, and really depends on the domain, along with the ends I am\ntrying to reach.\n\nTo achieve this, the system should be steadfast to:\n- be able to put information in relatively easily, without too much thought\n\trequired to make that determination.\n- be able to extract the information that we need, meaning there is a\n\thigh-degree in confidence in the location of the information. The idea is\n\tthat information loses a large amount of its value when it is unfindable.\n\tTherefore, a relatively strict ideology should be used when determining\n\twhere a piece of information belongs.\n"
     }
   ],
   "noteIndex": {
@@ -42238,12 +42238,12 @@
       "3577d6e8-1437-4f7b-9da2-c353ed232038"
     ],
     "data": {},
-    "contentHash": "b5a875cede0b3b4abe401df717960205",
+    "contentHash": "7730693db0d19d3a73665766d9c0a1c5",
     "custom": {
       "nav_order": 0,
       "permalink": "/"
     },
-    "body": "\n# Digital Garden\n\nThis Wiki of Personal Information is organized according to domains and their\nsub-domains, along with specific implementation of those domains.\n\nFor instance, Git itself is a domain. Sub-domains of Git, would be `commit`,\n`tags`, `reflog` etc. implementations of each of those could be `cli`, `strat`\n(strategies), `inner` etc.\n\nThe goal of the wiki is to present data in a manner that is from the perspective\nof a querying user. Here, a user is a programmer wanting to get key information\nfrom a specific domain. For instance, if a user wants to use postgres functions\nand hasn't done them in a while, they should be able to query\n`postgres.functions` to see what information is available to them.\n\nThis wiki has been written with myself in mind. While learning each of these\ndomains, I have been sensitive to the aha moments and have noted down my\ninsights as they arose. I have refrained from capturing information that I\nconsidered obvious or otherwise non-beneficial to my own understanding.\n\nThe ability I hope to gain from this wiki is the ability to step away from any\ngiven domain for a long period of time, and be able to be passably useful for\nwhatever my goals are within a short period of time. Of course, this is all\nvague sounding, and really depends on the domain, along with the ends I am\ntrying to reach.\n"
+    "body": "\n# Digital Garden\n\nThis Wiki of Personal Information is organized according to domains and their\nsub-domains, along with specific implementation of those domains.\n\nFor instance, Git itself is a domain. Sub-domains of Git, would be `commit`,\n`tags`, `reflog` etc. implementations of each of those could be `cli`, `strat`\n(strategies), `inner` etc.\n\nThe goal of the wiki is to present data in a manner that is from the perspective\nof a querying user. Here, a user is a programmer wanting to get key information\nfrom a specific domain. For instance, if a user wants to use postgres functions\nand hasn't done them in a while, they should be able to query\n`postgres.functions` to see what information is available to them.\n\nThis wiki has been written with myself in mind. While learning each of these\ndomains, I have been sensitive to the \"aha\" moments and have noted down my\ninsights as they arose. I have refrained from capturing information that I\nconsidered obvious or otherwise non-beneficial to my own understanding.\n\nThe ability I hope to gain from this wiki is the ability to step away from any\ngiven domain for a long period of time, and be able to be passably useful for\nwhatever my goals are within a short period of time. Of course, this is all\nvague sounding, and really depends on the domain, along with the ends I am\ntrying to reach.\n\nTo achieve this, the system should be steadfast to:\n- be able to put information in relatively easily, without too much thought\n\trequired to make that determination.\n- be able to extract the information that we need, meaning there is a\n\thigh-degree in confidence in the location of the information. The idea is\n\tthat information loses a large amount of its value when it is unfindable.\n\tTherefore, a relatively strict ideology should be used when determining\n\twhere a piece of information belongs.\n"
   },
   "vaults": [
     {
