@@ -1,0 +1,30 @@
+<h1 id="subscriptions"><a aria-hidden="true" class="anchor-heading" href="#subscriptions"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Subscriptions</h1>
+<h2 id="subscriptions-1"><a aria-hidden="true" class="anchor-heading" href="#subscriptions-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Subscriptions</h2>
+<p>real-time connection from the client to the server that allows the client to get immediately informed about events happening server-side</p>
+<ul>
+<li>when a client subscribes to an event, it will hold a steady connection to the server. when this event happens, the server will push that corresponding data to the client
+Therefore, subscriptions are event-based, acting in response to what just happened.</li>
+<li>We can see this in the subscription nomenclature: <code>commentAdded</code>, <code>paymentMethodAdded</code></li>
+<li>Unlike queries and mutations that follow a typical “request-response-cycle”, subscriptions represent a <em>stream</em> of data sent over to the client.</li>
+</ul>
+<p>You should use subscriptions for the following:</p>
+<ul>
+<li>Small, incremental changes to large objects.
+<ul>
+<li>Repeatedly polling for a large object is expensive, especially when most of the object's fields rarely change. Instead, you can fetch the object's initial state with a query, and your server can proactively push updates to individual fields as they occur.</li>
+</ul>
+</li>
+<li>Low-latency, real-time updates.
+<ul>
+<li>For example, a chat application's client wants to receive new messages as soon as they're available.</li>
+</ul>
+</li>
+</ul>
+<pre><code>subscription {
+  newPerson {
+    name
+    age
+  }
+}
+</code></pre>
+<p>Whenever a newer mutation is performed that creates a new <code>Person</code>, the server sends the information about this person to the client</p>

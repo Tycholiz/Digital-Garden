@@ -1,0 +1,45 @@
+<h1 id="jestmock"><a aria-hidden="true" class="anchor-heading" href="#jestmock"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>jest.mock</h1>
+<p><code>jest.mock</code> allows us to mock an entire module</p>
+<p>If we call <code>jest.mock</code> with only 1 arg,</p>
+<ul>
+<li>the module we pass will be replaced simply with <code>jest.fn</code></li>
+</ul>
+<p>If we call <code>jest.mock</code> with 2 args,</p>
+<ul>
+<li>the module we pass will be replaced with the return value of the function provided (arg2).
+<ul>
+<li>in other words, if there is 2 args, <code>jest.mock</code> says "replace all occurrences of arg1 with arg2"</li>
+</ul>
+</li>
+</ul>
+<p>This code tells jest, "any time <code>calculateAge</code> is called, stick in 42 as its return value"</p>
+<ul>
+<li>we say "any time you import <code>calculateAge</code> into some other module, replace its value with <code>jest.fn(() => 42)</code></li>
+</ul>
+<pre class="language-js"><code class="language-js">jest<span class="token punctuation">.</span><span class="token method function property-access">mock</span><span class="token punctuation">(</span><span class="token string">'../calculateAge'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+  <span class="token keyword control-flow">return</span> jest<span class="token punctuation">.</span><span class="token method function property-access">fn</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token number">42</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// This runs the function specified as second argument to `jest.mock`.</span>
+<span class="token keyword">const</span> calculateAge <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'../calculateAge'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">calculateAge</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Will return '42';</span>
+</code></pre>
+<ul>
+<li><strong><em>ex.</em></strong> <code>jest.mock('7g-components/box/box.jsx', () => 'Box');</code>
+<ul>
+<li>this is saying "for the component we are testing, take all instances of <code>Box</code> and replace them with the text <code>Box</code>"</li>
+<li>what's happening underlying is that since components are just functions, we are saying "replace our component function with the function <code>() => 'Box'</code>"</li>
+<li>we do this when we don't really care about all the props that come with box, but are just interested in the structure. <code>&#x3C;Box /></code> doesn't really matter, since that isn't what we are testing.</li>
+<li>we do this basically when our proptypes fails, because we aren't supplying data in the way proptypes would expect (ex. passing to <code>Box</code> margin as <code>25px</code> rather than the expected <code>25</code>)</li>
+</ul>
+</li>
+</ul>
+<p>When we do <code>jest.mock('./my-file.js')</code>, it will turn all functions into Jest mock functions and all objects will have more properties on them like, <code>mockReturnValueOnce</code></p>
+<p>spec: Mocks get hoisted, so if there is a variable you define <em>after</em> the mock, you probably won't be able to use it</p>
+<pre class="language-js"><code class="language-js">jest<span class="token punctuation">.</span><span class="token method function property-access">mock</span><span class="token punctuation">(</span><span class="token string">'./isValidCoupon'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+  <span class="token keyword control-flow">return</span> <span class="token punctuation">{</span>
+    <span class="token comment">// isValidCoupon: async () => true,</span>
+    isValidCoupon<span class="token operator">:</span> jest<span class="token punctuation">.</span><span class="token method function property-access">fn</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token method function property-access">mockImplementation</span><span class="token punctuation">(</span><span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+</code></pre>

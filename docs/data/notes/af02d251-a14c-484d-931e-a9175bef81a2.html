@@ -1,0 +1,16 @@
+<h1 id="serial-port"><a aria-hidden="true" class="anchor-heading" href="#serial-port"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Serial Port</h1>
+<p>Serial Port is a Node library that allows us to connect and communicate with an external device via the device's serial ports</p>
+<p><img src="/Digital-Garden/assets/images/2021-03-20-19-47-20.png" alt="Serial Port"></p>
+<h3 id="raspberry-pi--roombaarduino"><a aria-hidden="true" class="anchor-heading" href="#raspberry-pi--roombaarduino"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Raspberry Pi + Roomba/Arduino</h3>
+<p>Roomba has a serial port, meaning we can connect it with a Raspberry Pi via the Pi's GPIO pins</p>
+<p>On the Pi, we would install Node SerialPort, and run <code>npx @serialport/list</code> to scan the devices that are connected via the GPIO pins.</p>
+<ul>
+<li>From there, we open a serial port, we open a REPL, and we define a new port, which uses one of the connected devices and specifies some options</li>
+</ul>
+<pre><code>$ npx @serialport/terminal -p /dev/tty.usbmodem14301                                                                    
+Opening serial port: /dev/tty.usbmodem14301 echo: true
+</code></pre>
+<pre><code>$ npx @serialport/repl                                                                                                  
+port = SerialPort("/dev/tty.usbmodem14301", { autoOpen: false })
+globals { SerialPort, portName, port }
+</code></pre>

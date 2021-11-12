@@ -1,0 +1,16 @@
+<h1 id="functions"><a aria-hidden="true" class="anchor-heading" href="#functions"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Functions</h1>
+<h3 id="functions-1"><a aria-hidden="true" class="anchor-heading" href="#functions-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Functions</h3>
+<ul>
+<li>In C, we must declare a function prototype before calling the function so that the signature is known to the compiler 
+<ul>
+<li>this is no different from declaring an int with <code>int e</code></li>
+<li>The prototype looks identical to the function, expect the body is replaced by a semi-colon:</li>
+</ul>
+</li>
+</ul>
+<pre class="language-c"><code class="language-c"><span class="token keyword">char</span> <span class="token operator">*</span><span class="token function">do_something</span><span class="token punctuation">(</span><span class="token keyword">char</span> <span class="token operator">*</span>dest<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>src<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>This is not strictly necessary, but unless we declare it, the compiler is left to guess the signature based on how the function is called, and it is often wrong.</p>
+<ul>
+<li>if we are passing an argument that should remain constant within the function body, we can prepend <code>const</code> to the parameter: <code>int strlen(const char[]);</code></li>
+</ul>

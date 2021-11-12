@@ -1,0 +1,18 @@
+<h1 id="mx"><a aria-hidden="true" class="anchor-heading" href="#mx"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Mx</h1>
+<h3 id="mx-1"><a aria-hidden="true" class="anchor-heading" href="#mx-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>MX</h3>
+<p>Mail exchange (SMTP)</p>
+<ul>
+<li>MX Records point to the incoming smtp server for a domain</li>
+<li>the record indicates how email messages should be routed (in accordance with SMTP)
+<ul>
+<li>ex. When a user sends an email to <a href="mailto:john.smith@gmail.com">john.smith@gmail.com</a>, the <em>Message Transfer Agent</em> (MTA) sends a DNS query to identify the mail servers for that email address. The MTA establishes an SMTP connection with those mail servers, starting with the prioritized domains</li>
+</ul>
+</li>
+<li>must point to an A record</li>
+<li><code>priority</code> - lower number indicates preference. In the result of a send failure, the next priority domain will be attempted 
+<ul>
+<li><code>mailhost1.tycholiz.com</code> might have <code>priority</code> of 10, and <code>mailhost2.tycholiz.com</code> might have <code>priority</code> of 20, which would mean <code>mailhost2</code> only gets used when the first message fails to send. </li>
+<li>if we use the same priority, then both servers will receive equal amount of mail (effectively a load balancer) </li>
+</ul>
+</li>
+</ul>

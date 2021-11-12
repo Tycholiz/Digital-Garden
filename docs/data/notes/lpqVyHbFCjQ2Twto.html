@@ -1,0 +1,11 @@
+<h1 id="loops"><a aria-hidden="true" class="anchor-heading" href="#loops"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Loops</h1>
+<h4 id="loop-over-regular-files-in-directory"><a aria-hidden="true" class="anchor-heading" href="#loop-over-regular-files-in-directory"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Loop over regular files in directory</h4>
+<pre class="language-sh"><code class="language-sh">for f in *; do
+  echo "File -> $f"
+done
+</code></pre>
+<h4 id="loop-over-all-files-in-directory-inc-dotfiles"><a aria-hidden="true" class="anchor-heading" href="#loop-over-all-files-in-directory-inc-dotfiles"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Loop over all files in directory (inc. dotfiles)</h4>
+<pre class="language-sh"><code class="language-sh">for f in $(ls -a ~/Documents); do
+    echo "Processing $f file.."
+done
+</code></pre>

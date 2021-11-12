@@ -1,0 +1,29 @@
+<h1 id="n1"><a aria-hidden="true" class="anchor-heading" href="#n1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>N1</h1>
+<h1 id="graphql-suffers-from-the-n1-problem"><a aria-hidden="true" class="anchor-heading" href="#graphql-suffers-from-the-n1-problem"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>GraphQL suffers from the N+1 problem</h1>
+<ul>
+<li>The number of queries grows exponentially with the depth of the query</li>
+<li>N1 problem occurs when you have to retrieve the same information multiple times. In graphql, the resolver for that particular field would have to be hit every single time, instead of the system understanding that it's the same result, and being more efficient about it.
+<ul>
+<li>ex. We have a query shaped as below. imagine that the article has 5 <code>comments</code> and all are written by the same person. In Graphql, that would be 5 times that the resolver got called, instead of once.</li>
+</ul>
+</li>
+</ul>
+<pre class="language-js"><code class="language-js">query <span class="token punctuation">{</span>
+  <span class="token function">user</span><span class="token punctuation">(</span>id<span class="token operator">:</span> <span class="token string">"abc"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	name
+	<span class="token function">article</span><span class="token punctuation">(</span>title<span class="token operator">:</span> <span class="token string">"GraphQL is great"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	  comments <span class="token punctuation">{</span>
+		text
+		writtenBy <span class="token punctuation">{</span>
+		  name
+		<span class="token punctuation">}</span>
+	  <span class="token punctuation">}</span>
+	<span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<ul>
+<li>N1 problem can be solved by DataLoader library
+<a href="https://stackoverflow.com/questions/97197/what-is-the-n1-selects-problem-in-orm-object-relational-mapping">possibly redundant info</a>
+<a href="http://www.petecorey.com/blog/2017/08/14/batching-graphql-queries-with-dataloader/?from=east5th.co">using a batchloader (like joinMonster) to solve N+1</a></li>
+</ul>

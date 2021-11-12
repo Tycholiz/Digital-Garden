@@ -1,0 +1,19 @@
+<h1 id="page"><a aria-hidden="true" class="anchor-heading" href="#page"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Page</h1>
+<h3 id="nextpage"><a aria-hidden="true" class="anchor-heading" href="#nextpage"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>NextPage</h3>
+<p>We can type them using the <code>NextPage</code> type.</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token maybe-class-name">Page</span><span class="token operator">:</span> <span class="token maybe-class-name">NextPage</span><span class="token operator">&#x3C;</span><span class="token maybe-class-name">Props</span><span class="token operator">></span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">props<span class="token operator">:</span> <span class="token maybe-class-name">Props</span></span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">(</span>
+  <span class="token operator">&#x3C;</span>main<span class="token operator">></span><span class="token maybe-class-name">Your</span> user agent<span class="token operator">:</span> <span class="token punctuation">{</span>userAgent<span class="token punctuation">}</span><span class="token operator">&#x3C;</span><span class="token operator">/</span>main<span class="token operator">></span>
+<span class="token punctuation">)</span>
+</code></pre>
+<h2 id="api"><a aria-hidden="true" class="anchor-heading" href="#api"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>API</h2>
+<h3 id="getinitialprops"><a aria-hidden="true" class="anchor-heading" href="#getinitialprops"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>getInitialProps</code></h3>
+<p>Enables SSR, allowing us to do initial data population.</p>
+<ul>
+<li>ie. sending the page with the data already populated from the server.</li>
+<li>carries SEO-related benefits</li>
+</ul>
+<p>This method can be used to asynchronously fetch some data, which then gets passed through <code>props</code></p>
+<ul>
+<li>The first time this method runs, it will be on the server, each time the user navigates to a different route (using <code>next/link</code> or <code>next/router</code> components), <code>getInitialProps</code> will be run on the client.</li>
+</ul>
+<p><code>getInitialProps</code> is being migrated away from in favor of <code>getStaticProps</code> or <code>getServerSideProps</code>.</p>

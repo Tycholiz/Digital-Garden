@@ -1,0 +1,136 @@
+<h1 id="regex"><a aria-hidden="true" class="anchor-heading" href="#regex"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Regex</h1>
+<h3 id="types"><a aria-hidden="true" class="anchor-heading" href="#types"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Types</h3>
+<p>The "normal" regex is Perl-Compatible Regex (PCRE)</p>
+<ul>
+<li>may be contrasted with Basic Regular Expressions (BRE)</li>
+<li>Vim Regex largely follows BRE</li>
+</ul>
+<h4 id="bre"><a aria-hidden="true" class="anchor-heading" href="#bre"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>BRE</h4>
+<p>The main difference between the two is that BRE tends to treat more characters as literals - an "a" is an "a", but also a "(" is a "(", not a special character - and so involves more backslashes to give them "special" meaning.</p>
+<ul>
+<li><strong>magic</strong> means we don't have to escape a character for it to take on its special meaning. <strong>nomagic</strong> means we have to escape, because otherwise the character will be taken literally
+<ul>
+<li><strong><em>ex.</em></strong> with magic, <code>.</code> will mean "stand in for any character". with nomagic, it will literally mean "match the <code>.</code> character"</li>
+<li>this makes sense, because with magic, a lot of cool stuff is happening that we have no idea how it's being done. Without magic, it's just looking for a character</li>
+</ul>
+</li>
+<li><code>\V</code> Verbatim Switch - only <code>\</code> has special meaning (ie. very nomagic)
+<ul>
+<li>prevent regex symbols from taking over - <code>/\Va.k.a</code> (equivalent to <code>/a\.k\.a\.</code>)</li>
+<li>in regex, <code>.</code> means "match any character". making a verbatim search removes that functionality</li>
+<li>when we use <code>\V</code>, it means for the following search, only <code>\</code> will have a special meaning</li>
+</ul>
+</li>
+<li><code>\v</code> Literal Switch - all characters (except word characters (<strong>[a-zA-Z_]</strong>)) have special meaning (ie. very magic)</li>
+<li>delimit words - since the word "the" appears in "these", if we wanted to just search for the word "the", we can use delimiters
+<ul>
+<li><code>/\v&#x3C;the></code></li>
+</ul>
+</li>
+<li>ignore case - <code>/search\c</code></li>
+<li>enforce case - <code>/search\C</code></li>
+<li>Anything that matches inside of parentheses is automatically assigned to a temporary silo.
+<ul>
+<li>we can reference these matches in any later commands, such as a <code>:%S</code> search and replace command</li>
+<li>We can reference the captured text within the first set of parens as <code>\1</code> (and <code>\2</code> for the second set of parens, and so on) </li>
+<li><code>\0</code> refers to the entire match, whether or not there were parens</li>
+<li>tip: use <code>%</code> to not capture the following parens
+<ul>
+<li>imagine we want to find and replace all occurrences of a first and last name, then replace it by the format <code>LAST, FIRST</code>. Notice the where we use and omit the <code>%</code> in order to control which matches are going to the <code>\1</code> and <code>\2</code> registers. Here, we don't care whether "Drew" or "Andrew" was matched, so we don't bother registering it.
+<ul>
+<li><code>/\v(%(And|D)rew) (Neil)</code></li>
+<li><code>:%s//\2, \1/g</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="character-classes-make-the-letter-capital-to-negate-the-character-ex-s-for-non-whitespace-char"><a aria-hidden="true" class="anchor-heading" href="#character-classes-make-the-letter-capital-to-negate-the-character-ex-s-for-non-whitespace-char"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Character Classes (make the letter capital to negate the character (ex. <code>\S</code> for non-whitespace char)</h3>
+<ul>
+<li>whitespace char - <code>\s</code></li>
+<li>digit - <code>\d</code></li>
+<li>hex-digit - <code>\x</code></li>
+<li>word character (alphanumeric + underscore) - <code>\w</code></li>
+<li>alphabetic char - <code>\a</code></li>
+<li>lowercase char - <code>\l</code></li>
+<li>uppercase char - <code>\u</code></li>
+</ul>
+<h1 id="word-boundaries"><a aria-hidden="true" class="anchor-heading" href="#word-boundaries"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Word boundaries</h1>
+<ul>
+<li><code>pattern</code> - the regex text that we type into the search field</li>
+<li><code>match</code> - any text in the document that is highlighted as a result of the search</li>
+<li><code>&#x3C;</code>/<code>></code> - match the beginning/end of a word</li>
+</ul>
+<h2 id="lookaheadslookbehinds"><a aria-hidden="true" class="anchor-heading" href="#lookaheadslookbehinds"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Lookaheads/Lookbehinds</h2>
+<ul>
+<li>while the boundaries of a match normally correspond with the start and end of a pattern, we can use <code>\zs</code> and <code>\ze</code> to crop the beginning and end of a match, making the new match a subset of the pattern
+<ul>
+<li>ex. search for matches of "eagle", but only when it follows the word "bald"
+<ul>
+<li><code>/bald \zseagle</code>()</li>
+<li>In this example, "bald eagle" still forms part of the pattern, but only the word "eagle" is matched</li>
+</ul>
+</li>
+<li>ex. search for everything inside quotes, without the quotes themselves
+<ul>
+<li><code>/\v"\zs[^"]+\ze"</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="backreference"><a aria-hidden="true" class="anchor-heading" href="#backreference"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backreference</h3>
+<ul>
+<li>allow you to match a particular pattern, then use a variable that refers back
+to it
+<ul>
+<li>Say we wanted to match an html tag and its content. Since there is
+repetition in an opening and closing tag (<code>&#x3C;div></code>/<code>&#x3C;/div></code>), we can use
+a back reference to capture <code>div</code> in a variable, in order to use it
+later in the regex pattern</li>
+</ul>
+</li>
+<li>a related, but distinct term.</li>
+</ul>
+<h1 id="fine-slicing"><a aria-hidden="true" class="anchor-heading" href="#fine-slicing"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Fine slicing</h1>
+<h4 id="character-set"><a aria-hidden="true" class="anchor-heading" href="#character-set"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Character Set</h4>
+<ul>
+<li>match any character specified - <code>[a-zA-Z0-9]</code></li>
+<li>match either an <code>f</code> or an <code>o</code> - <code>(f|o)</code></li>
+<li>search for any 6 of the preceding characters - <code>{6}</code>
+<ul>
+<li>ex. <code>/\v#([a-fA-F0-9]{6})</code> will match any hex code</li>
+</ul>
+</li>
+<li>search for between 4 and 6 matches of the preceding character - <code>{6,8}</code></li>
+<li>search for at least 6 matches of the preceding character - <code>{6,}</code>
+<ul>
+<li>In other words, leave upper range unbounded</li>
+</ul>
+</li>
+<li>negate the following search - <code>^</code></li>
+<li>multiple occurrences of the same character
+<ul>
+<li>0 or 1 times (ie. it is optional) -s <code>?</code></li>
+<li>0 or more times - <code>*</code></li>
+<li>1 or more - <code>+</code></li>
+</ul>
+</li>
+<li>match any character - <code>.</code></li>
+<li>match any character 0 or more times - <code>.*</code>
+<ul>
+<li>doesn't have to be the same character many times to work
+<ul>
+<li>ex. <code>.*dog</code> matches <code>yyydog</code> and <code>yfwdog</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="useful-regex-patterns"><a aria-hidden="true" class="anchor-heading" href="#useful-regex-patterns"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Useful Regex Patterns</h1>
+<ul>
+<li><code>ag '\{\s.*ListView.*from\s.react-native.'</code> - search for a non-default
+exported module from a specific module</li>
+</ul>

@@ -1,0 +1,43 @@
+<h1 id="port-forwarding"><a aria-hidden="true" class="anchor-heading" href="#port-forwarding"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Port Forwarding</h1>
+<h1 id="port-forwarding-1"><a aria-hidden="true" class="anchor-heading" href="#port-forwarding-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Port Forwarding</h1>
+<p>the act of directly forwarding data packets from one interface (or physical link) to another. This is not really proxying; instead, think of railroad tracks: without port forwarding the track ends at a station, but with port forwarding the track seamlessly continues to the next station.</p>
+<ul>
+<li>If I were to try and ssh into my home computer from halfway around the world by using my home's public IP address, my home router would receive the request, and not know what to do with it, since the private IP address would then be needed to complete the send.</li>
+<li>We can specify to a router "hey, when you receive requests from the internet with ssh (port 22), I need you to pass them along to 192.168.1.74" 
+<ul>
+<li>We give the router a forwarding IP address (the internal IP that the packets are destined for) and a port. The router external IP and port number together serve as a unique identifier, and we specify what happens when the router receives the combination  
+<ul>
+<li>"upon receiving a request on port 8000, forward that request on to 196.168.1.74"</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>we need to specify an <strong>external port</strong>, which is the port on the router that is open and facing the internet.
+<ul>
+<li>some numbers will be in use already, such as services from email and web server.</li>
+<li>pick port above 5000</li>
+</ul>
+</li>
+<li>Port forwarding settings are found in the router (using the modem's IP) </li>
+</ul>
+<h2 id="external-port-range"><a aria-hidden="true" class="anchor-heading" href="#external-port-range"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>External port range</h2>
+<ul>
+<li>normally identical to the internal port range. For security purposes, we may change this.</li>
+<li>We may not like the fact that people on the outside can see what ports are being used. 
+<ul>
+<li>ex. 5432 is the normal port for postgres. Recognizability like this introduces security issues.</li>
+</ul>
+</li>
+<li>To get around this issue, we can employ external port ranges. We can specify 11111 as the external port, and 5432 as the internal port, and now whenever a request comes in with port 11111, it will get forwarded to the specified internal IP and the internal port. </li>
+</ul>
+<h2 id="internal-port"><a aria-hidden="true" class="anchor-heading" href="#internal-port"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Internal port</h2>
+<ul>
+<li>port of the service running on the internal IP host. 
+<ul>
+<li>ex, we are running an express server on port 8000</li>
+</ul>
+</li>
+<li>we may want to expose port 22 (SSH), port 21 (FTP) </li>
+</ul>
+<h1 id="resources"><a aria-hidden="true" class="anchor-heading" href="#resources"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Resources</h1>
+<p><a href="https://caddy.community/t/using-caddy-as-a-reverse-proxy-in-a-home-network/9427">Caddy Reverse Proxy: Setting up for home network</a></p>

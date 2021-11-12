@@ -1,0 +1,74 @@
+<h1 id="pointer"><a aria-hidden="true" class="anchor-heading" href="#pointer"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Pointer</h1>
+<h1 id="pointer-1"><a aria-hidden="true" class="anchor-heading" href="#pointer-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Pointer</h1>
+<p>A pointer is a variable that stores both a memory address and the type of data that resides at that memory location.</p>
+<ul>
+<li>Obtaining the value stored at that location is known as <em>dereferencing the pointer</em>
+<ul>
+<li>anal: The index within a textbook has page numbers which reference pages in the book. Dereferencing the pointer would be done by flipping to that page and reading the text.</li>
+<li>the type of the pointer tells the compiler what operations can be performed through that pointer</li>
+</ul>
+</li>
+<li>a pointer is a very thin abstraction built on top of a language's own addressing capabilities</li>
+<li>Each unit of memory in a system is assigned a unique address (memory location).
+<ul>
+<li>A pointer is an object that stores this address.
+<ul>
+<li>This is similar in concept to how we dont store images in a database, we just store its url location</li>
+</ul>
+</li>
+<li>Conceptually, the fact that memory is just stored in blocks makes memory itself a very large array.</li>
+<li>arrays work a bit differently in that the variable points to the address (location) of the first character in the array </li>
+</ul>
+</li>
+<li>pointers are used partly because they are sometimes the only way to express a computation, and partly because they usually lead to more compact and efficient code than can be obtained in other ways
+<ul>
+<li>They are especially efficient when used in repetitive operations</li>
+</ul>
+</li>
+<li>pointers are used for constructing <em>references</em>, which in turn are fundamental to constructing nearly all data structures</li>
+<li>using a pointer to retrieve the value that is stored at the relevant memory location is called <strong>dereferencing the pointer</strong></li>
+<li>anal:if storage were a reference book, then the page number in the index would be the pointer, and flipping to that page and reading the text would be dereferencing that pointer.</li>
+<li>the format of a pointer is dependent on the underlying computer architecture (since pointer's pertain to physical memory locations)</li>
+<li>Pointers and arrays are closely related
+<ul>
+<li>Any operation that can be achieved by array subscripting can also be done with pointers</li>
+<li>consider that when we declare an array <code>x</code> of length 10, we are reserving 10 contiguous memory cells. We can create a pointer that points to the first element with <code>ptr = &#x26;x[0];</code>. Now, we can copy the contents of that first element to <code>y</code> with <code>y = *ptr;</code>.
+<ul>
+<li>Since elements in an array are contiguous, by defintion <code>ptr+1</code> points to the second element in the array, and <code>*(ptr+1)</code> refers to the <em>contents</em> of <code>x[1]</code> </li>
+</ul>
+</li>
+<li>ex. a char occupies a single byte, a short occupies 2 contiguous bytes, a long occupies 4 contiguous bytes, and so on.
+<ul>
+<li>Naturally, this means that contiguous groups of memory cells can be manipulated</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>A pointer is a group of cells (often two or four) that can hold an address</li>
+</ul>
+<h2 id="example"><a aria-hidden="true" class="anchor-heading" href="#example"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Example</h2>
+<p>Imagine we executed the following code:</p>
+<pre><code>int a = 5;
+int *ptr = NULL;
+</code></pre>
+<p>assuming that <code>a</code> is stored at <code>0x8130</code> and <code>ptr</code> at <code>0x8134</code>, our memory would look like:
+| Address | Value |
+|---------|------------|
+| 0x8130  | 0x00000005 |
+| 0x8134  | 0x00000000 |</p>
+<p>now this code is run:</p>
+<pre><code>ptr = &#x26;a;
+</code></pre>
+<p>And our memory looks like this:
+| Address | Value |
+|---------|------------|
+| 0x8130  | 0x00000005 |
+| 0x8134  | 0x00008130 |</p>
+<p>now we can dereference <code>ptr</code>:</p>
+<pre><code>*ptr = 8;
+</code></pre>
+<p>And our computer takes the contents of <code>ptr</code> (0x00008130), locates the address, and assigns 8 to that location, yielding this memory:
+| Address | Value |
+|---------|------------|
+| 0x8130  | 0x00000008 |
+| 0x8134  | 0x00008130 |</p>

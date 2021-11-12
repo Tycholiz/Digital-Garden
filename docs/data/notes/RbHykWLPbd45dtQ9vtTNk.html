@@ -1,0 +1,16 @@
+<h1 id="cook"><a aria-hidden="true" class="anchor-heading" href="#cook"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Cook</h1>
+<h4 id="serving-static-files"><a aria-hidden="true" class="anchor-heading" href="#serving-static-files"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Serving static files</h4>
+<p>ie. Caddy performing the duties of a static file server</p>
+<pre class="language-conf"><code class="language-conf">example.com {
+    # if `root` omitted, pwd (of Caddyfile) is assumed
+    # `*` is a wildcard matcher, so it matches all requests.
+    root * /var/www
+    file_server
+}
+</code></pre>
+<h4 id="reverse-proxy-load-balance"><a aria-hidden="true" class="anchor-heading" href="#reverse-proxy-load-balance"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Reverse proxy load balance</h4>
+<p>This will round-robin load balance requests to 3 different hosts on the same local network</p>
+<pre class="language-conf"><code class="language-conf">reverse_proxy /api/* 192.168.0.30:80 192.168.0.31:80 192.168.0.32:80 {
+	lb_policy round_robin
+}
+</code></pre>

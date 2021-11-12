@@ -1,0 +1,43 @@
+<h1 id="links"><a aria-hidden="true" class="anchor-heading" href="#links"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Links</h1>
+<h1 id="apollo-link"><a aria-hidden="true" class="anchor-heading" href="#apollo-link"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Apollo Link</h1>
+<ul>
+<li>a system of modular components for GraphQL networking
+<ul>
+<li>Each link represents a subset of functionality that can be composed with other links to create complex control flows of data.</li>
+<li>In a few words, Apollo Links are chainable "units" that you can snap together to define how each GraphQL request is handled by your GraphQL client.</li>
+</ul>
+</li>
+<li>When you fire a GraphQL request, each Link's functionality is applied one after another, allowing you to control the request lifecycle in a way that makes sense for your application
+<ul>
+<li>ex. Links can provide retrying, polling, and batching</li>
+</ul>
+</li>
+<li>At a basic level, a link is a function that takes an operation and returns an observable
+<ul>
+<li>an operation is an object with information like: query, variables, context</li>
+</ul>
+</li>
+<li>links are required when creating an Apollo client instance.</li>
+<li>the core of a link is the <code>request</code> method, which accepts the <code>operation</code> (ex. query, mutation) as an argument
+<ul>
+<li>this method is called every time execute is run on that link chain (typically each time an operation is passed through the link chain)</li>
+</ul>
+</li>
+</ul>
+<h2 id="http-link"><a aria-hidden="true" class="anchor-heading" href="#http-link"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>HTTP Link</h2>
+<ul>
+<li>most common Apollo Link</li>
+<li>The http link is a terminating link that fetches GraphQL results from a GraphQL endpoint using http
+<ul>
+<li>This can be used for authentication, persisted queries, dynamic uris, and other granular updates.</li>
+</ul>
+</li>
+</ul>
+<h2 id="state-link"><a aria-hidden="true" class="anchor-heading" href="#state-link"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>State link</h2>
+<ul>
+<li>allows us to use graphql query operations on client state. </li>
+</ul>
+<h2 id="auth-link"><a aria-hidden="true" class="anchor-heading" href="#auth-link"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Auth link</h2>
+<ul>
+<li>allows us to add an authorization header to each request</li>
+</ul>

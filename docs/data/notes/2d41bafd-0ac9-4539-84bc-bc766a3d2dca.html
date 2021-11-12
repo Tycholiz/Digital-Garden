@@ -1,0 +1,25 @@
+<h1 id="types"><a aria-hidden="true" class="anchor-heading" href="#types"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Types</h1>
+<h4 id="clusterip-default"><a aria-hidden="true" class="anchor-heading" href="#clusterip-default"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>ClusterIP (default)</h4>
+<p>exposes the port only inside the cluster, making it inaccessible from the outside world.</p>
+<ul>
+<li>Therefore, use this service when we want to enable communication between pods, while preventing external access.</li>
+<li>With ClusterIP, all the Pods in the cluster can access the <code>TargetPort</code> (the port of the associated Pod that will receive all the requests)</li>
+</ul>
+<h4 id="nodeport"><a aria-hidden="true" class="anchor-heading" href="#nodeport"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>NodePort</h4>
+<p>exposes ports to all the nodes</p>
+<ul>
+<li>If the service is of type NodePort, ports will be available both within the cluster as well as from outside by sending requests to any of the nodes.</li>
+<li>If NodePort is used, ClusterIP will be created automatically.</li>
+<li>NodePort is the port which we can use to access the Service and, therefore, the Pods from outside the cluster
+<ul>
+<li>in most cases the port should be randomly generated to avoid clashes</li>
+</ul>
+</li>
+</ul>
+<h4 id="loadbalancer"><a aria-hidden="true" class="anchor-heading" href="#loadbalancer"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>LoadBalancer</h4>
+<p>only useful when combined with cloud provider’s load balancer.</p>
+<h4 id="externalname"><a aria-hidden="true" class="anchor-heading" href="#externalname"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>ExternalName</h4>
+<p>maps a service to an external address (e.g., kubernetes.io)</p>
+<ul>
+<li>This service has limited usage.</li>
+</ul>

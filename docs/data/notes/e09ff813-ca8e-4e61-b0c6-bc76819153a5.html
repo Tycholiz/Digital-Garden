@@ -1,0 +1,29 @@
+<h1 id="merge"><a aria-hidden="true" class="anchor-heading" href="#merge"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Merge</h1>
+<h1 id="merge-1"><a aria-hidden="true" class="anchor-heading" href="#merge-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Merge</h1>
+<ul>
+<li>to undo a merge, simply run <code>git reset --hard HEAD</code>
+<ul>
+<li>by default, only the index will be reset, meaning the partially merged files will remain in the working directory.</li>
+<li>If we've merged and committed already but want to revert the merge, we can discard the commit with <code>git reset --hard ORIG_HEAD</code></li>
+</ul>
+</li>
+<li>From a DX standpoint, the big difference between rebase and merge is that <code>merge</code> will preserve the "railroad" switch that was our branch when we look at the history, whereas <code>rebase</code> will show it linear.
+<ul>
+<li>"Should this branch remain visible in the graph?"</li>
+</ul>
+</li>
+</ul>
+<p><a href="https://softwareengineering.stackexchange.com/questions/314215/can-a-git-commit-have-more-than-2-parents">git merge with multiple parents</a></p>
+<h2 id="when-to-use-merge"><a aria-hidden="true" class="anchor-heading" href="#when-to-use-merge"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>When to use Merge</h2>
+<ol>
+<li>If master remained untouched while we were working on our feature branch (in which case a fast-forward merge would be automatic).</li>
+<li>When we have work that is related to an agile ticket or bugfix (which would allow us to look back in history and clearly see it)</li>
+</ol>
+<h2 id="terminology"><a aria-hidden="true" class="anchor-heading" href="#terminology"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Terminology</h2>
+<p>The <code>ours</code> <code>theirs</code> terminology is from the perspective of the "already existing branch". Put another way, if we are on main and merging in a feature branch, main is <code>ours</code> and feature is <code>theirs</code>. Also in the same way (and using a different paradigm), <code>current change</code> would refer to main, and <code>incoming change</code> to feature.</p>
+<p>This is also the same as with rebase. if we are rebasing main onto feature, then <code>ours</code> will refer to main (<code>git rebase main</code> from feature branch)</p>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/a27714da-49f6-4f50-9b91-5ccbb6cf0115">Merge Strategies</a></li>
+</ol>

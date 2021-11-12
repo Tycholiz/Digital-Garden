@@ -1,0 +1,20 @@
+<h1 id="views"><a aria-hidden="true" class="anchor-heading" href="#views"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Views</h1>
+<h1 id="view"><a aria-hidden="true" class="anchor-heading" href="#view"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>View</h1>
+<ul>
+<li>A view is like a derived table, but instead of it only living within the context of a single query, it exists more in perpetuity 
+<ul>
+<li>in other words, it is the result set of a stored query</li>
+<li>users of the database can query the view just as they would query any other table</li>
+</ul>
+</li>
+<li>while a view is a virtualized table that represents the result of a particular db query, when a query is made against a view, that query is converted into a query that can be made against the base table (in other words, the underlying base table(s) that the view is based off of)
+<ul>
+<li><em>materialized view</em> - in contrast to the way a view is queried, a materialized view actually takes up storage space, making it a proper table (and not just a conceptual table). When you query a materialized view, the result set is cached and stored (or, materialized) as a sort of pseudo table 
+<ul>
+<li>can be thought of as a snapshot of a query set</li>
+<li>makes queries more efficient at the expense of space  </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>

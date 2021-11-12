@@ -1,0 +1,43 @@
+<h1 id="join"><a aria-hidden="true" class="anchor-heading" href="#join"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Join</h1>
+<h3 id="syntax-for-joining-on-a-key"><a aria-hidden="true" class="anchor-heading" href="#syntax-for-joining-on-a-key"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Syntax for joining on a key</h3>
+<p>Most common is to use JOIN ... ON</p>
+<pre class="language-sql"><code class="language-sql"><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token keyword">inner</span> <span class="token keyword">join</span> T1 <span class="token keyword">on</span> T2<span class="token punctuation">.</span>id <span class="token operator">=</span> T1<span class="token punctuation">.</span>id
+</code></pre>
+<p>We can also use the USING clause, which is a shorthand that allows you to take advantage of the specific situation where both sides of the join use the same name for the joining column(s)</p>
+<ul>
+<li>For example, the following produces the join condition ON T1.a = T2.a AND T1.b = T2.b.</li>
+</ul>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> T1
+<span class="token keyword">inner</span> <span class="token keyword">join</span> T2 <span class="token keyword">using</span> <span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span>
+</code></pre>
+<p>Doing it like this also suppresses redundant columns</p>
+<ul>
+<li>there is no need to print both of the matched columns, since they must have equal values</li>
+</ul>
+<h3 id="anti-join"><a aria-hidden="true" class="anchor-heading" href="#anti-join"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Anti-join</h3>
+<p>An anti-join is meant to keep only the rows that fail a test.</p>
+<ul>
+<li>ex. imagine we have a result set of students having taken an Economics exam. If we want to filter to include only those students who did not finish the exam (denoted by <code>null</code> value in the <code>score</code> column), we can filter out those who did in fact finish the exam.
+<ul>
+<li>note: since WHERE clause is just a filter, it doesn't care which columns are actually returned by the query. This is why we can just say <code>SELECT 1</code>. Postgres doesn't even look at what was selected; only that something was returned from the query.</li>
+</ul>
+</li>
+</ul>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token operator">*</span>
+    <span class="token keyword">from</span> students
+    <span class="token keyword">inner</span> <span class="token keyword">join</span> results <span class="token keyword">on</span> students<span class="token punctuation">.</span>id <span class="token operator">=</span> results<span class="token punctuation">.</span>student_id
+<span class="token keyword">where</span> <span class="token operator">not</span> <span class="token keyword">exists</span> <span class="token punctuation">(</span>
+    <span class="token keyword">select</span> <span class="token number">1</span>
+        <span class="token keyword">from</span> results r
+    <span class="token keyword">where</span> score <span class="token operator">is</span> <span class="token operator">not</span> <span class="token boolean">null</span>
+<span class="token punctuation">)</span>
+</code></pre>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/2395afdc-4175-48e6-a411-1cf44a1ab2ff">Cross</a></li>
+<li><a href="/Digital-Garden/notes/d0e9bf24-7701-4bf8-b4c6-3920e6c08ae3">Lateral</a></li>
+<li><a href="/Digital-Garden/notes/9e0dd223-c36b-49ad-a99d-7ee481430e68">Outer</a></li>
+<li><a href="/Digital-Garden/notes/8bf98fb7-4898-4664-8911-08351ac4807e">Self Join</a></li>
+</ol>

@@ -1,0 +1,8 @@
+<h1 id="boundary"><a aria-hidden="true" class="anchor-heading" href="#boundary"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Boundary</h1>
+<h1 id="boundary-commit"><a aria-hidden="true" class="anchor-heading" href="#boundary-commit"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Boundary Commit</h1>
+<p>A boundary commit is the commit that limits a revision range but does not belong to that range. For example the revision range <code>HEAD~3..HEAD</code> consists of 3 commits (HEAD~2, HEAD~1, and HEAD), and the commit HEAD~3 serves as a boundary commit for it.</p>
+<ul>
+<li>This is related to the concept of inclusive/exclusive ranges. In this comparison, the boundary commit would be an exclusive boundary.</li>
+</ul>
+<p>More formally, git processes a revision range by starting at the specified commit and getting at other commits through the parent links. It stops at commits that don't meet the selection criteria (and therefore should be excluded) - those are the boundary commits.
+<a href="https://stackoverflow.com/questions/42437590/what-is-a-git-boundary-commit">Source</a></p>

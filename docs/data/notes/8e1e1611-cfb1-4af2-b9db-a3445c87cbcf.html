@@ -1,0 +1,45 @@
+<h1 id="functions"><a aria-hidden="true" class="anchor-heading" href="#functions"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Functions</h1>
+<p>A function is a binary relation between 2 sets (ie. collection of values). The input set is mapped to a return value.</p>
+<p>A function's type consists of the types of its argument and its return type.</p>
+<ul>
+<li>ie. function type === function signature</li>
+</ul>
+<p>the indent level of a function should not be greater than one or two.</p>
+<ul>
+<li>If a function does only those steps that are one level below the stated name of the function, then the function is doing one thing.</li>
+</ul>
+<p>Functions can be either total or partial.</p>
+<ul>
+<li>A total function is one that will succeed for all possible inputs, whereas a partial function may not.</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token comment">/* No matter what numbers you specify, this function will always return a value. You can be confident that under no circumstances
+ * will your program crash because of this function (Reality is slightly more complex, but this is close enough)
+ * As such, this function is a total function.
+ */</span>
+<span class="token keyword">function</span> <span class="token function">add</span><span class="token punctuation">(</span> <span class="token parameter">x<span class="token punctuation">,</span> y</span> <span class="token punctuation">)</span><span class="token punctuation">{</span> <span class="token keyword control-flow">return</span> x <span class="token operator">+</span> y <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token comment">// All numbers can be converted to strings, so this is a total function.</span>
+<span class="token keyword">function</span> <span class="token function">numberToString</span><span class="token punctuation">(</span> <span class="token parameter">num</span> <span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword control-flow">return</span> num<span class="token punctuation">.</span><span class="token method function property-access">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre>
+<p>When a function is called, its memory is allocated on the stack.</p>
+<ul>
+<li>When a function executes, it adds its state data to the top of the stack; when the function exits this data is removed from the stack.
+<ul>
+<li>All data, such as local variables, parameters, return address etc. are included in this single unit that is added to the stack.</li>
+</ul>
+</li>
+</ul>
+<h3 id="memory-allocation-of-recursive-functions"><a aria-hidden="true" class="anchor-heading" href="#memory-allocation-of-recursive-functions"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Memory allocation of recursive functions</h3>
+<p>A recursive function calls itself, therefore, the memory for a called function is allocated on top of memory allocated for calling function.</p>
+<ul>
+<li>a different copy of local variables is created for each function call. When the base case is reached, the child function returns its value to the function from which it was called. Then, this child function’s stack frame is removed. This process continues until the parent function is returned.</li>
+</ul>
+<p>If the memory stack was a stack of plates, then each execution of the function would be a plate added to the stack. Plates would continue to be added until the base case was reached. At that point, the top plate would be removed, and its return value would go to the next plate. This would continue until the return value reaches the final plate in the stack, which would return the final value to the initial calling site.</p>
+<h3 id="function-composition"><a aria-hidden="true" class="anchor-heading" href="#function-composition"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Function composition</h3>
+<p>Intuitively, composing functions is a chaining process in which the output of function f feeds the input of function g.</p>
+<h3 id="higher-order-function"><a aria-hidden="true" class="anchor-heading" href="#higher-order-function"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Higher-order function</h3>
+<p>A higher-order function is such a function that:</p>
+<ul>
+<li>Has a parameter that has a function type, OR</li>
+<li>it’s return type is a function type</li>
+</ul>

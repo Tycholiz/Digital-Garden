@@ -1,0 +1,39 @@
+<h1 id="merge-strategies"><a aria-hidden="true" class="anchor-heading" href="#merge-strategies"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Merge Strategies</h1>
+<p>Git has several different methods to find a base commit, these methods are called "merge strategies".</p>
+<ul>
+<li>Once Git finds a common base commit it will create a new "merge commit" that combines the changes of the specified merge commits.</li>
+<li>Technically, a merge commit is a regular commit which just happens to have two parent commits.</li>
+</ul>
+<p>when merging (and pulling), we can pass the <code>-s</code> flag to specify which merge strategy we want to use.</p>
+<ul>
+<li>When not specified, Git will select the most appropriate based on the provided branches.
+merges can be either explicit or implicit</li>
+<li><em>explicit</em> means a new merge commit is created.</li>
+<li><em>implicit</em> means no new merge commit is made, and any evidence of a branch having existed is erased from history
+<ul>
+<li>This is accomplished either by fast-forward merges or rebases.</li>
+</ul>
+</li>
+</ul>
+<h2 id="strategy-types"><a aria-hidden="true" class="anchor-heading" href="#strategy-types"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Strategy types</h2>
+<p>Specified with <code>-s</code> flag</p>
+<ul>
+<li>ex. <code>git merge -s ours feature-branch</code></li>
+</ul>
+<h3 id="recursive"><a aria-hidden="true" class="anchor-heading" href="#recursive"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Recursive</h3>
+<p>Operates on 2 heads. Therefore, it is the default when pulling/merging one branch.</p>
+<p>Has additional sub-operation options, which allow us to auto-resolve conflicts, by accepting all changes in one HEAD version</p>
+<ul>
+<li><em>ours</em> - accept all "ours" versions of the HEADS</li>
+<li><em>theirs</em> - accept all "theirs" versions of the HEADS</li>
+<li><em>patience</em> - This option spends extra time to avoid mis-merges on unimportant matching lines. This options is best used when branches to be merged have extremely diverged.</li>
+</ul>
+<h3 id="resolve"><a aria-hidden="true" class="anchor-heading" href="#resolve"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Resolve</h3>
+<p>operates on 2 heads using 3-way merge algorithm.</p>
+<h3 id="octopus"><a aria-hidden="true" class="anchor-heading" href="#octopus"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Octopus</h3>
+<p>default when there are more than 2 heads.</p>
+<h3 id="ours"><a aria-hidden="true" class="anchor-heading" href="#ours"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Ours</h3>
+<p>The output merge result is always that of the current branch HEAD. The "ours" term implies the preference effectively ignoring all changes from all other branches. It is intended to be used to combine history of similar feature branches.</p>
+<ul>
+<li>note: this should not be confused with the <code>ours</code> option of the Recursive Merge Strategy</li>
+</ul>

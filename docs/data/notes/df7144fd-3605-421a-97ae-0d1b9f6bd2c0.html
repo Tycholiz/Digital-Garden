@@ -1,0 +1,54 @@
+<h1 id="records"><a aria-hidden="true" class="anchor-heading" href="#records"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>records</h1>
+<h1 id="resource-records-rr"><a aria-hidden="true" class="anchor-heading" href="#resource-records-rr"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Resource Records (RR)</h1>
+<p>DNS records (aka zone files) are instructions that live in authoritative DNS servers and provide information about a domain</p>
+<ul>
+<li>ex. You can think of a set of DNS records like a business listing on Yelp. That listing will give you a bunch of useful information about a business such as their location, hours, services offered, etc</li>
+<li>a DNS record is a mapping between domain name and IP address. </li>
+</ul>
+<p>when we enter <code>facebook.com</code> in an address bar, we request an A record from the DNS. When we send an email, we request an MX record from the DNS. </p>
+<ul>
+<li>A record is therefore the thing that we (the client) query for when engaging with the DNS</li>
+</ul>
+<h2 id="rr-field-values"><a aria-hidden="true" class="anchor-heading" href="#rr-field-values"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>RR Field Values</h2>
+<p>Values</p>
+<ul>
+<li><code>@</code> - indicates that this is a record for the root domain</li>
+<li><code>*</code> - indicates a wildcard, which will match all subdomains.</li>
+</ul>
+<h3 id="ttl-time-to-live"><a aria-hidden="true" class="anchor-heading" href="#ttl-time-to-live"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>TTL (Time to Live)</h3>
+<ul>
+<li>How long the website will live in the caching nameserver before a new one is requested. If the TTL is 1 hour, then the server will only request a new version of the site every hour. All requests made to that URL will be made to the cached version, until the hour is up, and a new version is used.</li>
+<li>As we know, there are many layers to DNS. It could be the case that we are able to resolve the domain name in the ISP nameserver, but we also may need to recurve further. The TTL will give us the max amount of time that particular resolution can exist on the ISP nameserver
+<ul>
+<li>In other words, how long can a given mapping of domain to IP address live for in the cache, before we need to make a more recursive query? </li>
+</ul>
+</li>
+</ul>
+<h3 id="record-data"><a aria-hidden="true" class="anchor-heading" href="#record-data"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Record Data</h3>
+<ul>
+<li>Think of it like environment variables. We are passing data to the record. Naturally, whatever data we pass will vary in result depending on what type of record we have designated. </li>
+</ul>
+<h3 id="record-class"><a aria-hidden="true" class="anchor-heading" href="#record-class"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Record Class</h3>
+<ul>
+<li>this is the namespace of the record information.
+<ul>
+<li>The most commonly used namespace is that of the Internet (<code>IN</code>)</li>
+</ul>
+</li>
+</ul>
+<h1 id="ue-resources"><a aria-hidden="true" class="anchor-heading" href="#ue-resources"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>UE Resources</h1>
+<ul>
+<li><a href="https://www.linode.com/docs/networking/dns/dns-records-an-introduction/">DNS records - an introduction</a></li>
+</ul>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/7b847e2c-d1c9-4479-9fc2-079d9aab9d1a">A (Address) Record</a></li>
+<li><a href="/Digital-Garden/notes/494c6e8e-775b-4257-9a3a-2fba416b6553">Aname</a></li>
+<li><a href="/Digital-Garden/notes/2620ec89-5627-4a5d-ab25-8d5c56c79ba0">Cname</a></li>
+<li><a href="/Digital-Garden/notes/6471d171-ea1e-4394-ab45-3994f5565565">Mx</a></li>
+<li><a href="/Digital-Garden/notes/3463aa7f-4f37-4e92-b0e6-1df389e17349">Ns</a></li>
+<li><a href="/Digital-Garden/notes/8d703452-4b6e-4681-a0b6-7ac3e32620eb">Srv</a></li>
+<li><a href="/Digital-Garden/notes/19aca11c-c4b2-47b1-93be-aa57a97b703d">Txt</a></li>
+<li><a href="/Digital-Garden/notes/8af2c434-28b4-4777-a175-2f6ced77c78b">soa</a></li>
+</ol>

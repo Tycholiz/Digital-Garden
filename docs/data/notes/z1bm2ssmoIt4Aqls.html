@@ -1,0 +1,44 @@
+<h1 id="concurrency"><a aria-hidden="true" class="anchor-heading" href="#concurrency"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Concurrency</h1>
+<p>Concurrency is the ability of different parts or units of a program, algorithm, or problem to be executed out-of-order or at the same time simultaneously partial order, without affecting the final outcome.</p>
+<p>One thing you <em>never</em> want in computing is for 2 different programs to be accessing/writing to the same memory location at the same time. This results in file corruption.</p>
+<ul>
+<li>This could result if 2 different programs are trying to write the same file at the same time.</li>
+</ul>
+<p>spec: a concurrent system is one where the processes know how to wait their turn to access resources. If a system was non-concurrent, it would mean that multiple processes would try and access the same data at the same time, and we would likely result in data corruption.</p>
+<h3 id="resource-starvation"><a aria-hidden="true" class="anchor-heading" href="#resource-starvation"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Resource Starvation</h3>
+<p>Resource starvation occurs in concurrent computing where a process is denied access to <a href="/Digital-Garden/notes/77d8d8d6-4f2a-4b0f-85f6-7f50f1175b3a#resource">resources</a> that it needs to process its work</p>
+<p>When starvation is impossible in a concurrent algorithm, the algorithm is called starvation-free</p>
+<ul>
+<li>aka <em>lockout-freed</em>, or said to have <em>finite bypass</em></li>
+</ul>
+<h3 id="liveness"><a aria-hidden="true" class="anchor-heading" href="#liveness"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Liveness</h3>
+<p>Liveness is the quality of a concurrent algorithm where multiple processes may have to "take turns" during the critical sections in order to continue to make progress. In this way, the program does not stall, and progress can still be made.</p>
+<p>Liveness guarantees are important properties in operating systems and distributed systems</p>
+<h3 id="critical-section"><a aria-hidden="true" class="anchor-heading" href="#critical-section"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Critical Section</h3>
+<p>The parts of a program where a shared resource is being accessed needs to be protected in a way that will prevent concurrent access from being possible. This protected section is called the critical section, and it cannot be executed by more than one process at a time.</p>
+<ul>
+<li>think of the critical section as the traffic cop at the sensitive areas. It allows each process to know when it's their turn to access the data.</li>
+</ul>
+<p>Typically, the critical section accesses a shared resource, such as a data structure, a peripheral device, or a network connection, that would not operate correctly in the context of multiple concurrent accesses.</p>
+<p>A critical section is typically used when a multi-threaded program must update multiple related variables without a separate thread making conflicting changes to that data. In other words, each thread knows to wait its turn before manipulating and accessing the data.</p>
+<p>Whoever holds <em>the lock</em> is the process that is allowed to access the resource (ie. it's their turn)</p>
+<h2 id="dining-philosophers-problem"><a aria-hidden="true" class="anchor-heading" href="#dining-philosophers-problem"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Dining Philosophers Problem</h2>
+<p>The problem was designed to illustrate the challenges of avoiding deadlock, a system state in which no progress is possible
+<img src="/Digital-Garden/assets/images/2021-07-30-09-00-51.png"></p>
+<h3 id="rules"><a aria-hidden="true" class="anchor-heading" href="#rules"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>rules:</h3>
+<p>The philosopher is either in thinking or eating state.</p>
+<ul>
+<li>eating -> the philosopher has both forks in his hand</li>
+<li>thinking -> everything else</li>
+</ul>
+<p>The dining philosophers is an analogy for a program where the processses must alternate between one task and another (here, eating and thinking)</p>
+<p>The goal is to create a program that would result in no philosopher having starved. This would be the case if the program were to deadlock because the line of execution was stalled.</p>
+<ul>
+<li>if we are able to achieve this, then we will have created a <strong>concurrent algorithm</strong></li>
+</ul>
+<p>A philosopher having starved represents <strong>resource starvation</strong></p>
+<p>Once the philosopher has finished their meal, they place down both forks so that they are available to others.</p>
+<p>There are different approaches to solving the dining philosopher's problem</p>
+<ol>
+<li>Introduce a waiter who enforces that only one philosopher at a time may pick up 1 or 2 forks, meaning that the philosophers have to request and receive permission from the waiter before picking up the fork. This results in a system where only one philosopher at a time can pick up a fork.</li>
+</ol>

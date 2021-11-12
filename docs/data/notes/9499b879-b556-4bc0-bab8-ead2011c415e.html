@@ -1,0 +1,29 @@
+<h1 id="visual"><a aria-hidden="true" class="anchor-heading" href="#visual"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Visual</h1>
+<h1 id="visual-mode"><a aria-hidden="true" class="anchor-heading" href="#visual-mode"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Visual Mode</h1>
+<p>reselect last v-mode selection</p>
+<ul>
+<li><code>gv</code></li>
+</ul>
+<p>go to the <em>other</em> end of the v-mode selection</p>
+<ul>
+<li><code>o</code></li>
+</ul>
+<p>when using <em>dot command</em> to repeat a v-mode command, it acts on the same amount of text as was marked by the recent visual selection</p>
+<h2 id="tips"><a aria-hidden="true" class="anchor-heading" href="#tips"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Tips</h2>
+<ul>
+<li>use visual block mode to create multiple cursors to edit multiple places at once
+<ul>
+<li><strong><em>ex.</em></strong> - to append <code>;</code> to end of three lines (hence the <code>jj</code>), <code>&#x3C;C-v>jj$A;</code></li>
+</ul>
+</li>
+<li>when visually selecting by motion (ex. <code>vi(</code>), you can increase the level of enclosing parens that you navigate
+<ul>
+<li>for example, if we have nested parens, we can start off with the above command, then say <code>i(</code> to go an additional layer</li>
+</ul>
+</li>
+<li>When using visual block to edit multiple places, you must use a command that puts you in i-mode(eg. <code>c</code>, <code>I</code>, <code>A</code>)
+<ul>
+<li>note the capitalization of <code>I</code> and <code>A</code>. This shows that in visual block mode, the commands to "insert at start" and "insert at end" consider the demarcations to be what is within the visual block (instead of the start/end of the entire line, as is normally the case)</li>
+</ul>
+</li>
+</ul>

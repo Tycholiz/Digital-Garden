@@ -1,0 +1,41 @@
+<h1 id="text-object"><a aria-hidden="true" class="anchor-heading" href="#text-object"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Text Object</h1>
+<p>One of the keys to using Vim effectively is trying to edit by text object</p>
+<h1 id="text-object-1"><a aria-hidden="true" class="anchor-heading" href="#text-object-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Text object</h1>
+<ul>
+<li>a defined region of text that is defined by the motions, and modifier of that motion (eg. <code>vaw</code>, or <code>v2aw</code>)
+<ul>
+<li>The definition of the text's scope depends on what vim commands we are using
+<ul>
+<li>ex. When we say <code>vi"</code> we are defining a text object, whose definition is "everything inside <code>""</code>". Text objects define regions of text by some sort of structure.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>text objects are good because we don't have to worry about where in the word the cursor is located. as a result, they work well with <code>.</code> </li>
+</ul>
+<h2 id="types"><a aria-hidden="true" class="anchor-heading" href="#types"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Types</h2>
+<ul>
+<li>Word (<code>w</code>)</li>
+<li>Sentence (<code>s</code>)</li>
+</ul>
+<h2 id="extended-text-objects-plugins"><a aria-hidden="true" class="anchor-heading" href="#extended-text-objects-plugins"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Extended Text Objects (Plugins)</h2>
+<h3 id="camelcasemotion"><a aria-hidden="true" class="anchor-heading" href="#camelcasemotion"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>CamelCaseMotion</h3>
+<p>Defines a text object that is a single word in a larger camel-case word</p>
+<ul>
+<li>Delete inside the camel-case word
+<ul>
+<li><code>di,w</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="vimtextobject"><a aria-hidden="true" class="anchor-heading" href="#vimtextobject"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>VimTextObject</h3>
+<p>Defines a text object that is a function argument/parameter</p>
+<ul>
+<li>Delete inside the argument
+<ul>
+<li><code>dia</code></li>
+</ul>
+</li>
+</ul>
+<h1 id="ue-resources"><a aria-hidden="true" class="anchor-heading" href="#ue-resources"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>UE Resources</h1>
+<p><a href="https://blog.carbonfive.com/2011/10/17/vim-text-objects-the-definitive-guide/">info</a></p>

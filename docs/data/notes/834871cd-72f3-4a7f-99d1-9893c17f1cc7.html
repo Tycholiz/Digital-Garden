@@ -1,0 +1,35 @@
+<h1 id="this"><a aria-hidden="true" class="anchor-heading" href="#this"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>This</h1>
+<p><code>this</code> only cares about execution context (where the fn was called). it doesn't care about the scope chain</p>
+<p><code>this</code> is essentially an implicit input to a function, thereby negatively impacting function purity. Think of <code>this</code> as an implicit parameter that gets passed into the function.</p>
+<ul>
+<li>ie. because of this impure nature, <code>this</code> shouldn't be used in FP</li>
+</ul>
+<p>The scope chain encompasses the prototype chain</p>
+<ul>
+<li>Expl. Imagine 2 functions: inner() and outer(). If a variable is used within inner() and it does not exist within that function's context, it will look at its prototype to see if it exists (prototype chain). If it goes all the way up the chain and still doesn't exist, then the scope of outer() will be considered.</li>
+<li>Expl. If this were illustrated as 2 for loops, the scope chain would be the <code>i</code> iterator, while prototype would be <code>j</code></li>
+</ul>
+<p><code>return</code> is a keyword which returns us to the immediate outer execution context (to continue parsing at the point directly after where the function was called)</p>
+<h2 id="classes"><a aria-hidden="true" class="anchor-heading" href="#classes"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Classes</h2>
+<p>The behavior of this in classes and functions is similar, since classes are functions under the hood. There are some important caveats:</p>
+<ul>
+<li>methods of a class can be accessed on <code>this</code>. We might assume that this means that the method is a property on the <code>this</code> object. This is a false assumption. The reality is that the method is a property on the class itself (which is the prototype of <code>this</code>). This means that when we are accessing a method like <code>this.moveUnit</code>, the  <code>moveUnit</code> is being accessed by traversing this prototype chain, up from <code>this</code> and reaching the class itself, upon which the method is found.</li>
+<li>note: if a method is marked <code>static</code>, then it is not added to the prototype of <code>this</code>.</li>
+</ul>
+<h2 id="arrow-functions"><a aria-hidden="true" class="anchor-heading" href="#arrow-functions"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Arrow functions</h2>
+<p>In arrow functions, <code>this</code> retains the value of the enclosing lexical context's <code>this</code>. </p>
+<ul>
+<li>In global code, it will be set to the global object. Here, the enclosing lexical context (ie. the context of <code>foo</code>) is the global context:</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token keyword">var</span> globalObject <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> foo <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span><span class="token function">foo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">===</span> globalObject<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// true</span>
+<span class="token comment">// `true` returned because the function `foo` is in the global scope</span>
+</code></pre>
+<p>This logic follows that if we had an arrow function within another function, the arrow functions <code>this</code> value would retain the value of the outer functions <code>this</code> object.</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">outer</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">const</span> outerFunctionContext <span class="token operator">=</span> <span class="token keyword">this</span>
+	<span class="token keyword">const</span> inner <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token keyword">this</span><span class="token punctuation">)</span>
+	<span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span>outerFunctionContext <span class="token operator">===</span> <span class="token function">inner</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>

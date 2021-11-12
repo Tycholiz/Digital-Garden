@@ -1,0 +1,7 @@
+<h1 id="usereducer"><a aria-hidden="true" class="anchor-heading" href="#usereducer"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>useReducer</h1>
+<p>Prefer <code>useReducer</code> over <code>useState</code> when either:</p>
+<ol>
+<li>The state is complex, where it has multiple sub-values (ie. an object)</li>
+<li>the next state depends on the previous state</li>
+</ol>
+<p><code>useReducer</code> also lets you optimize performance for components that trigger deep updates because you can pass dispatch down instead of callbacks.</p>

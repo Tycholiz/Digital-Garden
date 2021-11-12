@@ -1,0 +1,29 @@
+<h1 id="middleware"><a aria-hidden="true" class="anchor-heading" href="#middleware"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Middleware</h1>
+<h1 id="middleware-1"><a aria-hidden="true" class="anchor-heading" href="#middleware-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Middleware</h1>
+<p>Middleware is a stack of functions that gets called in a chain. However, the next function in that chain does not need to get called necessarily. The middleware that is currently handling the request decides if the request will complete right then and there, continue on to the next middleware in the stack with <code>next()</code>, or die instantly.</p>
+<ul>
+<li>MWs are the key to flexibility and modularity in Express</li>
+<li>A MW is a function that occurs in the lifecycle of a http request before the request hits the server, or before the response gets to the client</li>
+<li>These functions have access to the request and response objects, and can modify/read however they want</li>
+<li>When we add middleware to express with <code>app.use()</code>, we are appending items to <code>Server.prototype.stack</code> in Connect. When the server receives a request, it iterates over the stack, calling the <code>(req, res, next)</code> method.</li>
+<li>Recall that each middleware item will either modify the request object, modify the response object, or call <code>next()</code> so the next middleware in the stack is called (?)</li>
+<li>If a middleware does <em>not</em> modify the body or the header of the response, it should call <code>next()</code>. If it does, it should not call <code>next()</code></li>
+<li>If the current mw function does not end the request-response cycle, it must call <code>next()</code> so the next mw in the stack can take over.
+Technically, Express itself is just middleware that occurs before the node.js server</li>
+</ul>
+<h2 id="types-of-middleware"><a aria-hidden="true" class="anchor-heading" href="#types-of-middleware"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Types of middleware</h2>
+<h3 id="application-level"><a aria-hidden="true" class="anchor-heading" href="#application-level"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Application level</h3>
+<p>using <code>app.use()</code>, we can bind a piece of application-level MW to the app object</p>
+<ul>
+<li><code>app.use</code> will be called each time a request is sent to the server</li>
+</ul>
+<h3 id="router-level"><a aria-hidden="true" class="anchor-heading" href="#router-level"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Router level</h3>
+<p>works the same as application-level, except the middleware is bound to an instance of <code>express.Router()</code> instead of <code>express()</code></p>
+<h3 id="error-handling"><a aria-hidden="true" class="anchor-heading" href="#error-handling"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Error handling</h3>
+<h3 id="built-in"><a aria-hidden="true" class="anchor-heading" href="#built-in"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Built-in</h3>
+<p>ex. <code>express.static</code>, <code>express.json</code></p>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/9a29814e-98d6-4719-ae74-5dbfde6b28ba">Body Parser</a></li>
+</ol>

@@ -1,0 +1,134 @@
+<h1 id="watermelon"><a aria-hidden="true" class="anchor-heading" href="#watermelon"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Watermelon</h1>
+<h1 id="philosophy"><a aria-hidden="true" class="anchor-heading" href="#philosophy"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Philosophy</h1>
+<p>declaratively define the connection between the component, and the data you want it to display. When the data changes, every component that is connected will automatically update.
+watermelon is fast in part because it uses a declarative API. The declarative API means that all of the expensive computation is being done natively (Java or Swift). Since Javascript is quite slow compared to these 2 languages, this allows our computations to be done more efficiently.</p>
+<h1 id="tables"><a aria-hidden="true" class="anchor-heading" href="#tables"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Tables</h1>
+<h3 id="columns"><a aria-hidden="true" class="anchor-heading" href="#columns"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Columns</h3>
+<p>Columns have one of three types: string, number, or boolean
+Fields of those types will default to '', 0, or false respectively</p>
+<p>To allow fields to be null, mark the column as isOptional: true</p>
+<h3 id="withobservables"><a aria-hidden="true" class="anchor-heading" href="#withobservables"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>withObservables</h3>
+<ul>
+<li>This is the principal way that we connect WatermelonDB to our component</li>
+<li>let's us enhance a component by turning a non-reactive component to become reactive, meaning that UI will update in accordance with localdb changes</li>
+<li>we make our component reactive by feeding it an observable for the data we want to display</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token function">withObservables</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'post'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token parameter"><span class="token punctuation">{</span> post <span class="token punctuation">}</span></span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">(</span><span class="token punctuation">{</span>
+  post<span class="token operator">:</span> post<span class="token punctuation">.</span><span class="token method function property-access">observe</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token comment">// inject enhanced props into the component</span>
+  author<span class="token operator">:</span> post<span class="token punctuation">.</span><span class="token property-access">author</span><span class="token punctuation">.</span><span class="token method function property-access">observeCount</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre>
+<ul>
+<li>above:
+<ul>
+<li><code>({ post })</code> are the input props for the component</li>
+<li>The first argument: <code>['post']</code> is a list of props that trigger observation restart. So if a different post is passed, that new post will be observed</li>
+<li>Rule of thumb: If you want to use a prop in the second arg function, pass its name in the first arg array</li>
+<li>This is also the place that we should make relations
+<ul>
+<li>the relation is enabled by the <code>@children</code> decorator on the parent model</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="actions"><a aria-hidden="true" class="anchor-heading" href="#actions"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Actions</h1>
+<p>Mutation (Create, Update) queries can be made from anywhere in the app, but the preferred way is to execute them through actions</p>
+<ul>
+<li>An action is a function that can modify the database</li>
+</ul>
+<h1 id="migrations"><a aria-hidden="true" class="anchor-heading" href="#migrations"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Migrations</h1>
+<p>Each migration must migrate to a version one above the previous migration</p>
+<ul>
+<li>of course, each migration simply builds on the previous ones, meaning that when we want to make changes, we need to add the new changes as an item in the <code>migrations</code> array (to the front) and mark it with the next integer <code>toVersion</code>.</li>
+</ul>
+<p>Steps to making schema changes:</p>
+<ol>
+<li>make the change in migrations.js</li>
+<li>wait for the error in the simulator:
+<ul>
+<li><code>Migrations can't be newer than schema. Schema is version 1 and migrations cover range from 1 to 2</code></li>
+</ul>
+</li>
+<li>if the error is there, make the change in schema.js, updating the <code>schemaVersion</code> to the latest migration</li>
+</ol>
+<h3 id="testing-migrations-work-properly"><a aria-hidden="true" class="anchor-heading" href="#testing-migrations-work-properly"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Testing migrations work properly</h3>
+<ol>
+<li><em>Migrations test</em>: Install the previous version of your app, then update to the version you're about to ship, and make sure it still works</li>
+<li><em>Fresh schema install test</em>: Remove the app, and then install the new version of the app, and make sure it works</li>
+</ol>
+<h1 id="q-module"><a aria-hidden="true" class="anchor-heading" href="#q-module"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Q Module</h1>
+<ul>
+<li>This module provides us to make SQL-like clauses to help construct our query
+<ul>
+<li>This is where we can use WHERE, JOIN (on), AND, OR, LIKE etc.
+<ul>
+<li>note: remember to escape <code>Q.like</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>JOINs are done through <code>Q.on</code></li>
+</ul>
+<h1 id="observable"><a aria-hidden="true" class="anchor-heading" href="#observable"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Observable</h1>
+<ul>
+<li><code>.observe()</code> will return an observable</li>
+<li>we can hook up observables to components</li>
+<li>Because WatermelonDB is fully observable, we can create a <a title="Private" style="color: brown" href="https://wiki.dendron.so/notes/hfyvYGJZQiUwQaaxQO27q.html" target="_blank">@lazy (Private)</a> function that will observe a database value and give us updated results in real-time (ie. without having to query the database)
+<ul>
+<li>ex. imagine we have a blog site, and blog posts can have a "popular" banner if they have at least 10 comments. We can make a function on the model layer that will observe the number of comments and will reactively give us the correct flag for the boolean:</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token keyword">class</span> <span class="token class-name">Post</span> <span class="token keyword">extends</span> <span class="token class-name">Model</span> <span class="token punctuation">{</span>
+	@lazy isPopular <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">comments</span><span class="token punctuation">.</span><span class="token method function property-access">observeCount</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token method function property-access">pipe</span><span class="token punctuation">(</span>
+		<span class="token function">map$</span><span class="token punctuation">(</span><span class="token parameter">comments</span> <span class="token arrow operator">=></span> comments <span class="token operator">></span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+	    <span class="token function">distinctUntilChanged</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>
+and then directly connect it to the component:
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> enhance <span class="token operator">=</span> <span class="token function">withObservables</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'post'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token parameter"><span class="token punctuation">{</span> post <span class="token punctuation">}</span></span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">(</span><span class="token punctuation">{</span>
+	isPopular<span class="token operator">:</span> post<span class="token punctuation">.</span><span class="token property-access">isPopular</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre>
+<ul>
+<li>since this is reactive, a rise above/fall below the 10 comment threshold will cause the component to re-render.</li>
+<li>Dissecting:
+<ul>
+<li><code>this.comments.observeCount()</code> - take the Observable number of comments</li>
+<li><code>map$(comments => comments > 10)</code> - transform this into an Observable of boolean (popular or not)</li>
+<li><code>distinctUntilChanged()</code> - this is so that if the comment count changes, but the popularity doesn't (it's still below/above 10), components won't be unnecessarily re-rendered</li>
+<li><code>@lazy</code> - also for performance (we only define this Observable once, so we can re-use it for free)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="sync"><a aria-hidden="true" class="anchor-heading" href="#sync"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Sync</h1>
+<p>Any backend will work, as long as it complies with the following spec:
+<img src="/Digital-Garden/:/860953c1a363424aac94bdff9d490b90" alt="6d0a0837a90af34681ce452b015d4b19.png"></p>
+<ul>
+<li><code>changes</code> is an object with a field for each model (table) that has changes. For each model, there are 3 fields: <code>created</code>, <code>updated</code>, <code>deleted</code>.
+<ul>
+<li>When the <code>changes</code> object is received from a Pull Request, it is the selection of changes that were made on the server since our last sync, that we need to now update locally.</li>
+<li>When the <code>changes</code> object is sent with a Push Request, it is the selection of changes that we've made locally, that have not yet been sent to the remote database.</li>
+</ul>
+</li>
+</ul>
+<h3 id="pulling"><a aria-hidden="true" class="anchor-heading" href="#pulling"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Pulling</h3>
+<p>When Watermelon runs <code>synchronize()</code>, <code>pullChanges</code> will get run, which will pass along with it information about the last time a pull was made (<code>lastPulledAt</code>). <code>pullChanges</code> will call an endpoint to the backend, passing along that <code>lastPulledAt</code> timestamp, and the server will confer with the backend DB, and send back all of the changes made since the last pull, along with the current timestamp. When the mobile app receives the response, it will then proceed to apply those changes to the local db.</p>
+<h3 id="pushing"><a aria-hidden="true" class="anchor-heading" href="#pushing"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Pushing</h3>
+<p>We send to the server a <code>change</code> object, containing everything that needs to be updated remotely, as well as a timestamp of the last time a pull was made (<code>lastPulledAt</code>). When the server receives the request, it will use <code>lastPulledAt</code> to check conflicts with the remote db. If there is no conflict, the server will then update the db with the provided changes.</p>
+<h3 id="sync-limitations"><a aria-hidden="true" class="anchor-heading" href="#sync-limitations"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Sync limitations</h3>
+<p>There are currently limitations of Sync, as outlined in this blog: <a href=":/f615cdc32a5c4be4a768caee30774aa9">How to Build WatermelonDB Sync Backend in Elixir | Fahri NH</a></p>
+<h3 id="how-does-it-know-when-to-re-render"><a aria-hidden="true" class="anchor-heading" href="#how-does-it-know-when-to-re-render"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>How does it know when to re-render?</h3>
+<p>for individual records, just listen to changes, and if the record changes, re-render</p>
+<p>for queries, like "tasks where a=b", listen to the collection of tasks, and when a record in that collection changes, check if the record matches the query. If it does: if record was on the rendered list, and was deleted — remove from rendered list. if it wasn't on the rendered list, and now matches — add to rendered list.</p>
+<p>for multi-table queries like "tasks that belong to projects where a =b", listen to all relevant collections, and if there's a change in any of them, re-query the database. There's ways to make it more efficient, but need to measure if the perf benefit is worth it</p>
+<h1 id="solutions-to"><a aria-hidden="true" class="anchor-heading" href="#solutions-to"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Solutions to:</h1>
+<ul>
+<li><a href="https://nozbe.github.io/WatermelonDB/Components.html#database-provider">prop drilling</a></li>
+</ul>
+<h1 id="ue-resources"><a aria-hidden="true" class="anchor-heading" href="#ue-resources"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>UE Resources</h1>
+<p><a href="https://blog.logrocket.com/offline-app-react-native-watermelondb/">Logrocket Tutorial</a>
+<a href="https://fahri.id/posts/how-to-build-watermelondb-sync-backend-in-elixir/">how sync works</a>
+<a href="https://www.youtube.com/watch?v=uFvHURTRLxQ">conf</a></p>

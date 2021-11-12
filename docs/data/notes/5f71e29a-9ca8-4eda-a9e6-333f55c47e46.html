@@ -1,0 +1,33 @@
+<h1 id="volumes"><a aria-hidden="true" class="anchor-heading" href="#volumes"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Volumes</h1>
+<h2 id="volumes-1"><a aria-hidden="true" class="anchor-heading" href="#volumes-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Volumes</h2>
+<ul>
+<li>The primary way to persist data that exists in a Container</li>
+<li>in a node app, we specify the following <code>volume</code> field attributes</li>
+</ul>
+<pre><code>volumes:
+      - '.:/app'
+      - '/app/node_modules'
+</code></pre>
+<ul>
+<li>This first line is saying "map the host's PWD (.) to the <code>/app</code> directory in the container". The next line says "persist the node-modules directory in the container so that when we mount the host directory (the first line) at runtime, the node-modules won't get overwritten"
+<ul>
+<li>In other words, this would happen:
+<ul>
+<li>Build - The node_modules directory is created in the image.</li>
+<li>Run - The current directory is mounted into the container, overwriting the node_modules that were installed during the build.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="bind-mount"><a aria-hidden="true" class="anchor-heading" href="#bind-mount"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Bind Mount</h2>
+<ul>
+<li>Instead of Docker creating a directory on the host that a container can have full access to (volume), we can make use of bind mounts. A bind mount lets us create something similar to a symbolic linked directory, whereby a directory or file on the host machine gets mounted into the container.
+<ul>
+<li>This means that we can make changes to the directory/file on the host machine, and those changes will reflected in the docker container's version of the directory/file. </li>
+</ul>
+</li>
+<li>bind mounts are created in <code>docker-compose.yml</code> with the <code>volumes</code> directive</li>
+</ul>
+<h1 id="ue-resources"><a aria-hidden="true" class="anchor-heading" href="#ue-resources"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>UE Resources</h1>
+<p><a href="https://docs.docker.com/storage/volumes/">Primer</a></p>

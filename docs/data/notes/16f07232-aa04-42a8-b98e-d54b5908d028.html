@@ -1,0 +1,13 @@
+<h1 id="bisect"><a aria-hidden="true" class="anchor-heading" href="#bisect"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Bisect</h1>
+<h3 id="flow"><a aria-hidden="true" class="anchor-heading" href="#flow"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Flow</h3>
+<p>From the commit that is not working,</p>
+<ol>
+<li>run <code>git bisect</code></li>
+<li>run <code>git bisect bad</code> to indicate the current commit is "bad"</li>
+<li>run <code>git bisect good &#x3C;SHA></code> on a commit we know works</li>
+<li>git will checkout a commit in the middle of the good-bad range. See if this version works, and run <code>git bisect good</code>/<code>git bisect bad</code></li>
+<li>repeat until we find the commit that introduced the issue</li>
+<li>run <code>git bisect reset</code> to clean up bisection state, returning to original HEAD</li>
+</ol>
+<hr>
+<p>you can pass git-bisect a script which programmatically tests a tree for the presence of a bug and avoid false positives</p>

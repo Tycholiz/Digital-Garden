@@ -1,0 +1,20 @@
+<h1 id="cli"><a aria-hidden="true" class="anchor-heading" href="#cli"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>CLI</h1>
+<h1 id="cli-1"><a aria-hidden="true" class="anchor-heading" href="#cli-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>CLI</h1>
+<h2 id="listen"><a aria-hidden="true" class="anchor-heading" href="#listen"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>listen</h2>
+<ul>
+<li>from the CLI, we can listen for events that happen on the stripe API, and have those events forwarded to us.</li>
+<li>by default, <code>listen</code> will listen to the events happening on our live configuration (endpoint), found in Stripe dashboard. If we want to test, then we can listen for events happening at a different endpoint, with <code>stripe listen --forward-to localhost:5000/webhook</code></li>
+</ul>
+<h2 id="trigger"><a aria-hidden="true" class="anchor-heading" href="#trigger"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>trigger</h2>
+<ul>
+<li>from the CLI, we can fake an event happening (ie. fake a call to Stripe's API)</li>
+<li>if we are listening in another terminal, then we should see the fakes command being listened to.</li>
+</ul>
+<h2 id="payment-intents"><a aria-hidden="true" class="anchor-heading" href="#payment-intents"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>payment intents</h2>
+<h3 id="create"><a aria-hidden="true" class="anchor-heading" href="#create"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>create</h3>
+<pre><code>stripe payment_intents create \
+  --amount=2000 \
+  --currency=cad \
+  -d "payment_method_types[]"=card
+</code></pre>
+<p><a href="https://stripe.com/docs/api/payment_intents/create">ref</a></p>

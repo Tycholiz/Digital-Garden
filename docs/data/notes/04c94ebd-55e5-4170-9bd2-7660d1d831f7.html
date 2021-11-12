@@ -1,0 +1,15 @@
+<h1 id="hooks"><a aria-hidden="true" class="anchor-heading" href="#hooks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Hooks</h1>
+<h1 id="query--mutation"><a aria-hidden="true" class="anchor-heading" href="#query--mutation"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Query &#x26; Mutation</h1>
+<ul>
+<li><code>useQuery</code> will execute on component mount, giving us back the loading, error and data state. Therefore, it is declarative </li>
+<li><code>useLazyQuery</code> will execute the query on command. This is perfect to use in events other than component mount, like on button click 
+<ul>
+<li>To be clear, you could put this in <code>useEffect</code> and it would operate similarly to <code>useQuery</code>, since <code>useEffect</code> gets run on component mount</li>
+</ul>
+</li>
+<li><code>useMutation</code> will return a function that we can execute to perform the mutation </li>
+</ul>
+<h3 id="errors"><a aria-hidden="true" class="anchor-heading" href="#errors"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Errors</h3>
+<p>we need to stringify errors:
+<code>console.log('error', JSON.stringify(err, null, 2))</code>
+spec: alternatively, we can use <code>apollo-link-error</code></p>

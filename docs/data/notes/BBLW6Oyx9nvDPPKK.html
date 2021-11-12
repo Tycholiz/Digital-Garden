@@ -1,0 +1,22 @@
+<h1 id="self-hosted"><a aria-hidden="true" class="anchor-heading" href="#self-hosted"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Self Hosted</h1>
+<p>A Synology NAS can be configured to run a DNS server. Even once the server is set up, of course by default nothing will happen, since no one will be configured to ask the NAS for DNS records</p>
+<ul>
+<li>There are 2 ways we can achieve this: by host, or by the router
+<ul>
+<li>by host means we configure it on every single client on our network</li>
+<li></li>
+</ul>
+</li>
+</ul>
+<h3 id="host-based-method"><a aria-hidden="true" class="anchor-heading" href="#host-based-method"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Host-based method</h3>
+<p>In Mac Network Preferences you can find a place to add DNS server IP addresses. You might have your ISP's DNS server IP, you may have Cloudflare's (<code>1.1.1.1</code> and <code>1.0.0.1</code>), you may have Google's (<code>8.8.8.8</code> and <code>8.4.4.8</code>)</p>
+<p>You can replace one of these IP addresses with the IP of your NAS. It's important to retain one of the Cloudflare/Google IP addresses, so that if the NAS is down, the whole network isn't down.</p>
+<ul>
+<li>note: we want to configure our NAS DNS server so that it forwards requests on to the Cloudflare/Google DNS servers if the NAS doesn't have the IP address in its cache (rule: enable forwarders)</li>
+</ul>
+<hr>
+<h2 id="router-dns"><a aria-hidden="true" class="anchor-heading" href="#router-dns"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Router DNS</h2>
+<p>When our Mac has its DNS server configured as the router IP address, your router is running a caching DNS server, and setting itself as the DNS server via DHCP.</p>
+<ul>
+<li>Your router is acting as a DNS forwarder, you ask your router and your router asks a DNS server for you (the DNS server it forwards it to on your behalf can be configured in the Router settings)</li>
+</ul>

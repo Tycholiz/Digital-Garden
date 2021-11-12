@@ -1,0 +1,40 @@
+<h1 id="variables"><a aria-hidden="true" class="anchor-heading" href="#variables"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Variables</h1>
+<h3 id="variables-1"><a aria-hidden="true" class="anchor-heading" href="#variables-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Variables</h3>
+<ul>
+<li><code>external</code> and <code>static</code> variables are guaranteed to be initialized to zero if not explicitly declared.
+<ul>
+<li>The value of these variables is determined conceptually before the program begins execution </li>
+</ul>
+</li>
+<li>automatic and register variables have undefined (i.e., garbage) initial values, if not explicitly declared.
+<ul>
+<li>The value of these variables is determined when the function or block is entered.</li>
+</ul>
+</li>
+</ul>
+<p>Static</p>
+<ul>
+<li>Decalaring a variable or fn <em>static</em> does 2 things:</li>
+</ul>
+<ol>
+<li>it becomes scoped to wherever it was defined (scoped to source file, fn etc)</li>
+<li>When static is declared inside a function, then that variable will live on between calls of the function, giving us permanent stoage. </li>
+</ol>
+<ul>
+<li>Static variables are allocated memory in data segment, not stack segment</li>
+<li>Unless initialized with a value, static variables default at ‘0’</li>
+</ul>
+<p>Register</p>
+<ul>
+<li>Declaring a variable with <code>register</code> advises the compiler that it will be heavily used, placing it in a machine register for quicker access</li>
+<li>Only a few variables in each function may be kept in registers, and only certain types are allowed.
+<ul>
+<li>Excess register declarations are harmless, however, since the word register is ignored for excess or disallowed declarations
+<ul>
+<li>The actual limit varies from machine to machine.</li>
+</ul>
+</li>
+<li>It is impossible to get the memory address of a register variable. </li>
+</ul>
+</li>
+</ul>

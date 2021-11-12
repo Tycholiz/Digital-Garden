@@ -1,0 +1,75 @@
+<h1 id="recursion"><a aria-hidden="true" class="anchor-heading" href="#recursion"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Recursion</h1>
+<p>In general, recursive code helps us avoid complex nested loops and is most useful for tasks that can be defined in terms of similar subtasks.</p>
+<p>Each recursive function consists of 2 parts:</p>
+<ol>
+<li>Base Case: The base case is where further calls to the same function stop, i.e, it does not make any subsequent recursive calls.</li>
+<li>Recursive Case: The recursive case is where the function calls itself again and again until it reaches the base case.
+<ul>
+<li>Each child function call returns result to its parent function.</li>
+</ul>
+</li>
+</ol>
+<p>Both recursion and iteration depend on a condition which determines whether to stop execution or continue it.</p>
+<p></p><blockquote>
+No note with name general.lang.functions found
+</blockquote><p></p>
+<h2 id="methods-to-understand-flow-of-recursive-function"><a aria-hidden="true" class="anchor-heading" href="#methods-to-understand-flow-of-recursive-function"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Methods to understand flow of recursive function</h2>
+<h3 id="visualizing-through-a-stack"><a aria-hidden="true" class="anchor-heading" href="#visualizing-through-a-stack"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Visualizing through a stack</h3>
+<p>The concept of a stack is critical in recursion. When you start visualizing your function calls through a stack and how it returns when reaching a base case - the concept of recursive calls and their output becomes easier to comprehend.</p>
+<p>Recursing:
+<img src="/Digital-Garden/assets/images/2021-10-09-15-16-13.png">
+Returning values to lower stacks:
+<img src="/Digital-Garden/assets/images/2021-10-09-15-16-42.png"></p>
+<h3 id="making-a-recursive-tree"><a aria-hidden="true" class="anchor-heading" href="#making-a-recursive-tree"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Making a recursive tree</h3>
+<p>Consider that each function call must return before subsequent code can be run. In the first recursive step (ie. "iteration 1"), the recursing function does not actually return until the base-case is complete. In fact, it is the <em>final</em> call of that function to actually return.
+<img src="/Digital-Garden/assets/images/2021-10-09-21-07-35.png">
+<img src="/Digital-Garden/assets/images/2021-10-09-21-11-00.png"></p>
+<hr>
+<h3 id="parallels-with-mathematics"><a aria-hidden="true" class="anchor-heading" href="#parallels-with-mathematics"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Parallels with mathematics</h3>
+<p>Mentally, what's happening is similar to when a mathematician uses a Σ summation in a larger equation. We're saying, "the max-even of the rest of the list is calculated by <code>maxEven(...restNums)</code>, so we'll just assume that part and move on."</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">maxEven</span><span class="token punctuation">(</span><span class="token parameter">num1<span class="token punctuation">,</span> <span class="token spread operator">...</span>restNums</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">var</span> maxRest <span class="token operator">=</span> restNums<span class="token punctuation">.</span><span class="token property-access">length</span> <span class="token operator">></span> <span class="token number">0</span> <span class="token operator">?</span> <span class="token function">maxEven</span><span class="token punctuation">(</span><span class="token spread operator">...</span>restNums<span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token keyword nil">undefined</span><span class="token punctuation">;</span>
+
+	<span class="token keyword control-flow">return</span> <span class="token punctuation">(</span>num1 <span class="token operator">%</span> <span class="token number">2</span> <span class="token operator">!=</span> <span class="token number">0</span> <span class="token operator">||</span> num1 <span class="token operator">&#x3C;</span> maxRest<span class="token punctuation">)</span> <span class="token operator">?</span> maxRest <span class="token operator">:</span> num1<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span><span class="token function">maxEven</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre>
+<p>Once the base case is met, the final return value makes its way back up all layers of the call stack to give us that value</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">foo</span><span class="token punctuation">(</span><span class="token parameter">x</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span>x <span class="token operator">&#x3C;</span> <span class="token number">5</span><span class="token punctuation">)</span> <span class="token keyword control-flow">return</span> x<span class="token punctuation">;</span>
+    <span class="token keyword control-flow">return</span> <span class="token function">foo</span><span class="token punctuation">(</span> x <span class="token operator">/</span> <span class="token number">2</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p><img src="/Digital-Garden/assets/images/2021-03-09-09-41-09.png">
+Recursion is declarative for algorithms in the same sense that Σ is declarative for mathematics.</p>
+<p>using reverseString as an example
+</p><p></p><div class="portal-container">
+<div class="portal-head">
+<div class="portal-backlink">
+<div class="portal-title">From <span class="portal-text-title">Cook</span></div>
+<a href="/Digital-Garden/notes/bKmFCFyB1IkcNANMTeRG4" class="portal-arrow">Go to text <span class="right-arrow">→</span></a>
+</div>
+</div>
+<div id="portal-parent-anchor" class="portal-parent" markdown="1">
+<div class="portal-parent-fader-top"></div>
+<div class="portal-parent-fader-bottom"></div><p>We start from the end of the string. We take the last character of the string string[string.length - 1] and call the function reverseString() again, but with the last character removed. When this child function returns, this string[string.length - 1] will be appended at the beginning of the returned string.</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">reverseString</span><span class="token punctuation">(</span><span class="token parameter">string</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// Base case</span>
+  <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span>string <span class="token operator">===</span> <span class="token string">""</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword control-flow">return</span> string<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token comment">// Recursive case</span>
+  <span class="token keyword control-flow">else</span> <span class="token punctuation">{</span>
+    <span class="token comment">// take the last character and add it to the reverse of the previous characters</span>
+    <span class="token keyword control-flow">return</span> string<span class="token punctuation">[</span>string<span class="token punctuation">.</span><span class="token property-access">length</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">+</span> <span class="token function">reverseString</span><span class="token punctuation">(</span>string<span class="token punctuation">.</span><span class="token method function property-access">substr</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> string<span class="token punctuation">.</span><span class="token property-access">length</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div></div><p></p><p></p>
+<p>spec: consider what we are doing here, conceptually. We are taking the last character, putting it at the front, and calling the function again with the last character popped off. Each time we recurse, we build up the new string. That is, each "iteration" adds one character to the new string. That whole idea can be summed up with just this part of the function: <code>string[string.length - 1] + ...</code> (ie. the first part of the return value). Assuming you understand the logic taking place each "iteration" (ie. get the last character of a truncated (by one character) string), then you don't really need to focus on the recursive-function-call part of the return value. This logic taking place is reflected in the value that is passed to the recursive function. Once you've internalized this, then you can inherently understand the values you are working with. Given <code>string[string.length - 1] + ...</code>, we know that we are just adding the last character to the front.</p>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/bKmFCFyB1IkcNANMTeRG4">Cook</a></li>
+</ol>

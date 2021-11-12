@@ -1,0 +1,52 @@
+<h1 id="practice"><a aria-hidden="true" class="anchor-heading" href="#practice"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Practice</h1>
+<h3 id="sorted-indexes"><a aria-hidden="true" class="anchor-heading" href="#sorted-indexes"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Sorted indexes</h3>
+<p>Given an array, sort the elements from the largest to the smallest. Create a result array using the indices of the original array. </p>
+<ul>
+<li>Example: arr = [4,4,4,10,6,6,5]</li>
+<li>res = [3,4,5,6,0,1,2]</li>
+</ul>
+<h3 id="missing-results-from-graphql-query"><a aria-hidden="true" class="anchor-heading" href="#missing-results-from-graphql-query"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Missing results from graphql query</h3>
+<p>Given a graphql-like query string and an object, return an array of paths that exist in the graphql-like string and don't exist in the object.</p>
+<ul>
+<li>Example
+given:</li>
+</ul>
+<pre><code>{
+    age
+    name {
+        first
+        last
+    }
+    parent {
+        name {
+            first
+            last
+        }
+        age
+    }
+    contact {
+        phone
+        email
+    }
+}
+</code></pre>
+<p>and </p>
+<pre class="language-js"><code class="language-js"><span class="token punctuation">{</span>
+    name<span class="token operator">:</span> <span class="token punctuation">{</span>
+        first<span class="token operator">:</span> <span class="token string">'joe'</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    contact<span class="token operator">:</span> <span class="token punctuation">{</span>
+        email<span class="token operator">:</span> <span class="token string">'joe@joe.joe'</span><span class="token punctuation">,</span>
+        phone<span class="token operator">:</span> <span class="token number">7788713377</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Should return</p>
+<pre class="language-ts"><code class="language-ts"><span class="token punctuation">[</span>
+    <span class="token string">'age'</span><span class="token punctuation">,</span>
+    <span class="token string">'name.last'</span><span class="token punctuation">,</span>
+    <span class="token string">'parent.name.first'</span><span class="token punctuation">,</span>
+    <span class="token string">'parent.name.last'</span><span class="token punctuation">,</span>
+    <span class="token string">'parent.age'</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span>
+</code></pre>

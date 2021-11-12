@@ -1,0 +1,157 @@
+<h1 id="nosql"><a aria-hidden="true" class="anchor-heading" href="#nosql"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Nosql</h1>
+<p>Relational databases assume that the relationships are of similar importance, document databases assume that relationships form a hierarchical structure and relationships between documents are less important</p>
+<p>If your data cannot be represented on literally a sheet of paper, NoSQL is the wrong data store for you. And I don't mean sheets of paper with references that say "now turn to page 64 for the diagram", no, I mean a sheet of paper per document. That is what a normalized record looks like in a document store.</p>
+<p>Horizontal scaling is a distinct benefit of NoSQL, which is why companies like Netflix and Spotify use document databases.</p>
+<ul>
+<li>RDBMSs more lend themselves to vertical scaling, which can get costly.</li>
+</ul>
+<p>NoSQL databases fit better into the whole paradigm of distributed computing, and NoSQL databases make the most of cloud computing and storage. Cloud-based storage is an excellent cost-saving solution but requires data to be easily spread across multiple servers to scale up. Using commodity (affordable, smaller) hardware on-site or in the cloud saves you the hassle of additional software, and NoSQL databases like Cassandra are designed to be scaled across multiple data centers out of the box, without a lot of headaches.</p>
+<p>Generally, NoSQL databases sacrifice ACID compliance for scalability and processing speed</p>
+<p>Going from SQL to NoSQL is easier than from NoSQL to SQL</p>
+<p>When all the other components of our application are fast and seamless, NoSQL databases prevent data from being the bottleneck.</p>
+<ul>
+<li>Big data is contributing to a large success for NoSQL databases, mainly because it handles data differently than the traditional relational databases.</li>
+</ul>
+<h1 id="types-of-nosql-databases"><a aria-hidden="true" class="anchor-heading" href="#types-of-nosql-databases"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Types of NoSQL Databases</h1>
+<h2 id="document-based-databases"><a aria-hidden="true" class="anchor-heading" href="#document-based-databases"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Document-Based Databases</h2>
+<p>Document-based databases store the data in JSON objects. Each document has key-value pairs like structures:</p>
+<p>The document-based databases are easy for developers as the document directly maps to the objects as JSON is a very common data format used by web developers. They are very flexible and allow us to modify the structure at any time.</p>
+<p>Ex. Mongo, Couch, Couchbase</p>
+<h2 id="key-value-database"><a aria-hidden="true" class="anchor-heading" href="#key-value-database"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Key-Value Database</h2>
+<p>Here, keys and values can be anything like strings, integers, or even complex objects. They are highly partitionable and are the best in horizontal scaling. They can be really useful in session oriented applications where we try to capture the behavior of the customer in a particular session.</p>
+<p>key-value stores, in general, always maintain a certain number of replicas to offer reliability.</p>
+<p>Ex. DynamoDB, Redis, Cassandra</p>
+<h2 id="wide-column-based-database"><a aria-hidden="true" class="anchor-heading" href="#wide-column-based-database"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Wide Column-Based Database</h2>
+<p>This database stores the data in records similar to any relational database but it has the ability to store very large numbers of dynamic columns. It groups the columns logically into column families.</p>
+<ul>
+<li>For example, in a relational database, you have multiple tables but in a wide-column based database, instead of having multiple tables, we have multiple column families.
+Cassandra or key-value stores, in general, always maintain a certain number of replicas to offer reliability.</li>
+</ul>
+<p>Ex. Cassandra</p>
+<h1 id="implementations"><a aria-hidden="true" class="anchor-heading" href="#implementations"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Implementations</h1>
+<h2 id="cassandra"><a aria-hidden="true" class="anchor-heading" href="#cassandra"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Cassandra</h2>
+<p>A key-value store approach to NoSQL</p>
+<p>Cassandra's approach to data availability is as follows: Instead of having one master node, it utilizes multiple masters inside a cluster. With multiple masters present, there is no fear of any downtime. The redundant model ensures high availability at all times.</p>
+<p>Cassandra is designed to manipulate huge data arrays across multiple nodes. </p>
+<p>In contrast to the relational database organizing data records in rows, Cassandra’s data model is based on columns to provide faster data retrieval. The data is stored in the form of hash.</p>
+<p>designed to be scaled across multiple data centers out of the box, without a lot of headaches.</p>
+<h2 id="dynamodb-amazon"><a aria-hidden="true" class="anchor-heading" href="#dynamodb-amazon"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>DynamoDB (Amazon)</h2>
+<p></p><p></p><div class="portal-container">
+<div class="portal-head">
+<div class="portal-backlink">
+<div class="portal-title">From <span class="portal-text-title">Aws</span></div>
+<a href="/Digital-Garden/notes/b965d9fa-c200-4a8d-9323-73b9c2565812" class="portal-arrow">Go to text <span class="right-arrow">→</span></a>
+</div>
+</div>
+<div id="portal-parent-anchor" class="portal-parent" markdown="1">
+<div class="portal-parent-fader-top"></div>
+<div class="portal-parent-fader-bottom"></div><p>Data is stored as a partitioned B-Tree.
+Unlike Redis, in that it is immediately consistent and highly-durable, centered around that single data structure.</p>
+<ul>
+<li>If you put something into DynamoDB, you’ll be able to read it back immediately and, for all practical purposes, you can assume that what you have put will never get lost.</li>
+</ul>
+<p>DynamoDB data is schemaless. The DB engine can manage structured or semi-structured data, including JSON documents.
+Fully managed.
+supports key–value and document data structures
+The general rule of thumb is to choose Dynamo for low throughput apps as writes are expensive and consistent reads are twice the cost of eventually consistent reads
+High vendor lock-in.
+provides seamless integration with services such as Redshift (large scale data analysis), Cognito (identity pools), Elastic Map Reduce (EMR), Data Pipeline, Kinesis, and S3. Also, has tight integration with AWS lambda via Streams and aligns with the server-less philosophy; automatic scaling according to your application load, pay-per-what-you-use pricing, easy to get started with, and no servers to manage. </p>
+<p>When to use DynamoDB?</p>
+<ul>
+<li>In case you are looking for a database that can handle simple key-value queries but those queries are very large in number</li>
+<li>In case you are working with OLTP workload like online ticket booking or banking where the data needs to be highly consistent</li>
+</ul>
+<p>When not to use DynamoDB?</p>
+<ul>
+<li>In cases where you have to do computations on the data. 
+<ul>
+<li>Relational databases run their queries close to the data, so if you’re trying to calculate the sum total value of orders per customer, then that rollup gets done while reading the data, and only the final summary (one row per customer) gets sent over the network. However, if you were to do this with DynamoDB, you’d have to get all the customer orders (one row per order), which involves a lot more data over the network, and then you have to do the rollup in your application, which is far away from the data.</li>
+</ul>
+</li>
+</ul>
+<p>Pricing
+$256/TB/month</p>
+<p>By default, you should start with DynamoDB’s on-demand pricing and only consider the provisioned capacity as cost optimization. On-demand costs $1.25 per million writes, and $0.25 per million reads.</p>
+<ul>
+<li>Then, if your usage grows significantly, you will almost always want to consider moving to provisioned capacity (significant cost savings).</li>
+<li>if you believe that on-demand pricing is too expensive, then DynamoDB will very likely be too expensive, even with provisioned capacity. In that case, you might want to consider a relational database.</li>
+</ul>
+<h1 id="cloudformation"><a aria-hidden="true" class="anchor-heading" href="#cloudformation"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>CloudFormation</h1>
+<p>When working in AWS, you almost always want to use some CloudFormation (or a similar tool).
+lets you create and update the things you have in AWS without having to click around on the console or write fragile scripts.</p>
+<ul>
+<li>for instance, gives us the ability to tear down everything cleanly and recreate your AWS set up in one click</li>
+</ul>
+<p>rule of thumb is to let CloudFormation deal with all the AWS things that are either static or change very rarely, like load balancers, deployment pipelines, VPC configs, security groups</p>
+<h3 id="overview"><a aria-hidden="true" class="anchor-heading" href="#overview"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Overview</h3>
+<ul>
+<li>define your AWS resources as a YAML script</li>
+<li>point CloudFormation to your AWS account, and it creates all the resources you defined idempotently.</li>
+<li>Updates can be rolled back.</li>
+</ul>
+<h1 id="sqs-simple-queue-service"><a aria-hidden="true" class="anchor-heading" href="#sqs-simple-queue-service"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>SQS (Simple Queue Service)</h1>
+<p>highly-durable queue in the cloud</p>
+<ul>
+<li>put messages on one end, and a consumer takes them out from the other side.
+Messages are consumed <em>almost</em> in FIFO, but there is no strictness to adhere to this.</li>
+<li>Strictness <em>can</em> be guaranteed, but there is a performance cost.</li>
+</ul>
+<p>SQS requires zero capacity management.</p>
+<ul>
+<li>no limit on the rate of messages enqueued or consumed</li>
+<li>don’t have to worry about any throttling limits.</li>
+<li>number of messages stored in SQS (the backlog size) is also unlimited.</li>
+</ul>
+<p>great default choice for dispatching asynchronous work.</p>
+<h1 id="kinesis"><a aria-hidden="true" class="anchor-heading" href="#kinesis"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Kinesis</h1>
+<p>A highly-durable linked list in the cloud</p>
+<p>Use-cases are similar to SQS—you would typically use either Kinesis or SQS when you want to enqueue records for asynchronous processing.</p>
+<p>Difference with SQS:</p>
+<ul>
+<li>SQS can only have one consumer, while Kinesis can have many.</li>
+<li>Once an SQS message gets consumed, it gets deleted from the queue. But Kinesis records get added to a list in a stable order, and any number of consumers can read a copy of the stream by keeping a cursor over this never-ending list.</li>
+<li>Multiple consumers don’t affect each other, and if one falls behind, it doesn’t slow down the other consumers.</li>
+<li>Whenever consumers read data out of Kinesis, they will always get their records in the same order.</li>
+<li>Often cheaper than SQS</li>
+<li>Kinesis can carry a significant operational burden with the need to provision capacity (shards).</li>
+</ul>
+<h1 id="cloudfront"><a aria-hidden="true" class="anchor-heading" href="#cloudfront"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>CloudFront</h1>
+<p>CloudFront is a CDN in AWS which operates at Edge Locations around the world closer to the users. It can cache the static assets and deliver them to the end-users quite fast.</p>
+<p>Lambda Edge functions run here</p>
+</div></div><p></p><p></p>
+<h2 id="elasticsearch"><a aria-hidden="true" class="anchor-heading" href="#elasticsearch"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Elasticsearch</h2>
+<p>When to use ElasticSearch?</p>
+<ul>
+<li>If your use case requires a full-text search, Elasticsearch will be the best fit</li>
+<li>If your use case involves chatbots where these bots resolve most of the queries, such as when a person types something there are high chances of spelling mistakes. You can make use of the in-built fuzzy matching practices of the ElasticSearch</li>
+<li>Also, ElasticSearch is useful in storing logs data and analyzing it</li>
+</ul>
+<h2 id="couchdb"><a aria-hidden="true" class="anchor-heading" href="#couchdb"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>CouchDB</h2>
+<p>Like MongoDB, Couch is a document-oriented NoSQL databases, but Mongo and Couch diverge significantly in their implementations. </p>
+<ul>
+<li>CouchDB uses the semi-structured JSON format for storing data. Queries to a CouchDB database are made via a RESTful HTTP API, using HTTP or JavaScript. </li>
+<li>MongoDB uses BSON, a JSON variant that stores data in a binary format. MongoDB uses its own query language that is distinct from SQL, although they have some similarities. </li>
+</ul>
+<p>Like Mongo, Couch is schemaless.</p>
+<p>CouchDB and MongoDB differ in their approach to the <a href="/Digital-Garden/notes/c5biuPaXNApaWxC2zRhm4">CAP theorem</a> </p>
+<ul>
+<li>CouchDB favors availability and partition tolerance
+<ul>
+<li>CouchDB uses eventual consistency. Clients can write to a single database node, and this information is guaranteed to eventually propagate to the rest of the database. </li>
+</ul>
+</li>
+<li>MongoDB prefers consistency and partition tolerance.
+<ul>
+<li>MongoDB uses strict consistency. The database uses a replica set to provide redundancy but at the cost of availability. </li>
+</ul>
+</li>
+</ul>
+<p>As of this writing, Google projects the cost of deploying CouchDB on GCP at $34.72 per month. This estimate is based on a 30 day, 24 hours per day usage in the Central US region, a VM instance with 2 vCPUs and 8 GB of memory, and 10GB of a standard persistent disk.</p>
+<h2 id="couchbase"><a aria-hidden="true" class="anchor-heading" href="#couchbase"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Couchbase</h2>
+<p>Every Couchbase node consists of a data service, index service, query service, and cluster manager component. Starting with the 4.0 release, the three services can be distributed to run on separate nodes of the cluster if needed.</p>
+<p>In the parlance of CAP Theorem, Couchbase is typically run as a CP system (consistency &#x26; partition tolerant)</p>
+<p>Provides a SQL-like query language called <code>N1QL</code> for manipulating JSON data stored in Couchbase.</p>
+<h2 id="pouchdb"><a aria-hidden="true" class="anchor-heading" href="#pouchdb"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>PouchDB</h2>
+<p>PouchDB was created to help web developers build applications that work as well offline as they do online.
+It enables applications to store data locally while offline, then synchronize it with CouchDB and compatible servers when the application is back online, keeping the user's data in sync no matter where they next login.
+Inspired by Couch</p>

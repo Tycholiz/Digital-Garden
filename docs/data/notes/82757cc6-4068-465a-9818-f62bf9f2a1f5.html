@@ -1,0 +1,6 @@
+<h1 id="custom-resource-definition"><a aria-hidden="true" class="anchor-heading" href="#custom-resource-definition"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Custom Resource Definition</h1>
+<p>A CRD defines a new resource type, and tells Kubernetes about it</p>
+<ul>
+<li>Once a new resource type is added, new instances of that resource may be created.</li>
+</ul>
+<p>Handling CRD changes is up to us as the developer, though a common pattern is to create a custom controller that watches for new CRD instances, and responds accordingly.</p>

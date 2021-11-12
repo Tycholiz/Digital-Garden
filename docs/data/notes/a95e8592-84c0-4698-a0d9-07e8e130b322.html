@@ -1,0 +1,78 @@
+<h1 id="bash"><a aria-hidden="true" class="anchor-heading" href="#bash"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Bash</h1>
+<h1 id="high-level"><a aria-hidden="true" class="anchor-heading" href="#high-level"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>High-level</h1>
+<ul>
+<li>A shell program is typically an executable binary that takes commands that you type and (once you hit return), translates those commands into (ultimately) system calls to the Operating System API.
+<ul>
+<li>a shell language is a language designed to ‘glue’ together other programs.</li>
+</ul>
+</li>
+<li>a shell is simply a macro processor that executes commands.
+<ul>
+<li>The term macro processor means functionality where text and symbols are expanded to create larger expressions.</li>
+</ul>
+</li>
+</ul>
+<p>Since other shells are also programs, they can be run from within one another</p>
+<p><em>"Although most users think of the shell as an interactive command interpreter, it is really a programming language in which each statement runs a command. Because it must satisfy both the interactive and programming aspects of command execution, it is a strange language, shaped as much by history as by design."</em></p>
+<ul>
+<li>
+<p>GNU specifies the shell as both a programming language AND a command interpreter. The command interpreter part provides the user interface to the GNU utilities, while the programming language part allows these utilities to be combined.</p>
+</li>
+<li>
+<p>environment variables exist in the same environment as the code that is executed</p>
+</li>
+</ul>
+<h3 id="precedence-of-synonyms"><a aria-hidden="true" class="anchor-heading" href="#precedence-of-synonyms"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Precedence of Synonyms</h3>
+<ol>
+<li>Alias</li>
+<li>Keyword (ie. syntax of the shell)</li>
+<li>Function</li>
+<li>Builtin
+<ul>
+<li>commands that are built into the shell. These are executed directly, as opposed to the shell having to load and execute the executable
+<ul>
+<li>ex. pwd, cd</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<p>check to see if alias exists in shell - <code>which g</code></p>
+<p><em>interactive</em> means that input is accepted from the command line, while <em>non-interactive</em> means that input is accepted from a file.</p>
+<p>if the first word of a given command does not correspond to a built-in shell command, then the shell assumed that it is the name of an executable file.</p>
+<p>when we run <code>bash -c</code>, a script, or other executable in the shell, it becomes a child of the current environment.</p>
+<ul>
+<li>ex. <code>bash -c 'echo "child [$var]";</code> will only have access to <code>$var</code> if it was exported beforehand from the shell that the command is run in.</li>
+</ul>
+<p>In bash utilities, the <code>--</code> signifies the end of command options, after which only positional parameters are accepted.</p>
+<ul>
+<li>often, <code>--</code> can signify the separation from the command options, and the following Regex</li>
+</ul>
+<h3 id="status-code-127"><a aria-hidden="true" class="anchor-heading" href="#status-code-127"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Status code 127</h3>
+<p>Think of it as "Error: the program you tried to use was not found"</p>
+<ul>
+<li>it's returned by your shell <code>/bin/bash</code> when any given command within your bash script or on bash command line is not found in any of the paths defined by PATH system environment variable.</li>
+<li>to fix, make sure the command we are using is discoverable through <code>$PATH</code></li>
+</ul>
+<h3 id=""><a aria-hidden="true" class="anchor-heading" href="#"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>$()</h3>
+<p>when we execute commands like this, they are executed in a subshell</p>
+<h2 id="ue-resources"><a aria-hidden="true" class="anchor-heading" href="#ue-resources"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>UE Resources</h2>
+<p><a href="https://www.gnu.org/software/bash/manual/bash.html">GNU High-quality documentation</a></p>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/uGis733B02kZK6M6fFbEt">CLI</a></li>
+<li><a href="/Digital-Garden/notes/e682e684-a366-4724-bfb9-2f2114dc4565">Cmds</a></li>
+<li><a href="/Digital-Garden/notes/vEvapkRVZ6AmjOea">Cook</a></li>
+<li><a href="/Digital-Garden/notes/44647156-6b58-4154-9e25-d0ba65169a47">Expansion</a></li>
+<li><a href="/Digital-Garden/notes/497fc196-4ace-4e16-a80b-be8be3adfb0a">Glob</a></li>
+<li><a href="/Digital-Garden/notes/A0nhMxUDrgRZKcQq7ov7R">Lang</a></li>
+<li><a href="/Digital-Garden/notes/8f156901-986e-4ed2-8aa3-725db951eac0">Parameters</a></li>
+<li><a href="/Digital-Garden/notes/a69786b8-757c-463d-9f1b-1654f6f9bad3">Pipeline</a></li>
+<li><a href="/Digital-Garden/notes/c8e16fb4-209d-4fd0-84da-d829a8955ac3">Redirection</a></li>
+<li><a href="/Digital-Garden/notes/7ccf052f-8297-412a-8854-7229a93bc583">Script</a></li>
+<li><a href="/Digital-Garden/notes/b8e3f8c6-f76b-41da-982c-317af838cda2">Strings</a></li>
+<li><a href="/Digital-Garden/notes/881923a6-d135-44ea-b273-e392701d1ccd">Test</a></li>
+<li><a href="/Digital-Garden/notes/01646f4f-2c65-4f92-8e1a-b974cc1df7d1">Variables</a></li>
+</ol>

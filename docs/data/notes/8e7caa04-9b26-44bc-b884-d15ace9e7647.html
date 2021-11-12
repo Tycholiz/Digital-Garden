@@ -1,0 +1,11 @@
+<h1 id="gitignore"><a aria-hidden="true" class="anchor-heading" href="#gitignore"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Gitignore</h1>
+<h1 id="gitignore-1"><a aria-hidden="true" class="anchor-heading" href="#gitignore-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Gitignore</h1>
+<ul>
+<li>When git comes across a file in your repo that is untracked, it will report it to you (in <code>git status</code>). However, if that file has been added to <code>.gitignore</code>, it will suppress it.</li>
+<li>once a file is known to git (ie. it has been in the index), adding the file to <code>.gitignore</code> has no effect (ie. the file will continue to be tracked)</li>
+<li>if you need to stop tracking a file (for example, we've already added the file to the index, but now want to start ignoring it), we need to run <code>git rm --cached &#x3C;file></code>
+<ul>
+<li>for folders, <code>git rm -r --cached &#x3C;folder></code></li>
+</ul>
+</li>
+</ul>

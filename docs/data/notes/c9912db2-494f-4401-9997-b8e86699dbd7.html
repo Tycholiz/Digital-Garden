@@ -1,0 +1,63 @@
+<h1 id="register"><a aria-hidden="true" class="anchor-heading" href="#register"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Register</h1>
+<h1 id="register-1"><a aria-hidden="true" class="anchor-heading" href="#register-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Register</h1>
+<p>(<a href="https://www.brianstorti.com/vim-registers/">info</a>)</p>
+<ul>
+<li>a space in memory with an identifier that vim uses to store text
+<ul>
+<li>analogous to a clipboard</li>
+</ul>
+</li>
+<li>access register <code>a</code> - <code>"a</code>
+<ul>
+<li>access register in <em>i mode</em> - <code>&#x3C;C-r></code> (instead of <code>"</code>)</li>
+</ul>
+</li>
+<li>vim has a default register, which is where any deleted or yanked text will be
+<ul>
+<li>denoted <code>""</code> - so <code>p</code> is shorthand for <code>""p</code></li>
+<li>this is more like copy/paste</li>
+</ul>
+</li>
+<li>when writing to a register, lowercase letters will overwrite the register, while uppercase will append to the register</li>
+<li>Sequential register
+<ul>
+<li><code>"1</code> is most recent (or <code>""</code>), <code>"2</code> is second most recent, and so on</li>
+<li>this is only for <code>dd</code> and <code>yy</code> operation</li>
+</ul>
+</li>
+<li>Yank register
+<ul>
+<li><code>"0</code></li>
+</ul>
+</li>
+<li>Blackhole register
+<ul>
+<li><code>"_</code> - prepending a command with this will prevent anything from entering a register.</li>
+</ul>
+</li>
+<li>Clipboard register
+<ul>
+<li><code>"+</code>/<code>"*</code> - gives access to the system clipboard</li>
+</ul>
+</li>
+<li>Expression register
+<ul>
+<li><code>"=</code></li>
+<li>when fetching contents from the register, we enter command-line moe</li>
+<li>an exception to the idea that "registers are containers that hold a block of text"</li>
+</ul>
+</li>
+<li>use <code>:reg</code> to see all registers
+<ul>
+<li><code>:reg a b c</code> will show registers <code>a b c</code></li>
+</ul>
+</li>
+<li>copy text into register <code>r</code>, then paste it - <code>"ry</code>, <code>"rp</code></li>
+<li><em>Yank Register</em> - when yanking, the copied text is placed into the yank register (<code>"0</code>), as well as the default register.</li>
+<li><em>Delete/yank Register</em> - <code>"-</code>
+<ul>
+<li>only small delete (ie. no <code>dd</code>)</li>
+</ul>
+</li>
+<li>when using visual mode to make a selection of text that we will replace with <code>p</code>, the highlighted text will go into the register as the <em>pasted</em> text exits</li>
+</ul>

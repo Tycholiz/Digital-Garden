@@ -1,0 +1,9 @@
+<h1 id="signature"><a aria-hidden="true" class="anchor-heading" href="#signature"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Signature</h1>
+<h3 id="signature-1"><a aria-hidden="true" class="anchor-heading" href="#signature-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Signature</h3>
+<ul>
+<li>created using the header, the claims AND the secret. Therefore, this unique combination creates a hash, and if something in the claim were to change, then the signature would be different and would no longer match up. 
+<pre><code>- What this means is that if the 1st and 2nd set of the JWT don't change, than neither will the 3rd (of course assuming the secret remains unchanging)
+	- in practice jwt will always be different between sign ins of the same user, since the `exp` variable will always be different
+</code></pre>
+<img src="/Digital-Garden/:/fa5c3e7e2d95477e85f51bed49c6b4d9" alt="8ded9f2b6239d7464fa7e85badce77c6.png"></li>
+</ul>

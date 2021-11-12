@@ -1,0 +1,27 @@
+<h1 id="vm"><a aria-hidden="true" class="anchor-heading" href="#vm"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Vm</h1>
+<h1 id="virtual-maachines-vm"><a aria-hidden="true" class="anchor-heading" href="#virtual-maachines-vm"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Virtual Maachines (VM)</h1>
+<p>A VM is made up of a Host VM and a Guest VM</p>
+<h3 id="host-vm"><a aria-hidden="true" class="anchor-heading" href="#host-vm"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Host VM</h3>
+<ul>
+<li>the server component of a VM, which provides resources to a Guest VM, such as processing power, memory, disk, network I/O etc.</li>
+</ul>
+<h3 id="guest-vm"><a aria-hidden="true" class="anchor-heading" href="#guest-vm"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Guest VM</h3>
+<ul>
+<li>can exist on a single phsyical machine, but is usually distributed across multiple hosts for load balancing.</li>
+<li>The guest VM is not even aware that it is a guest VM, and therefore is not aware of any other physical resources that are allocated to other guest VMs.</li>
+</ul>
+<h3 id="hypervisor"><a aria-hidden="true" class="anchor-heading" href="#hypervisor"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Hypervisor</h3>
+<ul>
+<li>a piece of software in a computer that will create and run virtual machines</li>
+<li>the hypervisor intermediates between the host and guest VM, which isolates individual guest VMs. This allows a host VM to support multiple guests running on different operating systems.</li>
+</ul>
+<hr>
+<h3 id="swap-space"><a aria-hidden="true" class="anchor-heading" href="#swap-space"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Swap Space</h3>
+<ul>
+<li>Swap space in Linux is used when the amount of physical memory (RAM) is full</li>
+</ul>
+<h3 id="memory-page-aka-virtual-page"><a aria-hidden="true" class="anchor-heading" href="#memory-page-aka-virtual-page"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Memory Page (a.k.a. Virtual Page)</h3>
+<ul>
+<li>a fixed length contiguous block of virtual memory.</li>
+<li>each page is described by an record in a page table</li>
+</ul>

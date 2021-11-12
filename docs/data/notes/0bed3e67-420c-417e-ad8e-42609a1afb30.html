@@ -1,0 +1,16 @@
+<h1 id="queries"><a aria-hidden="true" class="anchor-heading" href="#queries"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Queries</h1>
+<h2 id="queries-1"><a aria-hidden="true" class="anchor-heading" href="#queries-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Queries</h2>
+<p>Every GraphQL service has a query type and may or may not have a mutation type</p>
+<h3 id="understanding-how-a-query-works"><a aria-hidden="true" class="anchor-heading" href="#understanding-how-a-query-works"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Understanding how a query works</h3>
+<pre><code>query {
+  hero {
+    name
+    appearsIn
+  }
+}
+</code></pre>
+<ol>
+<li>We query the special root Query type, and get back an object</li>
+<li>We select the hero field on that object</li>
+<li>For the object returned by hero, we select the name and appearsIn fields</li>
+</ol>

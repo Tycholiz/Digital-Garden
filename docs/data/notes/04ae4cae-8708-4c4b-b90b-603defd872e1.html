@@ -1,0 +1,11 @@
+<h1 id="mutations"><a aria-hidden="true" class="anchor-heading" href="#mutations"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Mutations</h1>
+<h2 id="mutations-1"><a aria-hidden="true" class="anchor-heading" href="#mutations-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Mutations</h2>
+<ul>
+<li>While query fields are executed in parallel, mutation fields run in series, one after the other.
+<ul>
+<li>This means that if we send two <code>updateNugget</code> mutations in one request, the first is guaranteed to finish before the second begins</li>
+</ul>
+</li>
+</ul>
+<h3 id="input-types"><a aria-hidden="true" class="anchor-heading" href="#input-types"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Input types</h3>
+<p>often we will be using the same inputs to different mutations (ex. createNugget, updateNugget). Input types offers us a way to decalare these inputs once, and alias it as a type. </p>

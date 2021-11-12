@@ -1,0 +1,42 @@
+<h1 id="self-join"><a aria-hidden="true" class="anchor-heading" href="#self-join"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Self Join</h1>
+<p>A self join allows us to join a table to itself using an inner or outer join</p>
+<ul>
+<li>this allows you to create a result set that joins the rows with the other rows within the same table.</li>
+</ul>
+<p>In practice, you typically use a self-join to query hierarchical data or to compare rows within the same table.</p>
+<ul>
+<li>Imagine we need to compare a column of each row with all other rows in that table, and get a result set of only the rows that pass a certain condition
+<ul>
+<li>ex. we have a table <code>temperature_readings</code> that include both the high and low for the day. What we conceptually need to do is take row1 and compare it to every other row. Then we take row2 and compare it to every other row, and so on. Conceptually, this is like a nested for loop, where w1 is the outer loop and w2 is the inner loop:</li>
+</ul>
+</li>
+</ul>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">select</span>
+     w1<span class="token punctuation">.</span>city<span class="token punctuation">,</span>
+     w1<span class="token punctuation">.</span>temp_lo <span class="token keyword">as</span> low<span class="token punctuation">,</span>
+     w1<span class="token punctuation">.</span>temp_hi <span class="token keyword">as</span> high<span class="token punctuation">,</span>
+     w2<span class="token punctuation">.</span>city<span class="token punctuation">,</span>
+     w2<span class="token punctuation">.</span>temp_lo <span class="token keyword">as</span> low<span class="token punctuation">,</span>
+     w2<span class="token punctuation">.</span>temp_hi <span class="token keyword">as</span> high
+ <span class="token keyword">from</span> weather w1<span class="token punctuation">,</span> weather w2
+ <span class="token keyword">where</span> w1<span class="token punctuation">.</span>temp_lo <span class="token operator">&#x3C;</span> w2<span class="token punctuation">.</span>temp_lo
+ <span class="token operator">and</span> w1<span class="token punctuation">.</span>temp_hi <span class="token operator">></span> w2<span class="token punctuation">.</span>temp_hi<span class="token punctuation">;</span>
+</code></pre>
+<p>With self joins, we need to use an alias because you cannot refer to the same table more than once in a query, so we assign it a name when it is joining against itself</p>
+<ul>
+<li>since we are using 2 versions of the same table, we should give both an alias. For example in the below example, give alias <code>m</code> for the manager's version and <code>e</code> for the employee's version</li>
+<li><a href="https://www.reddit.com/r/SQL/comments/9e5yi9/why_use_table_alias_noob_question/">why use aliases?</a></li>
+</ul>
+<p>Two reasons for using a self-join:</p>
+<ol>
+<li>query parents/child relationship stored in a table
+<ul>
+<li>ex. in <code>employee</code> table, demonstrate relationship between <code>employee_id</code> and <code>reports_to</code> columns. Here, the employee's <code>reports_to</code> would match up with the manager's <code>employee_id</code>
+<ul>
+<li><code>INNER JOIN employees m ON m.employeeid = e.reportsto</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>obtain running totals</li>
+</ol>

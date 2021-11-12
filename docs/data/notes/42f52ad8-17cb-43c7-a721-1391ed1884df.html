@@ -1,0 +1,10 @@
+<h1 id="cascade"><a aria-hidden="true" class="anchor-heading" href="#cascade"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Cascade</h1>
+<h1 id="cascade-1"><a aria-hidden="true" class="anchor-heading" href="#cascade-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>CASCADE</h1>
+<ul>
+<li>whenever rows in the parent (referenced) table are deleted/updated, the respective rows in the child (referencing) table with matching FK will be deleted/updated as well
+<ul>
+<li>put another way, not only do we delete an object (ex. a schema), but we delete everything contained within that object (ex. tables)</li>
+</ul>
+</li>
+<li>ex. if we mark the <code>nugget_id</code> of <code>nugget_bucket</code> table as CASCADE, when a row in the <code>nugget</code> table is deleted, all rows in <code>nugget_bucket</code> table that reference that nugget will also be deleted</li>
+</ul>

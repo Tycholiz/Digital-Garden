@@ -1,0 +1,1 @@
+{"id":"1d1e1e69-e7a0-42b1-8ff3-b800dde3232b","title":"DaemonSet","vault":{"fsPath":"../main/tech","name":"tech"},"type":"note","desc":"","links":[],"anchors":{},"fname":"k8s.controllers.daemon-set","updated":1622228239397,"created":1622228131468,"parent":"3cb54c89-f537-4e45-9302-da56e4814237","children":[],"data":{},"contentHash":"61ca17f4d336129dd09f8a834a1f6429","custom":{}}

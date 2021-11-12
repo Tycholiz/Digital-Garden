@@ -1,0 +1,29 @@
+<h1 id="do-while"><a aria-hidden="true" class="anchor-heading" href="#do-while"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Do While</h1>
+<p>Benefit of a <code>do...while</code> over a regular <code>while</code> is that <code>do...while</code> will always run at least once. A <code>while</code> will only run as long as the condition is satisfied. </p>
+<p>Therefore,</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword control-flow">do</span> <span class="token punctuation">{</span>
+    <span class="token function">do_work</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token punctuation">}</span> <span class="token keyword control-flow">while</span> <span class="token punctuation">(</span>condition<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// is equivalent to:</span>
+<span class="token function">do_work</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword control-flow">while</span> <span class="token punctuation">(</span>condition<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">do_work</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="easy-retry-process-with-do-while"><a aria-hidden="true" class="anchor-heading" href="#easy-retry-process-with-do-while"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Easy retry process with do-while</h3>
+<pre class="language-js"><code class="language-js"><span class="token comment">// each time the loop runs, it checks to see if the place equals the address. If did, then there is an automatic retry done, accomplished with the do-while</span>
+<span class="token maybe-class-name">VillageState</span><span class="token punctuation">.</span><span class="token method-variable function-variable method function property-access">random</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">parcelCount <span class="token operator">=</span> <span class="token number">5</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> parcels <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token keyword control-flow">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&#x3C;</span> parcelCount<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">let</span> address <span class="token operator">=</span> <span class="token function">randomPick</span><span class="token punctuation">(</span><span class="token known-class-name class-name">Object</span><span class="token punctuation">.</span><span class="token method function property-access">keys</span><span class="token punctuation">(</span>roadGraph<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">let</span> place<span class="token punctuation">;</span>
+    <span class="token keyword control-flow">do</span> <span class="token punctuation">{</span>
+      place <span class="token operator">=</span> <span class="token function">randomPick</span><span class="token punctuation">(</span><span class="token known-class-name class-name">Object</span><span class="token punctuation">.</span><span class="token method function property-access">keys</span><span class="token punctuation">(</span>roadGraph<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword control-flow">while</span> <span class="token punctuation">(</span>place <span class="token operator">==</span> address<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    parcels<span class="token punctuation">.</span><span class="token method function property-access">push</span><span class="token punctuation">(</span><span class="token punctuation">{</span>place<span class="token punctuation">,</span> address<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword control-flow">return</span> <span class="token keyword">new</span> <span class="token class-name">VillageState</span><span class="token punctuation">(</span><span class="token string">"Post Office"</span><span class="token punctuation">,</span> parcels<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre>

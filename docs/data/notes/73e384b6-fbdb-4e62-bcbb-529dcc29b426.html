@@ -1,0 +1,49 @@
+<h1 id="bitwise"><a aria-hidden="true" class="anchor-heading" href="#bitwise"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Bitwise</h1>
+<p><em>Bitwise operation</em> - an operation done on a series of bits. Therefore, it is supported directly by the CPU and thus more efficient</p>
+<ul>
+<li>the nature of bitwise is to treat a value as a series of bits, rather than as a numerical quantity</li>
+<li>used to manipulate values for comparisons and calculations
+<ul>
+<li>the values must be an array of chars (string), array of ints, or a binary numeral</li>
+</ul>
+</li>
+<li>ex. NOT, AND, OR, XOR</li>
+<li>ex. Say we perform the bitwise operation <code>4&#x26;1</code>. What happens is that a check is performed on each bit:</li>
+</ul>
+<pre><code>  00000011
+&#x26; 00000001
+__________
+  00000001
+</code></pre>
+<p>It is <em>not</em> their main use to substitute arithmetic operations. Cryptography, computer graphics, hash functions, compression algorithms, and network protocols are just some examples where bitwise operations are extremely useful.</p>
+<ul>
+<li>It is true that in most cases when you multiply an integer by a constant that happens to be a power of two, the compiler optimises it to use the bit-shift.</li>
+</ul>
+<p><em>Bitmask</em> (or simply mask) - in the example above (with <code>&#x26;</code>) we utilized the bitwise operator to make a mask. Basically, what comes after the <code>&#x26;</code> is the mask, and it specifies which bits from the leftside will "shine through".</p>
+<ul>
+<li>the mask is determined by the bitwise operator (i.e. AND, OR XOR) and the value following it.
+<ul>
+<li><code>&#x26;</code> (AND) will extract a subset of bits from the value</li>
+<li><code>|</code> (OR) will set a subset of the bits in the value</li>
+</ul>
+<pre><code>  00110110
+| 11010011
+__________
+  11110111	
+</code></pre>
+<ul>
+<li><code>^</code> (XOR) will toggle a subset of the bits in the value</li>
+</ul>
+<pre><code>  00110110
+^ 11010011
+__________
+  1110001	
+</code></pre>
+</li>
+<li>anal. imagine a mask in Inkscape who's job is to mask anything that isn't skin. The resulting mask would be black wherever there is not skin in the photo. When we apply this mask to the photo, the resulting image would be just skin. </li>
+</ul>
+<p><em>Shifting</em> (<code>&#x3C;&#x3C;</code>/<code>>></code>) - the action of shifting all bits to the left or right. Shifting to the left effectively doubles the value. Conversely, shifting to the right divides the value by 2.</p>
+<ul>
+<li>when shifting, if there is no bit to take a place, it defaults to 0</li>
+<li>Declaring the first argument to be unsigned ensures that when it is right-shifted, vacated bits will be filled with zeros, not sign bits</li>
+</ul>

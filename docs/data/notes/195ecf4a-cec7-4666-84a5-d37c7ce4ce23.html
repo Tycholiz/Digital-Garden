@@ -1,0 +1,14 @@
+<h1 id="iife"><a aria-hidden="true" class="anchor-heading" href="#iife"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>IIFE</h1>
+<p>When async/await was first introduced, attempting to use an await outside of an async function resulted in a SyntaxError. Many developers utilized immediately-invoked async function expressions as a way to get access to the feature.</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword control-flow">await</span> <span class="token known-class-name class-name">Promise</span><span class="token punctuation">.</span><span class="token method function property-access">resolve</span><span class="token punctuation">(</span><span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span><span class="token string">'🎉'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment">// → SyntaxError: await is only valid in async function</span>
+
+<span class="token punctuation">;</span><span class="token punctuation">(</span><span class="token keyword">async</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword control-flow">await</span> <span class="token known-class-name class-name">Promise</span><span class="token punctuation">.</span><span class="token method function property-access">resolve</span><span class="token punctuation">(</span><span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span><span class="token string">'🎉'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token comment">// → 🎉</span>
+<span class="token punctuation">}</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre>
+<ul>
+<li>note: this IIFE here could be considered to be analogous to the <code>main</code> function of a C program (ie. it is the entrypoint— it is what gets called when you run <code>node filename.js</code>). Otherwise, we would be declaring the function, then calling it</li>
+</ul>
+<p>Without top-level await, JavaScript developers often used async immediately-invoked function expressions just to get access to await. Unfortunately, this pattern results in less determinism of graph execution and static analyzability of applications. For these reasons, the lack of top-level await was viewed as a higher risk than the hazards introduced with the feature.</p>

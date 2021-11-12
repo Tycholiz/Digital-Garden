@@ -1,0 +1,23 @@
+<h1 id="parameters"><a aria-hidden="true" class="anchor-heading" href="#parameters"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Parameters</h1>
+<h1 id="special-parameters"><a aria-hidden="true" class="anchor-heading" href="#special-parameters"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Special Parameters</h1>
+<ul>
+<li><code>$1, $2, $3</code> are the positional parameters.</li>
+<li><code>"$@"</code> is an array-like construct of all positional parameters
+<ul>
+<li>ex. <code>{$1, $2, $3 ...}</code></li>
+</ul>
+</li>
+<li><code>"$*"</code> is the IFS expansion of all positional parameters
+<ul>
+<li>ex. <code>$1 $2 $3</code></li>
+</ul>
+</li>
+<li><code>$#</code> is the number of positional parameters.</li>
+<li><code>$-</code> current options set for the shell.</li>
+<li><code>$$</code> pid of the current shell (not subshell).</li>
+<li><code>$_</code> most recent parameter (or the abs path of the command to start the current shell immediately after startup).</li>
+<li><code>$IFS</code> is the (input) field separator.</li>
+<li><code>$?</code> is the most recent foreground pipeline exit status.</li>
+<li><code>$!</code> is the PID of the most recent background command.</li>
+<li><code>$0</code> is the name of the shell or shell script.</li>
+</ul>

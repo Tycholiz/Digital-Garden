@@ -1,0 +1,15 @@
+<h1 id="numeric"><a aria-hidden="true" class="anchor-heading" href="#numeric"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Numeric</h1>
+<p><code>decimal</code> is an alias for <code>numeric</code></p>
+<p>there are 2 values inherent to a <code>numeric</code> value</p>
+<ol>
+<li>Precision - total $ of significant digits in a number (ie. size of integer part plus size of decimal part)</li>
+<li>Scale - size of decimal part. (therefore integers have scale of 0)</li>
+</ol>
+<ul>
+<li>these 2 values should be declared explicitly</li>
+</ul>
+<p>example:</p>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">numeric</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span>
+</code></pre>
+<p>means "3 digits total, with 2 occurring past the decimal"
+ie. <code>1.00</code> and <code>0.23</code>, but not <code>1.235</code></p>

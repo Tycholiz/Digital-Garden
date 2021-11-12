@@ -1,0 +1,11 @@
+<h1 id="cook"><a aria-hidden="true" class="anchor-heading" href="#cook"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Cook</h1>
+<h4 id="delete-from-one-table-while-using-values-from-another-as-the-condition"><a aria-hidden="true" class="anchor-heading" href="#delete-from-one-table-while-using-values-from-another-as-the-condition"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Delete from one table while using values from another as the condition</h4>
+<p>Here, we delete from the <code>users</code> table where the <code>user.id</code> can be found in the result set. We are doubling up the result set with <code>UNION</code>, in an effort to find users that are test users</p>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">delete</span> <span class="token keyword">from</span> app_public<span class="token punctuation">.</span>users
+<span class="token keyword">where</span> id <span class="token operator">in</span>
+	<span class="token punctuation">(</span>
+		<span class="token keyword">select</span> user_id <span class="token keyword">from</span> app_public<span class="token punctuation">.</span>user_emails <span class="token keyword">where</span> email <span class="token operator">like</span> <span class="token string">'testuser%@example.com'</span>
+	<span class="token keyword">union</span>
+		<span class="token keyword">select</span> user_id <span class="token keyword">from</span> app_public<span class="token punctuation">.</span>user_authentications <span class="token keyword">where</span> identifier <span class="token operator">=</span> <span class="token string">'123456%'</span>
+	<span class="token punctuation">)</span>
+</code></pre>

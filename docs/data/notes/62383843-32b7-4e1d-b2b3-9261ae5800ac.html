@@ -1,0 +1,29 @@
+<h1 id="purity"><a aria-hidden="true" class="anchor-heading" href="#purity"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Purity</h1>
+<h2 id="purifying-functions"><a aria-hidden="true" class="anchor-heading" href="#purifying-functions"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Purifying functions</h2>
+<ul>
+<li>Use immutable data structures (ex. Immutable.js)</li>
+<li>Sometimes you can just shift the side effects out of a function to the part of the program where the call of that function happens. The side effect wasn't eliminated, but it was made more obvious by showing up at the call-site.</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">addMaxNum</span><span class="token punctuation">(</span><span class="token parameter">arr</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> maxNum <span class="token operator">=</span> <span class="token known-class-name class-name">Math</span><span class="token punctuation">.</span><span class="token method function property-access">max</span><span class="token punctuation">(</span> <span class="token spread operator">...</span>arr <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    arr<span class="token punctuation">.</span><span class="token method function property-access">push</span><span class="token punctuation">(</span> maxNum <span class="token operator">+</span> <span class="token number">1</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">var</span> nums <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">7</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+<span class="token function">addMaxNum</span><span class="token punctuation">(</span> nums <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+nums<span class="token punctuation">;</span>       <span class="token comment">// [4,2,7,3,8]</span>
+</code></pre>
+<p>to</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">addMaxNum</span><span class="token punctuation">(</span><span class="token parameter">arr</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> maxNum <span class="token operator">=</span> <span class="token known-class-name class-name">Math</span><span class="token punctuation">.</span><span class="token method function property-access">max</span><span class="token punctuation">(</span> <span class="token spread operator">...</span>arr <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    arr<span class="token punctuation">.</span><span class="token method function property-access">push</span><span class="token punctuation">(</span> maxNum <span class="token operator">+</span> <span class="token number">1</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">var</span> nums <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">7</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+<span class="token function">addMaxNum</span><span class="token punctuation">(</span> nums <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+nums<span class="token punctuation">;</span>       <span class="token comment">// [4,2,7,3,8]</span>
+</code></pre>

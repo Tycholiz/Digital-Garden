@@ -1,0 +1,71 @@
+<h1 id="mapping"><a aria-hidden="true" class="anchor-heading" href="#mapping"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Mapping</h1>
+<h1 id="mapping-1"><a aria-hidden="true" class="anchor-heading" href="#mapping-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Mapping</h1>
+<ul>
+<li><code>:map</code> - recursive version of mapping command</li>
+<li><code>:noremap</code> - non-recursive version of mapping command
+<ul>
+<li>"Recursive" means that the mapping is expanded to a result, then the result is expanded to another result, and so on.</li>
+</ul>
+</li>
+<li>below, <code>j</code> will be mapped to <code>gg</code>. <code>Q</code> will also be mapped to <code>gg</code>, because <code>j</code> will be expanded for the recursive mapping. <code>W</code> will be  mapped to <code>j</code> (and not to <code>gg</code>) because <code>j</code> will not be expanded for the non-recursive mapping.
+<ul>
+<li>The expansion stops when one of these is true:
+<ol>
+<li>the result is no longer mapped to anything else.</li>
+<li>a non-recursive mapping has been applied (i.e. the "noremap" [or one of its ilk] is the final expansion).</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>:map j gg
+:map Q j
+:noremap W j
+</code></pre>
+<ul>
+<li>
+<p>since VIM is a <strong>modal editor</strong>, there are corresponding mapping commands for each mode</p>
+<ul>
+<li><strong><em>ex.</em></strong> - <code>:imap</code>, <code>:nmap</code>, <code>:map!</code> (<em>i mode</em> and command line)</li>
+</ul>
+</li>
+<li>
+<p>Recursive map - the rhs says to the lhs "if you get triggered, when I get triggered. It stops with me, and nothing past me gets triggered"</p>
+</li>
+<li>
+<p>Non-recursive map (nore)- the rhs says "When you get triggered, I may server as the lhs of another mapping that will trigger something else."</p>
+</li>
+<li>
+<p>map is the "root" of all recursive mapping commands. </p>
+<ul>
+<li>The root form applies to "normal", "visual+select", and "operator-pending" modes. </li>
+</ul>
+</li>
+<li>
+<p>"Recursive" means that the mapping is expanded to a result, then the result is expanded to another result, and so on.</p>
+</li>
+<li>
+<p>The expansion stops when one of these is true:</p>
+<ol>
+<li>the result is no longer mapped to anything else.</li>
+<li>a non-recursive mapping has been applied (i.e. the "noremap" [or one of its ilk] is the final expansion).</li>
+</ol>
+</li>
+<li>
+<p>At that point, Vim's default "meaning" of the final result is applied/executed.</p>
+</li>
+<li>
+<p>"Non-recursive" means the mapping is only expanded once, and that result is applied/executed.</p>
+<ul>
+<li>Example:</li>
+</ul>
+</li>
+</ul>
+<pre><code>nmap K H
+nnoremap H G
+nnoremap G gg
+</code></pre>
+<ul>
+<li>The above causes K to expand to H, then H to expand to G and stop. It stops because of the nnoremap, which expands and stops immediately. The meaning of G will be executed (i.e. "jump to last line"). At most one non-recursive mapping will ever be applied in an expansion chain (it would be the last expansion to happen).</li>
+<li>The mapping of G to gg only applies if you press G, but not if you press K. This mapping doesn't affect pressing K regardless of whether G was mapped recursively or not, since it's line 2 that causes the expansion of K to stop, so line 3 wouldn't be used.</li>
+</ul>

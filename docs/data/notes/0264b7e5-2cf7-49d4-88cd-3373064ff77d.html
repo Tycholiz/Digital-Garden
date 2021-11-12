@@ -1,0 +1,17 @@
+<h1 id="authoritative-nameserver"><a aria-hidden="true" class="anchor-heading" href="#authoritative-nameserver"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Authoritative Nameserver</h1>
+<p>When a DNS server queries other DNS servers, it’s making an “upstream” query. Queries for a domain can go “upstream” until they lead back to domain’s authority, or “authoritative name server.”</p>
+<ul>
+<li>An authoritative name server is where administrators manage server names and IP addresses for their domains. Whenever a DNS administrator wants to add, change or delete a server name or an IP address, they make a change on their authoritative DNS server (sometimes called a “master DNS server”).</li>
+</ul>
+<p>Therefore, the authoritative nameserver is the server that actually holds, and is responsible for, DNS resource records</p>
+<pre><code>- This could be considered the "domain's nameserver"
+</code></pre>
+<ul>
+<li>Holds information specific to the actual domain name it serves (eg. google.com), and will send the IP address back to the recursive resolver.
+<ul>
+<li>The IP address it sends is found in the DNS A record.</li>
+</ul>
+</li>
+<li>Each domain has its own authoritative NS</li>
+<li>spec: this nameserver holds the records that we see on our domain registrar dashboard for our domain. </li>
+</ul>

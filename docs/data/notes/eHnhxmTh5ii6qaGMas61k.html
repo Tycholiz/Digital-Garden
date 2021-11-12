@@ -1,0 +1,36 @@
+<h1 id="mock"><a aria-hidden="true" class="anchor-heading" href="#mock"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Mock</h1>
+<p>Mocking is a technique to isolate test subjects by replacing dependencies with objects that you can control and inspect.</p>
+<ul>
+<li>The goal for mocking is to replace something we don’t control with something we do, so it’s important that what we replace it with has all the features we need.</li>
+</ul>
+<p>Mocking means to create a fake version of an external dependency. The purpose is to reduce the surface area of our tests to ensure we are properly scoping our test to the unit, and to not allow external things to bleed into the test.</p>
+<p>Mocking allows us to test the links between code by erasing the actual implementation, and focusing on:</p>
+<ul>
+<li>how many times a function/method was called (along with the args passed)</li>
+</ul>
+<p>Imagine we have a function that does some computation, then sticks the result in a new file. Since we are unit testing, we aren't testing whether or not the file gets created— that can be safely assumed (or tested in another unit test). Instead, we can safely mock the creation of the file.</p>
+<ul>
+<li>If we didn't mock this, we'd have to clean up after ourselves each time we run a test. It would result in a slower testing suite.</li>
+</ul>
+<h3 id="examples"><a aria-hidden="true" class="anchor-heading" href="#examples"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Examples</h3>
+<h4 id="foreach"><a aria-hidden="true" class="anchor-heading" href="#foreach"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>forEach</h4>
+<p>If we were writing a unit test for <code>forEach</code>, we would just mock the callback.</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">forEach</span><span class="token punctuation">(</span><span class="token parameter">items<span class="token punctuation">,</span> callback</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword control-flow">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> index <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> index <span class="token operator">&#x3C;</span> items<span class="token punctuation">.</span><span class="token property-access">length</span><span class="token punctuation">;</span> index<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">callback</span><span class="token punctuation">(</span>items<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Imagine we had a mock function:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> mockCallback <span class="token operator">=</span> jest<span class="token punctuation">.</span><span class="token method function property-access">fn</span><span class="token punctuation">(</span><span class="token parameter">x</span> <span class="token arrow operator">=></span> <span class="token number">42</span> <span class="token operator">+</span> x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">forEach</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> mockCallback<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>There are a few things we care about when it comes to unit testing this function:</p>
+<ul>
+<li>was the callback called twice?</li>
+<li>was the first argument of the first call <code>0</code>?</li>
+<li>was the return value of the first call <code>42</code> (42 + 0)?</li>
+</ul>
+<h4 id="difference-between-mock-and-stub"><a aria-hidden="true" class="anchor-heading" href="#difference-between-mock-and-stub"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Difference between mock and stub</h4>
+<p>A mock is like a stub but the test will also verify that the object under test calls the mock as expected
+ex. You can stub a database by implementing a simple in-memory structure for storing records. The object under test can then read and write records to the database stub to allow it to execute the test. This could test some behavior of the object not related to the database and the database stub would be included just to let the test run. If you instead want to verify that the object under test writes some specific data to the database you will have to mock the database. Your test would then incorporate assertions about what was written to the database mock.</p>

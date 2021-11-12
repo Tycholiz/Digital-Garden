@@ -1,0 +1,47 @@
+<h1 id="reset"><a aria-hidden="true" class="anchor-heading" href="#reset"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Reset</h1>
+<h1 id="reset-1"><a aria-hidden="true" class="anchor-heading" href="#reset-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Reset</h1>
+<ul>
+<li><code>reset</code> is the opposite of <code>add</code></li>
+<li>In general, git reset is used to move branch tips around (likely to another commit)</li>
+<li>If we pass a filename to <code>git reset</code>, then the staging area will be updated to match the given commit instead of the working directory (the branch pointer does not move).
+<pre><code>- ex. if we have 3 files staged, we can remove one of them with `git reset HEAD index.js`, making `index.js` match the version found in HEAD. The working directory and current branch are left alone. The result is a staging area that matches the most recent commit and a working directory that contains the modified `index.js` file.
+	- Put another way, we are unstaging the file.
+</code></pre>
+<img src="/Digital-Garden/:/78999c9edf5c4f129b389d40acc423cc" alt="8f6b8c503feeeceab0f2175850b7acbd.png"></li>
+</ul>
+<h2 id="soft"><a aria-hidden="true" class="anchor-heading" href="#soft"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Soft</h2>
+<ul>
+<li>moves the HEAD to the provided <code>&#x3C;SHA></code>, while keeping working tree and staging area intact.</li>
+<li><em>soft</em> means the commit is canceled and moved before the <code>HEAD</code></li>
+<li><code>git reset --soft HEAD^</code> - undo last commit</li>
+</ul>
+<h2 id="mixed"><a aria-hidden="true" class="anchor-heading" href="#mixed"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Mixed</h2>
+<ul>
+<li>moves the HEAD to the provided <code>&#x3C;SHA></code>, while keeping working tree intact.
+<ul>
+<li>Move the HEAD backward <code>&#x3C;n></code> commits, but don’t change the working directory.</li>
+</ul>
+</li>
+<li>reset the staging area</li>
+<li><code>git reset &#x3C;file></code> is the opposite of <code>git add &#x3C;file></code></li>
+<li>ex. if we are on c3 and do <code>git reset c1</code>, we will go back to c1, and the working directory and index will remain unchanged
+<ul>
+<li>This is the default type of reset</li>
+</ul>
+</li>
+</ul>
+<h2 id="hard"><a aria-hidden="true" class="anchor-heading" href="#hard"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Hard</h2>
+<ul>
+<li>moves the HEAD to the provided <code>&#x3C;SHA></code>, keeping neither the working tree nor staging area intact.
+<ul>
+<li>Move the HEAD backward <code>&#x3C;n></code> commits, and change the working directory to match</li>
+</ul>
+</li>
+<li>the only version of <code>reset</code> that actually results in a changed working directory file.</li>
+<li>ex. if we are on c3 and do <code>git reset --HARD c1</code>, we will go back to c1 (i.e. our head will point to c1) and c2 and c3 will be "destroyed", and working directory wiped.</li>
+</ul>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/DVQTTbkFMZfkVjV1to197">Cook</a></li>
+</ol>

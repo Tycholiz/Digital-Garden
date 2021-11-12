@@ -1,0 +1,342 @@
+<h1 id="ramda"><a aria-hidden="true" class="anchor-heading" href="#ramda"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Ramda</h1>
+<p>There are two main guiding principles of Ramda:</p>
+<ul>
+<li>Data comes last</li>
+<li>Everything gets curried</li>
+</ul>
+<p>These two principles lead to a style that functional programmers call <em>point-free</em> (a.k.a <em>tacit programming</em>)</p>
+<ul>
+<li>Think of point-free code as “Data? What data? There’s no data here.”</li>
+</ul>
+<p>We can make <em>point-free</em> transformations by converting functions that take in data to new functions that accept that data and after having already decided what to do with it:</p>
+<pre><code>const forever21 = age => ifElse(gte(__, 21), always(21), inc)(age)
+// becomes:
+const forever21 = ifElse(gte(__, 21), always(21), inc)
+</code></pre>
+<p>now, the function <code>forever21</code> can be used without having to worry about data until the last minute.</p>
+<ul>
+<li>Note: there is no behavioral difference in these two versions. We’re still returning a function that takes an age, but now we’re not explicitly specifying the age parameter.</li>
+</ul>
+<p>Ramda <code>map</code> and <code>filter</code> (maybe more?) automatically convert different datatypes into functors</p>
+<ul>
+<li>This allows us to take a function that was made for an array, and apply it to an object, or even a string</li>
+</ul>
+<pre><code>// An array
+transform(['Optimus Prime','Bumblebee','Ironhide','Sunstreaker','Ratchet'])
+//=> [ 'EMIRP SUMITPO', 'EDIHNORI', 'REKAERTSNUS', 'TEHCTAR' ]
+ 
+// A string
+transform('Optimus Prime')
+// => [ 'R' ]
+ 
+// Even an object
+transform({ leader: 'Optimus Prime', bodyguard: 'Ironhide', medic: 'Ratchet' })
+// => { leader: 'EMIRP SUMITPO', bodyguard: 'EDIHNORI', medic: 'TEHCTAR' 
+</code></pre>
+<h2 id="math-functions"><a aria-hidden="true" class="anchor-heading" href="#math-functions"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Math functions</h2>
+<p>these functions take their arguments in what seems like normal order (is the first argument greater than the second?) That makes sense when used in isolation, but can be confusing when combining functions. These functions seem to violate Ramda’s “data-last” principle, so we’ll have to be careful when we use them in pipelines and similar situations. That’s when <code>R.flip</code> and the placeholder <code>R.__</code> will come in handy.</p>
+<h2 id="symbol-replacements"><a aria-hidden="true" class="anchor-heading" href="#symbol-replacements"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Symbol replacements</h2>
+<h3 id="function-methods"><a aria-hidden="true" class="anchor-heading" href="#function-methods"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Function methods</h3>
+<ul>
+<li>The following methods are best suited for functions
+<ul>
+<li>ex. <code>either(wasBornInCountry, wasNaturalized)</code></li>
+</ul>
+</li>
+</ul>
+<p><code>&#x26;&#x26;</code> -> <code>R.both</code></p>
+<p><code>||</code> -> <code>R.either</code></p>
+<p><code>!</code> -> <code>R.complement</code></p>
+<h3 id="value-methods"><a aria-hidden="true" class="anchor-heading" href="#value-methods"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Value methods</h3>
+<ul>
+<li>The following methods are best used with values</li>
+</ul>
+<p><code>&#x26;&#x26;</code> -> <code>R.and</code></p>
+<p><code>||</code> -> <code>R.or</code></p>
+<p><code>!</code> -> <code>R.not</code></p>
+<h3 id="inequality"><a aria-hidden="true" class="anchor-heading" href="#inequality"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Inequality</h3>
+<p><code>gt</code>, <code>lt</code>, <code>gte</code>, <code>lte</code>
+if we are passing data in, then we most likely want to provide a placeholder for the first arg
+ex. using conditionals (<code>R.ifElse</code>), <code>R.pipe</code>/<code>R.compose</code></p>
+<pre><code>const forever21 = age => ifElse(gte(__, 21), always(21), inc)(age)
+</code></pre>
+<h2 id="debugging-ramda"><a aria-hidden="true" class="anchor-heading" href="#debugging-ramda"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Debugging Ramda</h2>
+<p><a href="https://blog.carbonfive.com/2017/12/20/easy-pipeline-debugging-with-curried-console-log/">more info</a></p>
+<p>Ramda provides us with a function <code>R.tap</code> which we can use to create side effects without interrupting the flow of an existing composition</p>
+<ul>
+<li><code>tap</code> accepts a function, and returns a function (ex. <code>console.log</code>) that may take in the passed in arg</li>
+</ul>
+<pre><code>R.compose(
+    R.tap(x => console.log('REVERSE:',x)),
+    R.map(R.reverse),
+)
+</code></pre>
+<p>this allows us figure out what happened after <code>reverse</code> was called on the data</p>
+<p>Control flow (<code>if</code>/<code>else</code>) is less necessary in functional programming, but still occasionally useful.</p>
+<h3 id="data-flow"><a aria-hidden="true" class="anchor-heading" href="#data-flow"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Data flow</h3>
+<p>Remember that Ramda is flexible with how you combine functions, as long as the expected types are received</p>
+<pre><code>const alwaysDrivingAge = age => ifElse(lt(__, 16), always(16), a => a)(age)
+</code></pre>
+<p>Here, an age variable goes through the ifElse, and if fails the condition, will proceed to the third arg (else), where age is the first argument of the function</p>
+<h4 id="arg-order-on-pipecompose-when-function-arg-passed-in-through-the-data-flow"><a aria-hidden="true" class="anchor-heading" href="#arg-order-on-pipecompose-when-function-arg-passed-in-through-the-data-flow"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Arg order on <code>pipe</code>/<code>compose</code> when function arg passed in through the data flow</h4>
+<pre><code>const publishedInYear = year => 
+    book => 
+        book.year === year
+const titlesForYear = year => 
+	R.pipe(
+		//pIY returns a function that takes a book as its arg
+		R.filter(publishedInYear(year)), 
+		R.map(book => book.title)
+	)
+
+console.log(titlesForYear(1934)(books))
+</code></pre>
+<h4 id="rwhenrunless"><a aria-hidden="true" class="anchor-heading" href="#rwhenrunless"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>R.when</code>/<code>R.unless</code></h4>
+<p>similar to <code>ifElse</code>, but with only one conclusion. Implicitly, <code>R.identity</code> is the second conclusion (ie., it is <em>else</em>)</p>
+<pre><code>const alwaysDrivingAge = age => when(lt(__, 16), always(16))(age)
+</code></pre>
+<h2 id="working-with-functions-that-you-didnt-write"><a aria-hidden="true" class="anchor-heading" href="#working-with-functions-that-you-didnt-write"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Working with functions that you didn't write</h2>
+<h3 id="rapply"><a aria-hidden="true" class="anchor-heading" href="#rapply"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>R.apply</code></h3>
+<p>spread out a single array into individual arguments. Think of it as <code>spreadArgs()</code>
+This is useful for creating a fixed-arity function from a variadic (variable arity) function</p>
+<pre><code>function spreadArgs(fn) {
+    return function spreadFn(argsArr){
+        return fn( ...argsArr );
+    };
+}
+</code></pre>
+<p>This is related to usingSpread syntax with functions</p>
+<pre><code>const arr = [1, 2, 3]
+const fn = (a, b, c)
+fn(...arr) === fn(arr[0], arr[1], arr[2])
+</code></pre>
+<h3 id="runapply"><a aria-hidden="true" class="anchor-heading" href="#runapply"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>R.unapply</code></h3>
+<p>gather individual args into a single array</p>
+<h3 id="runary"><a aria-hidden="true" class="anchor-heading" href="#runary"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>R.unary</code></h3>
+<p>Can be used to cut off all arguments past the first. The benefit of this is that if we call a function and pass in too many arguments, the extra ones will just drop off.
+ex. map takes a function, and the first argument of map (the iterated value) gets passed to parseInt. Then the second arg (index) gets passed to parseInt, which corresponds to its radix. Since we don't want index to be interpreted this way, we make it a unary function, and the index argument safely falls off</p>
+<pre><code>["1", "2", "3"].map(R.unary(parseInt)
+</code></pre>
+<h3 id="rflip"><a aria-hidden="true" class="anchor-heading" href="#rflip"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>R.flip</code></h3>
+<p>swap the first and second argument of a function</p>
+<h3 id="r__"><a aria-hidden="true" class="anchor-heading" href="#r__"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>R.__</code></h3>
+<p>use a placeholder argument to go in place of a parameter
+When we pass data through some sort of chain (<code>pipe</code>, <code>compose</code>, <code>ifElse</code>), that data will be passed through the methods as the argument in the first available spot.</p>
+<ul>
+<li>ex. if a fn in <code>pipe</code> has no args provided, then the data will be the first arg. If it has one arg, then the data will be applied in the second place (and so on). If we use a placeholder <code>R.__</code> as the first arg, then the data will be applied to that space, since it is the first available argument.</li>
+<li><code>const forever21 = age => ifElse(gte(__, 21), always(21), inc)(age)</code></li>
+</ul>
+<h2 id="object-manipulation"><a aria-hidden="true" class="anchor-heading" href="#object-manipulation"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Object manipulation</h2>
+<h3 id="rassoc"><a aria-hidden="true" class="anchor-heading" href="#rassoc"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>R.assoc</code></h3>
+<p>update (or create) a property of an object</p>
+<pre><code>const myObj = {
+	name: 'kyle'
+}
+
+const newObj = R.assoc('number', '7788713377')
+
+console.log(newObj(myObj))
+// { name: 'kyle', number: '77887133' }
+</code></pre>
+<h3 id="rprop"><a aria-hidden="true" class="anchor-heading" href="#rprop"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>R.prop</code></h3>
+<p>read a single property from an object and return the value</p>
+<h3 id="rpick"><a aria-hidden="true" class="anchor-heading" href="#rpick"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>R.pick</code></h3>
+<p>pick multiple properties of an object and return a new object with just those properties</p>
+<ul>
+<li>complement of <code>R.omit</code></li>
+</ul>
+<h3 id="rhas"><a aria-hidden="true" class="anchor-heading" href="#rhas"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>R.has</code></h3>
+<p>return boolean indicating whether or not a property exists on the object</p>
+<h3 id="rpath"><a aria-hidden="true" class="anchor-heading" href="#rpath"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>R.path</code></h3>
+<p>dive into nested objects returning the value at the given path</p>
+<h3 id="rproporrpathor"><a aria-hidden="true" class="anchor-heading" href="#rproporrpathor"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>R.propOr</code>/<code>R.pathOr</code></h3>
+<p>search for the property on an object, allowing you to provide a default value in case the property/path cannot be found on the obj.</p>
+<h3 id="revolve"><a aria-hidden="true" class="anchor-heading" href="#revolve"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>R.evolve</code></h3>
+<p>declaratively provides transformations to happen on each property of an object:</p>
+<ul>
+<li>note: cannot add new properties with this</li>
+</ul>
+<pre><code>var tomato  = {firstName: '  Tomato ', data: {elapsed: 100, remaining: 1400}, id:123};
+var transformations = {
+  firstName: R.trim,
+  lastName: R.trim, // Will not get invoked.
+  data: {elapsed: R.add(1), remaining: R.add(-1)}
+};
+R.evolve(transformations, tomato); //=> {firstName: 'Tomato', data: {elapsed: 101, remaining: 1399}, id:123}
+</code></pre>
+<p>also</p>
+<pre><code>//before
+const nextAge = compose(inc, prop('age'))
+const celebrateBirthday = person => assoc('age', nextAge(person), person)
+
+// after
+const celebrateBirthday = evolve({ age: inc })
+</code></pre>
+<h2 id="array-manipulation"><a aria-hidden="true" class="anchor-heading" href="#array-manipulation"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Array manipulation</h2>
+<p><code>R.nth</code>
+access an array at the given index
+equivalent of object's <code>R.prop</code></p>
+<p><code>R.slice</code>
+equivalent of object's <code>R.pick</code></p>
+<p><code>R.contains</code>
+check if array contains given value
+equivalent of object's <code>R.has</code></p>
+<p><code>R.head</code>
+access first element of array</p>
+<p><code>R.last</code>
+access last element of array</p>
+<p><code>R.append</code>/<code>R.prepend</code>
+FP versions of <code>.push</code> and <code>.unshift</code></p>
+<p><code>R.drop</code>/<code>R.dropLast</code>
+FP versions of <code>.shift</code> and <code>.pop</code></p>
+<p><code>R.insert</code>
+insert an element at given index of an array</p>
+<p><code>R.update</code>
+replace an element at the given index of an array</p>
+<p><code>R.adjust</code>
+equivalent of object's <code>R.evolve</code>, except only works for one element. We would use this function over <code>R.update</code> when using a function to update the array element</p>
+<pre><code>const numbers = [10, 20, 30, 40, 50, 60]
+ 
+adjust(multiply(10), 2, numbers) // [10, 20, 300, 40, 50, 60]
+</code></pre>
+<p><code>R.remove</code>
+remove element by index</p>
+<p><code>R.without</code>
+remove element by value</p>
+<h3 id="rreject"><a aria-hidden="true" class="anchor-heading" href="#rreject"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>R.reject()</code></h3>
+<p>complement of <code>R.filter()</code>. If <code>filter()</code> is <em>filter in</em>, then <code>reject()</code> is <em>filter out</em></p>
+<h3 id="reduce"><a aria-hidden="true" class="anchor-heading" href="#reduce"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>.reduce()</code></h3>
+<p>with <code>initialValue</code>
+<img src="/Digital-Garden/assets/images/2021-03-07-22-18-20.png"></p>
+<p>without <code>initialValue</code>. The first value of the list will act in place of the initialValue and the combining will start with the second value in the list
+<img src="/Digital-Garden/assets/images/2021-03-07-22-18-41.png"></p>
+<p>If the array passed to <code>.reduce()</code> is empty, then there must be an <code>initialValue</code> specified, otherwise there will be an error</p>
+<h3 id="map"><a aria-hidden="true" class="anchor-heading" href="#map"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>.map()</code></h3>
+<h4 id="use-cases"><a aria-hidden="true" class="anchor-heading" href="#use-cases"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>use cases</h4>
+<ul>
+<li>transform a list of functions into their return values:</li>
+</ul>
+<pre><code>var one = () => 1;
+var two = () => 2;
+var three = () => 3;
+
+[one,two,three].map( fn => fn() );
+// [1,2,3]
+</code></pre>
+<ul>
+<li>transform a list of functions by composing each of them with another function, and then execute them:</li>
+</ul>
+<pre><code>var increment = v => ++v;
+var decrement = v => --v;
+var square = v => v * v;
+
+var double = v => v * 2;
+
+[increment,decrement,square]
+.map( fn => compose( fn, double ) )
+.map( fn => fn( 3 ) );
+// [7,5,36]
+</code></pre>
+<h3 id="rchain-aka-flatmap"><a aria-hidden="true" class="anchor-heading" href="#rchain-aka-flatmap"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>R.chain</code> (a.k.a. flatMap)</h3>
+<p>iterate over values of a list, performing the provided function on each element, then concatenating all of the results together</p>
+<ul>
+<li>what results is if we were to perform a function of each element, then flatten that resulting array</li>
+</ul>
+<pre><code>var firstNames = [
+	{ name: "Jonathan", variations: ["John", "Jon", "Jonny"] },
+	{ name: "Stephanie", variations: ["Steph", "Stephy"] },
+	{ name: "Frederick", variations: ["Fred", "Freddy"] }
+];
+
+R.chain(entry => [entry.name, ...entry.variations], firstNames)
+// ["Jonathan","John","Jon","Jonny","Stephanie","Steph","Stephy",
+//  "Frederick","Fred","Freddy"]
+</code></pre>
+<h3 id="rzip"><a aria-hidden="true" class="anchor-heading" href="#rzip"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>R.zip</code></h3>
+<p>Alternate through 2 arrays and take each value that appears at the same index and put them into their own array. The shorter of the 2 lists is considered the list length</p>
+<pre><code>const arr1 = [1, 2, 3]
+const arr2 = ['a', 'b', 'c']
+
+R.zip(arr1, arr2)
+// [[1, a], [2, b], [3, c] ]
+</code></pre>
+<h3 id="rinvoker-aka-unboundmethod"><a aria-hidden="true" class="anchor-heading" href="#rinvoker-aka-unboundmethod"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>R.invoker()</code> a.k.a. <code>unboundMethod()</code></h3>
+<h2 id="number-manipulation"><a aria-hidden="true" class="anchor-heading" href="#number-manipulation"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Number manipulation</h2>
+<p><code>R.clamp</code>
+restrict a number to be within a certain range</p>
+<pre><code>R.clamp(1, 10, -5) // => 1
+R.clamp(1, 10, 15) // => 10
+R.clamp(1, 10, 4)  // => 4
+</code></pre>
+<h3 id="rcomplement"><a aria-hidden="true" class="anchor-heading" href="#rcomplement"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>R.complement()</code></h3>
+<p> implements the same idea for functions as the ! (not) operator does for values.
+nothig good ever comes out of this
+my daring susan
+why cant we jst love each other aagain???</p>
+<h2 id="fusion-with-map"><a aria-hidden="true" class="anchor-heading" href="#fusion-with-map"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Fusion (with <code>.map()</code>)</h2>
+<p>Imagine we have multiple functions that each take 1 argument, and each function's return can be passed directly into the next as input:</p>
+<pre><code>function truncate(word) {
+	if (word.length > 10) {
+		return `${word.substring(0, 6)}...`
+	}
+	return word
+}
+
+function upper(word) {
+	return word.toUpperCase()
+}
+
+
+function append1(word) {
+	return word + '1'
+}
+</code></pre>
+<p>Naively, we could do this:</p>
+<pre><code>const generateList = arr
+    .map(append1)
+    .map(upper)
+    .map(truncate)
+</code></pre>
+<p>when we pass a function to map, like <code>.map(fn)</code>, the element of the list gets passed as the first argument to that function. Here, when we pass <code>R.pipe</code>, the element gets passed as first argument to <code>pipe</code> (since pipe is ltr)</p>
+<pre><code>const generateList = arr.map(R.pipe(append1, upper, truncate))
+</code></pre>
+<h1 id="lenses"><a aria-hidden="true" class="anchor-heading" href="#lenses"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Lenses</h1>
+<p>With the following more specific ways of creating lenses, <code>R.lens()</code> is not often needed</p>
+<h4 id="rlensprop"><a aria-hidden="true" class="anchor-heading" href="#rlensprop"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>R.lensProp</code></h4>
+<p>lets us create a lens that focuses on a <em>non-nested</em> property of an object</p>
+<h4 id="rlenspath"><a aria-hidden="true" class="anchor-heading" href="#rlenspath"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>R.lensPath</code></h4>
+<p>lets us create a lens that focuses on a <em>nested</em> property of an object</p>
+<h4 id="rlensindex"><a aria-hidden="true" class="anchor-heading" href="#rlensindex"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>R.lensIndex</code></h4>
+<p>lets us create a lens that focuses on an element of an array</p>
+<ul>
+<li>these are for the times where we know in advance the index that we are interested in, but don't yet have the data (<em>ex. capitalize first letter</em>)</li>
+</ul>
+<pre><code>const toTitle = R.compose(
+	R.join(''),
+	R.over(R.lensIndex(0), R.toUpper)
+)
+</code></pre>
+<h3 id="three-functions-for-working-with-lenses"><a aria-hidden="true" class="anchor-heading" href="#three-functions-for-working-with-lenses"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Three functions for working with lenses</h3>
+<h4 id="rview"><a aria-hidden="true" class="anchor-heading" href="#rview"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>R.view()</code></h4>
+<p>read value of the lens</p>
+<h4 id="rset"><a aria-hidden="true" class="anchor-heading" href="#rset"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>R.set()</code></h4>
+<p>set the value of the lens</p>
+<ul>
+<li>note: this does not mutate the original object supplied. In other words, <code>R.view()</code> will give us the exact same result before and after #### <code>R.set()</code></li>
+</ul>
+<h4 id="rover"><a aria-hidden="true" class="anchor-heading" href="#rover"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>R.over()</code></h4>
+<p>apply a transformation function to the lens</p>
+<pre><code>over(nameLens, toUpper, person)
+// => {
+//   name: 'RANDY',
+//   socialMedia: {
+//     github: 'randycoulman',
+//     twitter: '@randycoulman'
+//   }
+// }
+</code></pre>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/25e0eab0-64a4-48a1-ba21-f1c98fd45df9">CLI</a></li>
+</ol>

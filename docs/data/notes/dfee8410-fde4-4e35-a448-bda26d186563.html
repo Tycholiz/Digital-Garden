@@ -1,0 +1,33 @@
+<h1 id="cook"><a aria-hidden="true" class="anchor-heading" href="#cook"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Cook</h1>
+<p>Diff between stash and HEAD (ie. view the changes tied to the stash)</p>
+<ul>
+<li><code>git stash show -p stash@{1}</code></li>
+</ul>
+<p>Retain staged work of stashes</p>
+<ul>
+<li>run <code>git stash pop --index</code> so that staged files return as staged when you pop the stash</li>
+</ul>
+<p>Reverting <code>stash apply</code></p>
+<ul>
+<li><code>git reset --hard</code>
+<ul>
+<li>assuming you had everything in a clean state when you started</li>
+</ul>
+</li>
+</ul>
+<p>Popping stash onto a new branch</p>
+<ul>
+<li><code>git stash branch &#x3C;branch-name> stash@{0}</code></li>
+</ul>
+<p>Adding a message</p>
+<ul>
+<li><code>git stash save "&#x3C;message>"</code></li>
+</ul>
+<p>Including untracked files with stash</p>
+<ul>
+<li><code>git stash --include-untacked</code></li>
+</ul>
+<p>Deleting a stash</p>
+<ul>
+<li><code>git stash drop stash@{1}</code></li>
+</ul>

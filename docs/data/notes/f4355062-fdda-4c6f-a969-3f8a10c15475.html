@@ -1,0 +1,27 @@
+<h1 id="nextjs"><a aria-hidden="true" class="anchor-heading" href="#nextjs"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Nextjs</h1>
+<p>create pre-rendered react websites, offered from SSR</p>
+<p>jsx is rendered already into html on the server, and is sent to the client to be displayed</p>
+<ul>
+<li>vanilla-react will do everything at runtime.</li>
+</ul>
+<p>helps with SEO</p>
+<p>next takes care of routing for us</p>
+<ul>
+<li>we define new pages in the <code>pages/</code> directory, and next picks up on them automatically, giving us the url out of the box.
+<ul>
+<li>next defines a component <code>&#x3C;Link /></code> we can use to handle routes</li>
+</ul>
+</li>
+</ul>
+<p>next is smart and will not re-render the same content, if it has rendered it already</p>
+<p>If we had a function in a Next.js component that referred to the <code>window</code> object, we would get errors. This is because that code is being run on the server, which of course has no concept of the browser's global variables. However, if we were to use <code>window</code> in the <code>useEffect</code> call, we would indeed get access to the <code>window</code> object. This shows that <code>useEffect</code> is still done client side, even though functions are understood server-side</p>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/pXlBJBrzBY09I1s9aKIs1">Cook</a></li>
+<li><a href="/Digital-Garden/notes/626rG7rOxbMPCKX3pUe0d">Methods</a></li>
+<li><a href="/Digital-Garden/notes/XNugC2GwsVjLseir5sCfp">Page</a></li>
+<li><a href="/Digital-Garden/notes/LGU7dak8kIHNK0pjJwrVD">Prerendering</a></li>
+<li><a href="/Digital-Garden/notes/r3obCvqWPmtIL84MJqsfN">Rehydration</a></li>
+<li><a href="/Digital-Garden/notes/GqbAx9HVtDkGB1tfTYfCa">Styled Components in Nextjs</a></li>
+</ol>

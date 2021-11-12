@@ -1,0 +1,67 @@
+<h1 id="types"><a aria-hidden="true" class="anchor-heading" href="#types"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Types</h1>
+<h2 id="data-types"><a aria-hidden="true" class="anchor-heading" href="#data-types"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Data Types</h2>
+<h3 id="composite-type"><a aria-hidden="true" class="anchor-heading" href="#composite-type"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Composite Type</h3>
+<ul>
+<li>a type defined by the "signature" of the row. In other words, the very combination of columns included in a row make up a <strong>composite type</strong>
+<ul>
+<li>therefore, every column in a given table is an example of a composite type. In fact, every time we create a table, a composite type representing that row's composition is made.</li>
+</ul>
+</li>
+<li>PostgreSQL allows composite types to be used in many of the same ways that simple types can be used.
+<ul>
+<li>ex. a column of a table can be declared to be of a composite type.
+<ul>
+<li>spec: for instance <code>first_name</code> and <code>last_name</code>?</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>In Postgres, columns can be of composite types, meaning that we can have a type defined as (email: string, username: string), and have a column in a table called <code>identity</code> and have a column with that type.</li>
+<li>When used in a function, composite types can be thought of as objects, as we would access the value of each subtype with <code>$1.key</code></li>
+</ul>
+<h3 id="text"><a aria-hidden="true" class="anchor-heading" href="#text"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Text</h3>
+<ul>
+<li>don't use VARCHAR. just use TEXT, and add length limits</li>
+</ul>
+<h4 id="citext"><a aria-hidden="true" class="anchor-heading" href="#citext"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Citext</h4>
+<ul>
+<li>Case insensitive text</li>
+<li>behaves like text, except that it lower-cases everything before comparing it
+<ul>
+<li>Therefore, we may want to store things like email or postal code in <code>citext</code> rather than <code>text</code>.</li>
+</ul>
+</li>
+</ul>
+<h3 id="serial"><a aria-hidden="true" class="anchor-heading" href="#serial"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Serial</h3>
+<ul>
+<li>SERIAL is the postgres equivalent of autoincrement in other flavors of SQL
+<ul>
+<li>Consider using uuid's though.</li>
+</ul>
+</li>
+</ul>
+<h3 id="range"><a aria-hidden="true" class="anchor-heading" href="#range"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Range</h3>
+<ul>
+<li>We can specify a range in a single column (ex. timestamps, price etc).</li>
+<li>The real benefit is that you can then have constraints
+<ul>
+<li>ex. certain time stamps can’t overlap</li>
+</ul>
+</li>
+<li>To work with ranges, use the <a href="https://www.postgresql.org/docs/9.3/functions-range.html">range operators</a>
+<a href="https://wiki.postgresql.org/images/7/73/Range-types-pgopen-2012.pdf">Demo</a></li>
+</ul>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/GAnsvgK9c6mDr7gH">Cook</a></li>
+<li><a href="/Digital-Garden/notes/e524b806-3c30-40d7-8d83-02e8907b82f7">Date</a></li>
+<li><a href="/Digital-Garden/notes/260a2d68-992d-4b99-acc4-dd33836265f2">Enum</a></li>
+<li><a href="/Digital-Garden/notes/39fcba78-dc07-495d-a01c-4a4b108cf3b7">Interval</a></li>
+<li><a href="/Digital-Garden/notes/4f288dda-1a69-4f68-999e-873777d08636">Json</a></li>
+<li><a href="/Digital-Garden/notes/c4e58bb8-0a6d-45b7-b31d-2bfacbad510d">Money</a></li>
+<li><a href="/Digital-Garden/notes/99a77ea8-4d1b-4c67-b0a1-db212c9e3064">Numeric</a></li>
+<li><a href="/Digital-Garden/notes/62afc3f6-ed14-428d-9600-b619be9fe72a">Point</a></li>
+<li><a href="/Digital-Garden/notes/0b049a74-6ff9-4237-8939-7b382e6ba2b0">Range</a></li>
+<li><a href="/Digital-Garden/notes/e32c37fe-5314-429c-ae42-2122829111dc">Timestamp</a></li>
+</ol>

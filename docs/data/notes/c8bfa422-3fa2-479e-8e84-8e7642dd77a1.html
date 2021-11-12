@@ -1,0 +1,49 @@
+<h1 id="nat"><a aria-hidden="true" class="anchor-heading" href="#nat"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Nat</h1>
+<h1 id="network-area-translation-nat"><a aria-hidden="true" class="anchor-heading" href="#network-area-translation-nat"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Network Area Translation (NAT)</h1>
+<ul>
+<li>a NAT allows us to map a router's public internet-facing IP address to 1+ local IP addresses on a LAN
+<ul>
+<li>the NAT lives on the router.</li>
+</ul>
+</li>
+<li>the NAT was invented to solve a problem presented by the IPv4 protocol – a shortage of IP addresses</li>
+<li>when you are at a home network and access a webpage, the request goes from your local machine to the router, where the router translates your machine's IP address to the router's address. Therefore, the server that you connected to only sees your router's IP address as the origin of the request. </li>
+<li>The NAT is the precise reason why if you search something on Google, the results don't show up on your dad's computer. </li>
+<li>A side effect of NAT is that machines on the internet cannot initiate communications to local machines; they can only respond to communications initiated by them</li>
+</ul>
+<p>NAT Table</p>
+<ul>
+<li>allows devices on a private network to access a public network</li>
+<li>each row in the table maps one private address to one public address.</li>
+<li>When the router receives an outbound request from a host in the LAN, it changes the request headers to have the public IP of the router, and it creates an entry in the NAT table.
+<ul>
+<li>When an external request comes in from the internet to the private network, the router needs to know where to forward those packets, so it looks in the NAT Table to find out which host to send it to. </li>
+</ul>
+</li>
+<li>each pairing of our private host IP and external public IP is called a <em>connection</em></li>
+</ul>
+<h2 id="hole-punching"><a aria-hidden="true" class="anchor-heading" href="#hole-punching"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Hole Punching</h2>
+<ul>
+<li>hole punching is a technique to establish a direct connection between two parties, where one or both are behind firewalls using NAT</li>
+<li>To punch a hole, each client connects to an unrestricted third-party server that temporarily stores private and public IP address and port information for each client. The server then relays each client's information to the other, and using that information, each client tries to establish direct connection; 
+<ul>
+<li>once there is a successful connection using valid port numbers, each router accepts and forwards the incoming packets on to the host node on the LAN</li>
+</ul>
+</li>
+<li>Hole punching is agnostic to which layer the hole punching is performed at. Therefore, there are different types of hole punching occurring at different layers:
+<ul>
+<li>ICMP hole punching</li>
+<li>UDP hole punching</li>
+<li>TCP hole punching</li>
+</ul>
+</li>
+<li>Technologies that use hole punching include:
+<ul>
+<li>VoIP, online games, P2P networking, Skype</li>
+</ul>
+</li>
+</ul>
+<p>Why is this needed?</p>
+<ul>
+<li>networked devices with privately/publicly available IP addresses can connect easily. However, when one or both of the hosts are behind different firewalls, we need to implement hole punching to make the connection </li>
+</ul>

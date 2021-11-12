@@ -1,0 +1,52 @@
+<h1 id="array"><a aria-hidden="true" class="anchor-heading" href="#array"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Array</h1>
+<p>Arrays technically aren't a type in Javascript.</p>
+<p>Since everything in Javascript is an object, <code>Array</code> doesn't follow the same limitations as an actual <a href="/Digital-Garden/notes/dllH3Gs5wUUlAjykagGtE">array</a>, such as being of fixed length.</p>
+<ul>
+<li>for example, the <code>length</code> property returns the size of the internal storage area for indexed items of the array. </li>
+</ul>
+<p>in JavaScript, array indexes are coerced to strings by an implicit <code>toString()</code> call.</p>
+<h2 id="when-to-use-arrays-for-lists-of-data"><a aria-hidden="true" class="anchor-heading" href="#when-to-use-arrays-for-lists-of-data"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>When to use Arrays for lists of data</h2>
+<p>If you have a list of data that you are going to be transforming somehow, or mapping over it somehow, you should try to structure that data as an array</p>
+<ul>
+<li>expl: if you had an object of keys, and each key was a list item, then to operate on that might get a little messy and imperative. Imagine if we stored taxes in an object like this:</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> taxes <span class="token operator">=</span> <span class="token punctuation">{</span>
+    <span class="token constant">GST</span><span class="token operator">:</span> <span class="token number">0.05</span><span class="token punctuation">,</span>
+    <span class="token constant">PST</span><span class="token operator">:</span> <span class="token number">0.07</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>We can loop over this with <code>Object.entries</code> without problem, but now imagine that we want to map over each entry, and display it in the UI in React. That might look something like this:</p>
+<pre class="language-jsx"><code class="language-jsx"><span class="token known-class-name class-name">Object</span><span class="token punctuation">.</span><span class="token method function property-access">entries</span><span class="token punctuation">(</span>taxes<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token method function property-access">map</span><span class="token punctuation">(</span><span class="token parameter">tax</span> <span class="token arrow operator">=></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span></span><span class="token punctuation">></span></span><span class="token plain-text">
+        </span><span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span>p</span><span class="token punctuation">></span></span><span class="token plain-text">Tax type: </span><span class="token punctuation">{</span>tax<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">}</span><span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;/</span>p</span><span class="token punctuation">></span></span><span class="token plain-text">
+        </span><span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span>p</span><span class="token punctuation">></span></span><span class="token plain-text">Amount: </span><span class="token punctuation">{</span>tax<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">}</span><span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;/</span>p</span><span class="token punctuation">></span></span><span class="token plain-text">
+    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;/</span></span><span class="token punctuation">></span></span>
+<span class="token punctuation">)</span>
+</code></pre>
+<p>Alternatively, imagine we structured taxes like this:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> taxes <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">{</span>
+        jurisdiction<span class="token operator">:</span> <span class="token string">'PST'</span><span class="token punctuation">,</span>
+        percentage<span class="token operator">:</span> <span class="token number">0.05</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">{</span>
+        jurisdiction<span class="token operator">:</span> <span class="token string">'GST'</span><span class="token punctuation">,</span>
+        percentage<span class="token operator">:</span> <span class="token number">0.05</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span>
+</code></pre>
+<p>Although this is less succinct, there is a benefit to doing it this way. This is how we would handle that React task:</p>
+<pre class="language-js"><code class="language-js">taxes<span class="token punctuation">.</span><span class="token method function property-access">map</span><span class="token punctuation">(</span><span class="token parameter">tax</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+    <span class="token operator">&#x3C;</span><span class="token operator">></span>
+        <span class="token operator">&#x3C;</span>p<span class="token operator">></span><span class="token maybe-class-name">Tax</span> type<span class="token operator">:</span> <span class="token punctuation">{</span>tax<span class="token punctuation">.</span><span class="token property-access">jurisdiction</span><span class="token punctuation">}</span><span class="token operator">&#x3C;</span><span class="token operator">/</span>p<span class="token operator">></span>
+        <span class="token operator">&#x3C;</span>p<span class="token operator">></span><span class="token maybe-class-name">Amount</span><span class="token operator">:</span> <span class="token punctuation">{</span>tax<span class="token punctuation">.</span><span class="token property-access">percentage</span><span class="token punctuation">}</span><span class="token operator">&#x3C;</span><span class="token operator">/</span>p<span class="token operator">></span>
+    <span class="token operator">&#x3C;</span><span class="token operator">/</span><span class="token operator">></span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+</code></pre>
+<p>This is yet another example of why you should go from a data-consumption perspective (in other words, consider how it will be used; think of the end-user of that code.)</p>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/CJH3UJqHDkfMJn2h">Cook</a></li>
+<li><a href="/Digital-Garden/notes/D5Y3BOYdtS1nFI3dAD5zh">Method</a></li>
+</ol>

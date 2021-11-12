@@ -1,0 +1,29 @@
+<h1 id="inheritance"><a aria-hidden="true" class="anchor-heading" href="#inheritance"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Inheritance</h1>
+<h2 id="table-inheritance"><a aria-hidden="true" class="anchor-heading" href="#table-inheritance"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Table Inheritance</h2>
+<ul>
+<li>Imagine we had 2 data sets: cities and capitals. A naive approach might be to create 2 tables called <code>non_capitals</code> and <code>capitals</code>, then join them together in a UNION
+<ul>
+<li>This approach is bad because problems arise once we need to update multiple rows at once.</li>
+</ul>
+</li>
+<li>Instead, a better solution is to use inheritance:</li>
+</ul>
+<pre><code>CREATE TABLE cities (
+  name       text,
+  population real,
+  elevation  int     -- (in ft)
+);
+
+CREATE TABLE capitals (
+  state      char(2) UNIQUE NOT NULL
+) INHERITS (cities);
+</code></pre>
+<ul>
+<li>here, a row of <code>capitals</code> will inherit all columns from its parent, and will gain an additional column <code>state</code></li>
+<li>a table can inherit from more than one other table</li>
+<li>using the ONLY clause, we can prevent the query from running over tables below the specified table
+<ul>
+<li>ex. in the capital cities example, if we query <code>SELECT * FROM ONLY cities...</code>, then we prevent capitals from showing up in the result set.</li>
+</ul>
+</li>
+</ul>

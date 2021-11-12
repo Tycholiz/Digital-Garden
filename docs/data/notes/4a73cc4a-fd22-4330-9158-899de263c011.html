@@ -1,0 +1,30 @@
+<h1 id="common-table-expression"><a aria-hidden="true" class="anchor-heading" href="#common-table-expression"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Common Table Expression</h1>
+<p>A CTE is basically a way to set a computed result set to a variable, which we can then later use (eg. to join against)
+a CTE is a temporary result that we can reference with another SELECT.</p>
+<ul>
+<li>A CTE always returns a result set</li>
+<li>They are used to simplify queries
+<ul>
+<li>ex. you could use one to eliminate a derived table from the main query body.</li>
+</ul>
+</li>
+</ul>
+<p>A good use-case for a CTE is when we imagine that our result set is grouped by date. Imagine that we want to get a result set showing sales by date. We could certainly query a single table and order by date, but what happens when there are no sales on a particular day? We would end up with gaps in our result set. To solve this, we can make a CTE and join our tables to it.</p>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">with</span> v_date <span class="token keyword">as</span> <span class="token punctuation">(</span>
+	<span class="token keyword">select</span> <span class="token keyword">current_date</span>
+<span class="token punctuation">)</span>
+</code></pre>
+<h3 id="cte-and-updatefrom"><a aria-hidden="true" class="anchor-heading" href="#cte-and-updatefrom"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>CTE and UPDATE..FROM</h3>
+<p>We can use a CTE in combination with <code>UPDATE..FROM</code> to update every row in the result set of a different query (the CTE)</p>
+<ul>
+<li>Here, we are updating the <code>book_orders.purchase_status</code> column on book_orders that have been <code>PENDING</code> for more than 24 hours:</li>
+</ul>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">WITH</span> old_books <span class="token keyword">AS</span> <span class="token punctuation">(</span>
+	<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> app_public<span class="token punctuation">.</span>book_orders <span class="token keyword">as</span> book_orders
+	<span class="token keyword">where</span> book_orders<span class="token punctuation">.</span>purchase_status <span class="token operator">=</span> <span class="token string">'PENDING'</span>
+	<span class="token operator">and</span> created_at <span class="token operator">&#x3C;</span> <span class="token function">NOW</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token keyword">interval</span> <span class="token string">'24 hours'</span>
+<span class="token punctuation">)</span>
+<span class="token keyword">update</span> app_public<span class="token punctuation">.</span>book_orders <span class="token keyword">set</span> purchase_status <span class="token operator">=</span> <span class="token string">'EXPIRED'</span>
+<span class="token keyword">from</span> old_books
+</code></pre>
+<p><a href="https://www.essentialsql.com/introduction-common-table-expressions-ctes/">more</a></p>

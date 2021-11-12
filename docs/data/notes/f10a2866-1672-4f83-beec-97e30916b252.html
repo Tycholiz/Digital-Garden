@@ -1,0 +1,11 @@
+<h1 id="object-relational-mapper"><a aria-hidden="true" class="anchor-heading" href="#object-relational-mapper"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Object Relational Mapper</h1>
+<p>An ORM is for translating SQL records into Python objects (or whatever language used on the server). If you think it can handle anything more, like preventing your need to write SQL, managing indexes etc… you are wrong.</p>
+<p>If our server has an ORM built-in (like the one Django has), it is not necessarily a bad idea to use an ORM. Consider that:</p>
+<pre class="language-py"><code class="language-py">MyModel<span class="token punctuation">.</span>objects<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token builtin">id</span><span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
+</code></pre>
+<p>is equivalent to:</p>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">select</span> mymodel<span class="token punctuation">.</span>id<span class="token punctuation">,</span> mymodel<span class="token punctuation">.</span>other_field<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+  <span class="token keyword">from</span> mymodel
+ <span class="token keyword">where</span> id<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span>
+</code></pre>
+<p>The SQL language abstracts away the procedural steps for querying a database, allowing one to merely define what one wants. But certain SQL queries are thousands of times slower than other logically equivalent queries. On an even higher level of abstraction, ORM systems, which isolate object-oriented code from the implementation of object persistence using a relational database, still force the programmer to think in terms of databases, tables, and native SQL queries as soon as performance of ORM-generated queries becomes a concern.</p>

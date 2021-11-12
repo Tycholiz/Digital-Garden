@@ -1,0 +1,20 @@
+<h1 id="brace-expansion"><a aria-hidden="true" class="anchor-heading" href="#brace-expansion"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Brace Expansion</h1>
+<p>With brace expansion, we can generate arbitrary strings</p>
+<ul>
+<li>similar to filename expansion (ex. <code>*.env</code>), except the generated strings actually need to exist.</li>
+</ul>
+<p>To be a proper brace expansion, there must be opening and closing braces, and at least one <code>,</code></p>
+<pre class="language-sh"><code class="language-sh">$ echo a{d,c,b}e
+# ade ace abe
+</code></pre>
+<p>Brace expansion is performed before any other expansions, and any characters special to other expansions are preserved in the result</p>
+<ul>
+<li>Bash does not apply any syntactic interpretation to the context of the expansion or the text between the braces.</li>
+</ul>
+<h3 id="alpha-example"><a aria-hidden="true" class="anchor-heading" href="#alpha-example"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Alpha example</h3>
+<pre class="language-sh"><code class="language-sh">$ ls
+alpha.py alphabeta.py
+
+### Brace expansion
+$ mv alpha{,beta}.py ../
+</code></pre>

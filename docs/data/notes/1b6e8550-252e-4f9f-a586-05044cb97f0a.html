@@ -1,0 +1,249 @@
+<h1 id="mongoose"><a aria-hidden="true" class="anchor-heading" href="#mongoose"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Mongoose</h1>
+<p>Note: do not use arrow functions in mongoose, since it prevents binding</p>
+<h1 id="hooks-aka-middleware"><a aria-hidden="true" class="anchor-heading" href="#hooks-aka-middleware"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Hooks (a.k.a. <em>Middleware</em>)</h1>
+<p>Hooks are useful for atomizing model logic and avoiding nested blocks of asynchronous code.
+Other use cases:</p>
+<ul>
+<li>complex validation</li>
+<li>removing dependent documents
+<ul>
+<li>(removing a user removes all his blogposts)</li>
+</ul>
+</li>
+<li>asynchronous defaults</li>
+<li>asynchronous tasks that a certain action triggers
+<ul>
+<li>triggering custom events</li>
+<li>notifications</li>
+</ul>
+</li>
+</ul>
+<h2 id="pre-hooks"><a aria-hidden="true" class="anchor-heading" href="#pre-hooks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>pre-hooks</h2>
+<p>There are two types of pre-hooks:</p>
+<h3 id="serial"><a aria-hidden="true" class="anchor-heading" href="#serial"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Serial</h3>
+<p>The MW functions are executed one after another</p>
+<ul>
+<li>Note: calling <code>next()</code> does not immediately stop execution of the function. To do this, we would need to call <code>return</code>:</li>
+</ul>
+<pre><code>var schema = new Schema(..);
+schema.pre('save', function(next) {
+  if (foo()) {
+    console.log('calling next!');
+    // `return next();` will make sure the rest of this function doesn't run
+    /*return*/ next();
+  }
+  // Unless you comment out the `return` above, 'after next' will print
+  console.log('after next');
+});
+</code></pre>
+<h3 id="parallel"><a aria-hidden="true" class="anchor-heading" href="#parallel"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Parallel</h3>
+<p>The hooked method does not get executed until <code>done</code> is called by each middleware:</p>
+<pre><code>var schema = new Schema(..);
+
+// `true` means this is a parallel middleware. You **must** specify `true`
+// as the second parameter if you want to use parallel middleware.
+schema.pre('save', true, function(next, done) {
+  // calling next kicks off the next middleware in parallel
+  next();
+  setTimeout(done, 100);
+});
+</code></pre>
+<h2 id="post-hooks"><a aria-hidden="true" class="anchor-heading" href="#post-hooks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>post-hooks</h2>
+<p>Functions that are executed <em>after</em> the hooked method and all of its <code>pre</code> middleware have completed.</p>
+<p>Do not directly receive control flow</p>
+<ul>
+<li>i.e. no <code>next</code> or <code>done</code> callbacks are passed to it</li>
+</ul>
+<p><code>post</code> hooks are a way to register traditional event listeners for these methods</p>
+<ul>
+<li>ex. when the <code>save</code> pre-hook happens, this function will execute:</li>
+</ul>
+<pre><code>schema.post('save', function(doc) {
+  console.log('%s has been saved', doc._id);
+});
+</code></pre>
+<h2 id="types-of-middleware"><a aria-hidden="true" class="anchor-heading" href="#types-of-middleware"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Types of middleware</h2>
+<h3 id="document-mw"><a aria-hidden="true" class="anchor-heading" href="#document-mw"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Document MW</h3>
+<p><code>this</code> refers to the document itself</p>
+<p>Hook methods:</p>
+<ul>
+<li><code>init</code>
+<ul>
+<li>initialize a document without setters</li>
+<li>Called internally after a document is returned from mongodb.</li>
+</ul>
+</li>
+<li><code>validate</code> (a.k.a. <em>pre-save</em>)
+<ul>
+<li>Executes registered validation rules for this document.</li>
+<li>if a validation rule is violated, save is aborted</li>
+</ul>
+</li>
+<li><code>save</code>
+<ul>
+<li>Saves this document</li>
+<li>calling this (as a pre-hook) will trigger <code>validate</code>, though <code>validate</code> will execute before <code>save</code></li>
+</ul>
+</li>
+<li><code>remove</code>
+<ul>
+<li>Removes the document from database  </li>
+</ul>
+</li>
+</ul>
+<h3 id="model-mw"><a aria-hidden="true" class="anchor-heading" href="#model-mw"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Model MW</h3>
+<p><code>this</code> refers to the model (schema)</p>
+<h3 id="query-mw"><a aria-hidden="true" class="anchor-heading" href="#query-mw"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Query MW</h3>
+<p><code>this</code> refers to the query</p>
+<ul>
+<li><code>count</code></li>
+<li><code>find</code></li>
+<li><code>findOne</code></li>
+<li>...
+Mongoose will not execute a query until <code>then</code> or <code>exec</code> has been called on it. The power of this comes when we want to build complex queries (ex. using <code>populate</code>/<code>aggregate</code>)</li>
+<li>Note: <code>.then()</code> in Mongoose are not actually <code>promises</code>. If you need a fully-fledged promise, use <code>.exec()</code></li>
+</ul>
+<pre><code>User.find({ username }) // will not execute
+
+// callback
+User.find({ name: 'John' }, (err, res) => {}) // Will execute
+
+// .then()
+User.find({name: 'John'}).then(); // Will execute
+
+Promise.all([User.find({name: 'John'}), User.find({name: 'Bob'})]) // Will execute all queries in parallel
+
+// .exec()
+User.find({name: 'John'}).exec(); // Will execute returning a promise
+</code></pre>
+<h3 id="aggregate-mw"><a aria-hidden="true" class="anchor-heading" href="#aggregate-mw"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Aggregate MW</h3>
+<p>Aggregate MW executes whe you call <code>exec()</code> on an aggregate object
+<code>this</code> refers to the aggregation object (<code>&#x3C;Model>.aggregate</code>)</p>
+<p>If any middleware calls <code>next()</code> or <code>done()</code> with an argument of type <code>Error</code>, the flow is interrupted and the error is passed to the callback</p>
+<h1 id="populate"><a aria-hidden="true" class="anchor-heading" href="#populate"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Populate</h1>
+<p>Lets us reference documents in other collections</p>
+<ul>
+<li>similar to JOIN in SQL dbs</li>
+</ul>
+<p><em>population</em> is the process of automatically replacing the specified paths in the document with document(s) from other collection(s).</p>
+<p>In models, we give the <code>ref</code> option to a field (property within a document) to indicate which model to use during population.</p>
+<pre><code>const userSchema = new mongoose.Schema({
+    username: String,
+    posts: [{
+        type: mongoose.Schema.Types.ObjectId, //an array of object ids
+        ref: 'Post' //which model to use
+    }]
+})
+
+const postSchema = new mongoose.Schema({
+    content: String,
+    author: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }
+})
+</code></pre>
+<p>Later, when we are within our controller, we will be using <code>.populate()</code> on the fields that have <code>type = mongoose.Schema.Types.ObjectId</code>:</p>
+<pre><code>User.findOne({ username: 'Kyle' })
+    .populate('posts') //we want populate to work with the posts field in the user collection
+    .exec((err, posts) => { // similar to .then()
+        if (err) return err
+        console.log('populated user:', posts)
+    }
+</code></pre>
+<p>This query will return the specific document within the user collection where <code>username = 'Kyle'</code>, and it will <em>populate</em> the posts field with all posts made by 'Kyle':</p>
+<pre><code>{
+    _id: 123,
+    username: 'Kyle',
+    posts: [
+        "s8fm39m",
+        "c83ncm8",
+        "w822m02"
+    ]
+}
+</code></pre>
+<h1 id="schemas"><a aria-hidden="true" class="anchor-heading" href="#schemas"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Schemas</h1>
+<h2 id="instance-methods"><a aria-hidden="true" class="anchor-heading" href="#instance-methods"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Instance Methods</h2>
+<p>Here, instance refers to the document (since a document is an instance of a model)</p>
+<p>Instance methods are defined like so:</p>
+<pre><code>// define a schema
+var animalSchema = new Schema({ name: String, type: String });
+
+// assign a function to the "methods" object of our animalSchema
+animalSchema.methods.findSimilarTypes = function(cb) {
+    return this.model('Animal').find({ type: this.type }, cb);
+};
+</code></pre>
+<p>Now, all <code>animal</code> instances will have a <code>findSimilarTypes</code> method available on them:</p>
+<pre><code>var Animal = mongoose.model('Animal', animalSchema);
+var dog = new Animal({ type: 'dog' });
+
+dog.findSimilarTypes(function(err, dogs) {
+    console.log(dogs); // woof
+});
+</code></pre>
+<p>Imagine we were making a Medium.com clone. Our Article model would have a field called <code>claps</code>. We could define an instance method called <code>clap()</code>, which when executed, would increment the field <code>claps</code></p>
+<h2 id="static-methods"><a aria-hidden="true" class="anchor-heading" href="#static-methods"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Static Methods</h2>
+<p>Whereas instance methods are defined on the instance (document), static methods are defined on the Model itself.</p>
+<pre><code>//static method
+const fido = await Animal.findByName('fido');
+
+//instance method
+const dogs = await fido.findSimilarTypes();
+</code></pre>
+<p>The previous two could not be swapped (ex. <code>Animals.findSimilarTypes()</code>), since it would not make sense. </p>
+<ul>
+<li>Since <code>Animals</code> is a model and it has no <code>type</code>. This naturally would only exist on an instance of the model</li>
+</ul>
+<h2 id="query-helper"><a aria-hidden="true" class="anchor-heading" href="#query-helper"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Query Helper</h2>
+<p>Instance methods for Mongoose queries:</p>
+<pre><code>animalSchema.query.byName = function(name) {
+    return this.where({ name: new RegExp(name, 'i') });
+};
+var Animal = mongoose.model('Animal', animalSchema);
+
+Animal.find().byName('fido').exec(function(err, animals) {
+    console.log(animals);
+});
+
+Animal.findOne().byName('fido').exec(function(err, animal) {
+    console.log(animal);
+});
+</code></pre>
+<h2 id="virtual"><a aria-hidden="true" class="anchor-heading" href="#virtual"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Virtual</h2>
+<p>Lets us define <code>getters</code> and <code>setters</code> that don't get persisted to the database</p>
+<ul>
+<li>Imagine we need a variable <code>fullName</code>, but on the <code>User</code> model, we only store <code>first</code> and <code>last</code>. The naive way would be to concatenate these 2 variables each time. Instead, lets define a virtual so that we can use this "pseudo-field" in our application:</li>
+</ul>
+<pre><code>personSchema.virtual('fullname').get(function() {
+    return `${this.first} ${this.last}`
+}
+</code></pre>
+<h3 id="accessing-the-parent-documents-from-the-child-document"><a aria-hidden="true" class="anchor-heading" href="#accessing-the-parent-documents-from-the-child-document"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Accessing the parent documents from the child document</h3>
+<ul>
+<li>ex. Tour has <em>1:many</em> relationship with reviews</li>
+<li>We can add a pre-hook MW function onto the tour model</li>
+</ul>
+<pre><code>parentSchema.virtual('reviews', { //the name of the virtual field
+  ref: 'Review', //the child model
+  foreignField: 'tour', //name of the field in the child model that contains the reference to the current (parent) model
+  localField: '_id' //name of the field where the ID is stored on the current (parent) model.
+});
+</code></pre>
+<p>Then, to actually populate this virtual field, we just have to use the <code>populate()</code> method within our <code>getTour</code> handler.</p>
+<h2 id="nested-routes"><a aria-hidden="true" class="anchor-heading" href="#nested-routes"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Nested routes</h2>
+<ul>
+<li>Having 2+ resources at the same url</li>
+<li></li>
+</ul>
+<h2 id="improving-read-performance-with-indices"><a aria-hidden="true" class="anchor-heading" href="#improving-read-performance-with-indices"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Improving Read Performance with Indices</h2>
+<ul>
+<li>see bottom of <a href="https://medium.com/@SigniorGratiano/modelling-data-and-advanced-mongoose-175cdbc68bb1">https://medium.com/@SigniorGratiano/modelling-data-and-advanced-mongoose-175cdbc68bb1</a></li>
+<li>this also allows us to carry out logic such as "each user can only review a tour one time" 
+<ul>
+<li><code> reviewSchema.index({ tour: 1, user: 1 }, { unique: true });</code></li>
+</ul>
+</li>
+</ul>
+<h1 id="e-resources"><a aria-hidden="true" class="anchor-heading" href="#e-resources"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>E Resources</h1>
+<p><a href="https://medium.com/@SigniorGratiano/modelling-data-and-advanced-mongoose-175cdbc68bb1">Data modeling and Referencing other collections</a></p>

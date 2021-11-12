@@ -1,0 +1,80 @@
+<h1 id="formulas"><a aria-hidden="true" class="anchor-heading" href="#formulas"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Formulas</h1>
+<!-- This file should probably be refactored so that we include each recipe along with whichever submodule it belongs to (ex. deleting commits should probably be in git.cli.rebase.cook) -->
+<!-- Is this the most logical place that we'd expect to find this information? -->
+<h3 id="rewordingdeleting-commits"><a aria-hidden="true" class="anchor-heading" href="#rewordingdeleting-commits"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Rewording/deleting commits</h3>
+<ul>
+<li>imagine we want to change a commit message from 2 commits ago, or imagine we want to delete it altogether
+<ol>
+<li>We can run <code>git rebase -i HEAD~2</code>
+<ul>
+<li>meaning "I want to operate on the last 2 commits"</li>
+</ul>
+</li>
+<li>vim will open and will list all of the commits that we have asked to change.</li>
+<li>change the command from <code>pick</code> to <code>reword</code> (or <code>drop</code> to delete) of the relevant commit, then save and close the file.</li>
+<li>change the message, save and close.</li>
+</ol>
+</li>
+</ul>
+<h3 id="changing-contents-of-commitsplitting-commits"><a aria-hidden="true" class="anchor-heading" href="#changing-contents-of-commitsplitting-commits"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Changing contents of commit/Splitting commits</h3>
+<ol>
+<li>run <code>git rebase -i HEAD~n</code>, where <code>n</code> is the commit immediately preceding the commit we want to edit.</li>
+<li>change the rebase command of the commit we want to edit from <code>pick</code> to <code>edit</code></li>
+<li>run <code>git reset --mixed HEAD^</code>, which leaves the working directory unchanged, but reverses the commit
+<ul>
+<li><code>HEAD^</code> is the parent of our current commit</li>
+</ul>
+</li>
+<li>do our normal operations, adding files, deleting files, or modifying them as we please. <code>git add</code> them, <code>commit</code> them as per normal workflow.</li>
+<li>run <code>git rebase --continue</code></li>
+</ol>
+<h3 id="reverting-commits"><a aria-hidden="true" class="anchor-heading" href="#reverting-commits"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Reverting commits</h3>
+<ul>
+<li>think of <code>git revert</code> as an inverse operation to <code>git commit</code>. Effectively, this command creates a new commit that undoes all of the changes introduced by a certain commit.</li>
+<li>Imagine we made a commit that simply changed which port our app connects to. Later on down the line, imagine that we want to "undo" that, and go back to the original port. We could change that port in the code and commit it, or we could simply run <code>git revert &#x3C;SHA></code> to make a new commit, known as a <code>revert commit</code> whose sole purpose is to reverse the changes that that particular commit actually made.</li>
+</ul>
+<h3 id="squashing-commits"><a aria-hidden="true" class="anchor-heading" href="#squashing-commits"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Squashing commits</h3>
+<ul>
+<li>Imagine we made 3 commits that should logically only be one.
+<ol>
+<li>run <code>git rebase -i HEAD~3</code></li>
+<li>leave the commit that everything will get squished into alone, but change the commits that will be thrown away from <code>pick</code> to <code>fixup</code>
+<ul>
+<li>listed by oldest to newest</li>
+<li>fixup and squish are similar, but fixup will discard the commit messages of the discarded commits.</li>
+<li>if we want to retain the commit messages, then use <code>squash</code> instead of <code>fixup</code></li>
+</ul>
+</li>
+</ol>
+</li>
+<li>If we compare the git logs before and after, we will notice that the SHA of the commit with the same message will be different, showing that we are in fact rewriting history</li>
+</ul>
+<h3 id="splitting-commits"><a aria-hidden="true" class="anchor-heading" href="#splitting-commits"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Splitting commits</h3>
+<ul>
+<li>Imagine we have made a commit that realistically should actually be split into 2 commits ("add navbar and fix bug")
+<ol>
+<li>run <code>git rebase -i HEAD~2</code></li>
+<li>change the commit we want to split from rebase operation <code>pick</code> to <code>edit</code></li>
+<li>after saving the file, git will put us onto a special rebasing branch</li>
+<li>unstage all files that were added during that commit by running <code>git reset HEAD^</code></li>
+<li>perform normal workflow, by adding commit1 changes and committing, then adding commit2 changes and committing</li>
+<li>run <code>git rebase --continue</code></li>
+</ol>
+</li>
+</ul>
+<h2 id="undoing-work"><a aria-hidden="true" class="anchor-heading" href="#undoing-work"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Undoing Work</h2>
+<ul>
+<li>this will discard everything permanently</li>
+</ul>
+<h3 id="restoring-to-the-state-of-the-last-commit"><a aria-hidden="true" class="anchor-heading" href="#restoring-to-the-state-of-the-last-commit"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Restoring to the state of the last commit</h3>
+<ul>
+<li>if just a single file, we can simply run <code>git checkout HEAD &#x3C;file></code> to blow away all changes, and restore the file to what it was in the most recent commit.</li>
+<li>if we want to blow away all changes and get the exact state of the last commit, we can run <code>git reset --hard HEAD</code>
+<ul>
+<li>This tells Git to replace the files in your working copy with the "HEAD" revision</li>
+<li>we can replace HEAD with any SHA to go back to that previous version.</li>
+<li>note: this will not produce any new commits (like revert), nor will it delete any old ones. Instead, it works by resetting your current HEAD branch to an older revision (also called "rolling back" to that older revision)</li>
+<li>note2: since this doesn't rewrite history, the commits we "erased" are still available</li>
+</ul>
+</li>
+</ul>

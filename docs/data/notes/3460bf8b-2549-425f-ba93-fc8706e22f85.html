@@ -1,0 +1,18 @@
+<h1 id="message-broker"><a aria-hidden="true" class="anchor-heading" href="#message-broker"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Message Broker</h1>
+<h1 id="overview"><a aria-hidden="true" class="anchor-heading" href="#overview"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Overview</h1>
+<p>In a typical message-queueing implementation, a developer installs and configures message-queueing software (a queue manager or broker), and defines a named message queue. Or they register with a message queuing service.</p>
+<ul>
+<li>An application then registers a software routine that "listens" for messages placed onto the queue.</li>
+<li>Second and subsequent applications may connect to the queue and transfer a message onto it.</li>
+<li>The queue-manager software stores the messages until a receiving application connects and then calls the registered software routine. The receiving application then processes the message in an appropriate manner.</li>
+</ul>
+<h2 id="message-broker-1"><a aria-hidden="true" class="anchor-heading" href="#message-broker-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Message Broker</h2>
+<p>A message broker is an intermediary computer program module that translates a message from the formal messaging protocol of the sender to the formal messaging protocol of the receiver.</p>
+<h3 id="examples"><a aria-hidden="true" class="anchor-heading" href="#examples"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Examples</h3>
+<ul>
+<li>Kafka</li>
+<li>RabbitMQ</li>
+<li>AWS Kinesis</li>
+<li>Google Cloud Pub/Sub</li>
+<li>Redis (not a message broker per se, but rather has messaging brokering as one of its capabilities)</li>
+</ul>

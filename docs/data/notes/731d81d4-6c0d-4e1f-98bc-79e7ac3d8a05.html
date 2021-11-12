@@ -1,0 +1,77 @@
+<h1 id="ast"><a aria-hidden="true" class="anchor-heading" href="#ast"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>AST</h1>
+<p>In order to interpret and understand these unique and complex requests, GraphQL employs the use of an Abstract Syntax Tree (AST) to structure the incoming requests.</p>
+<ul>
+<li>This makes it easier for the back-end gurus &#x26; frameworks to parse and construct the required response.</li>
+</ul>
+<p>As a consequence of Graphql being data-layer-independent, libraries such as graphql-js and graphql-tools exist to abstract away the heavy lifting, removing our need to worry about having to interact with the underlying AST.</p>
+<ul>
+<li>Sometimes however we must be able to perform our own custom operations based on the specifics of the user's request.</li>
+</ul>
+<p>When a user makes a request, GraphQL combines the query document that the user requested with the schema definition that we defined for our resolver in the form of an AST. This AST is used to determine which fields were requested, what arguments were included and much more.</p>
+<h3 id="rugby-player-example"><a aria-hidden="true" class="anchor-heading" href="#rugby-player-example"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Rugby Player Example</h3>
+<p>Suppose we wanted to expose a list of rugby players on our Graphql backend. We make a schema definition which models a new Graphql type <code>RugbyPlayer</code>, which has 2 fields: <code>full_name</code> and <code>club</code>:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword module">export</span> <span class="token keyword">const</span> <span class="token maybe-class-name">RugbyPlayer</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">gql<span class="token punctuation">.</span>GraphQLObjectType</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    name<span class="token operator">:</span> <span class="token string">'RugbyPlayer'</span><span class="token punctuation">,</span>
+    fields<span class="token operator">:</span> <span class="token punctuation">{</span>
+        full_name<span class="token operator">:</span> <span class="token punctuation">{</span>
+            type<span class="token operator">:</span> gql<span class="token punctuation">.</span><span class="token property-access"><span class="token maybe-class-name">GraphQLString</span></span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        club<span class="token operator">:</span> <span class="token punctuation">{</span>
+            type<span class="token operator">:</span> <span class="token keyword">new</span> <span class="token class-name">gql<span class="token punctuation">.</span>GraphQLObjectType</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+                name<span class="token operator">:</span> <span class="token string">'Club'</span><span class="token punctuation">,</span>
+                fields<span class="token operator">:</span> <span class="token punctuation">{</span>
+                    name<span class="token operator">:</span> <span class="token punctuation">{</span>
+                        type<span class="token operator">:</span> gql<span class="token punctuation">.</span><span class="token property-access"><span class="token maybe-class-name">GraphQLString</span></span><span class="token punctuation">,</span>
+                    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+</code></pre>
+<p>Imagine now that a client makes a request for that list of players. From the Graphql server's perspective, the schema knows nothing about the query document (ie. the request). Therefore, it has to parse the query document into AST format (ie. heavily nested objects) before it can traverse it. Now, it can perform any necessary validation, like throwing errors for having the wrong types for fields or arguments.</p>
+<ul>
+<li>Following this validation, schema types are mapped onto the respective branches of the AST to provide a richer set of metadata.</li>
+</ul>
+<h3 id="what-we-can-do-with-the-ast"><a aria-hidden="true" class="anchor-heading" href="#what-we-can-do-with-the-ast"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>What we can do with the AST</h3>
+<p>By understanding the AST, we can craft custom directives and optimise user requests</p>
+<ul>
+<li>We do this by breaking the traditional Graphql lifecycle and inercepting a request before it gets passed onto another library to generate a response.</li>
+</ul>
+<p>By traversing and augmenting the AST we can implement:</p>
+<ul>
+<li>Schema stitching</li>
+<li>Custom directives</li>
+<li>Enriched queries</li>
+<li>Layered Abstraction</li>
+<li>More backend magic!</li>
+</ul>
+<p>In a step to give more control to the front-end client, we often find it useful to implement a range of directives that can transform or filter out fields specified in the AST.</p>
+<ul>
+<li>ex. In the Rugby example, imagine we want to solve this problem: "Rugby player's names are being mispronounced too often".
+<ul>
+<li>What we can do is implement a Graphql directive called <code>@pronounce</code>, which can be added onto the <code>full_name</code> field when we are querying our <code>RugbyPlayers</code> type:</li>
+</ul>
+</li>
+</ul>
+<pre><code>query {
+  RugbyPlayers {
+    full_name @pronounce
+  }
+}
+</code></pre>
+<p>libraries like <code>graphql-js</code> can provide methods such as <code>gql.GraphQLDirective</code> that allow us to add these directives.</p>
+<p>Whenever we see code like this:</p>
+<pre><code>const Type = gql`
+  type ${nameOfType} {
+    str: String
+    int: Int
+  }
+`;
+</code></pre>
+<p>We can understand <code>gql</code> as a function that transforms our human-readable graphql schema language into an AST that the application can understand.</p>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/25864130-d786-4fee-a831-f24ab9949472">Gql</a></li>
+</ul>

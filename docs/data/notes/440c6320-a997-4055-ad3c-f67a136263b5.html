@@ -1,0 +1,23 @@
+<h1 id="views"><a aria-hidden="true" class="anchor-heading" href="#views"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Views</h1>
+<p>We can use postgres views in such a way that it is exposed on the graphql schema to be consumed, as if it were an actual table.</p>
+<p>Imagine we have the following:</p>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> app_public<span class="token punctuation">.</span>films <span class="token punctuation">(</span>
+  id <span class="token keyword">serial</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">,</span>
+  name <span class="token keyword">text</span><span class="token punctuation">,</span>
+  release_year <span class="token keyword">int</span><span class="token punctuation">,</span>
+  kind <span class="token keyword">text</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">CREATE</span> <span class="token keyword">VIEW</span> comedies <span class="token keyword">AS</span>
+    <span class="token keyword">SELECT</span> <span class="token operator">*</span>
+    <span class="token keyword">FROM</span> app_public<span class="token punctuation">.</span>films
+    <span class="token keyword">WHERE</span> kind <span class="token operator">=</span> <span class="token string">'Comedy'</span><span class="token punctuation">;</span>
+</code></pre>
+<p>The view <code>comedies</code> is able to be queried directly on the Graphql schema:</p>
+<pre><code>{
+  comedies(first: 20) {
+    name
+    releaseYear
+  }
+}
+</code></pre>

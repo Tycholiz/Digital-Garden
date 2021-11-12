@@ -1,0 +1,36 @@
+<h1 id="cook"><a aria-hidden="true" class="anchor-heading" href="#cook"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Cook</h1>
+<h4 id="get-user-keyboardcontroller-input"><a aria-hidden="true" class="anchor-heading" href="#get-user-keyboardcontroller-input"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Get user keyboard/controller input</h4>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">public</span> <span class="token class-name"><span class="token keyword">float</span></span> verticalInput<span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token class-name"><span class="token keyword">float</span></span> horizontalInput<span class="token punctuation">;</span>
+
+<span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">Update</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    verticalInput <span class="token operator">=</span> Input<span class="token punctuation">.</span><span class="token function">GetAxis</span><span class="token punctuation">(</span><span class="token string">"Vertical"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    horizontalInput  <span class="token operator">=</span> Input<span class="token punctuation">.</span><span class="token function">GetAxis</span><span class="token punctuation">(</span><span class="token string">"Horizontal"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// move the plane forward at a constant rate</span>
+    transform<span class="token punctuation">.</span><span class="token function">Translate</span><span class="token punctuation">(</span>Vector3<span class="token punctuation">.</span>forward <span class="token operator">*</span> speed<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// tilt the plane up/down based on up/down arrow keys</span>
+    transform<span class="token punctuation">.</span><span class="token function">Rotate</span><span class="token punctuation">(</span>Vector3<span class="token punctuation">.</span>right <span class="token operator">*</span> rotationSpeed <span class="token operator">*</span> Time<span class="token punctuation">.</span>deltaTime <span class="token operator">*</span> verticalInput<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// steer the plane left/right based on arrow keys</span>
+    transform<span class="token punctuation">.</span><span class="token function">Rotate</span><span class="token punctuation">(</span>Vector3<span class="token punctuation">.</span>up <span class="token operator">*</span> rotationSpeed <span class="token operator">*</span> Time<span class="token punctuation">.</span>deltaTime <span class="token operator">*</span> horizontalInput<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+<h4 id="get-input-based-on-key"><a aria-hidden="true" class="anchor-heading" href="#get-input-based-on-key"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Get input based on key</h4>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">if</span> <span class="token punctuation">(</span>Input<span class="token punctuation">.</span><span class="token function">GetKeyUp</span><span class="token punctuation">(</span>KeyCode<span class="token punctuation">.</span>Space<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// instantiate a GameObject</span>
+    <span class="token function">Instantiate</span><span class="token punctuation">(</span>projectilePrefab<span class="token punctuation">,</span> transform<span class="token punctuation">.</span>position<span class="token punctuation">,</span> projectilePrefab<span class="token punctuation">.</span>transform<span class="token punctuation">.</span>rotation<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h4 id="run-a-function-every-2-seconds-starting-after-1-second"><a aria-hidden="true" class="anchor-heading" href="#run-a-function-every-2-seconds-starting-after-1-second"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Run a function every 2 seconds, starting after 1 second</h4>
+<p><code>InvokeRepeating("methodName", 1, 2)</code></p>
+<h4 id="getset-property-of-a-component"><a aria-hidden="true" class="anchor-heading" href="#getset-property-of-a-component"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Get/Set(?) property of a component</h4>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">private</span> <span class="token class-name"><span class="token keyword">float</span></span> repeatWidth<span class="token punctuation">;</span>
+<span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// get the x position value of the box collider component of the GameObject that this script it attached to</span>
+    repeatWidth <span class="token operator">=</span> <span class="token generic-method"><span class="token function">GetComponent</span><span class="token generic class-name"><span class="token punctuation">&#x3C;</span>BoxCollider<span class="token punctuation">></span></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>size<span class="token punctuation">.</span>x <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>

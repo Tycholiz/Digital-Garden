@@ -1,0 +1,37 @@
+<h1 id="claim"><a aria-hidden="true" class="anchor-heading" href="#claim"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Claim</h1>
+<h3 id="claim-1"><a aria-hidden="true" class="anchor-heading" href="#claim-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Claim</h3>
+<ul>
+<li>the core of a JWT, since they are the data contained in the JWT</li>
+<li>claims are pieces of information that are "claimed" about a subject (most often a user). In other words, they are just properties of an object.
+<ul>
+<li>ex. name, sub, admin</li>
+</ul>
+</li>
+<li>the claim refers to the key, not the value</li>
+<li>usually not encrypted, meaning if we don't use https, this information is potentially compromised.</li>
+<li>anyone will be able to decode them and to read them, we cannot store any sensitive data in here
+<ul>
+<li>not an issues because of the secret</li>
+</ul>
+</li>
+<li>ex:</li>
+</ul>
+<pre><code>{
+	"sub": "1234567890",
+	"name": "John Doe",
+	"admin": true
+}
+</code></pre>
+<ul>
+<li>when the server receives a JWT from an HTTP request's authorization header, like so:</li>
+</ul>
+<pre><code>Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhIjoxLCJiIjoyLCJjIjozfQ.hxhGCCCmGV9nT1slief1WgEsOsfdnlVizNrODxfh1M8
+</code></pre>
+<p>it will verify the token using the secret, and then will serialize the claims in that token to the database. Therefore, we will be able to access the data in <code>current_settings</code> (if using Postgres)</p>
+<ul>
+<li>claims can be used as a means to differentiate users. Imagine we are building a postgres database and decide that all signed-in users will have the group role <code>user_login</code>. We can use the claims in the jwt to distinguish users</li>
+<li>in postgres, a claim can be retrieved with <code>current_setting('request.jwt.claim.email', true)</code></li>
+</ul>
+<p><em>Registered claim</em> - recommended pre-defined claims</p>
+<pre><code>- ex. **iss** (issuer), **exp** (expiration time), **sub** (subject), **aud** (audience)
+</code></pre>

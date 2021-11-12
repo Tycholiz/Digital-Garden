@@ -1,0 +1,51 @@
+<h1 id="selectors"><a aria-hidden="true" class="anchor-heading" href="#selectors"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Selectors</h1>
+<h1 id="selectors-1"><a aria-hidden="true" class="anchor-heading" href="#selectors-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Selectors</h1>
+<p>If actions are the entry points, selectors are the exit.</p>
+<ul>
+<li>After dispatching an action, the application can use selectors to get the resulting data from the store after reducers and sagas have done something with it.</li>
+</ul>
+<h3 id="useselector"><a aria-hidden="true" class="anchor-heading" href="#useselector"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>useSelector</h3>
+<ul>
+<li>equivalent to the purpose of <code>mapStateToProps</code>, which is provide easy access to the particular parts of the store that you want. 
+<ul>
+<li>when a component has multiple instances, the selector needs to be defined inside the component, so that each instance gets its own selector instance.</li>
+</ul>
+</li>
+</ul>
+<h2 id="reselect"><a aria-hidden="true" class="anchor-heading" href="#reselect"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Reselect</h2>
+<ul>
+<li>Will memoize the value that is returned by the selected value
+<ul>
+<li>Imagine there is a list of questions in the redux store, and we want to retrieve all questions that have an even-numbered <code>id</code>. We could write a reselect selector that gets this array, performs a <code>filter</code> on it, memoizes (caches) that function, then return it to us. Then, next time we call that selector, the value is already available to us, rather than having to perform that <code>filter</code> operation on the array all over again.</li>
+</ul>
+</li>
+<li>If we are just getting data without modification (ex. getting <code>store.title</code>), then reselect is not necessary. Only when there is expensive computation is reselct beneficial.</li>
+<li><code>createSelector</code> will take in 1+ selectors (functions), call them, and passes their return values (the selected part of the store) as arguments to the final arg (an anonymous transform function) of <code>createSelector</code>. That function will accept 1 parameter for every selector that came before it. 
+<ul>
+<li>If one of the input selectors has changed since the last call, the transform function will be called. Otherwise, it will just return the memoized value.
+<ul>
+<li>this function is a thunk (returns a function)</li>
+<li><strong><em>ex.</em></strong></li>
+</ul>
+<pre><code>export const getFeedbackForYou = createSelector(
+    getByRecipient,
+    (byRecipientState) => byRecipientState.myFeedback,
+);
+</code></pre>
+<ul>
+<li>here, <code>createSelector</code> is being called and returns a function that takes state as the argument (since that's what thunks do).</li>
+<li>conceptually, we can therefore replace <code>createSelector(...)</code> with `(state) => </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<ul>
+<li><code>mapStateToProps</code> is really just a type of selector when you think about it.
+<ul>
+<li>specifically, it is the selector that (potentially) uses other selectors to get data from the store. It is meant to clump them together for easy access to components that get rendered by the container </li>
+</ul>
+</li>
+<li><code>state</code> refers to the data that currently exists in the store. <code>store</code> refers to the instance</li>
+</ul>

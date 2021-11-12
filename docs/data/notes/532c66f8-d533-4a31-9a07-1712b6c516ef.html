@@ -1,0 +1,57 @@
+<h1 id="suspense"><a aria-hidden="true" class="anchor-heading" href="#suspense"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Suspense</h1>
+<p>Suspense refers to React’s ability to “suspend” rendering while components are waiting for something, and display a loading indicator</p>
+<p>Imagine a component that needs to do some asynchronous task before it can render, e.g. fetching some data.
+Before Suspense, such a component would keep an isLoading state and return some kind fallback (an empty state, skeleton, spinner, ...) based on it.
+With Suspense, a component can now, during rendering, shout "HALT! I'm not ready yet. Don't continue rendering me, please - here's a pager, I'll ping you when I'm ready!1"
+React will walk up the tree to find the nearest Suspense boundary, which is set by You and contains the fallback that'll now be rendered until the pager is ringing.</p>
+<p>In the traditional way of handling data fetching, the paradigm is: "wait for Promise to resolve and run some user code". With suspense, it's "React will retry rendering when it resolves". </p>
+<ul>
+<li>In some ways it's simpler but it takes some "unlearning" because the user loses some control they might be used to from traditional Promise-base programming.</li>
+</ul>
+<p>solves the problem of having some of the data, but not being able to render until all data is in. With suspense, we can load some of the UI without all of the data having to be available.</p>
+<ul>
+<li>Suspense lets you pause rendering a component while it’s loading async data</li>
+</ul>
+<p>React Suspense will specify a fallback component in case the main component suspends. </p>
+<p><img src="/Digital-Garden/:/3b101f50bf264119a5a3d57e387812f4" alt="28a01e0b811e84e2c3c20a4faca82641.png"></p>
+<h2 id="process-for-data-fetching-and-rendering-in-browser"><a aria-hidden="true" class="anchor-heading" href="#process-for-data-fetching-and-rendering-in-browser"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Process for data fetching and rendering in browser</h2>
+<ol>
+<li>Browser downloads the code</li>
+<li>React begins to render the <code>&#x3C;Home /></code> component</li>
+<li>React will attempt to use the data needed for the component, then will realize that the data doesn't exist yet. React will then look up the component tree, find its nearest Suspense boundary. Then it will then render the fallback component, and fetch the data simultaneously.</li>
+<li>Once data has been fetched (signified by a function like <code>useQuery</code> having been completed), React will render <code>&#x3C;Home /></code> (which contains an <code>&#x3C;img /></code> tag)</li>
+<li>The browser sees the <code>&#x3C;img /></code> tag and makes a fetch to get that image.</li>
+</ol>
+<hr>
+<ul>
+<li>If we have multiple components within a <code>&#x3C;Suspense /></code>, then we have to wait
+for all components inside to be ready before anything renders. Conversely if
+each component is nested within its own <code>&#x3C;Suspense /></code>, then each can render
+when it is done</li>
+</ul>
+<pre class="language-jsx"><code class="language-jsx"><span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span><span class="token class-name">Suspense</span></span> <span class="token attr-name">fallback</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span><span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span><span class="token class-name">DotLoader</span></span> <span class="token punctuation">/></span></span><span class="token punctuation">}</span></span><span class="token punctuation">></span></span><span class="token plain-text">
+    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span><span class="token class-name">NewsFeed</span></span> <span class="token punctuation">/></span></span><span class="token plain-text">
+</span><span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;/</span><span class="token class-name">Suspense</span></span><span class="token punctuation">></span></span>
+</code></pre>
+<ul>
+<li>If we want to control the order in which something will render, we can use a
+<code>&#x3C;SuspenseList></code> component. This component takes a prop <code>revealOrder</code>.
+<ul>
+<li>if we set <code>revealOrder="forwards"</code>, then we ensure that the first
+component will always render first. </li>
+<li>We might want to do this if component1 and component2 are stacked on top
+of each other, and component1 has dynamic dimensions (content determines
+the height). If component2 were to load first, then once component1
+loads, it would push everything down.
+<ul>
+<li>ex. Facebook's <code>&#x3C;Composer></code> and <code>&#x3C;NewsFeed></code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>"In the long term, we intend Suspense to become the primary way to read asynchronous data from components — no matter where that data is coming from."
+<ul>
+<li>from React team</li>
+</ul>
+</li>
+</ul>

@@ -1,0 +1,19 @@
+<h1 id="pagination"><a aria-hidden="true" class="anchor-heading" href="#pagination"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Pagination</h1>
+<h1 id="pagination-1"><a aria-hidden="true" class="anchor-heading" href="#pagination-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Pagination</h1>
+<h2 id="limitoffset-pagination"><a aria-hidden="true" class="anchor-heading" href="#limitoffset-pagination"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Limit/Offset Pagination</h2>
+<p>A naive approach to pagination is to think like this: "We want page 3, with a page size of 10, so we should load 10 items, starting after item 20". This might look like this:</p>
+<pre><code>SELECT * FROM posts ORDER BY created_at LIMIT 10 OFFSET 20;
+</code></pre>
+<p>This approach is naive because it has some major downfalls</p>
+<ul>
+<li>If an item was added to the list while the user is switching pages, we will inevitably be skipping over items (ex. product site, chat app)</li>
+<li>If an item was added at the top of the list while switching pages, then we might see the same item twice.
+These previous examples show that the mental model of pages in a book is a poor analogy for pagination, since the data set is not static. This goes to show that for certain apps, the very concepts of page1 and page2 don't really make any sense, because the set of data and the boundaries between loaded sections is constantly changing.</li>
+</ul>
+<h2 id="cursor-based-pagination"><a aria-hidden="true" class="anchor-heading" href="#cursor-based-pagination"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Cursor-Based Pagination</h2>
+<p>What if we could just specify the place in the list we want to begin, and then specify how many items we want to fetch? Then it doesn’t matter how many items were added to the top of the list in the meanwhile, since we have a constant pointer (cursor) to the specific spot where we left off.</p>
+<p>A cursor-based paginator needs 2 things to fetch more data: the current cursor position, and the number of items to fetch.</p>
+<p><em>"Cursor-based pagination is the most efficient method of paging and should always be used where possible."</em></p>
+<ul>
+<li>besides cursor-based pagination, the most</li>
+</ul>

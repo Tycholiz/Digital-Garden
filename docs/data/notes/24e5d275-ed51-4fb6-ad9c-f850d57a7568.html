@@ -1,0 +1,13 @@
+<h1 id="viminfo"><a aria-hidden="true" class="anchor-heading" href="#viminfo"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Viminfo</h1>
+<pre><code>set viminfo=%,&#x3C;800,'10,/50,:100,h,f0,n~/.vim/cache/.viminfo
+"           | |    |   |   |    | |  + viminfo file path
+"           | |    |   |   |    | + file marks 0-9,A-Z 0=NOT stored
+"           | |    |   |   |    + disable 'hlsearch' loading viminfo
+"           | |    |   |   + command-line history saved
+"           | |    |   + search history saved
+"           | |    + files marks saved
+"           | + lines saved each register (old name for &#x3C;, vi6.2)
+"           + save/restore buffer list
+</code></pre>
+<p><code>set viminfo=xxx</code> should come after <code>set nocompatible</code></p>
+<p>if we set <code>'</code> parameter, then marks and other things set during the buffer editing will persist even after we close vim.</p>

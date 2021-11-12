@@ -1,0 +1,44 @@
+<h1 id="pg-xl"><a aria-hidden="true" class="anchor-heading" href="#pg-xl"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Pg Xl</h1>
+<p>PostgresXL is a horizontally scalable SQL database cluster</p>
+<ul>
+<li>It is equipped to handle write-intensive workloads that depend on atomic transactions which are potentially distributed
+<ul>
+<li>OLTP</li>
+</ul>
+</li>
+<li>PostgresXL allows you to either partition tables across multiple nodes, or replicate them.
+<ul>
+<li>Partitioning (or distributing) tables allows for write scalability across multiple nodes as well as massively parallel processing (MPP) for Big Data type of workloads.
+<ul>
+<li>MPP is using many computers to perform a set of coordinated computations in parallel</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="components-of-postgres-xl"><a aria-hidden="true" class="anchor-heading" href="#components-of-postgres-xl"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Components of Postgres-XL</h2>
+<h3 id="global-transaction-monitor"><a aria-hidden="true" class="anchor-heading" href="#global-transaction-monitor"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Global Transaction Monitor</h3>
+<ul>
+<li>ensures cluster-wide transaction consistency
+<ul>
+<li>responsible for issuing transaction ids and snapshots as part of its Multi-version Concurrency Control.</li>
+</ul>
+</li>
+</ul>
+<h3 id="coordinator"><a aria-hidden="true" class="anchor-heading" href="#coordinator"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Coordinator</h3>
+<ul>
+<li>manages the user sessions and interacts with GTM and the data nodes
+<ul>
+<li>parses and plans queries, and sends down a serialized global plan to each of the components involved in a statement.</li>
+</ul>
+</li>
+</ul>
+<h3 id="data-node"><a aria-hidden="true" class="anchor-heading" href="#data-node"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Data node</h3>
+<ul>
+<li>where the actual data is stored.
+<ul>
+<li>The distribution of the data can be configured by the DBA.</li>
+</ul>
+</li>
+<li>warm standbys of the data nodes can be configured to be failover-ready.</li>
+</ul>

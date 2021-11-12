@@ -1,0 +1,12 @@
+<h1 id="workers"><a aria-hidden="true" class="anchor-heading" href="#workers"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Workers</h1>
+<p>Task Queues/Worker Queues are used as a mechanism to distribute work across threads or machines.
+A task queue’s input is a unit of work called a task. Dedicated worker processes constantly monitor task queues for new work to perform.</p>
+<p>Often, a task queue will use a message broker to mediate between clients and workers</p>
+<ul>
+<li>To initiate a task the client adds a message to the queue, the broker then delivers that message to a worker.</li>
+</ul>
+<p>Task Queues like Celery require a configured message broker like Redis broker transports or RabbitMQ to be functional</p>
+<ul>
+<li>Realistically, you could roll your own using SQLite if you wanted to. You just need a service that will take care of the message queue for you.</li>
+<li>Graphile-worker has this functionality built-in, as it manages its own queue in your Postgres db.</li>
+</ul>

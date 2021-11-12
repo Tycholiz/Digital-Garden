@@ -1,0 +1,16 @@
+<h1 id="lens"><a aria-hidden="true" class="anchor-heading" href="#lens"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Lens</h1>
+<h1 id="lenses"><a aria-hidden="true" class="anchor-heading" href="#lenses"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Lenses</h1>
+<p>Think of a lens as something that focuses (zooms in) on a specific part of a larger data structure</p>
+<ul>
+<li>Similar to stores  in Redux</li>
+</ul>
+<p>Another way is to see lenses as little drones that copy a part of an object for us, and delve into it to change the properties, all without mutating the original </p>
+<p>Given a lens there are essentially three things you might want to do</p>
+<ul>
+<li>view the subpart</li>
+<li>modify the whole by changing the subpart</li>
+<li>combine this lens with another lens to look even deeper</li>
+</ul>
+<p>Lenses can be handy if we have a somewhat complex data structure that we want to abstract away from calling code. Rather than exposing the structure or providing a getter, setter, and transformer for every accessible property, we can instead expose lenses. Client code can then work with our data structure using view, set, and over without being coupled to the exact shape of the structure.</p>
+<p>It is a special <code>type</code> that combines a <em>getter</em> and a <em>setter</em> function into a single unit</p>
+<p>The first fn is the getter, while the second is the setter</p>

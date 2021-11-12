@@ -1,0 +1,18 @@
+<h1 id="endpoints"><a aria-hidden="true" class="anchor-heading" href="#endpoints"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Endpoints</h1>
+<p>Endpoints run only on the server</p>
+<ul>
+<li>This means it's the place to do things like access databases or APIs that require private credentials or return data that lives on a machine in your production network. Pages can request data from endpoints. Endpoints return JSON by default</li>
+</ul>
+<p>Endpoints are written in <code>.js</code> (or <code>.ts</code>) files.</p>
+<p>Endpoints export functions that correspond to HTTP methods.</p>
+<ul>
+<li><code>get</code>, <code>post</code>, <code>del</code>, <code>put</code>, <code>patch</code></li>
+</ul>
+<blockquote>
+<p>We don't interact with the req/res objects you might be familiar with from Node's http module or frameworks like Express, because they're only available on certain platforms. Instead, SvelteKit translates the returned object into whatever's required by the platform you're deploying your app to.</p>
+</blockquote>
+<p>headers (including cookies) can be set in the return value of the HTTP method.</p>
+<p>if we had a <code>routes/blog/post1.svelte</code> page, we could request data from <code>routes/blog/post1.json</code></p>
+<ul>
+<li>both could be represented in the file structure as <code>blog/[slug].svelte</code> and <code>blog/[slug].json</code>, respectively.</li>
+</ul>

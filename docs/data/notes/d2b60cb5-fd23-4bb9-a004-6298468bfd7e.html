@@ -1,0 +1,11 @@
+<h1 id="strategies"><a aria-hidden="true" class="anchor-heading" href="#strategies"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Strategies</h1>
+<h3 id="push-new-changes-to-pr-branch-that-has-diverged"><a aria-hidden="true" class="anchor-heading" href="#push-new-changes-to-pr-branch-that-has-diverged"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Push new changes to PR branch that has diverged.</h3>
+<ol>
+<li>Before pushing any new changes, rebase <code>master</code> onto the feature branch, and resolve conflicts:
+<code>git rebase master</code></li>
+<li>on feature branch, run <code>git push --force</code>
+<ul>
+<li>If we don't force push, we will get a warning that branches have diverged and we must first pull. This is a bad idea, spec: because we would be getting rewritten history, and would in effect be introducing many more commits than we are actually intending.</li>
+</ul>
+</li>
+</ol>

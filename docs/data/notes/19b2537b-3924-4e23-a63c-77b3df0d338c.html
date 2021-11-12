@@ -1,0 +1,46 @@
+<h1 id="substitution"><a aria-hidden="true" class="anchor-heading" href="#substitution"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Substitution</h1>
+<h1 id="substitution-1"><a aria-hidden="true" class="anchor-heading" href="#substitution-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Substitution</h1>
+<p>repeat last substitute</p>
+<ul>
+<li><code>:&#x26;</code>
+<ul>
+<li><code>:&#x26;&#x26;</code> command repeats the last substitution with the same flags.
+<ul>
+<li>You can supply the additional range(s) to it (and concatenate as many as you like):</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>replace multiple search terms at once</p>
+<ul>
+<li><code>:%s/Kang\|Kodos/alien/gc</code></li>
+</ul>
+<p><code>:6,10s/&#x3C;search_string>/&#x3C;replace_string>/g | 14,18&#x26;&#x26;</code></p>
+<h2 id="within-visually-selected-area"><a aria-hidden="true" class="anchor-heading" href="#within-visually-selected-area"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>within Visually Selected Area</h2>
+<ol>
+<li>visually select the area you want substitutions to take place in, then <code>&#x3C;ESC></code></li>
+<li><code>:%s/\%Vfoo/bar/g</code> to replace all <code>foo</code> with <code>bar</code></li>
+</ol>
+<p>Alternatively, the vis.vim plugin can be used</p>
+<h3 id="upperlower-case"><a aria-hidden="true" class="anchor-heading" href="#upperlower-case"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Upper/Lower Case</h3>
+<ul>
+<li><code>guw</code>/<code>gUw</code> - make word lowercase/uppercase
+<ul>
+<li><code>guu</code>/<code>gUU</code> - make line uppercase/lowercase</li>
+</ul>
+</li>
+<li><code>g~</code> - swap case</li>
+</ul>
+<h2 id="flags"><a aria-hidden="true" class="anchor-heading" href="#flags"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Flags</h2>
+<h3 id="c"><a aria-hidden="true" class="anchor-heading" href="#c"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>c</h3>
+<p>y/n/a/q substitute (within single file)</p>
+<ul>
+<li><code>:%s/search/replace/gc</code></li>
+</ul>
+<h4 id="values"><a aria-hidden="true" class="anchor-heading" href="#values"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Values</h4>
+<p><code>l</code> - last (substitute this match, then quit)
+<code>a</code> - all (this, and all remaining)</p>
+<pre><code>- note: `l` and `a` are opposites, since `l` will treat the current match as the final one in our substitution process, whereas `a`
+</code></pre>
+<p><code>&#x3C;C-e></code>/<code>&#x3C;C-d></code> - scroll</p>

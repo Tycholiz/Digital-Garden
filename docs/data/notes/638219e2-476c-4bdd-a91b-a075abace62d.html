@@ -1,0 +1,21 @@
+<h1 id="network-tab"><a aria-hidden="true" class="anchor-heading" href="#network-tab"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Network Tab</h1>
+<p>We should probably have the "disable cache" checkbox enabled. This will give us a more realistic view of the actual user experience.</p>
+<p>When looking at the  load amounts, there is two numbers. The first number is how much data is in the browser, and the second is how much data was actually loaded over the wire. The second number is more significant in terms of debugging performance</p>
+<h2 id="unofficial-apis"><a aria-hidden="true" class="anchor-heading" href="#unofficial-apis"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Unofficial APIs</h2>
+<p>Often companies don't offer open APIs. We can "open it up" to ourselves by mimicking the request as if it's coming from us interacting with the webpage.</p>
+<ol>
+<li>In the website's UI, do the interaction that will trigger a network request (eg. clicking a button)</li>
+<li>In the network tab, find the request and gather the API endpoint that was hit.</li>
+<li>Right-click and <em>copy as</em> fetch/cURL. We now have a fully formatted request that has all of the headers needed to make a successful request.</li>
+</ol>
+<h2 id="image-caching-status"><a aria-hidden="true" class="anchor-heading" href="#image-caching-status"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Image caching status</h2>
+<p>We can check to see if image caching is working or not (eg. if we are using Cloudflare image caching worker)</p>
+<ol>
+<li>In Network tab, filter for images, and find the image in question</li>
+<li>Check response headers for an indicator (in this example, <code>cf-cache-status=hit</code>) that the image came from a cached location.</li>
+</ol>
+<hr>
+<p>When right-clicking a request, we get the option to <code>Copy As...</code>. If we <code>copy as Node.js fetch</code>, we also get anything that came along with the request (inc. all of the cookies, session Ids, headers etc).</p>
+<ul>
+<li>a normal fetch request doesn't include these, because it assumes we are firing off the request from the browser. However, if we are making a fetch request from a server, then we would manually need to send those cookies/headers etc along.</li>
+</ul>

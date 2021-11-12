@@ -1,0 +1,53 @@
+<h1 id="cook"><a aria-hidden="true" class="anchor-heading" href="#cook"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Cook</h1>
+<p>find empty lines (only whitespace)</p>
+<ul>
+<li><code>^\s.*$</code></li>
+</ul>
+<p>find lowercase/non-lowercase</p>
+<ul>
+<li><code>\l</code>/<code>\L</code></li>
+</ul>
+<p>find uppercase/non-uppercase</p>
+<ul>
+<li><code>\l</code>/<code>\L</code></li>
+</ul>
+<p>find word boundary</p>
+<ul>
+<li><code>\&#x3C;term\></code></li>
+</ul>
+<p>find both "dog" and "Dog"</p>
+<ul>
+<li><code>/[Dd]og</code></li>
+</ul>
+<h3 id="greedy-vs-non-greedy-quantifiers"><a aria-hidden="true" class="anchor-heading" href="#greedy-vs-non-greedy-quantifiers"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Greedy vs Non-greedy Quantifiers</h3>
+<p>Vim allows you to specify how many of something you wish to match by adding quantifiers to the term.</p>
+<ul>
+<li>"greedy quantifiers" are those that match as many of the specified characters as possible.
+<ul>
+<li><code>*</code> matches 0 or more
+<ul>
+<li>ex. <code>/abc*</code> will match abc, abby, and absolutely</li>
+</ul>
+</li>
+<li><code>\+</code> matches 1 or more
+<ul>
+<li>ex. <code>/abc\+</code> will match abc, but not abby or absolutely</li>
+</ul>
+</li>
+<li><code>\{5,}</code> matches 5 or more characters</li>
+</ul>
+</li>
+<li>"non-greedy quantifiers" are those that match only the specified number, or as few as possible.
+<ul>
+<li><code>\=</code> matches 0 or 1
+<ul>
+<li>ex. <code>/abc\=</code> will match abc, abby, and absolutely.</li>
+</ul>
+</li>
+<li><code>\{0,10}</code> matches between 0 and 10 of a character</li>
+<li><code>\{5}</code> matches 5 characters</li>
+<li><code>\{,5}</code> matches 5 characters or less</li>
+<li><code>\{-}</code> matches as little as possible</li>
+</ul>
+</li>
+</ul>

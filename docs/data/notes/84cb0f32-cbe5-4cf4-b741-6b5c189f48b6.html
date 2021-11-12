@@ -1,0 +1,14 @@
+<h1 id="setof"><a aria-hidden="true" class="anchor-heading" href="#setof"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Setof</h1>
+<p>When our plpgsql function returns a <code>setof</code> rows, we must follow a different procedure:</p>
+<ul>
+<li>the items that are returned by the function are specified by the <code>RETURN NEXT</code> or <code>RETURN QUERY</code> commands.</li>
+<li>at the end, a final <code>RETURN</code> command with no argument, to indicate the function has finished execution.</li>
+</ul>
+<p><code>RETURN NEXT</code> and <code>RETURN QUERY</code> do not actually cause execution to return from the function call. Instead, they simply append zero or more rows to the function's result set.</p>
+<ul>
+<li>As successive RETURN NEXT or RETURN QUERY commands are executed, the result set is appended to further. The final <code>RETURN</code> command causes control to exit the function, leaving us with the dataset that has been constructed up until that point
+<ul>
+<li>note: naturally, we can omit the final <code>RETURN</code> if we are at the last line anyway</li>
+</ul>
+</li>
+</ul>

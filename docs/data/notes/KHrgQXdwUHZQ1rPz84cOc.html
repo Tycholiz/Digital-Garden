@@ -1,0 +1,11 @@
+<h1 id="batching"><a aria-hidden="true" class="anchor-heading" href="#batching"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Batching</h1>
+<p>With automated batching in React 18, multiple state updates will always be batched.</p>
+<p>The problem is that when we update multiple pieces of state in sequence, React will re-render the component. We need a way to tell React "hey, don't bother re-rendering until I've completed my whole sequence of state updates."</p>
+<p>When we implement a click handler, we are implementing the same benefits that batching gives us. Only a single re-render would be triggered from the following click handler:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">handleClick</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token function">setIsFetching</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">setError</span><span class="token punctuation">(</span><span class="token keyword null nil">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">setFormStatus</span><span class="token punctuation">(</span><span class="token string">'success'</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>However, what if we wanted to change the 3 pieces of state <em>not</em> in response to an event handler? Imagine we want the state to be updated when a fetch resolves?</p>

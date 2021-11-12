@@ -1,0 +1,35 @@
+<h1 id="search"><a aria-hidden="true" class="anchor-heading" href="#search"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Search</h1>
+<h1 id="searching"><a aria-hidden="true" class="anchor-heading" href="#searching"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Searching</h1>
+<p>search all code bases with <code>@json</code></p>
+<ul>
+<li>
+<p><code>"json;"</code>
+exclude results from repository WatermelonDB</p>
+</li>
+<li>
+<p><code>-repo:Nozbe/WatermelonDB</code></p>
+</li>
+<li>
+<p>checkout a branch from github (ex. for CR)</p>
+<ul>
+<li><code>hub pr checkout &#x3C;issue number></code></li>
+</ul>
+</li>
+</ul>
+<p>drop role if exists google_data_studio;
+create role google_data_studio with login password 'sk338fjw0g74nf92nf%34d8' noinherit;</p>
+<p>revoke usage on schema stats from google_data_studio;
+grant usage on schema stats to google_data_studio;</p>
+<p>revoke select on all tables in schema stats from google_data_studio cascade;
+grant select on all tables in schema stats to google_data_studio;</p>
+<p>//after all tables</p>
+<p>revoke select on stats.daily_registration_historical from google_data_studio;
+grant select on stats.daily_registration_historical to google_data_studio;</p>
+<p>revoke select on stats.current_active_users_historical from google_data_studio;
+grant select on stats.current_active_users_historical to google_data_studio;</p>
+<p>revoke select on stats.daily_book_sales_historical from google_data_studio;
+grant select on stats.daily_book_sales_historical to google_data_studio;</p>
+<p>revoke select on stats.daily_readership_historical from google_data_studio;
+grant select on stats.daily_readership_historical to google_data_studio;</p>
+<p>revoke select on stats.daily_reading_activity_by_publisher_historical from google_data_studio;
+grant select on stats.daily_reading_activity_by_publisher_historical to google_data_studio;</p>

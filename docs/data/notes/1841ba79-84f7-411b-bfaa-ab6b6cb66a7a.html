@@ -1,0 +1,32 @@
+<h1 id="operations"><a aria-hidden="true" class="anchor-heading" href="#operations"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Operations</h1>
+<h1 id="operation-types-ie-queries-and-mutations"><a aria-hidden="true" class="anchor-heading" href="#operation-types-ie-queries-and-mutations"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Operation Types (ie. Queries and Mutations)</h1>
+<ul>
+<li><code>query</code> types and <code>mutation</code> types are the entry point to a graphql query
+<ul>
+<li>It's important to remember that other than the special status of being the "entry point" into the schema, the Query and Mutation types are the same as any other GraphQL object type, and their fields work exactly the same way.</li>
+</ul>
+</li>
+</ul>
+<p>Scalars are primitive values in GraphQL. If we consider a graphql query as a hierarchical graph, the leaves would be the primitives</p>
+<p>GraphQL requires that you construct your queries in a way that only returns concrete data</p>
+<ul>
+<li>Each field has to ultimately resolve to one or more scalars (or enums). That means you cannot just request a field that resolves to a type without also indicating which fields of that type you want to get back (hence why <code>graphiql</code> will auto-complete for us).</li>
+</ul>
+<p>two operations that occur in GraphQL servers are:</p>
+<ol>
+<li><strong>result coercion</strong>: upholding the contract of a type which we receive from the server (basically upholding the primitive values or object type)
+<ul>
+<li>The type system knows what to expect and will convert the values returned by a resolver function into something that upholds the API contract</li>
+</ul>
+</li>
+<li><strong>input coercion</strong>: upholding the contract of a type for input arguments that we pass into the GraphQL query or mutation
+<ul>
+<li>if we pass in <code>5</code> for the <code>id</code> field, the type will be parsed into a string as <code>"5"</code></li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/c1a58a3a-c74c-4466-8d7c-7254f3801645">Subscriptions</a></li>
+</ol>

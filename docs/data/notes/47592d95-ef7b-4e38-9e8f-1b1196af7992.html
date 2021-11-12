@@ -1,0 +1,12 @@
+<h1 id="cook"><a aria-hidden="true" class="anchor-heading" href="#cook"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Cook</h1>
+<h5 id="see-commits-that-exist-on-a-given-branch"><a aria-hidden="true" class="anchor-heading" href="#see-commits-that-exist-on-a-given-branch"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>See commits that exist on a given branch</h5>
+<p><code>git log feature-branch</code></p>
+<h5 id="see-commits-that-exist-on-a-branch-while-excluding-ones-that-live-on-another"><a aria-hidden="true" class="anchor-heading" href="#see-commits-that-exist-on-a-branch-while-excluding-ones-that-live-on-another"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>See commits that exist on a branch, while excluding ones that live on another</h5>
+<p><code>git log feature-branch ^main</code></p>
+<ul>
+<li>equivalent to <code>git log main..feature-branch</code></li>
+</ul>
+<h5 id="see-the-history-of-a-file-across-this-rename"><a aria-hidden="true" class="anchor-heading" href="#see-the-history-of-a-file-across-this-rename"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>See the history of a file across this rename</h5>
+<p><code>git log --follow -- /path/to/file</code></p>
+<h5 id="see-only-commits-where-files-were-deleted"><a aria-hidden="true" class="anchor-heading" href="#see-only-commits-where-files-were-deleted"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>See only commits where files were deleted</h5>
+<p><code>git log --diff-filter=D --summary</code></p>

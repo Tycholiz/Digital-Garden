@@ -1,0 +1,178 @@
+<h1 id="nginx"><a aria-hidden="true" class="anchor-heading" href="#nginx"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Nginx</h1>
+<h2 id="overview"><a aria-hidden="true" class="anchor-heading" href="#overview"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Overview</h2>
+<ul>
+<li>Nginx has 1 master process, and multiple worker processes.
+<ul>
+<li>The master's job is to read configuration files, and to manage the worker processes.</li>
+<li>The worker processes handle the requests.</li>
+</ul>
+</li>
+<li>Nginx uses an event-based model to distribute requests among workers</li>
+<li>The # of workers is specified in the config file, and may either be fixed, or adjustable based on how many cores the CPU has. </li>
+</ul>
+<h3 id="config-file"><a aria-hidden="true" class="anchor-heading" href="#config-file"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Config file</h3>
+<ul>
+<li>The nginx config file <code>nginx.conf</code> is stored either in <code>/usr/local/nginx/conf</code>, <code>/etc/nginx</code>, or <code>/usr/local/etc/nginx</code>.</li>
+<li>nginx consists of modules which are controlled by directives specified in the configuration file
+<ul>
+<li>Directives can either be simple directives or block directives
+<ul>
+<li>simple ends with <code>;</code>, block uses <code>{}</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>If a directive can have other directives inside, it is called a Context 
+<ul>
+<li>ex. <code>events</code>, <code>http</code>, <code>server</code>, <code>location</code></li>
+</ul>
+</li>
+<li>If a directive is not placed within a Context, then it is considered to be in the Main Context. 
+<ul>
+<li>The <code>events</code> and <code>http</code> directives reside in the Main Context, <code>server</code> in <code>http</code>, and <code>location</code> in <code>server</code>.</li>
+</ul>
+</li>
+</ul>
+<h2 id="blocks"><a aria-hidden="true" class="anchor-heading" href="#blocks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Blocks</h2>
+<ul>
+<li>Nginx divides the configurations meant to serve different content into Blocks, which live in a hierarchical structure.</li>
+<li>Each time a client request is made to the server, Nginx begins a process of determining which hierarchical block should be used to handle the request.</li>
+</ul>
+<h3 id="server-block"><a aria-hidden="true" class="anchor-heading" href="#server-block"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Server Block</h3>
+<ul>
+<li>Defines a virtual server used to handle requests of a defined type
+<ul>
+<li>each Server Block functions as a separate virtual web server instance</li>
+</ul>
+</li>
+<li>Based on the domain name, port and IP address requested, we can configure multiple server blocks to handle each combination.</li>
+<li>The <code>server_name</code> and <code>listen</code> directives are used to determine which server block should be used to fulfill a request. They are used to bind to tcp sockets.
+<ul>
+<li>With <code>listen</code>, we can use a lone IP, a lone port, or a combo of the two. If we only specify one, then defaults are used
+<ul>
+<li>default port: 80</li>
+<li>default IP: 0.0.0.0</li>
+</ul>
+</li>
+<li>the <code>server_name</code> directive is only evaluated when nginx needs to distinguish between server blocks that match to the same level of specificity in the <code>listen</code> directive. Put another way, it is a "specificity tie-breaker" 
+<ul>
+<li>in other words, if <code>example.com</code> is hosted on <code>192.168.1.10:80</code>, a request will always be served by a server block that specifies <code>listen 192.168.1.10</code>, even if there is another server block that specifies <code>server_name example.com</code></li>
+</ul>
+</li>
+<li>Finally, if further specificity is needed, then the Host header from the request (which contains the URI that the client was trying to reach) is used. 
+<ul>
+<li>When using wildcard matching, the longest match beginning with a wildcard is used
+<ul>
+<li>ex. if the request has a Host header of <code>www.example.com</code>, and we have 3 server blocks with <code>server_name</code> of <code>*.example.com</code>, <code>www.example.*</code> and <code>*.com</code>, <code>*.example.com</code> would win out.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>With server blocks, we can run more than one website on a single host</li>
+<li>in Apache, called <em>VirtualHost</em> </li>
+</ul>
+<h3 id="location-block"><a aria-hidden="true" class="anchor-heading" href="#location-block"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Location Block</h3>
+<ul>
+<li>Lives within a Server Block (or nested in other location blocks).</li>
+<li>Determine how Nginx should handle the part of the request that comes after IP:port (ie. the URI).</li>
+<li>Similar to how Nginx has a specificity-based process for determining which server block will process the request, Nginx has an algorithm to determine which location block within the server should be used for handling requests.</li>
+<li>Location blocks take the following form:</li>
+</ul>
+<pre><code>location &#x3C;optional_modifier> &#x3C;location_match> {
+}
+</code></pre>
+<ul>
+<li>The <code>location_match</code> defines what Nginx should check the request URI against.</li>
+<li>The <code>optional_modifier</code> affects the way Nginx will attempt to match the location block.
+<ul>
+<li>ex. check for prefix match (default), check for exact match (<code>=</code>), check for case-sensitive Regex (<code>~</code>)</li>
+</ul>
+</li>
+<li>The URI specified after <code>location</code> will be added to the path specified in the <em>root directive</em>
+<ul>
+<li>ex. if we specify <code>root /var/www/</code> and the location block specifies <code>/images/</code>, then the path to the requested file on the local FS will be <code>/var/www/images</code></li>
+</ul>
+</li>
+<li>ex. Imagine we had a server block:</li>
+</ul>
+<pre><code>server {
+    location / {
+        root /data/www;
+    }
+
+    location /images/ {
+        root /data;
+    }
+}
+</code></pre>
+<p>in response to a request with URI starting with <code>/images/</code>, the server will send files from the <code>/data/images</code> directory. </p>
+<h2 id="tasks-of-nginx"><a aria-hidden="true" class="anchor-heading" href="#tasks-of-nginx"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Tasks of Nginx</h2>
+<h3 id="serving-static-content"><a aria-hidden="true" class="anchor-heading" href="#serving-static-content"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Serving Static Content</h3>
+<ul>
+<li>Nginx can be configured to serve static content, such as HTML and images.</li>
+<li>this involves setting up of a server block inside the http block with two location blocks.
+<ul>
+<li>multiple server blocks are able to be added, each specifying a different port.</li>
+</ul>
+</li>
+</ul>
+<pre><code>http {
+	server {
+		
+	}
+}
+</code></pre>
+<h3 id="reverse-proxy-server"><a aria-hidden="true" class="anchor-heading" href="#reverse-proxy-server"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Reverse Proxy Server</h3>
+<ul>
+<li>When Nginx proxies a request, it sends the request to a specified proxied server, fetches the response, and sends it back to the client
+<ul>
+<li>it is possible to proxy requests to another HTTP server (eg. another Nginx server) or to a non-HTTP server (eg. express.js)
+<ul>
+<li>We use a specified protocol like FastCGI to do this</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>We can establish a proxy server by using the <code>proxy_pass</code> directive within a <em>location block</em>.
+<ul>
+<li>The value of <code>proxy_pass</code> is the address of the proxy server:</li>
+</ul>
+</li>
+</ul>
+<pre><code>location /some/path/ {
+    proxy_pass http://www.example.com/link/;
+}
+</code></pre>
+<ul>
+<li>In this config, all requests processed to <code>/some/path/</code> to be sent to the proxy server at <code>http://www.example.com/link/</code>.
+<ul>
+<li>ex. the request with the URI of <code>/some/path/page.html</code> will be proxied to <code>http://www.example.com/link/page.html</code></li>
+</ul>
+</li>
+<li>to pass a request to a non-HTTP server, the appropriate <code>*_pass</code> directive should be used
+<ul>
+<li>ex. <code>fastcgi_pass</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="debugging"><a aria-hidden="true" class="anchor-heading" href="#debugging"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Debugging</h2>
+<ul>
+<li>upon changing nginx.conf, we need to reload the nginx server with <code>nginx -s reload</code>.</li>
+<li>logs are stored at either <code>/usr/local/nginx/logs</code> or <code>/var/log/nginx</code></li>
+</ul>
+<h3 id="pitfalls"><a aria-hidden="true" class="anchor-heading" href="#pitfalls"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Pitfalls</h3>
+<ul>
+<li>A <em>root directive</em> should occur outside of the location block. We can then use another <em>root directive</em> within a <em>location block</em> if we want to override it.
+<ul>
+<li>Conversely, if you were to add a root to every location block then a location block that isn’t matched will have no root. Therefore, it is important that a root directive occur prior to your location blocks, which can then override this directive if they need to.</li>
+</ul>
+</li>
+<li><a href="https://www.nginx.com/resources/wiki/start/topics/tutorials/config_pitfalls/">source</a></li>
+</ul>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/485747d0-4ad3-4453-b400-515c8833535f">Conf</a></li>
+</ol>

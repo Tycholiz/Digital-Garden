@@ -1,0 +1,36 @@
+<h1 id="select"><a aria-hidden="true" class="anchor-heading" href="#select"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Select</h1>
+<h1 id="select-1"><a aria-hidden="true" class="anchor-heading" href="#select-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>SELECT</h1>
+<ul>
+<li>SELECT is known as a "projection" in relational algebra.
+<ul>
+<li>Once you’ve generated your table reference, filtered it, transformed it, you can step to projecting it to another form</li>
+</ul>
+</li>
+<li>Within the SELECT clause, you can finally operate on columns, creating complex column expressions as parts of the row.</li>
+<li>SELECT accepts expressions, allowing us to say <code>select (temp_lo + temp_hi)/2 as temp_avg...</code></li>
+<li>The SELECT clause may be one of the most complex clauses in SQL, even if it appears so simple. All other clauses just “pipe” table references from one to another</li>
+<li>In order to understand SQL, it is important to understand everything else first, before trying to tackle SELECT</li>
+</ul>
+<h3 id="select-distinct"><a aria-hidden="true" class="anchor-heading" href="#select-distinct"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>SELECT DISTINCT</h3>
+<p>remove duplicate rows <em>after</em> the SELECT has been applied (in other words, after the projection)</p>
+<h3 id="select-inside-a-with"><a aria-hidden="true" class="anchor-heading" href="#select-inside-a-with"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>SELECT (inside a WITH)</h3>
+<ul>
+<li>purpose is to break down complicated queries into simpler parts</li>
+</ul>
+<h1 id="combining-result-set-of-2-select-statements"><a aria-hidden="true" class="anchor-heading" href="#combining-result-set-of-2-select-statements"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Combining result set of 2+ SELECT statements</h1>
+<p>The queries that involve UNION, INTERSECT, or EXCEPT need to follow these rules:</p>
+<ol>
+<li>The number of columns and their orders must be the same in the two queries.</li>
+<li>The data types of the respective columns must be compatible.</li>
+</ol>
+<hr>
+<h3 id="dont-use-select-"><a aria-hidden="true" class="anchor-heading" href="#dont-use-select-"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Don't use SELECT *</h3>
+<ul>
+<li>By manually listing out each column we want to project, we show the intention of the code. Listing out each column allows for declaring our thinking as developers</li>
+<li>When we implicitly select all columns, if the columns on a table change (eg. we remove a column), then the implementations where we call <code>SELECT *</code> may not be happy with the new dataset returned.
+<ul>
+<li>Maybe the column we just removed was a dependency of that module. If we had manually listed out each column, then the error would have been more clear.</li>
+</ul>
+</li>
+<li>It isn't efficient to retrieve all bytes of data, when we don't even need them all.</li>
+</ul>

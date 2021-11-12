@@ -1,0 +1,39 @@
+<h1 id="declaration-merging"><a aria-hidden="true" class="anchor-heading" href="#declaration-merging"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Declaration Merging</h1>
+<h2 id="overview"><a aria-hidden="true" class="anchor-heading" href="#overview"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Overview</h2>
+<p>A fundamental concept in TS is the language's ability to describe the shape of javascript objects at the type level.</p>
+<ul>
+<li>One example of the implementation of this concept is the idea of <strong>Declaration Merging</strong></li>
+</ul>
+<p>In TS, a declaration creates entities in at least one of three groups: namespace, type, or value.</p>
+<ul>
+<li>Namespace-creating declarations create a namespace, which contains names that are accessed using a dotted notation.</li>
+<li>Type-creating declarations do just that: they create a type that is visible with the declared shape and bound to the given name.</li>
+<li>Value-creating declarations create values that are visible in the output JavaScript.
+<img src="/Digital-Garden/assets/images/2021-04-04-13-05-32.png"></li>
+</ul>
+<h2 id="interface-merging"><a aria-hidden="true" class="anchor-heading" href="#interface-merging"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Interface merging</h2>
+<p>the merge mechanically joins the members of both declarations into a single interface with the same name.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">interface</span> <span class="token class-name"><span class="token maybe-class-name">Box</span></span> <span class="token punctuation">{</span>
+  height<span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">;</span>
+  width<span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">interface</span> <span class="token class-name"><span class="token maybe-class-name">Box</span></span> <span class="token punctuation">{</span>
+  scale<span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">let</span> box<span class="token operator">:</span> <span class="token maybe-class-name">Box</span> <span class="token operator">=</span> <span class="token punctuation">{</span> height<span class="token operator">:</span> <span class="token number">5</span><span class="token punctuation">,</span> width<span class="token operator">:</span> <span class="token number">6</span><span class="token punctuation">,</span> scale<span class="token operator">:</span> <span class="token number">10</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre>
+<p>If 2 objects have a function member with the same name but different signatures, then they will be <a href="/Digital-Garden/notes/109bced0-70d0-4f2d-9ca1-f6bc2fa0602e">overloaded</a>, and both functions will appear on the merged object:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">interface</span> <span class="token class-name"><span class="token maybe-class-name">Cloner</span></span> <span class="token punctuation">{</span>
+  <span class="token function">clone</span><span class="token punctuation">(</span>animal<span class="token operator">:</span> <span class="token maybe-class-name">Animal</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token maybe-class-name">Animal</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">interface</span> <span class="token class-name"><span class="token maybe-class-name">Cloner</span></span> <span class="token punctuation">{</span>
+  <span class="token function">clone</span><span class="token punctuation">(</span>animal<span class="token operator">:</span> <span class="token maybe-class-name">Sheep</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token maybe-class-name">Sheep</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// The two interfaces merged will create a single declaration:</span>
+<span class="token keyword">interface</span> <span class="token class-name"><span class="token maybe-class-name">Cloner</span></span> <span class="token punctuation">{</span>
+  <span class="token function">clone</span><span class="token punctuation">(</span>animal<span class="token operator">:</span> <span class="token maybe-class-name">Animal</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token maybe-class-name">Animal</span><span class="token punctuation">;</span>
+  <span class="token function">clone</span><span class="token punctuation">(</span>animal<span class="token operator">:</span> <span class="token maybe-class-name">Sheep</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token maybe-class-name">Sheep</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+</code></pre>

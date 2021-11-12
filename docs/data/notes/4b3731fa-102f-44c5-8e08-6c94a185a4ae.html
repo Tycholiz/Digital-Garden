@@ -1,0 +1,32 @@
+<h1 id="mvc"><a aria-hidden="true" class="anchor-heading" href="#mvc"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>MVC</h1>
+<h2 id="mvc-1"><a aria-hidden="true" class="anchor-heading" href="#mvc-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>MVC</h2>
+<p>Even with the so-called MVC design pattern, there is some variation between the traditional MVC pattern and its modern interpretation in various programming languages. For example, some MVC–based frameworks will have the view observe the changes in the models, while others will let the controller handle the view update.</p>
+<h3 id="model"><a aria-hidden="true" class="anchor-heading" href="#model"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Model</h3>
+<ul>
+<li>Models represent knowledge. A model could be a single object (rather uninteresting), or it could be some structure of objects.
+<ul>
+<li>There should be a one-to-one correspondence between the model and its parts on the one hand, and the represented world as perceived by the owner of the model on the other hand.</li>
+</ul>
+</li>
+<li>The classes which are used to store and manipulate state, typically in a database of some kind.</li>
+<li>The model retrieves and populates the data.</li>
+<li>When a model changes, typically it will notify its observers that a change has occurred.</li>
+</ul>
+<h3 id="view"><a aria-hidden="true" class="anchor-heading" href="#view"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>View</h3>
+<ul>
+<li>A view is a visual representation of its model. 
+<ul>
+<li>It highlights certain attributes of the model and suppress others. It is thus acting as a presentation filter.</li>
+</ul>
+</li>
+</ul>
+<h3 id="controller"><a aria-hidden="true" class="anchor-heading" href="#controller"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Controller</h3>
+<p>A controller is the link between a user and the system, or the glue between the view and the model. </p>
+<ul>
+<li>The controller updates the view when the model changes. It also adds event listeners to the view and updates the model when the user manipulates the view.</li>
+</ul>
+<p>It provides the user with input by arranging for relevant views to present themselves in appropriate places on the screen. It provides means for user output by presenting the user with menus or other means of giving commands and data. The controller receives such user output, translates it into the appropriate messages and pass these messages on to one or more of the views.</p>
+<ul>
+<li>The brains of the application. The controller decides what the user's input was, how the model needs to change as a result of that input, and which resulting view should be used.</li>
+<li>job is to provide a bit of orchestration between Models and Views</li>
+</ul>

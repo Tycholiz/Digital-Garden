@@ -1,0 +1,49 @@
+<h1 id="timestamp"><a aria-hidden="true" class="anchor-heading" href="#timestamp"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Timestamp</h1>
+<p>For timestamp with time zone, the internally stored value is always in UTC</p>
+<ul>
+<li>An input value that has an explicit time zone specified is converted to UTC using the appropriate offset for that time zone.
+<ul>
+<li>If no time zone is stated in the input string, then the system's TimeZone parameter is used.</li>
+</ul>
+</li>
+</ul>
+<p><code>+00:00</code> indicates an <code>hour:minute</code> timezone offset</p>
+<h3 id="timezone"><a aria-hidden="true" class="anchor-heading" href="#timezone"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Timezone</h3>
+<p>Timezone can be changed like:</p>
+<ul>
+<li><code>set timezone to 'Europe/Paris';</code></li>
+</ul>
+<h3 id="timestamp-vs-timestamptz-with-timezone"><a aria-hidden="true" class="anchor-heading" href="#timestamp-vs-timestamptz-with-timezone"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Timestamp vs Timestamptz (with timezone)</h3>
+<p>Imagine we use <code>timestamptz</code>. Now 2 users that are haflway around the world from each other can insert data into the database, and the same exact timestamp will be recorded.</p>
+<p>Furthermore, the time that appears in our database will actually change if we change the timezone that is set in the pg client:</p>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">set</span> timezone <span class="token keyword">to</span> <span class="token string">'Europe/Paris'</span>
+<span class="token comment">-- ts looks like this: `2021-04-29 17:51:42.316944+02`</span>
+
+<span class="token keyword">set</span> timezone <span class="token keyword">to</span> <span class="token string">'Pacific/Tahiti'</span>
+<span class="token comment">-- ts now looks like this: `2021-04-29 05:54:15.419514-10`</span>
+</code></pre>
+<p>Tstz can be thought of a way of abstracting timezones. If I am looking at a set of data, I can directly compare all timezones because of this normalization.</p>
+<ul>
+<li>ex. <code>2021-04-29 08:51:42.316944-07</code> and <code>2021-04-29 08:52:15.419514-07</code> are the timestamps recorded of 2 users in different timezones, 1 minute apart from each other.</li>
+</ul>
+<p>If you manage an application with users in different time zones and you want to display time in their own local preferred time zone, then you can set timezone in your application code before doing any timestamp related processing, and have PostgreSQL do all the hard work for you.</p>
+<p>Even when using timestamps with time zone, PostgreSQL will not store the time zone in use at input time, so there’s no way from our tstz table to know that the entries are at the same time but just from different places.</p>
+<h3 id="functions"><a aria-hidden="true" class="anchor-heading" href="#functions"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Functions</h3>
+<h6 id="now"><a aria-hidden="true" class="anchor-heading" href="#now"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>now()</h6>
+<ul>
+<li>returns the timestamp of the current transaction.
+<ul>
+<li>Therefore, the result is equal if we call <code>now()</code> in different parts of the transaction.</li>
+</ul>
+</li>
+</ul>
+<h6 id="clock_timestamp"><a aria-hidden="true" class="anchor-heading" href="#clock_timestamp"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>clock_timestamp()</h6>
+<ul>
+<li>returns us the actual timestamp of when the code is being executed.
+<ul>
+<li>Therefore, if we use this in a transaction, the actual time an operation took place <em>will</em> be recorded</li>
+</ul>
+</li>
+</ul>
+<h1 id="references"><a aria-hidden="true" class="anchor-heading" href="#references"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>References</h1>
+<p><a href="https://www.postgresql.org/docs/8.1/datetime-keywords.html#DATETIME-TIMEZONE-SET-TABLE">Timezone List</a></p>

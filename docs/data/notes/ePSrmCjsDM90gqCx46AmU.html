@@ -1,0 +1,41 @@
+<h1 id="directives"><a aria-hidden="true" class="anchor-heading" href="#directives"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Directives</h1>
+<h2 id="matchers"><a aria-hidden="true" class="anchor-heading" href="#matchers"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Matchers</h2>
+<p>A request matcher is used to filter requests.</p>
+<p>Syntax-wise, matchers immediately follow directives</p>
+<h2 id="addresses"><a aria-hidden="true" class="anchor-heading" href="#addresses"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Addresses</h2>
+<p>The address part may be any of these forms:</p>
+<ul>
+<li><code>host</code></li>
+<li><code>host:port</code></li>
+<li><code>:port</code></li>
+<li><code>/path/to/unix/socket</code>
+<ul>
+<li>ex. <code>unix//path/to/socket</code></li>
+</ul>
+</li>
+</ul>
+<p>some config fields may allow us to specify a port range, like <code>:8080-8085</code></p>
+<h2 id="directives-1"><a aria-hidden="true" class="anchor-heading" href="#directives-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Directives</h2>
+<h3 id="root"><a aria-hidden="true" class="anchor-heading" href="#root"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>root</h3>
+<p>sets the root path of the site</p>
+<ul>
+<li>the root path (ie. root directory) holds all the files related to serving an application, whether they are private or public, (with respect to being exposed to the internet).</li>
+</ul>
+<p>specifying multiple <code>root</code>s in the same block is legal. </p>
+<ul>
+<li>Each <code>root</code> directive is mutually exclusive with others in the same block.
+<ul>
+<li>multiple <code>root</code>s will not cascade and overwrite each other.</li>
+</ul>
+</li>
+</ul>
+<p><code>root</code> is usually used together with <code>file_server</code>, since it does not enable serving static files on its own.</p>
+<pre><code>root * /var/www
+</code></pre>
+<h3 id="file_server"><a aria-hidden="true" class="anchor-heading" href="#file_server"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>file_server</h3>
+<p><code>file_server</code> works by taking the request's URI path and appending it onto the root path</p>
+<p>ex. if a user visits <code>https://example.com/jokes</code>
+With the Caddyfile:</p>
+<pre class="language-caddyfile"><code class="language-Caddyfile">root * /var/www
+</code></pre>
+<p>Caddy will serve content from <code>/var/www/jokes</code></p>

@@ -1,0 +1,124 @@
+<h1 id="vim"><a aria-hidden="true" class="anchor-heading" href="#vim"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Vim</h1>
+<h1 id="operators-and-motions"><a aria-hidden="true" class="anchor-heading" href="#operators-and-motions"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Operators and Motions</h1>
+<ul>
+<li>Operator --> Number --> Motion</li>
+</ul>
+<h2 id="operator-verb"><a aria-hidden="true" class="anchor-heading" href="#operator-verb"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>operator (Verb)</h2>
+<ul>
+<li>what we are doing</li>
+<li><strong><em>ex.</em></strong> - <code>d</code>, <code>c</code>, <code>y</code>, <code>f</code>, <code>t</code>
+<ul>
+<li><code>f#</code>/<code>F#</code> - (<em>mn.</em> find)
+<ul>
+<li>inclusively go to first occurrence of <code>#</code> in the line</li>
+<li><code>;</code> to cycle through, <code>,</code> to go backwards</li>
+</ul>
+</li>
+<li><code>t#</code>/<code>T#</code> - (<em>mn.</em> til)
+<ul>
+<li>exclusively go to first occurrence of <code>#</code> in the line</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="modifier"><a aria-hidden="true" class="anchor-heading" href="#modifier"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Modifier</h2>
+<ul>
+<li>more specific information about the modifier</li>
+<li><strong><em>ex.</em></strong> - <code>i</code> (inside), <code>a</code> (around)</li>
+</ul>
+<p>Combine with numbers to further specify text objects</p>
+<ul>
+<li><strong><em>ex.</em></strong> - <code>d2f:</code> - delete until the second <code>:</code> character</li>
+<li><strong><em>ex.</em></strong> - <code>d2/:&#x3C;cr></code> - delete until the second <code>:</code> character</li>
+</ul>
+<h2 id="motion-noun---what-we-are-operating-on"><a aria-hidden="true" class="anchor-heading" href="#motion-noun---what-we-are-operating-on"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>motion (noun) - what we are operating on</h2>
+<ul>
+<li><strong><em>ex.</em></strong> - <code>$</code>, <code>0</code>, <code>w</code>, <code>e</code>, <code>b</code></li>
+</ul>
+<hr>
+<h1 id="strat-submodules"><a aria-hidden="true" class="anchor-heading" href="#strat-submodules"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>strat submodules</h1>
+<p>Structure the vim module from the perspective of a user who is trying to accomplish a certain task in vim.</p>
+<ul>
+<li>
+<p>Are they trying to substitute all occurrences in a file?</p>
+</li>
+<li>
+<p>are they trying to modify text in some way (surround, uppercase, )</p>
+</li>
+<li>
+<p>nav (moving the cursor around)</p>
+<ul>
+<li>line
+<ul>
+<li>search</li>
+<li>find</li>
+</ul>
+</li>
+<li>buffer
+<ul>
+<li>search</li>
+</ul>
+</li>
+<li>windows</li>
+<li>tree
+<ul>
+<li>netrw</li>
+<li>MRU</li>
+<li>
+<c-6>
+</c-6></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>modify</p>
+<ul>
+<li>surround</li>
+<li>substitute
+<ul>
+<li>greplace</li>
+</ul>
+</li>
+<li>uppercase</li>
+</ul>
+</li>
+<li>
+<p>feat</p>
+<ul>
+<li>marks</li>
+<li>macro</li>
+<li>shell (execute shell commands)</li>
+</ul>
+</li>
+<li>
+<p>plug</p>
+<ul>
+<li>fzf</li>
+<li>fugitive</li>
+<li>guter (git-gutter)</li>
+</ul>
+</li>
+<li>
+<p>repeating</p>
+</li>
+</ul>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/e4b8bd71-4f1d-4012-a17b-7b3022dc48ab">Cmds</a></li>
+<li><a href="/Digital-Garden/notes/ee17da05-fd4b-4e3e-a440-915c8edb0820">Config</a></li>
+<li><a href="/Digital-Garden/notes/a7f905c5-18dc-4e64-b1a2-c216f17ccd30">Feat</a></li>
+<li><a href="/Digital-Garden/notes/2738937e-273a-4dd1-81a9-267eab7a907e">Fugitive</a></li>
+<li><a href="/Digital-Garden/notes/fe9c7071-18c8-4602-a1b7-567994079ee9">Help</a></li>
+<li><a href="/Digital-Garden/notes/a400153d-01d1-4d41-8e98-b8afacb8289f">Inner</a></li>
+<li><a href="/Digital-Garden/notes/eaa7919d-abb6-4266-bd80-a43917e4ca91">Innner</a></li>
+<li><a href="/Digital-Garden/notes/b79cca0c-d7cd-4513-a338-361d64925267">Modes</a></li>
+<li><a href="/Digital-Garden/notes/b0f9ffe8-9af0-423c-9021-07f026cbbce7">Nav</a></li>
+<li><a href="/Digital-Garden/notes/859081c5-87e5-4585-abcf-520f2d874947">Plug</a></li>
+<li><a href="/Digital-Garden/notes/54dad762-b422-43ad-85ed-4b400cd8a19f">Regex</a></li>
+<li><a href="/Digital-Garden/notes/ef420c39-c187-420e-8fad-43f48bc3537b">Search</a></li>
+<li><a href="/Digital-Garden/notes/6781b217-909f-420b-a7b3-94bc18ecc845">Settings</a></li>
+<li><a href="/Digital-Garden/notes/19b2537b-3924-4e23-a63c-77b3df0d338c">Substitution</a></li>
+</ol>

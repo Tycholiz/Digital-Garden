@@ -1,0 +1,27 @@
+<h1 id="passport"><a aria-hidden="true" class="anchor-heading" href="#passport"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Passport</h1>
+<h2 id="serializingdeserializing"><a aria-hidden="true" class="anchor-heading" href="#serializingdeserializing"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Serializing/Deserializing</h2>
+<pre><code>passport.serializeUser(function(user, done) {
+    done(null, user.id); 
+   // where is this user.id going? Are we supposed to access this anywhere?
+});
+
+// used to deserialize the user
+passport.deserializeUser(function(id, done) {
+    User.findById(id, function(err, user) {
+        done(err, user);
+    });
+});
+</code></pre>
+<ul>
+<li>the <code>user.id</code> we pass as an arg to <code>done</code> (inside <code>serializeUser</code>) is saved in the session. We can later use it to retrieve the whole user object (<code>deseralizeUser</code>)</li>
+<li><code>serializeUser</code> determined which data in the <code>User</code> object shoould be saved in the session 
+<ul>
+<li>the result of <code>serializeUser</code> is attached to the session as <code>req.session.passport.user</code></li>
+</ul>
+</li>
+<li>the <code>id</code> that is passed to <code>deseralizeUser</code> is used to find the session object that has already been stored. The key it looks for is the same key provided to the <code>done</code> funtion in <code>serializeUser</code>
+<ul>
+<li>the fetched object is attached to the request object as <code>req.user</code></li>
+</ul>
+</li>
+</ul>

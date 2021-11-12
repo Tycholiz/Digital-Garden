@@ -1,0 +1,17 @@
+<h1 id="cook"><a aria-hidden="true" class="anchor-heading" href="#cook"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Cook</h1>
+<h4 id="object-where-keys-are-integers-as-string"><a aria-hidden="true" class="anchor-heading" href="#object-where-keys-are-integers-as-string"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Object where keys are integers as string</h4>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">interface</span> <span class="token class-name"><span class="token maybe-class-name">IDictionary</span><span class="token operator">&#x3C;</span><span class="token maybe-class-name">TValue</span><span class="token operator">></span></span> <span class="token punctuation">{</span>
+    <span class="token punctuation">[</span>id<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">]</span><span class="token operator">:</span> <span class="token maybe-class-name">TValue</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// later</span>
+<span class="token keyword">const</span> myObject<span class="token operator">:</span> <span class="token maybe-class-name">IDictionary</span><span class="token operator">&#x3C;</span><span class="token builtin">string</span><span class="token operator">></span> <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token string">"0"</span><span class="token operator">:</span> <span class="token string">"teleport"</span> <span class="token punctuation">}</span>
+</code></pre>
+<h3 id="object-where-keys-are-not-known-ahead-of-time"><a aria-hidden="true" class="anchor-heading" href="#object-where-keys-are-not-known-ahead-of-time"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Object where keys are not known ahead of time</h3>
+<p><a href="https://stackoverflow.com/questions/12710905/how-do-i-dynamically-assign-properties-to-an-object-in-typescript#answer-44441178">source</a></p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">const</span> constants<span class="token operator">:</span> <span class="token maybe-class-name">Record</span><span class="token operator">&#x3C;</span><span class="token builtin">string</span><span class="token punctuation">,</span> <span class="token builtin">any</span><span class="token operator">></span> <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+constants<span class="token punctuation">.</span><span class="token property-access">dendronTechUrl</span> <span class="token operator">=</span> <span class="token string">'https://tycholiz.github.io/Digital-Garden/'</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> constants
+</code></pre>

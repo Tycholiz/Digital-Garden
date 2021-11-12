@@ -1,0 +1,4 @@
+<h1 id="drawer"><a aria-hidden="true" class="anchor-heading" href="#drawer"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Drawer</h1>
+<p>Have your state management system keep track of whether the drawer is open or not. Use that state to determine the transform position of the drawer:</p>
+<pre><code>transform: ${({ isOpen }) => isOpen ? 'translateX(0)' : 'translateX(-100%)'};
+</code></pre>

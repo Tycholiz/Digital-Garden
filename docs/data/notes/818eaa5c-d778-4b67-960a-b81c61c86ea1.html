@@ -1,0 +1,22 @@
+<h1 id="deploy"><a aria-hidden="true" class="anchor-heading" href="#deploy"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Deploy</h1>
+<h2 id="centralized-vs-distributed-git"><a aria-hidden="true" class="anchor-heading" href="#centralized-vs-distributed-git"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Centralized vs Distributed Git</h2>
+<ul>
+<li>we can run Git in a centralized system, where we have a git repo on a central server. All contributors must push and pull to the same repo for progress on the project to be made.
+<ul>
+<li>A concern with this is that for anyone to be able to contribute, they must have access to the entire project. Therefore you cannot maintain control with a centralized workflow.
+<ul>
+<li>This may not be a concern, if there are 2 or 3 people working on a project.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>With an integrator workflow, everyone has their own private repo and public repo. When a contributor wants to add their changes, they push to their own public repo. From there, we can pull their changes into our local repo to ensure everything works as expected. If everything is good, we merge them into our local branch, then push that branch to the main repo. From there, everyone can pull those changes.
+<ul>
+<li>with this workflow, everyone pulls from a single official repo, but pushes to their own public repo.</li>
+</ul>
+</li>
+</ul>
+<p>Centralized:
+<img src="/Digital-Garden/assets/images/2021-03-11-15-39-35.png">
+Distributed:
+<img src="/Digital-Garden/assets/images/2021-03-11-15-39-48.png"></p>

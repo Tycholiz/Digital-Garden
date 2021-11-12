@@ -1,0 +1,14 @@
+<h1 id="fat"><a aria-hidden="true" class="anchor-heading" href="#fat"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Fat</h1>
+<h2 id="fat-file-allocation-table"><a aria-hidden="true" class="anchor-heading" href="#fat-file-allocation-table"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>FAT (File Allocation Table)</h2>
+<ul>
+<li>the FAT filesystem uses an index table stored on the device to identify chains of data storage that are associated with a single file. </li>
+<li>the table is a linked list of entries for each cluster
+<pre><code>- a cluster is an atomic unit of space on a hard disk that can be allocated to hold files.
+	- Storing small files on a filesystem with large clusters will therefore waste disk space (slack space)
+- being a linked list, each entry contains either the number of the next cluster in the file, or else a marker indicating the end of the file, unused disk space, or special reserved areas of the disk.
+	- also, the root directory of the disk contains the number of the first cluster of each file in that directory
+	- this enables the operating system to traverse the FAT, looking up the cluster number of each successive part of the disk file as a cluster chain until the end of the file is reached
+	- Sub-directories are implemented as special files containing the directory entries of their respective files.
+</code></pre>
+FAT is a legacy system, and is supported for backward-compatability reasons</li>
+</ul>

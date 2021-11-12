@@ -1,0 +1,264 @@
+<h1 id="aws"><a aria-hidden="true" class="anchor-heading" href="#aws"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Aws</h1>
+<h1 id="lambda"><a aria-hidden="true" class="anchor-heading" href="#lambda"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Lambda</h1>
+<p>like an anonymous function (or a callback) that runs code in response to events.</p>
+<ul>
+<li>Think of them like event handlers, but for web services, not components within a webpage</li>
+</ul>
+<p>Effectively, everything is abstracted away aside from a function interface.</p>
+<p>If EC2 is a complete computer in the cloud, Lambda is a code runner in the cloud.</p>
+<ul>
+<li>With EC2 you get an OS, a file system, access to the server’s hardware, etc. </li>
+<li>With Lambda, you just upload some code and Amazon runs it for you.</li>
+</ul>
+<h3 id="when-to-use"><a aria-hidden="true" class="anchor-heading" href="#when-to-use"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>When to use</h3>
+<p>Lambda is most suitable for small snippets of code that rarely change.</p>
+<ul>
+<li>think of Lambda functions as part of the infrastructure rather than part of the application</li>
+</ul>
+<p>Lambda can be used as a plugin system for other AWS services, for example:</p>
+<ul>
+<li>S3 doesn’t come with an API to resize an image after uploading it to a bucket, but with Lambda, you can add that capability to S3.</li>
+</ul>
+<h3 id="limitations"><a aria-hidden="true" class="anchor-heading" href="#limitations"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Limitations</h3>
+<ul>
+<li>Your functions will suffer a cold start when a function is invoked after a period of inactivity</li>
+<li>limit of 250 MB for your code bundle, including all your dependencies</li>
+</ul>
+<h1 id="ec2-elastic-compute-cloud"><a aria-hidden="true" class="anchor-heading" href="#ec2-elastic-compute-cloud"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>EC2 (Elastic Compute Cloud)</h1>
+<p>An instance of EC2 is a VM on an AWS server
+The nice thing about EC2 is that the computer you get will be very similar to the computer you use to develop your software. If you can run your software on your computer, you can almost certainly run it on EC2 without any changes.</p>
+<ul>
+<li>This is one of EC2’s main advantages compared to other types of compute platforms (such as Lambda): you don’t have to adapt your application to your host.</li>
+</ul>
+<p>Elastic refers to the fact that it can scale up/down as needed automatically</p>
+<p>EC2 has dozens of options you will probably never need, and thus it comes with sensible defaults.</p>
+<ul>
+<li>This is the result of the highly varied workloads and use cases serviced by EC2</li>
+</ul>
+<p>Selecting an instance type will be the most consequential decision when provisioning an EC2 instance.</p>
+<ul>
+<li>There are 256+, and can be narrowed to a few categories, defined by what they're optimized for:
+<ul>
+<li>CPU</li>
+<li>Memory</li>
+<li>Network</li>
+<li>Storage</li>
+</ul>
+</li>
+</ul>
+<p>If you were building your own server, there would be an infinite number of ways to configure it, but with EC2 you get to pick an instance type from its catalog.</p>
+<ul>
+<li>This is the tradeoff you make as opposed to getting you build your own server, but most likely it shouldn't even be a concern.</li>
+</ul>
+<h3 id="security"><a aria-hidden="true" class="anchor-heading" href="#security"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Security</h3>
+<p>the defaults are sensible, but we may have to modify:</p>
+<ul>
+<li>The security group
+<ul>
+<li>You can think of security groups as individual firewalls for your instances. With security groups, you can control what goes in and out of your instances.</li>
+</ul>
+</li>
+<li>The VPC ACL.
+<ul>
+<li>You can think of VPC ACL as a network firewall. With the VPC ACL, you can control what goes in and out of your network.</li>
+</ul>
+</li>
+</ul>
+<h3 id="scaling"><a aria-hidden="true" class="anchor-heading" href="#scaling"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Scaling</h3>
+<p>The auto part of Auto Scaling allows us to automatically add/remove EC2 instances (therefore horizontal scaling). In theory it works, but is often impractical.
+The main premise of Auto Scaling is that once you decide how much headroom you want, you’ll be able to make that headroom a constant size</p>
+<p>Unless the following 2 are true, then it's probably not worth messing around with auto-scaling:</p>
+<ul>
+<li>Are your EC2 costs high enough that any reduction in usage will be materially significant?</li>
+<li>If your EC2 bill were to go down by 30%—would that be a big deal for your business?</li>
+</ul>
+<h4 id="how-many-ec2-instances-to-run"><a aria-hidden="true" class="anchor-heading" href="#how-many-ec2-instances-to-run"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>How many EC2 instances to run?</h4>
+<p>Capacity Headroom - we need to have a buffer between the expected peak demand and the maximum capacity that our system can handle.</p>
+<p>Pricing</p>
+<ul>
+<li>only pay for the number of seconds your instance is running.</li>
+</ul>
+<h1 id="elb-elastic-load-balancing"><a aria-hidden="true" class="anchor-heading" href="#elb-elastic-load-balancing"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>ELB (Elastic Load Balancing)</h1>
+<p>Comes in 3 variants:</p>
+<ul>
+<li>Classic 
+<ul>
+<li>Legacy software.</li>
+</ul>
+</li>
+<li>Application (ALB)
+<ul>
+<li>a proper reverse proxy that sits between the internet and your application</li>
+<li>Every request to your application gets handled by the load balancer first. The load balancer then makes another request to your application and finally forwards the response from your application to the caller.</li>
+</ul>
+</li>
+<li>Network (NLB)
+<ul>
+<li>behave like load balancers, but they work by routing network packets rather than by proxying HTTP requests</li>
+</ul>
+</li>
+</ul>
+<h1 id="s3-simple-storage-service"><a aria-hidden="true" class="anchor-heading" href="#s3-simple-storage-service"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>S3 (Simple Storage Service)</h1>
+<p>Fundamentally, you can think of S3 as a highly-durable hash table in the cloud. </p>
+<ul>
+<li>The key can be any string, and </li>
+<li>the value any blob/object of data up to 5 TB.</li>
+</ul>
+<p>Object storage is used for purposes such as storing photos on Facebook, songs on Spotify, or files in online collaboration services, such as Dropbox.</p>
+<p>Data gets streamed at a rate of around 90 MB/s.</p>
+<p>You can have as many parallel uploads and downloads as you want, thus, the infinite bandwidth.</p>
+<p>S3 offers built-in redundancy.</p>
+<p>At first you can start with the default storage class and ignore all the other classes. Don't bother with the implications of the different storage classes until you really need to start saving money from S3 storage costs.</p>
+<h3 id="limitations-1"><a aria-hidden="true" class="anchor-heading" href="#limitations-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Limitations</h3>
+<ul>
+<li>
+<p>cannot append to objects.</p>
+</li>
+<li>
+<p>It doesn’t support HTTPS when used as a static website host, so you cannot host static websites</p>
+</li>
+<li>
+<p>Alternatives: Azure Blob</p>
+</li>
+</ul>
+<p>Pricing
+$23.55/TB/month
+$5/million uploads and $0.40/million downloads</p>
+<h1 id="fargate"><a aria-hidden="true" class="anchor-heading" href="#fargate"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Fargate</h1>
+<ul>
+<li>serverless compute engine for containers</li>
+<li>adds about 20% in price, but removes a lot of the admin overhead</li>
+<li>removes the need to provision and manage servers
+<ul>
+<li>don't have to worry about scaling, patching, securing, and managing servers</li>
+</ul>
+</li>
+<li>Fargate automates how much computing power you need and will scale up/down automatically</li>
+<li>with Fargate, you only interact with your containers
+<img src="/Digital-Garden/assets/images/2021-03-08-21-25-27.png"></li>
+</ul>
+<h1 id="rds-relational-database-service"><a aria-hidden="true" class="anchor-heading" href="#rds-relational-database-service"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>RDS (Relational Database Service)</h1>
+<ul>
+<li>databases shouldn't be run in a container</li>
+<li>by default will spin up a single instance in a single availability zone
+<ul>
+<li>if we want more redundancy, we can add an active backup instance</li>
+</ul>
+</li>
+<li>doesn't support downloading postgres extensions</li>
+</ul>
+<h1 id="amplify"><a aria-hidden="true" class="anchor-heading" href="#amplify"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Amplify</h1>
+<ul>
+<li>toolbox for front-end/mobile development, with some overlap with Firebase
+<ul>
+<li>ex. tools for creating onboarding flow, tools for implementing AI/ML features, tools for auth </li>
+</ul>
+</li>
+<li>also includes tools to help implement cloud-based features in the app</li>
+<li>includes tools to make real-time apps (ex. news feed, chat)</li>
+</ul>
+<h1 id="elastic-beanstalk"><a aria-hidden="true" class="anchor-heading" href="#elastic-beanstalk"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Elastic Beanstalk</h1>
+<p>Purpose is to deploy + scale web apps/services built with common web languages (Javascript, PHP etc) onto webservers like Nginx/Apache</p>
+<ul>
+<li>Elastic beanstalk hosts all the services needed for deployment/scaling</li>
+</ul>
+<p>Handles things like:</p>
+<ul>
+<li>Provisioning services</li>
+<li>loadbalancing</li>
+<li>scaling infra</li>
+<li>updating platform with latest patches</li>
+<li>app health monitoring</li>
+</ul>
+<p>Also allows us to reimplement portions of the code as containerized services, allowing us to achieve a more <a href="/Digital-Garden/notes/0ZcWOP1WGOQ0aJ06">distributed</a> architectural design</p>
+<p>Allows to retain control over the resources powering your application, so you can decide on how much you want to manage.</p>
+<p>Alternatives: Azure App Service, Google Cloud App Engine</p>
+<h3 id="process"><a aria-hidden="true" class="anchor-heading" href="#process"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Process</h3>
+<ol>
+<li>upload source code bundle to Elastic Beanstalk console</li>
+<li>Elastic Beanstalk return a new URL for the webapp</li>
+</ol>
+<h1 id="dynamodb"><a aria-hidden="true" class="anchor-heading" href="#dynamodb"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>DynamoDB</h1>
+<p>Data is stored as a partitioned B-Tree.
+Unlike Redis, in that it is immediately consistent and highly-durable, centered around that single data structure.</p>
+<ul>
+<li>If you put something into DynamoDB, you’ll be able to read it back immediately and, for all practical purposes, you can assume that what you have put will never get lost.</li>
+</ul>
+<p>DynamoDB data is schemaless. The DB engine can manage structured or semi-structured data, including JSON documents.
+Fully managed.
+supports key–value and document data structures
+The general rule of thumb is to choose Dynamo for low throughput apps as writes are expensive and consistent reads are twice the cost of eventually consistent reads
+High vendor lock-in.
+provides seamless integration with services such as Redshift (large scale data analysis), Cognito (identity pools), Elastic Map Reduce (EMR), Data Pipeline, Kinesis, and S3. Also, has tight integration with AWS lambda via Streams and aligns with the server-less philosophy; automatic scaling according to your application load, pay-per-what-you-use pricing, easy to get started with, and no servers to manage. </p>
+<p>When to use DynamoDB?</p>
+<ul>
+<li>In case you are looking for a database that can handle simple key-value queries but those queries are very large in number</li>
+<li>In case you are working with OLTP workload like online ticket booking or banking where the data needs to be highly consistent</li>
+</ul>
+<p>When not to use DynamoDB?</p>
+<ul>
+<li>In cases where you have to do computations on the data. 
+<ul>
+<li>Relational databases run their queries close to the data, so if you’re trying to calculate the sum total value of orders per customer, then that rollup gets done while reading the data, and only the final summary (one row per customer) gets sent over the network. However, if you were to do this with DynamoDB, you’d have to get all the customer orders (one row per order), which involves a lot more data over the network, and then you have to do the rollup in your application, which is far away from the data.</li>
+</ul>
+</li>
+</ul>
+<p>Pricing
+$256/TB/month</p>
+<p>By default, you should start with DynamoDB’s on-demand pricing and only consider the provisioned capacity as cost optimization. On-demand costs $1.25 per million writes, and $0.25 per million reads.</p>
+<ul>
+<li>Then, if your usage grows significantly, you will almost always want to consider moving to provisioned capacity (significant cost savings).</li>
+<li>if you believe that on-demand pricing is too expensive, then DynamoDB will very likely be too expensive, even with provisioned capacity. In that case, you might want to consider a relational database.</li>
+</ul>
+<h1 id="cloudformation"><a aria-hidden="true" class="anchor-heading" href="#cloudformation"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>CloudFormation</h1>
+<p>When working in AWS, you almost always want to use some CloudFormation (or a similar tool).
+lets you create and update the things you have in AWS without having to click around on the console or write fragile scripts.</p>
+<ul>
+<li>for instance, gives us the ability to tear down everything cleanly and recreate your AWS set up in one click</li>
+</ul>
+<p>rule of thumb is to let CloudFormation deal with all the AWS things that are either static or change very rarely, like load balancers, deployment pipelines, VPC configs, security groups</p>
+<h3 id="overview"><a aria-hidden="true" class="anchor-heading" href="#overview"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Overview</h3>
+<ul>
+<li>define your AWS resources as a YAML script</li>
+<li>point CloudFormation to your AWS account, and it creates all the resources you defined idempotently.</li>
+<li>Updates can be rolled back.</li>
+</ul>
+<h1 id="sqs-simple-queue-service"><a aria-hidden="true" class="anchor-heading" href="#sqs-simple-queue-service"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>SQS (Simple Queue Service)</h1>
+<p>highly-durable queue in the cloud</p>
+<ul>
+<li>put messages on one end, and a consumer takes them out from the other side.
+Messages are consumed <em>almost</em> in FIFO, but there is no strictness to adhere to this.</li>
+<li>Strictness <em>can</em> be guaranteed, but there is a performance cost.</li>
+</ul>
+<p>SQS requires zero capacity management.</p>
+<ul>
+<li>no limit on the rate of messages enqueued or consumed</li>
+<li>don’t have to worry about any throttling limits.</li>
+<li>number of messages stored in SQS (the backlog size) is also unlimited.</li>
+</ul>
+<p>great default choice for dispatching asynchronous work.</p>
+<h1 id="kinesis"><a aria-hidden="true" class="anchor-heading" href="#kinesis"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Kinesis</h1>
+<p>A highly-durable linked list in the cloud</p>
+<p>Use-cases are similar to SQS—you would typically use either Kinesis or SQS when you want to enqueue records for asynchronous processing.</p>
+<p>Difference with SQS:</p>
+<ul>
+<li>SQS can only have one consumer, while Kinesis can have many.</li>
+<li>Once an SQS message gets consumed, it gets deleted from the queue. But Kinesis records get added to a list in a stable order, and any number of consumers can read a copy of the stream by keeping a cursor over this never-ending list.</li>
+<li>Multiple consumers don’t affect each other, and if one falls behind, it doesn’t slow down the other consumers.</li>
+<li>Whenever consumers read data out of Kinesis, they will always get their records in the same order.</li>
+<li>Often cheaper than SQS</li>
+<li>Kinesis can carry a significant operational burden with the need to provision capacity (shards).</li>
+</ul>
+<h1 id="cloudfront"><a aria-hidden="true" class="anchor-heading" href="#cloudfront"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>CloudFront</h1>
+<p>CloudFront is a CDN in AWS which operates at Edge Locations around the world closer to the users. It can cache the static assets and deliver them to the end-users quite fast.</p>
+<p>Lambda Edge functions run here</p>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/dfab2e99-6155-482d-a598-8b8cc11f7ddc">Nosql</a></li>
+</ul>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/9de1b0f8-ba4e-428c-8b35-f05c5788214b">Ecs</a></li>
+</ol>

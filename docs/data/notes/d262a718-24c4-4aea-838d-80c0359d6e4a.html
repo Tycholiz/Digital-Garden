@@ -1,0 +1,16 @@
+<h1 id="order-by"><a aria-hidden="true" class="anchor-heading" href="#order-by"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Order by</h1>
+<p>order by the column name.</p>
+<ul>
+<li>SQL doesn't guarantee any ordering of the result set of any query except when you use ORDER BY</li>
+<li>you can use <code>order by 1</code> to sort the view or table by 1st column of query's result.</li>
+</ul>
+<h2 id="implementing-knn-k-nearest-neighbors"><a aria-hidden="true" class="anchor-heading" href="#implementing-knn-k-nearest-neighbors"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Implementing kNN (<em>k</em> nearest neighbors)</h2>
+<p>Suppose we want to order a list of cities by their distance to Paris:</p>
+<ul>
+<li>note: <code>&#x3C;-></code> operator is "distance between"</li>
+</ul>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">select</span> name<span class="token punctuation">,</span> location<span class="token punctuation">,</span> country
+    <span class="token keyword">from</span> circuits
+<span class="token keyword">order</span> <span class="token keyword">by</span> <span class="token keyword">point</span><span class="token punctuation">(</span>lng<span class="token punctuation">,</span>lat<span class="token punctuation">)</span> <span class="token operator">&#x3C;</span><span class="token operator">-</span><span class="token operator">></span> <span class="token keyword">point</span><span class="token punctuation">(</span><span class="token number">2.349014</span><span class="token punctuation">,</span> <span class="token number">48.864716</span><span class="token punctuation">)</span>
+   <span class="token keyword">limit</span> <span class="token number">10</span><span class="token punctuation">;</span>
+</code></pre>

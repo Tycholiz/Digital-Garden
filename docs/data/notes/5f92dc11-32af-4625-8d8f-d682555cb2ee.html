@@ -1,0 +1,7 @@
+<h1 id="adb"><a aria-hidden="true" class="anchor-heading" href="#adb"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Adb</h1>
+<h1 id="adb-reverse-and-port-forwarding"><a aria-hidden="true" class="anchor-heading" href="#adb-reverse-and-port-forwarding"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Adb reverse and port forwarding</h1>
+<p><code>adb -s 192.168.76.101:5555 reverse tcp:8081 tcp:8081</code>
+In either case, it's basically just port forwarding. It's probably called "reverse" because it's actually setting up a "reverse proxy" in which a http server running on your phone accepts connections on a port and wires them to your computer... Or vice versa. The port is specified twice because you have the ability to control the listening port on both sides of the proxy.</p>
+<p>When the RN packager is running, there is an active web server accessible in your browser at 127.0.0.1:8081. It's from this server that the JS bundle for your application is served and refreshed as you make changes. Without the reverse proxy, your phone wouldn't be able to connect to that address.</p>
+<p>Now when your phone tries to access http://localhost:3000/ your request will be routed to localhost:3000 of your laptop. Just recompile your app to use localhost:3000 as the API endpoint.</p>
+<p>if we had written <code>adb reverse tcp:80 tcp:3000</code>, it would redirect your phone’s port 80 to your computer’s port 3000</p>

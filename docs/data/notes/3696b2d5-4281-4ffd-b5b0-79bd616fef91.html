@@ -1,0 +1,99 @@
+<h1 id="keys"><a aria-hidden="true" class="anchor-heading" href="#keys"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Keys</h1>
+<h2 id="keys-1"><a aria-hidden="true" class="anchor-heading" href="#keys-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Keys</h2>
+<h3 id="primary-key"><a aria-hidden="true" class="anchor-heading" href="#primary-key"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Primary Key</h3>
+<ul>
+<li>a foreign key of a table can also be made into its PK
+<ul>
+<li>ex. Imagine we had a <code>public.user</code> table that held more public info about a user like <code>username</code>, <code>interests</code>, and a <code>private.user_account</code> which held sensitive info like <code>password</code> and <code>email</code>. Since it is logical to think of the <code>user_account</code> table as just an extension of the <code>user</code> table, we can simply use the already existing <code>id</code> from the <code>user</code> table, and make <code>user_id</code> the primary key of <code>user_account</code>, which references the <code>user</code> table.</li>
+</ul>
+</li>
+<li>PK is a type of candidate key.</li>
+</ul>
+<h4 id="surrogate-key"><a aria-hidden="true" class="anchor-heading" href="#surrogate-key"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Surrogate Key</h4>
+<ul>
+<li>A surrogate key is a (likely automatically generated) primary key that is chosen because there is nothing else that uniquely identifies a row. Put another way, the only reason it exists is for the purposes of our database.
+<ul>
+<li>By contrast, a key that actually means something outside our database (ex. an item SKU)</li>
+</ul>
+</li>
+<li>The danger in just relying on surrogate keys is if we have a situation where there are other columns that should uniquely identify the row, then it leaves us open to developer error
+<ul>
+<li>ex. what if we have an <code>items</code> table, and 2 rows are <code>id</code> and <code>SKU</code>. There's nothing stopping us from inputting the same SKU twice, which result in a duplicated row with different ids.</li>
+</ul>
+</li>
+</ul>
+<h3 id="foreign-key"><a aria-hidden="true" class="anchor-heading" href="#foreign-key"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Foreign Key</h3>
+<ul>
+<li>for foreign keys, we definitely want one column to uniquely identify a row (likely a primary key), otherwise we would have to reference multiple columns in the other table.</li>
+<li>foreign keys can reference tables or columns</li>
+<li>the foreign key is on the many side of a 1:many relationship</li>
+<li>foreign keys are not unique</li>
+<li>foreign keys can be null</li>
+</ul>
+<h3 id="candidate-key"><a aria-hidden="true" class="anchor-heading" href="#candidate-key"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Candidate key</h3>
+<ul>
+<li>a column or combination of columns that uniquely identifies a row.
+<ul>
+<li>ex. if the rules of our application dictated that emails in the db must be unique, then email could qualify as a candidate key </li>
+</ul>
+</li>
+<li>Any column or column combination that can guarantee uniqueness is referred to as a <em>candidate key</em>
+<ul>
+<li>if this uniqueness is achieved by 2 or more columns, then it is referred to as a composite key. Therefore, composite key is a type of candidate key.</li>
+</ul>
+</li>
+</ul>
+<h4 id="differences-with-pk"><a aria-hidden="true" class="anchor-heading" href="#differences-with-pk"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Differences with PK</h4>
+<ul>
+<li>a table can have multiple candidate keys.</li>
+<li>candidate key column(s) can have null values</li>
+</ul>
+<h4 id="composite-key"><a aria-hidden="true" class="anchor-heading" href="#composite-key"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Composite key</h4>
+<ul>
+<li>If a table does not have a single column that qualifies for a Candidate key, then you have to select 2 or more columns to make a row unique
+<ul>
+<li>ex. if no EmployeeID or SocialSecurityNumber that could qualify as a candidate key, then you can make FullName + DoB as composite primary key (though there is small risk of duplication still)</li>
+</ul>
+</li>
+<li>Using composite keys could save us from having to perform lookups before making insertions.</li>
+</ul>
+<h3 id="super-key"><a aria-hidden="true" class="anchor-heading" href="#super-key"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Super key</h3>
+<ul>
+<li>if you add any column to a PK, then it becomes a super key
+<ul>
+<li>ex. EmployeeID + FullName</li>
+</ul>
+</li>
+</ul>
+<h2 id="constraining-tables"><a aria-hidden="true" class="anchor-heading" href="#constraining-tables"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Constraining tables</h2>
+<ul>
+<li>foreign key constraints ensure that there is another table in existence that has the same column-value
+<ul>
+<li>ex. if we have an attribute <code>product_no</code> in an Order table, then we should expect that attribute to reference an <code>id</code> from a Product table</li>
+<li>maintains the referential integrity between two related tables</li>
+</ul>
+</li>
+<li>when we create a foreign key, we essentially are saying "a row cannot be entered into this table, unless we have an established reference to the other table"
+<ul>
+<li>in other words, if the id in the other table (the <em>referenced table</em>) doesn't exist, then neither can the row in the <em>referencing table</em> (the table with the FK) </li>
+</ul>
+</li>
+</ul>
+<h2 id="constraining-columns"><a aria-hidden="true" class="anchor-heading" href="#constraining-columns"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Constraining columns</h2>
+<ul>
+<li>below, we reference columns <code>c1</code> and <code>c2</code> from <code>table2</code>, calling the <code>b</code> and <code>c</code> in our table (<code>table1</code>)</li>
+</ul>
+<pre><code>CREATE TABLE table` (
+  a integer PRIMARY KEY,
+  b integer,
+  c integer,
+  FOREIGN KEY (b, c) REFERENCES table2 (c1, c2)
+);
+</code></pre>
+<p>1:1 and 1:many relationships are achieved by the use of key contraints (foreign keys)</p>
+<ul>
+<li>ex. User table with an <code>id</code> (PK) property can be used as the value for the <code>owner_id</code> (FK) property on the Nugget table</li>
+</ul>
+<h3 id="shoestore-example"><a aria-hidden="true" class="anchor-heading" href="#shoestore-example"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Shoestore example</h3>
+<p>Lets start with a  sensible table: <code>product</code> (ex. Air, Jordans). Since we are going to keeping inventory in the store, we will need actual instances of those shoes, which we can call the <code>item</code> table. For instance, this table will hold the information about the shoe's size, its particular color, its price etc. (All of this information is specific to a shoe instance, and doesn't make sense to be included in the product table). Next, we might be tempted to add a column to the <code>product</code> table indicating what type of shoe it is (business, running etc). What we would find when querying data however, is that 'business' would be repeated many times, which is a sign that it should be its own table. So we create a table called <code>product_type</code> and relate it to the <code>product</code> table with ids. Next, we will have to consider that we will have to store data on the actual sale of the item (called <code>sales_item</code>). There is a distinct but important difference between difference between the <code>item</code> table and the <code>sales_item</code>. <code>item</code> is a table that includes the actual instances of the shoe in inventory. <code>sales_item</code> is the item that is being sold. Therefore, it is going to be part of another table <code>sales_order</code>. In <code>sales_item</code>, we will include information like the specific tax rate that was used (since different people are subject to different tax rates), the discount that was applied, the quantity bought etc. Next, in our <code>sales_order</code> table, we will include the form of payment (credit, cash), what time the order was placed etc.
+<img src="/Digital-Garden/:/7d7f11b898814196afe51643fe2a6f8d" alt="8da5a5b7c2d3633de044d693884219ee.png"></p>

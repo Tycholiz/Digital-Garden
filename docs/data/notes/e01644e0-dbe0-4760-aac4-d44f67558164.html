@@ -1,0 +1,32 @@
+<h1 id="interface"><a aria-hidden="true" class="anchor-heading" href="#interface"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Interface</h1>
+<p>An interface fulfills the principle of "duck typing"</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">interface</span> <span class="token class-name">inputObjectI</span> <span class="token operator">=</span> <span class="token punctuation">{</span>
+	label<span class="token operator">:</span> <span class="token builtin">string</span>
+	optionalVal<span class="token operator">:</span> <span class="token builtin">string</span><span class="token operator">?</span>
+	<span class="token keyword">readonly</span> readOnlyVal<span class="token operator">:</span> <span class="token builtin">number</span> <span class="token comment">// value is immutable post-declaration</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Once we define the interface, it can then be used as a type.</p>
+<p>Function interfaces can also be created</p>
+<ul>
+<li>ex. we have a fn with 2 params of type <code>String</code> and <code>String</code>, and the function returns <code>Boolean</code></li>
+</ul>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">interface</span> <span class="token class-name">search</span> <span class="token punctuation">{</span>
+	<span class="token punctuation">(</span>source<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">,</span> substring<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">boolean</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<hr>
+<h2 id="different-perspectives-of-interface"><a aria-hidden="true" class="anchor-heading" href="#different-perspectives-of-interface"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Different perspectives of Interface</h2>
+<p>The purpose of an interface changes depending on if we are looking at it from an Object-Oriented perspective or a Function perspective.</p>
+<h3 id="interfaces-in-object-oriented-programming"><a aria-hidden="true" class="anchor-heading" href="#interfaces-in-object-oriented-programming"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Interfaces in Object-Oriented Programming</h3>
+<p>In OOP context, an interface defines a list of methods that a class needs to implement in order to conform to the interface.</p>
+<ul>
+<li>often used to fulfill the Dependency Inversion Principle from SOLID design principles.</li>
+<li>The dependency inversion principles says that it’s much better to have interfaces than concrete classes as dependencies.</li>
+</ul>
+<p>In general, the OOP part of interfaces is their ability to express some <em>required behavior</em>, as opposed to <em>data</em> in the functional paradigm.</p>
+<h3 id="interfaces-in-functional-programming"><a aria-hidden="true" class="anchor-heading" href="#interfaces-in-functional-programming"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Interfaces in Functional Programming</h3>
+<p>In functional programming context, interfaces are used not to enumerate methods of an object, but to describe the shape of the data contained by the object.</p>
+<ul>
+<li>In this context, generic interfaces are used to describe a data shape when you don’t know or care about the exact type of some properties of the interface. It often makes sense when the data types contain some value.</li>
+</ul>

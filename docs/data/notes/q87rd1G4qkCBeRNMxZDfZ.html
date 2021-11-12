@@ -1,0 +1,67 @@
+<h1 id="types"><a aria-hidden="true" class="anchor-heading" href="#types"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Types</h1>
+<h3 id="keys"><a aria-hidden="true" class="anchor-heading" href="#keys"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Keys</h3>
+<p>Try to stick with a schema. For instance <code>object-type:id</code> is a good idea, as in "user:1000". Dots or dashes are often used for multi-word fields, as in <code>comment:1234:reply.to</code> or <code>comment:1234:reply-to</code>.</p>
+<h3 id="hash"><a aria-hidden="true" class="anchor-heading" href="#hash"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Hash</h3>
+<p><code>field</code> and <code>value</code> form a pair. Both are strings</p>
+<ul>
+<li>If this were Javascript, 
+<ul>
+<li>the object name would be the Redis <code>key</code>, </li>
+<li>the object key would be the Redis <code>field</code>, </li>
+<li>the object value would be the Redis <code>value</code></li>
+</ul>
+</li>
+</ul>
+<pre><code>user:1000: {
+    "username": "antirez",
+    "birthyear": 1970
+}
+</code></pre>
+<p>Methods:</p>
+<ul>
+<li><code>HGET &#x3C;key> &#x3C;field></code> / <code>HSET &#x3C;key> &#x3C;field> &#x3C;value></code> - get/set a field+value</li>
+</ul>
+<h3 id="lists"><a aria-hidden="true" class="anchor-heading" href="#lists"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Lists</h3>
+<p>Redis lists are implemented via Linked Lists.</p>
+<ul>
+<li>LinkedLists were used (as opposed to arrays) because for a database system it is crucial to be able to add elements to a very long list in a very fast way.</li>
+<li>When fast access to the middle of a large collection of elements is important, Sorted Sets should be used</li>
+</ul>
+<p>Common use-cases for Lists</p>
+<ul>
+<li>Remember the latest updates posted by users into a social network.
+<ul>
+<li>ex. Twitter takes the latest tweets posted by users into Redis lists.</li>
+<li>imagine your home page shows the latest photos published in a photo sharing social network and you want to speedup access.
+<ul>
+<li>Every time a user posts a new photo, we add its ID into a list with <code>LPUSH</code>.</li>
+<li>When users visit the home page, we use <code>LRANGE 0 9</code> in order to get the latest 10 posted items.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Communication between processes, using a consumer-producer pattern where the producer pushes items into a list, and a consumer (usually a worker) consumes those items and executed actions. Redis has special list commands to make this use case both more reliable and efficient.</li>
+</ul>
+<p>Methods:</p>
+<ul>
+<li><code>LPUSH</code> / <code>RPUSH</code> - add element to the left/right</li>
+<li><code>LRANGE &#x3C;listname> &#x3C;fromindex> &#x3C;toindex></code> - extract ranges of elements from lists</li>
+</ul>
+<h3 id="sets"><a aria-hidden="true" class="anchor-heading" href="#sets"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Sets</h3>
+<p>unordered collections of strings.</p>
+<p>Sets are good for expressing relations between objects. For instance we can easily use sets in order to implement tags.</p>
+<ul>
+<li>A simple way to model this problem is to have a set for every object we want to tag. The set contains the IDs of the tags associated with the object.</li>
+</ul>
+<p>Methods:
+<code>SADD</code> - add element to set</p>
+<h3 id="sorted-sets"><a aria-hidden="true" class="anchor-heading" href="#sorted-sets"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Sorted Sets</h3>
+<p>similar to a mix between a Set and a Hash</p>
+<ul>
+<li>Like sets, sorted sets are composed of unique, non-repeating string elements, so in some sense a sorted set is a set as well.</li>
+<li>every element in a sorted set is associated with a floating point value, called the score (this is why the type is also similar to a hash, since every element is mapped to a value).</li>
+</ul>
+<p>Methods:
+<code>ZADD</code> - add element to set</p>
+<h1 id="e-resources"><a aria-hidden="true" class="anchor-heading" href="#e-resources"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>E Resources</h1>
+<p><a href="https://redis.io/topics/data-types-intro">Redis Documentation</a></p>

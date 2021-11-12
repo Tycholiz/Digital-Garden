@@ -1,0 +1,102 @@
+<h1 id="ast"><a aria-hidden="true" class="anchor-heading" href="#ast"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>AST</h1>
+<h2 id="what-is-an-ast"><a aria-hidden="true" class="anchor-heading" href="#what-is-an-ast"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>What is an AST?</h2>
+<p>Think of an AST as a big nested object that holds metadata about the thing we are describing.</p>
+<ul>
+<li>ex. we could generate an AST of a single Javascript file. The AST would have a field called <code>body</code>, which is an array of parts: 
+<ul>
+<li>variable declaration </li>
+<li>expression statement </li>
+</ul>
+</li>
+</ul>
+<p>Imagine we have an extremely short file <code>file.js</code>:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> myname <span class="token operator">=</span> <span class="token string">'jason'</span>
+<span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span>myname<span class="token punctuation">)</span>
+</code></pre>
+<p>The resulting AST of this file would be:</p>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"Program"</span><span class="token punctuation">,</span>
+  <span class="token property">"start"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+  <span class="token property">"end"</span><span class="token operator">:</span> <span class="token number">43</span><span class="token punctuation">,</span>
+  <span class="token property">"body"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">{</span>
+      <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"VariableDeclaration"</span><span class="token punctuation">,</span>
+      <span class="token property">"start"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+      <span class="token property">"end"</span><span class="token operator">:</span> <span class="token number">22</span><span class="token punctuation">,</span>
+      <span class="token property">"declarations"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+          <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"VariableDeclarator"</span><span class="token punctuation">,</span>
+          <span class="token property">"start"</span><span class="token operator">:</span> <span class="token number">6</span><span class="token punctuation">,</span>
+          <span class="token property">"end"</span><span class="token operator">:</span> <span class="token number">22</span><span class="token punctuation">,</span>
+          <span class="token property">"id"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"Identifier"</span><span class="token punctuation">,</span>
+            <span class="token property">"start"</span><span class="token operator">:</span> <span class="token number">6</span><span class="token punctuation">,</span>
+            <span class="token property">"end"</span><span class="token operator">:</span> <span class="token number">12</span><span class="token punctuation">,</span>
+            <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"myname"</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          <span class="token property">"init"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"Literal"</span><span class="token punctuation">,</span>
+            <span class="token property">"start"</span><span class="token operator">:</span> <span class="token number">15</span><span class="token punctuation">,</span>
+            <span class="token property">"end"</span><span class="token operator">:</span> <span class="token number">22</span><span class="token punctuation">,</span>
+            <span class="token property">"value"</span><span class="token operator">:</span> <span class="token string">"jason"</span><span class="token punctuation">,</span>
+            <span class="token property">"raw"</span><span class="token operator">:</span> <span class="token string">"'jason'"</span>
+          <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">]</span><span class="token punctuation">,</span>
+      <span class="token property">"kind"</span><span class="token operator">:</span> <span class="token string">"const"</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">{</span>
+      <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"ExpressionStatement"</span><span class="token punctuation">,</span>
+      <span class="token property">"start"</span><span class="token operator">:</span> <span class="token number">23</span><span class="token punctuation">,</span>
+      <span class="token property">"end"</span><span class="token operator">:</span> <span class="token number">42</span><span class="token punctuation">,</span>
+      <span class="token property">"expression"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"CallExpression"</span><span class="token punctuation">,</span>
+        <span class="token property">"start"</span><span class="token operator">:</span> <span class="token number">23</span><span class="token punctuation">,</span>
+        <span class="token property">"end"</span><span class="token operator">:</span> <span class="token number">42</span><span class="token punctuation">,</span>
+        <span class="token property">"callee"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+          <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"MemberExpression"</span><span class="token punctuation">,</span>
+          <span class="token property">"start"</span><span class="token operator">:</span> <span class="token number">23</span><span class="token punctuation">,</span>
+          <span class="token property">"end"</span><span class="token operator">:</span> <span class="token number">34</span><span class="token punctuation">,</span>
+          <span class="token property">"object"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"Identifier"</span><span class="token punctuation">,</span>
+            <span class="token property">"start"</span><span class="token operator">:</span> <span class="token number">23</span><span class="token punctuation">,</span>
+            <span class="token property">"end"</span><span class="token operator">:</span> <span class="token number">30</span><span class="token punctuation">,</span>
+            <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"console"</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          <span class="token property">"property"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"Identifier"</span><span class="token punctuation">,</span>
+            <span class="token property">"start"</span><span class="token operator">:</span> <span class="token number">31</span><span class="token punctuation">,</span>
+            <span class="token property">"end"</span><span class="token operator">:</span> <span class="token number">34</span><span class="token punctuation">,</span>
+            <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"log"</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          <span class="token property">"computed"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+          <span class="token property">"optional"</span><span class="token operator">:</span> <span class="token boolean">false</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token property">"arguments"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+          <span class="token punctuation">{</span>
+            <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"Identifier"</span><span class="token punctuation">,</span>
+            <span class="token property">"start"</span><span class="token operator">:</span> <span class="token number">35</span><span class="token punctuation">,</span>
+            <span class="token property">"end"</span><span class="token operator">:</span> <span class="token number">41</span><span class="token punctuation">,</span>
+            <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"myname"</span>
+          <span class="token punctuation">}</span>
+        <span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token property">"optional"</span><span class="token operator">:</span> <span class="token boolean">false</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token property">"sourceType"</span><span class="token operator">:</span> <span class="token string">"module"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>ASTs are commonly used in compilers to parse the code we write, converting it into a tree structure that we can traverse programmatically.</p>
+<p>Creating lint rules is another area we can make use of ASTs. The AST enables us to recognize certain parts of the code and act accordingly with our rules. </p>
+<ul>
+<li>ex. The <code>no-unused-vars</code> looks at all <code>VariableDeclaration</code> types and ensures that the variable names are used at least once elsewhere in the code.</li>
+</ul>
+<p>Syntax highlighting is made possible by ASTs</p>
+<h1 id="tools"><a aria-hidden="true" class="anchor-heading" href="#tools"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Tools</h1>
+<p><a href="https://astexplorer.net/">AST Explorer tool</a> —multiple language support</p>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/ejzZZH4lCCJmesKk">Lang</a></li>
+</ul>

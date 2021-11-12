@@ -1,0 +1,23 @@
+<h1 id="generator-functions"><a aria-hidden="true" class="anchor-heading" href="#generator-functions"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Generator Functions</h1>
+<ul>
+<li>can be exited and later re-entered</li>
+<li>like closures, variables inside the generator function maintain state.</li>
+<li>when calling a generator function, an iterator object is returned. When we call <code>next()</code> on that object, all the code up until the first <code>yield</code> will be executed. Calling <code>next()</code> again will then execute all the code up until the second <code>yield</code>, and so on.
+<ul>
+<li>The function that calls the generator function is the <strong>iterator</strong></li>
+</ul>
+</li>
+<li>the generator function can pass values to the iterator object (<code>yield</code>). Anything that occurs after <code>yield</code> gets stored in the iterator's <code>next()</code> value
+<ul>
+<li>The generator function can also retrieve values from the iterator object (<code>next(___)</code>)</li>
+</ul>
+</li>
+<li><code>yield</code> returns execution to outside the generator function (ie. the context from which the gen fn was called), it's possible to use <code>while(true)</code>, as long as there is a yield inside
+<ul>
+<li>This way, <code>next()</code> can keep getting called</li>
+</ul>
+</li>
+<li>spec: <code>next</code> is like async/await in the sense that it will execute code up until a point (<code>yield</code>), then stop and wait for the availability of that data before continuing on</li>
+</ul>
+<h1 id="ue-resources"><a aria-hidden="true" class="anchor-heading" href="#ue-resources"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>UE Resources</h1>
+<p><a href="https://medium.com/javascript-scene/the-hidden-power-of-es6-generators-observable-async-flow-control-cfa4c7f31435">Observable Async flow control (Eric Elliott)</a></p>

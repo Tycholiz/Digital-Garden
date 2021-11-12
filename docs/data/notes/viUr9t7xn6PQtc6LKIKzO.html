@@ -1,0 +1,11 @@
+<h1 id="components"><a aria-hidden="true" class="anchor-heading" href="#components"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Components</h1>
+<p>purity and immutability between components is critical. mutability within a component is fine.</p>
+<ul>
+<li>ex. pushing onto an array within a component is fine.</li>
+</ul>
+<p>When React is interpreting JSX, it will treat custom components (<code>&#x3C;Form></code>) as recursive functions, and regular elements (<code>&#x3C;form></code>) as the finality of the chain</p>
+<ul>
+<li>ex. We say "React, render a <code>&#x3C;Sidebar></code> for me". React responds "ok what's in a <code>&#x3C;Sidebar></code>?", and it will go on like this until React gets to the html elements and it has therefore built up the entire component tree.</li>
+</ul>
+<h3 id="higher-order-components"><a aria-hidden="true" class="anchor-heading" href="#higher-order-components"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Higher-order components</h3>
+<p>Higher-Order Components are generic functions, as they only care about the argument being a component. The type of the component’s properties is not important.</p>

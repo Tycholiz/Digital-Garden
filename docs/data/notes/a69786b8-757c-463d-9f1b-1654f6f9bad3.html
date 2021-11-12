@@ -1,0 +1,10 @@
+<h1 id="pipeline"><a aria-hidden="true" class="anchor-heading" href="#pipeline"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Pipeline</h1>
+<h1 id="pipeline-1"><a aria-hidden="true" class="anchor-heading" href="#pipeline-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Pipeline</h1>
+<ul>
+<li>a pipe takes stdout from one process and passes it as stdin to another
+<ul>
+<li>spec: if the first program fails, then a <code>0</code> will be passed as stdout. (maybe not true)</li>
+</ul>
+</li>
+<li>Each command in a pipeline is executed in its own subshell, which is a separate process</li>
+</ul>

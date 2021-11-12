@@ -1,0 +1,27 @@
+<h1 id="pipe"><a aria-hidden="true" class="anchor-heading" href="#pipe"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Pipe</h1>
+<h1 id="rpipe"><a aria-hidden="true" class="anchor-heading" href="#rpipe"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>R.pipe()</code></h1>
+<p><code>pipe(..)</code> is identical to <code>compose(..)</code> except it processes through the list of functions in left-to-right order:
+<code>var pipe = reverseargs( compose )</code></p>
+<p>the function returned by <code>pipe</code> takes the same number of arguments as the first function <code>.pipe()</code> is given</p>
+<p>when we call <code>operate(3, 4)</code>, pipe passes the 3 and 4 to the <code>multiply</code> function, resulting in 12. it passes that 12 to addone, which returns 13. it then passes that 13 to square, which returns 169, and that becomes the final result of operate.</p>
+<pre><code>const operate = pipe(
+  multiply,
+  addOne,
+  square
+)
+</code></pre>
+<p>ex. improvement with <code>R.pipe</code></p>
+<pre><code>// before
+const titlesForYear = (books, year) => {
+  const selected = filter(publishedInYear(year), books)
+ 
+  return map(book => book.title, selected)
+}
+
+// after
+const titlesForYear = year =>
+  pipe(
+    filter(publishedInYear(year)),
+    map(book => book.title)
+  )
+</code></pre>

@@ -1,0 +1,39 @@
+<h1 id="directives"><a aria-hidden="true" class="anchor-heading" href="#directives"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Directives</h1>
+<h1 id="directives-1"><a aria-hidden="true" class="anchor-heading" href="#directives-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Directives(<code>@</code>)</h1>
+<ul>
+<li>Using variables, Directives let us dynamically change the structure and shape of our queries.</li>
+<li>This allows us to either <code>@include</code> or <code>@skip</code> over fields.</li>
+<li>ex. In Never Forget, consider the BrowseNugget screen. Our list component allows us to switch between just showing the nugget name, and showing a summary of the nugget. To determine whether or not we want the summary, we can use a variable:</li>
+</ul>
+<pre><code>query Nugget($details: details) {
+	nugget {
+		title
+		mediaItems @include(if:  $details) {
+			title
+		}
+	}
+}
+</code></pre>
+<p>Directives are useful when we find ourselves needing to do string manipulation in order to modify (ie. add/remove fields from) our query structure.</p>
+<p>To be Graphql spec-compliant, a server must implement only the <code>@include</code> and <code>@skip</code> directives. This leaves each server implementation open to extending their own directives.</p>
+<h3 id="use-with-inline-fragments"><a aria-hidden="true" class="anchor-heading" href="#use-with-inline-fragments"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Use with Inline Fragments</h3>
+<p>Directives can also be applied with inline fragments like so:</p>
+<pre><code>query inlineFragmentNoType($expandedInfo: Boolean) {
+  user(handle: "zuck") {
+    id
+    name
+    ... @include(if: $expandedInfo) {
+      firstName
+      lastName
+      birthday
+    }
+  }
+}
+</code></pre>
+<h3 id="deprecation"><a aria-hidden="true" class="anchor-heading" href="#deprecation"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Deprecation</h3>
+<p>Fields in an object may be marked with the <code>@deprecated</code> directive like so:</p>
+<pre><code>type ExampleType {
+  oldField: String @deprecated
+}
+</code></pre>
+<p>These fields can still be queried (to prevent breaking changes).</p>

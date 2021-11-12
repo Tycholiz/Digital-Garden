@@ -1,0 +1,15 @@
+<h1 id="seed"><a aria-hidden="true" class="anchor-heading" href="#seed"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Seed</h1>
+<h3 id="generate_series"><a aria-hidden="true" class="anchor-heading" href="#generate_series"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Generate_series</h3>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> app_public<span class="token punctuation">.</span>entities <span class="token punctuation">(</span>id<span class="token punctuation">)</span>
+<span class="token keyword">SELECT</span> gen_random_uuid<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">FROM</span> generate_series<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span> x
+<span class="token punctuation">;</span>
+
+<span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> app_public<span class="token punctuation">.</span>organizations <span class="token punctuation">(</span>id<span class="token punctuation">,</span> entity_id<span class="token punctuation">,</span> owner_id<span class="token punctuation">,</span> display_name<span class="token punctuation">)</span>
+<span class="token keyword">SELECT</span> gen_random_uuid<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">AS</span> id<span class="token punctuation">,</span> e<span class="token punctuation">.</span>id <span class="token keyword">AS</span> entity_id<span class="token punctuation">,</span> gen_random_uuid<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">AS</span> owner_id<span class="token punctuation">,</span> random<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">AS</span> name
+    <span class="token keyword">FROM</span> app_public<span class="token punctuation">.</span>entities e
+<span class="token punctuation">;</span>
+</code></pre>
+<h1 id="ue-resources"><a aria-hidden="true" class="anchor-heading" href="#ue-resources"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>UE Resources</h1>
+<p><a href="https://www.citusdata.com/blog/2018/03/14/fun-with-sql-generate-sql/">Use generate_series</a>
+[For fake data generation, have a look at pyramation's faker]</p>

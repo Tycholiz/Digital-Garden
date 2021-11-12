@@ -1,0 +1,15 @@
+<h1 id="cook"><a aria-hidden="true" class="anchor-heading" href="#cook"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Cook</h1>
+<h3 id="copy-from-csv-into-postgres-table"><a aria-hidden="true" class="anchor-heading" href="#copy-from-csv-into-postgres-table"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Copy from CSV into Postgres table</h3>
+<ol>
+<li>In psql, create a new table that matches the format of the csv headers</li>
+<li>In psql, run the COPY command:</li>
+</ol>
+<pre><code>COPY cars
+FROM '/Users/kyletycholiz/Downloads/cars.csv' 
+DELIMITER ',' 
+CSV HEADER;
+</code></pre>
+<p>note: if we don't want to have the table columns match the csv headers, we can specify like so:</p>
+<pre><code>COPY cars(id, name)
+...
+</code></pre>

@@ -1,0 +1,22 @@
+<h1 id="for"><a aria-hidden="true" class="anchor-heading" href="#for"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>For</h1>
+<h3 id="run-loop-indefinitely-and-stop-when-a-certain-condition-is-met"><a aria-hidden="true" class="anchor-heading" href="#run-loop-indefinitely-and-stop-when-a-certain-condition-is-met"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Run loop indefinitely, and stop when a certain condition is met</h3>
+<pre class="language-js"><code class="language-js"><span class="token keyword control-flow">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> turn <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span><span class="token punctuation">;</span> turn<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span>state<span class="token punctuation">.</span><span class="token property-access">parcels</span><span class="token punctuation">.</span><span class="token property-access">length</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Done in </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>turn<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> turns</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword control-flow">break</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+  <span class="token comment">// do your stuff here</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="forof-vs-forin"><a aria-hidden="true" class="anchor-heading" href="#forof-vs-forin"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>for..of</code> vs <code>for..in</code></h2>
+<p><code>for..of</code> should be used with arrays, and other iterable objects, like strings</p>
+<ul>
+<li>an object is considered iterable if it adheres to the <a href="/Digital-Garden/notes/g6xpggyRrYtJoysZKBVb8">iterator protocols</a>
+<code>for..in</code> should be used with objects, and is used to iterate over the properties of an object</li>
+</ul>
+<h3 id="forof"><a aria-hidden="true" class="anchor-heading" href="#forof"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>For..of</h3>
+<p>Get index in <code>for..of</code></p>
+<pre class="language-js"><code class="language-js"><span class="token keyword control-flow">for</span> <span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token punctuation">[</span>i<span class="token punctuation">,</span> value<span class="token punctuation">]</span> <span class="token keyword">of</span> arr<span class="token punctuation">.</span><span class="token method function property-access">entries</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  indexMap<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> value
+<span class="token punctuation">}</span>
+</code></pre>

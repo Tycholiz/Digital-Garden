@@ -1,0 +1,16 @@
+<h1 id="change-list"><a aria-hidden="true" class="anchor-heading" href="#change-list"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Change List</h1>
+<p>Vim remembers the locations where changes occurred. </p>
+<ul>
+<li>Each position (column number, line number) is recorded in a change list, and each buffer has a separate change list that records the last 100 positions where an undo-able change occurred.</li>
+<li>if you make a change at a certain position, then make another change nearby, only the location of the later change is recorded 
+<ul>
+<li>"nearby" means on the same line, within a certain number of bytes.</li>
+</ul>
+</li>
+</ul>
+<h2 id="usage"><a aria-hidden="true" class="anchor-heading" href="#usage"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Usage</h2>
+<ul>
+<li>Type g; to jump back to the position of the previous (older) change.</li>
+<li>Type g, to jump to the position of the next (newer) change.</li>
+</ul>
+<p>Type <code>:changes</code> to view the list</p>

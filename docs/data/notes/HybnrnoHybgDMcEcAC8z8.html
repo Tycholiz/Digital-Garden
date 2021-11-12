@@ -1,0 +1,22 @@
+<h1 id="position"><a aria-hidden="true" class="anchor-heading" href="#position"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Position</h1>
+<h3 id="static"><a aria-hidden="true" class="anchor-heading" href="#static"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Static</h3>
+<p>The element goes with the normal document flow. <code>z-index</code> has no meaning here, and neither do <code>top</code>/<code>left</code>/<code>bottom</code>/<code>right</code>
+This is default</p>
+<h3 id="relative"><a aria-hidden="true" class="anchor-heading" href="#relative"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Relative</h3>
+<p>The element goes with the normal document flow, and then is offset relative to itself (using <code>top</code>/<code>left</code>/<code>bottom</code>/<code>right</code>)
+The element does not impact any other elements in the document
+The space given to the component in the page layout is the same as if position were <code>static</code></p>
+<h3 id="absolute"><a aria-hidden="true" class="anchor-heading" href="#absolute"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Absolute</h3>
+<p>The element is removed from the normal document flow, and no space is created for the element in the page layout.
+Instead, the element is positioned relative to it's closest positioned ancestor (ie. an ancestor with a position value that is not <code>static</code>)</p>
+<ul>
+<li>If there are no positioned ancestors, then the element is positioned relative to the initial containing block (ie. the parent of the <code>&#x3C;html></code> tag)</li>
+</ul>
+<p>Creates a new stacking context as long as <code>z-index</code> is not set to <code>auto</code></p>
+<h3 id="fixed"><a aria-hidden="true" class="anchor-heading" href="#fixed"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Fixed</h3>
+<p>The element is removed from the normal document flow, and no space is created for the element in the page layout.
+The element is positioned relative to the initial containing block (ie. the parent of the <code>&#x3C;html></code> tag)
+If one of the element's ancestors has any of: <code>transform</code>, <code>perspective</code>, or <code>filter</code>, then that ancestor is used as the containing block.
+Creates a new stacking context</p>
+<h3 id="sticky"><a aria-hidden="true" class="anchor-heading" href="#sticky"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Sticky</h3>
+<p>The element goes with the normal document flow, and then is offset relative to 2 containing blocks: the nearest scrolling ancestor, and the nearest block-level ancestor.</p>

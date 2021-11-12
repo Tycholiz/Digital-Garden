@@ -1,0 +1,30 @@
+<h1 id="methods"><a aria-hidden="true" class="anchor-heading" href="#methods"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Methods</h1>
+<h1 id="methods-1"><a aria-hidden="true" class="anchor-heading" href="#methods-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Methods</h1>
+<h2 id="raid-redundant-array-of-independent-disks"><a aria-hidden="true" class="anchor-heading" href="#raid-redundant-array-of-independent-disks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>RAID (Redundant Array of Independent Disks)</h2>
+<ul>
+<li>A RAID is simply multiple physical hard drives acting as a single virtual hard drive</li>
+<li>The two main reasons are to safeguard your data with some sort of backup/failsafe, or to speed up reading/writing.
+<ul>
+<li>When data is read, it is read from both hard drives and checked to make sure they agree.</li>
+</ul>
+</li>
+<li>There are 3 main types (with example of storing a song):
+<ol>
+<li><em>RAID-0</em> - the song is stored across multiple hard drives. Therefore, if one fails then the file is corrupted 
+<ul>
+<li>Least safe</li>
+</ul>
+</li>
+<li><em>RAID-1</em> - all hard drives have the same data. Therefore, if one fails, the redundancy provided by the second will allow us to retain all of the data.
+<ul>
+<li>RAID-1 is where disk mirroring is most commonly used</li>
+</ul>
+</li>
+<li><em>RAID-5</em> - the song is stored across multiple hard drives (like RAID-0), but each hard drive will have its own backup. If one hard drive fails, the backup is restored so we don't get a corrupted file. 
+<ul>
+<li>This is the safest, but also more expensive and a bit slower.</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>

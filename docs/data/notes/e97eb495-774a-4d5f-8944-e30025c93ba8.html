@@ -1,0 +1,157 @@
+<h1 id="observable"><a aria-hidden="true" class="anchor-heading" href="#observable"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Observable</h1>
+<ul>
+<li><strong><em>Observable</em></strong> - A data structure representing the idea of an invokable collection of future values or events
+<ul>
+<li>in other words, they are a representation of any set of values over any amount of time</li>
+</ul>
+</li>
+<li>Observables allow us to compartmentalize our eventing flows, encapsulating each action in a single function</li>
+<li>Observables are lazy Push collections of multiple values</li>
+<li>An observable is a function that returns a stream</li>
+<li>An observable is a function that takes an observer and returns a cancellation function</li>
+<li><code>$</code> is used to indicate that the variable in question is observable</li>
+<li>variables that reference a stream are denoted with <code>$</code> (ex. <code>action$</code>)
+<ul>
+<li>ex. <em>observable</em></li>
+<li>an observer is an object with <code>next</code>, <code>error</code> and <code>complete</code> methods</li>
+</ul>
+</li>
+<li>Observables are inert (they just sit there until they are <em>subscribed</em> to), while observers stay active and listen for events from the producers</li>
+<li>The problem is this: we can consider an array where we already know all the values as eager, and an array that receives values (ie. increases length) at a set interval (1s) as lazy. Normally, we perform data processing in an eager way, since the data is processed immediately as it's received, which is instant. What if we are in a position where the array grows over time? It would be beneficial if we could call a method on an array value as it enters the array. In this sense, we need to subscribe to the array to execute a method when the array grows.</li>
+</ul>
+<p>observables are conceptually similar to a fancy event emitter.</p>
+<ul>
+<li>
+<p>There are 2 sides to an observable: producer and consumer</p>
+<ul>
+<li><strong>Producer</strong> - adds to the array
+<ul>
+<li>ex. button clicks add that click event to the array</li>
+</ul>
+</li>
+<li><strong>Consumer</strong> - calls the function on the new array item
+<ul>
+<li>ex. calls <code>console.log</code> in response to the new click event</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>An <code>Observer</code> subscribes (ie. is consumer) to an <code>Observable</code></p>
+<ul>
+<li>an observer is a collection of callbacks</li>
+</ul>
+</li>
+</ul>
+<p>Observables are lazy Push collections of multiple values. They fill the missing spot in the following table:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>Single</th><th>Multiple</th></tr></thead><tbody><tr><td>Pull</td><td>Function</td><td>Iterator</td></tr><tr><td>Push</td><td>Promise</td><td>Observable</td></tr></tbody></table>
+<ul>
+<li>They <em>push</em> with <code>.next()</code></li>
+</ul>
+<h2 id="characteristics"><a aria-hidden="true" class="anchor-heading" href="#characteristics"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Characteristics</h2>
+<ul>
+<li>
+<p>They are time-independent (ie. lazy)</p>
+</li>
+<li>
+<p>They are mostly used in asynchronous data streams, like web sockets or multiple concurrent api calls</p>
+</li>
+<li>
+<p>Just as promises abstract time away from our concern for a single asynchronous operation, observables abstract time away from a set of data (eg. array)</p>
+<ul>
+<li>ex. Observable can be set up to listen for mouseclicks, by pushing onto an array each time the mouse is clicked. The fact that the <em>subscribed</em> function exists means that it will fire whenever the array increases in size.</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>
+<p>If you combine the functionality of an Observer and an Observable, you get a Subject</p>
+</li>
+<li>
+<p>each operator on an Observable returns a new Observable, meaning they are chainable (this is known as a <em>stream</em>)</p>
+</li>
+<li>
+<p>A map(..) on an array runs its mapping function once for each value currently in the array, putting all the mapped values in the outcome array. A map(..) on an Observable runs its mapping function once for each value, whenever it comes in, and pushes all the mapped values to the output Observable.</p>
+</li>
+</ul>
+<p><strong>epic</strong> - a collection of observables</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword module">export</span> <span class="token keyword module">default</span> <span class="token keyword">function</span> <span class="token function">fetchTeams</span><span class="token punctuation">(</span><span class="token parameter">action$</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// epic</span>
+    <span class="token keyword control-flow">return</span> action$<span class="token punctuation">.</span><span class="token method function property-access">pipe</span><span class="token punctuation">(</span>
+        <span class="token comment">//operator</span>
+        <span class="token function">ofType</span><span class="token punctuation">(</span><span class="token string">'FLASHCARDS_TEAMS_GET'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token comment">//operator</span>
+        <span class="token function">switchMap</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span>
+            <span class="token function">queryGraphQL</span><span class="token punctuation">(</span><span class="token string">'flashcards__teams'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token comment">//operator</span>
+        <span class="token function">map</span><span class="token punctuation">(</span><span class="token parameter">resp</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span> operator
+            <span class="token keyword">const</span> flattenedData <span class="token operator">=</span> <span class="token function">flattenGraphqlNode</span><span class="token punctuation">(</span>resp<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token property-access">data</span><span class="token punctuation">.</span><span class="token property-access">teams</span><span class="token punctuation">;</span>
+            <span class="token keyword control-flow">return</span> <span class="token function">getTeamsSuccess</span><span class="token punctuation">(</span>flattenedData<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token function">catchError</span><span class="token punctuation">(</span><span class="token parameter">err</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+            <span class="token function">getError</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="using-observables"><a aria-hidden="true" class="anchor-heading" href="#using-observables"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Using observables</h2>
+<ul>
+<li>An <code>observable</code> is a function that takes in an <code>observer</code> (an object with <code>next</code>, <code>error</code>, and <code>complete</code>) and returns cancellation logic (i.e. unsubscribe).</li>
+<li><code>.next()</code> is called when the observable produces values</li>
+<li>When an observer subscribes to an observable, the observer will keep receiving values until one of 2 things happens:
+<ul>
+<li>there are no more values to be sent (in which case <code>.complete()</code> is called)</li>
+<li>the observer calls <code>.unsubscribe()</code> on the observer</li>
+</ul>
+</li>
+<li>fromEvent will turn an event into an observable
+<ul>
+<li><code>fromEvent(&#x3C;event to be listened to>, &#x3C;eventName>)</code></li>
+</ul>
+</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> input$ <span class="token operator">=</span> <span class="token maybe-class-name">Rx</span><span class="token punctuation">.</span><span class="token property-access"><span class="token maybe-class-name">Observable</span></span><span class="token punctuation">.</span><span class="token method function property-access">fromEvent</span><span class="token punctuation">(</span>node<span class="token punctuation">,</span> <span class="token string">'input'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token method function property-access">map</span><span class="token punctuation">(</span><span class="token parameter">event</span> <span class="token arrow operator">=></span> event<span class="token punctuation">.</span><span class="token property-access">target</span><span class="token punctuation">.</span><span class="token property-access">value</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token method function property-access">filter</span><span class="token punctuation">(</span><span class="token parameter">value</span> <span class="token arrow operator">=></span> value<span class="token punctuation">.</span><span class="token property-access">length</span> <span class="token operator">>=</span> <span class="token number">2</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token method function property-access">subscribe</span><span class="token punctuation">(</span><span class="token parameter">value</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+    <span class="token comment">// use the `value`</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Here are the steps of this sequence:</p>
+<ol>
+<li>Let’s assume the user types the letter “a” into our input (node is a variable that has query selected the html input element)</li>
+<li>The Observable then reacts to this event, passing the value to the next observer</li>
+<li>The value “a” is passed to <code>.map()</code>, which is subscribing to our initial observable</li>
+<li><code>.map()</code> returns a new Observable of event.target.value and calls <code>.next()</code> on it’s observer</li>
+<li>The <code>.next()</code> call will invoke <code>.filter()</code>, which is subscribing to <code>.map()</code>, with the resulting value of the .map() call</li>
+<li>.filter() will then return another Observable with the filtered results, calling <code>.next()</code> with the value if the length is 2 or above</li>
+<li>We get the final value through our <code>.subscribe()</code> block</li>
+</ol>
+<ul>
+<li>Each time a new Observable is returned, a new observer is hooked up to the previous Observable (allowing us to pass values along a stream of observers, which do something we've asked, then call <code>.next()</code>, then pass the result to the next observer.
+<ul>
+<li>Basically, an operator returns a new Observable each time, allowing the stream to continue</li>
+</ul>
+</li>
+</ul>

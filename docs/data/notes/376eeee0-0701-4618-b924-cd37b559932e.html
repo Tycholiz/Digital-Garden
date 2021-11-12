@@ -1,0 +1,10 @@
+<h1 id="merge-commit"><a aria-hidden="true" class="anchor-heading" href="#merge-commit"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Merge Commit</h1>
+<p>When git creates a merge commit it will also by default append a list of files that had conflicts to the commit message:</p>
+<pre><code>Conflicts:
+    src/foo-service.c
+    src/bar-client.c
+</code></pre>
+<p>This is a piece of useful information for us when poring over the history to find out what went wrong</p>
+<ul>
+<li>Even if your merge conflict was trivial, there is always a non-zero chance of introducing a bug when resolving a conflict, and seeing those lines in the merge commit message could be valuable information. They are basically a hint saying “Still confused? Maybe you should be extra careful when reviewing the changes in these files”.</li>
+</ul>

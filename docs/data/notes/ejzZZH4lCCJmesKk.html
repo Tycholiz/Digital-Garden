@@ -1,0 +1,39 @@
+<h1 id="lang"><a aria-hidden="true" class="anchor-heading" href="#lang"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Lang</h1>
+<h2 id="compiled-vs-interpreted-languages"><a aria-hidden="true" class="anchor-heading" href="#compiled-vs-interpreted-languages"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Compiled vs Interpreted Languages</h2>
+<ul>
+<li>A compiler figures out everything a program will do, turns it into “machine code” (a format the computer can run really fast), then saves that to be executed later.</li>
+<li>An interpreter steps through the source code line by line, figuring out what it’s doing as it goes.</li>
+</ul>
+<p>Technically any language could be compiled or interpreted, but one or the other usually makes more sense for a specific language. </p>
+<ul>
+<li>Generally, interpreting tends to be more flexible, while compiling tends to have higher performance.</li>
+<li>a lot of language design decisions are affected by the decision to make a language interpreted or compiled 
+<ul>
+<li>for example, static typing is a big benefit to compiled languages, but not so much for interpreted ones.</li>
+</ul>
+</li>
+</ul>
+<p>Interpreted languages are generally easier design, build and learn</p>
+<h3 id="writing-your-own-language"><a aria-hidden="true" class="anchor-heading" href="#writing-your-own-language"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Writing your own language</h3>
+<p>If you are writing an interpreted language, it makes a lot of sense to write it in a compiled one (like C, C++ or Swift) because the performance lost in the language of your interpreter and the interpreter that is interpreting your interpreter will compound.</p>
+<p>If you plan to compile, a slower language (like Python or JavaScript) is more acceptable. Compile time may be bad, but that isn’t nearly as big a deal as bad run time.</p>
+<h4 id="from-source-file-to-execution"><a aria-hidden="true" class="anchor-heading" href="#from-source-file-to-execution"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>From source file to execution</h4>
+<p>A programming language is generally structured as a pipeline. The first stage is a string containing the entire input source file. The final stage is something that can be run. This will all become clear as we go through the Pinecone pipeline step by step.</p>
+<h5 id="lexer"><a aria-hidden="true" class="anchor-heading" href="#lexer"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Lexer</h5>
+<p>The first stage. The lexer is supposed to take in a string containing an entire files worth of source code and spit out a list containing every token (a token is a unit of the language, like a function name or an operator).</p>
+<p>The lexer provides all details of the source file that are needed by future stages.</p>
+<h5 id="parser"><a aria-hidden="true" class="anchor-heading" href="#parser"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Parser</h5>
+<p>The parser turns a list of tokens into a tree of nodes. </p>
+<ul>
+<li>A tree used for storing this type of data is known as an <a href="/Digital-Garden/notes/pFmvM2g_w9EL9faDFRYmS">AST</a>.</li>
+</ul>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/pFmvM2g_w9EL9faDFRYmS">AST</a></li>
+<li><a href="/Digital-Garden/notes/kql5oY88f5mlxMo7fJvAA">Data Structures</a></li>
+<li><a href="/Digital-Garden/notes/h2EpostlatyJ8twhZe3ht">Feat</a></li>
+<li><a href="/Digital-Garden/notes/O9ihxyuuQ6LmIwb9sAq6o">Generator</a></li>
+<li><a href="/Digital-Garden/notes/K2hJHUVocJXnLxWkGT1He">Loops</a></li>
+<li><a href="/Digital-Garden/notes/vR3Sa8MbEhYM2V7ulup61">Types</a></li>
+</ol>

@@ -1,0 +1,36 @@
+<h1 id="algorithms"><a aria-hidden="true" class="anchor-heading" href="#algorithms"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Algorithms</h1>
+<h4 id="what-may-cause-an-algorithm-to-not-be-deterministic"><a aria-hidden="true" class="anchor-heading" href="#what-may-cause-an-algorithm-to-not-be-deterministic"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>What may cause an algorithm to not be deterministic?</h4>
+<ol>
+<li>The algorithm uses external state, that is not passed in as an argument to the function
+<ul>
+<li>ex. global variable, hardware timer value, random value etc.</li>
+</ul>
+</li>
+<li>Timing is sensitive. If the algorithm is run two times, is there a possibility that different processes of the algorithm finish in different orders (e.g. if there are multiple processes)</li>
+<li>hardware error causes its state to change in an unexpected way.</li>
+</ol>
+<p>Although real programs are rarely purely deterministic, it is easier for humans as well as other programs to reason about programs that are.</p>
+<p>most programming languages and especially functional programming languages make an effort to prevent the above events from happening except under controlled conditions</p>
+<h3 id="making-an-algorithm-that-is-open-ended"><a aria-hidden="true" class="anchor-heading" href="#making-an-algorithm-that-is-open-ended"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Making an algorithm that is open-ended</h3>
+<p>Consider a function that counts occurrences in an array</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token function-variable function">countVowels</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">str</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> vowels <span class="token operator">=</span> <span class="token punctuation">{</span> a<span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span> e<span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span> i<span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span> o<span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span> u<span class="token operator">:</span> <span class="token number">0</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword control-flow">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&#x3C;</span> str<span class="token punctuation">.</span><span class="token property-access">length</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">const</span> currentChar <span class="token operator">=</span> str<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token method function property-access">toLowerCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span><span class="token known-class-name class-name">Object</span><span class="token punctuation">.</span><span class="token method function property-access">keys</span><span class="token punctuation">(</span>vowels<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token method function property-access">includes</span><span class="token punctuation">(</span>currentChar<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            vowels<span class="token punctuation">[</span>currentChar<span class="token punctuation">]</span><span class="token operator">++</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword control-flow">return</span> <span class="token known-class-name class-name">Object</span><span class="token punctuation">.</span><span class="token method function property-access">values</span><span class="token punctuation">(</span>vowels<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token method function property-access">reduce</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">acc<span class="token punctuation">,</span> sum</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> acc <span class="token operator">+</span> sum<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Conceptually, this could be made a bit simpler, because we don't actually care about the breakdown of each vowel. In other words, we don't really care if there are 2 <code>a</code>s, or 3 <code>e</code>s... All we care about is how many there are in total. Therefore, we could have just iterated on the string and counted the vowels and returned that value. However, there is a benefit to having put the results of the vowel count into an object. It may be a reasonable assumption that the breakdown of values is of value (or future value) to us. Building our algorithm this way makes it a simple adjustment to include the breakdown, and doesn't really add much overhead.</p>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/9qWK5iTk4fejiZwwE0R2y">Approach</a></li>
+<li><a href="/Digital-Garden/notes/FL3Vi4Vss0wSZoLTnSvRz">Patterns</a></li>
+<li><a href="/Digital-Garden/notes/QC8eO6oFOXQ3eQcCKQcT7">Practice</a></li>
+<li><a href="/Digital-Garden/notes/E3pRaDy3rlzEPJva">Space and Time Complexity</a></li>
+</ol>

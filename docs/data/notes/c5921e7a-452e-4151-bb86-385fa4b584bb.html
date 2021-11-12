@@ -1,0 +1,23 @@
+<h1 id="threads"><a aria-hidden="true" class="anchor-heading" href="#threads"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Threads</h1>
+<h1 id="threads-1"><a aria-hidden="true" class="anchor-heading" href="#threads-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Threads</h1>
+<p><strong>Scheduling</strong> is the action of assigning work to different resources in a system. </p>
+<ul>
+<li>this work is carried out on threads.
+Therefore a thread is the smallest amount of instructions that can be handled by a scheduler.</li>
+<li>think of it as the atomic unit from the scheuler's perspective.</li>
+</ul>
+<p>A <strong>process</strong> is an instance of a program that is being executed on 1 or more threads.</p>
+<ul>
+<li>multiple threads can exist on process simultaneously.
+<ul>
+<li>the number of threads depends on the programming language and source code that the process is running on.</li>
+</ul>
+</li>
+<li>threads within a process share resources like memory, but threads in different processes to not share resources.</li>
+<li>a process can be forked (split) into many child processes</li>
+</ul>
+<h3 id="multi-process-vs-multi-threaded"><a aria-hidden="true" class="anchor-heading" href="#multi-process-vs-multi-threaded"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Multi-process vs Multi-threaded</h3>
+<p>If a single process in a multi-process application crashes, that process alone dies.  The buffer is flushed, and all the other child processes continue happily along.  In a multi-threaded environment, when one thread dies, they all die.</p>
+<ul>
+<li>On some OSs, processes tend to be more expensive than threads (though on Linux, the difference is not that great)</li>
+</ul>

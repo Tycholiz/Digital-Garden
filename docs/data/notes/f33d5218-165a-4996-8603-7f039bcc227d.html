@@ -1,0 +1,46 @@
+<h1 id="useeffect"><a aria-hidden="true" class="anchor-heading" href="#useeffect"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>useEffect</h1>
+<h1 id="useeffect-1"><a aria-hidden="true" class="anchor-heading" href="#useeffect-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>useEffect</h1>
+<ul>
+<li><em>The question is not “when does this effect run”, the question is “with which state does this effect synchronize with:”</em>
+<ul>
+<li><code>useEffect(fn)</code> - all state</li>
+<li><code>useEffect(fn, [])</code> - no state</li>
+<li><code>useEffect(fn, [these, states])</code></li>
+</ul>
+</li>
+<li>if one of the variables in the dependency array changes, <code>useEffect</code> runs again. If the array is empty the hook doesn't run when updating the component at all, because it doesn't have to watch any variables.</li>
+<li>if you have no dependency array and are getting infinite loops, see if there are functions being defined each time in the component. It might be a simple fix to memoize them with <code>useCallback</code>
+<ul>
+<li>simply adding an empty dependency array is a bandaid solution and is not really addressing the root of the problem.</li>
+</ul>
+</li>
+<li>By passing an empty array, we’re saying “only ever do this once”.
+<ul>
+<li>on rare occasions that’s ok, but most of the time you want something in there. The reason is that usually you want to synchronize with something in your code, not just perform the effect once</li>
+</ul>
+</li>
+</ul>
+<h2 id="shortcoming-of-useeffect"><a aria-hidden="true" class="anchor-heading" href="#shortcoming-of-useeffect"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Shortcoming of useEffect</h2>
+<ul>
+<li>Compared to class component lifecycle methods, the shortcoming of <code>useEffect</code> is that we while we can set new state, we are unable to access current state (because of stale closure)</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token function">useEffect</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> intervalId <span class="token operator">=</span> <span class="token function">setInterval</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+        <span class="token function">setCount</span><span class="token punctuation">(</span>count <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token number">1000</span><span class="token punctuation">)</span>
+    <span class="token keyword control-flow">return</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token function">clearInterval</span><span class="token punctuation">(</span>intervalId<span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+</code></pre>
+<ul>
+<li>in this example, <code>count</code> is always pointing to the previous reference.</li>
+<li>we can work around this shortcoming with refs. Essentially, because refs exist between renders, that value is never lost between mounts. We simply take the value from the ref, and update the state with that value:</li>
+</ul>
+<pre><code>useEffect(() => {
+    const intervalId = setInterval(() => {
+        countRef.current = countRef.current + 1
+        setCount(countRef.current)
+    }, 1000)
+    return () => clearInterval(intervalId)
+}, [])
+</code></pre>
+<p><code>this</code> is mutable state, and the problem with mutable state is that it is always up to date. The good thing about hooks in react is that there is no <code>this</code> get retrieve values from. State always stays the same within a given render of a component.</p>

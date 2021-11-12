@@ -1,0 +1,64 @@
+<h1 id="dns"><a aria-hidden="true" class="anchor-heading" href="#dns"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>dns</h1>
+<p>DNS can be thought of as a directory service for the internet.</p>
+<ul>
+<li>Consider that a real-life directory service works like this: You have the name of someone, and you consult an agent to get "directions" (or a phone number) on how to reach them. A DNS is a similar entity which when given a domain name, can give us the address that it represents.</li>
+</ul>
+<p>DNS illustrates how a piece of core network functionality (network-name to network-address translation) can be implemented at the application layer of the internet.</p>
+<h2 id="history"><a aria-hidden="true" class="anchor-heading" href="#history"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>History</h2>
+<p>DNS is based on a distributed database that takes time to update globally. In the early internet days, the database was small and could be updated by hand. As the internet grew, this became unfeasible, so a new management structure was introduced: the concept of <em>domain name registrars</em>. The idea was that the updates to the database would be handled by the registrars</p>
+<ul>
+<li>nowadays, when you make updates to domain name management settings, the registrar will push out the updated information to other DNS servers. </li>
+</ul>
+<p>The DNS can be thought of the administrative assistant of the internet. It carries all the administrative responsibility of making things work, albeit behind the scenes.
+The DNS is made up of Internet nameservers and a communication protocol</p>
+<h2 id="components-of-dns"><a aria-hidden="true" class="anchor-heading" href="#components-of-dns"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Components of DNS</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/641013aa-5287-4909-a6ed-f0e9e215dd50">DNS Cache</a></li>
+<li><a href="/Digital-Garden/notes/fa38f0e2-5d5b-45e1-9f54-a95c44d8bbd5">DNS Lookup</a></li>
+<li><a href="/Digital-Garden/notes/ae80b473-1749-4755-900e-e7350dbdea56">DNS Resolver</a></li>
+</ul>
+<h2 id="config"><a aria-hidden="true" class="anchor-heading" href="#config"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Config</h2>
+<p><code>/etc/resolv.conf</code></p>
+<ul>
+<li>we can see what our system's DNS info is with this file
+<ul>
+<li>run <code>scutil --dns</code> on Mac to see DNS configuration</li>
+</ul>
+</li>
+</ul>
+<h2 id="names"><a aria-hidden="true" class="anchor-heading" href="#names"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Names</h2>
+<h3 id="apex-domain"><a aria-hidden="true" class="anchor-heading" href="#apex-domain"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Apex domain</h3>
+<p>The apex domain is the root domain, without any <code>www</code> subdomain.</p>
+<h3 id="fully-qualified-domain-name-fqdn"><a aria-hidden="true" class="anchor-heading" href="#fully-qualified-domain-name-fqdn"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Fully Qualified Domain Name (FQDN)</h3>
+<ul>
+<li>The full domain name, rather than its parts separated. The FQDM is notable because it is fully unambiguous. It therefore points to a very specific place, and cannot be interpreted in any other way.</li>
+<li>It always ends in the TLD (therefore, paths don't count)</li>
+<li>FQDN in DNS records should always be appended with a <code>.</code>
+<ul>
+<li>This is to differentiate them from paths.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p>There is no way to specify port numbers in DNS. If you are running a website, your server must respond to HTTP requests on port 80</p>
+<h1 id="resources"><a aria-hidden="true" class="anchor-heading" href="#resources"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Resources</h1>
+<p><a href="https://shapeshed.com/unix-traceroute/">https://shapeshed.com/unix-traceroute/</a>
+<a href="https://activedirectorypro.com/dns-best-practices/#dns-aging-scavenging">https://activedirectorypro.com/dns-best-practices/#dns-aging-scavenging</a></p>
+<h1 id="ue-resources"><a aria-hidden="true" class="anchor-heading" href="#ue-resources"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>UE Resources</h1>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/DNS_sinkhole">DNS sinkhole</a></li>
+</ul>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/JKhbbV9Lt7bRtxNO">Cook</a></li>
+<li><a href="/Digital-Garden/notes/641013aa-5287-4909-a6ed-f0e9e215dd50">DNS Cache</a></li>
+<li><a href="/Digital-Garden/notes/fa38f0e2-5d5b-45e1-9f54-a95c44d8bbd5">DNS Lookup</a></li>
+<li><a href="/Digital-Garden/notes/66ffb46f-ca05-469e-8300-ea54754bba5f">Dynamic DNS</a></li>
+<li><a href="/Digital-Garden/notes/ea44888d-ce69-474b-8717-c257c1a7df02">Registry</a></li>
+<li><a href="/Digital-Garden/notes/ae80b473-1749-4755-900e-e7350dbdea56">Resolver</a></li>
+<li><a href="/Digital-Garden/notes/1c97c6af-2ba6-4ad3-86d6-034efc7e2e01">Servers</a></li>
+<li><a href="/Digital-Garden/notes/pod390RH9Nwad9QK4k7RF">Subdomain</a></li>
+<li><a href="/Digital-Garden/notes/95f70ce9-e8f5-46da-8377-dab55f656bda">Zone</a></li>
+<li><a href="/Digital-Garden/notes/df7144fd-3605-421a-97ae-0d1b9f6bd2c0">records</a></li>
+</ol>

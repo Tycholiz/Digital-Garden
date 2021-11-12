@@ -1,0 +1,96 @@
+<h1 id="cache"><a aria-hidden="true" class="anchor-heading" href="#cache"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Cache</h1>
+<h1 id="cache-1"><a aria-hidden="true" class="anchor-heading" href="#cache-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Cache</h1>
+<ul>
+<li>Apollo caches the result of every graphql query in a normalized cache</li>
+<li>when a single resource is updated with a mutation, Apollo handles caching for us (as long as we return the <code>id</code> and fields that were updated). When we create or delete, or if we update many at once, we will have to manually take care of caching.
+<ul>
+<li><code>useMutation</code> has an <code>update</code> function, whose purpose is to modify your cached data to match the modifications that a mutation makes to your back-end data</li>
+</ul>
+</li>
+<li>we can interact directly with the cache with <code>readQuery, writeQuery, readFragment, writeFragment</code>, accessible from <code>ApolloClient</code> class</li>
+<li>we can get the cached version of an entity with <code>cache.identify</code>
+<ul>
+<li>an input <code>{ id: 1, title: '', mediaItems: [{...}] }</code> gives us <code>Nugget:1</code></li>
+</ul>
+</li>
+</ul>
+<p>readQuery</p>
+<ul>
+<li>like a regular graphql query, only it is performed on the cache, rather than the GraphQL API</li>
+</ul>
+<p>writeQuery</p>
+<ul>
+<li>we can use this function to update the apollo cache </li>
+</ul>
+<p>We can search only data that is in the cache (ie no API call made) by using the <code>@client</code> decorator</p>
+<h2 id="normalization"><a aria-hidden="true" class="anchor-heading" href="#normalization"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Normalization</h2>
+<ul>
+<li>The <code>InMemoryCache</code> normalizes query response objects before it saves them to its internal data store.</li>
+<li>normalization happens in the following steps:
+<ol>
+<li>The cache generates a unique ID for every identifiable object included in the response. 
+<ul>
+<li>ID will be in format: <code>&#x3C;__typename>:&#x3C;id></code> (ex. <code>Bucket:232</code>)</li>
+</ul>
+</li>
+<li>All the objects are stored by that generated ID in a flat lookup table.</li>
+<li>Whenever an incoming object is stored with the same ID as an existing object, the fields of those objects are merged.
+<ul>
+<li>this means that the only time anything is overwritten is when the field names are the same. If the incoming object has different fieldnames than the existing one, they will be preserved </li>
+</ul>
+</li>
+</ol>
+</li>
+<li>The apollo cache is an object where each key is the ID (<code>typename:id</code>), and the value is an object of the corresponding record from the database:</li>
+</ul>
+<pre><code>data: {
+	'Bucket:1': {
+		id: 1,
+		title: 'Psychology',
+		__typename: 'Bucket'
+	}
+}
+</code></pre>
+<h3 id="updating-the-cache"><a aria-hidden="true" class="anchor-heading" href="#updating-the-cache"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Updating the cache</h3>
+<ul>
+<li>we can pass an <code>update</code> method to <code>useMutation</code>
+<ul>
+<li>this method allows us to interact with the cache as if we were interacting with a graphql API. 
+<ul>
+<li>ex. we can make general queries, as well as use fragments to help</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>cache.modify</code> is a method we can execute on our cache that lets us modify individual fields directly 
+<ul>
+<li>differs from <code>writeQuery</code> and <code>writeFragment</code> in that it will circumvent any <code>merge</code> function we have defined, meaning that fields are always overwritten with exactly the values you specify.</li>
+</ul>
+</li>
+</ul>
+<h3 id="type-policies"><a aria-hidden="true" class="anchor-heading" href="#type-policies"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Type Policies</h3>
+<ul>
+<li>By defining type policies, we can determine how the cache interacts with specific types in the schema
+<ul>
+<li>done by mapping a <code>__typename</code> to the whole <code>TypePolicy</code> object.</li>
+<li>in other words, the <code>typePolicies</code> object has <code>key</code>-<code>values</code> of <code>__typename</code>-<code>TypePolicy Object</code></li>
+</ul>
+</li>
+<li>each field in a <code>typePolicies</code> object is a type's <code>__typename</code></li>
+<li>we can customize how a particular field within our Apollo cache is written to and read. For this, we have 2 methods: <code>merge</code> and <code>read</code>.
+<ul>
+<li>with <code>read</code>, the cache calls that function whenever your client queries for the field. In the query response, the field is populated with the read function’s return value, instead of the field’s cached value.
+<ul>
+<li>Read is useful for manipulating values when they’re read from the cache, for example, things like formatting strings, dates, etc.</li>
+</ul>
+</li>
+<li>with <code>merge</code>, the cache calls that function whenever the field is about to be written with an incoming value. When the write occurs, the field’s new value is set to the merge function’s return value, instead of the original incoming value.
+<ul>
+<li>Merge can take incoming data and manipulate it before merging it with existing data. Suppose you want to merge arrays or non-normalized objects.</li>
+</ul>
+</li>
+<li>to define the policy for a single field, we need to first know which TypePolicy object the field corresponds to.</li>
+</ul>
+</li>
+<li><code>FieldPolicy</code> lets us customize how individual fields in the Apollo Client cache are read and written.</li>
+</ul>

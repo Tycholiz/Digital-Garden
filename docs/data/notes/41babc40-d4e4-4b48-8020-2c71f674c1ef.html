@@ -1,0 +1,30 @@
+<h1 id="commit"><a aria-hidden="true" class="anchor-heading" href="#commit"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Commit</h1>
+<h1 id="amend"><a aria-hidden="true" class="anchor-heading" href="#amend"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Amend</h1>
+<hr>
+<h2 id="operators"><a aria-hidden="true" class="anchor-heading" href="#operators"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Operators</h2>
+<h3 id="-operator"><a aria-hidden="true" class="anchor-heading" href="#-operator"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>~ Operator</h3>
+<ul>
+<li>allows us to reach parent commits
+<ul>
+<li>ex. <code>git show HEAD~2</code> shows the grandparents of HEAD</li>
+</ul>
+</li>
+<li>if the commit has more than 1 parent (ie. merge commit), then the first parent of the commit will be used by default.
+<ul>
+<li>Need to use <code>^</code> to specify a different commit</li>
+</ul>
+</li>
+</ul>
+<h3 id="-operator-1"><a aria-hidden="true" class="anchor-heading" href="#-operator-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>^ Operator</h3>
+<ul>
+<li>allows us to specify which parent we want to refer to
+<pre><code>- spec: therefore, if there is only one parent, then `HEAD~1` refers to the same commit as `HEAD^1`
+</code></pre>
+<img src="/Digital-Garden/assets/images/2021-03-07-22-45-05.png"></li>
+</ul>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/b11fd04a-11f0-486d-9ce5-455eeec00c91">Amend</a></li>
+<li><a href="/Digital-Garden/notes/cc2112c7-b3f2-4bda-9a56-9eab27a5e0c7">Cook</a></li>
+</ol>

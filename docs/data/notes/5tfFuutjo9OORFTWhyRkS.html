@@ -1,0 +1,37 @@
+<h1 id="app"><a aria-hidden="true" class="anchor-heading" href="#app"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>App</h1>
+<p>The app object denotes the Express application.</p>
+<p>The <code>app</code> object has methods for:</p>
+<ul>
+<li>Routing HTTP requests
+<ul>
+<li>ex. <code>app.get()</code>, <code>app.param()</code></li>
+</ul>
+</li>
+<li>Configuring middleware
+<ul>
+<li><code>app.route()</code></li>
+</ul>
+</li>
+<li>Rendering HTML views
+<ul>
+<li><code>app.render()</code></li>
+</ul>
+</li>
+<li>Registering a template engine
+<ul>
+<li><code>app.engine()</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="express-variables"><a aria-hidden="true" class="anchor-heading" href="#express-variables"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Express variables</h3>
+<ul>
+<li>we can set and get variables that are available throughout express with <code>app.set</code> and <code>app.get</code></li>
+<li>Express has the concept of the "app settings table", which is essentially a list of key-value pairs for configging Express that we can manipulate with <code>app.set</code></li>
+</ul>
+<h3 id="local-properties"><a aria-hidden="true" class="anchor-heading" href="#local-properties"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Local properties</h3>
+<p>The <code>app.locals</code> object has properties that are local variables within the application.
+Once set, the value of <code>app.locals</code> properties persist throughout the life of the application, </p>
+<ul>
+<li>can be accessed on <code>req.app.locals</code></li>
+</ul>
+<p>in contrast with res.locals properties that are valid only for the lifetime of the request.</p>

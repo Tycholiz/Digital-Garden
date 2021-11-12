@@ -1,0 +1,81 @@
+<h1 id="jwt"><a aria-hidden="true" class="anchor-heading" href="#jwt"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Jwt</h1>
+<p>A JWT is a security token format that is used for exchanging authentication and authorization data between parties
+The most common implementations of JWT that we will see are as <a title="Private" style="color: brown" href="https://wiki.dendron.so/notes/hfyvYGJZQiUwQaaxQO27q.html" target="_blank">access tokens (Private)</a> and <a title="Private" style="color: brown" href="https://wiki.dendron.so/notes/hfyvYGJZQiUwQaaxQO27q.html" target="_blank">refresh tokens (Private)</a></p>
+<h3 id="token-ex-jwt"><a aria-hidden="true" class="anchor-heading" href="#token-ex-jwt"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Token (ex. JWT)</h3>
+<ul>
+<li>
+<p>When user logs in, the server creates a JWT with the secret, and sends it to the client. The client stores the JWT in local storage, and includes that JWT in every request.</p>
+</li>
+<li>
+<p>The biggest difference here is that the user’s state is not stored on the server, as the state is stored inside the token on the client side instead</p>
+</li>
+<li>
+<p>the whole point of JWTs is to not require centralised coordination</p>
+<ul>
+<li>this is why there is no <code>/logout</code> endpoint to hit. </li>
+</ul>
+</li>
+<li>
+<p>A JWT is just a regular javascript object that is stringified, hashed, and cryptographically signed.</p>
+</li>
+<li>
+<p>Your token is signed with the secret, known only by the server. If someone changes the token on client side, it would fail validation and the server side framework would reject it. Therefore you can trust your token. Of course, the jwtSecret should be a secret only known by your authentication server and resource server.</p>
+</li>
+<li>
+<p>JWTs are agnostic to what form of authentication you are using (ex. email, OAuth etc). Regardless, the response will contain the JWT.</p>
+</li>
+<li>
+<p>You generate the token only if you trust the user who requested it.</p>
+</li>
+<li>
+<p>You trust the token as long as it has not expired and can be verified with the secret.</p>
+</li>
+<li>
+<p>The information in a JWT can be read by anyone, so do not put private information in a JWT. What makes JWTs secure is that unless they were signed by our secret, we can not accept the information inside the JWT as truth.</p>
+</li>
+<li>
+<p>JWTs guarantee that the bearer of the token also owns the data that he is requesting.</p>
+<ul>
+<li>However JWTs don't guarantee encryption, which is why HTTPS is required. Otherwise, a man in the middle could take that server response (with the jwt) and use it to authenticate itself on your behalf, gaining access to all data.</li>
+</ul>
+</li>
+<li>
+<p>JWTs come with a death sentence— that is, by nature they have an expiry date.</p>
+<ul>
+<li>this value is stored in the <code>iat</code> property. This can be thought of as the <code>date_of_death</code> property.</li>
+<li>The server determines the lifespan of the JWT, since it controls the expiry date. Therefore, JWTs give a uniform lifespan to all JWTs, but like God, it has control over ending your life prematurely in order to deny access.</li>
+</ul>
+</li>
+<li>
+<p>JWTs are stateless (while sessions are stateful). This fact enables them to be verified on the server, without having to make a database call. This effectively makes them faster than using sessions (since sessions need to be stored)</p>
+<ul>
+<li>In reality, it's likely that the times we need to authenticate ourseleves with the JWT are also times that we need to interact with the database. This makes "saving trips to the database" more of a pipe-dream than a reality. At the end of the day, if we need to make a database interaction <em>and</em> authenticate ourselves, we are quicker just using a session rather than authenticating with a JWT (due to their size)</li>
+</ul>
+</li>
+<li>
+<p>JWTs are huge. Storing a userid in a cookie is 6 bytes, while storing in the JWT (along with headers+secret) makes it 304 bytes.</p>
+</li>
+</ul>
+<p><img src="/Digital-Garden/assets/images/2021-03-08-16-41-50.png"></p>
+<ul>
+<li>unlike a cookie, a JWT can contain an unlimited amount of data</li>
+</ul>
+<h3 id="logout"><a aria-hidden="true" class="anchor-heading" href="#logout"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Logout</h3>
+<p>There is no <code>/logout</code> endpoint to hit, as all we need to do is delete the JWT kept on the client.</p>
+<ul>
+<li>This means the token is still valid even after you logout. This is why keeping a short expiry date is important</li>
+</ul>
+<h3 id="analogy"><a aria-hidden="true" class="anchor-heading" href="#analogy"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Analogy</h3>
+<p><em>"Pretend I’m blind and hard of hearing. Let’s also pretend that last week you bought me lunch, and now I need your bank account number to pay you back. If I ask you for your bank account number in person, and someone else shouts their bank account number, I might accidentally send them the money I owe you.
+That’s because I heard someone shout a bank account number, and I trusted that it was you, even though in this case, it wasn’t.
+JWTs were designed to prevent this sort of thing from happening. JWTs give people an easy way to pass data between each other, while at the same time verifying who created the data in the first place.
+If I received 1,000,000 different JWTs that contained a bank account number, I’d easily be able to tell which one actually came from you.</em>"</p>
+<h1 id="e-resources"><a aria-hidden="true" class="anchor-heading" href="#e-resources"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>E Resources</h1>
+<p><a href="https://blog.logrocket.com/jwt-authentication-best-practices/#:~:text=A%20JWT%20needs%20to%20be,storage%20(or%20session%20storage).">Good high level overview. Includes links to other good content</a></p>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/31d9dd7a-6da1-4312-a8ea-a7817d6955cd">Claim</a></li>
+<li><a href="/Digital-Garden/notes/b28d04eb-f785-43a8-8f87-a58f250e0ecb">Jwk</a></li>
+<li><a href="/Digital-Garden/notes/4a111bd2-64c4-4fd7-873c-cb841a5ecb15">Signature</a></li>
+</ol>

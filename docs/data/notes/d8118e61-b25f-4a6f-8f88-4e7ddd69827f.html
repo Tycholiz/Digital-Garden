@@ -1,0 +1,43 @@
+<h1 id="graphile-migrate"><a aria-hidden="true" class="anchor-heading" href="#graphile-migrate"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Graphile Migrate</h1>
+<h2 id="tracking-changes"><a aria-hidden="true" class="anchor-heading" href="#tracking-changes"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Tracking Changes</h2>
+<ul>
+<li>GM has an .gmrc file, which allows us to define hooks. We can therefore define a hook that will run <code>pg_dump</code> on the shadow db after every migration. If we track this file in git, then we can see a clear history of what each migration has done.</li>
+</ul>
+<h2 id="development"><a aria-hidden="true" class="anchor-heading" href="#development"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Development</h2>
+<ul>
+<li>In Development, aside from the main database, there is a shadow db which is used internally by graphile-migrate and is mainly for testing consistency of the migrations, among other minor tasks</li>
+<li>the shadow database gets reset frequently</li>
+<li><code>commit</code>, <code>uncommit</code>, <code>watch</code> and <code>reset</code> are development-only commands.</li>
+</ul>
+<h2 id="flow"><a aria-hidden="true" class="anchor-heading" href="#flow"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Flow</h2>
+<ol>
+<li>We write our new idempotent migration in <code>current.sql</code>
+<ul>
+<li>any seed data we have can be placed at the bottom, to be removed prior to committing.</li>
+</ul>
+</li>
+<li>when ready, we run <code>commit</code>
+<ul>
+<li>this should only be done immediately before the branch is merged into master (see README##<a title="Private" style="color: brown" href="https://wiki.dendron.so/notes/hfyvYGJZQiUwQaaxQO27q.html" target="_blank">#Collaboration) (Private)</a>. This it to ensure commits are linear.</li>
+<li>all sql in <code>current.sql</code> is removed and catalogued into <code>committed/</code></li>
+<li>the shadow database is dropped, and recreated by running all migrations. This is to ensure that the migration works without a hitch.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="pitfalls"><a aria-hidden="true" class="anchor-heading" href="#pitfalls"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Pitfalls</h3>
+<ul>
+<li>when dropping tables, schemas, and functions, we should use CASCADE</li>
+<li>use idempotent commands whenever possible.
+<ul>
+<li>ex. DROP ____ IF EXISTS</li>
+<li>ex. CREATE OR REPLACE FUNCTION</li>
+<li>The initial migrations don't need to be idempotent if this migration starts off by dropping all schemas (which implicitly drops all tables attached to those schemas)</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/f747b9e8-78b4-4ef4-a8c7-4cf75f33ee5a">Deployment</a></li>
+</ul>

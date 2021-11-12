@@ -1,0 +1,86 @@
+<h1 id="servers"><a aria-hidden="true" class="anchor-heading" href="#servers"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Servers</h1>
+<h1 id="dns-request"><a aria-hidden="true" class="anchor-heading" href="#dns-request"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>DNS Request</h1>
+<p>A DNS request is executed by the browser on a device. The first thing the OS checks is the hosts file. If the hosts file has an entry for the DNS, then this entry is always used, regardless of what comes next.</p>
+<ul>
+<li>If the hosts file turns up no result, then the network card settings will be queried. This can come from one of 2 places:
+<pre><code>1. IP addresses of DNS servers configured in router
+2. IP addresses of DNS servers configured on device itself (in which the DNS settings on router would be set to *manual*)
+</code></pre>
+When the DNS resolves, the browser is enabled to connect to a web server or a CDN edge server </li>
+</ul>
+<p>DNS queries and responses are sent in plaintext (via UDP), which means they can be read by networks, ISPs, or anybody able to monitor transmissions (even when using HTTPS)</p>
+<h1 id="nameservers"><a aria-hidden="true" class="anchor-heading" href="#nameservers"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Nameservers</h1>
+<ul>
+<li>A DNS nameserver is a server that stores the DNS records for a domain
+<ul>
+<li>a DNS nameserver responds with answers to queries against its database.</li>
+</ul>
+</li>
+<li>A nameserver is a computer designated to translate domain names into IP addresses</li>
+<li>Nameservers can be “authoritative”, meaning that they give answers to queries about domains under their control. Otherwise, they may point to other servers, or serve cached copies of other name servers’ data.</li>
+</ul>
+<h1 id="dns-server"><a aria-hidden="true" class="anchor-heading" href="#dns-server"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>DNS Server</h1>
+<p>There are only 4 types of DNS Server:</p>
+<ol>
+<li>DNS Recursor
+<ul>
+<li>the server that responds to a DNS query and asks another DNS server for the address, or already has the IP address for the site saved.</li>
+</ul>
+</li>
+<li>Root nameserver
+<ul>
+<li>A root name server is the name server for the root zone. It responds to direct requests and can return a list of authoritative name servers for the corresponding top-level domain.</li>
+</ul>
+</li>
+<li>TLD nameserver
+<ul>
+<li>The top-level domain server (TLD) is one of the high-level DNS servers on the internet. When you search for <a href="http://www.varonis.com">www.varonis.com</a>, a TLD server for the ‘.com’ will respond first, then DNS will search for ‘varonis.’</li>
+</ul>
+</li>
+<li>Authoritative nameserver
+<ul>
+<li>The authoritative name server is the final stop for a DNS query. The authoritative name server has the DNS record for the request.</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>In instances where the query is for a subdomain such as <code>foo.example.com</code>, an additional nameserver will be added to the sequence after the authoritative nameserver, which is responsible for storing the subdomain’s <code>CNAME</code> record.</li>
+<li>the ISP typically supplies the nameserver, but you can use public servers, like those offered by Google (which have IP <code>8.8.8.8</code> and <code>8.8.4.4</code>) or Cloudflare (<code>1.1.1.1</code> and <code>1.0.0.1</code>)
+<ul>
+<li>You could consider each IP address here to be a resolver.</li>
+</ul>
+</li>
+<li>The DNS server has expanded its role beyond only resolving domain names, and has other anciliary functionality
+<ul>
+<li>ex. a real-time blackhole list for spam</li>
+</ul>
+</li>
+<li>The DNS database is traditionally stored in a structured text file (the <em>Zone File</em>)
+<ul>
+<li>The Zone File describes a DNS Zone, and contains all RR for every domain in the zone.</li>
+</ul>
+</li>
+</ul>
+<p>Your home network typically relies on a DNS Server supplied by your ISP</p>
+<ul>
+<li>therefore your ISP's DNS servers see every domain you request.</li>
+<li>some ISPs have found a way to monetize their DNS service. When you hit an erroneous domain, one that has no actual IP address, they divert your browser to a search and advertising page preloaded with a search phrase derived from the domain name</li>
+</ul>
+<h3 id="library-analogy"><a aria-hidden="true" class="anchor-heading" href="#library-analogy"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Library Analogy</h3>
+<ul>
+<li><em>Resolver</em> - a librarian who, given a title, is asked to go fetch a book</li>
+<li><em>Root NS</em> - the blocks of bookshelves in the library</li>
+<li><em>TLD NS</em> - the specific rack within the bookshelf block</li>
+<li><em>Authoritative NS</em> - the specific book you asked for.</li>
+</ul>
+<h2 id="misc"><a aria-hidden="true" class="anchor-heading" href="#misc"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Misc</h2>
+<p>the same domain name may have multiple IP addresses associated with it.</p>
+<p>Anything that can be done with a DNS address can also be done with an IP address, since all a DNS does is translate from hostname (www.____.com) to IP.</p>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/0264b7e5-2cf7-49d4-88cd-3373064ff77d">Authoritative Nameserver</a></li>
+<li><a href="/Digital-Garden/notes/5f320b8a-944f-4968-9739-119537ffa490">Root</a></li>
+<li><a href="/Digital-Garden/notes/BBLW6Oyx9nvDPPKK">Self Hosted</a></li>
+<li><a href="/Digital-Garden/notes/c175f6b0-1747-42f3-ac26-70c8aaf89a78">Tld</a></li>
+</ol>

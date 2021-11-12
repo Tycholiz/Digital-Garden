@@ -1,0 +1,67 @@
+<h1 id="ecs"><a aria-hidden="true" class="anchor-heading" href="#ecs"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Ecs</h1>
+<h1 id="ecs-elastic-container-service"><a aria-hidden="true" class="anchor-heading" href="#ecs-elastic-container-service"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>ECS (Elastic Container Service)</h1>
+<ul>
+<li>running containers via AWS proprietary orchestrator</li>
+<li>There are 2 main models for running containers: ec2 and fargate</li>
+<li>ECS clusters can be run a few different ways:
+<ul>
+<li>run on vms</li>
+<li>managed docker container runtime</li>
+<li>EC2</li>
+<li>Fargate</li>
+</ul>
+</li>
+<li><strong>ECS Control Plane</strong> - The tools to manage ECS
+<ul>
+<li>handles autohealing</li>
+</ul>
+</li>
+<li>by default, containers behave like other Linux processes with respect to access to resources like CPU and memory. this means they get access to all of the host's CPU and memory capacity
+<ul>
+<li>ecs provides mechanisms through which we can limit this (in the task)</li>
+</ul>
+</li>
+</ul>
+<h3 id="task"><a aria-hidden="true" class="anchor-heading" href="#task"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Task</h3>
+<p><strong>Task definition</strong> - To prepare your application to run on Amazon ECS, you create a task definition, which is a JSON file that describes between 1 and 10 containers</p>
+<ul>
+<li>
+<p>Think of it as a blueprint for your application</p>
+</li>
+<li>
+<p>Task definition parameters might be:</p>
+<ul>
+<li>Which containers should be used?</li>
+<li>Which ports should be opened?</li>
+<li>Which data volumes should be used within the containers?</li>
+<li>How are container linked together</li>
+</ul>
+</li>
+<li>
+<p>a <code>task</code> is an instantiation of a <code>task definition</code></p>
+<ul>
+<li>the basic unit of deployment is a <code>task</code></li>
+</ul>
+</li>
+<li>
+<p>a <code>task</code> is a logical construct that models 1+ containers</p>
+<ul>
+<li>therefore, the ECS API operates on tasks rather than individual containers</li>
+</ul>
+</li>
+<li>
+<p>in ECS you run a task, which in turn runs a container</p>
+</li>
+<li>
+<p>each fargate task has its own isolation boundary and doesn't share kernel, cpu resources, memory resources etc</p>
+</li>
+<li>
+<p><strong>ECS Cluster</strong> - a regional grouping of container instances, upon which we can run task requests</p>
+<ul>
+<li>When tasks are run on Fargate, cluster resources are managed for us</li>
+<li>ECS cluster is a regional grouping of one or more container instances on which you can run task requests</li>
+</ul>
+</li>
+</ul>
+<p>ECS objects and how they relate
+<img src="/Digital-Garden/assets/images/2021-03-08-21-29-20.png"></p>

@@ -1,0 +1,85 @@
+<h1 id="compose"><a aria-hidden="true" class="anchor-heading" href="#compose"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Compose</h1>
+<h1 id="docker-compose"><a aria-hidden="true" class="anchor-heading" href="#docker-compose"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Docker Compose</h1>
+<p>compose is a tool for defining and running multi-container applications</p>
+<ul>
+<li>use <code>docker-compose.yml</code> to configure the app's services, and start them with a single command
+<ul>
+<li>this file will be parsed everytime you run <code>docker-compose up</code>. Therefore, if you make changes to <code>docker-compose.yml</code>, all you need to do is <code>docker-compose down</code>, then <code>dc up</code> again. This is unlike the Dockerfile, which will only be run once when you are building an image</li>
+</ul>
+</li>
+</ul>
+<p>using compose is a 3 step process:</p>
+<ol>
+<li>Define your app’s environment with a Dockerfile so it can be reproduced anywhere.</li>
+<li>Define the services that make up your app in docker-compose.yml so they can be run together in an isolated environment.</li>
+<li>Run docker-compose up and Compose starts and runs your entire app.</li>
+</ol>
+<p>Compose has commands for managing the whole lifecycle of your application:</p>
+<ul>
+<li>Start, stop, and rebuild services</li>
+<li>View the status of running services</li>
+<li>Stream the log output of running services</li>
+<li>Run a one-off command on a service</li>
+</ul>
+<h2 id="anatomy-of-docker-composeyml"><a aria-hidden="true" class="anchor-heading" href="#anatomy-of-docker-composeyml"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Anatomy of docker-compose.yml</h2>
+<p>This file will be run with <code>docker-compose up</code>, building up the services (and with it, the containers) of the whole application</p>
+<ul>
+<li>if the image has already been built, then by default the build command will be ignored</li>
+</ul>
+<p>The docker-compose.yml file is organized by service. The <code>build</code> field designates the location of the service's dockerfile (this location is called the "build context") so that it can be run and the image can be built.</p>
+<p>the docker-compose.yml file can specify environment variables to be executed during process of building the images with the <code>args</code> field under <code>build</code></p>
+<ul>
+<li>these variables are accessed in the dockerfiles by specifying <code>arg</code>:</li>
+</ul>
+<p>dockerfile:</p>
+<pre><code>arg buildno
+arg gitcommithash
+
+run echo "build number: $buildno"
+run echo "based on commit: $gitcommithash"
+</code></pre>
+<p>docker-compose.yml</p>
+<pre><code>build:
+  context: .
+  args:
+    buildno: 1
+    gitcommithash: cdc3b19
+</code></pre>
+<h3 id="publish-vs-expose"><a aria-hidden="true" class="anchor-heading" href="#publish-vs-expose"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Publish vs. EXPOSE</h3>
+<ul>
+<li>these commands make the services inside the containers available to outside the containers</li>
+<li>expose makes the processes in the container accessible to other containers within Docker (but not from <em>outside</em> Docker)
+<ul>
+<li>note: this is not entirely correct, but useful for understanding. <a href="https://stackoverflow.com/questions/22111060/what-is-the-difference-between-expose-and-publish-in-docker/47594352#47594352">see</a></li>
+</ul>
+</li>
+<li>publish (<code>-p</code>) makes the services available to outside Docker
+<ul>
+<li>Therefore, publish implicitly EXPOSES</li>
+</ul>
+</li>
+</ul>
+<h2 id="service"><a aria-hidden="true" class="anchor-heading" href="#service"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Service</h2>
+<ul>
+<li>there is one image per service, but there can be multiple containers for a service. In other words, a docker "service" is one or more containers from one image</li>
+<li>In our development set up, we are likely to have a single container per image. When we start to scale and need for additional containers per service arises, we can use <code>docker service</code> to create multiple containers from the same image
+<ul>
+<li>consider how this relates to the <code>docker run</code> command, which starts up 1+ containers from an equal amount of image (ie. one container per image)</li>
+<li>what arises from running this command is Docker's swarm mode</li>
+</ul>
+</li>
+<li>Swarm mode is a container orchestration tool, giving the user the ability to manage multiple containers deployed across many different host machines
+<ul>
+<li>ex. imagine there are 5 containers deplayed across 5 different machines across USA. Swarm mode allows you to interact with all 5 containers at once, instead of having to manage one container at a time</li>
+</ul>
+</li>
+<li>This above distinction between a container and a service is precicely what differentiates <code>docker exec</code> and <code>docker-compose run</code>
+<ul>
+<li>naturally, <code>docker-compose</code> runs <code>docker</code> commands under the hood.</li>
+<li><code>docker exec</code> exectutes a command within a docker container</li>
+<li><code>docker-compose run</code> executes a command on a service (with the help of a swarm manager(?)</li>
+</ul>
+</li>
+</ul>
+<h1 id="ue-resources"><a aria-hidden="true" class="anchor-heading" href="#ue-resources"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>UE Resources</h1>
+<p><a href="https://gabrieltanner.org/blog/docker-compose">Definitive Guide to Docker Compose</a></p>

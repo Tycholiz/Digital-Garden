@@ -1,0 +1,36 @@
+<h1 id="time"><a aria-hidden="true" class="anchor-heading" href="#time"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Time</h1>
+<h1 id="overview"><a aria-hidden="true" class="anchor-heading" href="#overview"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Overview</h1>
+<p>we need to express both a time and a location whenever we want to place some event</p>
+<ul>
+<li>The basic problem is that we assume spatial coordinates more than we assume temporal coordinates
+<ul>
+<li>Consider how timezones really are. Everyone has a concept of 3:00 in the afternoon. It doesn't matter which timezone you are in, because 3:00 will have a certain feel. We ignore the timezone (spatial coordinate) when it comes to conceptualizing the time. It falls secondary to the time (temporal coordinate).</li>
+</ul>
+</li>
+<li>This problem results in people having a poor conception of how their timezone relates to others. This is why <code>-07:00</code> is a pretty abstract concept, and thus meaningless to most people.</li>
+<li>When talking about time, people almost always leave out some crucial information, leaning on the context of what they are saying to help communicate.
+<ul>
+<li>ex. to denote a year people often shorten to 2 digits ('04).</li>
+</ul>
+</li>
+</ul>
+<h3 id="other-issues"><a aria-hidden="true" class="anchor-heading" href="#other-issues"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Other issues</h3>
+<ul>
+<li>Scientific time naturally has origin 0, as usual with scientific measures, even though the rest of human time notations tend to have origin 1</li>
+</ul>
+<h4 id="unix-time"><a aria-hidden="true" class="anchor-heading" href="#unix-time"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Unix time</h4>
+<p>The Unix-time way of solving time-related problems is to set time 0 equal to 1970-01-01 00:00:00 UTC. This approach works well as long as the rules for converting between relative and absolute time are stable. As it turns out, they are not.</p>
+<ul>
+<li>Some have used local time as the point of reference, some use decoded local time as the reference, and some use hardware clocks that try to maintain time suitable for direct human consumption. Without consistency, problems arise.</li>
+</ul>
+<h4 id="political-time"><a aria-hidden="true" class="anchor-heading" href="#political-time"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Political Time</h4>
+<p>On the surface, answering the question "how long does it take for a clock to show the same value?" is an easy one to answer. The answer is 24 hours, right? Well, this question gets complex when we consider daylight savings, since 1/365 days will have 23 hours, and 1/365 days will have 25 hours.</p>
+<p>There is no way you can know from your location alone which time zone applies at some particular point on the face of the earth: you have to ask the people who live there what they have decided.</p>
+<p>Unfortunately, political time is what people want their computers to produce when asking for time of day.</p>
+<h1 id="ue-resources"><a aria-hidden="true" class="anchor-heading" href="#ue-resources"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>UE Resources</h1>
+<p><a href="https://zachholman.com/talk/utc-is-enough-for-everyone-right">Essential reading before working with Timezones</a></p>
+<ul>
+<li>Jensen recommends using <a href="https://date-fns.org/">https://date-fns.org/</a></li>
+</ul>
+<h1 id="e-resources"><a aria-hidden="true" class="anchor-heading" href="#e-resources"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>E Resources</h1>
+<p><a href="http://naggum.no/lugm-time.html">Scientific paper on time and its complexities</a></p>

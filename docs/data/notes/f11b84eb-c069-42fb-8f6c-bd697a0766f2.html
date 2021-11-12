@@ -1,0 +1,36 @@
+<h1 id="layout"><a aria-hidden="true" class="anchor-heading" href="#layout"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Layout</h1>
+<h2 id="layout-isolated-component"><a aria-hidden="true" class="anchor-heading" href="#layout-isolated-component"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Layout-isolated component</h2>
+<ul>
+<li>def - A component that is unaffected by the parent it is placed within, and does not itself affect the size and position of its siblings.
+<pre><code>- this only applies to the root element of a reusable component
+</code></pre>
+<img src="/Digital-Garden/assets/images/2021-03-28-19-49-24.png"></li>
+<li>avoid any properties on the root element of a component that affect, or are affected by elements outside of the bounds of that component.
+<ul>
+<li>ex. margin, because it acts on elements outside of the component's scope</li>
+<li>ex. align-self, as it will stretch the width or height of the component depending on the flex-direction of its parent</li>
+<li>by contrast, padding is fine, as it is confined to the scope of the component</li>
+<li>Basically, if a property depends on, or impacts other components outside of its scope, discourage its use.</li>
+</ul>
+</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token comment">// Does NOT conform to layout isolation principals</span>
+<span class="token keyword">function</span> <span class="token function"><span class="token maybe-class-name">MyComponent</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword control-flow">return</span> <span class="token punctuation">(</span>
+    <span class="token operator">&#x3C;</span>div style<span class="token operator">=</span><span class="token punctuation">{</span><span class="token punctuation">{</span>alignSelf<span class="token operator">:</span> <span class="token string">'center'</span><span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token operator">></span>
+      <span class="token operator">&#x3C;</span>div <span class="token operator">/</span><span class="token operator">></span>
+    <span class="token operator">&#x3C;</span><span class="token operator">/</span>div<span class="token operator">></span>
+  
+<span class="token punctuation">}</span>
+
+<span class="token comment">// This component is layout isolated, since the potentially dangerous property is not on the root element</span>
+<span class="token keyword">function</span> <span class="token function"><span class="token maybe-class-name">MyComponent</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword control-flow">return</span> <span class="token punctuation">(</span>
+    <span class="token operator">&#x3C;</span>div<span class="token operator">></span>
+      <span class="token operator">&#x3C;</span>div style<span class="token operator">=</span><span class="token punctuation">{</span><span class="token punctuation">{</span>alignSelf<span class="token operator">:</span> <span class="token string">'center'</span><span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token operator">/</span><span class="token operator">></span>
+    <span class="token operator">&#x3C;</span><span class="token operator">/</span>div<span class="token operator">></span>
+  <span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h1 id="e-resources"><a aria-hidden="true" class="anchor-heading" href="#e-resources"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>E Resources</h1>
+<p><a href="https://visly.app/blogposts/layout-isolated-components">https://visly.app/blogposts/layout-isolated-components</a></p>

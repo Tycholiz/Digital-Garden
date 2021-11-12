@@ -1,0 +1,67 @@
+<h1 id="ref"><a aria-hidden="true" class="anchor-heading" href="#ref"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Ref</h1>
+<h2 id="ref-1"><a aria-hidden="true" class="anchor-heading" href="#ref-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Ref</h2>
+<ul>
+<li>Ref - a mutable value that is shared by all component renders.
+<ul>
+<li>Think of a ref as a piece of state that doesn't abide by the same re-rendering rules that apply to normal state.</li>
+<li>a ref can be a function or an object</li>
+</ul>
+</li>
+<li>ex. Imagine we had 2 counters: one made with state, and the other with refs. As expected, when we increment the state count, the component understands that it needs to re-render, so it does so and reads in the new value of count. When we increment the ref count however, the component understands that it should not update, so we end up still seeing the old value, even though underneath the hood, the count has still risen. Since nothing has caused the component to re-render, this value will remain static. Now imagine that we increment the state count. React will recognize that an updated state means that it needs to re-render. Upon doing so, the current value of the ref will be read.</li>
+<li>traditionally, refs were meant to let you directly access an html element.
+<ul>
+<li>ex. focus an input field</li>
+</ul>
+</li>
+<li>The <code>useRef()</code> hook helps create mutable variables inside a functional component that won’t update on every render.</li>
+<li>a ref can be used when the "React-way" of interacting with children (ie. Passing props) doesn't cut it, or we want to manually access DOM nodes or React elements created in the render method</li>
+<li>The variables created with useRef() persists in between component renders (like state).</li>
+<li>The nature of refs is that we can change the value of the ref, and it will not cause the component to re-render.</li>
+<li>Refs have a value called <code>.current()</code>, which gives us the value of the ref in the current rendering of the component.</li>
+<li>use refs To manage focus, text selection, or media playback</li>
+<li>Most elements inside of your document have a ref attribute, which facilitates the use of useRef to reference elements inside of your HTML.</li>
+<li>refs created using createRef are not persisted between re-renders. A new ref is always created whenever the component is re-rendered.</li>
+<li>Updating a ref value is considered a side effect</li>
+</ul>
+<p>This is the reason why you want to update your ref value in event handlers and effects and not during rendering</p>
+<ul>
+<li>Ex. Imagine we have a list of users. When we click one, it logs out the username after 1 second. Now imagine that we click on a user, then click on another before the <code>console.log</code> occurs.
+In this scenario, class components would log out user2, while functional components would log out user1.
+<pre><code>- This shows that functional components attach the call made to the user selected at the time. If we want to make a functional component that behaves like a class, we can use a ref, which is a value that is shared between all renders (in this sense it's sort of like an instance variable) &#x3C;-- (in retrospect I think this should read "static variable", since it exists across all renders, similar to how static variables exist across all instances of that class; however this information came from React docs)
+</code></pre>
+</li>
+</ul>
+<p>ref QUESTION
+I'm hoping someone can help me understand Refs and their use in React. To be clear, I have a decent high-level understanding of them. For instance, I understand that they are an escape hatch from the regular re-rendering lifecycle of react components. We can use them to access DOM nodes directly, and we can use <code>useRef</code> to get a value that persists underneath the re-rendering nature of components.</p>
+<p>However, I struggle to see how this relates to the use of refs in the modal library I'm using (<code>react-native-modalize</code>). This library exports a component called <code>&#x3C;Modalize /></code> which wraps a component, putting it in a modal. In addition to others, <code>&#x3C;Modalize /></code> takes in 2 props: <code>ref</code> and <code>contentRef</code>. <code>ref</code> lets us control the modal via 2 methods <code>myRef.current.open()</code> and <code>myRef.current.close()</code>. This makes sense, but why do we need refs here? Why couldn't the library be written in a way that we just control the modal with state <code>isOpen</code>/<code>isClosed</code> (perhaps it is an implementation detail rather than the nature of how modals work?). If the value of refs here is supposedly to persist values through successive renders, how does this relate?</p>
+<h3 id="forward-ref"><a aria-hidden="true" class="anchor-heading" href="#forward-ref"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Forward Ref</h3>
+<ul>
+<li>What if we want to take a <strong>ref</strong> that is currently existing in the component and pass it down the tree?
+<ul>
+<li>ie. we can reference a component rendered by <code>&#x3C;Child /></code> from <code>&#x3C;Parent /></code></li>
+<li>ex. we have a <code>&#x3C;Form /></code> and <code>&#x3C;App /></code>. We have a ref defined in <code>App</code> and want to attach it to an input box inside <code>Form</code>. We wrap <code>Form</code> with <code>forwardRef</code>, enabling the component to receive the <code>ref</code>. in <code>Form</code>, we pass the ref to the input. Now, we can control that component from <code>App</code>.</li>
+</ul>
+</li>
+<li>the component that has <code>forwardRef</code> in it is the component that is receiving the ref (ie. the child)</li>
+<li><code>forwardRef()</code> will create a component, accepting 2 arguments: <code>props</code> and <code>ref</code> (a regular component just accepts props)</li>
+</ul>
+<h4 id="example"><a aria-hidden="true" class="anchor-heading" href="#example"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Example</h4>
+<p>Imagine we have a CheckoutPage component which renders a PaymentForm. The CheckoutPage handles all logic related to network calls in the app, and PaymentForm handles all form logic, including managing its own state. This is a reasonable separation of concerns. However, what happens if we want to access a piece of state in the parent from the child? Imagine the network call our parent made needed to get the address from the form. The "React Way" of accomplishing this is to bring the form state up one level to live in the parent component. However, this breaks our separation of concerns pattern. We can use an escape hatch forward ref in this circumstance.</p>
+<p>Illustration:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token function-variable function"><span class="token maybe-class-name">Parent</span></span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> myRef <span class="token operator">=</span> <span class="token function">useRef</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword control-flow">return</span> <span class="token operator">&#x3C;</span><span class="token maybe-class-name">Child</span> ref<span class="token operator">=</span><span class="token punctuation">{</span>myRef<span class="token punctuation">}</span> <span class="token operator">/</span><span class="token operator">></span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">const</span> <span class="token maybe-class-name">Child</span> <span class="token operator">=</span> <span class="token maybe-class-name">React</span><span class="token punctuation">.</span><span class="token method function property-access">forwardRef</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">props<span class="token punctuation">,</span> ref</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> <span class="token punctuation">[</span>myState<span class="token punctuation">,</span> setMyState<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">useState</span><span class="token punctuation">(</span><span class="token string">'This is my state!'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">useImperativeHandle</span><span class="token punctuation">(</span>ref<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token function-variable function">getMyState</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span><span class="token keyword control-flow">return</span> myState<span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">[</span>myState<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+</code></pre>
+<p>Then you should be able to get myState in the Parent component by calling: <code>myRef.current.getMyState()</code></p>
+<h4 id="combined-ref"><a aria-hidden="true" class="anchor-heading" href="#combined-ref"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Combined ref</h4>
+<ul>
+<li>for low-level UI development, it's common to want to use both a local ref and an external one (<code>forwardRef</code>).</li>
+</ul>
+<h3 id="uer"><a aria-hidden="true" class="anchor-heading" href="#uer"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>UER</h3>
+<p><a href="https://overreacted.io/making-setinterval-declarative-with-react-hooks/">Dan Abramov on refs</a></p>

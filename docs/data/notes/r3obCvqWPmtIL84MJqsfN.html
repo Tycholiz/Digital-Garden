@@ -1,0 +1,10 @@
+<h1 id="rehydration"><a aria-hidden="true" class="anchor-heading" href="#rehydration"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Rehydration</h1>
+<p>spec: In traditional server-side rendered applications (think Express-Pug, Ruby on Rails), each value in the HTML is generated on the server, and sent to the client. That means if the page changed, it's because the server sent some new HTML to the client. With Next, the initial render is done via the server at compile time, but the same React code used to generate that HTML is also included on the client (ie. the bundle.js is included in Nextjs, just like it is in vanilla React)</p>
+<ul>
+<li>This compiled client-side javascript code (originally React code) gets run on the client, building up a picture of what the world should look like. Then it is compared to the HTML in the document. This process is <strong>Rehydration</strong>.</li>
+</ul>
+<h3 id="render-vs-rehydration"><a aria-hidden="true" class="anchor-heading" href="#render-vs-rehydration"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Render vs Rehydration</h3>
+<p>In a render, vanilla React detects when there are changes to state or props. When there are, React updates the DOM.
+In a rehydration, React assumes the DOM won't change; It's just trying to adopt the existing DOM.</p>
+<h1 id="e-resources"><a aria-hidden="true" class="anchor-heading" href="#e-resources"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>E Resources</h1>
+<p><a href="https://www.joshwcomeau.com/react/the-perils-of-rehydration/">Quality resource on rehydration. Uses the backdrop of a dynamic Navbar to explain</a></p>

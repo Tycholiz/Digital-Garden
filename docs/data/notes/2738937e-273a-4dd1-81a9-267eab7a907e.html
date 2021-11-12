@@ -1,0 +1,123 @@
+<h1 id="fugitive"><a aria-hidden="true" class="anchor-heading" href="#fugitive"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Fugitive</h1>
+<h1 id="vim-fugitive"><a aria-hidden="true" class="anchor-heading" href="#vim-fugitive"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Vim-Fugitive</h1>
+<h2 id="gstatus"><a aria-hidden="true" class="anchor-heading" href="#gstatus"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Gstatus</h2>
+<p>or simply <code>:G</code>
+<code>&#x3C;C-n></code>/<code>&#x3C;C-p></code> - navigate files
+<code>-</code> stage/unstage the file that you are hovering over</p>
+<ul>
+<li>can use visual mode</li>
+</ul>
+<p><code>p</code> - run <code>git add --patch</code> for the file under cursor</p>
+<ul>
+<li>splits file into hunks of changes and allows you to pick which parts to stage for commit</li>
+<li>not as useful, since we can just use <code>diffget</code> as described below.</li>
+</ul>
+<p><code>cc</code> - commit
+<code>D</code> - open file under cursor as a diff
+<code>U</code> - unstage a file ("I've staged a file and want to remove it from the index")
+<code>X</code> - untrack a file ("I've changed a file in the working tree and want to discard all changes")</p>
+<ul>
+<li><code>git checkout -- &#x3C;filename></code></li>
+</ul>
+<p><code>]c</code>/<code>[c</code> - navigate between hunks when in vimdiff window</p>
+<h2 id="gblame"><a aria-hidden="true" class="anchor-heading" href="#gblame"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Gblame</h2>
+<p><code>A</code> resizes to end of author column
+<code>C</code> resizes to end of commit column
+<code>D</code> resizes to end of date/time column
+<code>&#x3C;CR></code> opens the patch that was applied by that commit</p>
+<h2 id="reconciling-differences-between-working-copy-and-index-version"><a aria-hidden="true" class="anchor-heading" href="#reconciling-differences-between-working-copy-and-index-version"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Reconciling differences between working copy and index version</h2>
+<ul>
+<li>
+<p><code>:Gw[rite]</code> - write (save) the current file and stage it</p>
+</li>
+<li>
+<p><code>:Gr[ead]</code> - read the index version of the file into the current buffer</p>
+<ul>
+<li>good for seeing what changes were made (that haven't been staged yet)</li>
+</ul>
+</li>
+<li>
+<p><code>Gwrite</code> and <code>Gread</code> are opposites. Running <code>Gread</code> in the working file will do the exact same thing as running <code>Gwrite</code> in the index file +vv (both cause the working copy to revert to the index version)</p>
+<ul>
+<li>Both of these commands reconcile differences between the working copy and
+the index version of a file by overwriting the contents of one buffer.</li>
+</ul>
+</li>
+<li>
+<p>We can be more granular with our reconciliation by using vim built-in <code>diffget</code>/<code>diffput</code> (alias <code>do</code>/<code>dp</code>, respectively. These aliases also run :diffupdate afterwards, to fix coloring issues)</p>
+<ul>
+<li>While running <code>:Gdiff</code>, if we are in the index window and position the
+cursor over a hunk of text and run <code>diffget</code>, it will pull that hunk into
+the working copy of the file.</li>
+<li>If there are changes in the working copy (right side) that you'd like to move to the index, you can visually select those lines and run <code>diffput</code>
+<ul>
+<li>this opens a new buffer with just the hunks you've added. we need to save this buffer before we `</li>
+</ul>
+</li>
+<li><code>diffget</code> makes changes in the currently active buffer, while <code>diffput</code> makes changes in the inactive buffer (by drawing in differences from the active buffer)
+<img src="/Digital-Garden/assets/images/2021-03-08-21-36-16.png"></li>
+<li>run <code>:diffupdate</code> if colors get messed up as a result of doing this</li>
+</ul>
+</li>
+<li>
+<p><code>:Gedit :0</code> - open index version of current file (remember: staging a file
+updates the index version of the file (?))</p>
+</li>
+<li>
+<p><code>:Gremove</code> - wipe out the buffer and run <code>git remove</code> on the current file</p>
+</li>
+<li>
+<p><code>:Gmove</code> - rename the current file</p>
+<ul>
+<li>does a whole bunch more than <code>git move</code>, so it's not a direct replacement</li>
+<li>ex. <code>:Gmove new-file-name</code> - (relative to the path of the current file)</li>
+</ul>
+</li>
+<li>
+<p>jump between conflicting regions with <code>[c</code>/<code>]c</code></p>
+</li>
+</ul>
+<h2 id="merge-conflicts"><a aria-hidden="true" class="anchor-heading" href="#merge-conflicts"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Merge conflicts</h2>
+<ul>
+<li>open a file with merge conflicts and run <code>:Gdiff</code>
+<ul>
+<li>might need to run <code>Gdiffsplit!</code> to get 3 windows</li>
+</ul>
+</li>
+<li>The windows shown are:
+<ol>
+<li>Target Branch - The branch we are merging into (normally master)</li>
+<li>Working Tree - The file as it currently is (with changes visible from both target branch and merge branch)</li>
+<li>Merge Branch - The branch we are introducing</li>
+</ol>
+</li>
+<li>if using <code>diffget</code> and want to accept changes from the target branch (likely master), run <code>:diffget //2</code>. If we wan to accept changes from merge branch (likely feature-branch), run <code>:diffget //3</code></li>
+</ul>
+<h1 id="diff"><a aria-hidden="true" class="anchor-heading" href="#diff"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Diff</h1>
+<p>Left window is the commit we are comparing against, and right window is the current working copy</p>
+<h3 id="colors"><a aria-hidden="true" class="anchor-heading" href="#colors"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Colors</h3>
+<p>red - lines were deleted
+green - lines were added
+teal - lines were modified</p>
+<ul>
+<li>knowing colors, we can easily notice if something has actually been removed, or if it was just moved/has a new structure
+<ul>
+<li>In this case, you'd find the green code in the left hand side, and try and match it up with a green chunk on the righthand side. If we find a match, then we know the code format just changed, and that no actual code was deleted.</li>
+</ul>
+</li>
+</ul>
+<h2 id="seeing-diff-between-2-versions-of-a-file"><a aria-hidden="true" class="anchor-heading" href="#seeing-diff-between-2-versions-of-a-file"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Seeing diff between 2 versions of a file</h2>
+<p><code>:Gdiff &#x3C;sha></code></p>
+<p><code>:Gdiff :0</code></p>
+<ul>
+<li>diff between current file and staged version</li>
+</ul>
+<p><code>:Gdiff !~3</code></p>
+<ul>
+<li>diff between current file and 3 commits ago</li>
+</ul>
+<h3 id="ue-resources"><a aria-hidden="true" class="anchor-heading" href="#ue-resources"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>UE Resources</h3>
+<ul>
+<li><a href="http://vimcasts.org/episodes/fugitive-vim-resolving-merge-conflicts-with-vimdiff/">http://vimcasts.org/episodes/fugitive-vim-resolving-merge-conflicts-with-vimdiff/</a></li>
+<li><a href="https://gist.github.com/mikaelz/38600d22b716b39b031165cd6d201a67">cheatsheet</a></li>
+</ul>

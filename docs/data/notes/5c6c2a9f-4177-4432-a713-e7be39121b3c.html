@@ -1,0 +1,13 @@
+<h1 id="users"><a aria-hidden="true" class="anchor-heading" href="#users"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Users</h1>
+<h1 id="database-users"><a aria-hidden="true" class="anchor-heading" href="#database-users"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Database Users</h1>
+<ul>
+<li>each database cluster has a set of database users, which are distinct from the users that the OS of the server manages.</li>
+<li>database users are global across a cluster installation.</li>
+<li>users own database objects, such as tables. These owners can assign priveleges on those objects to other users.</li>
+<li>freshly initialized postgres systems will always contain a predefined user with ID 1, which has the same name as the OS user that initialized the db cluster. However, it is often a best practice to name this user <code>postgres</code> instead.
+<ul>
+<li>this is a superuser</li>
+<li>To create more users, we need to connect as this user first.</li>
+</ul>
+</li>
+</ul>

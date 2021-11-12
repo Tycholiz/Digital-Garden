@@ -1,0 +1,16 @@
+<h1 id="cook"><a aria-hidden="true" class="anchor-heading" href="#cook"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Cook</h1>
+<h4 id="access-public-variable-from-different-gameobject-class"><a aria-hidden="true" class="anchor-heading" href="#access-public-variable-from-different-gameobject-class"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Access public variable from different GameObject class</h4>
+<pre class="language-cs"><code class="language-cs"><span class="token comment">// assuming we have a PlayerController.cs script that is attached to a Player GameObject</span>
+<span class="token keyword">private</span> <span class="token class-name">PlayerController</span> playerControllerScript<span class="token punctuation">;</span>
+
+<span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    playerControllerScript <span class="token operator">=</span> GameObject<span class="token punctuation">.</span><span class="token function">Find</span><span class="token punctuation">(</span><span class="token string">"Player"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token generic-method"><span class="token function">GetComponent</span><span class="token generic class-name"><span class="token punctuation">&#x3C;</span>PlayerController<span class="token punctuation">></span></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+<span class="token punctuation">}</span>
+
+<span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">Update</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// access gameOver variable from the PlayerController instance</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>playerControllerScript<span class="token punctuation">.</span>gameOver<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        transform<span class="token punctuation">.</span><span class="token function">Translate</span><span class="token punctuation">(</span>Vector3<span class="token punctuation">.</span>left <span class="token operator">*</span> Time<span class="token punctuation">.</span>deltaTime <span class="token operator">*</span> speed<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>

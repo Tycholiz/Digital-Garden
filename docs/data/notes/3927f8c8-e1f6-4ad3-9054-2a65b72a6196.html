@@ -1,0 +1,14 @@
+<h1 id="jestfn"><a aria-hidden="true" class="anchor-heading" href="#jestfn"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>jest.fn</h1>
+<p>Allows us to mock a function</p>
+<p>Used we want to mock a fn, and don't really care about its original implementation (often just mocking the return value)</p>
+<ul>
+<li>returns a <code>spy</code> (which remembers each call that was made on it)</li>
+<li>creates a stub</li>
+<li>useful in removing dependencies to some backend (eg. server, API)</li>
+</ul>
+<p>If we pass an argument, then it means we are passing a mock implementation:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> queryMock <span class="token operator">=</span> jest<span class="token punctuation">.</span><span class="token method function property-access">fn</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token known-class-name class-name">Promise</span><span class="token punctuation">.</span><span class="token method function property-access">resolve</span><span class="token punctuation">(</span><span class="token punctuation">{</span> data<span class="token operator">:</span> <span class="token number">1</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span><span class="token function">queryMock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">// Promise { pending }</span>
+<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token template-punctuation string">`</span></span>
+
+</code></pre>

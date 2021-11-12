@@ -1,0 +1,31 @@
+<h1 id="functions"><a aria-hidden="true" class="anchor-heading" href="#functions"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Functions</h1>
+<h2 id="tagged-template-literals"><a aria-hidden="true" class="anchor-heading" href="#tagged-template-literals"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Tagged Template Literals</h2>
+<pre class="language-js"><code class="language-js"><span class="token comment">// These are equivalent:</span>
+fn<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">some string here</span><span class="token template-punctuation string">`</span></span>
+<span class="token function">fn</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'some string here'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+</code></pre>
+<hr>
+<p>The rest of the arguments will be the interpolations, in order.</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> aVar <span class="token operator">=</span> <span class="token string">'good'</span>
+
+<span class="token comment">// These are equivalent:</span>
+fn<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">this is a </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>aVar<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> day</span><span class="token template-punctuation string">`</span></span>
+<span class="token function">fn</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'this is a '</span><span class="token punctuation">,</span> <span class="token string">' day'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> aVar<span class="token punctuation">)</span>
+</code></pre>
+<h2 id="identity-function"><a aria-hidden="true" class="anchor-heading" href="#identity-function"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Identity function</h2>
+<pre><code>fetchBook()
+  .then((book) => formatBook(book))
+  .then((postscript) => print(postscript))
+</code></pre>
+<p>is equivalent to (verify this)</p>
+<pre><code>fetchBook()
+  .then(formatBook)
+  .then(print);
+</code></pre>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/0b4a7970-c5ca-4db8-9780-7e802af9ce28">Generator Functions</a></li>
+<li><a href="/Digital-Garden/notes/195ecf4a-cec7-4666-84a5-d37c7ce4ce23">IIFE</a></li>
+<li><a href="/Digital-Garden/notes/42152323-36d0-4222-a830-dc7138fefa00">Ttl</a></li>
+</ol>

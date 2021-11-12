@@ -1,0 +1,8 @@
+<h1 id="cook"><a aria-hidden="true" class="anchor-heading" href="#cook"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Cook</h1>
+<h4 id="match-a-pattern-only-in-unstaged-hunks"><a aria-hidden="true" class="anchor-heading" href="#match-a-pattern-only-in-unstaged-hunks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Match a pattern only in UNSTAGED hunks</h4>
+<p><code>git diff -U1 | grepdiff 'TODO' --output-matching=hunk</code></p>
+<h4 id="match-a-pattern-only-in-staged-hunks"><a aria-hidden="true" class="anchor-heading" href="#match-a-pattern-only-in-staged-hunks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Match a pattern only in STAGED hunks</h4>
+<p><code>git diff -U1 --staged | grepdiff 'TODO' --output-matching=hunk</code></p>
+<h4 id="list-the-files-that-match-a-pattern-in-a-given-git-range"><a aria-hidden="true" class="anchor-heading" href="#list-the-files-that-match-a-pattern-in-a-given-git-range"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>List the files that match a pattern in a given git range</h4>
+<p>Here, look for the pattern <code>TODO</code> in all commits from <code>main..HEAD</code>
+<code>git grep TODO -- $(git diff --name-only main..HEAD)</code></p>

@@ -1,0 +1,48 @@
+<h1 id="actions"><a aria-hidden="true" class="anchor-heading" href="#actions"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Actions</h1>
+<p>A Github Action is installed as soon as we have a <code>.github/workflows</code> directory committed to our repo on Github.</p>
+<p><img src="/Digital-Garden/assets/images/2021-04-15-21-56-11.png"></p>
+<h2 id="terminology"><a aria-hidden="true" class="anchor-heading" href="#terminology"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Terminology</h2>
+<h3 id="workflow"><a aria-hidden="true" class="anchor-heading" href="#workflow"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Workflow</h3>
+<p>A workflow is an automated procedure that exists as a part of our repo.</p>
+<ul>
+<li>Workflows are made up of a collection of jobs which run is response to some event (on PR, on push etc)</li>
+</ul>
+<p>A Github Workflow can be used to build, test, package, release, or deploy a project on GitHub.</p>
+<p>Workflows can be configured to run in response to a webhook call, so we can trigger workflows in response to events happening outside Github.</p>
+<h3 id="job"><a aria-hidden="true" class="anchor-heading" href="#job"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Job</h3>
+<p>A job is a set of steps that execute on a single runner
+A workflow with multiple jobs will run those jobs in parallel by default (configurable)
+Each job in a workflow runs in a fresh virtual environment</p>
+<h3 id="step"><a aria-hidden="true" class="anchor-heading" href="#step"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Step</h3>
+<p>A step is an individual task that can run commands in a job</p>
+<p>A step can either be:</p>
+<ul>
+<li>a shell command</li>
+<li>an action</li>
+</ul>
+<p>Each step in a job executes on the same runner, allowing the actions in that job to share data with each other.</p>
+<h3 id="action"><a aria-hidden="true" class="anchor-heading" href="#action"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Action</h3>
+<p>Actions are standalone commands that are combined into steps to create a job
+Actions are the smallest portable building block of a workflow. You can create your own actions, or use actions created by the GitHub community</p>
+<h3 id="runner"><a aria-hidden="true" class="anchor-heading" href="#runner"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Runner</h3>
+<p>A runner is a server that has the GitHub Actions runner application installed</p>
+<ul>
+<li>meaning we could use the managed service from Github, or self-host the Runner.</li>
+</ul>
+<p>A runner listens for available jobs, runs one job at a time, and reports the progress, logs, and results back to GitHub</p>
+<p>GitHub-hosted runners are based on Ubuntu Linux, Microsoft Windows, and macOS</p>
+<hr>
+<h3 id="secrets"><a aria-hidden="true" class="anchor-heading" href="#secrets"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Secrets</h3>
+<p><code>GITHUB_TOKEN</code> is passed to the runner when a workflow is triggered.</p>
+<ul>
+<li>Aside from this, no other secrets are passed by default, and must be configured manually.</li>
+</ul>
+<p>To provide an action with a secret (either as input or as an env variable), use the <code>secrets</code> context.</p>
+<ul>
+<li>This allows us to access secrets we've created in our repo.</li>
+<li><a href="https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions">more info</a></li>
+</ul>
+<p>Secrets should not be passed between processes via the command line, as these commands might be visible to other users with the <code>ps</code> command.</p>
+<ul>
+<li>This is why we use <code>STDIN</code> or env variables to pass secrets.</li>
+</ul>

@@ -1,0 +1,9 @@
+<h1 id="cookies"><a aria-hidden="true" class="anchor-heading" href="#cookies"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Cookies</h1>
+<p>When a browser sends a request to a server, all of the cookies are automatically sent along with that request.</p>
+<p>One of the benefits of using cookies versus local storage is that the server receives all of these cookies on initial request. If we are storing a JWT in local storage, then the user will be shown the non-authenticated version of the page initially. The reason is that local storage uses JavaScript, which only gets loaded after the HTML and CSS have been already received. This is a perceivable delay, over just storing the JWT in an http-only cookie.</p>
+<p>If you use an HTTP only cookie for authentication, the user's data will be available on the server for the initial render</p>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/f2e725af-be5e-4bde-a753-75aa31274938">Cookies</a></li>
+</ol>

@@ -1,0 +1,9 @@
+<h1 id="having"><a aria-hidden="true" class="anchor-heading" href="#having"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Having</h1>
+<p>The WHERE clause allows you to filter rows based on a specified condition. However, the HAVING clause allows you to filter groups of rows according to a specified condition.</p>
+<ul>
+<li>In other words, the WHERE clause is applied to rows while the HAVING clause is applied to groups of rows</li>
+<li>The WHERE clause applies the condition to individual rows before the rows are summarized into groups by the GROUP BY clause. However, the HAVING clause applies the condition to the groups after the rows are grouped into groups.
+ex. from a People table, we can SELECT income, and "filter" in the rows that have income > 1000000: <code>... HAVING income > 1000000;</code>
+In contrast with WHERE, HAVING selects group rows after groups and aggregates are computed. Thus, the WHERE clause must not contain aggregate functions; it makes no sense to try to use an aggregate to determine which rows will be inputs to the aggregates.</li>
+<li>The HAVING clause almost always contains aggregate functions.</li>
+</ul>

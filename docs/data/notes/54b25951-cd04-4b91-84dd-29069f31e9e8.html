@@ -1,0 +1,8 @@
+<h1 id="pipeline"><a aria-hidden="true" class="anchor-heading" href="#pipeline"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Pipeline</h1>
+<p>Useful any time we want to do something like this:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> result <span class="token operator">=</span> <span class="token function">double</span><span class="token punctuation">(</span><span class="token function">double</span><span class="token punctuation">(</span><span class="token function">increment</span><span class="token punctuation">(</span><span class="token function">double</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre>
+<p>With pipeline operator, we can do this:</p>
+<pre class="language-js"><code class="language-js"><span class="token number">2</span> <span class="token operator">|</span><span class="token operator">></span> double <span class="token operator">|</span><span class="token operator">></span> increment <span class="token operator">|</span><span class="token operator">></span> double <span class="token operator">|</span><span class="token operator">></span> double
+</code></pre>
+<p>Note: as of 06/2020, this is still only stage one, so polyfills are needed</p>

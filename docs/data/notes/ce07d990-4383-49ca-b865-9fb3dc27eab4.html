@@ -1,0 +1,23 @@
+<h1 id="cd"><a aria-hidden="true" class="anchor-heading" href="#cd"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>CD</h1>
+<h2 id="continuous-deployment"><a aria-hidden="true" class="anchor-heading" href="#continuous-deployment"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Continuous Deployment</h2>
+<p>This process is about taking all of the commits we make during the development process, and putting them out into production. As part of this process, we subject our code to a multitude of tests (unit, e2e etc.)</p>
+<h2 id="continuous-delivery"><a aria-hidden="true" class="anchor-heading" href="#continuous-delivery"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Continuous Delivery</h2>
+<p>slightly broader, in the sense that not all changes that go through the pipeline need to necessarily make it into production.
+continuous delivery is about making sure that every change a developer makes can make it through the pipeline that includes subjecting our code to a series of tests (1. does it compile? 2. does it pass unit tests? 3. does it pass E2E? etc)</p>
+<ul>
+<li>This shows how putting code into production is then a business-decision, not a technical one. The executives of a company may decide "we only want to deploy new releases every 2 weeks, so that the amount of change that user's experience isn't so jarring". The point is that from a technical standpoint, we can do this— we just decide not to for business reasons.</li>
+</ul>
+<p>This above explanation shows that in order to do Continuous Delivery, we have to already be doing Continuous Deployment</p>
+<h3 id="why"><a aria-hidden="true" class="anchor-heading" href="#why"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Why?</h3>
+<ul>
+<li>reduced deployment risk
+<ul>
+<li>with smaller deployments, it's easier to spot when/where something goes wrong</li>
+</ul>
+</li>
+<li>user feedback
+<ul>
+<li>with incremental and automated change, it's easier to get more reliable feedback from users, rather than having to depend on what they tell you they want.</li>
+</ul>
+</li>
+</ul>

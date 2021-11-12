@@ -1,0 +1,22 @@
+<h1 id="resolver"><a aria-hidden="true" class="anchor-heading" href="#resolver"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Resolver</h1>
+<h3 id="dns-resolver-aka-recursive-resolver"><a aria-hidden="true" class="anchor-heading" href="#dns-resolver-aka-recursive-resolver"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>DNS Resolver (aka. Recursive Resolver)</h3>
+<p>the recursive resolver is at the beginning of the DNS query (with the authoritative nameserver at the end).</p>
+<ul>
+<li>the resolver receives requests from web browsers, and in turn makes additional requests to the rest of the servers in a final effort to resolve the query. </li>
+<li>a resolver will tell us what the IP is, given a domain name. By default, if a resolver cannot tell us, then that is it. However, the fact that it is recursive means that not only can we query a resolver, but a resolver can make queries itself. Put another way, if it doesn't have the answer we are looking for, it has the capacity to make queries itself. </li>
+<li>After receiving a request for a webpage, the resolver will either respond with cached data (given to it by the nameservers), or will send a request to the <em>root nameserver</em>, followed by a request to a <em>TLD nameserver</em>, and then one last request to an <em>authoritative nameserver</em> (This is called <a href="/Digital-Garden/notes/fa38f0e2-5d5b-45e1-9f54-a95c44d8bbd5">DNS Lookup</a>)
+<ul>
+<li>At each step, there is a possibility that a cached version of the website will be found, and it can immediately be returned to the client, rather than continuing to recurse down the DNS tree.</li>
+</ul>
+</li>
+<li>After receiving the requested IP address (from the authoritative nameserver), the recursive resolver sends a response to the client</li>
+</ul>
+<p>DNS Client (aka <em>Resolver</em>) is a client machine configured to send name resolution queries to a DNS server</p>
+<ul>
+<li>in other words, our computer is a DNS client when it sends requests to port 53 of a DNS server, with the intention of resolving an IP address  </li>
+</ul>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/81e5a201-c843-49d1-b291-f99d818cee0c">dns</a></li>
+</ul>

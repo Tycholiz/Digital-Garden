@@ -1,0 +1,21 @@
+<h1 id="update"><a aria-hidden="true" class="anchor-heading" href="#update"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Update</h1>
+<p>we can update a table while leveraging the commands that help us create a result set.</p>
+<ul>
+<li>ex. imagine we discover that all temperature readings after Nov 14 are off by 2 degrees:</li>
+</ul>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">UPDATE</span> weather
+<span class="token keyword">SET</span> <span class="token keyword">temp</span> <span class="token operator">=</span> <span class="token keyword">temp</span> <span class="token operator">-</span> <span class="token number">2</span>
+<span class="token keyword">WHERE</span> <span class="token keyword">date</span> <span class="token operator">></span> <span class="token string">'2020-11-14'</span>
+</code></pre>
+<ul>
+<li>UPDATE always requires a SET token.</li>
+</ul>
+<p></p><blockquote>
+No note with name sql.query.cte found in vault code
+</blockquote><p></p>
+<h3 id="joining"><a aria-hidden="true" class="anchor-heading" href="#joining"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Joining</h3>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">update</span> app_public<span class="token punctuation">.</span>payments <span class="token keyword">as</span> payments
+  <span class="token keyword">set</span> stripe_pi_code <span class="token operator">=</span> book_orders<span class="token punctuation">.</span>stripe_pi_code
+  <span class="token keyword">from</span> app_public<span class="token punctuation">.</span>book_orders <span class="token keyword">as</span> book_orders
+  <span class="token keyword">where</span> payments<span class="token punctuation">.</span>book_order_id <span class="token operator">=</span> book_orders<span class="token punctuation">.</span>id<span class="token punctuation">;</span>
+</code></pre>

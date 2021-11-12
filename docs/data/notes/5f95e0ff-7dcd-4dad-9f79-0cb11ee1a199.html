@@ -1,0 +1,13 @@
+<h1 id="partial-index"><a aria-hidden="true" class="anchor-heading" href="#partial-index"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Partial Index</h1>
+<p>A partial index is an index built over a subset of a table, and therefore only contains entries for that subset.</p>
+<ul>
+<li>The subset is determined by a conditional expression given by us (called the predicate).</li>
+</ul>
+<h2 id="purpose"><a aria-hidden="true" class="anchor-heading" href="#purpose"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Purpose</h2>
+<ul>
+<li>To avoid indexing common values
+<ul>
+<li>Since a query searching for a common value (ie. one that occurs for more than a few percent of all table rows) will not use the index anyway, there is no point in keeping those rows in the index at all. Doing this reduces the size of the index, increasing the speed of queries that do ue the index.</li>
+</ul>
+</li>
+</ul>

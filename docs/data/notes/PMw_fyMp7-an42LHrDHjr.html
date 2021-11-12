@@ -1,0 +1,7 @@
+<h1 id="reverse-proxy"><a aria-hidden="true" class="anchor-heading" href="#reverse-proxy"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Reverse Proxy</h1>
+<p>We need to load the proxy and proxy_http modules in Apache, and the most basic configuration would look like this (for one domain):</p>
+<pre><code>&#x3C;VirtualHost *:80>
+    ServerName foo.example.com
+    ProxyPass / http://192.168.2.x
+&#x3C;/VirtualHost>
+</code></pre>

@@ -1,0 +1,16 @@
+<h1 id="curl"><a aria-hidden="true" class="anchor-heading" href="#curl"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Curl</h1>
+<h2 id="http-requests"><a aria-hidden="true" class="anchor-heading" href="#http-requests"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>HTTP Requests</h2>
+<h4 id="post"><a aria-hidden="true" class="anchor-heading" href="#post"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Post</h4>
+<pre><code>curl -X POST [options] [URL]
+</code></pre>
+<p>example</p>
+<pre class="language-sh"><code class="language-sh">curl -X POST -H "Content-Type: application/json" \
+    -d '{"email": "linuxize@example.com", "password": "123"}' \
+    http://localhost:5678/login
+</code></pre>
+<h4 id="put"><a aria-hidden="true" class="anchor-heading" href="#put"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Put</h4>
+<pre><code>curl -X PUT -d arg=val -d arg2=val2 localhost:8080
+</code></pre>
+<h4 id="setting-return-value-of-curl-to-variable"><a aria-hidden="true" class="anchor-heading" href="#setting-return-value-of-curl-to-variable"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Setting return value of curl to variable</h4>
+<pre><code>http_code=$(curl -s -o /dev/null -w "%{http_code}" https://www.google.com)
+</code></pre>

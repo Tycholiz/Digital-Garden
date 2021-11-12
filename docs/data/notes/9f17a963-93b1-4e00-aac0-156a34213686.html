@@ -1,0 +1,50 @@
+<h1 id="group-by"><a aria-hidden="true" class="anchor-heading" href="#group-by"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Group by</h1>
+<h1 id="group-by-1"><a aria-hidden="true" class="anchor-heading" href="#group-by-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>GROUP BY</h1>
+<p>GROUP BY allows us to divide rows returned from SELECT into groups. It is only applicable to aggregate functions</p>
+<ul>
+<li>GROUP BY groups rows sharing a property so that an aggregate function can be applied to each group
+<ul>
+<li>for each group, we can apply an aggregate function, ex <code>SUM()</code></li>
+</ul>
+</li>
+</ul>
+<p>GROUP BY allows implementing much the same thing than <code>map</code>/<code>reduce</code> do in Javascript</p>
+<ul>
+<li>ie. map your data into different groups, and in each group reduce the data set to a single value.</li>
+</ul>
+<p>GROUP BY produces a new table reference with only as many columns as are listed after the GROUP BY clause</p>
+<ul>
+<li>Note that other columns may still be available as arguments of aggregate functions</li>
+<li>ex. <code>GROUP BY "nugget".id, "nugget".title</code> will reduce the number of available columns in all subsequent logical clauses (inc. SELECT) to 2.
+<ul>
+<li>This is the syntactical reason why you can only reference columns from the GROUP BY clause in the SELECT clause.</li>
+</ul>
+</li>
+</ul>
+<p>If we simply GROUP BY an id and don't apply any aggregate function, then the functionality will be the same as DISTINCT (remove duplicate rows)</p>
+<pre><code>- this is why GROUP BY only really becomes valuable once we add an aggregate function
+</code></pre>
+<h4 id="multiple-columns-in-group-by"><a aria-hidden="true" class="anchor-heading" href="#multiple-columns-in-group-by"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Multiple columns in GROUP BY</h4>
+<p><code>GROUP BY X</code> means put all those with the same value for X in the one group
+<code>GROUP BY X, Y</code> means put all those with the same values for both X and Y in the one group.</p>
+<h2 id="examples"><a aria-hidden="true" class="anchor-heading" href="#examples"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Examples</h2>
+<h3 id="average-salary-by-position"><a aria-hidden="true" class="anchor-heading" href="#average-salary-by-position"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Average salary by position</h3>
+<ul>
+<li>ex. imagine we have an <code>employee</code> table and we are interested in average salaries. Naturally, we have different employee positions, so if we ran the aggregate function AVG, we would get back an average of every salary:</li>
+</ul>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> <span class="token function">avg</span><span class="token punctuation">(</span>salary<span class="token punctuation">)</span>
+<span class="token keyword">FROM</span> <span class="token string">"employee"</span>
+</code></pre>
+<p>since the average of all salaries is not that interesting, we want to get the average of salaries GROUPed BY position</p>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> position<span class="token punctuation">,</span> <span class="token function">avg</span><span class="token punctuation">(</span>salary<span class="token punctuation">)</span>
+<span class="token keyword">FROM</span> <span class="token string">"employee"</span>
+<span class="token keyword">GROUP</span> <span class="token keyword">BY</span> position
+</code></pre>
+<ul>
+<li>note: if we didn't have the GROUP BY clause here, we would get an error
+<ul>
+<li>here, GROUP BY basically says "let's see the aggregate data <em>per</em> position"</li>
+</ul>
+</li>
+<li>Sometimes we may see syntax such as <code>GROUP BY 2</code>. Here, 2 refers to the second column, and would be equivalent to writing out the actual column name.</li>
+</ul>

@@ -1,0 +1,153 @@
+<h1 id="rxjs"><a aria-hidden="true" class="anchor-heading" href="#rxjs"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Rxjs</h1>
+<h1 id="overview"><a aria-hidden="true" class="anchor-heading" href="#overview"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Overview</h1>
+<p>The following table shows what role observables fulfill. When we want to get a single value for a synchronous action, we set the value to a variable. When we want to get a single value for an async action, we use promises. When we want to get the value for an array synchronously, we use an array. Finally, when we want to get the value of an array of values asynchronously, we use observables.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>sync</th><th>async</th></tr></thead><tbody><tr><td>single</td><td>variable</td><td>promise</td></tr><tr><td>collection</td><td>array</td><td>observable</td></tr></tbody></table>
+<p>Observables are like arrays because they represent a collection of events but are also like promises as they’re asynchronous: each event in the collection arrives at some indeterminate point in the future.</p>
+<ul>
+<li>This is distinct from a collection of promises (like <code>Promise.all</code>) as an observable can handle an arbitrary number of events, and a promise can only track one thing.</li>
+</ul>
+<p>An observable can be used to model clicks of a button. It represents all the clicks that will happen over the application’s lifetime, but the clicks will happen at some point in the future that we can’t predict.</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">let</span> myObs$ <span class="token operator">=</span> <span class="token function">clicksOnButton</span><span class="token punctuation">(</span>myButton<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h2 id="mapping--flattening-operators"><a aria-hidden="true" class="anchor-heading" href="#mapping--flattening-operators"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>"Mapping + Flattening" Operators</h2>
+<ul>
+<li><strong><em>flatten</em></strong> - subscribing inside a subscribe</li>
+<li>All work mostly in same manner
+<ul>
+<li>They map some value to an observable (you are the one in charge of returning an observable value from them, they just map it)</li>
+<li>They flatten the observable you return ( they just subscribe to it)</li>
+<li>They decide about what to do before / after they flatten (“Flattening Strategy”)</li>
+</ul>
+</li>
+</ul>
+<h3 id="mergemap---the-slacker-operator"><a aria-hidden="true" class="anchor-heading" href="#mergemap---the-slacker-operator"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>mergeMap - the slacker operator</h3>
+<ul>
+<li>simply keep subscribing to every new observable that we return from the map</li>
+<li>Other than mapping + flattening the observable, it does nothing else.</li>
+<li>ex. Imagine Netflix shows up-to-date ratings for each movie, retrieved from IMDB's API. We can <code>mergeMap</code> the movie into an http request to IMDB to get this data and enhance our UI.</li>
+</ul>
+<h3 id="switchmap---the-latest-and-greatest-operator"><a aria-hidden="true" class="anchor-heading" href="#switchmap---the-latest-and-greatest-operator"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>switchMap - the "latest and greatest" operator</h3>
+<ul>
+<li>unsubscribe from the last mapped observable</li>
+<li>ex. Imagine we are typing in Google and the autocomplete box shows up. Of course, these suggestions change with each key press. If we use <code>switchMap</code>, each previous request will be cancelled if a new one happens. If we'd used <code>mergeMap</code>, a request for each keystroke would be made</li>
+</ul>
+<h3 id="concatmap---the-wait-in-line-operator"><a aria-hidden="true" class="anchor-heading" href="#concatmap---the-wait-in-line-operator"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>concatMap - the "wait in line" operator</h3>
+<ul>
+<li>queue up the observables one after the other, and play their events in that order (i.e. subscribe to the next Observable in the queue only when the previous one is completed).</li>
+<li>Similar to <code>mergeMap</code>, except order matters</li>
+<li>ex. top 10 list</li>
+</ul>
+<h3 id="exhaustmap---the-do-not-disturb-operator"><a aria-hidden="true" class="anchor-heading" href="#exhaustmap---the-do-not-disturb-operator"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>exhaustMap - the "do not disturb" operator</h3>
+<ul>
+<li>ex. login button - since we don't want multiple clicks to be registered, we want want to disable mapping while the first http request is on the go, ensuring that we never call the server while the current request is running.</li>
+</ul>
+<h1 id="redux-observable-library"><a aria-hidden="true" class="anchor-heading" href="#redux-observable-library"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Redux-Observable (library)</h1>
+<ul>
+<li><strong><em>def</em></strong> - a redux middlware allowing us to <code>map</code> and <code>filter</code> actions with RxJS operators.
+<ul>
+<li>While javascript <code>map</code> and <code>reduce</code> allows us to transform arrays, these versions allow us to transform <em>streams of actions</em></li>
+</ul>
+</li>
+</ul>
+<h2 id="epic"><a aria-hidden="true" class="anchor-heading" href="#epic"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Epic</h2>
+<ul>
+<li><strong><em>def</em></strong> - a function that takes in a stream of actions, and returns a modified stream of actions.
+<ul>
+<li>receive <code>variable$</code> as input</li>
+</ul>
+</li>
+<li>epics can be thought of as a description of what additional actions redux-observable should dispatch</li>
+<li>epics are analogous to sagas from redux-saga</li>
+</ul>
+<p>example:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token function-variable function">pingEpic</span> <span class="token operator">=</span> <span class="token parameter">action$</span> <span class="token arrow operator">=></span> action$<span class="token punctuation">.</span><span class="token method function property-access">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">ofType</span><span class="token punctuation">(</span><span class="token string">'PING'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token comment">//equivalent to filter(action => action.type === 'PING')</span>
+  <span class="token function">mapTo</span><span class="token punctuation">(</span><span class="token punctuation">{</span> type<span class="token operator">:</span> <span class="token string">'PONG'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// later...</span>
+<span class="token function">dispatch</span><span class="token punctuation">(</span><span class="token punctuation">{</span> type<span class="token operator">:</span> <span class="token string">'PING'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<ul>
+<li>pingEpic will listen for actions of type PING and map them to a new action, PONG. This example is functionally equivalent to doing this:</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token function">dispatch</span><span class="token punctuation">(</span><span class="token punctuation">{</span> type<span class="token operator">:</span> <span class="token string">'PING'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">dispatch</span><span class="token punctuation">(</span><span class="token punctuation">{</span> type<span class="token operator">:</span> <span class="token string">'PONG'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<ul>
+<li>Epics run alongside the normal Redux dispatch channel, after the reducers have already received them. When you map an action to another one, you are not preventing the original action from reaching the reducers; that action has already been through them</li>
+</ul>
+<h2 id="operators"><a aria-hidden="true" class="anchor-heading" href="#operators"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Operators</h2>
+<ul>
+<li><code>ofType</code> - filter by a specific type of action</li>
+</ul>
+<h1 id="stream"><a aria-hidden="true" class="anchor-heading" href="#stream"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Stream</h1>
+<ul>
+<li><strong><em>def</em></strong> - a sequence of data elements made available over time</li>
+<li>Can be thought of as items on a conveyor belt being processed one at a time, rather than in large batches</li>
+<li>Can also be seen as a sequence of ongoing events ordered in time
+<ul>
+<li>ex. number of button clicks in 1 second
+<ul>
+<li>All the clicks will be grouped together as a stream</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>The stream is the subject which is being observed</li>
+</ul>
+<hr>
+<h3 id="promise-vs-observable"><a aria-hidden="true" class="anchor-heading" href="#promise-vs-observable"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Promise vs Observable</h3>
+<ul>
+<li>Promises handle a single event (ie. the failure or success of an asyn operation).</li>
+<li>An observable is a function that returns a stream, and we can pass in zero or more events to it. The callback provided to the observable will be called for each event.
+<ul>
+<li>Observables are preferred over promises because they don't care how many events you have, while promises require 1, and only 1.</li>
+</ul>
+</li>
+<li>Observable libraries provide methods to help interact with the emitted (returned?) value(s). For instance, we can use <code>map</code> to transform each value's output</li>
+<li>a Promise is eager, whereas an Observable is lazy</li>
+<li>If you wanted to subscribe to the reactive way of programming, then you could just "observable all the things"</li>
+</ul>
+<p>Additionally...</p>
+<ul>
+<li>Observables are cancellable.</li>
+</ul>
+<h1 id="questions"><a aria-hidden="true" class="anchor-heading" href="#questions"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Questions</h1>
+<ul>
+<li>what is meant by inner/outer observable
+<ul>
+<li><a href="https://academind.com/learn/javascript/callbacks-vs-promises-vs-rxjs-vs-async-awaits/">source</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="resources"><a aria-hidden="true" class="anchor-heading" href="#resources"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Resources</h1>
+<ul>
+<li><a href="http://reactivex.io/documentation/operators.html">Operators</a></li>
+<li><a href="https://rangle.io/blog/thinking-in-nested-streams-with-rxjs/">thinking in nested streams</a></li>
+</ul>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/0rXfs38KlbsR9QX8z1fEh">Objects</a></li>
+</ol>

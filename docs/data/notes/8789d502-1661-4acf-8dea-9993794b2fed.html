@@ -1,0 +1,38 @@
+<h1 id="design"><a aria-hidden="true" class="anchor-heading" href="#design"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Design</h1>
+<h2 id="should-this-be-a-table-or-not"><a aria-hidden="true" class="anchor-heading" href="#should-this-be-a-table-or-not"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Should this be a table or not?</h2>
+<ul>
+<li>can you imagine the current data being <em>expanded</em> in the future?
+<ul>
+<li>ex. imagine we had a Book table, which included 3 properties: genre1, genre2, genre3. Now if we decided that each book should have 4 potential genres, we would have to change the structure. The solution would be to have a Books table and a Genres table</li>
+</ul>
+</li>
+<li>Is the data being held in a table "genericable"? If you are tempted to combine different concepts into something that has a common thread, it might be a sign that they should be different tables. Framed another way, if you find yourself in a position where it would be difficult to extend a table, it should give us pause.
+<ul>
+<li>ex. Imagine we have to keep track of <code>InvoiceStatus</code>, <code>BackOrderStatus</code>, <code>ShipViaCarrier</code>, <code>CreditStatus</code>, and <code>CustomerStatusType</code>. Each of these concepts has a common thread, which is that aside from their respective PKs, they only have a single text field. We might therefore think it appropriate to combine all 5 concepts into a single generic table. However, this becomes problematic when we start to query information. What results is a necessity to JOIN ON many different fields, and to use aliases to distinguish multiple "versions" of the same table:</li>
+</ul>
+</li>
+<li>if we were to look at 5 rows of a single table and noticed that 3/5 of the rows have an identical value for one of the columns, that would be a sign that the column should be its own table
+<ul>
+<li>ex. we have a table called <code>shoes</code> and there is a field to describe what type of shoe it is (business, casual etc). If we were to query some records, we would find that 'business' would show up a lot in the 'type' column. This is a sign that we should create a "shoe type" table.</li>
+</ul>
+</li>
+</ul>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span>
+	<span class="token keyword">FROM</span> Customer
+	<span class="token keyword">JOIN</span> GenericDomain <span class="token keyword">as</span> CustomerType
+	<span class="token keyword">ON</span> Customer<span class="token punctuation">.</span>CustomerTypeId <span class="token operator">=</span> CustomerType<span class="token punctuation">.</span>GenericDomainId
+	  <span class="token operator">and</span> CustomerType<span class="token punctuation">.</span>RelatedToTable <span class="token operator">=</span> <span class="token string">"Customer"</span>
+	  <span class="token operator">and</span>  CustomerType<span class="token punctuation">.</span>RelatedToColumn <span class="token operator">=</span> <span class="token string">"CustomerTypeId"</span>
+	<span class="token keyword">JOIN</span> GenericDomain <span class="token keyword">as</span> CreditStatus
+	<span class="token keyword">ON</span> Customer<span class="token punctuation">.</span>CreditStatusId <span class="token operator">=</span> CreditStatus<span class="token punctuation">.</span>GenericDomainId
+	  <span class="token operator">and</span> CreditStatus<span class="token punctuation">.</span>RelatedToTable <span class="token operator">=</span> <span class="token string">"Customer"</span>
+	  <span class="token operator">and</span> CreditStatus<span class="token punctuation">.</span>RelatedToColumn <span class="token operator">=</span> <span class="token string">"CreditStatusId"</span>
+</code></pre>
+<pre><code>- on the other hand, if we separate them all out as seperate tables, then it greatly simplifies our query:
+</code></pre>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> Customer  
+	<span class="token keyword">JOIN</span> CustomerType 
+		<span class="token keyword">ON</span> Customer<span class="token punctuation">.</span>CustomerTypeId <span class="token operator">=</span> CustomerType<span class="token punctuation">.</span>CustomerTypeId  
+	<span class="token keyword">JOIN</span> CreditStatus    
+		<span class="token keyword">ON</span> Customer<span class="token punctuation">.</span>CreditStatusId <span class="token operator">=</span> CreditStatus<span class="token punctuation">.</span>CreditStatusId
+</code></pre>

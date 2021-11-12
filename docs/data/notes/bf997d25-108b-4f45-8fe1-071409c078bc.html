@@ -1,0 +1,68 @@
+<h1 id="lets-encrypt"><a aria-hidden="true" class="anchor-heading" href="#lets-encrypt"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Lets Encrypt</h1>
+<h1 id="lets-encrypt-1"><a aria-hidden="true" class="anchor-heading" href="#lets-encrypt-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Let's Encrypt</h1>
+<h2 id="plugins"><a aria-hidden="true" class="anchor-heading" href="#plugins"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Plugins</h2>
+<p>Certbot supports 2 types of plugins for obtaining and installing certificates: authenticators and installers</p>
+<ul>
+<li>some plugins can do both, such as the Apache and Nginx plugins</li>
+</ul>
+<h3 id="authenticator"><a aria-hidden="true" class="anchor-heading" href="#authenticator"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Authenticator</h3>
+<ul>
+<li>Authenticators are plugins used with the <code>certonly</code> command to obtain a certificate, validating that we own the domain we are requesting a certificate for. It then obtains the certificate for that domain, and places the certificate in the <code>/etc/letsencrypt</code> directory on your machine
+<ul>
+<li>The authenticator does not install the certificate (it does not edit any of your server’s configuration files to serve the obtained certificate)</li>
+</ul>
+</li>
+<li>If we list multiple domains to authenticate, they will all be included in a single certificate by default.</li>
+</ul>
+<h3 id="installer"><a aria-hidden="true" class="anchor-heading" href="#installer"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Installer</h3>
+<ul>
+<li>Installers are Plugins used with the <code>install</code> command to install a certificate.</li>
+<li>These plugins modify the webserver's configuration in order to server the site over HTTPS </li>
+</ul>
+<h2 id="certificates"><a aria-hidden="true" class="anchor-heading" href="#certificates"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Certificates</h2>
+<ul>
+<li>All generated keys and certificates can be found on the host that serves the application. 
+<ul>
+<li>found in <code>/etc/letsencrypt/live/$domain</code> if using Let's Encrypt</li>
+</ul>
+</li>
+<li>note: <code>pem</code> is a type of encoding</li>
+</ul>
+<h3 id="privkeypem"><a aria-hidden="true" class="anchor-heading" href="#privkeypem"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>privkey.pem</h3>
+<p>This is the private key for the certificate </p>
+<ul>
+<li>This is what Apache needs for <code>SSLCertificateKeyFile</code>, and Nginx for <code>ssl_certificate_key</code></li>
+</ul>
+<h3 id="fullchainpem"><a aria-hidden="true" class="anchor-heading" href="#fullchainpem"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>fullchain.pem</h3>
+<p>This is the full list of certificates, including the server certificate (a.k.a Leaf Certificate or End-Entity Certificate)</p>
+<ul>
+<li>the server certificate is the first one listed. It is followed by intermediary certificates. </li>
+<li>This is what Apache needs for <code>SSLCertificateFile</code>, and what Nginx needs for <code>ssl_certificate</code>.</li>
+</ul>
+<h2 id="concepts"><a aria-hidden="true" class="anchor-heading" href="#concepts"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Concepts</h2>
+<h3 id="acme"><a aria-hidden="true" class="anchor-heading" href="#acme"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>ACME</h3>
+<ul>
+<li>ACME is a communications protocol for automating interactions between CAs and their users' webservers.
+<ul>
+<li>This allows automated deployment of public key infrastructure.</li>
+</ul>
+</li>
+<li>Certbot is an example of an ACME client</li>
+</ul>
+<h3 id="challenge"><a aria-hidden="true" class="anchor-heading" href="#challenge"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Challenge</h3>
+<ul>
+<li>Challenges are a way for the Let's Encrypt servers to validate that you own the domain.</li>
+<li>ex. HTTP-01 Challenge, DNS-01 Challenge</li>
+<li>We only need one.</li>
+</ul>
+<p>HTTP-01</p>
+<ul>
+<li>The webserver proves it controls the domain by provisioning resources on its filesystem. The ACME server then challenges the webserver to provision a file at a specific path. If the webserver is able to do that, it is proof that the domain is under the webserver's control.</li>
+<li>When our webserver gets a token from Let's Encrypt, the webserver creates a file at <code>http://&#x3C;YOUR_DOMAIN>/.well-known/acme-challenge/&#x3C;TOKEN></code>
+<ul>
+<li>this file also includes a thumbprint of your account key</li>
+</ul>
+</li>
+<li>Once our webserver tells Let’s Encrypt that the file is ready, Let’s Encrypt tries retrieving it. If successful in doing so, then we are able to issue the certificate.</li>
+<li>This is the most common type of challenge.</li>
+</ul>

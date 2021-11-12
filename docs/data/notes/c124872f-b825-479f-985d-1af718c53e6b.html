@@ -1,0 +1,14 @@
+<h1 id="fetch"><a aria-hidden="true" class="anchor-heading" href="#fetch"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Fetch</h1>
+<h1 id="fetch-1"><a aria-hidden="true" class="anchor-heading" href="#fetch-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Fetch</h1>
+<ul>
+<li>running fetch will pull all refs and objects that we don't already have from the remote repo, and will put them into the object database. </li>
+<li>fetch is opposite of push, in the sense that fetch will import branches, while push will export them
+<ul>
+<li>when we run <code>git push origin master</code>, we are exporting our master branch to origin. If we were to run <code>git branch</code> on origin, we would see our local branch that we just pushed, listed as a local branch.
+<ul>
+<li>ex. Imagine we had a repo called <code>foo</code>, then cloned in locally into a different directory on our machine and called it <code>bar</code>. On <code>bar</code>, origin would default to <code>foo</code> (since it was copied from <code>foo</code>). <code>foo</code> would not have an origin by default, since it did not come into existence by being copied. We could manually add <code>bar</code> as a remote. Now, if we made a branch on <code>foo</code> and pushed it, that branch would be available locally on <code>bar</code>.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>

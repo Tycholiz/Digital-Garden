@@ -1,0 +1,73 @@
+<h1 id="load-function"><a aria-hidden="true" class="anchor-heading" href="#load-function"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>load Function</h1>
+<p>pages and layouts can export a <code>load()</code> function that runs before the component is created.</p>
+<ul>
+<li>This function runs both during server-side rendering and in the client</li>
+<li>An example of its usage would be to allow us to get page data without showing a loading spinner and fetching data in <code>onMount</code>.</li>
+<li><code>load</code> is similar to <code>getStaticProps</code> or <code>getServerSideProps</code> in Next.js, except that it runs on both the server and the client.</li>
+</ul>
+<p>If load returns nothing, SvelteKit will fall through to other routes until something responds, or will respond with a generic 404.</p>
+<p>SvelteKit's load receives an implementation of fetch, which has the following special properties:</p>
+<ul>
+<li>it has access to cookies on the server</li>
+<li>it can make requests against the app's own endpoints without issuing an HTTP call</li>
+<li>it makes a copy of the response when you use it, and then sends it embedded in the initial page load for hydration</li>
+</ul>
+<p>code inside <code>load</code> blocks should never reference <code>window</code>, <code>document</code>, or any browser-specific objects</p>
+<p>code inside <code>load</code> blocks should not directly reference any API keys or secrets, which will be exposed to the client, but instead call an endpoint that uses any required secrets</p>
+<p>spec: If we want to make HTTP calls in our <code>load</code> function, we will have to import a created API endpoint (<code>export async function get()...</code>) and use it in <code>load</code>. </p>
+<p>The <code>load</code> function is reactive, and will re-run when its parameters change, but only if they are used in the function.</p>
+<ul>
+<li>Specifically, if page.query, page.path, session, or stuff are used in the function, they will be re-run whenever their value changes. </li>
+<li>Note that destructuring parameters in the function declaration is enough to count as using them. </li>
+</ul>
+<p>If you return a <code>Promise</code> from load, SvelteKit will delay rendering until the promise resolves.</p>
+<hr>
+<h3 id="signature-of-load"><a aria-hidden="true" class="anchor-heading" href="#signature-of-load"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Signature of <code>load()</code></h3>
+<p>The <code>load</code> function receives an object containing four fields — <code>page</code>, <code>fetch</code>, <code>session</code> and <code>stuff</code></p>
+<h4 id="page"><a aria-hidden="true" class="anchor-heading" href="#page"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>page</h4>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">interface</span> <span class="token class-name">page</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    host<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+    path<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+    params<span class="token operator">:</span> <span class="token maybe-class-name">PageParams</span><span class="token punctuation">;</span>
+    query<span class="token operator">:</span> <span class="token maybe-class-name">URLSearchParams</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre>
+<p>So if the example above was <code>src/routes/blog/[slug].svelte</code> and the URL was <code>https://example.com/blog/some-post?foo=bar&#x26;baz&#x26;bizz=a&#x26;bizz=b</code>, the following would be true:</p>
+<ul>
+<li><code>page.host === 'example.com'</code></li>
+<li><code>page.path === '/blog/some-post'</code></li>
+<li><code>page.params.slug === 'some-post'</code></li>
+<li><code>page.query.get('foo') === 'bar'</code></li>
+<li><code>page.query.has('baz')</code></li>
+<li><code>page.query.getAll('bizz') === ['a', 'b'</code>]</li>
+</ul>
+<h4 id="stuff"><a aria-hidden="true" class="anchor-heading" href="#stuff"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>stuff</h4>
+<p><code>stuff</code> is passed from layout components to child layouts and page components and can be filled with anything else you need to make available. For the root <code>__layout</code>.svelte component, it is equal to <code>{}</code>, but if that component's load function returns an object with a <code>stuff</code> property, it will be available to subsequent load functions.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">export</span> <span class="token keyword">interface</span> <span class="token class-name"><span class="token maybe-class-name">LoadInput</span><span class="token operator">&#x3C;</span>
+	<span class="token maybe-class-name">PageParams</span> <span class="token keyword">extends</span> <span class="token maybe-class-name">Record</span><span class="token operator">&#x3C;</span><span class="token builtin">string</span><span class="token punctuation">,</span> <span class="token builtin">string</span><span class="token operator">></span> <span class="token operator">=</span> <span class="token maybe-class-name">Record</span><span class="token operator">&#x3C;</span><span class="token builtin">string</span><span class="token punctuation">,</span> <span class="token builtin">string</span><span class="token operator">></span><span class="token punctuation">,</span>
+	<span class="token maybe-class-name">Stuff</span> <span class="token keyword">extends</span> <span class="token maybe-class-name">Record</span><span class="token operator">&#x3C;</span><span class="token builtin">string</span><span class="token punctuation">,</span> <span class="token builtin">any</span><span class="token operator">></span> <span class="token operator">=</span> <span class="token maybe-class-name">Record</span><span class="token operator">&#x3C;</span><span class="token builtin">string</span><span class="token punctuation">,</span> <span class="token builtin">any</span><span class="token operator">></span><span class="token punctuation">,</span>
+	<span class="token maybe-class-name">Session</span> <span class="token operator">=</span> <span class="token builtin">any</span>
+<span class="token operator">></span></span> <span class="token punctuation">{</span>
+	page<span class="token operator">:</span> <span class="token punctuation">{</span>
+		host<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+		path<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+		params<span class="token operator">:</span> <span class="token maybe-class-name">PageParams</span><span class="token punctuation">;</span>
+		query<span class="token operator">:</span> <span class="token maybe-class-name">URLSearchParams</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span><span class="token punctuation">;</span>
+	<span class="token function">fetch</span><span class="token punctuation">(</span>info<span class="token operator">:</span> <span class="token maybe-class-name">RequestInfo</span><span class="token punctuation">,</span> init<span class="token operator">?</span><span class="token operator">:</span> <span class="token maybe-class-name">RequestInit</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token known-class-name class-name">Promise</span><span class="token operator">&#x3C;</span><span class="token maybe-class-name">Response</span><span class="token operator">></span><span class="token punctuation">;</span>
+	session<span class="token operator">:</span> <span class="token maybe-class-name">Session</span><span class="token punctuation">;</span>
+	stuff<span class="token operator">:</span> <span class="token maybe-class-name">Stuff</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">export</span> <span class="token keyword">interface</span> <span class="token class-name"><span class="token maybe-class-name">LoadOutput</span><span class="token operator">&#x3C;</span>
+	<span class="token maybe-class-name">Props</span> <span class="token keyword">extends</span> <span class="token maybe-class-name">Record</span><span class="token operator">&#x3C;</span><span class="token builtin">string</span><span class="token punctuation">,</span> <span class="token builtin">any</span><span class="token operator">></span> <span class="token operator">=</span> <span class="token maybe-class-name">Record</span><span class="token operator">&#x3C;</span><span class="token builtin">string</span><span class="token punctuation">,</span> <span class="token builtin">any</span><span class="token operator">></span><span class="token punctuation">,</span>
+	<span class="token maybe-class-name">Stuff</span> <span class="token keyword">extends</span> <span class="token maybe-class-name">Record</span><span class="token operator">&#x3C;</span><span class="token builtin">string</span><span class="token punctuation">,</span> <span class="token builtin">any</span><span class="token operator">></span> <span class="token operator">=</span> <span class="token maybe-class-name">Record</span><span class="token operator">&#x3C;</span><span class="token builtin">string</span><span class="token punctuation">,</span> <span class="token builtin">any</span><span class="token operator">></span>
+<span class="token operator">></span></span> <span class="token punctuation">{</span>
+	status<span class="token operator">?</span><span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">;</span>
+	error<span class="token operator">?</span><span class="token operator">:</span> <span class="token builtin">string</span> <span class="token operator">|</span> <span class="token known-class-name class-name">Error</span><span class="token punctuation">;</span>
+	redirect<span class="token operator">?</span><span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+	props<span class="token operator">?</span><span class="token operator">:</span> <span class="token maybe-class-name">Props</span><span class="token punctuation">;</span>
+	stuff<span class="token operator">?</span><span class="token operator">:</span> <span class="token maybe-class-name">Stuff</span><span class="token punctuation">;</span>
+	maxage<span class="token operator">?</span><span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>

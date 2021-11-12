@@ -1,0 +1,13 @@
+<h1 id="cook"><a aria-hidden="true" class="anchor-heading" href="#cook"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Cook</h1>
+<h3 id="pass-in-grep-results-to-a-command"><a aria-hidden="true" class="anchor-heading" href="#pass-in-grep-results-to-a-command"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Pass in grep results to a command</h3>
+<p>Imagine we wanted to run a command each file in the stdout of <code>eslint</code>:</p>
+<pre><code>/Users/kyletycholiz/programming/projects/project-zero/modules/client-ui-components/src/atoms/Radio/FontFaceRadio.js
+  62:50  warning  'onClick' is missing in props validation  react/prop-types
+
+/Users/kyletycholiz/programming/projects/project-zero/modules/client-ui-components/src/atoms/Radio/TextAlignRadio.js
+  38:36  warning  'children' is missing in props validation  react/prop-types
+</code></pre>
+<p>We could use grep to get just the filenames, then run a command like <code>yarn lint | grep /Users/kyletycholiz | xargs npx react-proptypes-generate fix</code> to pipe those filenames into a command that takes an arbitrary number of args</p>
+<ul>
+<li>this would be like running: <code>npx react-proptypes-generate fix FontFaceRadio.js TextAlignRadio.js</code></li>
+</ul>

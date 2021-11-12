@@ -1,0 +1,15 @@
+<h1 id="virtual"><a aria-hidden="true" class="anchor-heading" href="#virtual"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Virtual</h1>
+<h1 id="virutal-fs-vfs"><a aria-hidden="true" class="anchor-heading" href="#virutal-fs-vfs"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Virutal FS (VFS)</h1>
+<ul>
+<li>a component of the kernel</li>
+<li>handles all system calls related to files and file systems</li>
+<li>serves as an interface between a user and a particular file system
+<ul>
+<li>In other words, it abstracts away the specific filesystem implementation and let's us access it on a command line.</li>
+<li>it accomplishes this by specifying an interface (a contract) between the kernel and the underlying FS</li>
+</ul>
+</li>
+<li>we interact with the underlying FS by using the API provided by the VFS. </li>
+<li>this abstraction allows us to bridge the differences between Windows filesystems, Mac filesystems, and Unix filesystems</li>
+<li>when an external device attached to the system (such as a USB stick), Unix can run the <code>mount</code> command, which will create a new directory on the VFS.</li>
+</ul>

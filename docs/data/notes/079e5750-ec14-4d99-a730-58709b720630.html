@@ -1,0 +1,37 @@
+<h1 id="requires"><a aria-hidden="true" class="anchor-heading" href="#requires"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Requires</h1>
+<h1 id="requires-private"><a aria-hidden="true" class="anchor-heading" href="#requires-private"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><a title="Private" style="color: brown" href="https://wiki.dendron.so/notes/hfyvYGJZQiUwQaaxQO27q.html" target="_blank">@requires (Private)</a></h1>
+<p>When extending a schema, it's often because you want to expose data from Node.js that would be too difficult (or impossible) to access from PostgreSQL</p>
+<ul>
+<li>in other words, we come to a situation where we don't want to rely on Postgres to process and give us data, but instead want to rely on Node to do the job for us.</li>
+</ul>
+<h2 id="usd-to-cad-example"><a aria-hidden="true" class="anchor-heading" href="#usd-to-cad-example"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>USD to CAD example</h2>
+<ul>
+<li>Imagine in our database we store the price of a product in USD. However, we want to be able to query the <code>priceInCad</code>, directly as a field on the graphql schema:</li>
+</ul>
+<pre><code>query Product {
+	product {
+		priceInCad
+	}
+}
+</code></pre>
+<p>We can accomplish this by making a custom Postgraphile plugin, which would extend the Graphql schema to include the <code>priceInCadCents</code> field on the <code>Product</code> type:</p>
+<pre><code>const MyForeignExchangePlugin = makeExtendSchemaPlugin(build => {
+  return {
+    typeDefs: gql`
+			extend type Product {
+				priceInCadCents: Int! @requires(columns: ["price_in_us_cents"])
+			}`,
+    resolvers: {
+      Product: {
+        priceInCadCents: async product => {
+          // Note that the columns are converted to fields, so the case changes
+          // from `price_in_us_cents` to `priceInUsCents`
+          const { priceInUsCents } = product;
+          return await convertUsdToCad(priceInUsCents);
+        },
+      },
+    },
+  };
+});
+</code></pre>
+<p>we include the <code>@require</code> directive to show that in order to calculate this field, we need the postgres column <code>price_in_us_cents</code></p>

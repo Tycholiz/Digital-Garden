@@ -1,0 +1,13 @@
+<h1 id="controlled-components"><a aria-hidden="true" class="anchor-heading" href="#controlled-components"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Controlled Components</h1>
+<p><strong><em><a href="https://dev.to/stanleyjovel/simplify-controlled-components-with-react-hooks-23nn">Controlled Component</a></em></strong> - components within a form whose state is controlled with <code>setState</code>, rather than the built-in functionality provided by HTML forms</p>
+<ul>
+<li>ie. an HTML <code>input</code> that receives its <code>value</code> property from a prop in the component</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token function-variable function"><span class="token maybe-class-name">ControlledInput</span></span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter"><span class="token punctuation">{</span> value<span class="token punctuation">,</span> eventHandler <span class="token punctuation">}</span></span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">(</span>
+	<span class="token operator">&#x3C;</span>input value<span class="token operator">=</span><span class="token punctuation">{</span>value<span class="token punctuation">}</span> onChange<span class="token operator">=</span><span class="token punctuation">{</span>eventHandler<span class="token punctuation">}</span> <span class="token operator">/</span><span class="token operator">></span>
+<span class="token punctuation">)</span>
+</code></pre>
+<ul>
+<li>It means that when the user types the letter “J” on the input, what is visible is not the same “J”, it may be an identical “J” that comes from the state, or whatever the event handler has put in there.</li>
+<li>Controlled components are the highly recommended approach</li>
+</ul>

@@ -1,0 +1,147 @@
+<h1 id="imports"><a aria-hidden="true" class="anchor-heading" href="#imports"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Imports</h1>
+<p>Modules import one another using a module loader. At runtime the module loader is responsible for locating and executing all dependencies of a module before executing it. Well-known module loaders used in JavaScript are Node.js’s loader for CommonJS modules and the RequireJS loader for AMD modules in Web applications.</p>
+<p>In TypeScript, just as in ECMAScript 2015, any file containing a top-level import or export is considered a module. Conversely, a file without any top-level import or export declarations is treated as a script whose contents are available in the global scope (and therefore to modules as well).</p>
+<h1 id="es-modules-es6-import"><a aria-hidden="true" class="anchor-heading" href="#es-modules-es6-import"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>ES Modules (ES6 Import)</h1>
+<p>Since imports aren't a part of the Javascript standard yet, imports are just a specification— it is up to the implementation (Babel, Typescript, Metro Bundler(?)) to carry out the operation of linking modules.</p>
+<p>ESM are required as they are needed, rather than there being a bundle created beforehand (as with CommonJS)</p>
+<p>when you tell the JS engine to run a module, it has to behave as though these four steps are happening:</p>
+<ol>
+<li>Parsing: The implementation reads the source code of the module and checks for syntax errors.</li>
+<li>Loading: The implementation loads all imported modules (recursively). (This is the part that isn’t standardized yet)</li>
+<li>Linking: For each newly loaded module, the implementation creates a module scope and fills it with all the bindings declared in that module, including things imported from other modules.
+<ul>
+<li>This is the part where if you try to import {cake} from "paleo", but the “paleo” module doesn’t actually export anything named cake, you’ll get an error. And that’s too bad, because you were so close to actually running some JS code. And having cake!</li>
+</ul>
+</li>
+<li>Run time: Finally, the implementation runs the statements in the body of each newly-loaded module. By this time, import processing is already finished, so when execution reaches a line of code where there’s an import declaration… nothing happens!</li>
+</ol>
+<ul>
+<li>
+<p>when we import a module like <code>import 'firebase/storage'</code> (ie. without declaring a variable), it means we are executing the module <code>firebase/storage</code>, but not bothering to assign the default export to a variable.</p>
+<ul>
+<li>This implies we are doing side-effects.</li>
+</ul>
+</li>
+<li>
+<p>When you <code>import *</code>, what’s imported is a <em>module namespace object</em>. The properties of this object are the module’s exports:</p>
+</li>
+</ul>
+<pre><code>[Module] {
+  default: '[Function]', // the default export
+  first: 'Kyle' // named export `first`
+  last: 'Tycholiz', // named export `last`
+}
+</code></pre>
+<ul>
+<li>
+<p>if we wanted to import the named exports, we could <code>import { first } from _____</code>. spec: also, we could import the default by <code>import default from _____</code> (or <code>import { default }</code>?)</p>
+</li>
+<li>
+<p><code>import _ from "lodash"</code> is an alias for <code>import { default as _ } from "lodash"</code></p>
+</li>
+</ul>
+<hr>
+<p>Imported ES6 modules are executed either asynchronously or synchronously, depending on the module loader (ie. the implementation) we use. Therefore, to be safe we must assume async. However, all imports are executed prior to the script doing the importing. This makes ES6 modules different from Node.js modules or <code>&#x3C;script></code> tags without the <code>async</code> attribute</p>
+<h3 id="importing-without-name"><a aria-hidden="true" class="anchor-heading" href="#importing-without-name"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Importing without name</h3>
+<p>ex. <code>import './bootstrap'</code></p>
+<ul>
+<li>this will execute the target module (ie. run the module's code), without importing anything. It will not affect the scope of the active module
+<ul>
+<li>There may be side-effects, such as declaring global variables.</li>
+</ul>
+</li>
+<li>This method of importing is described as "importing a module for its side-effects only"</li>
+</ul>
+<h3 id="aggregating-modules-re-exporting"><a aria-hidden="true" class="anchor-heading" href="#aggregating-modules-re-exporting"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Aggregating modules (Re-exporting)</h3>
+<ul>
+<li>We can import modules and immediately export them again by aggregating the import and export commands:</li>
+</ul>
+<pre><code>export * from './atoms'
+</code></pre>
+<ul>
+<li>If any name exported by “atoms” happened to collide with the other exports, that would be an error, so use export * with care.</li>
+</ul>
+<p>Unlike a real import, this doesn’t add the re-exported bindings to your scope, meaning we can't use the exports from "atoms" within that file.</p>
+<h1 id="commonjs-imports"><a aria-hidden="true" class="anchor-heading" href="#commonjs-imports"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>CommonJS Imports</h1>
+<h2 id="moduleexports"><a aria-hidden="true" class="anchor-heading" href="#moduleexports"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>module.exports</h2>
+<ul>
+<li><code>module.exports</code> is an object that is included in every <code>.js</code> file in a Node application.
+<ul>
+<li><code>module</code> represents the current module</li>
+<li><code>exports</code> is an objects that will be exposed as a module</li>
+<li>Therefore whatever we assign to <code>module.exports</code> is exposed as a module.</li>
+</ul>
+</li>
+<li>like <code>exports</code> below, <code>module.exports</code> can also be extended by including more properties/methods on the object.</li>
+</ul>
+<p>before a module's code is actually executed, Node will wrap it in a function that looks something like this:</p>
+<pre><code>(function(exports, require, module, __filename, __dirname) {
+// Module code actually lives in here
+});
+</code></pre>
+<p>This gives us the benefit of:</p>
+<ul>
+<li>scoped variables, rather than global variables.</li>
+<li>ability to use <code>module</code> and <code>exports</code> objects.</li>
+<li>ability to reference the module's absolute filename and directory path with <code>__filename</code> and <code>__dirname</code></li>
+</ul>
+<h2 id="exports"><a aria-hidden="true" class="anchor-heading" href="#exports"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>exports</h2>
+<ul>
+<li><code>exports</code> is an object that we can attach properties and methods to.</li>
+<li>when we import a module, we must then call the same property/method:</li>
+</ul>
+<pre><code>// dependency
+exports.name = 'Kyle'
+exports.phone = '7788713377'
+
+// dependent
+const person = require('./information')
+
+console.log(person.name) // Kyle
+</code></pre>
+<h1 id="commonjs-vs-es6-modules"><a aria-hidden="true" class="anchor-heading" href="#commonjs-vs-es6-modules"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>CommonJS vs ES6 Modules</h1>
+<ul>
+<li>Under the hood, we need something like Babel to convert from ES6 modules to CommonJS.</li>
+</ul>
+<p><a href="https://stackoverflow.com/questions/40294870/module-exports-vs-export-default-in-node-js-and-es6">explanation</a></p>
+<h1 id="circular-dependencies"><a aria-hidden="true" class="anchor-heading" href="#circular-dependencies"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Circular Dependencies</h1>
+<ul>
+<li>Not always a problem, but they introduce tight coupling.
+<ul>
+<li>These kinds of modules are harder to understand and reuse, as doing so might cause a ripple effect where a local change to one module has global effects.</li>
+<li>As such, it might indicate lack of a larger context or proper architecture, since a good architecture imposes uni-directional flow between modules and entire layers.</li>
+</ul>
+</li>
+</ul>
+<p>using <code>const</code> over <code>function</code> while defining functions prevents function hoisting within a single module and ensures the absence of circular dependencies within a single module.</p>
+<p>Circular dependencies with Function calls would not cause problems when the cycle is asynchronous, meaning that directly referenced functions are not called immediately.</p>
+<ul>
+<li>ex. Cycle of function calls when one continues chain through a DOM event listener being async, i.e. waiting for user click.</li>
+</ul>
+<h1 id="dynamic-imports"><a aria-hidden="true" class="anchor-heading" href="#dynamic-imports"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Dynamic Imports</h1>
+<p><code>import(module)</code> loads the module and returns a promise that resolves into a module object that contains all its exports. <code>import</code> can be called from anywhere in the code.</p>
+<p>example</p>
+<pre><code>import(modulePath)
+  .then(obj => &#x3C;module object>)
+  .catch(err => &#x3C;loading error, e.g. if no such module>)
+</code></pre>
+<p>or</p>
+<pre><code>// 📁 say.js
+export function hi() {
+  alert(`Hello`);
+}
+
+export function bye() {
+  alert(`Bye`);
+}
+</code></pre>
+<p>then</p>
+<pre><code>let {hi, bye} = await import('./say.js');
+
+hi();
+bye();
+</code></pre>
+<p>Note: Although <code>import()</code> looks like a function call, it is specified as syntax that just happens to use parentheses (similar to super()). That means that import doesn’t inherit from Function.prototype so you cannot call or apply it.</p>
+<p>Dynamic means code that can be executed at runtime. Static means it occurs before compilation and before runtime. An example is dynamic imports. in this case, dynamic means that we can decide the path at runtime, or we can decide which module to import at runtime</p>
+<h1 id="ue-resources"><a aria-hidden="true" class="anchor-heading" href="#ue-resources"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>UE Resources</h1>
+<p><a href="https://v8.dev/features/modules">https://v8.dev/features/modules</a></p>

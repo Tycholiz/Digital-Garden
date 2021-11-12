@@ -1,0 +1,4 @@
+<h1 id="cook"><a aria-hidden="true" class="anchor-heading" href="#cook"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Cook</h1>
+<h5 id="remove-all-containers-built-from-image-7401323eb08e"><a aria-hidden="true" class="anchor-heading" href="#remove-all-containers-built-from-image-7401323eb08e"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Remove all containers built from Image 7401323eb08e</h5>
+<pre><code>docker ps -a | awk '{ print $1,$2 }' | grep 7401323eb08e | awk '{print $1 }' | xargs -I {} docker rm {}
+</code></pre>

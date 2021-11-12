@@ -1,0 +1,53 @@
+<h1 id="ip"><a aria-hidden="true" class="anchor-heading" href="#ip"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Ip</h1>
+<h1 id="internet-protocol"><a aria-hidden="true" class="anchor-heading" href="#internet-protocol"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Internet Protocol</h1>
+<p>IP addresses consist of 32 bits, which is why the address is broken down into 4 parts of 8 bits each.</p>
+<ul>
+<li>255 represents 8 bits.</li>
+</ul>
+<h3 id="ip-address-spaces"><a aria-hidden="true" class="anchor-heading" href="#ip-address-spaces"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>IP Address Spaces</h3>
+<ul>
+<li>there are 2 main IP Address Spaces: public and private.
+<ul>
+<li>public are routable on the internet, meaning every device on the internet needs its own pubic IP</li>
+</ul>
+</li>
+<li>the public address space is further divided into 5 classes:
+Class A	0.0.0.0 – 126.255.255.255
+Class B	128.0.0.0 – 191.255.255.255
+Class C	192.0.0.0 – 223.255.255.255
+Class D	224.0.0.0 – 239.255.255.255
+Class E	240.0.0.0 – 255.255.255.255
+<pre><code>- A,B,C - devices directly connected to internet
+	- ex. L3 switches, routers, firewalls, servers
+- D - multicast traffic
+- E - experimental
+</code></pre>
+</li>
+<li>The private address space is divided into 3 classes:
+Class A—10.0.0.0/8 network block	10.0.0.0 – 010.255.255.255
+Class B—172.16.0.0/12 network block	172.16.0.0 – 172.31.255.255
+Class C—192.168.0.0/16 network block	192.168.0.0 – 192.168.255.255</li>
+</ul>
+<h3 id="address-block"><a aria-hidden="true" class="anchor-heading" href="#address-block"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Address block</h3>
+<p></p><p></p><div class="portal-container">
+<div class="portal-head">
+<div class="portal-backlink">
+<div class="portal-title">From <span class="portal-text-title">Router</span></div>
+<a href="/Digital-Garden/notes/c5d89932-0b27-4068-b450-6b33bb0a73ba" class="portal-arrow">Go to text <span class="right-arrow">→</span></a>
+</div>
+</div>
+<div id="portal-parent-anchor" class="portal-parent" markdown="1">
+<div class="portal-parent-fader-top"></div>
+<div class="portal-parent-fader-bottom"></div><p>We can see all nodes on a local area network with:</p>
+<ul>
+<li><code>sudo nmap -sn 192.168.1.0/24</code>
+<ul>
+<li>the 24 is CIDR notation, signifying that we will scan from 192.168.1.0 to 192.168.1.255
+<ul>
+<li><a aria-hidden="true" class="block-anchor anchor-heading" id="^RUsJkF0C" href="#^RUsJkF0C"><svg viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>the inclusion of 24 means we are scanning an <em>address block</em> </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div></div><p></p><p></p>

@@ -1,0 +1,17 @@
+<h1 id="man-pages"><a aria-hidden="true" class="anchor-heading" href="#man-pages"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Man Pages</h1>
+<h1 id="man-pages-1"><a aria-hidden="true" class="anchor-heading" href="#man-pages-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Man Pages</h1>
+<ul>
+<li>anything in <code>[]</code> brackets indicates optional</li>
+<li><code>--</code> - signify end of command options. Only positional params are accepted after this point.
+<ul>
+<li>ex. say we want to grep for the string <code>-v</code>. If we just executed <code>grep -v file.txt</code>, the <code>-v</code> would be interpreted as an argument on grep. If we execute <code>grep -- -v file.txt</code>, <code>--</code> tells us "ok, that's it. No more arguments accepted". Since the section after the args section is the pattern section, <code>-v</code> gets interpreted as a pattern.</li>
+</ul>
+</li>
+</ul>
+<h3 id="valid-command-form"><a aria-hidden="true" class="anchor-heading" href="#valid-command-form"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Valid command form</h3>
+<ul>
+<li>angle brackets for required parameters: ping <hostname></hostname></li>
+<li>square brackets for optional parameters: mkdir [-p] <dirname></dirname></li>
+<li>ellipses for repeated items: cp <source1> [source2…] <dest></dest></source1></li>
+<li>vertical bars for choice of items: netstat {-t|-u}</li>
+</ul>

@@ -1,0 +1,106 @@
+<h1 id="json"><a aria-hidden="true" class="anchor-heading" href="#json"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Json</h1>
+<h3 id="row_to_json"><a aria-hidden="true" class="anchor-heading" href="#row_to_json"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>row_to_json</h3>
+<p>turns the table into json</p>
+<ul>
+<li>each row becomes a json object, and the cumulative of these rows makes up the json array</li>
+<li>If the query <code>select * from nugget</code> gives us the data, then the whole below query gives us that same data as json</li>
+</ul>
+<pre><code>select row_to_json(nugget)
+from (select * from "nugget") as nugget
+</code></pre>
+<h3 id="array_agg"><a aria-hidden="true" class="anchor-heading" href="#array_agg"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>array_agg</h3>
+<p>It aggregates its argument into a PostgreSQL array</p>
+<ul>
+<li>accepts a set of values and returns an array. Each arg becomes an element in the array
+<ul>
+<li>we can determine the order of the array with ORDER BY</li>
+</ul>
+</li>
+<li>ex. Imagine we had 2 many:many tables (<code>actors</code> and <code>movies</code>) connected through a junction table <code>movies_actors</code>.
+<pre><code>- We are interested in viewing which actors were in which movie.
+- Assuming that the `movies` table is the table we are joining from, if we were to query the movies, we'd get duplicate rows with the same movie and actor names (since each row is a combination of the two, effectively having the same amount of rows as the junction table).
+</code></pre>
+<img src="/Digital-Garden/:/20ede76c8a314c528f1b4716c372db0d" alt="d26ee15403ed820f7c410d859e7c5e56.png">
+<pre><code>- What we want instead is to show a different movie in each row, and consolidate the actors appearing in that movie into an array
+</code></pre>
+<img src="/Digital-Garden/:/9d7a1c247b064dc285cd0597a477d28a" alt="939e260f1cc0aab3f7f7e6477164e5ac.png"></li>
+</ul>
+<h3 id="json_agg"><a aria-hidden="true" class="anchor-heading" href="#json_agg"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>json_agg</h3>
+<ul>
+<li>similar to <code>array_agg</code>, except that it puts the elements into a json array</li>
+<li>we could use <code>json_agg(json_build_object())</code> if we wanted to build an array of objects</li>
+</ul>
+<p>Before</p>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">Select</span>
+    title<span class="token punctuation">,</span>
+    first_name <span class="token operator">||</span> <span class="token string">' '</span> <span class="token operator">||</span> last_name <span class="token keyword">as</span> name
+<span class="token keyword">from</span> film
+<span class="token keyword">join</span> film_actor <span class="token keyword">using</span> <span class="token punctuation">(</span>film_id<span class="token punctuation">)</span>
+<span class="token keyword">join</span> actor <span class="token keyword">using</span> <span class="token punctuation">(</span>actor_id<span class="token punctuation">)</span>
+<span class="token keyword">group</span> <span class="token keyword">by</span> title<span class="token punctuation">,</span> first_name<span class="token punctuation">,</span> last_name
+<span class="token keyword">order</span> <span class="token keyword">by</span> title<span class="token punctuation">;</span>
+</code></pre>
+<p>After</p>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">SELECT</span>
+     title<span class="token punctuation">,</span>
+     ARRAY_AGG <span class="token punctuation">(</span>
+	     first_name <span class="token operator">||</span> <span class="token string">' '</span> <span class="token operator">||</span> last_name
+	     <span class="token keyword">ORDER</span> <span class="token keyword">BY</span> first_name
+     <span class="token punctuation">)</span> actors
+ <span class="token keyword">FROM</span>
+     film
+ <span class="token keyword">INNER</span> <span class="token keyword">JOIN</span> film_actor <span class="token keyword">USING</span> <span class="token punctuation">(</span>film_id<span class="token punctuation">)</span>
+ <span class="token keyword">INNER</span> <span class="token keyword">JOIN</span> actor <span class="token keyword">USING</span> <span class="token punctuation">(</span>actor_id<span class="token punctuation">)</span>
+ <span class="token keyword">GROUP</span> <span class="token keyword">BY</span>
+     title
+ <span class="token keyword">ORDER</span> <span class="token keyword">BY</span>
+     title<span class="token punctuation">;</span>
+</code></pre>
+<h3 id="json_build_object"><a aria-hidden="true" class="anchor-heading" href="#json_build_object"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>json_build_object</h3>
+<p>Allows us to provide key-value pairs, thereby returning us an object</p>
+<ul>
+<li>if we want to provide an array as the value of a key (ex. <code>buckets</code> property of a <code>nuggets</code> object), we can provide a SELECT statement in place of the value</li>
+</ul>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">SELECT</span>
+    json_build_object<span class="token punctuation">(</span>
+        <span class="token string">'id'</span><span class="token punctuation">,</span>id<span class="token punctuation">,</span>
+        <span class="token string">'name'</span><span class="token punctuation">,</span>name<span class="token punctuation">,</span>
+        <span class="token string">'comments'</span><span class="token punctuation">,</span><span class="token punctuation">(</span>
+            <span class="token keyword">SELECT</span> json_agg<span class="token punctuation">(</span>json_build_object<span class="token punctuation">(</span>
+                <span class="token string">'id'</span><span class="token punctuation">,</span> comments<span class="token punctuation">.</span>id<span class="token punctuation">,</span>
+                <span class="token string">'mood'</span><span class="token punctuation">,</span> comments<span class="token punctuation">.</span>mood<span class="token punctuation">,</span>
+                <span class="token string">'subject'</span><span class="token punctuation">,</span> comments<span class="token punctuation">.</span>subject<span class="token punctuation">,</span>
+                <span class="token string">'content'</span><span class="token punctuation">,</span> comments<span class="token punctuation">.</span>content<span class="token punctuation">,</span>
+                <span class="token string">'created_at'</span><span class="token punctuation">,</span> comments<span class="token punctuation">.</span>created_at
+            <span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token keyword">FROM</span> user_comment_map <span class="token keyword">JOIN</span> comments <span class="token keyword">ON</span> comment_id<span class="token operator">=</span>comments<span class="token punctuation">.</span>id
+            <span class="token keyword">WHERE</span> user_id<span class="token operator">=</span>users<span class="token punctuation">.</span>id
+        <span class="token punctuation">)</span>
+    <span class="token punctuation">)</span>
+</code></pre>
+<p>this works because</p>
+<h3 id="json_strip_nulls"><a aria-hidden="true" class="anchor-heading" href="#json_strip_nulls"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>json_strip_nulls</h3>
+<ul>
+<li>lets us exclude fields where the value is null</li>
+</ul>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> json_strip_nulls<span class="token punctuation">(</span>json_build_object<span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">,</span> p<span class="token punctuation">.</span>name<span class="token punctuation">,</span> <span class="token string">'birthday'</span><span class="token punctuation">,</span> p<span class="token punctuation">.</span>birthday<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">FROM</span> person p<span class="token punctuation">;</span>
+</code></pre>
+<h3 id="json_populate_record"><a aria-hidden="true" class="anchor-heading" href="#json_populate_record"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>json_populate_record</h3>
+<ul>
+<li>allows us to give postgres a string of json, which it will then convert into SQL row-format.</li>
+<li>the first arg we pass to</li>
+</ul>
+<h3 id="jsonb_pretty"><a aria-hidden="true" class="anchor-heading" href="#jsonb_pretty"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>jsonb_pretty</h3>
+<p>print json pretty in output</p>
+<h2 id="jsonb-manipulation-methods"><a aria-hidden="true" class="anchor-heading" href="#jsonb-manipulation-methods"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>jsonb manipulation methods</h2>
+<h3 id="jsonb_set--jsonb_insert"><a aria-hidden="true" class="anchor-heading" href="#jsonb_set--jsonb_insert"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>jsonb_set &#x26; jsonb_insert</h3>
+<p>With these methods, it is not possible to add values at the root of the json object.</p>
+<p>signature:</p>
+<pre><code>jsonb_set/jsonb_insert(target         jsonb,
+          path           text[],
+          new_value      jsonb,
+          create_missing boolean default true)
+</code></pre>
+<h4 id="jsonb_insert"><a aria-hidden="true" class="anchor-heading" href="#jsonb_insert"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>jsonb_insert</h4>
+<p>Allows us to insert into JSON array (while preserving all of the original values)</p>

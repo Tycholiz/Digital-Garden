@@ -1,0 +1,33 @@
+<h1 id="data"><a aria-hidden="true" class="anchor-heading" href="#data"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Data</h1>
+<h1 id="push-vs-pull-data-creation"><a aria-hidden="true" class="anchor-heading" href="#push-vs-pull-data-creation"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Push vs Pull data creation</h1>
+<ul>
+<li>Pull and Push are two different protocols that describe how a data Producer can communicate with a data Consumer.
+<img src="/Digital-Garden/assets/images/2021-03-07-22-37-12.png"></li>
+</ul>
+<p>Note:</p>
+<ul>
+<li>A regular function is a lazily evaluated computation that synchronously returns a single value on invocation.</li>
+<li>A generator function is a lazily evaluated computation that synchronously returns zero to (potentially) infinite values on iteration.</li>
+<li>A Promise is a computation that may (or may not) eventually return a single value.</li>
+<li>An Observable is a lazily evaluated computation that can synchronously or asynchronously return zero to (potentially) infinite values from the time it's invoked onwards.</li>
+</ul>
+<p><strong>Pull</strong></p>
+<ul>
+<li>Consumer determines when it receives data from the data Producer</li>
+<li>The Producer itself is unaware of when the data will be delivered to the Consumer.</li>
+<li>ex. every javascript function is a pull system
+<ul>
+<li>The function itself is the producer, and the calling code is the consumer. The reason the calling code is called the consumer is because the calling code "pulls" out a <em>single</em> return value</li>
+</ul>
+</li>
+</ul>
+<p><strong>Push</strong></p>
+<ul>
+<li>Producer determines when to send data to the consumer, and the consumer is unaware of when it will receive that data.</li>
+<li>ex. Promises and Observables are a push system, since the promise (a producer) delivers a resolved value to the registered callbacks (the consumers).
+<ul>
+<li>it is the Promise which is in charge of determining precisely when that value is "pushed" to the callbacks.</li>
+<li>ex. An Observable is a Producer of multiple values, "pushing" them to Observers (Consumers).</li>
+</ul>
+</li>
+</ul>

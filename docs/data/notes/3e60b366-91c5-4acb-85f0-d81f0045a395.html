@@ -1,0 +1,57 @@
+<h1 id="string"><a aria-hidden="true" class="anchor-heading" href="#string"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>String</h1>
+<h1 id="string-1"><a aria-hidden="true" class="anchor-heading" href="#string-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>String</h1>
+<ul>
+<li>The following are equivalent:</li>
+</ul>
+<pre><code>char pattern[] = "ould";
+// and
+char pattern[] = { ′o′, ′u′, ′l′, ′d′, ′\0′ };
+</code></pre>
+<ul>
+<li>C does not have a native string type. Instead, the language uses arrays of char terminated with a null char (<code>'\0'</code>)
+<ul>
+<li>Therefore, the physical storage required is one more than the number of characters</li>
+<li>Therefore, the physical storage required is one more than the number of characters</li>
+<li>The <code>\0</code> gets automatically appended for us when array is initialized. Therefore if we access the last element, we get back <code>\0</code></li>
+</ul>
+</li>
+<li>there is a standard header <code>&#x3C;string.h></code> that gives us some string utilities</li>
+<li>In C, arrays are of fixed length at the time they are declared. For this reason, it may make sense to declare an array with a length that is far more than you need, just so you know it can handle everything that gets thrown at it. </li>
+</ul>
+<p>Single vs Double Quotes</p>
+<ul>
+<li>In C, <code>'x'</code> is an integer representing the ASCII value, while <code>"x"</code> is a character array with 2 elements: <code>x</code> and <code>\0</code> </li>
+</ul>
+<h2 id="initialization"><a aria-hidden="true" class="anchor-heading" href="#initialization"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Initialization</h2>
+<ul>
+<li>Character arrays can be initialized in different ways:
+<ul>
+<li><code>char name[13] = "StudyTonight";</code></li>
+<li><code>char name[] = "hello";</code> (spec:wide char array)</li>
+<li><code>char name[10] = {'L','e','s','s','o','n','s','\0'};</code></li>
+</ul>
+</li>
+<li>These character arrays can either be read-only or manipulatable
+<ul>
+<li>read-only: <code>char * str = "Hello";</code></li>
+<li>manipulatable: <code>char str[] = "Hello";</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="format-specifiers"><a aria-hidden="true" class="anchor-heading" href="#format-specifiers"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Format specifiers</h2>
+<ul>
+<li><code>%s</code> - Take the next argument and print it as a <strong>string</strong></li>
+<li><code>%d</code> - Take the next argument and print it as an <strong>int</strong></li>
+</ul>
+<h2 id="printf-print-formatted"><a aria-hidden="true" class="anchor-heading" href="#printf-print-formatted"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>printf (print formatted)</h2>
+<ul>
+<li>The compliment to <code>printf</code> is <code>scanf</code>, in the sense that print is stdout and scanf is stdin. 
+<ul>
+<li><code>scanf</code> terminates its input on the first white space it encounters. Tip: use "edit set conversion code <code>%[..]</code> " to get around this.
+<ul>
+<li>alternatively, use <code>gets()</code>, which will terminate once hitting <code>\n</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>

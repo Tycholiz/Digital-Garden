@@ -1,0 +1,10 @@
+<h1 id="isolated"><a aria-hidden="true" class="anchor-heading" href="#isolated"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Isolated</h1>
+<h1 id="isolated-1"><a aria-hidden="true" class="anchor-heading" href="#isolated-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Isolated</h1>
+<ul>
+<li>the opposite side of atomicity.</li>
+<li>while we are doing our queries, are we allowed to see what is happening concurrently in the rest of the system?
+<ul>
+<li>ex. what if we want to make a backup with <code>pg_dump</code> that needs to run for several hours? That backup needs to be a consistent snapshot of the production database. If during the backup someone is doing inserts, we don't want these to be in the backup, since we want a snapshot that doesn't move.		- to do this, postgres uses an isolation mode that prevents this from happening.	</li>
+</ul>
+</li>
+</ul>

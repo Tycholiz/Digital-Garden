@@ -1,0 +1,27 @@
+<h1 id="buffer"><a aria-hidden="true" class="anchor-heading" href="#buffer"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Buffer</h1>
+<h1 id="buffer-1"><a aria-hidden="true" class="anchor-heading" href="#buffer-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Buffer</h1>
+<ul>
+<li>a part of vim's memory that can hold text</li>
+<li>This is normally in the form of:
+<ul>
+<li>an actual file</li>
+<li>text stored temporarily (yank, paste etc)</li>
+</ul>
+</li>
+<li>when opening an existing file, the text of that file is copied and put into a new buffer. When we save that text, the original file is replaced by writing the buffer to disk</li>
+<li>buffer list vs argument list
+<ul>
+<li>argument list is subset of buffer list</li>
+<li>buffer list can be seen as more random access, while argument list could have more organization to it
+<ul>
+<li>if you are working with only a few files in your current micro session, you'd have just those ones in the arg list, while having many more in the buffer list</li>
+</ul>
+</li>
+<li>idea is that we might have lots of buffers open, and want to execute a macro across many files, but not all buffers.
+<ul>
+<li>one solution is to prune the buffer list, but the most practical solution is to populate the argument list with just the files we are interested in. </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>

@@ -1,0 +1,92 @@
+<h1 id="ssh"><a aria-hidden="true" class="anchor-heading" href="#ssh"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Ssh</h1>
+<h1 id="ssh-key"><a aria-hidden="true" class="anchor-heading" href="#ssh-key"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>SSH Key</h1>
+<h2 id="components"><a aria-hidden="true" class="anchor-heading" href="#components"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Components</h2>
+<ul>
+<li>Each SSH key pair has 2 components: public key and private key</li>
+<li>They are both created with <code>ssh-keygen</code> </li>
+</ul>
+<h3 id="public-key"><a aria-hidden="true" class="anchor-heading" href="#public-key"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Public key</h3>
+<ul>
+<li>Public key is copied to the SSH server so it knows it can trust the user with the corresponding private key when it tries to connect via SSH</li>
+<li>Anyone that has the public key is able to encrypt the data in such a way that only the bearer of the private key can decrypt it. </li>
+<li>Once an SSH server receives the public key from a user, it marks the key as trustworthy and is moved to the <code>authorized_keys</code> file.</li>
+<li><code>ssh-copy-id</code> allows us to copy an SSH key from our local machine to a server to be used as an authorized key, allowing s the SSH client to login without password
+<ul>
+<li>What it does is it assembles a list of one or more fingerprints, and tries to log in with each key. It then makes a list of all the keys that failed login, and enables logins with those keys on the remote server (by adding them to the remote's <code>authorized_keys</code> file).</li>
+</ul>
+</li>
+<li>Public keys are stored on SSH clients </li>
+</ul>
+<h3 id="private-key"><a aria-hidden="true" class="anchor-heading" href="#private-key"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Private key</h3>
+<ul>
+<li>Considered proof of the user's identity, and only if the private key corresponds to the public key will the user be authenticated</li>
+<li>Because they are used for authentication, they are called identity keys</li>
+<li>The private key is stored on the SSH server</li>
+<li>When we open the private key, what we see is its encrypted form. To decrypt it, we need to enter the password that we created with <code>ssh-keygen</code>.
+<ul>
+<li>Therefore, without the password, the private key is useless.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="ssh-agent"><a aria-hidden="true" class="anchor-heading" href="#ssh-agent"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>SSH Agent</h2>
+<p>ssh-agent stores unencrypted private keys in memory, allowing us to login without entering our password each time.</p>
+<ul>
+<li>Therefore, ssh-agent is a form of Single-Sign on (SSO)</li>
+<li>Without ssh-agent, upon entering the password, the decrypted key is stored in program memory (which is associated with a process (PID)). However, the SSH client process cannot be used to store the decrypted key, since the process is terminated once the remote login session has ended. This is why we use <code>ssh-agent</code></li>
+</ul>
+<p><code>ssh-agent</code> works by creating a socket then checks for connections from ssh.</p>
+<ul>
+<li>anyone who is able to connect to this socket can also connect to the ssh-agent.</li>
+<li>upon starting, the agent creates a new directory in <code>/tmp</code> that determines permissions.</li>
+</ul>
+<p>On most Linux systems, ssh-agent is automatically configured and run at login. </p>
+<p>On the server side, <code>PubkeyAuthentication</code> must be enabled in the <code>ssh_config</code> file to allow these key-based logins. </p>
+<p>we can use <code>ssh-add</code> tool to add identities to the agent.</p>
+<ul>
+<li>running <code>ssh-add</code> without args will add the default private keys to the agent (<code>~/.ssh/id_rsa</code>, <code>~/.ssh/id_dsa</code> etc.)</li>
+<li><code>ssh-add -l</code> will list out the private keys accessible to the agent</li>
+</ul>
+<h3 id="agent-forwarding"><a aria-hidden="true" class="anchor-heading" href="#agent-forwarding"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Agent Forwarding</h3>
+<p>Agent forwarding is a mechanism that gives an SSH server access to the SSH client's <code>ssh-agent</code>, allowing it to use it as if it were local.
+To use agent forwarding, the <code>ForwardAgent</code> option must be set to yes on the client </p>
+<ul>
+<li>This allows us to execute commands on the server we SSHed into and have access to keys stored in <code>ssh-agent</code>. 
+<ul>
+<li>ex. if we are using keys to interact with Github (instead of entering password each time), we would be able to access them from the server. </li>
+<li>However, there is an implication of this, which is that we would not be able to run these commands as cron jobs on the server. Once our SSH connection ends, the the server no longer has access to <code>ssh-agent</code>, so it cannot use the private key.</li>
+</ul>
+</li>
+</ul>
+<h2 id="debugging"><a aria-hidden="true" class="anchor-heading" href="#debugging"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Debugging</h2>
+<ul>
+<li>
+<p>check client logs with <code>ssh -vvv &#x3C;user>@&#x3C;host></code></p>
+</li>
+<li>
+<p>check server logs at <code>/var/log/auth.log</code></p>
+</li>
+<li>
+<p>on server, try editing <code>/etc/ssh/sshd_config</code>, changing: </p>
+<ol>
+<li><code>PasswordAuthentication yes</code></li>
+<li><code>PermitRootLogin yes</code></li>
+</ol>
+<ul>
+<li>restart sshd <code>service sshd restart</code></li>
+<li>on client, run <code>ssh-copy-id -i &#x3C;remote-user>@&#x3C;remote-ip></code></li>
+<li>on host, revert the <code>sshd_config</code> options to their prior state</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="tunneling"><a aria-hidden="true" class="anchor-heading" href="#tunneling"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Tunneling</h2>
+<ul>
+<li>In order to tunnel, we need to set up a protocol. SSH is an example of such a protocol, where the receiver of the SSH command must have an SSH server running so that it may intercept the SSH message, and interpret it and enable the SSH connection. </li>
+</ul>
+<hr>
+<p>an OS can be preconfigured to enable SSH, so that it can be SHHed into the first time it is turned on.</p>
+<hr>
+<h2 id="config"><a aria-hidden="true" class="anchor-heading" href="#config"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Config</h2>
+<p>Client config (~/.ssh/config)
+<a href="https://gravitational.com/blog/ssh-config/">good resource with lots of info</a></p>

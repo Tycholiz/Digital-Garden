@@ -1,0 +1,9 @@
+<h1 id="cookies"><a aria-hidden="true" class="anchor-heading" href="#cookies"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Cookies</h1>
+<h3 id="httponly-cookie"><a aria-hidden="true" class="anchor-heading" href="#httponly-cookie"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>httpOnly Cookie</h3>
+<p>a cookie that is only sent in the http requests to the server.</p>
+<ul>
+<li>Therefore, never accessible to the client-side javascript (making it immune to XSS attacks.)</li>
+</ul>
+<p>Cookies and local storage can be accessed by anything client-side. This includes things like extensions. This makes storing sensitive information in a cookie a security risk. However, an HTTP-only cookie is different, in that its contents can only be set and read server side. This is why it is OK to store JWTs in an HTTP-only cookie.
+The cookie is set via the response payload from the server</p>
+<p>The clients only real job with an HTTP-only cookie is to store the cookie itself</p>

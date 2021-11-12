@@ -1,0 +1,21 @@
+<h1 id="physical"><a aria-hidden="true" class="anchor-heading" href="#physical"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Physical</h1>
+<h3 id="rigidbody"><a aria-hidden="true" class="anchor-heading" href="#rigidbody"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>RigidBody</h3>
+<p><code>RigidBody</code> gives a GameObject physical properties so that it can interact with gravity, air density, and other GameObjects.
+RigidBody can be used to determine if an object should be frozen in 2D/3D space or not</p>
+<h3 id="materials"><a aria-hidden="true" class="anchor-heading" href="#materials"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Materials</h3>
+<p><code>Materials</code> are components that define the surface characteristics of objects and how those surfaces interact with light. In each new 3D Scene, directional light is included to simulate the sun.</p>
+<p>You can drag a PNG into the assets folder of a Unity project, and by doing so, it will become a material (subfolder of <code>assets/</code>) that can be dragged onto an object of the scene</p>
+<h4 id="physic-materials"><a aria-hidden="true" class="anchor-heading" href="#physic-materials"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Physic Materials</h4>
+<p>With Physic Materials, you can make an object bounce and change its friction and drag properties.These properties take effect when the object is under the effects of gravity.</p>
+<ul>
+<li>in project window, right-click for dropdown and <code>create > physic material</code></li>
+<li>Collider components</li>
+</ul>
+<h3 id="colliders"><a aria-hidden="true" class="anchor-heading" href="#colliders"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Colliders</h3>
+<p>The sense of collision, in that you cannot pass through it.
+A collider has a material property, giving us the ability to drag one of our materials on top to give characteristics to the collision of an object</p>
+<ul>
+<li>ex. if we have a physic material that gives the quality of bounciness, then we can apply that to the collider, which makes the underlying GameObject bouncy. </li>
+</ul>
+<p>Objects like spheres and cubes by default have collision</p>
+<p>Colliders require a RigidBody to detect collision in our physics</p>

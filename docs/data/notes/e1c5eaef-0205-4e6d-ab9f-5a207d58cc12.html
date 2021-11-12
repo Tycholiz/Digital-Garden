@@ -1,0 +1,33 @@
+<h1 id="graphile-worker"><a aria-hidden="true" class="anchor-heading" href="#graphile-worker"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Graphile Worker</h1>
+<h2 id="tasks"><a aria-hidden="true" class="anchor-heading" href="#tasks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Tasks</h2>
+<p>When we run a task in Node (ex. with <code>run()</code>, we are returned a <code>Runner</code> object, which has the following methods/properties:</p>
+<ul>
+<li>stop(): Promise<void> - stops the runner from accepting new jobs, and returns a promise that resolves when all the in progress tasks (if any) are complete.</void></li>
+<li>addJob: AddJobFunction - see addJob.</li>
+<li>promise: Promise<void> - a promise that resolves once the runner has completed.</void></li>
+<li>events: WorkerEvents - a Node.js EventEmitter that exposes certain events within the runner (see WorkerEvents).</li>
+</ul>
+<p>ex. we can add a job to the queue in response to another job being added to the queue:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword control-flow">await</span> runner<span class="token punctuation">.</span><span class="token method function property-access">addJob</span><span class="token punctuation">(</span><span class="token string">"testTask"</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+  thisIsThePayload<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h3 id="events"><a aria-hidden="true" class="anchor-heading" href="#events"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Events</h3>
+<p>We can listen to events like so:</p>
+<pre class="language-js"><code class="language-js">runner<span class="token punctuation">.</span><span class="token property-access">events</span><span class="token punctuation">.</span><span class="token method function property-access">on</span><span class="token punctuation">(</span><span class="token string">"job:success"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token parameter"><span class="token punctuation">{</span> worker<span class="token punctuation">,</span> job <span class="token punctuation">}</span></span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+  <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Hooray! Worker </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>worker<span class="token punctuation">.</span><span class="token property-access">workerId</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> completed job </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>job<span class="token punctuation">.</span><span class="token property-access">id</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>To realize the importance and place of Workers, we have to break asynchronous tasks down into 2 types:</p>
+<ul>
+<li>async tasks, where the process of execution is dependent on the response to continue on to execute the next lines of code.
+<ul>
+<li>ex. When the Express server is making database queries, the it has to wait for the data to return before it can continue on with its operation. This is why we use <code>async</code>/<code>await</code>, because we need that data</li>
+</ul>
+</li>
+<li>async tasks, where the 2 processes are realistically distinct from one another, and can be completely decoupled.
+<ul>
+<li>ex. When we want to send registration success emails to users, we don't want to tie up the Express server thread doing this task. It is something that can be handed off to some other service to handle for us.</li>
+</ul>
+</li>
+</ul>

@@ -1,0 +1,101 @@
+<h1 id="sketch"><a aria-hidden="true" class="anchor-heading" href="#sketch"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Sketch</h1>
+<h1 id="styles"><a aria-hidden="true" class="anchor-heading" href="#styles"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Styles</h1>
+<ul>
+<li>apply styles to things like text to be able to reuse them easily
+<ul>
+<li>when selecting text, it is under the <code>Appearance</code> headline</li>
+</ul>
+</li>
+</ul>
+<h1 id="layout"><a aria-hidden="true" class="anchor-heading" href="#layout"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Layout</h1>
+<h2 id="smart-layout"><a aria-hidden="true" class="anchor-heading" href="#smart-layout"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Smart Layout</h2>
+<ul>
+<li>Create a symbol that when modified (ex. text), will retain its ratio
+<ul>
+<li>ex. make a button, group it, then make into a symbol. On the naming
+window, select "horizontal align". Now, when you replace the text on
+that button, the horizontal size will automatically adjust</li>
+</ul>
+</li>
+<li>Use smart layout any time you create a list of horizontal text (ex. a navbar,
+or tabs).
+<ul>
+<li>Each item should be a symbol that has a smart layout of "horizontal
+align".</li>
+<li>The whole navbar itself should also be a symbol with "horizontal align",
+making the spacing between the items to be consistent even with changes
+to the text.</li>
+<li>On the sidebar, you can choose to override styles in order to remove an
+item from the list. Each item will shift horizontally to take its place.</li>
+</ul>
+</li>
+</ul>
+<h1 id="reusing"><a aria-hidden="true" class="anchor-heading" href="#reusing"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Reusing</h1>
+<ul>
+<li>Mainly done through <code>Layer Styles</code>, <code>Text styles</code> and <code>Symbols</code></li>
+</ul>
+<h2 id="symbols"><a aria-hidden="true" class="anchor-heading" href="#symbols"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Symbols</h2>
+<ul>
+<li>similar to the concept of components in programming</li>
+<li>ex. create a button from scratch, similar to grouping them together, we can
+make them into a symbol to be reused throughout the design</li>
+<li>to make edits to the master symbol, just click on any symbol to be transported
+to the master symbol's canvas.</li>
+<li><a href="https://www.reddit.com/r/sketchapp/comments/gwft1f/if_you_could_just_edit_these_and_for_the_change/">guide to reusing colors</a></li>
+</ul>
+<h3 id="nested-symbols"><a aria-hidden="true" class="anchor-heading" href="#nested-symbols"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Nested Symbols</h3>
+<ul>
+<li>ability to override the symbols</li>
+<li>Imagine we have a navbar and want to create an active/inactive state for each
+button.</li>
+<li>Create the whole navbar as one symbol, then when editing the master navbar symbol, click
+into each button and convert it to a symbol, naming it <code>nav/icon{1,2,3}/off</code></li>
+<li>Duplicate each icon and make the ON state by changing color, then renaming to
+<code>nav/icon{1,2,3}/on</code></li>
+<li>This allows us to easily insert each state of a symbol easily.</li>
+<li>We can quickly swap in on/off states now by clicking on the symbol (from the
+artboard) and overriding the styles on the sidebar</li>
+<li>If we want to swap the icon for another, we can just go to the navbar master
+symbol and modify each nested symbol (the icon), and it will be updated
+across all instances of the navbar symbol
+</li>
+</ul>
+<h4 id="thought-experiment"><a aria-hidden="true" class="anchor-heading" href="#thought-experiment"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Thought experiment</h4>
+<p>Let’s say that a project requires 3 buttons in 3 different colours. To use only one symbol for all of them at once, we need to be able to change the colour of the button without detaching it from a symbol.
+When you put a symbol inside another, you can swap the one inside with any other available symbol of the same size. In Sketch, this function is named nested overrides. This way, if you have multiple colour swatches saved as symbols, you can easily replace one swatch with another.</p>
+<h2 id="overriding-symbols"><a aria-hidden="true" class="anchor-heading" href="#overriding-symbols"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Overriding symbols</h2>
+<ul>
+<li>Say we have a vertical scrollable list of airbnb houses for rent, each with common styles. What we can
+do is create 1, make it a symbol, then insert that symbol into the document.
+On the sidebar, you can see all of the overrides that are available
+(adjusting text, adjusting colors, images etc)</li>
+</ul>
+<hr>
+<h2 id="mask"><a aria-hidden="true" class="anchor-heading" href="#mask"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Mask</h2>
+<ul>
+<li>use to chop a hole out of the object (ex. picture) in the shape of the
+overlying object.
+<ul>
+<li>take a square and hover over a picture, then click 'mask', and you have an
+imagine in the shape of the square.</li>
+</ul>
+</li>
+</ul>
+<h3 id="alpha-mask"><a aria-hidden="true" class="anchor-heading" href="#alpha-mask"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Alpha mask</h3>
+<ul>
+<li>created when using opacity with gradients</li>
+<li>allows us to place a rectangle with a gradient at 0%-100% over text, and hit
+'mask' to impose that gradient on the text.</li>
+<li>the object on top will apply its gradient onto the object below</li>
+</ul>
+<h1 id="shortcuts"><a aria-hidden="true" class="anchor-heading" href="#shortcuts"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Shortcuts</h1>
+<ul>
+<li><code>cmd+1</code>/<code>cmd+2</code> - zoom in/out on object</li>
+<li><code>shift+cmd+l</code> - lock an object from movement</li>
+<li><code>shift+cmd+h</code> - hide an object </li>
+<li><code>cmd+[</code>/<code>cmd+]</code> - send layer back/fwd
+<ul>
+<li><code>cmd+opt+[]</code> - send to bottom/top</li>
+</ul>
+</li>
+</ul>

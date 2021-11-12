@@ -1,0 +1,39 @@
+<h1 id="pagination"><a aria-hidden="true" class="anchor-heading" href="#pagination"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Pagination</h1>
+<h1 id="pagination-1"><a aria-hidden="true" class="anchor-heading" href="#pagination-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Pagination</h1>
+<p>At a high level, cursor-based pagination works like this:</p>
+<ol>
+<li>User requests some data (either through initial page load, or clicking some UI pagination button).</li>
+<li>Along with the list of data that to display, we also want to get pagination information <code>pageInfo</code> that is defined on the connection</li>
+</ol>
+<pre><code>query OrganizationForLearningReact {
+  organization(login: "the-road-to-learn-react") {
+    name
+    url
+    repository(name: "the-road-to-learn-react") {
+      issues(first: 10, after: "Y3Vyc29yOnYyOpHODAESqg==") {
+        pageInfo {
+          endCursor
+        }
+        edges {
+          node {
+            author {
+              login
+            }
+          }
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<ol start="3">
+<li>Get the <code>id</code> of the last item in the most previously-fetched data list (known as the <code>cursor</code>) </li>
+</ol>
+<ul>
+<li>stored in <code>endCursor</code> variable</li>
+</ul>
+<ol start="4">
+<li>Store the cursor in local state (e.g. React, Apollo Client)</li>
+<li>pass as variable on subsequent fetches of data (ex. when user clicks "Load more", or scrolls more on infinite page)</li>
+<li>use that variable as input to the <code>after</code> parameter defined on the Connection (ex. in looking through a list of Github issues, the cursor is defined on the <code>IssuesConnection</code>)</li>
+</ol>

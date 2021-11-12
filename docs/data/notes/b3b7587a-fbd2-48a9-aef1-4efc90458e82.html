@@ -1,0 +1,20 @@
+<h1 id="elastic-search"><a aria-hidden="true" class="anchor-heading" href="#elastic-search"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Elastic Search</h1>
+<p>Elasticsearch is an open-source, RESTful, distributed search and analytics engine built on Apache Lucene</p>
+<ul>
+<li>You can send data in the form of JSON documents to Elasticsearch using the API. Elasticsearch automatically stores the original document and adds a searchable reference to the document in the cluster’s index. You can then search and retrieve the document using the Elasticsearch API</li>
+<li>ES is NoSQL and is more powerful, flexible, and faster than SQL's LIKE</li>
+</ul>
+<p>ES is typically used when you have :</p>
+<ul>
+<li>high data volumes, and are likely to need multiple nodes to process the data</li>
+<li>unstructured or semi-structured data (log files, text, ...). You ingest the raw data in its original form.</li>
+<li>the data is never updated. It’s ingested once, queried, and then purged according to some bulk retention policy (e.g. older than 30 days)</li>
+<li>you need to access aggregate data more than individual records</li>
+</ul>
+<p>When you're searching for text. ES ranks search results based on how close the phrase or words are. SQL doesn't do this nearly as well.</p>
+<ul>
+<li>ES starts to shine when you start to do a lot of filtering</li>
+</ul>
+<p>Elastic search scales horizontally with your requirements.</p>
+<h1 id="tools"><a aria-hidden="true" class="anchor-heading" href="#tools"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Tools</h1>
+<p><a href="https://www.elastic.co/kibana">Kibana: a data visualization platform for Elasticsearch</a></p>

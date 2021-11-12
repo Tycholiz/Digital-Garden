@@ -1,0 +1,28 @@
+<h1 id="stash"><a aria-hidden="true" class="anchor-heading" href="#stash"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Stash</h1>
+<h1 id="stash-1"><a aria-hidden="true" class="anchor-heading" href="#stash-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Stash</h1>
+<ul>
+<li>A stash is simply a list of patches, that you can apply wherever you want.</li>
+<li>Take all modified tracked files (that are unstaged) and staged changes, and save them onto a stack of unfinished changes
+<ul>
+<li>When you run git stash (alias of <code>git stash save</code>), git makes two commits that are not on any branch. One commit holds the state of the index, the second commit holds state of the work tree.</li>
+</ul>
+</li>
+<li><code>git stash</code> takes uncommitted changes, stores them internally, then runs <code>git reset --hard</code> to give us a clean working directory.
+<ul>
+<li>This means that stashes can be applied to any branch, useful if we ever discover that we were developing on the wrong branch.</li>
+</ul>
+</li>
+</ul>
+<h3 id="apply-vs-pop"><a aria-hidden="true" class="anchor-heading" href="#apply-vs-pop"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Apply vs Pop</h3>
+<ul>
+<li>pop will delete the stash after it is applied, while apply keeps it around for future use
+<ul>
+<li>this is why the below trick to revert the stash does not work if <code>pop</code> is used</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/dfee8410-fde4-4e35-a448-bda26d186563">Cook</a></li>
+</ol>

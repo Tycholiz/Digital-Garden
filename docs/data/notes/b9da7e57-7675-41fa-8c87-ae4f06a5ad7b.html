@@ -1,0 +1,30 @@
+<h1 id="netrc"><a aria-hidden="true" class="anchor-heading" href="#netrc"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Netrc</h1>
+<p>The <code>.netrc</code> file contains configuration and autologin information for the ftp client </p>
+<ul>
+<li>It resides in the user's home directory</li>
+</ul>
+<p><code>.netrc</code> file takes the form:</p>
+<blockquote>
+<p><code>remote-machine</code> <code>name</code></p>
+</blockquote>
+<p>The auto-login process searches the <code>.netrc</code> file for a machine token that matches the remote machine specified on the ftp command line</p>
+<ul>
+<li>Once a match is made, the subsequent <code>.netrc</code> tokens are processed, stopping when the end of file is reached or another machine or a default token is encountered</li>
+</ul>
+<p>The following three lines must be included in the file. The lines must be separated by either white space (spaces, tabs, or newlines) or commas:</p>
+<pre><code>machine &#x3C;remote-instance-of-labkey-server>
+login &#x3C;user-email>
+password &#x3C;user-password>
+</code></pre>
+<p>An example:</p>
+<pre><code>machine mymachine.labkey.org
+login user@labkey.org
+password mypassword
+</code></pre>
+<p>or:</p>
+<pre><code>machine mymachine.labkey.org login user@labkey.org password mypassword
+</code></pre>
+<h3 id="using-api-keys"><a aria-hidden="true" class="anchor-heading" href="#using-api-keys"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Using API Keys</h3>
+<p>When API Keys are enabled on your server, you can generate a specific token representing your login credentials on that server and use it in the netrc file. The "login" name used is "apikey" (instead of your email address) and the unique API key generated is used as the password</p>
+<hr>
+<p>Note: the <code>.netrc</code> file only deals with connections at the machine level and should not include a port or protocol designation, meaning both "mymachine.labkey.org:8888" and "<a href="https://mymachine.labkey.org%22">https://mymachine.labkey.org"</a> are incorrect.</p>

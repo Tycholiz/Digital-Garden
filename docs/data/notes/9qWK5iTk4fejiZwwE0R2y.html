@@ -1,0 +1,29 @@
+<h1 id="approach"><a aria-hidden="true" class="anchor-heading" href="#approach"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Approach</h1>
+<h3 id="approach-for-algorithmic-problems"><a aria-hidden="true" class="anchor-heading" href="#approach-for-algorithmic-problems"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Approach for algorithmic problems</h3>
+<p>Example: implement a method on a LinkedList class that will delete a node from that list, given a position.</p>
+<h4 id="have-a-clear-understanding-of-what-the-resulting-data-will-be-after-the-algorithm-is-run"><a aria-hidden="true" class="anchor-heading" href="#have-a-clear-understanding-of-what-the-resulting-data-will-be-after-the-algorithm-is-run"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Have a clear understanding of what the resulting data will be after the algorithm is run.</h4>
+<p>First, we have to understand what does it mean to delete an item from a linked list. In technical terms, it means to change the pointer of the previous node to point to the node after the one being deleted. If we had a linked list of 4 elements:</p>
+<p>first -> second -> third -> fourth</p>
+<p>and wanted to remove the node at the second index:</p>
+<p>first -> second -> fourth</p>
+<p>We would need to modify the second node's <code>next</code> value to point to the fourth element. This is effectively deleting a node from a linked list. If this is not clear to us, then it is impossible to write an algorithm that solves the problem.</p>
+<p>"A problem well put is a problem half-solved."</p>
+<p>A way to fulfill this step might be to satisfy some test cases. For example...</p>
+<ul>
+<li>If the list does not have a head, then return early, since there are no elements to remove</li>
+<li>If we want to delete the node at position 0 (the head), then we need to assign a new head. 
+<ul>
+<li>Therefore, after the removal does <code>list.head</code> properly point to the second node instead of the first?</li>
+</ul>
+</li>
+<li>If we want to delete any other node, we need to change the <code>next</code> value of the previous node so that it refers to the node that was after the deleted node.</li>
+</ul>
+<h3 id="tips"><a aria-hidden="true" class="anchor-heading" href="#tips"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Tips</h3>
+<ul>
+<li>Best starting point might be the end-interface. This answers the question "how would my code be used by others?". If you are implementing a Binary Search Tree, then you probably want users to be able to add an element something like this: <code>tree.insert(32)</code>. From there, work backwards.</li>
+<li>Any time you have to map over an array and you have to <em>remember</em> something about each iteration, consider using a map/object as a way to remember
+<ul>
+<li>ex. The problem "loop over array, sort it, and return an array of the original indices" requires us to remember which index the number was at before we sort it. We can solve this by making an object where the key is the original index, and the value is the value at that index. From there, we can sort it and do whatever else we want with it, because we have already "remembered" that mapping between the value and its index.</li>
+</ul>
+</li>
+</ul>

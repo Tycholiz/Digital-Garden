@@ -1,0 +1,9 @@
+<h1 id="money"><a aria-hidden="true" class="anchor-heading" href="#money"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Money</h1>
+<p>Don't use money.</p>
+<ul>
+<li>Instead use <code>decimal</code> (aka. <code>numeric</code>) with 2 units of forced precision</li>
+</ul>
+<p>if you only care about prices to 2 decimal places, then you shouldn't really care about using anything more precise than numeric type with 2 precision decimal places. However, this would coerce incoming values like <code>44.423</code> to be rounded to <code>44.42</code>, and the amounts could be very far off. Therefore, if we are controlling the prices coming in, and we always know that it will be to 2 decimal places then it shouldn't be a problem.</p>
+<ul>
+<li>If we are really concerned about this, then we can use microcurrencies, which store the value as a bigint 1 millionth of the numeric value. This allows lots of precisio</li>
+</ul>

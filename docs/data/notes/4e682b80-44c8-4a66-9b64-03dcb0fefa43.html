@@ -1,0 +1,22 @@
+<h1 id="path"><a aria-hidden="true" class="anchor-heading" href="#path"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Path</h1>
+<h1 id="path-1"><a aria-hidden="true" class="anchor-heading" href="#path-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Path</h1>
+<h2 id="pathjoin"><a aria-hidden="true" class="anchor-heading" href="#pathjoin"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Path.join</h2>
+<ul>
+<li>concatenate each argument to get a full URL
+<ul>
+<li>therefore, it can be relative or absolute (using <code>__dirname</code>) depending on what args we pass </li>
+</ul>
+</li>
+<li>depending on if the OS is Unix-based or Windows, different delimiters will be used, abstracting this away from us. </li>
+</ul>
+<h2 id="pathresolve"><a aria-hidden="true" class="anchor-heading" href="#pathresolve"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Path.resolve</h2>
+<ul>
+<li>attempts to resolve a sequence of paths from RTL, with each subsequence path prepended until an absolute directory is formed. 
+<ul>
+<li>if an absolute directory is not able to be formed, then the args will be put on the end of the current working directory. </li>
+</ul>
+</li>
+<li>this method will treat the first argument as the root directory </li>
+<li>when called without arguments, it will return the working directory (which may happen to be equivalent to <code>__dirname</code>)</li>
+<li>it will always result in an absolute URL </li>
+</ul>

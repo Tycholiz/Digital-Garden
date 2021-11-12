@@ -1,0 +1,6 @@
+<h1 id="debug"><a aria-hidden="true" class="anchor-heading" href="#debug"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Debug</h1>
+<ul>
+<li><code>docker logs &#x3C;container name></code> - see what happened during container initialization</li>
+<li><code>docker inspect &#x3C;container-name></code> - get low-level info about a container, such as its IP, port mappings,  </li>
+<li>remove all containers based on one image (ex. monica) - <code>docker ps -a | awk '{ print $1,$2 }' | grep monica | awk '{print $1 }' | xargs -I {} docker rm {}</code></li>
+</ul>

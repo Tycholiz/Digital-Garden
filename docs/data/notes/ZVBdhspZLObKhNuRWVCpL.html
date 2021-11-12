@@ -1,0 +1,13 @@
+<h1 id="camera"><a aria-hidden="true" class="anchor-heading" href="#camera"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Camera</h1>
+<h3 id="follow-player"><a aria-hidden="true" class="anchor-heading" href="#follow-player"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Follow player</h3>
+<p>In a C# script (attached to the Main Camera), we can specify a new public variable of type <code>GameObject</code>. Then we can modify that variable's position attribute in the <code>update()</code> method. Then, as a final step we can drag an actual GameObject that we have defined (such as our Player) onto the script, as a way to pass the GameObject to the script.</p>
+<ul>
+<li>this would be getting a reference to the Player GameObject</li>
+</ul>
+<pre class="language-cs"><code class="language-cs">    <span class="token keyword">public</span> <span class="token class-name">GameObject</span> player<span class="token punctuation">;</span>
+    <span class="token comment">// Update is called once per frame</span>
+    <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">Update</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        transform<span class="token punctuation">.</span>position <span class="token operator">=</span> player<span class="token punctuation">.</span>transform<span class="token punctuation">.</span>position<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+</code></pre>

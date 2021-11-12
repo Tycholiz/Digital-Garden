@@ -1,0 +1,14 @@
+<h1 id="assert"><a aria-hidden="true" class="anchor-heading" href="#assert"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Assert</h1>
+<h1 id="assert-1"><a aria-hidden="true" class="anchor-heading" href="#assert-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Assert</h1>
+<p><code>ASSERT</code> is a convenient shorthand for inserting debugging checks, but is not useful for reporting ordinary messages and errors.</p>
+<ul>
+<li>we can give <code>ASSERT</code> a value that is always expects to evaluate to true.
+<ul>
+<li>if it does, <code>ASSERT</code> does nothing further.</li>
+<li>if it doesn't, an <code>ASSERT_FAILURE</code> exception is raised.</li>
+</ul>
+</li>
+<li>if we don't pass a message, a default "assertion failed" will be used.</li>
+</ul>
+<pre class="language-sql"><code class="language-sql">ASSERT v_user <span class="token operator">is</span> <span class="token operator">not</span> <span class="token boolean">null</span><span class="token punctuation">,</span> <span class="token string">'user not found, check the users table'</span><span class="token punctuation">;</span>
+</code></pre>

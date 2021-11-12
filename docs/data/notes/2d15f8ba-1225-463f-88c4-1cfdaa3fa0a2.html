@@ -1,0 +1,11 @@
+<h1 id="offline-first"><a aria-hidden="true" class="anchor-heading" href="#offline-first"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Offline First</h1>
+<p>To make an app truly offline first, we primarily need to do two things:</p>
+<ol>
+<li>Any code and assets used should be available offline</li>
+<li>Any data changes should be made locally first and then synced to the cloud.</li>
+</ol>
+<h3 id="using-apollo-and-resolver-to-serve-offline-first"><a aria-hidden="true" class="anchor-heading" href="#using-apollo-and-resolver-to-serve-offline-first"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>using Apollo and resolver to serve offline-first</h3>
+<ul>
+<li>the local cache can be used to remember what queries resolved to. The resolver helps the cache remember which updates it made. Therefore if the app is offline, the cache will be able to remember updates that were made to the cache, so that up-to-date information can be returned
+![](/assets/images/2021-03-28-19-52-42.png</li>
+</ul>

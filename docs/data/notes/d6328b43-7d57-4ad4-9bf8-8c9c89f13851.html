@@ -1,0 +1,80 @@
+<h1 id="pointer"><a aria-hidden="true" class="anchor-heading" href="#pointer"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Pointer</h1>
+<h1 id="pointer-1"><a aria-hidden="true" class="anchor-heading" href="#pointer-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Pointer</h1>
+<ul>
+<li><code>&#x26;</code> returns the memory address of the object
+<ul>
+<li>called "address of" operator
+<ul>
+<li>Therefore, this gets applied to the value to get the memory address</li>
+</ul>
+</li>
+<li>ie. <code>p = &#x26;c;</code></li>
+</ul>
+</li>
+<li><code>*</code> either: 
+<ol>
+<li>declares a pointer variable, or
+<ul>
+<li>ex. <code>int *p;</code></li>
+</ul>
+</li>
+<li>dereferences an existing pointer (indirection through a pointer)</li>
+</ol>
+<ul>
+<li>called "indirection" or "dereferencing" operator
+<ul>
+<li>Therefore, this gets applied to the pointer to get the value in storage</li>
+</ul>
+</li>
+<li><code>int a = 5</code> then <code>int *ptr = &#x26;a;</code>
+<ul>
+<li>this means "locate" the address where <code>a</code> is stored, and assign its value to <code>ptr</code>
+<ul>
+<li>In other words, the value of <code>ptr</code> will now be the address where <code>a</code> is stored. </li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>*ptr = 8</code>
+<ul>
+<li>this means take the address of <code>ptr</code>, "locate" that address in memory, and set its value to 8.</li>
+</ul>
+</li>
+<li><code>int *ptr</code>
+<ul>
+<li>"<code>ptr</code> is a pointer that points to an object of type <code>int</code>", or simply: "<code>ptr</code> is a pointer to <code>int</code>."</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>If p points to the integer x, then *p can occur in any context where x could, so:</li>
+</ul>
+<pre><code>*p = *p + 10;
+// is the same as
+x = x + 10;
+</code></pre>
+<p><img src="/Digital-Garden/:/454c71a68a8845c99466685e0c038c4d" alt="996035c6b28b5cf88b9156c920cc0d58.png"></p>
+<ul>
+<li>
+<p>This picture shows how a pointer references a storage location, which holds a variable <code>c</code>. When we use the <code>&#x26;</code> operator, we are talking about the place where <code>c</code> is stored. When we use the <code>*</code> operator, we are talking about the variable <code>c</code> itself. </p>
+</li>
+<li>
+<p>each pointer points to a specific data type, which is why we declare a pointer variable <code>int *p;</code></p>
+<ul>
+<li>The exception is "pointer to void", which can hold any kind of pointer, but cannot be dereferenced itself.</li>
+</ul>
+</li>
+<li>
+<p>C does not implicitly initialize storage duration of memory locations. Therefore, we should be careful that the address that the pointer points to is valid.</p>
+<ul>
+<li>For this reason, some suggest initializing pointers to <code>NULL</code> (<em>null pointer</em>/<em>null reference</em>)</li>
+<li>null pointer shown as <code>0x00000000</code></li>
+</ul>
+</li>
+<li>
+<p>Like other languages, manipulating a function argument will have no effect on the original variable that was passed to the function. This is because when we pass an argument, a copy is made and we are merely mutating the copy. </p>
+<pre><code>- However, we are also able to call a function, passing in the variable's *address* as the argument `passByAddr(&#x26;x)`.
+</code></pre>
+<p>from within the function, if we change the value like so <code>*m = 14</code>. this changes the value at the address, so outside the function we'll notice that the value changed</p>
+</li>
+</ul>

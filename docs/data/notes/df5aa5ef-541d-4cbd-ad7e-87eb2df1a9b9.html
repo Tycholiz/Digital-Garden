@@ -1,0 +1,22 @@
+<h1 id="certificates"><a aria-hidden="true" class="anchor-heading" href="#certificates"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>certificates</h1>
+<h2 id="server-certificate"><a aria-hidden="true" class="anchor-heading" href="#server-certificate"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Server Certificate</h2>
+<p>Also known as SSL/TLS certificates</p>
+<p>Used to authenticate the identity of a server to the client that is trying to connect to it.</p>
+<p>When a server certificate gets installed on a website, HTTPS gets enabled, and the certificate chain gets created, the result of which vouches for the authenticity of the website.</p>
+<ul>
+<li>When we hop on to our computers and type in a website URL, the server certificate ensures that the data flow between our client browser and the domain we’re trying to reach stays secure</li>
+</ul>
+<p>Based on PKI</p>
+<h2 id="client-certificate"><a aria-hidden="true" class="anchor-heading" href="#client-certificate"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Client Certificate</h2>
+<p>Used to validate the identity of a client.</p>
+<ul>
+<li>In this way, it serves as a password, as in theory, no one should be able to produce that certificate but the true client.</li>
+<li>Client certs don't encrypt any data.</li>
+</ul>
+<p>Client certificates exist because passwords aren't that secure.</p>
+<p>Client certificates use the Public Key Infrastructure (PKI) for authentication (just as server certificates do).</p>
+<ul>
+<li>Difference is that client certificates don't encrypt any data; they are just for validation purposes.</li>
+</ul>
+<p>Contain "Issued to" and "Issued by" fields</p>
+<p>Based on PKI</p>

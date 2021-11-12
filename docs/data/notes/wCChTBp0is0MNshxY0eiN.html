@@ -1,0 +1,32 @@
+<h1 id="map"><a aria-hidden="true" class="anchor-heading" href="#map"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Map</h1>
+<p>Map is a collection of keyed data items, just like an Object. But the main difference is that Map allows keys of any type, whereas object only allows strings and numbers.</p>
+<ul>
+<li>ex. with a Map, <code>true</code>/<code>false</code> can be boolean keys. Even an object can be used as a key
+<ul>
+<li>Using objects as keys is one of the most notable and important Map features.</li>
+</ul>
+</li>
+</ul>
+<p>Methods and properties are:</p>
+<ul>
+<li>new Map() – creates the map.</li>
+<li>map.set(key, value) – stores the value by the key.</li>
+<li>map.get(key) – returns the value by the key, undefined if key doesn’t exist in map.</li>
+<li>map.has(key) – returns true if the key exists, false otherwise.</li>
+<li>map.delete(key) – removes the value by the key.</li>
+<li>map.clear() – removes everything from the map.</li>
+<li>map.size – returns the current element count.</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> myMap <span class="token operator">=</span> <span class="token function">newMap</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+myMap<span class="token punctuation">.</span><span class="token method function property-access">set</span><span class="token punctuation">(</span><span class="token string">'a'</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+myMap<span class="token punctuation">.</span><span class="token method function property-access">set</span><span class="token punctuation">(</span><span class="token string">'b'</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span>
+myMap<span class="token punctuation">.</span><span class="token method function property-access">get</span><span class="token punctuation">(</span><span class="token string">'a'</span><span class="token punctuation">)</span> <span class="token comment">// 1</span>
+
+<span class="token comment">/*
+{
+    a: 1,
+    b: 2
+}
+*/</span>
+</code></pre>

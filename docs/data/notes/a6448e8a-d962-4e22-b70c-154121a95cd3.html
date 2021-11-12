@@ -1,0 +1,71 @@
+<h1 id="http"><a aria-hidden="true" class="anchor-heading" href="#http"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>HTTP</h1>
+<p>HTTP uses TCP as its underlying transport protocol.</p>
+<ul>
+<li>The HTTP client first initiates a TCP connection with the server, then once the connection is made, the browser and server processes access TCP through their <a title="Private" style="color: brown" href="https://wiki.dendron.so/notes/hfyvYGJZQiUwQaaxQO27q.html" target="_blank">socket (Private)</a> interfaces.</li>
+</ul>
+<h3 id="credentials-policy"><a aria-hidden="true" class="anchor-heading" href="#credentials-policy"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Credentials policy</h3>
+<p><em>Only relevant to browsers</em></p>
+<ul>
+<li>Credentials are cookies, authorization headers or TLS client certificates.</li>
+</ul>
+<p>Credentials</p>
+<ul>
+<li>
+<p><code>include</code> - send a request with credentials included, even if it's cross-origin</p>
+</li>
+<li>
+<p><code>same-origin</code> - only send credentials if the request URL is on same origin as the calling script</p>
+</li>
+<li>
+<p><code>omit</code> - ensure browsers don’t include credentials in the request</p>
+</li>
+<li>
+<p>we can use the <code>Access-Control-Allow-Credentials</code> response header to tell browsers to expose the response to frontend JavaScript code.</p>
+<ul>
+<li>to do this, the client will need to set the credentials to <code>include</code> (<code>Request.credentials</code>)</li>
+</ul>
+</li>
+</ul>
+<h3 id="breakdown-of-connection-to-server"><a aria-hidden="true" class="anchor-heading" href="#breakdown-of-connection-to-server"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Breakdown of connection to server</h3>
+<ol>
+<li>User enters <code>http://someschool.edu/somedepartment/home.index</code> in the address bar of a browser</li>
+<li>The browser (ie. HTTP client process) initiates a TCP connection to the server <code>www.someschool.edu</code> at port <code>80</code>
+<ul>
+<li>associated with the TCP connection, there will be a socket at the client and a socket at the server.</li>
+</ul>
+</li>
+<li>The browser sends an HTTP request to the server via its socket.
+<ul>
+<li>The request includes the path name <code>/somedepartment/home.index</code></li>
+</ul>
+</li>
+<li>The server receives the request and retrieves the object (in this case, HTML) from its storage (eg. RAM or disk), encapsulates the object in an HTTP response, then sends that message to the client via its socket.</li>
+<li>The HTTP server process tells TCP to gracefully close the TCP connection.
+<ul>
+<li>"gracefully" here means that the connection will only close once the client receives the full communication.</li>
+</ul>
+</li>
+<li>The browser receives the response, and the TCP connection is closed.</li>
+<li>The response from the server indicates that the encapsulated object is HTML. The client then extracts the file fromm the response message, examines the HTML file, and finds references to 10 JPEG objects.</li>
+<li>Steps 1-5 are then repeated for <em>each</em> of the referenced JPEG objects.
+<ul>
+<li>These 10 TCP connections are most likely made in parallel, which we would say are 10 serial TCP connections.
+<ul>
+<li>This degree of parallelism is determined by the browser, and configurable by the user.
+<ul>
+<li>by default most browsers open between 5 and 10 parallel TCP connections.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/7813ad76-5620-4b0b-9062-3cd8f318007a">Cross-Origin Resource Sharing</a></li>
+<li><a href="/Digital-Garden/notes/9fe0ede4-885d-4380-b1b1-7a3a84184e7e">Requests</a></li>
+<li><a href="/Digital-Garden/notes/HREfpLUMmH3cYRp1cWwjs">URL</a></li>
+<li><a href="/Digital-Garden/notes/017d767e-0127-4ef8-b5bf-7616ad5a7a9a">Webdav</a></li>
+</ol>

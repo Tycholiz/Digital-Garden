@@ -1,0 +1,44 @@
+<h1 id="unknown"><a aria-hidden="true" class="anchor-heading" href="#unknown"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Unknown</h1>
+<p>This is similar to the <code>any</code> type, but is safer because it’s not legal to do anything with an <code>unknown</code> value</p>
+<p>If a type is of type <code>unknown</code>, then it means the variable can be assigned to any type. At the moment of initializing an <code>unknown</code> variable, we are saying "we don't know the type of this one. If you know it, feel tree to coerce it into its proper type. You can change it however you want."</p>
+<p>On the other hand, it also means that we can't set the <code>unknown</code> value to a different type.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token comment">// This is ok</span>
+<span class="token keyword">let</span> x<span class="token operator">:</span> <span class="token builtin">unknown</span><span class="token punctuation">;</span>
+
+x <span class="token operator">=</span> <span class="token number">123</span><span class="token punctuation">;</span> <span class="token comment">// no error</span>
+<span class="token comment">/* * * * * * * * * * */</span>
+<span class="token comment">// This is not</span>
+<span class="token keyword">function</span> <span class="token function">foo2</span><span class="token punctuation">(</span>bar<span class="token operator">:</span> <span class="token builtin">unknown</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> a<span class="token operator">:</span> <span class="token builtin">string</span> <span class="token operator">=</span> bar <span class="token comment">// error: Type 'unknown' is not assignable to type 'string'</span>
+  <span class="token comment">//...</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Both <code>any</code> and <code>unknown</code> represent an unknown type, but there is a key difference:</p>
+<ul>
+<li>as demonstrated in the code above, all types are assignable to the <code>unknown</code> type, but <code>unknown</code> is not assignable to any type
+<ul>
+<li>therefore <code>unknown</code> is a type-safe alternative to <code>any</code></li>
+</ul>
+</li>
+</ul>
+<p><img src="/Digital-Garden/assets/images/2021-10-21-08-39-26.png"></p>
+<p>This distinction between <code>any</code> and <code>unknown</code> is important, because it makes our code stricter. </p>
+<ul>
+<li>If you have a value of <code>unknown</code> type, you need to cast it to some other type before you can do anything useful with it. The consequence of this is that <code>unknown</code> doesn’t propagate like any does, which is much safer.</li>
+</ul>
+<h2 id="use-cases"><a aria-hidden="true" class="anchor-heading" href="#use-cases"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Use-cases</h2>
+<p>When you are working with external values (e.g. APIs), there is a good chance you won't know what the return type is. In such cases, it’s a good idea to type such value as <code>unknown</code> instead of <code>any</code>.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">interface</span> <span class="token class-name"><span class="token maybe-class-name">Article</span></span> <span class="token punctuation">{</span>
+    title<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+    body<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token function">fetch</span><span class="token punctuation">(</span><span class="token string">"http://example.com"</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token method function property-access">then</span><span class="token punctuation">(</span>response <span class="token arrow operator">=></span> response<span class="token punctuation">.</span><span class="token method function property-access">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token method function property-access">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span>body<span class="token operator">:</span> <span class="token builtin">unknown</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+        <span class="token keyword">const</span> article <span class="token operator">=</span> body <span class="token keyword">as</span> <span class="token maybe-class-name">Article</span><span class="token punctuation">;</span>
+        <span class="token comment">// we need to cast, otherwise we'd get an error</span>
+        <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span>article<span class="token punctuation">.</span><span class="token property-access">title</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>In this example, we use type assertion to tell TypeScript that we know the type of body. It’s still not type-safe because we could be wrong, but at least it’s explicit. The proper solution here would be to perform a runtime check to make sure that body is indeed an Article. We’ll look into such a solution in the lesson dedicated to user-defined type guards.</p>
