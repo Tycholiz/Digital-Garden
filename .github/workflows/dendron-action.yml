@@ -30,9 +30,7 @@ jobs:
     - name: run a script
       run: |
         echo "here it is boys!"
-        ls main
-        echo "----"
-        ls publishable
+        cat main/tech/apollo.md
 
     - name: Build pod
       run: "echo \"Y\" | npx @dendronhq/dendron-cli publish export --wsRoot publishable --target github"
