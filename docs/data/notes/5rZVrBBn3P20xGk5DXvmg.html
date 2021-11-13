@@ -3,7 +3,7 @@
 <pre class="language-ts"><code class="language-ts"><span class="token keyword">function</span> <span class="token generic-function"><span class="token function">makePair</span><span class="token generic class-name"><span class="token operator">&#x3C;</span><span class="token constant">F</span><span class="token punctuation">,</span> <span class="token constant">S</span><span class="token operator">></span></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
   <span class="token keyword">let</span> pair<span class="token operator">:</span> <span class="token punctuation">{</span> first<span class="token operator">:</span> <span class="token constant">F</span><span class="token punctuation">;</span> second<span class="token operator">:</span> <span class="token constant">S</span> <span class="token punctuation">}</span>
   <span class="token keyword">function</span> <span class="token function">getPair</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">return</span> pair
+    <span class="token keyword control-flow">return</span> pair
   <span class="token punctuation">}</span>
   <span class="token keyword">function</span> <span class="token function">setPair</span><span class="token punctuation">(</span>x<span class="token operator">:</span> <span class="token constant">F</span><span class="token punctuation">,</span> y<span class="token operator">:</span> <span class="token constant">S</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     pair <span class="token operator">=</span> <span class="token punctuation">{</span>
@@ -11,7 +11,7 @@
       second<span class="token operator">:</span> y
     <span class="token punctuation">}</span>
   <span class="token punctuation">}</span>
-  <span class="token keyword">return</span> <span class="token punctuation">{</span> getPair<span class="token punctuation">,</span> setPair <span class="token punctuation">}</span>
+  <span class="token keyword control-flow">return</span> <span class="token punctuation">{</span> getPair<span class="token punctuation">,</span> setPair <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 
 <span class="token keyword">const</span> <span class="token punctuation">{</span> getPair<span class="token punctuation">,</span> setPair <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token generic-function"><span class="token function">makePair</span><span class="token generic class-name"><span class="token operator">&#x3C;</span><span class="token builtin">string</span><span class="token punctuation">,</span> <span class="token builtin">number</span><span class="token operator">></span></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>

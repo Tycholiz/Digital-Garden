@@ -1,0 +1,37 @@
+<h1 id="step"><a aria-hidden="true" class="anchor-heading" href="#step"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Step</h1>
+<h3 id="step-1"><a aria-hidden="true" class="anchor-heading" href="#step-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Step</h3>
+<p>A step is an individual task that can run commands in a job</p>
+<p>A step can either be:</p>
+<ul>
+<li>a shell command</li>
+<li>an action</li>
+</ul>
+<p>Each step in a job executes on the same runner, allowing the actions in that job to share data with each other.</p>
+<p>Changing directories in one step does not carry through to the next step:</p>
+<pre class="language-yml"><code class="language-yml"><span class="token comment"># workflow.actions.yml</span>
+    <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> cd into publishable
+      <span class="token key atrule">run</span><span class="token punctuation">:</span> <span class="token punctuation">|</span><span class="token scalar string">
+        cd publishable 
+        pwd</span>
+
+    <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> does the cd carry thru<span class="token punctuation">?</span>
+      <span class="token key atrule">run</span><span class="token punctuation">:</span> <span class="token punctuation">|</span><span class="token scalar string">
+        pwd</span>
+</code></pre>
+<p>log:</p>
+<pre><code>Run cd publishable
+/home/runner/work/Digital-Garden/Digital-Garden/publishable
+
+Run pwd
+/home/runner/work/Digital-Garden/Digital-Garden
+</code></pre>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/2cbfa75d-0a0f-4cf8-9cc4-2428f61eb372">Actions</a></li>
+</ul>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/yudejOKYVZBLkMjCab9bD">Cook</a></li>
+</ol>

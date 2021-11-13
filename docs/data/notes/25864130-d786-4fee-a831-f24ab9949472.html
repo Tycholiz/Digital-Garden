@@ -11,17 +11,17 @@
 <span class="token comment">// type.</span>
 <span class="token keyword">const</span> <span class="token maybe-class-name">Type</span> <span class="token operator">=</span> gql<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token graphql language-graphql">
   <span class="token keyword">type</span> <span class="token class-name"><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>nameOfType<span class="token interpolation-punctuation punctuation">}</span></span></span> <span class="token punctuation">{</span>
-    <span class="token attr-name">str</span><span class="token punctuation">:</span> String
-    <span class="token attr-name">int</span><span class="token punctuation">:</span> Int
+    <span class="token attr-name">str</span><span class="token punctuation">:</span> <span class="token scalar">String</span>
+    <span class="token attr-name">int</span><span class="token punctuation">:</span> <span class="token scalar">Int</span>
   <span class="token punctuation">}</span>
 </span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
 
 <span class="token comment">// This tag interpolates the entire definition in `Type` above.</span>
 <span class="token keyword">const</span> typeDefs <span class="token operator">=</span> gql<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token graphql language-graphql">
-  <span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token maybe-class-name">Type</span><span class="token interpolation-punctuation punctuation">}</span></span>
+  <span class="token property"><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token maybe-class-name">Type</span><span class="token interpolation-punctuation punctuation">}</span></span></span>
 
   <span class="token keyword">extend</span> <span class="token keyword">type</span> <span class="token class-name">Query</span> <span class="token punctuation">{</span>
-    <span class="token attr-name">fieldName</span><span class="token punctuation">:</span> Type
+    <span class="token attr-name">fieldName</span><span class="token punctuation">:</span> <span class="token class-name">Type</span>
   <span class="token punctuation">}</span>
 </span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
 </code></pre>

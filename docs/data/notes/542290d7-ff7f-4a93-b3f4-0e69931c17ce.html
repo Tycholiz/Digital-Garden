@@ -63,3 +63,8 @@ BREAKING CHANGES:
 <p>commmit
 feat(stripe): create <code>book_order</code> when user signals intent to buy.</p>
 <p>This commit introduced a bit of a functionality change to how payments are processed through our backend and Stripe. Previously, rows in the invoices, invoice_items, and book_orders tables were only created after Stripe had verified our purchase (ie. by calling our webhook). Now, a row in the book_orders table will be inserted at the point that the user signals their intent to buy (ie. by entering their address info and hitting the 'Continue' button). At this point, our Express server makes an API call to get taxes (future implementation, though a placeholder solution included in this commit), and it is included on the Stripe PaymentIntent object. We retrieve this metadata in our webhook to insert it into the invoice table.</p>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/Iz3W0yE50qVp6ODy0QygH">Semantic Release</a></li>
+</ol>

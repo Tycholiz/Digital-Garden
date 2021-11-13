@@ -1,0 +1,11 @@
+<h1 id="cook"><a aria-hidden="true" class="anchor-heading" href="#cook"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Cook</h1>
+<h4 id="run-shell-command"><a aria-hidden="true" class="anchor-heading" href="#run-shell-command"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Run shell command</h4>
+<pre class="language-yml"><code class="language-yml"><span class="token key atrule">jobs</span><span class="token punctuation">:</span>
+  <span class="token key atrule">build</span><span class="token punctuation">:</span>
+    <span class="token key atrule">runs-on</span><span class="token punctuation">:</span> ubuntu<span class="token punctuation">-</span>latest
+    <span class="token key atrule">steps</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> run a script
+      <span class="token key atrule">run</span><span class="token punctuation">:</span> <span class="token punctuation">|</span><span class="token scalar string">
+        echo "here it is boys!"
+        ls main</span>
+</code></pre>

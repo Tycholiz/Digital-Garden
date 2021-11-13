@@ -39,12 +39,12 @@
 <pre class="language-ts"><code class="language-ts"><span class="token keyword">function</span> <span class="token generic-function"><span class="token function">makeState</span><span class="token generic class-name"><span class="token operator">&#x3C;</span><span class="token constant">S</span><span class="token operator">></span></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
   <span class="token keyword">let</span> state<span class="token operator">:</span> <span class="token constant">S</span>
   <span class="token keyword">function</span> <span class="token function">getState</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">return</span> state
+    <span class="token keyword control-flow">return</span> state
   <span class="token punctuation">}</span>
   <span class="token keyword">function</span> <span class="token function">setState</span><span class="token punctuation">(</span>x<span class="token operator">:</span> <span class="token constant">S</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     state <span class="token operator">=</span> x
   <span class="token punctuation">}</span>
-  <span class="token keyword">return</span> <span class="token punctuation">{</span> getState<span class="token punctuation">,</span> setState <span class="token punctuation">}</span>
+  <span class="token keyword control-flow">return</span> <span class="token punctuation">{</span> getState<span class="token punctuation">,</span> setState <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 
 <span class="token keyword">const</span> <span class="token punctuation">{</span> getState<span class="token punctuation">,</span> setState <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">makeState</span><span class="token punctuation">(</span><span class="token punctuation">)</span>

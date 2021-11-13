@@ -13,7 +13,7 @@
 <li>imagine we want to grab the return type of function <code>f()</code> for usage elsewhere:</li>
 </ul>
 <pre class="language-ts"><code class="language-ts"><span class="token keyword">function</span> <span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token keyword">return</span> <span class="token punctuation">{</span> x<span class="token operator">:</span> <span class="token number">10</span><span class="token punctuation">,</span> y<span class="token operator">:</span> <span class="token number">3</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+  <span class="token keyword control-flow">return</span> <span class="token punctuation">{</span> x<span class="token operator">:</span> <span class="token number">10</span><span class="token punctuation">,</span> y<span class="token operator">:</span> <span class="token number">3</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span class="token comment">// note: ReturnType is a built-in, and gives us the return type of a given function</span>
 <span class="token keyword">type</span> <span class="token class-name"><span class="token constant">P</span></span> <span class="token operator">=</span> <span class="token maybe-class-name">ReturnType</span><span class="token operator">&#x3C;</span><span class="token keyword">typeof</span> f<span class="token operator">></span><span class="token punctuation">;</span>

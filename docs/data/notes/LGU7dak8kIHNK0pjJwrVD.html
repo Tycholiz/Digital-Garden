@@ -28,16 +28,16 @@
 <span class="token punctuation">}</span>
 
 <span class="token comment">// This gets called on every request</span>
-<span class="token keyword">export</span> <span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">getServerSideProps</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token keyword module">export</span> <span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">getServerSideProps</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
   <span class="token comment">// Fetch data from external API</span>
-  <span class="token keyword">const</span> res <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">fetch</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">https://.../data</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span>
-  <span class="token keyword">const</span> data <span class="token operator">=</span> <span class="token keyword">await</span> res<span class="token punctuation">.</span><span class="token method function property-access">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token keyword">const</span> res <span class="token operator">=</span> <span class="token keyword control-flow">await</span> <span class="token function">fetch</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">https://.../data</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span>
+  <span class="token keyword">const</span> data <span class="token operator">=</span> <span class="token keyword control-flow">await</span> res<span class="token punctuation">.</span><span class="token method function property-access">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 
   <span class="token comment">// Pass data to the page via props</span>
-  <span class="token keyword">return</span> <span class="token punctuation">{</span> props<span class="token operator">:</span> <span class="token punctuation">{</span> data <span class="token punctuation">}</span> <span class="token punctuation">}</span>
+  <span class="token keyword control-flow">return</span> <span class="token punctuation">{</span> props<span class="token operator">:</span> <span class="token punctuation">{</span> data <span class="token punctuation">}</span> <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 
-<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token maybe-class-name">Page</span>
+<span class="token keyword module">export</span> <span class="token keyword module">default</span> <span class="token maybe-class-name">Page</span>
 </code></pre>
 <p>When you run <code>yarn build</code>, it generates 1 HTML document for every route on your site. Every side page, every blog post, every store item — an HTML file is created for each of them, ready to be served up immediately.</p>
 <p><code>getServerSideProps</code> is run on every request</p>

@@ -20,7 +20,7 @@
 <li>Non-null assertion operators are simply a way of telling the compiler, "trust me, I’m absolutely sure that this optional value is in fact never empty."</li>
 <li>While you might think that a value is always non-empty, you could be wrong. Or worse, you could be correct at the moment, but it will not be the case in the future, because some other developer will call your function with a null or undefined.</li>
 </ul>
-<pre class="language-ts"><code class="language-ts"><span class="token keyword">function</span> <span class="token function">sayHello</span><span class="token punctuation">(</span>person<span class="token operator">:</span> <span class="token maybe-class-name">Person</span> <span class="token operator">|</span> <span class="token keyword">undefined</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">function</span> <span class="token function">sayHello</span><span class="token punctuation">(</span>person<span class="token operator">:</span> <span class="token maybe-class-name">Person</span> <span class="token operator">|</span> <span class="token keyword nil">undefined</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     person<span class="token operator">!</span><span class="token punctuation">.</span><span class="token method function property-access">hello</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// no errors!</span>
 <span class="token punctuation">}</span>
 </code></pre>
