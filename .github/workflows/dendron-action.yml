@@ -27,6 +27,13 @@ jobs:
     - name: Install node dependencies
       run: npm --prefix ./publishable install
 
+    - name: run a script
+      run: |
+        echo "here it is boys!"
+        ls main
+        echo "----"
+        ls publishable
+
     - name: Build pod
       run: "echo \"Y\" | npx @dendronhq/dendron-cli publish export --wsRoot publishable --target github"
 
