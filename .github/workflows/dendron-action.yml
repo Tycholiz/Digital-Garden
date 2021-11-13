@@ -3,7 +3,10 @@ name: Dendron
 on:
   push:
     branches:
-    - master
+    - test
+
+  # schedule:
+  # - cron: "0 0 * * *"
 
 jobs:
   build:
@@ -12,31 +15,27 @@ jobs:
     - name: clone Dendron(main) repo
       uses: actions/checkout@v2
       with:
-        name: Tycholiz/Dendron
+        repository: Tycholiz/Dendron
         token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
-        path: 'dendronMain'
+        path: 'main'
       
-    - name: run a script
-
-      run: |
-        echo "here it is boys!"
-        ls
-
     - name: Checkout publishable repo
       uses: actions/checkout@v2
+      with:
+        path: 'publishable'
 
     - name: Install node dependencies
-      run: yarn
+      run: npm --prefix ./publishable install
 
     - name: Build pod
-      run: yarn dendron-cli publish export --target github
+      run: "echo \"Y\" | npx @dendronhq/dendron-cli publish export --wsRoot publishable --target github"
 
     - name: Deploy site to GH Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_branch: master
-        publish_dir: docs/
+        publish_branch: pages
+        publish_dir: publishable/docs/
         force_orphan: true
         cname: "tycholiz.github.io"
 
