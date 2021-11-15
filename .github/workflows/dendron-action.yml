@@ -32,15 +32,16 @@ jobs:
 
     - name: run a script
       run: |
-        echo "root dir"
-        ls
-        echo "publishable dir"
-        ls publishable
         echo "apollo note"
         cat publishable/docs/data/notes/f29f31f3-7235-41ad-83a1-b64f3f466916.html
 
     - name: Build pod
-      run: "npx @dendronhq/dendron-cli publish export --wsRoot publishable --target github"
+      run: "echo \"y\" | npx @dendronhq/dendron-cli publish export --wsRoot publishable --target github"
+
+    - name: run another script
+      run: |
+        echo "apollo note after build"
+        cat publishable/docs/data/notes/f29f31f3-7235-41ad-83a1-b64f3f466916.html
 
     - name: Deploy site to GH Pages
       uses: peaceiris/actions-gh-pages@v3
