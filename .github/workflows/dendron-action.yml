@@ -5,6 +5,7 @@ on:
     branches:
     - test
 
+  ## every day at midnight
   # schedule:
   # - cron: "0 0 * * *"
 
