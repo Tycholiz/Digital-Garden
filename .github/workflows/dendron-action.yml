@@ -33,7 +33,7 @@ jobs:
     - name: run a script
       run: |
         echo "here it is boys!"
-        cat main/tech/apollo.md
+        npx @dendronhq/dendron-cli --version
 
     - name: Build pod
       run: "npx @dendronhq/dendron-cli@0.68.0 publish export --wsRoot publishable --target github"
