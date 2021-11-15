@@ -33,7 +33,7 @@ jobs:
         cat main/tech/apollo.md
 
     - name: Build pod
-      run: "echo \"y\" | npx @dendronhq/dendron-cli publish export --wsRoot publishable --target github"
+      run: "npx @dendronhq/dendron-cli publish export --wsRoot publishable --target github"
 
     - name: Deploy site to GH Pages
       uses: peaceiris/actions-gh-pages@v3
