@@ -27,13 +27,16 @@ jobs:
     - name: Install node dependencies
       run: npm --prefix ./publishable install
 
+    - name: Install node dependencies
+      run: npm --prefix ./main install
+
     - name: run a script
       run: |
         echo "here it is boys!"
         cat main/tech/apollo.md
 
     - name: Build pod
-      run: "npx @dendronhq/dendron-cli publish export --wsRoot publishable --target github"
+      run: "npx @dendronhq/dendron-cli@0.68.0 publish export --wsRoot publishable --target github"
 
     - name: Deploy site to GH Pages
       uses: peaceiris/actions-gh-pages@v3
