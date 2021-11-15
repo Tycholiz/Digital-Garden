@@ -32,8 +32,12 @@ jobs:
 
     - name: run a script
       run: |
-        echo "here it is boys!"
-        cat publishable/data/notes/f29f31f3-7235-41ad-83a1-b64f3f466916.html
+        echo "root dir"
+        ls
+        echo "publishable dir"
+        ls publishable
+        echo "apollo note"
+        cat data/notes/f29f31f3-7235-41ad-83a1-b64f3f466916.html
 
     - name: Build pod
       run: "npx @dendronhq/dendron-cli publish export --wsRoot publishable --target github"
