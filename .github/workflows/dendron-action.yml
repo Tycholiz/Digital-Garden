@@ -31,11 +31,8 @@ jobs:
     - name: Initialize or pull nextjs template
       run: "(test -d publishable/.next) && (echo 'updating dendron next...' && cd publishable/.next && git reset --hard && git clean -f && git pull) || (echo 'init dendron next' && npx @dendronhq/dendron-cli publish init --wsRoot publishable)"
 
-    - name: force install 
-      run: npx @dendronhq/dendron-cli publish init --wsRoot publishable
-
-    - name: check ls of publishable/.next/publishable
-      run: ls -lah publishable/.next/publishable
+    - name: check ls of publishable/.next/publishable/.next
+      run: ls -lah publishable/.next/publishable/.next
 
     - name: Install dependencies
       run: cd publishable/.next && yarn && cd ../..
