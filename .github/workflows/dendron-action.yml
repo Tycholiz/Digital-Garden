@@ -29,7 +29,7 @@ jobs:
       run: npm --prefix ./publishable install
 
     - name: Initialize or pull nextjs template
-      run: "(test -d publishable/.next) && (echo 'updating dendron nextjs site...' && cd publishable/.next && git reset --hard && git clean -f && git pull) || (echo 'init dendron next' && pwd && ls && npx @dendronhq/dendron-cli publish init --wsRoot publishable)"
+      run: "(test -d publishable/.next) && (echo 'updating dendron nextjs site...' && cd publishable/.next && git reset --hard && git clean -f && git pull) || (echo 'init dendron next' && cd publishable && npx @dendronhq/dendron-cli publish init)"
 
     - name: check ls of publishable/.next/publishable/.next
       run: ls -lah publishable/.next/publishable/.next
