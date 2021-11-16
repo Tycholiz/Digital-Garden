@@ -35,7 +35,7 @@ jobs:
       run: cd publishable/.next && yarn && cd ../..
 
     - name: Export notes
-      run: npx dendron publish build --wsRoot publishable
+      run: npx @dendronhq/dendron-cli publish build --wsRoot publishable
 
     - name: Prep notes for publish
       run: cd publishable/.next && yarn export && cd ../..
