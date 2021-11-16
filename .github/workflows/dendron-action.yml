@@ -34,8 +34,8 @@ jobs:
     - name: force install 
       run: npx @dendronhq/dendron-cli publish init --wsRoot publishable
 
-    - name: check ls of publishable/.next
-      run: ls -lah publishable/.next
+    - name: check ls of publishable/.next/publishable
+      run: ls -lah publishable/.next/publishable
 
     - name: Install dependencies
       run: cd publishable/.next && yarn && cd ../..
