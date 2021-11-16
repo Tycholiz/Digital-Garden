@@ -28,21 +28,28 @@ jobs:
     - name: Install node dependencies
       run: npm --prefix ./publishable install
 
-    # - name: Install node dependencies
-    #   run: npm --prefix ./main install
+    - name: Initialize or pull nextjs template
+      run: "(test -d publishable/.next) && (echo 'updating dendron next...' && cd publishable/.next && git reset --hard && git clean -f && git pull) || (echo 'init dendron next' && npx dendron publish init)"
 
-    - name: run a script
+    - name: Install dependencies
+      run: cd publishable/.next && yarn && cd ../..
+
+    - name: Export notes
+      run: npx dendron publish build --wsRoot publishable
+
+    - name: Prep notes for publish
+      run: cd publishable/.next && yarn export && cd ../..
+
+    - name: Remove docs if exist
+      run: '(test -d publishable/docs && rm -rf publishable/docs) || echo skipping'
+
+    - name: Update Notes
       run: |
-        echo "apollo note"
-        cat publishable/docs/data/notes/f29f31f3-7235-41ad-83a1-b64f3f466916.html
+        cd publishable/.next && mv out ../docs && touch ../docs/.nojekyll && cd ..
 
-    - name: Build pod
-      run: "echo \"y\" | npx @dendronhq/dendron-cli publish export --wsRoot publishable --target github"
+    # - name: Build pod
+    #   run: "echo \"y\" | npx @dendronhq/dendron-cli publish export --wsRoot publishable --target github"
 
-    - name: run another script
-      run: |
-        echo "apollo note after build"
-        cat publishable/docs/data/notes/f29f31f3-7235-41ad-83a1-b64f3f466916.html
 
     - name: Deploy site to GH Pages
       uses: peaceiris/actions-gh-pages@v3
