@@ -34,14 +34,18 @@ jobs:
     - name: check ls -lah
       run: ls -lah publishable
 
-    - name: publish init (generate .next/)
-      run: "npx @dendronhq/dendron-cli publish init --wsRoot publishable"
-
     - name: Install dependencies
       run: cd publishable/.next && yarn && cd ../..
 
     - name: Export notes
       run: npx @dendronhq/dendron-cli publish build --wsRoot publishable
+
+    - name: investigate
+      run: |
+        cd publishable
+        ls -lah
+        cd .next
+        ls -lah
 
     - name: Prep notes for publish
       run: cd publishable/.next && ls && cat package.json && yarn export && cd ../..
