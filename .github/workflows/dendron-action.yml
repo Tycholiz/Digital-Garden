@@ -40,15 +40,8 @@ jobs:
     - name: Export notes
       run: npx @dendronhq/dendron-cli publish build --wsRoot publishable
 
-    - name: investigate
-      run: |
-        cd publishable
-        ls -lah
-        cd .next
-        ls -lah
-
     - name: Prep notes for publish
-      run: cd publishable/.next && ls && cat package.json && yarn export && cd ../..
+      run: cd publishable/.next && yarn export && cd ../..
 
     - name: Remove docs if exist
       run: '(test -d publishable/docs && rm -rf publishable/docs) || echo skipping'
