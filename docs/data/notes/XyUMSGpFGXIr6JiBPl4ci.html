@@ -1,0 +1,40 @@
+<h1 id="hook"><a aria-hidden="true" class="anchor-heading" href="#hook"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Hook</h1>
+<p>Hooks are a type of function that allows your system to call some other module.</p>
+<ul>
+<li>
+<p>It is a broad way to describe this pattern where some piece of code (the hook) can trigger in response to data being sent between software components.</p>
+</li>
+<li>
+<p>ex. keylogging</p>
+<ul>
+<li>Basically, our application code says "ok System, I want to be notified anytime anytime a user presses a key"</li>
+</ul>
+</li>
+<li>
+<p>ex. Every Chrome (or other browser) extension is possible because of hooks in the browser.</p>
+<ul>
+<li>The extension sets up a hook to be notified when a specific page is navigated to.</li>
+<li>Vimium executes hooks in response to keypresses.</li>
+</ul>
+</li>
+<li>
+<p>ex. Video games with mod support are another example of hooks in action.</p>
+</li>
+<li>
+<p>ex. a browser might use a hook to make it easier for antivirus software to scan downloads.</p>
+<ul>
+<li>When it starts a download, it shouts "Hey, anyone listening, I'm starting a download!", and any program listening for that will be able to react and intervene.</li>
+</ul>
+</li>
+<li>
+<p>A screen reader for blind users sets up a system hook to know when another program creates a new window on the screen.</p>
+</li>
+</ul>
+<h3 id="james-bond-paintball-mode-example"><a aria-hidden="true" class="anchor-heading" href="#james-bond-paintball-mode-example"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>James Bond paintball mode example</h3>
+<p>If you were to try and implement this mod to the game, you could use a hook provided by the game itself. Essentially, when an event happens in the game (ie. when bullets are shot), a hook is executed, which turns the resulting bullet holes colored.</p>
+<p><img src="/Digital-Garden/assets/images/2021-11-23-14-35-06.png"></p>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/xmQoOcXGLkOklWDGKw1s2">Direnv</a></li>
+</ul>

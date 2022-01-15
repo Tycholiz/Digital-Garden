@@ -1,0 +1,18 @@
+<h1 id="identity-federation"><a aria-hidden="true" class="anchor-heading" href="#identity-federation"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Identity Federation</h1>
+<p>Identity federation is a system of trust between two parties for the purpose of authenticating users.</p>
+<ul>
+<li>the SP trusts the IdP to authenticate users and relies on the information provided by the IdP about them.</li>
+</ul>
+<p>Identity Federation is a way that we can manage <a href="/Digital-Garden/notes/yBNgydTx5k1BfiGgW3BbD">federated identity</a> in AWS.</p>
+<p>The problem Identity Federation solves is, "how do we grapple with the fact that we have multitudes of different employees, contractors</p>
+<ul>
+<li>an identity provider (IdP) is responsible for user authentication.</li>
+<li>a service provider (SP) controls access to resources.
+<ul>
+<li>an SP might be a service or application</li>
+</ul>
+</li>
+</ul>
+<p>After authenticating a user, the IdP sends the SP a message, called an assertion, containing the user's sign-in name and other attributes that the SP needs to establish a session with the user and to determine the scope of resource access that the SP should grant.</p>
+<p>Federation is a common approach to building access control systems which manage users centrally within a central IdP and govern their access to multiple applications and services acting as SPs.</p>
+<p>AWS SSO and <a href="/Digital-Garden/notes/hUvXun5sLRxKOZXIZFuV1">AWS</a> are two tools from AWS that allow us to federate our workforce into AWS accounts and business applications.</p>

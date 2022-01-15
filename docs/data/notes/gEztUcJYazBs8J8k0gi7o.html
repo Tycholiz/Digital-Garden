@@ -1,0 +1,67 @@
+<h1 id="dynamo"><a aria-hidden="true" class="anchor-heading" href="#dynamo"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Dynamo</h1>
+<h1 id="dynamodb"><a aria-hidden="true" class="anchor-heading" href="#dynamodb"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>DynamoDB</h1>
+<p>Dynamo is a fully-managed schemaless NoSQL database.</p>
+<ul>
+<li>The DB engine can manage structured or semi-structured data, including JSON documents.</li>
+<li>supports key–value and document data structures</li>
+</ul>
+<p>Uses tables</p>
+<p>Data is stored as a partitioned B-Tree.</p>
+<p>Unlike Redis, in that it is immediately consistent and highly-durable, centered around that single data structure.</p>
+<ul>
+<li>If you put something into DynamoDB, you’ll be able to read it back immediately and, for all practical purposes, you can assume that what you have put will never get lost.</li>
+</ul>
+<p>provides seamless integration with services such as Redshift (large scale data analysis), Cognito (identity pools), Elastic Map Reduce (EMR), Data Pipeline, Kinesis, and S3. Also, has tight integration with AWS lambda via Streams and aligns with the server-less philosophy; automatic scaling according to your application load, pay-per-what-you-use pricing, easy to get started with, and no servers to manage.</p>
+<h2 id="terms"><a aria-hidden="true" class="anchor-heading" href="#terms"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Terms</h2>
+<h3 id="attributename"><a aria-hidden="true" class="anchor-heading" href="#attributename"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>AttributeName</h3>
+<p>column name of a table</p>
+<h3 id="marshalling"><a aria-hidden="true" class="anchor-heading" href="#marshalling"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Marshalling</h3>
+<p>Before we can Create/Update a record in DynamoDB, a plain JS Object needs to be converted into a DynamoDB Record.</p>
+<ul>
+<li>Marshalling refers to our ability to convert a Javascript object into a DynamoDB Record.</li>
+</ul>
+<h4 id="example"><a aria-hidden="true" class="anchor-heading" href="#example"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Example</h4>
+<pre class="language-js"><code class="language-js"><span class="token constant">AWS</span><span class="token punctuation">.</span><span class="token property-access"><span class="token maybe-class-name">DynamoDB</span></span><span class="token punctuation">.</span><span class="token property-access"><span class="token maybe-class-name">Converter</span></span><span class="token punctuation">.</span><span class="token method function property-access">unmarshall</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token string">"updated_at"</span><span class="token operator">:</span><span class="token punctuation">{</span><span class="token string">"N"</span><span class="token operator">:</span><span class="token string">"146548182"</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token string">"uuid"</span><span class="token operator">:</span><span class="token punctuation">{</span><span class="token string">"S"</span><span class="token operator">:</span><span class="token string">"foo"</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token string">"status"</span><span class="token operator">:</span><span class="token punctuation">{</span><span class="token string">"S"</span><span class="token operator">:</span><span class="token string">"new"</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+<span class="token comment">// { updated_at: 146548182, uuid: 'foo', status: 'new' }</span>
+</code></pre>
+<hr>
+<h2 id="dynamodb-in-practice"><a aria-hidden="true" class="anchor-heading" href="#dynamodb-in-practice"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>DynamoDB in practice</h2>
+<p>The general rule of thumb is to choose Dynamo for low throughput apps as writes are expensive and consistent reads are twice the cost of eventually consistent reads</p>
+<p>When to use DynamoDB?</p>
+<ul>
+<li>In case you are looking for a database that can handle simple key-value queries but those queries are very large in number</li>
+<li>In case you are working with OLTP workload like online ticket booking or banking where the data needs to be highly consistent</li>
+</ul>
+<p>When not to use DynamoDB?</p>
+<ul>
+<li>In cases where you have to do computations on the data.
+<ul>
+<li>Relational databases run their queries close to the data, so if you’re trying to calculate the sum total value of orders per customer, then that rollup gets done while reading the data, and only the final summary (one row per customer) gets sent over the network. However, if you were to do this with DynamoDB, you’d have to get all the customer orders (one row per order), which involves a lot more data over the network, and then you have to do the rollup in your application, which is far away from the data.</li>
+</ul>
+</li>
+<li>If worried about high vendor lock-in.</li>
+</ul>
+<p>Pricing
+$256/TB/month</p>
+<p>By default, you should start with DynamoDB’s on-demand pricing and only consider the provisioned capacity as cost optimization. On-demand costs $1.25 per million writes, and $0.25 per million reads.</p>
+<ul>
+<li>Then, if your usage grows significantly, you will almost always want to consider moving to provisioned capacity (significant cost savings).</li>
+<li>if you believe that on-demand pricing is too expensive, then DynamoDB will very likely be too expensive, even with provisioned capacity. In that case, you might want to consider a relational database.</li>
+</ul>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/KutlqQVGLBAdLTslz3D9A">Cloud Development Kit</a></li>
+<li><a href="/Digital-Garden/notes/OSdV9FvBG3wDbRNLllg0V">Lambda</a></li>
+</ul>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/hC9DXmocwzmceqrXwVm3a">CLI</a></li>
+<li><a href="/Digital-Garden/notes/5uuohllUAxCmbMFJb8Pj9">Dynamo Streams</a></li>
+</ol>

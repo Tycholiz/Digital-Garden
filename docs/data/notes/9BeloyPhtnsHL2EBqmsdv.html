@@ -1,8 +1,0 @@
-<h1 id="cook"><a aria-hidden="true" class="anchor-heading" href="#cook"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Cook</h1>
-<h4 id="search-for-pattern-in-a-specific-filename"><a aria-hidden="true" class="anchor-heading" href="#search-for-pattern-in-a-specific-filename"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>search for pattern in a specific filename</h4>
-<ul>
-<li>ex. search for pattern 'react' within all package.json</li>
-</ul>
-<pre><code>find . -name 'package.json' | ack -x 'react'
-</code></pre>
-<p>This has a flaw though, where it will only ack the first result from find.</p>

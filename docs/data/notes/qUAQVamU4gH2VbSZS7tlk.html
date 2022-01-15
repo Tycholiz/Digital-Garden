@@ -1,0 +1,19 @@
+<h1 id="constraint"><a aria-hidden="true" class="anchor-heading" href="#constraint"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Constraint</h1>
+<h1 id="differences-between-a-column-not-null-constraint-and-a-check-constraint-not-null"><a aria-hidden="true" class="anchor-heading" href="#differences-between-a-column-not-null-constraint-and-a-check-constraint-not-null"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Differences between a column NOT NULL constraint and a CHECK CONSTRAINT not null</h1>
+<p>a <code>check constraint</code> is like a column constraint, except that it's on a table.</p>
+<p>Although the end result may be the same, there are some differences:</p>
+<ul>
+<li>check constraints have to be named and belong to the table, while a NOT NULL column is just an option of the latter</li>
+<li>from a performance point of view, creating an explicit not-null constraint is more efficient.
+<ul>
+<li>only 0.5% performance penalty, so hardly noticeable.</li>
+</ul>
+</li>
+<li>you have to remove check constraints before removing the associated columns</li>
+<li>a <code>NOT NULL</code> is written beside the column name when issuing <code>\d your_table</code> on psql, while check constraints are described below a specific session</li>
+</ul>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/VIjNHZMg99Fh6TUHHqet9">Alter</a></li>
+</ul>

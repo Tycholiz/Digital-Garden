@@ -1,0 +1,33 @@
+<h1 id="proc"><a aria-hidden="true" class="anchor-heading" href="#proc"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Proc</h1>
+<p>A <code>proc</code> object holds a code block to be executed, and can be stored in a variable.</p>
+<ul>
+<li>it is an instance of the <code>Proc</code> class.</li>
+</ul>
+<p>Proc is short for procedure.</p>
+<p>When calling a proc, the program yields control to the code block in the proc. So, if the proc returns, the current scope returns. If a proc is called inside a function and calls <code>return</code>, the outer function immediately returns as well.</p>
+<p>When using parameters prefixed with ampersands, passing a block to a method results in a proc in the method’s context. Procs behave like blocks, but they can be stored in a variable.</p>
+<p>To create a proc, you call Proc.new and pass it a block:</p>
+<pre class="language-rb"><code class="language-rb"><span class="token keyword">def</span> <span class="token method-definition"><span class="token function">run_proc_with_random_number</span></span><span class="token punctuation">(</span>proc<span class="token punctuation">)</span>
+  proc<span class="token punctuation">.</span>call<span class="token punctuation">(</span>rand<span class="token punctuation">)</span>
+<span class="token keyword">end</span>
+
+proc <span class="token operator">=</span> <span class="token builtin">Proc</span><span class="token punctuation">.</span><span class="token keyword">new</span> <span class="token punctuation">{</span> <span class="token operator">|</span>n<span class="token operator">|</span> puts <span class="token string">"<span class="token interpolation"><span class="token delimiter tag">#{</span>n<span class="token delimiter tag">}</span></span>!"</span> <span class="token punctuation">}</span>
+run_proc_with_random_number<span class="token punctuation">(</span>proc<span class="token punctuation">)</span> <span class="token comment"># 0.8417555636545129!</span>
+</code></pre>
+<p>Since a proc can be stored in a variable, it can also be passed to a method just like a normal argument.</p>
+<p>Instead of creating a proc and passing that to the method, you can use Ruby’s ampersand parameter syntax and use a block instead:</p>
+<ul>
+<li>this will convert a passed block to a proc object and store it in a variable in the method scope.</li>
+</ul>
+<pre class="language-rb"><code class="language-rb"><span class="token keyword">def</span> <span class="token method-definition"><span class="token function">run_proc_with_random_number</span></span><span class="token punctuation">(</span><span class="token operator">&#x26;</span>proc<span class="token punctuation">)</span>
+  proc<span class="token punctuation">.</span>call<span class="token punctuation">(</span>random<span class="token punctuation">)</span>
+<span class="token keyword">end</span>
+
+run_proc_with_random_number <span class="token punctuation">{</span> <span class="token operator">|</span>n<span class="token operator">|</span> puts <span class="token string">"<span class="token interpolation"><span class="token delimiter tag">#{</span>n<span class="token delimiter tag">}</span></span>!"</span> <span class="token punctuation">}</span>
+</code></pre>
+<p>note: While it’s useful to have the proc in the method in some situations, the conversion of a block to a proc produces a performance hit. Whenever possible, use implicit blocks instead.</p>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/AiY1XBqp1K7hLoAFtgfWK">Lambda</a></li>
+</ul>

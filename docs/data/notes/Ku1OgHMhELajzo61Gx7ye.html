@@ -1,0 +1,54 @@
+<h1 id="terraform"><a aria-hidden="true" class="anchor-heading" href="#terraform"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Terraform</h1>
+<p>Cloud-agnostic <a title="Private" style="color: brown" href="https://wiki.dendron.so/notes/hfyvYGJZQiUwQaaxQO27q.html" target="_blank">IaC (Private)</a> solution.</p>
+<p>Terraform uses HCL which is like JSON. This file sets up the infra. we can define services to deploy infra services in a declarative manner (e.g. EC2 instances)</p>
+<ul>
+<li>ex. this is the EC2 instance I want done. you define this in the config file, and then it goes and deploys it.
+when we deploy the code, we deploy it into that infra environment.</li>
+</ul>
+<p>This is how we might declare an S3 bucket. You can reference this in different components, and then everything will deploy together when running <code>terraform apply</code>.</p>
+<pre class="language-tf"><code class="language-tf">resource "aws_s3_bucket" "example_bucket" {
+    bucket = "my-test-bucket"
+    acl = "private"
+    tags = {
+        Name = "My bucket"
+        Environment = "Dev"
+    }
+}
+</code></pre>
+<p>The EKS cluster (K8S) is defined in Terraform.</p>
+<h1 id="terragrunt"><a aria-hidden="true" class="anchor-heading" href="#terragrunt"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Terragrunt</h1>
+<p>terragrunt is an open source tool on top of terraform used to operate multiple modules at a time</p>
+<p>Terragrunt is for orchestrating multiple Terraform modules at once</p>
+<ul>
+<li>ex. We have an <a href="/Digital-Garden/notes/hUvXun5sLRxKOZXIZFuV1">IAM Role</a> for a Lambda function to run, but also have an S3 bucket for code to be deployed into. These 2 things aren't really related to each other, so we can put them into their own modules and then use Terragrunt to orchestrate all those modules and then deploy them all at once. 
+<ul>
+<li>Terragrunt sees all the modules it has to deploy (the terraform code) and figures out how to deploy it.</li>
+</ul>
+</li>
+</ul>
+<p>This is how we would implement the same <code>example_bucket</code> above in Terragrunt</p>
+<pre class="language-hcl"><code class="language-hcl"><span class="token keyword">locals</span> <span class="token punctuation">{</span>
+    <span class="token property">env</span> <span class="token punctuation">=</span> <span class="token string">"development"</span>
+    <span class="token property">short_env</span> <span class="token punctuation">=</span> <span class="token string">"dev"</span>
+    <span class="token property">region</span> <span class="token punctuation">=</span> <span class="token string">"us-east-1"</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">terraform</span> <span class="token punctuation">{</span>
+    <span class="token comment"># this references a predefined S3 module. In this case, it is a repo called s3 in the terraform-modules project group. The benefit is that there is a lot of s3 code that would be the same across different s3 buckets. We can define it once here, then reference it each time we create a new bucket.</span>
+    <span class="token property">source</span> <span class="token punctuation">=</span> <span class="token string">"git::https://gitlab.com/tycholiz/infra/terraform-modules/s3.git//?ref=0.3.0"</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment"># These are inputs that are used by the source s3 bucket referenced above (terraform-modules/s3)</span>
+<span class="token property">inputs</span> <span class="token punctuation">=</span> <span class="token punctuation">{</span>
+    <span class="token property">bucket_name</span> <span class="token punctuation">=</span> <span class="token string">"my-test-bucket-<span class="token interpolation"><span class="token punctuation">$</span><span class="token punctuation">{</span>locals<span class="token punctuation">.</span>short_env<span class="token punctuation">}</span></span>-<span class="token interpolation"><span class="token punctuation">$</span><span class="token punctuation">{</span>locals<span class="token punctuation">.</span>region<span class="token punctuation">}</span></span>-serverless"</span>
+    <span class="token property">environment</span> <span class="token punctuation">=</span> locals.env
+<span class="token punctuation">}</span>
+</code></pre>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/7Hd68M5niADEkip4CdU85">Infrastructure-as-Code</a></li>
+<li><a href="/Digital-Garden/notes/NbGOJJpZuEbf0hXs2UvAB">Cloud Formation</a></li>
+<li><a href="/Digital-Garden/notes/OSdV9FvBG3wDbRNLllg0V">Lambda</a></li>
+<li><a href="/Digital-Garden/notes/lBasXzi1eHzGwL2pEuOv8">gitops</a></li>
+</ul>

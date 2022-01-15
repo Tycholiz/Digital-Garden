@@ -1,0 +1,55 @@
+<h1 id="artifact"><a aria-hidden="true" class="anchor-heading" href="#artifact"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>artifact</h1>
+<p>Artifacts come in 2 flavors: Job Artifacts and Pipeline Artifacts</p>
+<h1 id="job-artifacts"><a aria-hidden="true" class="anchor-heading" href="#job-artifacts"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Job Artifacts</h1>
+<p>Jobs can output an archive of files and directories. This output is known as a job artifact.</p>
+<p>Often our <a href="/Digital-Garden/notes/00Zg2MBUOK3gzRljklTOp">jobs</a> generate files which are used by subsequent jobs/stages.</p>
+<ul>
+<li>ex. our deploy stage might generate libraries and files which are then used to deploy the application. These files are collectively known as the artifact
+<ul>
+<li>this can give us insight into how something was deployed</li>
+</ul>
+</li>
+</ul>
+<p>Artifacts can be uploaded and browsed by using the <code>artifact</code> property on the job.</p>
+<ul>
+<li>similar to a <a href="/Digital-Garden/notes/ltM0gjy87NV4go37RWkbd">cache</a>, it is then available to other jobs (though they must be in the same pipeline).</li>
+</ul>
+<p>You may want to create artifacts only for tagged releases to avoid filling the build server storage with temporary build artifacts. For example, use rules to create artifacts only for tags:</p>
+<pre class="language-yml"><code class="language-yml"><span class="token key atrule">default-job</span><span class="token punctuation">:</span>
+  <span class="token key atrule">script</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> yarn test
+  <span class="token key atrule">rules</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> <span class="token key atrule">if</span><span class="token punctuation">:</span> $CI_COMMIT_BRANCH
+
+<span class="token key atrule">release-job</span><span class="token punctuation">:</span>
+  <span class="token key atrule">script</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> yarn package <span class="token punctuation">-</span>U
+  <span class="token key atrule">artifacts</span><span class="token punctuation">:</span>
+    <span class="token key atrule">name</span><span class="token punctuation">:</span> <span class="token string">"$CI_COMMIT_REF_NAME"</span>
+    <span class="token key atrule">paths</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> target/<span class="token important">*.war</span>
+  <span class="token key atrule">rules</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> <span class="token key atrule">if</span><span class="token punctuation">:</span> $CI_COMMIT_TAG
+</code></pre>
+<p>You can use wildcards for directories too. For example, if you want to get all the files inside the directories that end with xyz:</p>
+<pre class="language-yml"><code class="language-yml"><span class="token key atrule">job</span><span class="token punctuation">:</span>
+  <span class="token key atrule">artifacts</span><span class="token punctuation">:</span>
+    <span class="token key atrule">paths</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> path/<span class="token important">*xyz/*</span>
+</code></pre>
+<p>Save all Git untracked files and files in <code>binaries/</code>:</p>
+<pre class="language-yml"><code class="language-yml"><span class="token key atrule">artifacts</span><span class="token punctuation">:</span>
+  <span class="token key atrule">untracked</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+  <span class="token key atrule">paths</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> binaries/
+</code></pre>
+<p>Imagine we are using <a href="/Digital-Garden/notes/nRb6Im4Kcmc2ZWE7K1jZ1">Serverless Framework</a> to create 3 <a href="/Digital-Garden/notes/OSdV9FvBG3wDbRNLllg0V">lambdas</a>. Building this will result in us having 3 different directories, each with its own <code>node_modules/</code>. We may want to create this artifact (which is in effect a <code>dist/</code> folder with 3 subdirectories).</p>
+<h2 id="how-to-view--download-artifacts"><a aria-hidden="true" class="anchor-heading" href="#how-to-view--download-artifacts"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>How to view + download Artifacts</h2>
+<p><a href="https://docs.gitlab.com/ee/ci/pipelines/job_artifacts.html#download-job-artifacts">docs</a></p>
+<h1 id="pipeline-artifacts"><a aria-hidden="true" class="anchor-heading" href="#pipeline-artifacts"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Pipeline Artifacts</h1>
+<p>Pipeline artifacts are files created by GitLab after a pipeline finishes. </p>
+<ul>
+<li>Pipeline artifacts are different to job artifacts because they are not explicitly managed by <code>.gitlab-ci.yml</code> definitions.</li>
+</ul>
+<p>ex. Pipeline artifacts are used by the <a href="https://docs.gitlab.com/ee/user/project/merge_requests/test_coverage_visualization.html">test coverage visualization feature</a> to collect coverage information. It uses the artifacts: reports CI/CD keyword.</p>
+<p>The latest pipeline artifacts are kept forever. Once a new one comes in, old ones will live on for 7 days after creation date.</p>

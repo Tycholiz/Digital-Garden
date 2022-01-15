@@ -1,0 +1,44 @@
+<h1 id="search"><a aria-hidden="true" class="anchor-heading" href="#search"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Search</h1>
+<h4 id="partial-word-search"><a aria-hidden="true" class="anchor-heading" href="#partial-word-search"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Partial Word Search</h4>
+<ul>
+<li>When you're typing and you enter a partial word, you can cause Vim to search for a completion by using the <code>&#x3C;C-p></code> (search for previous marching word) and <code>&#x3C;C-n></code> (search for next match).</li>
+</ul>
+<h3 id="where-you-land"><a aria-hidden="true" class="anchor-heading" href="#where-you-land"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Where you land</h3>
+<p>Searches in Vim put the cursor on the first character of the matched string by default</p>
+<ul>
+<li>if you search for Debian, it would put the cursor on the D.</li>
+</ul>
+<p>We can offset the cursor placement in a few ways:</p>
+<ul>
+<li>To land on the last character in the matched string, rather than the beginning, add an /e to your search:
+<ul>
+<li>ex. <code>/Debian/e</code></li>
+</ul>
+</li>
+<li>To land 2 lines above/below, add <code>-2</code>/<code>+2</code> to the end
+<ul>
+<li>ex. <code>/Debian/-2</code></li>
+</ul>
+</li>
+<li>To offset 2 chars from the beginning of the string, add <code>b+3</code></li>
+<li>To offset 2 chars from the end of the string, add <code>e-3</code></li>
+</ul>
+<h2 id="tips"><a aria-hidden="true" class="anchor-heading" href="#tips"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Tips</h2>
+<ul>
+<li>use search with an operator to find the location easier
+<ul>
+<li>ex. Yank til <code>})</code> 
+<ul>
+<li><code>y/})&#x3C;Enter></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/8zb73f4geAQtC9oBujIsB">Cook</a></li>
+<li><a href="/Digital-Garden/notes/OdbHWUydtgwDtrYFZeBI1">Options</a></li>
+<li><a href="/Digital-Garden/notes/D3FLn3oGJxnlFUbuTIdKw">Special Chars</a></li>
+</ol>

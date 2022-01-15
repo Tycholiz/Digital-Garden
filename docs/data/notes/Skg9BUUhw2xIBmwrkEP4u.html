@@ -1,0 +1,51 @@
+<h1 id="messaging-pattern"><a aria-hidden="true" class="anchor-heading" href="#messaging-pattern"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Messaging Pattern</h1>
+<p>A messaging pattern describes how two different parts of an application (or different systems) connect and communicate with each other.</p>
+<ul>
+<li>In actuality, protocols like REST are indeed messaging protocols, but we don't think of them as such. Typically when we talk about messaging patterns, we are referring to situations where we have this third entity between the provider/consumer of the data.</li>
+</ul>
+<h1 id="overview"><a aria-hidden="true" class="anchor-heading" href="#overview"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Overview</h1>
+<p>Imagine we have 2 services: OrderService and InvoiceService. In order to pass data from OrderService downstream to InvoiceService, we set up a message queue in the OrderService. Then, InvoiceService would read from it.</p>
+<p>If we need to add more downstream services, then we need to modify the upstream service (ie. OrderService) to instruct it to write a message queue. This creates more complex high-level service relationships that are hard to maintain, since future downstream services now become reliant on that upstream service to update its message queues.</p>
+<ul>
+<li>This burden is what causes people to go for more of a <a href="/Digital-Garden/notes/csPOCpGsdV9SQed4lZyWh">bus</a>-based solution</li>
+</ul>
+<p>In a typical message-queueing implementation, a developer installs and configures message-queueing software (a queue manager or broker), and defines a named message queue. Or they register with a message queuing service.</p>
+<ul>
+<li>An application then registers a software routine that "listens" for messages placed onto the queue.</li>
+<li>Second and subsequent applications may connect to the queue and transfer a message onto it.</li>
+<li>The queue-manager software stores the messages until a receiving application connects and then calls the registered software routine. The receiving application then processes the message in an appropriate manner.</li>
+</ul>
+<p>Some patterns for implementing messages are:</p>
+<ul>
+<li>Queues
+<ul>
+<li>ex. <a href="/Digital-Garden/notes/Ha1umcNRHS8mEarVSMy5v">SQS</a></li>
+</ul>
+</li>
+<li><a href="/Digital-Garden/notes/NpY4iv9TwpGJODbVesQYe">Pub/Sub</a>
+<ul>
+<li>ex. <a href="/Digital-Garden/notes/3E2oC3PsnDWowLW9hK0eZ">SNS</a></li>
+</ul>
+</li>
+<li>Event buses
+<ul>
+<li>ex. <a href="/Digital-Garden/notes/7n3tUhrwbvz8nNu0bTlWz">EventBridge</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="message-broker"><a aria-hidden="true" class="anchor-heading" href="#message-broker"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Message Broker</h2>
+<p>A message broker is an intermediary computer program module that translates a message from the formal messaging protocol of the sender to the formal messaging protocol of the receiver.</p>
+<h3 id="examples"><a aria-hidden="true" class="anchor-heading" href="#examples"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Examples</h3>
+<ul>
+<li>Kafka</li>
+<li>RabbitMQ</li>
+<li>AWS Kinesis</li>
+<li>Google Cloud Pub/Sub</li>
+<li>Redis (not a message broker per se, but rather has messaging brokering as one of its capabilities)</li>
+</ul>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/0pUoWXrTC07Z9B1ijwosK">Dead Letter Queue</a></li>
+<li><a href="/Digital-Garden/notes/NpY4iv9TwpGJODbVesQYe">Pubsub</a></li>
+</ol>

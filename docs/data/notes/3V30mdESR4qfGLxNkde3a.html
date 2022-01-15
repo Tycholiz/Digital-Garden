@@ -1,0 +1,29 @@
+<h1 id="javascript"><a aria-hidden="true" class="anchor-heading" href="#javascript"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>JavaScript</h1>
+<p>note: Documentation for Javascript as an Osascript language is pretty bad. It should be avoided. If possible, stick with Applescript.</p>
+<h2 id="cli"><a aria-hidden="true" class="anchor-heading" href="#cli"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>CLI</h2>
+<h3 id="run-script-in-terminal"><a aria-hidden="true" class="anchor-heading" href="#run-script-in-terminal"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Run script in terminal</h3>
+<pre class="language-sh"><code class="language-sh">osascript -l JavaScript myScript.scpt
+</code></pre>
+<h3 id="see-available-languages"><a aria-hidden="true" class="anchor-heading" href="#see-available-languages"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>See available languages</h3>
+<pre class="language-sh"><code class="language-sh">osalang -l
+</code></pre>
+<h3 id="startexit-application"><a aria-hidden="true" class="anchor-heading" href="#startexit-application"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Start/Exit application</h3>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> itunes <span class="token operator">=</span> <span class="token function"><span class="token maybe-class-name">Application</span></span><span class="token punctuation">(</span><span class="token string">'iTunes'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+itunes<span class="token punctuation">.</span><span class="token method function property-access">activate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// Play a song.</span>
+itunes<span class="token punctuation">.</span><span class="token method function property-access">play</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+itunes<span class="token punctuation">.</span><span class="token method function property-access">quit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h3 id="get-current-application-thats-running-the-script"><a aria-hidden="true" class="anchor-heading" href="#get-current-application-thats-running-the-script"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Get current application that's running the script</h3>
+<pre class="language-js"><code class="language-js"><span class="token keyword">var</span> app <span class="token operator">=</span> <span class="token maybe-class-name">Application</span><span class="token punctuation">.</span><span class="token method function property-access">currentApplication</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h3 id="get-topmost-application"><a aria-hidden="true" class="anchor-heading" href="#get-topmost-application"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Get topmost application</h3>
+<pre class="language-js"><code class="language-js"><span class="token comment">// Get the name of the current application.</span>
+<span class="token keyword">var</span> system <span class="token operator">=</span> <span class="token function"><span class="token maybe-class-name">Application</span></span><span class="token punctuation">(</span><span class="token string">"System Events"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">var</span> proc <span class="token operator">=</span> system<span class="token punctuation">.</span><span class="token property-access">processes</span><span class="token punctuation">.</span><span class="token method function property-access">whose</span><span class="token punctuation">(</span><span class="token punctuation">{</span> frontmost<span class="token operator">:</span> <span class="token punctuation">{</span><span class="token string">'='</span><span class="token operator">:</span> <span class="token boolean">true</span> <span class="token punctuation">}</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token method function property-access">name</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h1 id="resources"><a aria-hidden="true" class="anchor-heading" href="#resources"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Resources</h1>
+<p><a href="https://developer.apple.com/library/archive/releasenotes/InterapplicationCommunication/RN-JavaScriptForAutomation/Articles/Introduction.html#//apple_ref/doc/uid/TP40014508">docs(ish)</a>
+<a href="https://www.macstories.net/tutorials/getting-started-with-javascript-for-automation-on-yosemite/">https://www.macstories.net/tutorials/getting-started-with-javascript-for-automation-on-yosemite/</a>
+<a href="https://developer.apple.com/library/archive/documentation/LanguagesUtilities/Conceptual/MacAutomationScriptingGuide/index.html#//apple_ref/doc/uid/TP40016239-CH56-SW1">https://developer.apple.com/library/archive/documentation/LanguagesUtilities/Conceptual/MacAutomationScriptingGuide/index.html#//apple_ref/doc/uid/TP40016239-CH56-SW1</a></p>

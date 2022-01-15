@@ -1,0 +1,91 @@
+<h1 id="shell"><a aria-hidden="true" class="anchor-heading" href="#shell"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Shell</h1>
+<h1 id="high-level"><a aria-hidden="true" class="anchor-heading" href="#high-level"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>High-level</h1>
+<ul>
+<li>A shell program is typically an executable binary that takes commands that you type and (once you hit return), translates those commands into (ultimately) system calls to the Operating System API.
+<ul>
+<li>a shell language is a language designed to ‘glue’ together other programs.</li>
+</ul>
+</li>
+<li>a shell is simply a macro processor that executes commands.
+<ul>
+<li>The term macro processor means functionality where text and symbols are expanded to create larger expressions.</li>
+</ul>
+</li>
+</ul>
+<p>Since other shells are also programs, they can be run from within one another</p>
+<p><em>"Although most users think of the shell as an interactive command interpreter, it is really a programming language in which each statement runs a command. Because it must satisfy both the interactive and programming aspects of command execution, it is a strange language, shaped as much by history as by design."</em></p>
+<ul>
+<li>GNU specifies the shell as both a programming language AND a command interpreter. The command interpreter part provides the user interface to the GNU utilities, while the programming language part allows these utilities to be combined.</li>
+</ul>
+<h3 id="piping"><a aria-hidden="true" class="anchor-heading" href="#piping"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Piping</h3>
+<p>Shell languages are exceptional at one thing: piping</p>
+<ul>
+<li>
+<p>The <code>|</code>, <code>&#x26;</code> and <code>;</code> operators, plus <code>()</code> and ``` form a tidy little language for describing pipelines.</p>
+<ul>
+<li><code>a &#x26; b</code> is concurrent</li>
+<li><code>a ; b</code> is sequential</li>
+<li><code>a | b</code> is a pipeline where a feeds b</li>
+</ul>
+</li>
+<li>
+<p>Think of <code>( a &#x26; b &#x26; c ) | tee capture | analysis</code> as the kind of thing that's hard to express in Ruby (or Python).</p>
+</li>
+<li>
+<p>environment variables exist in the same environment as the code that is executed</p>
+</li>
+</ul>
+<h3 id="precedence-of-synonyms"><a aria-hidden="true" class="anchor-heading" href="#precedence-of-synonyms"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Precedence of Synonyms</h3>
+<ol>
+<li>Alias</li>
+<li>Keyword (ie. syntax of the shell)</li>
+<li>Function</li>
+<li>Builtin
+<ul>
+<li>commands that are built into the shell. These are executed directly, as opposed to the shell having to load and execute the executable
+<ul>
+<li>ex. pwd, cd</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<p><em>interactive</em> means that input is accepted from the command line, while <em>non-interactive</em> means that input is accepted from a file.</p>
+<p>if the first word of a given command does not correspond to a built-in shell command, then the shell assumed that it is the name of an executable file.</p>
+<p>when we run <code>bash -c</code>, a script, or other executable in the shell, it becomes a child of the current environment.</p>
+<ul>
+<li>ex. <code>bash -c 'echo "child [$var]";</code> will only have access to <code>$var</code> if it was exported beforehand from the shell that the command is run in.</li>
+</ul>
+<p>In bash utilities, the <code>--</code> signifies the end of command options, after which only positional parameters are accepted.</p>
+<ul>
+<li>often, <code>--</code> can signify the separation from the command options, and the following Regex</li>
+</ul>
+<h3 id="status-code-127"><a aria-hidden="true" class="anchor-heading" href="#status-code-127"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Status code 127</h3>
+<p>Think of it as "Error: the program you tried to use was not found"</p>
+<ul>
+<li>it's returned by your shell <code>/bin/bash</code> when any given command within your bash script or on bash command line is not found in any of the paths defined by PATH system environment variable.</li>
+<li>to fix, make sure the command we are using is discoverable through <code>$PATH</code></li>
+</ul>
+<h3 id="subshell-"><a aria-hidden="true" class="anchor-heading" href="#subshell-"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Subshell: <code>$()</code></h3>
+<p>when we execute commands within <code>$(...)</code>, they are executed in a subshell</p>
+<h2 id="ue-resources"><a aria-hidden="true" class="anchor-heading" href="#ue-resources"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>UE Resources</h2>
+<p><a href="https://www.gnu.org/software/bash/manual/bash.html">GNU High-quality documentation</a></p>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/eFEghb5db7cOFeJNdXJ1i">CLI</a></li>
+<li><a href="/Digital-Garden/notes/9UnmJRgHq2v5dw8euLxkD">Cmds</a></li>
+<li><a href="/Digital-Garden/notes/xK4zm8JEd1ErJdnqoDBbt">Cook</a></li>
+<li><a href="/Digital-Garden/notes/xmQoOcXGLkOklWDGKw1s2">Direnv</a></li>
+<li><a href="/Digital-Garden/notes/eiLiM9lY4cbUzgMXDgNA6">Expansion</a></li>
+<li><a href="/Digital-Garden/notes/11whopjbccxTnOFtzRcqw">Glob</a></li>
+<li><a href="/Digital-Garden/notes/wEsHyHfFQskcWU9XSjcai">Lang</a></li>
+<li><a href="/Digital-Garden/notes/Rfu5qn4RWuurUb76no8BS">Parameters</a></li>
+<li><a href="/Digital-Garden/notes/D9iUR88ICi8vzs4lCd1C0">Pipeline</a></li>
+<li><a href="/Digital-Garden/notes/XMXnniyVKQG2j9ZKRBkS8">Redirection</a></li>
+<li><a href="/Digital-Garden/notes/hWiWA0HhHH11SuQvtU432">Script</a></li>
+<li><a href="/Digital-Garden/notes/pZCpd8RhaoEUar8u7JlvZ">Strings</a></li>
+<li><a href="/Digital-Garden/notes/2UaUyRQowK5ckN12IEbcD">Test</a></li>
+<li><a href="/Digital-Garden/notes/5Fku3UcstDOzcPfLAAdeB">Variables</a></li>
+</ol>

@@ -1,0 +1,17 @@
+<h1 id="browser"><a aria-hidden="true" class="anchor-heading" href="#browser"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Browser</h1>
+<p>Events are the native way to deal with user input in browser based web applications. Events are not part of the language of JavaScript itself, but they are part of the browser environment that JavaScript runs in</p>
+<p>Browsers are single threaded and this single thread (The UI thread) is shared between the rendering engine and the js engine.</p>
+<ul>
+<li>Therefore, if the thing you want to do takes a lot of time, it could halt the rendering (flow and paint).</li>
+<li>In browsers there also exists "The bucket" where all events are first put in wait for the UI thread to be done with whatever it´s doing. As soon as the thread is done it looks in the bucket and picks the task first in line.
+<ul>
+<li>Using <code>setTimeout</code> you create a new task in the bucket after the delay and let the thread deal with it as soon as it´s available for more work.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/OVODP7MLQgGI0WohlQEk3">DOM</a></li>
+<li><a href="/Digital-Garden/notes/VxAdPJHMMIvNzNrr5GdA6">Worker</a></li>
+</ol>

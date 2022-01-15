@@ -1,0 +1,50 @@
+<h1 id="admin"><a aria-hidden="true" class="anchor-heading" href="#admin"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Admin</h1>
+<h1 id="overview"><a aria-hidden="true" class="anchor-heading" href="#overview"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Overview</h1>
+<ul>
+<li>When you install an instance of Postgres (ex. in Node), there will be a corresponding Postgres server, since postgres uses a client/server model.
+<ul>
+<li>if we use different ports, we can have multiple Postgres servers on a single physical server</li>
+</ul>
+</li>
+</ul>
+<h2 id="processes"><a aria-hidden="true" class="anchor-heading" href="#processes"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Processes</h2>
+<h3 id="postgres-server"><a aria-hidden="true" class="anchor-heading" href="#postgres-server"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Postgres Server</h3>
+<ul>
+<li>the server program is called <code>postgres</code></li>
+<li>purposes:
+<ul>
+<li>manages database files</li>
+<li>accepts connections from clients</li>
+<li>performs operations on behalf of clients</li>
+</ul>
+</li>
+</ul>
+<h3 id="postgres-client"><a aria-hidden="true" class="anchor-heading" href="#postgres-client"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Postgres Client</h3>
+<ul>
+<li>
+<p>the client is the application that wants to perform database operations</p>
+</li>
+<li>
+<p>clients are diverse in nature, and could be a CLI, GUI, or a library within a web server (like <code>pg</code> in node.js)</p>
+</li>
+<li>
+<p>Postgres' value is about concurrency and isolation</p>
+<ul>
+<li>The idea: what happens when 2+ people are trying to do the same thing concurrently? how is that handled?
+<ul>
+<li>This value is provided by the concept of ACID</li>
+<li>The fact that we have transactions in postgres means that we are ACID-compliant.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/YQ7Woq0OuBRWJFKMi26PB">Auth</a></li>
+<li><a href="/Digital-Garden/notes/VDuQMpwKgu2wA9KmAuVzC">Dir</a></li>
+<li><a href="/Digital-Garden/notes/Wkkq85PN5e62ykdxvaZjq">Search Path</a></li>
+<li><a href="/Digital-Garden/notes/BQl33lVysUrbRAk6OVeo3">Settings</a></li>
+<li><a href="/Digital-Garden/notes/Hv2U3lgVaqmFYufxsJIX2">Users</a></li>
+</ol>

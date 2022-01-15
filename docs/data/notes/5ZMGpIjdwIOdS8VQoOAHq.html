@@ -1,0 +1,49 @@
+<h1 id="workflows"><a aria-hidden="true" class="anchor-heading" href="#workflows"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Workflows</h1>
+<p>Each item in a workflow is called an <code>Object</code></p>
+<ul>
+<li>an input can be a <code>trigger</code>, <code>input</code>, <code>action</code>, <code>utility</code>, or <code>output</code></li>
+</ul>
+<p>Each workflow has its own folder, found in <code>Alfred.alfredpreferences/workflows/user.workflow.20D99320-DB8C-43F0-8128-B0981143AE62</code></p>
+<ul>
+<li>To access this folder, click into a workflow object and look for this symbol in the resulting window.</li>
+<li>this is currently stored in Onedrive so multiple machines can sync the same Alfred config.</li>
+<li>We can store scripts in here. For instance, we could have a node script, and then call that script with a simple bash script (ScriptFilter workflow object):
+<ul>
+<li><code>./recentdownloads 'added_reverse'</code>
+<ul>
+<li>the current directory here would be the workflow folder.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="/Digital-Garden/assets/images/2021-11-30-22-10-28.png"></p>
+<h2 id="workflow-object-types"><a aria-hidden="true" class="anchor-heading" href="#workflow-object-types"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Workflow Object types</h2>
+<ul>
+<li><em>Triggers</em>: Activate Alfred from a hotkey, another Alfred feature or an external source.</li>
+<li><em>Inputs</em>: Keyword-based objects used to perform an action, on its own or followed by a query.</li>
+<li><em>Actions</em>: The objects that do most of the work in your workflows; opening or revealing files and web searches, running scripts and performing commands.</li>
+<li><em>Utilities</em>: Utilities give you control over how your objects are connected together and how the arguments output by the previous object is passed on to the next object.</li>
+<li><em>Outputs</em>: Collect the information from the earlier objects in your workflow to pop up a Notification Centre message, show output in Large Type, copy to clipboard or run a script containing the result of your workflow.</li>
+</ul>
+<h3 id="placeholders"><a aria-hidden="true" class="anchor-heading" href="#placeholders"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Placeholders</h3>
+<ul>
+<li><code>{query}</code> - the string that the user adds after the keyword.</li>
+<li><code>{arg}</code> - the arg is what is passed from the previous object.</li>
+</ul>
+<h3 id="variables-and-arguments-utility"><a aria-hidden="true" class="anchor-heading" href="#variables-and-arguments-utility"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Variables and Arguments Utility</h3>
+<p>We can modify arguments. For instance, <code>{query}</code> evaluates to whatever was typed in the Alfred launcher. We can modify this to be <code>- {query}</code>, for instance if we were creating a bulleted list.</p>
+<ul>
+<li>otherwise, we can just pass the argument through.</li>
+</ul>
+<p><img src="/Digital-Garden/assets/images/2021-11-29-21-58-21.png"></p>
+<p>In this example, I've set two variables; The first variable named task will save the {query} input, allowing me to re-use it later in the workflow with {var:task}
+<img src="/Digital-Garden/assets/images/2021-11-29-21-58-11.png"></p>
+<h4 id="custom-environment-variables"><a aria-hidden="true" class="anchor-heading" href="#custom-environment-variables"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Custom Environment Variables</h4>
+<p>Icon at top right of workflow window:
+<img src="/Digital-Garden/assets/images/2021-12-19-10-34-56.png"></p>
+<h2 id="debugging"><a aria-hidden="true" class="anchor-heading" href="#debugging"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Debugging</h2>
+<h3 id="bash-script"><a aria-hidden="true" class="anchor-heading" href="#bash-script"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Bash script</h3>
+<p>redirect stdout to stderr to see logs in the debug console:</p>
+<pre><code>>&#x26;2 echo $query
+</code></pre>

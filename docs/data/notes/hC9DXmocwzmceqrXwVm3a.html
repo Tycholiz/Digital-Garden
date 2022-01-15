@@ -1,0 +1,10 @@
+<h1 id="cli"><a aria-hidden="true" class="anchor-heading" href="#cli"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>CLI</h1>
+<h3 id="get-item"><a aria-hidden="true" class="anchor-heading" href="#get-item"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>get-item</code></h3>
+<pre class="language-sh"><code class="language-sh">aws dynamodb get-item \
+    --table-name FLEET_EVENTS_SIGNAL_RETENTION \
+    --key '{ 
+        "id": { 
+            "S": "aaae3562-2f85-41b5-a003-b25e9425cd75" 
+        } 
+    }'
+</code></pre>

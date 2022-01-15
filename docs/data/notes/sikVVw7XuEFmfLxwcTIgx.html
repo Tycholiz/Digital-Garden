@@ -1,0 +1,61 @@
+<h1 id="gitlab-ciyml-file"><a aria-hidden="true" class="anchor-heading" href="#gitlab-ciyml-file"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>.gitlab-ci.yml file</h1>
+<p>In the .gitlab-ci.yml file, you can define:</p>
+<ul>
+<li>The scripts you want to run.</li>
+<li>Other configuration files and templates you want to include.</li>
+<li>Dependencies and caches.</li>
+<li>The commands you want to run in sequence and those you want to run in parallel.</li>
+<li>The location to deploy your application to.</li>
+<li>Whether you want to run the scripts automatically or trigger any of them manually.</li>
+</ul>
+<h2 id="keywords"><a aria-hidden="true" class="anchor-heading" href="#keywords"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Keywords</h2>
+<h3 id="extends"><a aria-hidden="true" class="anchor-heading" href="#extends"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Extends</h3>
+<p><code>extends</code> can be used to reuse configuration
+extends supports multi-level inheritance, but we should try and limit it to around 3 levels.</p>
+<p>If you want to exclude a key from being inherited, give it value of <code>null</code></p>
+<pre class="language-yml"><code class="language-yml"><span class="token key atrule">test4</span><span class="token punctuation">:</span>
+  <span class="token key atrule">extends</span><span class="token punctuation">:</span> .base
+  <span class="token key atrule">variables</span><span class="token punctuation">:</span> <span class="token null important">null</span>
+</code></pre>
+<p>You can use <code>extends</code> to merge hashes but not arrays.</p>
+<ul>
+<li>The algorithm used for merge is “closest scope wins,” so keys from the last member always override anything defined on other levels. For example, here <code>.in-docker</code> overwrites values from <code>only-important</code>, if there is overlap.</li>
+</ul>
+<h3 id="references"><a aria-hidden="true" class="anchor-heading" href="#references"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>!references</h3>
+<p>Only one level of nesting is supported for <code>!reference</code> tags. That is, we cannot <code>!reference</code> if the thing we are referencing has already been referenced.</p>
+<pre class="language-yml"><code class="language-yml"><span class="token key atrule">.vars</span><span class="token punctuation">:</span>
+  <span class="token key atrule">variables</span><span class="token punctuation">:</span>
+    <span class="token key atrule">URL</span><span class="token punctuation">:</span> <span class="token string">"http://my-url.internal"</span>
+    <span class="token key atrule">IMPORTANT_VAR</span><span class="token punctuation">:</span> <span class="token string">"the details"</span>
+
+<span class="token key atrule">test-vars-1</span><span class="token punctuation">:</span>
+  <span class="token comment"># the following expands both URL and IMPORTANT_VAR</span>
+  <span class="token key atrule">variables</span><span class="token punctuation">:</span> <span class="token tag">!reference</span> <span class="token punctuation">[</span>.vars<span class="token punctuation">,</span> variables<span class="token punctuation">]</span>
+</code></pre>
+<hr>
+<p>The following runs in order:</p>
+<ul>
+<li>Pipeline starts.</li>
+<li>job A runs.</li>
+<li>before_script is executed.</li>
+<li>script is executed.</li>
+<li>after_script is executed.</li>
+</ul>
+<pre class="language-yml"><code class="language-yml"><span class="token key atrule">before_script</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> echo "Hello"
+
+<span class="token key atrule">job A</span><span class="token punctuation">:</span>
+  <span class="token key atrule">stage</span><span class="token punctuation">:</span> build
+  <span class="token key atrule">script</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> mkdir vendor/
+    <span class="token punctuation">-</span> echo "build" <span class="token punctuation">></span> vendor/hello.txt
+  <span class="token key atrule">cache</span><span class="token punctuation">:</span>
+    <span class="token key atrule">key</span><span class="token punctuation">:</span> build<span class="token punctuation">-</span>cache
+    <span class="token key atrule">paths</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> vendor/
+  <span class="token key atrule">after_script</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> echo "World"
+</code></pre>
+<h1 id="resources"><a aria-hidden="true" class="anchor-heading" href="#resources"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Resources</h1>
+<p><a href="https://docs.gitlab.com/ee/ci/yaml/">.gitlab-ci.yml Keyword Reference</a>
+<a href="https://docs.gitlab.com/ee/ci/lint.html">.gitlab-ci.yml Lint Tool</a></p>

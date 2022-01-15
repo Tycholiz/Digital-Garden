@@ -1,0 +1,15 @@
+<h1 id="log"><a aria-hidden="true" class="anchor-heading" href="#log"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Log</h1>
+<p>A log is an append-only and totally ordered data structure sequence of changes.</p>
+<p>Logs are powerful primitives for building <a href="/Digital-Garden/notes/vutujFFWxQu6TshWVuMpI">distributed</a> systems.</p>
+<p>Many RDBMSs use change logs to improve performance, provide point-in-time recovery (PITR) after a crash, and implement replication.</p>
+<ul>
+<li>ex. Postgres uses Write-ahead Logs (WALs)</li>
+<li>A database change log also effectively allows the creation of a distributed database via replication of data on additional external hosts.</li>
+</ul>
+<p>To utilize logs to their fullest, we must understand the key principles of ordering, <a href="/Digital-Garden/notes/4JYrGNzRXRthALIZVzD4d">deduplication</a>, and checkpointing.</p>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/4JYrGNzRXRthALIZVzD4d">Deduping</a></li>
+<li><a href="/Digital-Garden/notes/5uuohllUAxCmbMFJb8Pj9">Dynamo Streams</a></li>
+</ul>

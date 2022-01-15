@@ -1,0 +1,94 @@
+<h1 id="microservice"><a aria-hidden="true" class="anchor-heading" href="#microservice"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Microservice</h1>
+<p>A microservice architecture is variant of the <a href="/Digital-Garden/notes/BX7Yh5IwYZCsV2BSxvunp">SOA</a> structural style</p>
+<ul>
+<li>arranges an application as a collection of loosely-coupled services.</li>
+<li>services are fine-grained and the protocols are lightweight.</li>
+</ul>
+<p>goal is that teams can bring their services life independent of others, but it comes at a cost to maintain the decoupling.</p>
+<ul>
+<li>Interfaces need to be designed carefully and treated as a public API.
+<ul>
+<li>These difficulties are usually solved by either having versioned APIs, or multiple interfaces on the same service (ie. multiple commands that effectively export a document— just done in different ways)</li>
+</ul>
+</li>
+</ul>
+<p>A microservice is a self-contained piece of business functionality with clear interfaces</p>
+<ul>
+<li>through its own internal components, it may implement a layered architecture</li>
+</ul>
+<p>The architecture essentially follows the Unix philosophy of "Do one thing and do it well"</p>
+<p>It lends itself to a continuous delivery software development process.</p>
+<ul>
+<li>A change to a small part of the application only requires rebuilding and redeploying only one or a small number of services</li>
+</ul>
+<p>Adheres to principles such as fine-grained interfaces (to independently deployable services), business-driven development (e.g. domain-driven design).</p>
+<p>Microservice architectures are commonly adopted for cloud-native applications, serverless computing, and applications using lightweight container deployment.</p>
+<p>When implementing a microservice-based architecture, the most important technology choices are the way microservices communicate with each other (synchronous, asynchronous, UI integration) and the protocols used for the communication (RESTful HTTP, messaging, GraphQL ...). Things like language and infrastructure don't introduce the coupling between services as you'd find in a monolithic app.</p>
+<ul>
+<li>In a traditional architecture, the choice of language impacts the whole system. This isn't the case in microservices,</li>
+</ul>
+<h2 id="pros--cons"><a aria-hidden="true" class="anchor-heading" href="#pros--cons"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Pros &#x26; Cons</h2>
+<h3 id="pros"><a aria-hidden="true" class="anchor-heading" href="#pros"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Pros</h3>
+<p>Modularity</p>
+<ul>
+<li>This makes the application easier to understand, develop, test, and become more resilient to architecture erosion. This benefit is often argued in comparison to the complexity of monolithic architectures.</li>
+</ul>
+<p>Scalability</p>
+<ul>
+<li>Since microservices are implemented and deployed independently of each other, i.e. they run within independent processes, they can be monitored and scaled independently.</li>
+</ul>
+<p>Integration of heterogeneous and legacy systems</p>
+<ul>
+<li>microservices is considered as a viable means for modernizing existing monolithic software application. There are experience reports of several companies who have successfully replaced (parts of) their existing software by microservices, or are in the process of doing so. The process for Software modernization of legacy applications is done using an incremental approach.</li>
+</ul>
+<p>Distributed development</p>
+<ul>
+<li>it parallelizes development by enabling small autonomous teams to develop, deploy and scale their respective services independently. It also allows the architecture of an individual service to emerge through continuous refactoring. Microservice-based architectures facilitate continuous integration, continuous delivery and deployment.
+<ul>
+<li>teams working on monoliths need to synchronize to deploy together.</li>
+</ul>
+</li>
+</ul>
+<h3 id="cons"><a aria-hidden="true" class="anchor-heading" href="#cons"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Cons</h3>
+<ul>
+<li>Services form information barriers.</li>
+<li>Inter-service calls over a network have a higher cost in terms of network latency</li>
+<li>Testing and deployment are more complicated</li>
+<li>Moving responsibilities between services is more difficult. It may involve communication between different teams, depending on how messages are passed between each microservice.</li>
+<li>following this paradigm results in a tendency to see the microservice as the atomic unit. This can lead to too many services when the alternative of internal modularization of a more monolithic approach may lead to a simpler design.
+<ul>
+<li>To make this judgement requires understanding the overall architecture of the applications and interdependencies between components.</li>
+</ul>
+</li>
+<li>The architecture introduces additional complexity and new problems to deal with, such as network latency, message format design, Backup/Availability/Consistency (BAC), load balancing and fault tolerance
+mat design, Backup/Availability/Consistency (BAC), load balancing and fault tolerance</li>
+</ul>
+<h2 id="examples"><a aria-hidden="true" class="anchor-heading" href="#examples"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Examples</h2>
+<h3 id="amazon-product-page"><a aria-hidden="true" class="anchor-heading" href="#amazon-product-page"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Amazon Product Page</h3>
+<p>Consider that a product page on Amazon gets data from multiple distinct domains:</p>
+<ul>
+<li>Product Info Service - basic metadata about the product such as title, author, page count etc.</li>
+<li>Pricing Service - product price</li>
+<li>Order service - purchase history for product</li>
+<li>Inventory service - product availability</li>
+<li>Review service - customer reviews </li>
+</ul>
+<p>The question becomes, how do the clients access each individual service? This is more complex than what we'd have in a monorepo architecture. As such, problems are:</p>
+<ul>
+<li>each client (web, mobile) might not necessarily get the same sets of data (ex. mobile probably shows less information)</li>
+</ul>
+<h1 id="resources"><a aria-hidden="true" class="anchor-heading" href="#resources"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Resources</h1>
+<p><a href="https://microservices.io/patterns/index.html">List of Microservice Patterns</a></p>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/zubgzhNFE6KlTgXcjTz6O">GitLab</a></li>
+<li><a href="/Digital-Garden/notes/qxSOd6SPN8qf9ZUojVFDX">K8s</a></li>
+<li><a href="/Digital-Garden/notes/NfY3pvmOMzpQg8TKrUMGd">Contract Testing</a></li>
+</ul>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/dXN7waVmwHQopWEjPpd0j">Micro Frontend</a></li>
+<li><a href="/Digital-Garden/notes/5lMqhn3fOgwP8k1v6yODU">Testing</a></li>
+</ol>

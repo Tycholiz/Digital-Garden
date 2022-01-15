@@ -1,0 +1,30 @@
+<h1 id="base64"><a aria-hidden="true" class="anchor-heading" href="#base64"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Base64</h1>
+<p>Base64 is an encoding scheme for translating text to binary, and back again. The resulting binary represents the binary data (a sequence of 8-bit bytes)</p>
+<p>Base64 is designed to carry data stored in binary formats across channels that only reliably support text, not binary.</p>
+<p>Base64 is prevalent in the World Wide Web.</p>
+<ul>
+<li>it is commonly used to embed image files (and other binary assets) within textual assets like HTML and CSS files</li>
+</ul>
+<p>Base64 has some key differences with hashing. Notably, if you take the string "I like dogs" and hash it with a cryptography function like the one Bcrypt uses, you will get a completely different hash than if you change a single character in the string, for instance to "I like dogs!". If we are talking Base64 encoding however, the resultant strings will be almost the same. Observe that the strings are the same, except for the end, which is precicely where we find the <code>!</code>:</p>
+<ul>
+<li>"I like dogs" -> "SSBsaWtlIGRvZ3M="</li>
+<li>"I like dogs!" -> "SSBsaWtlIGRvZ3Mh"</li>
+</ul>
+<h3 id="example"><a aria-hidden="true" class="anchor-heading" href="#example"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Example</h3>
+<p>Taking the following string</p>
+<blockquote>
+<p>Many hands make light work.</p>
+</blockquote>
+<p>When the quote is encoded into Base64, it is represented as a byte sequence of 8-bit-padded ASCII characters encoded in MIME's Base64 scheme:</p>
+<blockquote>
+<p>TWFueSBoYW5kcyBtYWtlIGxpZ2h0IHdvcmsu</p>
+</blockquote>
+<p>the encoded value of <code>Man</code> is <code>TWFu</code></p>
+<ul>
+<li>Encoded in ASCII, the characters <code>M</code>, <code>a</code>, and <code>n</code> are stored as the byte values <code>77</code>, <code>97</code>, and <code>110</code>, which are the 8-bit binary values <code>01001101</code>, <code>01100001</code>, and <code>01101110</code>. These three values are joined together into a 24-bit string, producing <code>010011010110000101101110</code>.</li>
+</ul>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/8vflbCVkwZtYcqdDDTNAz">System Design</a></li>
+</ul>

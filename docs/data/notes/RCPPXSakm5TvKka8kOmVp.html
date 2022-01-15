@@ -1,0 +1,38 @@
+<h1 id="yml"><a aria-hidden="true" class="anchor-heading" href="#yml"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>YML</h1>
+<h3 id="anchors--and-aliases-"><a aria-hidden="true" class="anchor-heading" href="#anchors--and-aliases-"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Anchors (<code>&#x26;</code>) and Aliases (<code>*</code>)</h3>
+<p>can be used to duplicate content across your yml file.</p>
+<ul>
+<li>with it, we can duplicate or inherit properties</li>
+</ul>
+<p>Anchors are identified by an <code>&#x26;</code> character, and aliased by an <code>*</code> character.</p>
+<p>You can use YAML anchors to merge YAML arrays.</p>
+<p>Below <code>&#x26;flag</code> identifies the Apple item, and is later referenced.</p>
+<pre class="language-yml"><code class="language-yml"><span class="token punctuation">-</span> <span class="token important">&#x26;flag</span> Apple
+<span class="token punctuation">-</span> <span class="token important">*flag</span>
+</code></pre>
+<p>Becomes this when the yml is parsed:</p>
+<pre class="language-yml"><code class="language-yml"><span class="token punctuation">-</span> Apple
+<span class="token punctuation">-</span> Apple
+</code></pre>
+<h3 id="overrides--aka-map-merging"><a aria-hidden="true" class="anchor-heading" href="#overrides--aka-map-merging"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Overrides (<code>&#x3C;&#x3C;</code>) a.k.a. map merging</h3>
+<p>This is a special key that indicates key-values from another mapping should be merged into this mapping.</p>
+<p>This example demonstrates 2 features:</p>
+<ul>
+<li>Anchors can be used with non-scalar values, such as whole objects (here the <code>nodeinfo</code> object is referred to in the <code>echoit</code> container)</li>
+<li>Overrides, which allows us to merge the key-value pairs of <code>&#x26;function</code> into the <code>echoit</code> object
+<ul>
+<li>note: that the <code>image</code> key-value gets overwritten, since we define it even though it already exists in <code>&#x26;function</code></li>
+</ul>
+</li>
+</ul>
+<pre class="language-yml"><code class="language-yml"><span class="token comment"># docker-compose.yml</span>
+<span class="token key atrule">services</span><span class="token punctuation">:</span>
+  <span class="token key atrule">nodeinfo</span><span class="token punctuation">:</span> <span class="token important">&#x26;function</span>
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> functions/nodeinfo<span class="token punctuation">:</span>latest
+    <span class="token key atrule">labels</span><span class="token punctuation">:</span>
+      <span class="token key atrule">function</span><span class="token punctuation">:</span> <span class="token string">"true"</span>
+
+<span class="token key atrule">echoit</span><span class="token punctuation">:</span>
+    <span class="token key atrule">&#x3C;&#x3C;</span><span class="token punctuation">:</span> <span class="token important">*function</span>
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> functions/alpine<span class="token punctuation">:</span>health
+</code></pre>

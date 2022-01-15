@@ -1,0 +1,20 @@
+<h1 id="xargs"><a aria-hidden="true" class="anchor-heading" href="#xargs"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Xargs</h1>
+<p><code>xargs</code> reads items from stdin, and runs a command (default <code>echo</code>) on each one</p>
+<ul>
+<li>each item may either be delimited by:
+<ol>
+<li>blanks (which can be protected with double or single quotes or a backslash))</li>
+<li>newlines</li>
+</ol>
+</li>
+</ul>
+<h4 id="handling-blanks-and-newlines"><a aria-hidden="true" class="anchor-heading" href="#handling-blanks-and-newlines"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Handling blanks and newlines</h4>
+<p>Because Unix filenames can contain blanks and newlines, this default behaviour is often problematic; filenames containing blanks and/or newlines are incorrectly processed by <code>xargs</code>.</p>
+<ul>
+<li>in these situations pass <code>-0</code> option, which would prevent these problems, though we need to ensure that the program which produces the input for <code>xargs</code> also uses a null character as a separator</li>
+</ul>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/DRkuK0e6qkKEiHDIGP6kP">Cook</a></li>
+</ol>

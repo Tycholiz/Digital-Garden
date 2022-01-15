@@ -1,0 +1,48 @@
+<h1 id="ts"><a aria-hidden="true" class="anchor-heading" href="#ts"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>TS</h1>
+<p>The whole value of typescript in being able to define code that is type-safe, and have any non-type safe code to be uncovered <em>at</em> compile time. This inevitably saves us a large amount of effort, since we don't have to wait until runtime to be able to catch these bugs. It makes our code tighter, easier to reason about and more robust.</p>
+<ul>
+<li>Generics is one way to implement this when writing functions</li>
+</ul>
+<p>TypeScript’s type system is very powerful because it allows expressing types in terms of other types. We can accomplish this via:</p>
+<ul>
+<li><a href="/Digital-Garden/notes/sih2fb5FtmlHDrOmJM60l">generics</a></li>
+<li><a href="/Digital-Garden/notes/tBsnpb1NuUp82nIGTJhgj">typeof operator</a></li>
+<li><a href="/Digital-Garden/notes/zGE1kYN0D0JHia9wxxLAh">keyof operator</a></li>
+<li>indexed access types</li>
+<li>conditional types</li>
+<li>mapped types</li>
+<li>template literal types</li>
+</ul>
+<p>Naturally, any code that does not exist as far as Javascript is concerned (e.g. Generics, Interfaces) does not add to the runtime cost of the code.</p>
+<h4 id="non-null-assertion"><a aria-hidden="true" class="anchor-heading" href="#non-null-assertion"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>non-null assertion</h4>
+<p>Non-null assertion operator shouldn't be used unless you have a very good reason to do so</p>
+<ul>
+<li>Non-null assertion operators are simply a way of telling the compiler, "trust me, I’m absolutely sure that this optional value is in fact never empty."</li>
+<li>While you might think that a value is always non-empty, you could be wrong. Or worse, you could be correct at the moment, but it will not be the case in the future, because some other developer will call your function with a null or undefined.</li>
+</ul>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">function</span> <span class="token function">sayHello</span><span class="token punctuation">(</span>person<span class="token operator">:</span> <span class="token maybe-class-name">Person</span> <span class="token operator">|</span> <span class="token keyword">undefined</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    person<span class="token operator">!</span><span class="token punctuation">.</span><span class="token method function property-access">hello</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// no errors!</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>The operator could come in handy, but generally our feeling for it should be that if we are reaching for it, there is probably a more correct way to do it.</p>
+<ul>
+<li>sometimes the overhead of the type system is not justified, and we just want to create a quick escape hatch that makes sense. We have to address these case by case.</li>
+</ul>
+<p>Another situation in which it might make sense to use this operator is when you want to enable strict null checks on a large, existing codebase. Enabling the flag in such a case might result in hundreds or thousands of errors. It’s a huge effort to go through them all at once. On the other hand, you cannot merge your changes to the master if the whole project doesn’t compile successfully. In this case, the non-null assertion operator might come in handy, as it will allow you to quickly suppress the errors that you don’t have time to fix properly.</p>
+<h3 id="compiler"><a aria-hidden="true" class="anchor-heading" href="#compiler"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Compiler</h3>
+<p>We can use ESBuild to compile typescript on server side</p>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/cI9meYdyLxhLk705Pyb5e">Cook</a></li>
+<li><a href="/Digital-Garden/notes/YunCqy27IUUekZDL3QJny">Declaration File</a></li>
+<li><a href="/Digital-Garden/notes/1t7R6enWy1jJHuqam84vq">Declaration Merging</a></li>
+<li><a href="/Digital-Garden/notes/GmCL485ztm6yr5sBf7deL">Examples</a></li>
+<li><a href="/Digital-Garden/notes/TrWbHNblto7LGpRQF1B7T">Fetch</a></li>
+<li><a href="/Digital-Garden/notes/pKpW4a3egreYLEuA7fBzL">Generic</a></li>
+<li><a href="/Digital-Garden/notes/760ZuXX4vksUaS3cNNRyG">Lang</a></li>
+<li><a href="/Digital-Garden/notes/piAoRTqgi46i9Vr6Ih0cH">Overloading</a></li>
+<li><a href="/Digital-Garden/notes/59nfP13cYdCJnQGZD4gdr">TS Config</a></li>
+<li><a href="/Digital-Garden/notes/QfmFMCeW9e8DyBaPJt09S">Type</a></li>
+<li><a href="/Digital-Garden/notes/dB2LgpVHBlwD4GHNXUWpZ">Types</a></li>
+</ol>

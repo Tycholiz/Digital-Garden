@@ -1,0 +1,23 @@
+<h1 id="commits"><a aria-hidden="true" class="anchor-heading" href="#commits"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Commits</h1>
+<h1 id="commit-object"><a aria-hidden="true" class="anchor-heading" href="#commit-object"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Commit Object</h1>
+<ul>
+<li>stores metadata about the commit, like who authored it, when it was made, what the previous commit is etc.</li>
+<li>a commit points to a single tree, marking it as what the project looked like a certain point in time
+<ul>
+<li>Therefore, the commit object is what gives a project its sense of history in Git</li>
+</ul>
+</li>
+<li>While the tree and blob objects are the content of the Git, the commit objects allow us to use the data in a user-friendly way. Technically, Git could be used without commit objects. However, we would have to remember every SHA to recall the snapshots. Also, we wouldn't have important information like who saved the snapshots, when they were saved, and who saved them. These benefits are what commit objects bring to us.</li>
+<li>When we run <code>git commit</code>, a commit object is created, and the parent commit is specified as the commit that the HEAD file points to (recall that a branch is just a pointer to a commit)</li>
+</ul>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/K5d4cyEMtCOR2Vraa99FV">Refs</a></li>
+</ul>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/m0epbZLHbgIsnxP8329xV">Boundary</a></li>
+<li><a href="/Digital-Garden/notes/U6RX4XDsz8HfUg2NNkf9N">Merge Commit</a></li>
+</ol>

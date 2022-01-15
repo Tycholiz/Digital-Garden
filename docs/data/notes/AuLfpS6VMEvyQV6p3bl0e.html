@@ -1,0 +1,23 @@
+<h1 id="duck-typing"><a aria-hidden="true" class="anchor-heading" href="#duck-typing"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Duck Typing</h1>
+<p>This is the object design pattern by which objects are assessed based on their ability to respond to particular methods</p>
+<ul>
+<li>In other words, if it responds to the methods you want, there's no reason to be particular about the type.</li>
+</ul>
+<pre class="language-rb"><code class="language-rb"><span class="token comment"># Say bye to everybody</span>
+<span class="token keyword">def</span> <span class="token method-definition"><span class="token function">say_bye</span></span>
+  <span class="token keyword">if</span> <span class="token variable">@names</span><span class="token punctuation">.</span><span class="token keyword">nil</span><span class="token operator">?</span>
+    puts <span class="token string">"..."</span>
+  <span class="token keyword">elsif</span> <span class="token variable">@names</span><span class="token punctuation">.</span>respond_to<span class="token operator">?</span><span class="token punctuation">(</span><span class="token string">"join"</span><span class="token punctuation">)</span>
+    <span class="token comment"># Join the list elements with commas</span>
+    puts <span class="token string">"Goodbye <span class="token interpolation"><span class="token delimiter tag">#{</span><span class="token variable">@names</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token string">", "</span><span class="token punctuation">)</span><span class="token delimiter tag">}</span></span>.  Come back soon!"</span>
+  <span class="token keyword">else</span>
+    puts <span class="token string">"Goodbye <span class="token interpolation"><span class="token delimiter tag">#{</span><span class="token variable">@names</span><span class="token delimiter tag">}</span></span>.  Come back soon!"</span>
+  <span class="token keyword">end</span>
+<span class="token keyword">end</span>
+</code></pre>
+<p>The <code>say_bye</code> method doesn’t use each, instead it checks to see if <code>@names</code> responds to the join method, and if so, uses it. Otherwise, it just prints out the variable as a string. This method of not caring about the actual type of a variable, just relying on what methods it supports is known as “Duck Typing”, as in “if it walks like a duck and quacks like a duck…”. The benefit of this is that it doesn’t unnecessarily restrict the types of variables that are supported. If someone comes up with a new kind of list class, as long as it implements the join method with the same semantics as other lists, everything will work as planned.</p>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/0gtg24Mj1a1bQFPRGQNlO">Ruby</a></li>
+</ul>

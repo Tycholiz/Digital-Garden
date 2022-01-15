@@ -1,0 +1,12 @@
+<h1 id="cron"><a aria-hidden="true" class="anchor-heading" href="#cron"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Cron</h1>
+<p>Cron assumes that the machine is running continuously.</p>
+<ul>
+<li>Therefore, it can't reliably be used on machines that aren't running 24 hours a day.</li>
+<li>If this is an issue, then try <a href="https://linux.die.net/man/8/anacron">anacron</a> (linux only), which removes this limitation
+<ul>
+<li>Might be able to get a similar effect with <a href="/Digital-Garden/notes/Bj0VPYftPkCN3u4aANbkb">launchd</a> on OS X</li>
+</ul>
+</li>
+</ul>
+<p>See all active Crontabs:
+<code>crontab -e</code></p>

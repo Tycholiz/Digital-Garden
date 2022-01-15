@@ -1,0 +1,26 @@
+<h1 id="keyof"><a aria-hidden="true" class="anchor-heading" href="#keyof"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Keyof</h1>
+<p>The <code>keyof</code> operator takes an object type and produces a union of its keys</p>
+<p>Like <code>typeof</code>, <code>keyof</code> is used to create new types</p>
+<p>For any type <code>T</code>, <code>keyof T</code> is the union of public property names of <code>T</code></p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">interface</span> <span class="token class-name"><span class="token maybe-class-name">Person</span></span> <span class="token punctuation">{</span>
+  age<span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">;</span>
+  name<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">type</span> <span class="token class-name"><span class="token maybe-class-name">PersonKeys</span></span> <span class="token operator">=</span> <span class="token keyword">keyof</span> <span class="token maybe-class-name">Person</span><span class="token punctuation">;</span> <span class="token comment">// "age" | "name"</span>
+</code></pre>
+<p>The type <code>PersonKeys</code> here is the same as:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">type</span> <span class="token class-name"><span class="token maybe-class-name">PersonKeys</span></span> <span class="token operator">=</span> <span class="token string">"age"</span> <span class="token operator">|</span> <span class="token string">"name"</span>
+</code></pre>
+<p>If the type uses a string or number as the index, then <code>keyof</code> will return those types instead:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">interface</span> <span class="token class-name"><span class="token maybe-class-name">Arrayish</span></span> <span class="token operator">=</span> <span class="token punctuation">{</span>
+    <span class="token punctuation">[</span>n<span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">]</span><span class="token operator">:</span> <span class="token builtin">unknown</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">type</span> <span class="token class-name"><span class="token constant">A</span></span> <span class="token operator">=</span> <span class="token keyword">keyof</span> <span class="token maybe-class-name">Arrayish</span>
+<span class="token comment">// A = number</span>
+</code></pre>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/S2sBltrPfd8a7ICuD7CuH">TS</a></li>
+</ul>

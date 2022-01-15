@@ -1,0 +1,65 @@
+<h1 id="k8s"><a aria-hidden="true" class="anchor-heading" href="#k8s"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>K8s</h1>
+<h2 id="overview"><a aria-hidden="true" class="anchor-heading" href="#overview"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Overview</h2>
+<p>Kubernetes is all about abstracting how, when and where containers are run.</p>
+<p>Kubernetes is a <a href="/Digital-Garden/notes/tUBvqQK65JnrN4Xc8XvqG">docker orchestrator</a>. It can also be thought of as a container scheduler.
+All containers in Kubernetes are scheduled as pods</p>
+<ul>
+<li>We don't tell Kubernetes to run a container. Rather, we tell it to create a pod that wraps a container.</li>
+</ul>
+<p>Kubernetes uses client-server architecture</p>
+<p>It’s not enough to run containers. We need to be able to scale them, to make them fault tolerant, to provide transparent communication across a cluster</p>
+<ul>
+<li>Containers are only a low-level piece of the puzzle. The real benefits are obtained with tools that sit on top of containers. Those tools are today known as container schedulers. They are our interface. We do not manage containers, they do.</li>
+</ul>
+<p>Kubernetes follows the ethos that we should not run our containers directly, and should instead trust Kubernetes to handle container scheduling for us.</p>
+<ul>
+<li>The chief reasoning for this is that containers by themselves don't provide fault tolerance. They cannot be deployed easily to the optimum spot in a cluster, and are not operator friendly</li>
+</ul>
+<p>Today, modern infrastructure is created from immutable images. Any upgrade is performed by building new images and performing rolling updates that will replace VMs one by one. Infrastructure dependencies are never changed at runtime</p>
+<ul>
+<li>One of the inherent benefits behind immutability is a clear division between infrastructure and deployments. Until not long ago, the two meshed together into an inseparable process. With infrastructure becoming a service, deployment processes can be clearly separated, thus allowing different teams, individuals, and expertise to take control.</li>
+</ul>
+<p>spec: Kubernetes offers us process isolation (via Docker), and an immutable way to deploy software</p>
+<h3 id="benefits-of-kubernetes"><a aria-hidden="true" class="anchor-heading" href="#benefits-of-kubernetes"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Benefits of Kubernetes</h3>
+<ul>
+<li>We can use it to deploy our services, to roll out new releases without downtime, and to scale (or de-scale) those services.</li>
+<li>We can move a Kubernetes cluster from one hosting vendor to another without changing (almost) any of the deployment and management processes.</li>
+</ul>
+<p>“A Kubernetes cluster is a good example of an abstraction over compute resources: there are many hosted and self-managed implementations of it on different platforms, all of which offer a common API and common set of capabilities.”</p>
+<ul>
+<li>That is, to a large extent, it doesn't matter if you are using AWS, Azure etc. Most of the config of K8s will be identical. Thus, Kubernetes is a good abstraction over compute as a resource.</li>
+</ul>
+<p>Kubernetes is usually seen as a way to manage your production infrastructure. But it can be configured to manage our test environments on the fly. Imagine using Kubernetes to host a Preview Environment. Every pull request can be run in an isolated test environment at the push of a button.</p>
+<ul>
+<li>"isolated" here truly means isolated. the app itself (with the code changes in the PR branch) with its own dedicated instances of SQL Server, Redis, Elasticsearch, and additional services pieces. All spun up from scratch within minutes and running in a handful of containers in a dedicated namespace, just for you and anyone who’s interested in your PR.  
+<ul>
+<li>the benefit of this really shines in a <a href="/Digital-Garden/notes/4JrFhUJpywlucgow6EX7j">microservice architecture</a>. In a monorepo, you just checkout someone's branch and run the code, but how do you do that if the code depends on many external services?</li>
+</ul>
+</li>
+</ul>
+<h3 id="kubernetes-vs-docker-swarm-mode"><a aria-hidden="true" class="anchor-heading" href="#kubernetes-vs-docker-swarm-mode"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Kubernetes vs Docker Swarm mode</h3>
+<p>In Kubernetes, an application can be deployed using a combination of pods, deployments, and services (or micro-services).</p>
+<p>Whereas, in Docker Swarm, applications can be deployed as services (or micro-services) in a Swarm cluster. YAML files can be used to specify multi-container. Moreover, Docker Compose can deploy the app.</p>
+<h1 id="e-resources"><a aria-hidden="true" class="anchor-heading" href="#e-resources"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>E Resources</h1>
+<p><a href="https://stackoverflow.blog/2021/07/21/why-you-should-build-on-kubernetes-from-day-one/">Why to use Kubernetes from Day 1</a>
+<a href="https://chrisshort.net/kubernetes-illustrated-childrens-guide/">Kubernetes Illustrated Children's Guide</a>
+<a href="https://techbeacon.com/devops/one-year-using-kubernetes-production-lessons-learned">1 year using Kubernetes in production</a></p>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/lBasXzi1eHzGwL2pEuOv8">gitops</a></li>
+</ul>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/eyseDLRg9pfVvPqwOjziq">Cluster</a></li>
+<li><a href="/Digital-Garden/notes/zqN0BK33by5Xq7LPUontA">Components</a></li>
+<li><a href="/Digital-Garden/notes/MsBnaMq62gg9DHWeOttQy">Controllers</a></li>
+<li><a href="/Digital-Garden/notes/CyzCsvxmIU3vs97x4VTTw">Custom Resource Definition</a></li>
+<li><a href="/Digital-Garden/notes/nhxmrkFjzHtZZmOBkWfhh">Kubectl</a></li>
+<li><a href="/Digital-Garden/notes/8AMDo06PMwirGL5p3eo6W">Labels</a></li>
+<li><a href="/Digital-Garden/notes/czMR1HV6QpOCF4dvyUY3X">Minikube</a></li>
+<li><a href="/Digital-Garden/notes/G8flDlvSL0SmiOVLt7fDX">Objects</a></li>
+<li><a href="/Digital-Garden/notes/yXKyirBsh45VQgOiWcuC4">Probes</a></li>
+<li><a href="/Digital-Garden/notes/I3qZAJVKTfctAhcCjgiZ5">Yml</a></li>
+</ol>

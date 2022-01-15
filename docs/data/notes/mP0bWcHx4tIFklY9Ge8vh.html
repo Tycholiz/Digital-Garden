@@ -1,0 +1,18 @@
+<h1 id="kinesis"><a aria-hidden="true" class="anchor-heading" href="#kinesis"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Kinesis</h1>
+<h1 id="kinesis-1"><a aria-hidden="true" class="anchor-heading" href="#kinesis-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Kinesis</h1>
+<p>A highly-durable linked list in the cloud</p>
+<p>Use-cases are similar to SQS— you would typically use either Kinesis or SQS when you want to enqueue records for asynchronous processing.</p>
+<p>Difference with SQS:</p>
+<ul>
+<li>SQS can only have one consumer, while Kinesis can have many.</li>
+<li>Once an SQS message gets consumed, it gets deleted from the queue. But Kinesis records get added to a list in a stable order, and any number of consumers can read a copy of the stream by keeping a cursor over this never-ending list.</li>
+<li>Multiple consumers don’t affect each other, and if one falls behind, it doesn’t slow down the other consumers.</li>
+<li>Whenever consumers read data out of Kinesis, they will always get their records in the same order.</li>
+<li>Often cheaper than SQS</li>
+<li>Kinesis can carry a significant operational burden with the need to provision capacity (shards).</li>
+</ul>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/OSdV9FvBG3wDbRNLllg0V">Lambda</a></li>
+</ul>

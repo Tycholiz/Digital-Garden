@@ -1,0 +1,148 @@
+<h1 id="portable-text"><a aria-hidden="true" class="anchor-heading" href="#portable-text"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Portable Text</h1>
+<p>In its simplest form, Portable Text is an array of objects of <code>type</code> with an array of <code>children</code></p>
+<p>Portable Text is an agnostic abstraction of Rich Text.
+It can be serialized into any markup language</p>
+<ul>
+<li>ex. HTML, Markdown, XML</li>
+</ul>
+<p>Portable Text is built on the idea of rich text as an array of blocks, themselves arrays of children <code>&#x3C;span></code>s.</p>
+<ul>
+<li>Each block can have a style and a set of mark definitions</li>
+</ul>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"style"</span><span class="token operator">:</span> <span class="token string">"h1"</span><span class="token punctuation">,</span>
+  <span class="token property">"_type"</span><span class="token operator">:</span> <span class="token string">"block"</span><span class="token punctuation">,</span>
+  <span class="token property">"children"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">{</span>
+      <span class="token property">"_type"</span><span class="token operator">:</span> <span class="token string">"span"</span><span class="token punctuation">,</span>
+      <span class="token property">"text"</span><span class="token operator">:</span> <span class="token string">"This is a heading"</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="block"><a aria-hidden="true" class="anchor-heading" href="#block"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Block</h3>
+<p>A section of text, such as paragraph or heading</p>
+<p>Includes:</p>
+<ul>
+<li>
+<p><code>children</code></p>
+</li>
+<li>
+<p><code>_type</code></p>
+</li>
+<li>
+<p><code>style</code></p>
+</li>
+<li>
+<p><code>markDefs</code></p>
+</li>
+<li>
+<p><code>listItem</code></p>
+</li>
+<li>
+<p><code>level</code></p>
+</li>
+<li>
+<p>includes all styling that is part of the section of text</p>
+<ul>
+<li>ex. if a paragraph has 2 italicized words in it, then it will result in 5 objects in the <code>children</code> array, but it will be part of the same block.</li>
+</ul>
+</li>
+</ul>
+<h4 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>children</code></h4>
+<p>The elements of the <code>children</code> array are sections of a block. They maintain the styling of the rich text. For instance, if the following were Rich Text, then we'd end up with a <code>children</code> array of length 5:</p>
+<pre class="language-md"><code class="language-md">I have to tell <span class="token italic"><span class="token punctuation">*</span><span class="token content">you</span><span class="token punctuation">*</span></span> what is happening! In fact, it was my <span class="token bold"><span class="token punctuation">**</span><span class="token content">uncle</span><span class="token punctuation">**</span></span> who shot at us.
+</code></pre>
+<p>It is split up like this;</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> children <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">{</span> text<span class="token operator">:</span> <span class="token string">"I have to tell "</span><span class="token punctuation">,</span> marks<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">{</span> text<span class="token operator">:</span> <span class="token string">"you"</span><span class="token punctuation">,</span> marks<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'em'</span><span class="token punctuation">]</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">{</span> text<span class="token operator">:</span> <span class="token string">"what is happening! In fact, it was my "</span><span class="token punctuation">,</span> marks<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">{</span> text<span class="token operator">:</span> <span class="token string">"uncle"</span><span class="token punctuation">,</span> marks<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'strong'</span><span class="token punctuation">]</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">{</span> text<span class="token operator">:</span> <span class="token string">" who shot at us"</span><span class="token punctuation">,</span> marks<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span>
+</code></pre>
+<h4 id="_type"><a aria-hidden="true" class="anchor-heading" href="#_type"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>_type</code></h4>
+<p>All blocks must be of a type. The type makes it possible for a serializer to parse the contents of the block.</p>
+<h4 id="style"><a aria-hidden="true" class="anchor-heading" href="#style"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>style</code></h4>
+<p>Style typically describes a visual property for the whole block (ie. all children).</p>
+<h4 id="markdefs"><a aria-hidden="true" class="anchor-heading" href="#markdefs"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>markDefs</code></h4>
+<p>Mark definitions is an array of objects with a key, type and some data</p>
+<p>Mark definitions describe data structures distributed on the children.</p>
+<ul>
+<li>Mark definitions are tied to spans in <code>children</code> by adding the referring <code>_key</code> in the child's <code>marks</code> array.</li>
+</ul>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"markDefs"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">{</span>
+      <span class="token property">"_key"</span><span class="token operator">:</span> <span class="token string">"some-random-key"</span><span class="token punctuation">,</span>
+      <span class="token property">"_type"</span><span class="token operator">:</span> <span class="token string">"link"</span><span class="token punctuation">,</span>
+      <span class="token property">"href"</span><span class="token operator">:</span> <span class="token string">"https://portabletext.org"</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">{</span>
+      <span class="token property">"_key"</span><span class="token operator">:</span> <span class="token string">"some-other-random-key"</span><span class="token punctuation">,</span>
+      <span class="token property">"_type"</span><span class="token operator">:</span> <span class="token string">"comment"</span><span class="token punctuation">,</span>
+      <span class="token property">"text"</span><span class="token operator">:</span> <span class="token string">"Change to https://"</span><span class="token punctuation">,</span>
+      <span class="token property">"author"</span><span class="token operator">:</span> <span class="token string">"some-author-id"</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<hr>
+<h3 id="custom-blocks"><a aria-hidden="true" class="anchor-heading" href="#custom-blocks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Custom blocks</h3>
+<p>Custom blocks is typically images, code blocks, tables, video embeds, or any data structure. </p>
+<ul>
+<li>Custom blocks should be given a <code>_type</code>.</li>
+</ul>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"_type"</span><span class="token operator">:</span> <span class="token string">"image"</span><span class="token punctuation">,</span>
+  <span class="token property">"asset"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"_ref"</span><span class="token operator">:</span> <span class="token string">"some-asset-reference"</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"_type"</span><span class="token operator">:</span> <span class="token string">"code"</span><span class="token punctuation">,</span>
+  <span class="token property">"language"</span><span class="token operator">:</span> <span class="token string">"javascript"</span><span class="token punctuation">,</span>
+  <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"console.log(\"hello world\");"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<hr>
+<h2 id="full-example"><a aria-hidden="true" class="anchor-heading" href="#full-example"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Full example</h2>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">[</span><span class="token punctuation">{</span>
+    <span class="token property">"_type"</span><span class="token operator">:</span> <span class="token string">"block"</span><span class="token punctuation">,</span>
+    <span class="token property">"_key"</span><span class="token operator">:</span> <span class="token string">"3628734dd519"</span><span class="token punctuation">,</span>
+    <span class="token property">"style"</span><span class="token operator">:</span> <span class="token string">"normal"</span><span class="token punctuation">,</span>
+    <span class="token property">"markDefs"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span>
+        <span class="token property">"_type"</span><span class="token operator">:</span> <span class="token string">"link"</span><span class="token punctuation">,</span>
+        <span class="token property">"_key"</span><span class="token operator">:</span> <span class="token string">"e556761904ba"</span><span class="token punctuation">,</span>
+        <span class="token property">"href"</span><span class="token operator">:</span> <span class="token string">"https://www.portabletext.org"</span>
+    <span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">"children"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span>
+            <span class="token property">"_type"</span><span class="token operator">:</span> <span class="token string">"span"</span><span class="token punctuation">,</span>
+            <span class="token property">"_key"</span><span class="token operator">:</span> <span class="token string">"3628734dd5190"</span><span class="token punctuation">,</span>
+            <span class="token property">"text"</span><span class="token operator">:</span> <span class="token string">"This is a paragraph with a "</span><span class="token punctuation">,</span>
+            <span class="token property">"marks"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"_type"</span><span class="token operator">:</span> <span class="token string">"span"</span><span class="token punctuation">,</span>
+            <span class="token property">"_key"</span><span class="token operator">:</span> <span class="token string">"3628734dd5191"</span><span class="token punctuation">,</span>
+            <span class="token property">"text"</span><span class="token operator">:</span> <span class="token string">"link"</span><span class="token punctuation">,</span>
+            <span class="token property">"marks"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                <span class="token string">"e556761904ba"</span>
+            <span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"_type"</span><span class="token operator">:</span> <span class="token string">"span"</span><span class="token punctuation">,</span>
+            <span class="token property">"_key"</span><span class="token operator">:</span> <span class="token string">"3628734dd5192"</span><span class="token punctuation">,</span>
+            <span class="token property">"text"</span><span class="token operator">:</span> <span class="token string">"."</span><span class="token punctuation">,</span>
+            <span class="token property">"marks"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span>
+<span class="token punctuation">}</span><span class="token punctuation">]</span>
+</code></pre>
+<hr>
+<h2 id="children-1"><a aria-hidden="true" class="anchor-heading" href="#children-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/X1NUNXgnU46Q4a5kPPLfE">Serializing</a></li>
+</ol>

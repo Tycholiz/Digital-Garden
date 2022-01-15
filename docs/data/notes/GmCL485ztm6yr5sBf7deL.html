@@ -1,0 +1,140 @@
+<h1 id="examples"><a aria-hidden="true" class="anchor-heading" href="#examples"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Examples</h1>
+<h3 id="making-optional-code-more-strict"><a aria-hidden="true" class="anchor-heading" href="#making-optional-code-more-strict"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Making optional code more strict</h3>
+<p>Before</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">interface</span> <span class="token class-name"><span class="token maybe-class-name">Address</span></span> <span class="token punctuation">{</span>
+  street<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+  city<span class="token operator">?</span><span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">interface</span> <span class="token class-name"><span class="token maybe-class-name">User</span></span> <span class="token punctuation">{</span>
+  name<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+  address<span class="token operator">:</span> <span class="token maybe-class-name">Address</span><span class="token punctuation">;</span>
+  meta<span class="token operator">:</span> <span class="token maybe-class-name">Record</span><span class="token operator">&#x3C;</span><span class="token builtin">string</span><span class="token punctuation">,</span> <span class="token builtin">string</span><span class="token operator">></span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">interface</span> <span class="token class-name"><span class="token maybe-class-name">SuperUser</span></span> <span class="token keyword">extends</span> <span class="token class-name"><span class="token maybe-class-name">User</span></span> <span class="token punctuation">{</span>
+  permissions<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name"><span class="token maybe-class-name">UserRepository</span></span> <span class="token punctuation">{</span>
+  <span class="token keyword">private</span> users<span class="token operator">:</span> <span class="token maybe-class-name">User</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">users</span> <span class="token operator">=</span> <span class="token punctuation">[</span>
+      <span class="token comment">// Do not change the data. Let's assume it comes from the backend.</span>
+      <span class="token punctuation">{</span>
+        name<span class="token operator">:</span> <span class="token string">"John"</span><span class="token punctuation">,</span>
+        address<span class="token operator">:</span> <span class="token keyword">undefined</span><span class="token punctuation">,</span>
+        meta<span class="token operator">:</span> <span class="token punctuation">{</span> created<span class="token operator">:</span> <span class="token string">"2019/01/03"</span> <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">{</span>
+        name<span class="token operator">:</span> <span class="token string">"Anne"</span><span class="token punctuation">,</span>
+        address<span class="token operator">:</span> <span class="token punctuation">{</span> street<span class="token operator">:</span> <span class="token string">"Warsaw"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        meta<span class="token operator">:</span> <span class="token punctuation">{</span>
+          created<span class="token operator">:</span> <span class="token string">"2019/01/05"</span><span class="token punctuation">,</span>
+          modified<span class="token operator">:</span> <span class="token string">"2019/04/02"</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token function">getUser</span><span class="token punctuation">(</span>id<span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token maybe-class-name">User</span> <span class="token operator">|</span> <span class="token keyword">undefined</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">users</span><span class="token punctuation">[</span>id<span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token function">getCities</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">users</span>
+      <span class="token punctuation">.</span><span class="token method function property-access">filter</span><span class="token punctuation">(</span>user <span class="token arrow operator">=></span> user<span class="token punctuation">.</span><span class="token property-access">address</span><span class="token operator">?.</span>city<span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token method function property-access">map</span><span class="token punctuation">(</span>user <span class="token arrow operator">=></span> user<span class="token punctuation">.</span><span class="token property-access">address</span><span class="token punctuation">.</span><span class="token property-access">city</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token function">forEachUser</span><span class="token punctuation">(</span><span class="token function-variable function">action</span><span class="token operator">:</span> <span class="token punctuation">(</span>user<span class="token operator">:</span> <span class="token maybe-class-name">User</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token keyword">void</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">users</span><span class="token punctuation">.</span><span class="token method function property-access">forEach</span><span class="token punctuation">(</span>user <span class="token arrow operator">=></span> <span class="token function">action</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">const</span> userRepository <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name"><span class="token maybe-class-name">UserRepository</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span>userRepository<span class="token punctuation">.</span><span class="token method function property-access">getUser</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token property-access">address</span><span class="token punctuation">.</span><span class="token property-access">city</span><span class="token punctuation">.</span><span class="token method function property-access">toLowerCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span>
+  userRepository
+    <span class="token punctuation">.</span><span class="token method function property-access">getCities</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token method function property-access">map</span><span class="token punctuation">(</span>city <span class="token arrow operator">=></span> city<span class="token punctuation">.</span><span class="token method function property-access">toUpperCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token method function property-access">join</span><span class="token punctuation">(</span><span class="token string">", "</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name"><span class="token known-class-name class-name">Date</span></span><span class="token punctuation">(</span>userRepository<span class="token punctuation">.</span><span class="token method function property-access">getUser</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token property-access">meta</span><span class="token punctuation">.</span><span class="token property-access">modfified</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token method function property-access">getFullYear</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>After</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">interface</span> <span class="token class-name"><span class="token maybe-class-name">Address</span></span> <span class="token punctuation">{</span>
+  street<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+  city<span class="token operator">?</span><span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">interface</span> <span class="token class-name"><span class="token maybe-class-name">User</span></span> <span class="token punctuation">{</span>
+  name<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+  address<span class="token operator">:</span> <span class="token maybe-class-name">Address</span> <span class="token operator">|</span> <span class="token keyword">undefined</span><span class="token punctuation">;</span> <span class="token comment">/* 1 */</span>
+  meta<span class="token operator">:</span> <span class="token maybe-class-name">Record</span><span class="token operator">&#x3C;</span><span class="token builtin">string</span><span class="token punctuation">,</span> <span class="token builtin">string</span><span class="token operator">></span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">interface</span> <span class="token class-name"><span class="token maybe-class-name">SuperUser</span></span> <span class="token keyword">extends</span> <span class="token class-name"><span class="token maybe-class-name">User</span></span> <span class="token punctuation">{</span>
+  permissions<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name"><span class="token maybe-class-name">SafeUserRepository</span></span> <span class="token punctuation">{</span>
+  <span class="token keyword">private</span> users<span class="token operator">:</span> <span class="token maybe-class-name">User</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+    <span class="token comment">/* 2 */</span>
+  <span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">users</span> <span class="token operator">=</span> <span class="token punctuation">[</span>
+      <span class="token comment">// Do not change the data. Let's assume it comes from the backend.</span>
+      <span class="token punctuation">{</span>
+        name<span class="token operator">:</span> <span class="token string">"John"</span><span class="token punctuation">,</span>
+        address<span class="token operator">:</span> <span class="token keyword">undefined</span><span class="token punctuation">,</span>
+        meta<span class="token operator">:</span> <span class="token punctuation">{</span> created<span class="token operator">:</span> <span class="token string">"2019/01/03"</span> <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">{</span>
+        name<span class="token operator">:</span> <span class="token string">"Anne"</span><span class="token punctuation">,</span>
+        address<span class="token operator">:</span> <span class="token punctuation">{</span> street<span class="token operator">:</span> <span class="token string">"Warsaw"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        meta<span class="token operator">:</span> <span class="token punctuation">{</span>
+          created<span class="token operator">:</span> <span class="token string">"2019/01/05"</span><span class="token punctuation">,</span>
+          modified<span class="token operator">:</span> <span class="token string">"2019/04/02"</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token comment">// `user` with given `id` might not exist, so marking the return type as possibly undefined</span>
+  <span class="token function">getUser</span><span class="token punctuation">(</span>id<span class="token operator">:</span> <span class="token builtin">number</span> <span class="token comment">/* 3 */</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token maybe-class-name">User</span> <span class="token operator">|</span> <span class="token keyword">undefined</span> <span class="token comment">/* 4 */</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">users</span><span class="token punctuation">[</span>id<span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token function">getCities</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">users</span>
+        <span class="token comment">/* 5 */</span>
+      <span class="token punctuation">.</span><span class="token method function property-access">map</span><span class="token punctuation">(</span>user <span class="token arrow operator">=></span> user<span class="token punctuation">.</span><span class="token property-access">address</span><span class="token operator">?.</span>city<span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token method function property-access">filter</span><span class="token punctuation">(</span>city <span class="token arrow operator">=></span> city <span class="token operator">!==</span> <span class="token keyword">undefined</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token function">forEachUser</span><span class="token punctuation">(</span><span class="token function-variable function">action</span><span class="token operator">:</span> <span class="token punctuation">(</span>user<span class="token operator">:</span> <span class="token maybe-class-name">User</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token keyword">void</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">users</span><span class="token punctuation">.</span><span class="token method function property-access">forEach</span><span class="token punctuation">(</span>user <span class="token arrow operator">=></span> <span class="token function">action</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">const</span> safeUserRepository <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name"><span class="token maybe-class-name">SafeUserRepository</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">/* 6 */</span>
+<span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span>safeUserRepository<span class="token punctuation">.</span><span class="token method function property-access">getUser</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">?.</span>address<span class="token operator">?.</span>city<span class="token operator">?.</span><span class="token method function property-access">toLowerCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span>
+  safeUserRepository
+    <span class="token punctuation">.</span><span class="token method function property-access">getCities</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token comment">/* 7 */</span>
+    <span class="token punctuation">.</span><span class="token method function property-access">map</span><span class="token punctuation">(</span>city <span class="token arrow operator">=></span> city<span class="token operator">?.</span><span class="token method function property-access">toUpperCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token method function property-access">join</span><span class="token punctuation">(</span><span class="token string">", "</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">/* 8 */</span>
+<span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name"><span class="token known-class-name class-name">Date</span></span><span class="token punctuation">(</span>safeUserRepository<span class="token operator">?.</span><span class="token method function property-access">getUser</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token operator">?.</span>meta<span class="token punctuation">.</span><span class="token property-access">modfified</span> <span class="token operator">??</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token method function property-access">getFullYear</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>

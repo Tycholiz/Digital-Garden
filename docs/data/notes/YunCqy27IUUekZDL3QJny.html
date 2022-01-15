@@ -1,0 +1,74 @@
+<h1 id="declaration-file"><a aria-hidden="true" class="anchor-heading" href="#declaration-file"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Declaration File</h1>
+<p>TypeScript is a superset of JavaScript, meaning you can write and use JavaScript libraries from within TypeScript. In such situations how should TypeScript handle the lack of Type information in JavaScript? We can either:</p>
+<ul>
+<li>Accept the lack of types from the JS file</li>
+<li>use Declaration files, which give us an ad-hoc way to specify the shape of things in Javascript.</li>
+</ul>
+<p><code>.d.ts</code> files are analogous to C++ header files.</p>
+<h3 id="incorporating-type-declarations-from-third-parties"><a aria-hidden="true" class="anchor-heading" href="#incorporating-type-declarations-from-third-parties"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Incorporating type declarations from third parties</h3>
+<p>When we want to use Javascript 3rd party libraries in our TS project, we can often find declaration modules as packages</p>
+<ul>
+<li>for example, <code>@types/lodash</code> is a module that gives us types out of the box with Lodash.</li>
+<li>these declaration files get saved in <code>node_modules/@types/</code></li>
+</ul>
+<p>When a type declaration is included in the <code>@types</code> directory, the types are automatically available for us to use in our project, as the TS compiler finds these types and makes them available during compilation time.</p>
+<p><a href="http://definitelytyped.org/">DefinitelyTyped</a> is a project that hosts declaration files for popular JS libraries.</p>
+<h3 id="config"><a aria-hidden="true" class="anchor-heading" href="#config"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Config</h3>
+<p>"typeRoots" and "types" are the two properties of the tsconfig.json file that can be used to configure the behavior of the type declaration resolution.</p>
+<h3 id="example"><a aria-hidden="true" class="anchor-heading" href="#example"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Example</h3>
+<p>Imagine we had a Javascript file in a Typescript project:</p>
+<pre class="language-js"><code class="language-js"><span class="token comment">// main.ts</span>
+<span class="token keyword">let</span> ajala
+
+ajala <span class="token operator">=</span> <span class="token punctuation">{</span>
+ name<span class="token operator">:</span> <span class="token string">"Ajala the traveller"</span><span class="token punctuation">,</span>
+ age<span class="token operator">:</span> <span class="token number">12</span><span class="token punctuation">,</span>
+ <span class="token function-variable function">getName</span><span class="token operator">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+     <span class="token keyword control-flow">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">name</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+ajala<span class="token punctuation">.</span><span class="token method function property-access">lol</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre>
+<p>When we compile this file with <code>tsc main.ts</code>, the compilation would be successful, and <code>main.js</code> is outputted.</p>
+<p>If we then run <code>node main.js</code>, we will get a runtime error that <code>ajala.lol is not a function</code>. Since no type information was available for it, Typescript could not have warned us about this at compile time.</p>
+<p>To fix this, we can create a file <code>main.d.ts</code>:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">declare</span> <span class="token keyword">module</span> <span class="token string">"MyTypes"</span> <span class="token punctuation">{</span>
+	<span class="token keyword">export</span> <span class="token keyword">interface</span> <span class="token class-name"><span class="token maybe-class-name">Person</span></span> <span class="token punctuation">{</span>
+		name<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+		age<span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">;</span>
+		<span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>And then add a triple-slash directive and type annotation in <code>main.ts</code></p>
+<ul>
+<li>note: this triple-slash directive is possible, but not recommended. Instead, just install npm type declaration modules (below)</li>
+</ul>
+<pre class="language-ts"><code class="language-ts"><span class="token comment">/// &#x3C;reference path="Main.d.ts" /></span>
+
+<span class="token keyword">import</span> <span class="token imports"><span class="token operator">*</span> <span class="token keyword">as</span> <span class="token maybe-class-name">MyTypes</span></span> <span class="token keyword">from</span> <span class="token string">"MyTypes"</span>
+
+<span class="token keyword">let</span> ajala<span class="token operator">:</span> <span class="token maybe-class-name">MyTypes</span><span class="token punctuation">.</span><span class="token property-access"><span class="token maybe-class-name">Person</span></span>
+
+ajala <span class="token operator">=</span> <span class="token punctuation">{</span>
+	name<span class="token operator">:</span> <span class="token string">"Ajala the traveller"</span><span class="token punctuation">,</span>
+	age<span class="token operator">:</span> <span class="token number">12</span><span class="token punctuation">,</span>
+	<span class="token function-variable function">getName</span><span class="token operator">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">name</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+ajala<span class="token punctuation">.</span><span class="token method function property-access">lol</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>With the declaration file provided and included via the triple-slash directive, the TS compiler now has information about the shape of <code>Person</code>, and will throw us an error at compile time.</p>
+<h3 id="how-to-type-a-third-party-module"><a aria-hidden="true" class="anchor-heading" href="#how-to-type-a-third-party-module"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>How to type a third party module</h3>
+<ol>
+<li>create a <code>@types</code> folder at same level as <code>tsconfig.json</code></li>
+<li>add a <code>.d.ts</code> file using the format <code>[nameOfTheThirdPartyModule].d.ts</code></li>
+<li>add the following to top-level of <code>tsconfig.json</code>:</li>
+</ol>
+<pre class="language-json"><code class="language-json"><span class="token property">"files"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+  <span class="token string">"@types/[nameOfTheThirdPartyModule].d.ts"</span>
+<span class="token punctuation">]</span><span class="token punctuation">,</span>
+</code></pre>

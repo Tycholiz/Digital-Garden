@@ -1,0 +1,87 @@
+<h1 id="interface"><a aria-hidden="true" class="anchor-heading" href="#interface"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Interface</h1>
+<p>Generic interfaces are very much like functions that transform types.</p>
+<p>A generic interface lets us define a function signature, and enforce that signature on a future value that we define. Put another way, we are describing a generic function</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">interface</span> <span class="token class-name"><span class="token maybe-class-name">GenericIdentityFn</span></span> <span class="token punctuation">{</span>
+  <span class="token operator">&#x3C;</span><span class="token maybe-class-name">Type</span><span class="token operator">></span><span class="token punctuation">(</span>arg<span class="token operator">:</span> <span class="token maybe-class-name">Type</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token maybe-class-name">Type</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+ 
+<span class="token keyword">function</span> <span class="token generic-function"><span class="token function">identity</span><span class="token generic class-name"><span class="token operator">&#x3C;</span><span class="token maybe-class-name">Type</span><span class="token operator">></span></span></span><span class="token punctuation">(</span>arg<span class="token operator">:</span> <span class="token maybe-class-name">Type</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token maybe-class-name">Type</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> arg<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+ 
+<span class="token keyword">let</span> myIdentity<span class="token operator">:</span> <span class="token maybe-class-name">GenericIdentityFn</span> <span class="token operator">=</span> identity<span class="token punctuation">;</span>
+</code></pre>
+<p>In this case, when we use <code>GenericIdentityFn</code> we now will also need to specify the corresponding type argument (here: <code>number</code>), effectively locking in what the underlying call signature will use. This changes its use markedly from the previous implementation.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">interface</span> <span class="token class-name"><span class="token maybe-class-name">GenericIdentityFn</span><span class="token operator">&#x3C;</span><span class="token maybe-class-name">Type</span><span class="token operator">></span></span> <span class="token punctuation">{</span>
+  <span class="token punctuation">(</span>arg<span class="token operator">:</span> <span class="token maybe-class-name">Type</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token maybe-class-name">Type</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+ 
+<span class="token keyword">function</span> <span class="token generic-function"><span class="token function">identity</span><span class="token generic class-name"><span class="token operator">&#x3C;</span><span class="token maybe-class-name">Type</span><span class="token operator">></span></span></span><span class="token punctuation">(</span>arg<span class="token operator">:</span> <span class="token maybe-class-name">Type</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token maybe-class-name">Type</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> arg<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+ 
+<span class="token keyword">let</span> myIdentity<span class="token operator">:</span> <span class="token maybe-class-name">GenericIdentityFn</span><span class="token operator">&#x3C;</span><span class="token builtin">number</span><span class="token operator">></span> <span class="token operator">=</span> identity<span class="token punctuation">;</span>
+</code></pre>
+<p>This changes it slightly. Now we have a non-generic function signature that is a part of the generic type</p>
+<ul>
+<li>Understanding when to put the type parameter directly on the call signature and when to put it on the interface itself will be helpful in describing what aspects of a type are generic.</li>
+</ul>
+<p>It’s not possible to refer to a generic interface without providing its type argument.</p>
+<p>For example, if you want to write a function that accepts an instance of a generic interface, you have two options:</p>
+<ol>
+<li>Write a specialized function that accepts a very specific instance of the interface (e.g. <code>FormField&#x3C;string></code>)</li>
+<li>Write a generic function</li>
+</ol>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">interface</span> <span class="token class-name"><span class="token maybe-class-name">FormField</span><span class="token operator">&#x3C;</span><span class="token constant">T</span><span class="token operator">></span></span> <span class="token punctuation">{</span>
+    value<span class="token operator">?</span><span class="token operator">:</span> <span class="token constant">T</span><span class="token punctuation">;</span>
+    defaultValue<span class="token operator">:</span> <span class="token constant">T</span><span class="token punctuation">;</span>
+    isValid<span class="token operator">:</span> <span class="token builtin">boolean</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// Very specialized. Only works with `FormField&#x3C;string>`.</span>
+<span class="token keyword">function</span> <span class="token function">getStringFieldValue</span><span class="token punctuation">(</span>field<span class="token operator">:</span> <span class="token maybe-class-name">FormField</span><span class="token operator">&#x3C;</span><span class="token builtin">string</span><span class="token operator">></span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">string</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>field<span class="token punctuation">.</span><span class="token property-access">isValid</span> <span class="token operator">||</span> field<span class="token punctuation">.</span><span class="token property-access">value</span> <span class="token operator">===</span> <span class="token keyword">undefined</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// Thanks to the specialization, the compiler knows the exact type of `field.defaultValue`.</span>
+        <span class="token keyword">return</span> field<span class="token punctuation">.</span><span class="token property-access">defaultValue</span><span class="token punctuation">.</span><span class="token method function property-access">toLowerCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> field<span class="token punctuation">.</span><span class="token property-access">value</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// Generic. Can be called with any `FormField`.</span>
+<span class="token comment">// It’s important to understand that here, T is the type argument of the function, not of the FormField interface. It gets passed only to FormField like any regular type does.</span>
+<span class="token keyword">function</span> <span class="token generic-function"><span class="token function">getFieldValue</span><span class="token generic class-name"><span class="token operator">&#x3C;</span><span class="token constant">T</span><span class="token operator">></span></span></span><span class="token punctuation">(</span>field<span class="token operator">:</span> <span class="token maybe-class-name">FormField</span><span class="token operator">&#x3C;</span><span class="token constant">T</span><span class="token operator">></span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token constant">T</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>field<span class="token punctuation">.</span><span class="token property-access">isValid</span> <span class="token operator">||</span> field<span class="token punctuation">.</span><span class="token property-access">value</span> <span class="token operator">===</span> <span class="token keyword">undefined</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// On the other hand, we don't know anything about the type of `field.defaultValue`.</span>
+        <span class="token keyword">return</span> field<span class="token punctuation">.</span><span class="token property-access">defaultValue</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> field<span class="token punctuation">.</span><span class="token property-access">value</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="generic-constraints-on-interfaces-type-argument-constraint"><a aria-hidden="true" class="anchor-heading" href="#generic-constraints-on-interfaces-type-argument-constraint"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Generic constraints on interfaces (Type argument constraint)</h3>
+<p>you might decide to enforce the fact that <code>FormField</code> should only contain string, number, or boolean values.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">interface</span> <span class="token class-name"><span class="token maybe-class-name">FormField</span><span class="token operator">&#x3C;</span><span class="token constant">T</span> <span class="token keyword">extends</span> <span class="token builtin">string</span> <span class="token operator">|</span> <span class="token builtin">number</span> <span class="token operator">|</span> <span class="token builtin">boolean</span><span class="token operator">></span></span> <span class="token punctuation">{</span>
+    value<span class="token operator">?</span><span class="token operator">:</span> <span class="token constant">T</span><span class="token punctuation">;</span>
+    defaultValue<span class="token operator">:</span> <span class="token constant">T</span><span class="token punctuation">;</span>
+    isValid<span class="token operator">:</span> <span class="token builtin">boolean</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// Type 'T' does not satisfy the constraint 'string | number | boolean'</span>
+<span class="token keyword">function</span> <span class="token generic-function"><span class="token function">getFieldValue</span><span class="token generic class-name"><span class="token operator">&#x3C;</span><span class="token constant">T</span><span class="token operator">></span></span></span><span class="token punctuation">(</span>field<span class="token operator">:</span> <span class="token maybe-class-name">FormField</span><span class="token operator">&#x3C;</span><span class="token constant">T</span><span class="token operator">></span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token constant">T</span> <span class="token punctuation">{</span> <span class="token comment">/* ... */</span> <span class="token punctuation">}</span>
+</code></pre>
+<p>The reason for this error is that the <code>T</code> type argument of the function has no restrictions. You’re trying to pass it to <code>FormField</code> which only accepts types that extend string, number or boolean. Therefore, you get a compile error. To get rid of the error, you need to put the same or stricter restrictions on the type argument <code>T</code>.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">interface</span> <span class="token class-name"><span class="token maybe-class-name">FormField</span><span class="token operator">&#x3C;</span><span class="token constant">T</span> <span class="token keyword">extends</span> <span class="token builtin">string</span> <span class="token operator">|</span> <span class="token builtin">number</span> <span class="token operator">|</span> <span class="token builtin">boolean</span><span class="token operator">></span></span> <span class="token punctuation">{</span>
+    value<span class="token operator">?</span><span class="token operator">:</span> <span class="token constant">T</span><span class="token punctuation">;</span>
+    defaultValue<span class="token operator">:</span> <span class="token constant">T</span><span class="token punctuation">;</span>
+    isValid<span class="token operator">:</span> <span class="token builtin">boolean</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// Type 'T' does not satisfy the constraint 'string | number | boolean'</span>
+<span class="token keyword">function</span> <span class="token generic-function"><span class="token function">getFieldValue</span><span class="token generic class-name"><span class="token operator">&#x3C;</span><span class="token constant">T</span> <span class="token keyword">extends</span> <span class="token builtin">string</span> <span class="token operator">|</span> <span class="token builtin">number</span><span class="token operator">></span></span></span><span class="token punctuation">(</span>field<span class="token operator">:</span> <span class="token maybe-class-name">FormField</span><span class="token operator">&#x3C;</span><span class="token constant">T</span><span class="token operator">></span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token constant">T</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> field<span class="token punctuation">.</span><span class="token property-access">value</span> <span class="token operator">??</span> field<span class="token punctuation">.</span><span class="token property-access">defaultValue</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/sKbmdTjtfodpEXI6br9QH">Cook</a></li>
+</ol>

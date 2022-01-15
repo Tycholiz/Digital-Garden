@@ -1,0 +1,22 @@
+<h1 id="symlink"><a aria-hidden="true" class="anchor-heading" href="#symlink"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Symlink</h1>
+<p>Soft symlinking a directory will not link the contents as well;</p>
+<p>A symbolic or soft link is an actual link to the original file, whereas a hard link is a mirror copy of the original file. If you delete the original file, the soft link has no value, because it points to a non-existent file.</p>
+<p>But in the case of hard link, it is entirely opposite. Even if you delete the original file, the hard link will still have the data of the original file, because hard links act as a mirror copy of the original file.</p>
+<p>In a nutshell, a soft link...</p>
+<ul>
+<li>can cross the file system,</li>
+<li>allows you to link between directories,</li>
+<li>has different inode number and file permissions than original file,</li>
+<li>permissions will not be updated,</li>
+<li>has only the path of the original file, not the contents.
+A soft link is something like a shortcut in Windows. It is an indirect pointer to a file or directory. Unlike a hard link, a symbolic link can point to a file or a directory on a different filesystem or partition.</li>
+</ul>
+<p>A hard Link...</p>
+<ul>
+<li>can't cross the file system boundaries (i.e. A hardlink can only work on the same filesystem),</li>
+<li>can't link directories,</li>
+<li>has the same inode number and permissions of original file,</li>
+<li>permissions will be updated if we change the permissions of source file,</li>
+<li>has the actual contents of original file, so that you still can view the contents, even if the original file moved or removed.
+You can think a hard link as an additional name for an existing file. Hard links are associating two or more file names with the same inode . You can create one or more hard links for a single file. Hard links cannot be created for directories and files on a different filesystem or partition.</li>
+</ul>

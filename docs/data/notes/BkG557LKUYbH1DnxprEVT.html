@@ -1,0 +1,70 @@
+<h1 id="c"><a aria-hidden="true" class="anchor-heading" href="#c"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>C</h1>
+<ul>
+<li>C is designed to interface with the output of the computer hardware. Therefore, it is a natural language to use when building operating systems. When you write code in C, you can better intuit what the resulting assembly language will look like. C effectively enables you to write code from a hardware-first perspective.</li>
+</ul>
+<p>In C, if a function signature doesn’t specify any argument, it means that the function can be called with any number of parameters or without any parameters.</p>
+<ul>
+<li><code>main</code> is a function just like any other, and thus returns a value to the environment that executed the c program to begin with.</li>
+</ul>
+<h1 id="header-files"><a aria-hidden="true" class="anchor-heading" href="#header-files"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Header Files</h1>
+<ul>
+<li>purpose is to share functions and macros across source files.</li>
+</ul>
+<hr>
+<h2 id="aspects"><a aria-hidden="true" class="anchor-heading" href="#aspects"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Aspects</h2>
+<h3 id="const"><a aria-hidden="true" class="anchor-heading" href="#const"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Const</h3>
+<ul>
+<li>a <em>constant expression</em> involves only constants, and is therefore evaluated during compilation </li>
+<li>an <code>emun</code> is a type of constant. By default, the first element has value 0, the second has value 1, and so on.</li>
+</ul>
+<h2 id="operators"><a aria-hidden="true" class="anchor-heading" href="#operators"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Operators</h2>
+<h3 id="token-pasting-operator--private"><a aria-hidden="true" class="anchor-heading" href="#token-pasting-operator--private"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Token-pasting operator (#<a title="Private" style="color: brown" href="https://wiki.dendron.so/notes/hfyvYGJZQiUwQaaxQO27q.html" target="_blank">#) (Private)</a></h3>
+<ul>
+<li>if 1+1=2, then 1##1=11</li>
+</ul>
+<h2 id="concepts"><a aria-hidden="true" class="anchor-heading" href="#concepts"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Concepts</h2>
+<hr>
+<h3 id="symbolic-constants-define"><a aria-hidden="true" class="anchor-heading" href="#symbolic-constants-define"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Symbolic Constants (<code>#define</code>)</h3>
+<ul>
+<li><code>#define</code> creates a macro</li>
+<li>Any constant defined in this manner will find all occurrences and replace it with the corresponding value <em>before</em> compilation 
+<ul>
+<li>This contrasts with variables, in that data is actually stored inside of them (while macros are more like aliases) </li>
+</ul>
+</li>
+<li>Symbolic Constants are valauble for defining magic numbers</li>
+</ul>
+<hr>
+<h2 id="debugging"><a aria-hidden="true" class="anchor-heading" href="#debugging"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Debugging</h2>
+<p>Errors involving “token” almost always mean that you either missed a semicolon or your {}s, ()s, or []s aren’t matched.</p>
+<hr>
+<h3 id="indirection"><a aria-hidden="true" class="anchor-heading" href="#indirection"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Indirection</h3>
+<ul>
+<li>The act of referencing something using a name, rather than using the value itself.</li>
+<li>A common form of indirection is when we manipulate a value via its memory address
+<ul>
+<li>ex. accessing a variable by using a pointer.</li>
+</ul>
+</li>
+<li>aka Dereferencing</li>
+</ul>
+<h3 id="handle-vs-pointer-vs-reference"><a aria-hidden="true" class="anchor-heading" href="#handle-vs-pointer-vs-reference"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Handle vs Pointer vs Reference</h3>
+<ul>
+<li>While a pointer contains the address of the item it refers to, a handle is an opaque reference to an object. </li>
+<li>The type of the handle is unrelated to the element referenced</li>
+<li>using handles adds an extra layer of indirection, meaning that we can change the details at this level without breaking the program. The same couldn't be said for a pointer. </li>
+<li>A pointer is the combination of an address in memory and the type of the object that resides in that memory location</li>
+</ul>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/X9TyB7Fn9NNAUyakav5Pz">Value Object</a></li>
+</ul>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/LrPwH7Qf504IgKLZ9D227">Compiler</a></li>
+<li><a href="/Digital-Garden/notes/31185107-edea-4538-ab47-c18d9bdc52cd">Lang</a></li>
+<li><a href="/Digital-Garden/notes/561mFMikO2Thf2ORAPH7K">Makefile</a></li>
+<li><a href="/Digital-Garden/notes/lsJI5ky0UGUjRLKexKi0P">Preprocessors</a></li>
+</ol>

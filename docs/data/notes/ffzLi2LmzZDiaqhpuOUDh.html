@@ -1,0 +1,23 @@
+<h1 id="rules-engine"><a aria-hidden="true" class="anchor-heading" href="#rules-engine"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>rules-engine</h1>
+<p>A rules engine can be visualized as a set of if-then-else statements to implement some business logic of our application.</p>
+<p>Example: determining car insurance premiums</p>
+<pre><code>if car.owner.hasCellPhone then premium += 100;
+if car.model.theftRating > 4 then premium += 200;
+if car.owner.livesInDodgyArea &#x26;&#x26; car.model.theftRating > 2 then premium += 300;
+</code></pre>
+<p>A rules engine is a tool that makes it easier to program using this computational model</p>
+<p>An important property of rule engines is chaining - where the action part of one rule changes the state of the system in such a way that it alters the value of the condition part of other rules.</p>
+<ul>
+<li>Chaining sounds appealing, since it supports more complex behaviors, but can easily end up being very hard to reason about and debug.
+<ul>
+<li>Often, it is easy to set up a rules system, but very hard to maintain it because nobody can understand this implicit program flow; a consequence of leaving the imperative computational model</li>
+</ul>
+</li>
+</ul>
+<h1 id="e-resources"><a aria-hidden="true" class="anchor-heading" href="#e-resources"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>E Resources</h1>
+<p><a href="https://martinfowler.com/bliki/RulesEngine.html">Martin Fowler thoughts on why to avoid a rules engine</a></p>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/7n3tUhrwbvz8nNu0bTlWz">Event Bridge</a></li>
+</ul>

@@ -1,0 +1,18 @@
+<h1 id="observer"><a aria-hidden="true" class="anchor-heading" href="#observer"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Observer</h1>
+<p>The idea with the observer pattern is that an object (the <code>subject</code>) maintains a list of all its dependents. Whenever a piece of state in the subject changes, all of the observers are automatically notified. This is normally accomplished by the subject calling the observer's <code>update()</code> method.</p>
+<ul>
+<li>The sole responsibility of a <em>subject</em> is to maintain a list of observers and to notify them of state changes by calling their update() operation. </li>
+<li>The responsibility of <em>observers</em> is to register (and unregister) themselves on a subject (to get notified of state changes) and to update their state (synchronize their state with the subject's state) when they are notified. This makes subject and observers loosely coupled.
+<ul>
+<li>Observers can be added and removed independently at run-time. This is very similar to <a href="/Digital-Garden/notes/NpY4iv9TwpGJODbVesQYe">pub-sub</a></li>
+</ul>
+</li>
+</ul>
+<p>Observer pattern is used in event handling systems that are generally distributed. In this case, the subject is usually a "stream of events", while the observers are "sinks of events". The observers themselves are physically separated and have no control over their emitted events from the stream-source (ie. subject).</p>
+<p>The observer pattern is well-suited to a process where data arrives from some input that is not available to the CPU at startup, but instead arrives "at random" (HTTP requests, GPIO data, user input from keyboard/mouse/..., distributed databases and blockchains, ...).</p>
+<p>The Observer pattern addresses the following problems:</p>
+<ul>
+<li>A one-to-many dependency between objects should be defined without making the objects tightly coupled.</li>
+<li>It should be ensured that when one object changes state, an open-ended number of dependent objects are updated automatically.</li>
+<li>It should be possible that one object can notify an open-ended number of other objects.</li>
+</ul>

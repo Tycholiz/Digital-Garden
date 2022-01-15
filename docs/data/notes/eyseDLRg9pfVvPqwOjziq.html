@@ -1,0 +1,16 @@
+<h1 id="cluster"><a aria-hidden="true" class="anchor-heading" href="#cluster"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Cluster</h1>
+<p>A Kubernetes cluster is a set of node machines for running containerized applications</p>
+<p>At a minimum, a cluster contains a control plane and one or more compute machines (nodes).</p>
+<ul>
+<li>The control plane is the brain of the cluster. It is responsible for maintaining the desired state of the cluster, such as which applications are running and which container images they use.</li>
+<li>Nodes actually run the applications and workloads.</li>
+</ul>
+<p>The cluster enables Kubernetes to schedule and run containers across a group of machines.</p>
+<ul>
+<li>note: this could mean multiple VMs on the same machine</li>
+<li>The heart of this whole idea is that Kubernetes containers aren’t tied to individual machines. Rather, they’re abstracted across the cluster.</li>
+</ul>
+<p>A Kubernetes cluster has a desired state, which defines which applications or other workloads should be running, along with which images they use, which resources should be made available for them, and other such configuration details.</p>
+<ul>
+<li>This desired state is described in a YAML file</li>
+</ul>

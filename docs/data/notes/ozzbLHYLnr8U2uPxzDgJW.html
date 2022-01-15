@@ -1,0 +1,25 @@
+<h1 id="clause"><a aria-hidden="true" class="anchor-heading" href="#clause"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Clause</h1>
+<h2 id="sql-clause-execution-order"><a aria-hidden="true" class="anchor-heading" href="#sql-clause-execution-order"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>SQL Clause Execution Order</h2>
+<p><code>FROM ➡ WHERE ➡ GROUP BY ➡ HAVING ➡ SELECT ➡ DISTINCT ➡ ORDER BY ➡ LIMIT</code></p>
+<p>in other words...</p>
+<ul>
+<li>The system first executes the FROM clause i.e. it creates the data set on which the WHERE and SELECT clauses are to be run. This step includes any joins specified in the FROM clause.</li>
+<li>Then, it eliminates rows from this data set by using the filters specified in the WHERE clause.</li>
+<li>It then groups the data set by the columns specified in the GROUP BY clause, and finally runs the SELECT clause. This is why you can never use the aliases specified in the SELECT clause to filter in the WHERE clause - because the aliases haven’t been declared yet.</li>
+</ul>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/xbx4TGR34l46miSSdp8xn">Alter</a></li>
+<li><a href="/Digital-Garden/notes/BRUbtn0BALYb7FyLiJxB0">As</a></li>
+<li><a href="/Digital-Garden/notes/fF4sO1xwvbkp60H2H5Q5C">Cascade</a></li>
+<li><a href="/Digital-Garden/notes/iWzugfGmhPr58omUx0LaS">Delete</a></li>
+<li><a href="/Digital-Garden/notes/12m6i3UdUef8aspMHjwUY">Group by</a></li>
+<li><a href="/Digital-Garden/notes/IeXVLjFiPkIUPDSxiky1r">Having</a></li>
+<li><a href="/Digital-Garden/notes/R85oo52DnTRhZcyeYcItQ">Insert</a></li>
+<li><a href="/Digital-Garden/notes/MHngPoItXbrEVdyT2B8Zb">Like</a></li>
+<li><a href="/Digital-Garden/notes/QkR4112Z1ElZAN7c0oTuO">On Conflict</a></li>
+<li><a href="/Digital-Garden/notes/FCQOZ27v8uQNiv97dsXVl">Returning</a></li>
+<li><a href="/Digital-Garden/notes/GoLU6uK33w2uBz0QkpyvM">Select</a></li>
+<li><a href="/Digital-Garden/notes/Cn5aqtggy4mrD38WFJxsQ">Where</a></li>
+</ol>

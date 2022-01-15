@@ -1,0 +1,23 @@
+<h1 id="tags"><a aria-hidden="true" class="anchor-heading" href="#tags"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Tags</h1>
+<h3 id="script"><a aria-hidden="true" class="anchor-heading" href="#script"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Script</h3>
+<p>Javascript loaded through script tags should be located before the closing <code>&#x3C;/body></code> tag.</p>
+<ul>
+<li>This is to stop JavaScript loading from blocking content loading. So, the content is loaded and the scripts are loaded next.</li>
+</ul>
+<p>An alternative to this is to use async in the script tag, like so:</p>
+<pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span>”main.js”</span> <span class="token attr-name">async</span><span class="token punctuation">></span></span><span class="token script"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;/</span>script</span><span class="token punctuation">></span></span>
+</code></pre>
+<p>this way it will not block the main thread and hence will not block the content from loading.</p>
+<h3 id="head"><a aria-hidden="true" class="anchor-heading" href="#head"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Head</h3>
+<p>put links to CSS style sheets in <code>&#x3C;head>&#x3C;/head></code></p>
+<ul>
+<li>this way, the browser styles the HTML as it loads. If style sheets are put at the bottom of the HTML, the browser will have to restyle and render the whole page from the top, which can cause a performance bottleneck.</li>
+</ul>
+<h3 id="nav"><a aria-hidden="true" class="anchor-heading" href="#nav"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>&#x3C;nav></code></h3>
+<p>The <code>&#x3C;nav></code> element represents a section of a page whose purpose is to provide navigation links, either within the current document or to other documents.
+ex. menus, tables of contents</p>
+<h3 id="iframe"><a aria-hidden="true" class="anchor-heading" href="#iframe"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>&#x3C;iframe></code></h3>
+<p>Sites like Facebook and Twitter use iframes to display content (plugins) on third party websites.</p>
+<ul>
+<li>think: sometimes you see tweets on other people's website, which has the same styling that you'd find on Twitter.com.</li>
+</ul>

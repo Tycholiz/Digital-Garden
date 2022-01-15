@@ -1,0 +1,138 @@
+<h1 id="osi-model"><a aria-hidden="true" class="anchor-heading" href="#osi-model"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Osi Model</h1>
+<ul>
+<li>The OSI model is a framework for understanding how communications work in a computing system. It is an abstract representation, since no attention is paid to the implementation details of each layer. Instead, each layer simply describes its function and purpose. Put another way, it defines what input it expects, and what output it gives. 
+<ul>
+<li>Since each layer interfaces directly with the layers above and below it, the consistence of the input and output offered by each layer is the only thing that matters (ex. as long as L1 receives 0's and 1's and delivers frames, all other details are inconsequential)</li>
+</ul>
+</li>
+</ul>
+<h2 id="the-protocol-layers"><a aria-hidden="true" class="anchor-heading" href="#the-protocol-layers"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>The Protocol Layers</h2>
+<h3 id="l7-application"><a aria-hidden="true" class="anchor-heading" href="#l7-application"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>L7 Application</h3>
+<ul>
+<li>consists of network applications and their application-layer protocols</li>
+<li>primary user interface with communication system.</li>
+<li>PDU - messages</li>
+<li>HTTP, FTP, DNS, SMTP, POP3, SSH, IRC, TLS/SSL, NFS (network FS)</li>
+</ul>
+<h3 id="l6-presentation"><a aria-hidden="true" class="anchor-heading" href="#l6-presentation"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>L6 Presentation</h3>
+<ul>
+<li>Supports the functionality of the application layer by providing services such as formatting and translation of data.</li>
+<li>provide data encryption and data compression.</li>
+<li>Data representation (compression, decompression) and encryption</li>
+<li>ex. SSL, SSH, IMAP, FTP, TLS, MPEG, JPEG</li>
+</ul>
+<h3 id="l5-session"><a aria-hidden="true" class="anchor-heading" href="#l5-session"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>L5 Session</h3>
+<ul>
+<li>Maintains the transmission path by synchronizing packets and controlling access to the medium by the Application layer.</li>
+<li>controls the connections between computers</li>
+<li>provides for delimiting and synchronizing of data exchange, including the means to build </li>
+<li>ex. API, sockets, HTTP sessions</li>
+</ul>
+<h3 id="l4-transport"><a aria-hidden="true" class="anchor-heading" href="#l4-transport"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>L4 Transport</h3>
+<ul>
+<li>Ensures the quality of transmission and determines the best route for transmission of data using the Network layer below.</li>
+<li>concerned with providing reliable communication over an unsecured network</li>
+<li>PDU - segments (TCP), datagrams (UDP)</li>
+<li>goal: deliver the data to the right software application
+<ul>
+<li>ex. TCP, UDP</li>
+</ul>
+</li>
+</ul>
+<h3 id="l3-network"><a aria-hidden="true" class="anchor-heading" href="#l3-network"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>L3 Network</h3>
+<ul>
+<li>Finds a route for transmission of data (packets) between 2 routers/hosts, and establishes and maintains the connection between two connected nodes.</li>
+<li>goal: pass data chunks over multiple connected networks</li>
+<li>PDU - packet</li>
+<li>ex. IPv4, IPv6, ICMP, ARP, NAT</li>
+</ul>
+<h3 id="l2-data-link"><a aria-hidden="true" class="anchor-heading" href="#l2-data-link"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>L2 Data Link</h3>
+<ul>
+<li>Creates, transmits, and receives packets. Controls the Physical layer.</li>
+<li>Concerned with sharing multiple access channels</li>
+<li>They are used to deliver frames on a LAN</li>
+<li>PDU - frames</li>
+<li>goal: organize the 1s and 0s into chunks of data, and get them to the right place on the wire.</li>
+<li>ex. wifi, ethernet, bluetooth, VLAN, port forwarding procol</li>
+</ul>
+<h3 id="l1-physical"><a aria-hidden="true" class="anchor-heading" href="#l1-physical"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>L1 Physical</h3>
+<ul>
+<li>Converts data into bits for transmission and converts received bits into usable data for the layers above it.</li>
+<li>PDU - bits</li>
+<li>goal is to send 0s and 1s across a wire</li>
+<li>ex. fiber optic, copper wire, coaxial cable, wireless, modem, repeaters, ethernet (physical portion), USB</li>
+</ul>
+<h3 id="the-internet-protocol"><a aria-hidden="true" class="anchor-heading" href="#the-internet-protocol"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>The Internet Protocol</h3>
+<ul>
+<li>The IP stack consists of L1, L2, L3, L4, L7</li>
+<li>When an HTTP request is sent, the protocol is established by piggybacking on the TCP connection that had already been made. This TCP connection is enabled by following the internet protocol. This is the point at which the internet protocol determines which routes datagrams</li>
+<li>The fact that there are 2 layers that are openly missing from the internet stack poses an interesting question: why are they not there? The reason is that the internet leaves these layers up to the application developer. The application developer can use any implementation of L5 and L6 that they choose in order to achieve their goals.</li>
+</ul>
+<h4 id="routers"><a aria-hidden="true" class="anchor-heading" href="#routers"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Routers</h4>
+<ul>
+<li>As data is sent out, it starts at L7 and makes its way down to L1. At L1, it is connected to the link-layer switch and goes up to L2, before going back down to L1. Then it reaches the router, which goes up to L3, then back down to L1, to be repeated depending on the number of subsequent routers. At the final router, the the router's L1 communicates with the L1 of the destination host, as it makes its way back up to L7.</li>
+</ul>
+<h3 id="airplane-trip-analogy"><a aria-hidden="true" class="anchor-heading" href="#airplane-trip-analogy"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Airplane trip analogy</h3>
+<ul>
+<li>As we look at the process of planning and taking an airplane, it becomes apparent that there are different layers to the entire process. In fact, each layer appears two times in the whole process— in reverse order:</li>
+</ul>
+<ol>
+<li>buy ticket</li>
+<li>check baggage</li>
+<li>load at gate</li>
+<li>takeoff on runway</li>
+<li>airplane routing (travel)</li>
+<li>land of runway</li>
+<li>unload at gate</li>
+<li>pickup baggage</li>
+<li>complain about ticket.</li>
+</ol>
+<ul>
+<li>each layer implements some functionality, and we can see that the opposite action was performed in reverse order.</li>
+<li>We can also see that each layer provides service to the layer below it.
+<ul>
+<li>ex. the act of checking baggage only makes sense to a ticketed person. </li>
+<li>ex. the idea of unloading at a gate only makes sense to a person on a landed plane.</li>
+</ul>
+</li>
+<li>we notice that we can replace any layer in the model, as long as the functionality remains the same. In this way, layers are interfaces to each other, and don't care about each other's implementation— only the outcome (ie. output) it provides.</li>
+</ul>
+<h3 id="encapsulation"><a aria-hidden="true" class="anchor-heading" href="#encapsulation"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Encapsulation</h3>
+<ul>
+<li>as data travels each layer from L7 down to L1, additional information is added. As we pass the information encapsulated in the HTTP request down to L4, the transport layer takes the information of L7 and adds its own information to it. This information that was added is then used by the transport layer of the next node in the chain (likely the destination host). This process of encapsulation continues on down layer by layer until L1.
+<ul>
+<li>This idea of encapsulation thus demonstrates what is fundamentally different between each PDU: a message (L7) is an encapsulated datagram (L4). In other words, the datagram encapsulates the message. A datagram is fundamentally a message, plus some other information (provided by the layer). Therefore, at each layer, the PDU has 2 types of fields: header fields, and payload fields (the payload is just a packet from the layer above).</li>
+</ul>
+</li>
+</ul>
+<h3 id="protocol-data-unit-pdu"><a aria-hidden="true" class="anchor-heading" href="#protocol-data-unit-pdu"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Protocol Data Unit (PDU)</h3>
+<ul>
+<li>each layer has the concept of a Protocol Data Unit, which is the format that the data exists in within the current Layer. In other words, it is what an atomic unit of data is called at each layer.
+<ul>
+<li>All PDUs are composed of a header and payload</li>
+</ul>
+</li>
+</ul>
+<h3 id="miscelaneous"><a aria-hidden="true" class="anchor-heading" href="#miscelaneous"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Miscelaneous</h3>
+<ul>
+<li>the very fact that there are layers means that we can treat it as a modular chain, and swap out one L3 implementation for another (such as wifi for ethernet)
+<ul>
+<li>therefore L2 doesn't care if we are using IP or IPX on L3, just like L3 doesn't care if L2 uses wifi or ethernet</li>
+</ul>
+</li>
+<li>The price we pay by layering is that we have to map between 32 bit IP addresses (L3) and 48 bit MAC addresses (L2).
+<ul>
+<li>The ARP protocol exists to solve this very problem</li>
+</ul>
+</li>
+<li>The OS may be a participant in any or all of the layers
+<ul>
+<li>ex. at L1, signal processing can be offloaded to a host CPU and that requires a driver which interfaces with the operating system</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/6rd2UlBxaM4Uc41t6VY63">Load Testing</a></li>
+</ul>

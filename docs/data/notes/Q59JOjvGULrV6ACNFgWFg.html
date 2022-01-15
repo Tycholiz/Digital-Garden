@@ -1,0 +1,10 @@
+<h1 id="iterables"><a aria-hidden="true" class="anchor-heading" href="#iterables"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Iterables</h1>
+<p>In Ruby, iterables are arrays, hashes and ranges.</p>
+<h4 id="map-function"><a aria-hidden="true" class="anchor-heading" href="#map-function"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>.map</code> function</h4>
+<pre class="language-rb"><code class="language-rb">array<span class="token punctuation">.</span>map <span class="token punctuation">{</span> <span class="token operator">|</span>string<span class="token operator">|</span> string<span class="token punctuation">.</span>upcase <span class="token punctuation">}</span>
+</code></pre>
+<h4 id="iterate-over-hash-map"><a aria-hidden="true" class="anchor-heading" href="#iterate-over-hash-map"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Iterate over hash map</h4>
+<p>Here, we have arguments to the callback(?) for the key and value.</p>
+<pre><code>hash = { bacon: "protein", apple: "fruit" }
+hash.map { |k,v| [k, v.to_sym] }.to_h
+</code></pre>

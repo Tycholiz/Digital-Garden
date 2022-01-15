@@ -1,0 +1,37 @@
+<h1 id="reverse"><a aria-hidden="true" class="anchor-heading" href="#reverse"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Reverse</h1>
+<p>Reverse proxies are servers that sit between the request-response process that retrieve resources from a server. These resources are then returned to the client, appearing as if they originated from the proxy server itself.</p>
+<ul>
+<li>ex. This might include services such as caching, security (inc. SSL), load balancing, and content optimization</li>
+</ul>
+<p>The backends that are receiving the proxied requests are called <em>upstreams</em></p>
+<ul>
+<li>
+<p>ie. these would be your application servers/database etc.</p>
+</li>
+<li>
+<p>Proxying is typically for load balancing, to seamlessly show content from different websites, or to pass requests for processing to application servers over protocols other than HTTP.</p>
+</li>
+<li>
+<p>It's called a reverse proxy because the client makes a request, and before that request can hit the server, it's intercepted by a server (the proxy server), which gives the request what it wants, and sends (reverses) it back to the client.</p>
+</li>
+<li>
+<p>A common scenario is that we run our REST API behind a reverse proxy. Among other reasons, we might want to do this so our API server is on a different network/IP than our front-end application. Therefore, we can secure this network and only allow traffic from the reverse proxy server.</p>
+</li>
+<li>
+<p>A reverse proxy like one from Nginx can be used to implement SSL</p>
+<ul>
+<li><a href="https://nginx.org/en/docs/http/configuring_https_servers.html">guide</a></li>
+</ul>
+</li>
+</ul>
+<p>Example:</p>
+<ul>
+<li>Imagine we had content stored in 3 different places. We could use a reverse proxy with rewrite rules to determine where each request would go depending on the actual endpoint of where the request was sent.</li>
+<li>in this case, each request is forwarded on to a different origin
+<img src="/Digital-Garden/assets/images/2021-12-07-12-13-42.png"></li>
+</ul>
+<h3 id="cook"><a aria-hidden="true" class="anchor-heading" href="#cook"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Cook</h3>
+<h4 id="proxy-requests-to-different-local-backends-ie-upstreams"><a aria-hidden="true" class="anchor-heading" href="#proxy-requests-to-different-local-backends-ie-upstreams"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Proxy requests to different local backends (ie. upstreams)</h4>
+<p>Imagine we want to have a RPi that exposes 3 websites to the internet, without having to specify port at the end of the URL. As it is, we can't expose them all on port 80/443. To get around this, we can configure a webserver like Apache/Nginx/Caddy as a reverse proxy to forward the requests to each specific application hosted on the RPi. With a reverse proxy configured, the webserver is able to know which requests go to which server based on the domain (or even the URL path). We can set this up by exposing the webserver to the internet via ports 80 &#x26; 443, and when the webserver receives requests, it will proxy them on to each individual app.</p>
+<h1 id="e-resources"><a aria-hidden="true" class="anchor-heading" href="#e-resources"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>E Resources</h1>
+<p><a href="https://aws.amazon.com/blogs/architecture/serving-content-using-fully-managed-reverse-proxy-architecture/">AWS Reverse Proxy Architecture</a></p>

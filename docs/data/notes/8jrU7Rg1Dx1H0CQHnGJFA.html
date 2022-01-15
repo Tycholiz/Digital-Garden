@@ -1,0 +1,47 @@
+<h1 id="attribute-accessors"><a aria-hidden="true" class="anchor-heading" href="#attribute-accessors"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Attribute Accessors</h1>
+<p>Attribute accessors provide us with a streamlined way to define getters and setters for instance variables. Otherwise, they are left private.</p>
+<p>Let’s say that you have a class with instance variables and you want to expose them to the outside world:</p>
+<pre class="language-rb"><code class="language-rb"><span class="token keyword">class</span> <span class="token class-name">Food</span>
+  <span class="token keyword">def</span> <span class="token method-definition"><span class="token function">initialize</span></span><span class="token punctuation">(</span>protein<span class="token punctuation">)</span>
+		<span class="token comment"># this instance variable cannot be accessed from outside</span>
+    <span class="token variable">@protein</span> <span class="token operator">=</span> protein
+  <span class="token keyword">end</span>
+<span class="token keyword">end</span>
+
+bacon <span class="token operator">=</span> <span class="token constant">Food</span><span class="token punctuation">.</span><span class="token keyword">new</span><span class="token punctuation">(</span><span class="token number">25</span><span class="token punctuation">)</span>
+bacon<span class="token punctuation">.</span>protein <span class="token comment"># NoMethodError: undefined method `protein'</span>
+</code></pre>
+<p>To solve this, we'd define a getter and setter:</p>
+<pre class="language-rb"><code class="language-rb"><span class="token keyword">class</span> <span class="token class-name">Food</span>
+	<span class="token comment"># getter</span>
+	<span class="token keyword">def</span> <span class="token method-definition"><span class="token function">protein</span></span>
+		<span class="token variable">@protein</span>
+	<span class="token keyword">end</span>
+	<span class="token comment"># setter</span>
+	<span class="token keyword">def</span> <span class="token method-definition"><span class="token function">protein</span></span><span class="token operator">=</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span>
+		<span class="token variable">@protein</span> <span class="token operator">=</span> value
+	<span class="token keyword">end</span>
+<span class="token keyword">end</span>
+</code></pre>
+<p>Lucky for us, Ruby provides attribute accessors so we don't have to do this by hand.</p>
+<pre class="language-rb"><code class="language-rb"><span class="token keyword">class</span> <span class="token class-name">Food</span>
+	attr_accessor <span class="token symbol">:protein</span><span class="token punctuation">,</span> <span class="token symbol">:calories</span>
+	<span class="token keyword">def</span> <span class="token method-definition"><span class="token function">initialize</span></span><span class="token punctuation">(</span>protein<span class="token punctuation">,</span> calories<span class="token punctuation">)</span>
+		<span class="token variable">@protein</span> <span class="token operator">=</span> protein
+		<span class="token variable">@calories</span> <span class="token operator">=</span> calories
+	<span class="token keyword">end</span>
+<span class="token keyword">end</span>
+</code></pre>
+<p>Above, we are having 4 new methods defined for us:</p>
+<ol>
+<li><code>protein</code></li>
+<li><code>protein=</code></li>
+<li><code>calories</code></li>
+<li><code>calories=</code></li>
+</ol>
+<hr>
+<ul>
+<li><code>attr_reader</code> - generate <em>getter</em></li>
+<li><code>attr_writer</code> - generate <em>setter</em></li>
+<li><code>attr_accessor</code> - generate <em>getter</em> and <em>setter</em></li>
+</ul>

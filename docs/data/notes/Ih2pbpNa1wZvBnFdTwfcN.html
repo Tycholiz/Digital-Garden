@@ -1,0 +1,27 @@
+<h1 id="event-sourcing"><a aria-hidden="true" class="anchor-heading" href="#event-sourcing"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Event Sourcing</h1>
+<p>A system that allows us to query a database tells us the current state of everything. A system that allows Event Sourcing also tells us how we got here. In other words, the system keeps records of all changes that have happened.</p>
+<ul>
+<li>Event Sourcing ensures that all changes to application state are stored as a sequence of events. Not just can we query these events, we can also use the event log to reconstruct past states, and as a foundation to automatically adjust the state to cope with retroactive changes.</li>
+</ul>
+<p>every change to the state of an application is captured in an event object, and that these event objects are themselves stored in the sequence they were applied for the same lifetime as the application state itself.</p>
+<ul>
+<li>To be clear, we are persisting two different things: an application state (ex. DB) and an event log.</li>
+</ul>
+<p>The key to Event Sourcing is that we guarantee that all changes to the domain objects (ex. what is stored in the DB) are initiated by the event objects</p>
+<ul>
+<li>This shows that when we want to change something in our database, our event system is first updated with the new log. Only once that log has been entered can our database be updated as well.
+<ul>
+<li>An implication of this is that we could dump the whole application state, and rebuild it from the log.</li>
+<li>Another implication is that we can see the state of the application as a timeline, analogous to Git branching.</li>
+</ul>
+</li>
+</ul>
+<p>A common example of an application that uses Event Sourcing is a version control system</p>
+<p><a href="/Digital-Garden/notes/vaDhC8WlLYfKrpBgU4D9g">CQRS</a> and event sourcing often go hand-in-hand</p>
+<h1 id="ue-resources"><a aria-hidden="true" class="anchor-heading" href="#ue-resources"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>UE Resources</h1>
+<p><a href="https://martinfowler.com/eaaDev/EventSourcing.html">https://martinfowler.com/eaaDev/EventSourcing.html</a></p>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/l7V3v2ep1YdDCt7DOr7Ci">Redux</a></li>
+</ul>

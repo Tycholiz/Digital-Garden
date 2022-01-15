@@ -1,0 +1,25 @@
+<h1 id="event"><a aria-hidden="true" class="anchor-heading" href="#event"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Event</h1>
+<p>When we invoke a function, we determine the structure and contents of the event:</p>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"TemperatureK"</span><span class="token operator">:</span> <span class="token number">281</span><span class="token punctuation">,</span>
+  <span class="token property">"WindKmh"</span><span class="token operator">:</span> <span class="token number">-3</span><span class="token punctuation">,</span>
+  <span class="token property">"HumidityPct"</span><span class="token operator">:</span> <span class="token number">0.55</span><span class="token punctuation">,</span>
+  <span class="token property">"PressureHPa"</span><span class="token operator">:</span> <span class="token number">1020</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>When an AWS service invokes your function, the service defines the shape of the event:</p>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"Records"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">{</span>
+      <span class="token property">"Sns"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">"Timestamp"</span><span class="token operator">:</span> <span class="token string">"2019-01-02T12:45:07.000Z"</span><span class="token punctuation">,</span>
+        <span class="token property">"Signature"</span><span class="token operator">:</span> <span class="token string">"tcc6faL2yUC6dgZdmrwh1Y4cGa/ebXEkAi6RibDsvpi+tE/1+82j...65r=="</span><span class="token punctuation">,</span>
+        <span class="token property">"MessageId"</span><span class="token operator">:</span> <span class="token string">"95df01b4-ee98-5cb9-9903-4c221d41eb5e"</span><span class="token punctuation">,</span>
+        <span class="token property">"Message"</span><span class="token operator">:</span> <span class="token string">"Hello from SNS!"</span><span class="token punctuation">,</span>
+        <span class="token comment">// ...</span>
+</code></pre>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/OSdV9FvBG3wDbRNLllg0V">Lambda</a></li>
+</ul>

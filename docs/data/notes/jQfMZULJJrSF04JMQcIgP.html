@@ -1,0 +1,64 @@
+<h1 id="binary"><a aria-hidden="true" class="anchor-heading" href="#binary"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Binary</h1>
+<p>Each node has at most 2 children (referred to ask <em>left child</em> and <em>right child</em>).</p>
+<p>We can break a binary tree down into the left subtree and the right subtree.</p>
+<h1 id="binary-search-tree-bst"><a aria-hidden="true" class="anchor-heading" href="#binary-search-tree-bst"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Binary Search Tree (BST)</h1>
+<p>A binary tree is a BST if the key of the node is greater than all the nodes in its left subtree and is smaller than all the nodes in its right subtree.
+A binary tree is a BST if:</p>
+<ul>
+<li>the key of each node in the left subtree is <em>less than</em> all the nodes in the right subtree, and</li>
+<li>the key of each node in the right subtree is <em>more than</em> all the nodes in the left subtree</li>
+<li>the root key is between the largest key in the left subtree and the smallest key in the right subtree
+<ul>
+<li>in other works, the root key serves as the dividing point.</li>
+</ul>
+</li>
+</ul>
+<p>The following is a BST, because there are no nodes in the left subtree that are greater than any node in the right subtree.
+<img src="/Digital-Garden/assets/images/2021-10-07-06-54-40.png"></p>
+<p>The following is <em>not</em> a BST, since there is a node with key 51 in the left subtree of 50 which breaks our invariant.
+<img src="/Digital-Garden/assets/images/2021-10-07-06-57-26.png"></p>
+<h2 id="logic-of-a-bst"><a aria-hidden="true" class="anchor-heading" href="#logic-of-a-bst"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Logic of a BST</h2>
+<h3 id="finding-a-node-by-key"><a aria-hidden="true" class="anchor-heading" href="#finding-a-node-by-key"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Finding a node by key</h3>
+<ol>
+<li>Compare current node's key with X. If it's equal, we've found the key. All done.</li>
+<li>If X is less than node's key, we start looking at node's left subtree. It's because we know that right subtree cannot contain anything greater than X.</li>
+<li>If X is greater than node's key, we start looking in the right subtree.</li>
+<li>We repeat this process until we find the key or we reach the leaf node. If we reach the leaf node and haven't found the key as yet, we return not found.</li>
+</ol>
+<h3 id="inserting-into-tree"><a aria-hidden="true" class="anchor-heading" href="#inserting-into-tree"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Inserting into tree</h3>
+<p>New nodes are <em>always</em> leaf nodes. Following the logic of left children being smaller and right children being larger, we start searching a key from the root until we hit a leaf node. Once a leaf node is found, the new node is added as a child of the leaf node.</p>
+<ul>
+<li>Therefore, there is only one correct location for the node to be, which is dependent on the key.</li>
+</ul>
+<p>Assume we want to insert a node with key <code>K</code>. Starting at the root,</p>
+<ol>
+<li>Compare current node's key with <code>k</code>.</li>
+<li>If <code>k</code> is less than the current node,
+<ul>
+<li>If left child of current node is <code>null</code>, we insert <code>k</code> as the left child of current node and return.</li>
+<li>If the left child is not <code>null</code>, the left child becomes the new current node, and we repeat the process from step 1.</li>
+</ul>
+</li>
+<li>If <code>k</code> is greater than the current node,
+<ul>
+<li>If right child of current node is <code>null</code>, we insert <code>k</code> as the right child of the current node and return.</li>
+<li>If the right child is not <code>null</code>, the right child becomes the new current node, and we repeat the process from step 1.</li>
+</ul>
+</li>
+</ol>
+<h4 id="advantages"><a aria-hidden="true" class="anchor-heading" href="#advantages"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Advantages</h4>
+<p>Binary trees are useful for accessing nodes based on their key or value. When labelled like this, we can implement a Binary Search Tree (for efficient searching/sorting/min/maxing).</p>
+<p>Binary search trees allow binary search for fast lookup, addition and removal of data items, and can be used to implement dynamic sets and lookup tables.</p>
+<ul>
+<li>with the way that the nodes of a BST are arranged, each comparison skips ~half the remaining tree.
+<ul>
+<li>this results in a <a href="/Digital-Garden/notes/kh4pnGNcrtlixB0ThQuBq">time complexity</a> that is logarithmic (<code>O(log n)</code>), making it much faster than the linear time required to find items in an unsorted array, but slower than finding items in a hash table.</li>
+</ul>
+</li>
+</ul>
+<h3 id="traversal-types"><a aria-hidden="true" class="anchor-heading" href="#traversal-types"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Traversal types</h3>
+<p>In-order traversals are performed on each node by processing the left subtree, then the node itself, then the right subtree.
+Pre-order traversal
+Post-order traversal</p>
+<h3 id="storing-a-bst"><a aria-hidden="true" class="anchor-heading" href="#storing-a-bst"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>"Storing" a BST</h3>
+<p>store both Inorder and Preorder traversals. This solution requires space twice the size of Binary Tree.</p>

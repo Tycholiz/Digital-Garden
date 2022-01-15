@@ -1,0 +1,21 @@
+<h1 id="log"><a aria-hidden="true" class="anchor-heading" href="#log"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Log</h1>
+<h3 id="log-1"><a aria-hidden="true" class="anchor-heading" href="#log-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Log</h3>
+<ul>
+<li>we can pass a filename to <code>git log</code> to only show the history of a given file</li>
+<li>also, we can pass a commit SHA to see the revision history up until that point
+<ul>
+<li>This fact shows how by default, <code>git log</code> will run with <code>HEAD</code>, showing the revision history from the current branch's tip</li>
+</ul>
+</li>
+<li>We can run <code>git log -n 4</code> to show only the last 4 commits from HEAD
+<ul>
+<li>equivalent to <code>git log HEAD~4..HEAD</code></li>
+</ul>
+</li>
+<li>running <code>git log master..origin/master</code> checks what exists on origin that doesn't on our local master. The opposite, <code>git log origin/master..master</code> checks what exists on our local master that doesn't on origin. If the output is empty, it means that our branches have not diverged.</li>
+</ul>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/XSO4NUbJM4byaaftyrFEC">Cook</a></li>
+</ol>

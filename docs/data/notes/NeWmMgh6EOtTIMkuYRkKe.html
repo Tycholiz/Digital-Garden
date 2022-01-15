@@ -1,0 +1,23 @@
+<h1 id="symbol"><a aria-hidden="true" class="anchor-heading" href="#symbol"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Symbol</h1>
+<p><a href="/Digital-Garden/notes/o4e8Bc8UEDoIFw5vYVsfZ">See</a></p>
+<p>Symbols can be used to add unique property keys to an object that won't collide with other code that might be added to the object.</p>
+<ul>
+<li>this effectively enables a weak form of encapsulation.</li>
+</ul>
+<p>Symbols are specifically created to be used as Object keys where you fear that key might be overwritten by someone else and lead to trouble (as it can happen with String keys for example).</p>
+<ul>
+<li>Since Symbols are all unique, the only way to access a property with a Symbol key is to already have that Symbol. This means you either have to be the one who wrote the code, or that Symbol was defined by the standard (e.g. <code>Symbol.iterator</code>) and they did that to avoid breaking older code that might have used <code>obj["iterator"]</code> for example.</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token keyword">let</span> sym1 <span class="token operator">=</span> <span class="token known-class-name class-name">Symbol</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> sym2 <span class="token operator">=</span> <span class="token known-class-name class-name">Symbol</span><span class="token punctuation">(</span><span class="token string">'foo'</span><span class="token punctuation">)</span>
+<span class="token comment">// since symbols are guaranteed to be unique, we can create multiple symbols with the same description</span>
+<span class="token keyword">let</span> sym3 <span class="token operator">=</span> <span class="token known-class-name class-name">Symbol</span><span class="token punctuation">(</span><span class="token string">'foo'</span><span class="token punctuation">)</span>
+
+<span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span>sym2 <span class="token operator">===</span> sym3<span class="token punctuation">)</span> <span class="token comment">// false</span>
+</code></pre>
+<p>The <code>description</code> is the value passed to <code>Symbol()</code>.</p>
+<ul>
+<li>can be used for debugging purposes, but not to access the <code>symbol</code> itself.</li>
+</ul>
+<h1 id="ue-resources"><a aria-hidden="true" class="anchor-heading" href="#ue-resources"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>UE Resources</h1>
+<p><a href="https://hacks.mozilla.org/2015/06/es6-in-depth-symbols/">Recommended MDN article on Symbols</a></p>

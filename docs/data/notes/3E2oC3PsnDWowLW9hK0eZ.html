@@ -1,0 +1,31 @@
+<h1 id="sns"><a aria-hidden="true" class="anchor-heading" href="#sns"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>SNS</h1>
+<h1 id="simple-notification-service"><a aria-hidden="true" class="anchor-heading" href="#simple-notification-service"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Simple Notification Service</h1>
+<p>AWS SNS is a fully managed messaging service that enables us to send messages <em>reliably</em> between parts of the infrastructure.</p>
+<p>SNS uses a robust retry mechanism in cases where downstream targets are unavailable.</p>
+<ul>
+<li>If it still fails, it will utilize a <a href="/Digital-Garden/notes/0pUoWXrTC07Z9B1ijwosK">DLQ</a>.</li>
+</ul>
+<p>SNS does not retain messages so if there are no subscribers for a topic, the message is discarded.</p>
+<ul>
+<li>comparatively, an <a href="/Digital-Garden/notes/Ha1umcNRHS8mEarVSMy5v">SQS</a> message is stored on the queue for up to 14 days until it is successfully processed by a subscriber.</li>
+</ul>
+<p>SNS uses topics to logically separate messages into channels, and your <a href="/Digital-Garden/notes/OSdV9FvBG3wDbRNLllg0V">Lambda functions</a> interact with these topics.</p>
+<p>SNS topics may broadcast to multiple targets (fan-out).</p>
+<ul>
+<li>An SNS topic can have up to 12,500,000 subscribers, providing highly scalable fan-out capabilities.</li>
+</ul>
+<p>SNS can be used to parallelize work across Lambda functions or send messages to multiple environments (such as test or development).</p>
+<h3 id="vs-eventbridge"><a aria-hidden="true" class="anchor-heading" href="#vs-eventbridge"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>vs <a href="/Digital-Garden/notes/7n3tUhrwbvz8nNu0bTlWz">EventBridge</a></h3>
+<p>Both can be used to decouple publishers and subscribers, filter messages or events, and provide fan-in or fan-out capabilities.</p>
+<p>EventBridge offers two capabilities not in SNS:</p>
+<ul>
+<li>SaaS integration</li>
+<li>Schema registry</li>
+</ul>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/QukN1H4jrogOyBjotZd7U">Svc</a></li>
+<li><a href="/Digital-Garden/notes/Skg9BUUhw2xIBmwrkEP4u">Messaging Pattern</a></li>
+<li><a href="/Digital-Garden/notes/Ag4RGxbqigmzcZAUS9FRv">Lambda Function</a></li>
+</ul>

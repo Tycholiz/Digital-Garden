@@ -1,0 +1,9 @@
+<h1 id="route53"><a aria-hidden="true" class="anchor-heading" href="#route53"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Route53</h1>
+<p>Route53 is a DNS web service</p>
+<p>It allows us to route end users to Internet applications by translating names like <a href="http://www.example.com">www.example.com</a> to IP addresses.</p>
+<p>effectively, Route53 connects user requests to infrastructure running in AWS, whether it be an <a href="/Digital-Garden/notes/T3myEQpNJczlAwIZCMpQB">Elastic Compute Cloud</a> instance, <a href="/Digital-Garden/notes/2Rtof8yGX9K2Tq6tLljBb">S3</a> bucket etc.</p>
+<ul>
+<li>it can also be used to route users to infrastructure outside of AWS.</li>
+</ul>
+<p>Because Route 53 knows about AWS resources, you can do things like run health checks against load balancers, configure geo-routing based on specific AWS resources, etc.</p>
+<p>A common way to do it would be to use Route53 for internal infrastructure, and something like Cloudflare for public facing resources.</p>

@@ -1,0 +1,43 @@
+<h1 id="ruby"><a aria-hidden="true" class="anchor-heading" href="#ruby"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Ruby</h1>
+<p>Everything in Ruby is an object, and therefore has a class that it's derived from.</p>
+<h3 id="object-types-in-ruby"><a aria-hidden="true" class="anchor-heading" href="#object-types-in-ruby"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Object Types in Ruby</h3>
+<p>Specifying what type any particular object is in Ruby is a bit of a wobbly concept. Since Ruby takes a <a href="/Digital-Garden/notes/AuLfpS6VMEvyQV6p3bl0e">duck typing</a> approach, it's not so important what object it is, but rather what it can do.</p>
+<p>Therefore, it's not common in Ruby-land to want to check the type of a particular object. Instead, it makes more sense to test its ability to respond to certain methods with <code>object.respond_to?(:to_s)</code>.</p>
+<h3 id="data-types"><a aria-hidden="true" class="anchor-heading" href="#data-types"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Data types</h3>
+<ul>
+<li>Numbers</li>
+<li>Boolean</li>
+<li>Strings</li>
+<li>Hashes</li>
+<li>Arrays</li>
+<li>Symbols</li>
+</ul>
+<p>We can verify what type the object is with <code>response.instance_of?(Array)</code></p>
+<h3 id="loose-syntax-rules-of-ruby"><a aria-hidden="true" class="anchor-heading" href="#loose-syntax-rules-of-ruby"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Loose syntax rules of Ruby</h3>
+<p>Ruby allows you to omit parenthesis <code>()</code> and in some cases curly braces <code>{}</code>, sometimes making the code harder to read:</p>
+<pre class="language-rb"><code class="language-rb"><span class="token comment"># the following</span>
+has_many <span class="token symbol">:models</span><span class="token punctuation">,</span> dependent<span class="token punctuation">:</span> <span class="token symbol">:destroy</span>
+
+<span class="token comment"># is identical to:</span>
+has_many<span class="token punctuation">(</span><span class="token symbol">:models</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> dependent<span class="token punctuation">:</span> <span class="token symbol">:destroy</span> <span class="token punctuation">}</span> <span class="token punctuation">)</span>
+<span class="token comment"># has_many takes in 2 args; a symbol and a hashmap</span>
+</code></pre>
+<hr>
+<h3 id="built-in-variables"><a aria-hidden="true" class="anchor-heading" href="#built-in-variables"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Built-in variables</h3>
+<ul>
+<li><code>__FILE__</code> - name of the current file</li>
+<li><code>$0</code> - name of the file that was originally executed</li>
+</ul>
+<p>Ruby treats <code>?</code> and <code>!</code> as actual characters in a method name. respond_to and respond_to? are different. <code>?</code> indicates a boolean evaluation (by convention; not strict requirement).</p>
+<hr>
+<h3 id="closures"><a aria-hidden="true" class="anchor-heading" href="#closures"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Closures</h3>
+<p>Ruby doesn't have <a href="/Digital-Garden/notes/XQ7bkzkwTyqd8vNOHslYZ">first-class functions</a>, but it does have closures in the form of <a href="/Digital-Garden/notes/PZkfa4RcWwEaVTOUoJ6hm">blocks</a> , procs and <a href="/Digital-Garden/notes/AiY1XBqp1K7hLoAFtgfWK">lambdas</a></p>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/tNdcGoS6VbMTG63yCzPXb">Cook</a></li>
+<li><a href="/Digital-Garden/notes/IrF1fg1RQkHLv2hlSXlSO">Gems</a></li>
+<li><a href="/Digital-Garden/notes/1mkk573O8jrA66Frx8cKM">Lang</a></li>
+<li><a href="/Digital-Garden/notes/nrnpmZBUdUh9GlmY6VjJc">Modules</a></li>
+<li><a href="/Digital-Garden/notes/FfSMAAorrDTX6HQBcijok">Regex</a></li>
+</ol>

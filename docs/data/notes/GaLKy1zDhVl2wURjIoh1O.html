@@ -1,0 +1,11 @@
+<h1 id="intersection"><a aria-hidden="true" class="anchor-heading" href="#intersection"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Intersection</h1>
+<p>An Intersection is a way to achieve type composition (as are <a href="/Digital-Garden/notes/uCBFbqRvlipftLOw8A4cd">unions</a>)</p>
+<p>Consider the following intersection:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">const</span> <span class="token function-variable function">sayHello</span> <span class="token operator">=</span> <span class="token punctuation">(</span>obj<span class="token operator">:</span> <span class="token maybe-class-name">Foo</span> <span class="token operator">&#x26;</span> <span class="token maybe-class-name">Bar</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span> <span class="token comment">/* ... */</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Here, we are saying that <code>obj</code> must have <em>all</em> properties that are included on both <code>Foo</code> and <code>Bar</code>. </p>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/uCBFbqRvlipftLOw8A4cd">Union</a></li>
+</ul>

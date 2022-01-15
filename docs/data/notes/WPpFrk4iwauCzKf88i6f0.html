@@ -1,0 +1,90 @@
+<h1 id="async-iterator"><a aria-hidden="true" class="anchor-heading" href="#async-iterator"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Async Iterator</h1>
+<h3 id="async-iterator-1"><a aria-hidden="true" class="anchor-heading" href="#async-iterator-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Async iterator</h3>
+<p>Asynchronous iteration allow us to iterate over data that comes asynchronously, on-demand.</p>
+<ul>
+<li>ex. download something chunk-by-chunk over a network.</li>
+<li>in other words, it allows you to access asynchronous data sequentially.</li>
+</ul>
+<p>Async iterators can be used when we don’t know the values and the end state we iterate over. Instead, we get <a href="/Digital-Garden/notes/FVbSefFiCJPpdtkRRsogA">Promises</a>.</p>
+<p><code>Symbol.asyncIterator</code> is a built-in symbol that enables an object to be async iterable.</p>
+<ul>
+<li>This enables us to use a <code>for-await-of</code> loop with async iterators, which allows us to loop over the async iterator.
+<ul>
+<li>Imagine having an array of promises, and each promise represents some data that will arrive in the next chunk. We can loop over each promise, and do something with that data when it arrives. Only once the current promise has resolved will it move onto the next.</li>
+</ul>
+</li>
+<li><code>Symbol.asyncIterator</code> is a method that returns the default AsyncIterator for an object. If the <code>asyncIterator</code> property is on an object, it is an Async Iterable, and therefore we can use <code>for-await-of</code>.</li>
+<li>recall at its base, an <a href="/Digital-Garden/notes/uyc7zM5lyRzHIsmnsSkFT">iterator</a> must know 2 things: where it currently is, and how to get to the next item.</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> asyncIterable <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token punctuation">[</span><span class="token known-class-name class-name">Symbol</span><span class="token punctuation">.</span><span class="token property-access">asyncIterator</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword control-flow">return</span> <span class="token punctuation">{</span>
+      i<span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+      <span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">i</span> <span class="token operator">&#x3C;</span> <span class="token number">3</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword control-flow">return</span> <span class="token known-class-name class-name">Promise</span><span class="token punctuation">.</span><span class="token method function property-access">resolve</span><span class="token punctuation">(</span><span class="token punctuation">{</span> value<span class="token operator">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">i</span><span class="token operator">++</span><span class="token punctuation">,</span> done<span class="token operator">:</span> <span class="token boolean">false</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword control-flow">return</span> <span class="token known-class-name class-name">Promise</span><span class="token punctuation">.</span><span class="token method function property-access">resolve</span><span class="token punctuation">(</span><span class="token punctuation">{</span> done<span class="token operator">:</span> <span class="token boolean">true</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token punctuation">(</span><span class="token keyword">async</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   <span class="token keyword control-flow">for</span> <span class="token keyword control-flow">await</span> <span class="token punctuation">(</span><span class="token keyword">let</span> num <span class="token keyword">of</span> asyncIterable<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+     <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span>num<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>An async iterator is like an <a href="/Digital-Garden/notes/uyc7zM5lyRzHIsmnsSkFT">iterator</a> except that its <code>next()</code> method returns a promise that resolves to the <code>{value, done}</code> object. A regular iterator's <code>next()</code> method would simply return the object (<code>{value, done}</code>).</p>
+<p>There are currently no built-in JavaScript objects that have the <code>[Symbol.asyncIterator]</code> key set by default.</p>
+<ul>
+<li>Streams do, but they are from Node.js. In fact, async iterators are very useful when dealing with streams</li>
+</ul>
+<p>A great use case for async iteration is when we need to fetch data from a remote paginated dataset.</p>
+<ul>
+<li><a href="https://www.nodejsdesignpatterns.com/blog/javascript-async-iterators/">https://www.nodejsdesignpatterns.com/blog/javascript-async-iterators/</a></li>
+</ul>
+<p>Since the ability of an iterator to be async is determined by the presence of a <code>[Symbol.asyncIterator]()</code> property on an object, we can define our own:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> myAsyncIterable <span class="token operator">=</span> <span class="token punctuation">{</span>
+    async<span class="token operator">*</span> <span class="token punctuation">[</span><span class="token known-class-name class-name">Symbol</span><span class="token punctuation">.</span><span class="token property-access">asyncIterator</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword control-flow">yield</span> <span class="token string">"hello"</span><span class="token punctuation">;</span>
+        <span class="token keyword control-flow">yield</span> <span class="token string">"async"</span><span class="token punctuation">;</span>
+        <span class="token keyword control-flow">yield</span> <span class="token string">"iteration!"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token punctuation">(</span><span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+    <span class="token keyword control-flow">for</span> <span class="token keyword control-flow">await</span> <span class="token punctuation">(</span><span class="token keyword">const</span> x <span class="token keyword">of</span> myAsyncIterable<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// expected output:</span>
+        <span class="token comment">//    "hello"</span>
+        <span class="token comment">//    "async"</span>
+        <span class="token comment">//    "iteration!"</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Another example:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> asyncIterable <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+asyncIterable<span class="token punctuation">[</span><span class="token known-class-name class-name">Symbol</span><span class="token punctuation">.</span><span class="token property-access">asyncIterator</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token keyword">function</span><span class="token operator">*</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword control-flow">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&#x3C;</span> asyncIterable<span class="token punctuation">.</span><span class="token property-access">length</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword control-flow">yield</span> <span class="token punctuation">{</span> value<span class="token operator">:</span> asyncIterable<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> done<span class="token operator">:</span> <span class="token boolean">false</span> <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword control-flow">yield</span> <span class="token punctuation">{</span> done<span class="token operator">:</span> <span class="token boolean">true</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token punctuation">(</span><span class="token keyword">async</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> 
+    <span class="token comment">// The for-await-of loop will wait for every promise it receives to resolve before moving on to the next one</span>
+    <span class="token keyword control-flow">for</span> <span class="token keyword control-flow">await</span> <span class="token punctuation">(</span><span class="token keyword">const</span> part <span class="token keyword">of</span> asyncIterable<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span>part<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h4 id="consuming-paginated-apis"><a aria-hidden="true" class="anchor-heading" href="#consuming-paginated-apis"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Consuming paginated APIs</h4>
+<p><a href="https://blog.risingstack.com/async-iterators-in-node-js/">https://blog.risingstack.com/async-iterators-in-node-js/</a></p>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/TW69H1KGd0viXoQcMoCU4">Stream</a></li>
+</ul>

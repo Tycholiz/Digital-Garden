@@ -1,0 +1,22 @@
+<h1 id="direnv"><a aria-hidden="true" class="anchor-heading" href="#direnv"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Direnv</h1>
+<p>Direnv is an environment variable manager for your shell</p>
+<ul>
+<li>ex. maybe you want to have <code>NPM_CONFIG</code> variable set to something else depending on what directory you are in.</li>
+<li>It does this by <a href="/Digital-Garden/notes/XyUMSGpFGXIr6JiBPl4ci">hooking</a> into the shell to load/unload env variables, depending on current directory.</li>
+</ul>
+<p>Direnv allows us to have project-specific env variables, preventing us from having to clutter a <code>/.profile</code> file.</p>
+<p>Before each prompt, existence of <code>.envrc</code> file is checked in current and parent directories.</p>
+<ul>
+<li>If exists, it is loaded into a sub shell and all exported variables and then captured by Direnv and made available to the current shell.</li>
+</ul>
+<p>spec: You could also use Direnv to load the correct version of node with <code>nvm</code>.</p>
+<h3 id="procedure"><a aria-hidden="true" class="anchor-heading" href="#procedure"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Procedure</h3>
+<ol>
+<li>create an <code>.envrc</code> file with the contents of what will get run when entering the directory:</li>
+</ol>
+<pre class="language-sh"><code class="language-sh"># .envrc
+export NPM_TOKEN=glpat-93884hnf3n33nf9
+</code></pre>
+<ol start="2">
+<li>run <code>direnv allow</code> in the directory to source in the file, and mark it as safe so it will be sourced automatically in the future.</li>
+</ol>

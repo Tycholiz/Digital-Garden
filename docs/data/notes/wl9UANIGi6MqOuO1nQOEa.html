@@ -1,0 +1,12 @@
+<h1 id="open3"><a aria-hidden="true" class="anchor-heading" href="#open3"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Open3</h1>
+<p>Open3 grants you access to stdin, stdout, stderr and a thread to wait for the child process when running another program.</p>
+<ul>
+<li>You can specify various attributes, redirections, current directory, etc., of the program in the same way as for Process.spawn.</li>
+</ul>
+<h4 id="capture2"><a aria-hidden="true" class="anchor-heading" href="#capture2"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>capture2</code></h4>
+<p>captures the standard output of a command.</p>
+<ul>
+<li><code>2</code> refers to stdout</li>
+</ul>
+<pre><code>stdout_str, status = Open3.capture2([env,] cmd... [, opts])
+</code></pre>

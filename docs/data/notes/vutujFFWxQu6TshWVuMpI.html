@@ -1,0 +1,47 @@
+<h1 id="distributed-computing"><a aria-hidden="true" class="anchor-heading" href="#distributed-computing"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Distributed Computing</h1>
+<p>A distributed system is a system whose components are spread across many machines on a single network. Therefore, when we think of a distributed system we think of it as a network— rather than a single computer.</p>
+<p>In distributed computing, a problem is divided into many tasks, each of which is solved by one or more computers, which communicate with each other via message passing.</p>
+<p>Not to be confused with decentralized architecture</p>
+<ul>
+<li>Distributed means that the processing is shared across multiple nodes, but the decisions may still be centralized and use complete system knowledge.</li>
+</ul>
+<p>Data partition and replication strategies lie at the core of any distributed system.</p>
+<p>Distributed systems typically have the following characteristics:</p>
+<ul>
+<li>concurrency of components</li>
+<li>lack of a global clock</li>
+<li>failure of components</li>
+</ul>
+<p>Key characteristics of a distributed system include Scalability, Reliability, Availability, Efficiency, and Manageability.</p>
+<p>Messages may be passed between nodes of a distributed system by using technologies like HTTP, <a href="/Digital-Garden/notes/GHjKTmxGjjtoWBzfz9MZL">RPCs</a>, or message queues</p>
+<p>Historically, <em>distributed</em> referred to the fact that there were multiple computers all working in unison to solve some problem. Nowadays (as of 2021), the term is much broader, and can be used to refer to a system of multiple autonomous processes existing on a single machine. In this case, a node of the "network" would be a single process, rather than an entire computer.</p>
+<ul>
+<li>In the case of distributed computing, a node is simply something that passes messages and has its own local memory.</li>
+</ul>
+<p>There is no clear distinction between distributed systems and parallel systems, and there is a lot of overlap, thought one distinction is that the nodes of a parallel system all share the same memory, while nodes of a distributed system manage their own:
+<img src="/Digital-Garden/assets/images/2021-07-16-13-10-56.png" alt="Distributed system vs Parallel system">
+Examples of distributed systems: MMOs, the internet itself</p>
+<h2 id="considerations-for-distributed-systems"><a aria-hidden="true" class="anchor-heading" href="#considerations-for-distributed-systems"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Considerations for distributed systems</h2>
+<p>According to <a href="/Digital-Garden/notes/ilOPfgNyiPSHOb9tNB6yL">CAP theorem</a>, out of consistency, availability and partition tolerance, you can only really achieve 2/3.</p>
+<h1 id="ue-resources"><a aria-hidden="true" class="anchor-heading" href="#ue-resources"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>UE Resources</h1>
+<p><a href="https://www.youtube.com/watch?v=Y6Ev8GIlbxc">Good Speaker (Kafka Guy)</a>
+<a href="https://www.aosabook.org/en/distsys.html">Considerations for distributed systems</a>
+<a href="https://vimeo.com/545130381">Distributed Transactions Without Atomic Clocks</a></p>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/fsTgzaiHZPnbWedUYhFty">Elastic Beanstalk</a></li>
+<li><a href="/Digital-Garden/notes/csPOCpGsdV9SQed4lZyWh">Enterprise Service Bus</a></li>
+<li><a href="/Digital-Garden/notes/mH9p012Girn7AC2S2mhAp">Log</a></li>
+</ul>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/ilOPfgNyiPSHOb9tNB6yL">CAP-theorem</a></li>
+<li><a href="/Digital-Garden/notes/VNbeSk3PfO4gigzuwv2UZ">CDN</a></li>
+<li><a href="/Digital-Garden/notes/kW6jznu1QgEOogMoby4E9">Cache</a></li>
+<li><a href="/Digital-Garden/notes/ixUb4q9KIlc89hsmLFvb5">Load Balancer</a></li>
+<li><a href="/Digital-Garden/notes/d9VcIHWuATcb5hABBes7W">Locks</a></li>
+<li><a href="/Digital-Garden/notes/GHjKTmxGjjtoWBzfz9MZL">RPC</a></li>
+<li><a href="/Digital-Garden/notes/44spGneT5iu1X9jEjpU1T">Strategies</a></li>
+</ol>

@@ -1,0 +1,42 @@
+<h1 id="functions"><a aria-hidden="true" class="anchor-heading" href="#functions"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Functions</h1>
+<h2 id="tagged-template-literals"><a aria-hidden="true" class="anchor-heading" href="#tagged-template-literals"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Tagged Template Literals</h2>
+<pre class="language-js"><code class="language-js"><span class="token comment">// These are equivalent:</span>
+fn<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">some string here</span><span class="token template-punctuation string">`</span></span>
+<span class="token function">fn</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'some string here'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+</code></pre>
+<hr>
+<p>The rest of the arguments will be the interpolations, in order.</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> aVar <span class="token operator">=</span> <span class="token string">'good'</span>
+
+<span class="token comment">// These are equivalent:</span>
+fn<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">this is a </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>aVar<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> day</span><span class="token template-punctuation string">`</span></span>
+<span class="token function">fn</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'this is a '</span><span class="token punctuation">,</span> <span class="token string">' day'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> aVar<span class="token punctuation">)</span>
+</code></pre>
+<h2 id="identity-function"><a aria-hidden="true" class="anchor-heading" href="#identity-function"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Identity function</h2>
+<pre><code>fetchBook()
+  .then((book) => formatBook(book))
+  .then((postscript) => print(postscript))
+</code></pre>
+<p>is equivalent to (verify this)</p>
+<pre><code>fetchBook()
+  .then(formatBook)
+  .then(print);
+</code></pre>
+<h3 id="passing-in-a-named-function-vs-passing-in-a-function-that-calls-the-named-function"><a aria-hidden="true" class="anchor-heading" href="#passing-in-a-named-function-vs-passing-in-a-function-that-calls-the-named-function"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Passing in a named function vs Passing in a function that calls the named function</h3>
+<p><code>setTimeout</code> will call the passed in function after X milliseconds.</p>
+<ul>
+<li>in the first case, <code>resolve</code> gets called, which resolves the promise</li>
+<li>in the second case, a function which calls <code>resolve</code> gets called. The act of calling this function results in <code>resolve</code> being called</li>
+</ul>
+<p>Therefore, these are not the same thing, but they attain the same result</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token function-variable function">sleep</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">ms</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span><span class="token parameter">resolve</span> <span class="token arrow operator">=></span> <span class="token function">setTimeout</span><span class="token punctuation">(</span>resolve<span class="token punctuation">,</span> ms<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment">// vs</span>
+<span class="token keyword">const</span> <span class="token function-variable function">sleep</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">ms</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span><span class="token parameter">resolve</span> <span class="token arrow operator">=></span> <span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token function">resolve</span><span class="token punctuation">(</span><span class="token string">'foo'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> ms<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/GwpfAU7h2KfT3Ld9v8c2B">Generator Functions</a></li>
+<li><a href="/Digital-Garden/notes/DsZDJNeN5czEgtcwlUrwX">IIFE</a></li>
+<li><a href="/Digital-Garden/notes/oEhmsVtjrXZomySs0QFij">Ttl</a></li>
+</ol>

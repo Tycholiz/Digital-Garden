@@ -1,0 +1,40 @@
+<h1 id="anchors"><a aria-hidden="true" class="anchor-heading" href="#anchors"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Anchors</h1>
+<p>While literal characters, <a href="/Digital-Garden/notes/nzN1gIEjllvdUknO4s40W">character classes</a>, and the <code>.</code> match a single character, anchors don't match any character at all. Instead, they match a position before, after, or between characters.</p>
+<ul>
+<li>Anchors are therefore said to be <em>zero-length</em>.</li>
+<li>They are called anchors because they can be used to “anchor” the regex match at a certain position</li>
+</ul>
+<h3 id=""><a aria-hidden="true" class="anchor-heading" href="#"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>^</code></h3>
+<p><code>^</code> matches the position before the first character in the string.</p>
+<ul>
+<li>Applying <code>^a</code> to <code>abc</code> matches <code>a</code>.</li>
+<li><code>^b</code> does not match <code>abc</code> at all</li>
+</ul>
+<h3 id="-1"><a aria-hidden="true" class="anchor-heading" href="#-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>$</code></h3>
+<p><code>$</code> matches right after the last character in the string.</p>
+<ul>
+<li><code>c$</code> matches <code>c</code> in <code>abc</code></li>
+<li><code>a$</code> does not match at all.</li>
+</ul>
+<h3 id="b"><a aria-hidden="true" class="anchor-heading" href="#b"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>\b</code></h3>
+<p>matches at a position that is called a “word boundary”</p>
+<ul>
+<li><code>\b</code> allows you to perform a “whole words only” search using a regular expression in the form of <code>\bword\b</code></li>
+</ul>
+<p><code>\b</code> is not technically an anchor, but it is very closely related. If we were to imagine a string of text as the space between 2 walls, then we would consider the anchors <code>^</code> and <code>$</code> to be either wall (ie. the position before the first character, and after the last character). <code>\b</code> differs from this because <code>\b</code> marks the position of a word character <code>\w</code> on one side, and a non-word character <code>\W</code> on the other.</p>
+<p>There are three different positions that qualify as word boundaries:</p>
+<ol>
+<li>Before the first character in the string, (if the first character is a word character).</li>
+<li>After the last character in the string, (if the last character is a word character).</li>
+<li>Between two characters in the string, where one is a word character and the other is not a word character.</li>
+</ol>
+<p><img src="/Digital-Garden/assets/images/2021-11-28-14-22-35.png"></p>
+<h3 id="using--and--as-start-of-line-and-end-of-line-anchors"><a aria-hidden="true" class="anchor-heading" href="#using--and--as-start-of-line-and-end-of-line-anchors"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Using <code>^</code> and <code>$</code> as Start of Line and End of Line Anchors</h3>
+<p>Called “multi-line mode”, and it generally needs to be explicitly enabled.</p>
+<p>If you have a string consisting of multiple lines, like <code>first line\nsecond line</code>, it often makes sense to think in terms of lines, rather than the entire string</p>
+<ul>
+<li>ex. <code>^</code> can match at the start of the string (ie. before the letter <code>f</code>), as well as after each line break (between <code>\n</code> and the letter <code>s</code>)</li>
+<li>ex. Likewise, <code>$</code> still matches at the end of the string (after the last <code>e</code>), and also before every line break (between <code>e</code> and <code>\n</code>)</li>
+</ul>
+<hr>
+<p>Anchors are very important when using regex in a programming language to validate user input</p>

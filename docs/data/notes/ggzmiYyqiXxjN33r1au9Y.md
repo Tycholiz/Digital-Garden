@@ -1,0 +1,28 @@
+
+# CPU Architecture
+## 32 bit vs 64 bit architecture
+- a memory address that's 32 bits long can only refer to 4.2 billion unique locations (i.e. 4 GB).
+- anal: we can count on our fingers up to 10 in the decimal system. Since computers are binary, a bit is the number of "digital fingers" that the computer can count on.
+	- ex. If I said a computer has 4 bits, the biggest number I could put in it is 4 places long, or 1111.
+- the biggest number a 32 bit system could handle is `11111111111111111111111111111111` (4,294,967,296)
+	- this would be the theoretical highest number that our computer could do calculations with (though there are workaround tricks that are slower)
+	- The practical use of this "largest number" is in determining how much memory we can have.
+- At a high level, a higher bit CPU allows the machine to run faster by having advanced operations supported by opcodes(rather than using simple opcodes to build up to a complex algorithm) and utilize more memory by having access to more address spaces(it can save stuff in RAM instead of hard-disk, which is slower than RAM, even if it is flash memory also).
+- ex. In legacy versions of Excel, the max number of rows is 65,537, which corresponds to 16 bits (`1111111111111111`)
+- ex. in the original zelda, the max number of rupees was 255, which corresponds to 8 bits (`11111111`)
+- anal: imagine a paper letter. More bits means more possible addresses, which would correspond to a bigger envelope. The other side of the equation is how much RAM we have. Going from a 32-bit system to a 64-bit system would be like going from a standard sized envelope to an envelope that wraps around the world 3 times (since: 2<sup>64</sup> is more than 4 billion times larger than 2<sup>32</sup>).
+- a 32-bit system would only be able to understand 4GB worth of RAM, making any RAM beyond that amount redundant on a 32-bit system.
+	- This is not entirely true because of the existence of PAE (Physical Address Extension), which allows a 32-bit system access more than 4GB of RAM. However it is still true that individual programs are limited to the 4GB.
+
+## ARM vs. x86
+ARM and x86 are 2 different families of CPU architecture
+- ARM is more efficient than regular x86 processors, which is made possible by a simplified instruction set, and having a stripped down hardware.
+- unlike x86, ARM wasn't made with backward compatability in mind, so it doesn't repeat a lot of the inefficient designs that were made by its antecedents.
+- known as *reduced instruction set computing* (RISC), while x86 uses *complex instruction set* (CISC)
+
+anal: imagine that we have 2 general-purpose factories that can make a wide array of things: the x86 Factory, and the ARM Factory
+	- **x86 Factory** - There is a receptionist at the front that receives mail (requests) one at a time. Each time he gets a piece of mail, he passes it on to a group of people who open (decode) the messages to figure out what action should be taken. Each person in this group can figure out his own request, and figure out where it should go next. Also, these requests can vary wildly in size and purpose. For instance, one request might be "take data from this warehouse and put it in bucket X (load to register)". Another might be "take data from this warehouse and put it on the conveyor to this trucking station (bus to I/O)". Another might be "take 3 different pieces of data from the warehouse, add them together, then put them back in a different spot of the warehouse". Since each request varies in the amount of time is takes to process, the factory gets more efficient if more people are hired to handle these requests. This is why this type of factory can be so expensive: to get more efficient, more decoders must be hired.
+	- **ARM Factory** - There is a receptionist at the front that receives mail (requests) **and** opens them. These requests differ from the ones accepted by the x86 Factory, in that they are more atomic and simpler to understand. The implication of this is that the receptionist knows exactly which department to send the request to, without needing another department of decoders to figure everything out. One type of request the receptionist might receive is "load this one piece of data from the warehouse into this bucket". Another might be "add these two buckets together and store the result in the first bucket". However, this means that the compiler (which converts the program to machine code) needs to write out all of these smaller instructions. Instead of the x86 method of decoding large instructions into smaller ones on the fly, the ARM method is to do it all ahead of time.
+
+Since the ARM architecture has less hardware doing things, it is a lot cheaper to design and make, and is more energy efficient.
+Originally, ARM was meant for small embedded systems. This meant that there was little incentive to improve performance. Since ARM chips have expanded to phones, performance is a more recent focus of ARM chips.

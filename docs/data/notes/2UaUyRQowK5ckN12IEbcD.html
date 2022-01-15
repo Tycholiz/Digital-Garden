@@ -1,0 +1,28 @@
+<h1 id="test"><a aria-hidden="true" class="anchor-heading" href="#test"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Test</h1>
+<p>"Test" is a conditional check in Bash</p>
+<p><code>[ -e FILE ]</code> - True if FILE exists
+<code>[ -d FILE ]</code> - True if FILE exists and is a directory.
+<code>[ -f FILE ]</code> - True if FILE exists and is a regular file (ie. not a directory).
+<code>[ -z STRING ]</code> - True if the length if "STRING" is zero.
+<code>[ -n STRING ]</code> or <code>[ STRING ]</code> - True if the length of string > 0</p>
+<pre><code>- use to check for existence of variable
+</code></pre>
+<pre class="language-sh"><code class="language-sh">http_status=$(curl ___)
+if [ $http_status != "200" ]
+    then
+        echo "command failed"
+fi
+</code></pre>
+<h3 id="test-based-on-exit-status-of-previously-executed-command"><a aria-hidden="true" class="anchor-heading" href="#test-based-on-exit-status-of-previously-executed-command"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Test based on exit status of previously executed command</h3>
+<ul>
+<li>The <code>?</code> variable holds the exit status of the previously executed command (the most recently completed foreground process).</li>
+</ul>
+<pre class="language-sh"><code class="language-sh">if [ $? -eq 0 ]
+then echo 'That was a good job!'
+fi
+</code></pre>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/cc2R54F24I4u4lXTMwoPE">Cook</a></li>
+</ol>

@@ -1,0 +1,49 @@
+<h1 id="groq"><a aria-hidden="true" class="anchor-heading" href="#groq"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>GROQ</h1>
+<p>GROQ (Graph-Relational Object Queries) is a declarative query language that shares a lot of similarities with <a href="/Digital-Garden/notes/CSePBQ6q7qhowKESqVwt7">GraphQL</a>.</p>
+<ul>
+<li>It is used by...
+<ul>
+<li>describing exactly what information your application needs</li>
+<li>potentially joining together information from several sets of documents</li>
+<li>then stitching together a very specific response with only the exact fields you need.</li>
+</ul>
+</li>
+</ul>
+<pre><code>*[_type == "post" &#x26;&#x26; slug.current == $slug] | order(publishedDate, title) {
+    title,
+    author,
+    publishedDate
+}[0..5]
+</code></pre>
+<p>Means:
+<code>*</code> </p>
+<ul>
+<li>select all documents</li>
+</ul>
+<p><code>[_type == 'post' &#x26;&#x26; slug.current == $slug]</code> </p>
+<ul>
+<li>filter the selection down to documents with the type "post" and those of them who have the same slug to that we have in the parameters</li>
+</ul>
+<p>[0] </p>
+<ul>
+<li>select the first and only one in that list</li>
+</ul>
+<h2 id="breakdown"><a aria-hidden="true" class="anchor-heading" href="#breakdown"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Breakdown</h2>
+<p>We think of GROQ statements as describing a data flow from left to right.</p>
+<h3 id="filter"><a aria-hidden="true" class="anchor-heading" href="#filter"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Filter</h3>
+<p>the first set of <code>[]</code> is the filer. We return data the type of data we are seeking, based on what parameters etc.</p>
+<ul>
+<li>ex. return data that are of either type <code>Movie</code> or <code>Person</code>, and <code>popularity > 15</code>, or <code>releaseDate > 2016-04-25</code></li>
+</ul>
+<h3 id="slice"><a aria-hidden="true" class="anchor-heading" href="#slice"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Slice</h3>
+<p>the second set of <code>[]</code>
+Allows us to determine which items we will get back from the query
+ex. first 5</p>
+<h3 id="projection"><a aria-hidden="true" class="anchor-heading" href="#projection"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>projection</h3>
+<p>what's found between <code>{}</code>
+ex. return <code>title</code>, <code>author</code>, and <code>publishedDate</code> from the query for all blog posts.</p>
+<h3 id="ordering"><a aria-hidden="true" class="anchor-heading" href="#ordering"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Ordering</h3>
+<p>what's found after the <code>|</code>
+We can order by secondary properties, if the first property is the same (e.g. in cases where there are many items with the same <code>year</code> value)</p>
+<h1 id="resources"><a aria-hidden="true" class="anchor-heading" href="#resources"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Resources</h1>
+<p><a href="https://www.sanity.io/docs/query-cheat-sheet">Cheat sheet</a></p>

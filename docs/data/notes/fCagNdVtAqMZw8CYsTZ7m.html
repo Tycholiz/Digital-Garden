@@ -1,0 +1,14 @@
+<h1 id="acid"><a aria-hidden="true" class="anchor-heading" href="#acid"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Acid</h1>
+<h1 id="acid-1"><a aria-hidden="true" class="anchor-heading" href="#acid-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>ACID</h1>
+<p>"As a developer, we should think of a database as something that is ACID-compliant." —Dmitri Fontaine</p>
+<hr>
+<p>From the Postgres-XL docs, here is an implication of it being fully ACID:
+<em>When you start a transaction or query in Postgres-XL, you’ll see a consistent version of your data across the entire cluster. While you are reading your data on one connection, you could be updating the same table or even row in another connection without any locking. Both connections are working with their own versions of the rows, thanks to global transaction identifiers and snapshots.  Readers do not block writers and writers do not block readers.</em></p>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/iVqY5tKOzlWVVRzOqOED5">Atomic</a></li>
+<li><a href="/Digital-Garden/notes/Ql1WxSHx11UTkDnfmYlzq">Consistent</a></li>
+<li><a href="/Digital-Garden/notes/CDsgl4whjOFvjrrLJXXDt">Durable</a></li>
+<li><a href="/Digital-Garden/notes/SBhnwv59C8Y0Gb9nRztZU">Isolated</a></li>
+</ol>

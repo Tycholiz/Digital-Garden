@@ -1,0 +1,25 @@
+<h1 id="util"><a aria-hidden="true" class="anchor-heading" href="#util"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Util</h1>
+<p>A utility type is also known as a Type Constructor</p>
+<p>Type constructor is a function (in the mathematical sense) that takes a type and returns a new type (based on the original type).</p>
+<ul>
+<li>Notice that a generic interface with only one type argument is exactly that</li>
+</ul>
+<p>Utility types allow us to construct a new type, taking an initial type, and modifying it some way, determined by which utility type we use.</p>
+<p>Think of a utility type as a function that takes in 1+ types, and returns a new type</p>
+<h2 id="examples"><a aria-hidden="true" class="anchor-heading" href="#examples"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Examples</h2>
+<ul>
+<li><code>Partial&#x3C;Type></code> - construct a new type with all properties of <code>Type</code>, but those properties are all optional.</li>
+<li><code>Required&#x3C;Type></code> - construct a new type with all properties of <code>Type</code>, but those properties are required. 
+<ul>
+<li>therefore opposite of Partial</li>
+</ul>
+</li>
+<li><code>Record&#x3C;Keys, Value></code> - contruct a new object type, where the keys are of type <code>Keys</code> and the values are of type <code>Value</code></li>
+</ul>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/EmdHPK2ov87xExwuoJM07">Partial</a></li>
+<li><a href="/Digital-Garden/notes/CKrmZeLBzQcMYBkKvYBTP">Pick</a></li>
+<li><a href="/Digital-Garden/notes/yG6UhH8culYpLeJN1pB0K">Record</a></li>
+</ol>

@@ -1,0 +1,30 @@
+<h1 id="plpgsql"><a aria-hidden="true" class="anchor-heading" href="#plpgsql"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Plpgsql</h1>
+<p>PL/pgSQL is an interpreted language, which means that the function body is not evaluated for syntactical soundness as in compiled programming languages like Pascal or C++. Therefore you can write a function which only reveals any errors when it is invoked.</p>
+<p>Think of sql commands as having the potential to return rows. In this sense, they are like functions.</p>
+<ul>
+<li>in javascript we can do something like this:</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> returnedValueFromFn <span class="token operator">=</span> <span class="token function">fn</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre>
+<ul>
+<li>in plpgsql we can do something like this:</li>
+</ul>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> users <span class="token keyword">returning</span> <span class="token operator">*</span> <span class="token keyword">into</span> v_users<span class="token punctuation">;</span>
+</code></pre>
+<p>Since these sql commands are like functions, we can imagine that <code>v_user_id</code> is an argument to the following query:</p>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> users <span class="token keyword">where</span> id <span class="token operator">=</span> v_user_id<span class="token punctuation">;</span>
+</code></pre>
+<ul>
+<li>When executing a SQL command in this way, PL/pgSQL may cache and re-use the execution plan for the command</li>
+</ul>
+<h1 id="e-resources"><a aria-hidden="true" class="anchor-heading" href="#e-resources"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>E Resources</h1>
+<p><a href="https://stackoverflow.com/questions/4547672/return-multiple-fields-as-a-record-in-postgresql-with-pl-pgsql">Return multiple fields without making new type</a></p>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/uEpXGOGg7LWxPaGh38OTr">Diagnostics</a></li>
+<li><a href="/Digital-Garden/notes/zdrNdVkiVb44iIkhOZdzg">For Loops</a></li>
+<li><a href="/Digital-Garden/notes/SD7NZaJDVMavSLsLWRNs3">Setof</a></li>
+<li><a href="/Digital-Garden/notes/1HC7Fui597WWMsdic04uV">Statements</a></li>
+<li><a href="/Digital-Garden/notes/4f4cd05c-52e2-4157-86a4-b2870d6d84a7">Types</a></li>
+</ol>

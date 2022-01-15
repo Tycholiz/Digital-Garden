@@ -1,0 +1,15 @@
+<h1 id="testing"><a aria-hidden="true" class="anchor-heading" href="#testing"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Testing</h1>
+<h2 id="challenges"><a aria-hidden="true" class="anchor-heading" href="#challenges"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Challenges</h2>
+<ul>
+<li>PubSub is inherently asynchronous. Your test can’t just make an API request and then perform an assertion on the response.</li>
+<li>EventBridge has no persistent storage of events that you can query via its API.</li>
+<li>How do you control the side effects caused by multiple downstream subscribers when publishing to EventBridge from your tests?</li>
+</ul>
+<p>We want to test for 3 main scenarios:</p>
+<ul>
+<li>Publisher fails to send event to EventBridge</li>
+<li>Subscriber does not receive event that it should have</li>
+<li>Subscriber receives event but fails to process it correctly</li>
+</ul>
+<h2 id="e-resources"><a aria-hidden="true" class="anchor-heading" href="#e-resources"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>E Resources</h2>
+<p><a href="https://stackoverflow.com/questions/60743785/test-that-an-aws-eventbridge-or-cloudwatch-event-was-fired">Test that EventBridge event was fired</a></p>

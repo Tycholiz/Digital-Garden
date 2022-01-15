@@ -1,0 +1,64 @@
+<h1 id="inversion-of-control"><a aria-hidden="true" class="anchor-heading" href="#inversion-of-control"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Inversion of Control</h1>
+<p>IoC means letting other code call you rather than insisting on doing the calling.</p>
+<ul>
+<li>ex. An example of IoC without dependency injection is the template method pattern. Here, polymorphism is achieved through subclassing, that is, inheritance.</li>
+</ul>
+<p>If you follow these simple two steps, you have done inversion of control:</p>
+<ol>
+<li>Separate what-to-do part from when-to-do part.</li>
+<li>Ensure that when part knows as little as possible about what part; and vice versa.</li>
+</ol>
+<h2 id="examples"><a aria-hidden="true" class="anchor-heading" href="#examples"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Examples</h2>
+<h3 id="email-example"><a aria-hidden="true" class="anchor-heading" href="#email-example"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Email Example</h3>
+<h4 id="the-scenario"><a aria-hidden="true" class="anchor-heading" href="#the-scenario"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>The Scenario</h4>
+<p>Imagine we had a module called <code>FortuneCookieEmailer</code>, which sends email. It uses some kind of service to do the work of actually sending the emails, <code>BillsBulkEmailService</code>. Here, the <code>FortuneCookieEmailer</code> code now contains a direct reference to the <code>BillsBulkEmailService</code>.</p>
+<p>This works, but imagine our program expands and now <code>FortuneCookieEmailer</code> has to sometimes use <code>KylesSpammingService</code>. We would have to go into the <code>FortuneCookieEmailer</code> module and introduce logic that would make it conditionally use either <code>BillsBulkEmailService</code> or <code>KylesSpammingService</code>. Now we need to have some kind of config file somewhere, or some kind of extra "switch" for our <code>FortuneCookieEmailer</code> module. The bad thing is that we are adding the job of "deciding which to use" to a module whose sole responsibility should be fortune cookie emails.</p>
+<h4 id="the-solution"><a aria-hidden="true" class="anchor-heading" href="#the-solution"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>The solution</h4>
+<p>Instead of <code>FortuneCookieEmailer</code> going out and getting a reference to the <code>BillsBulkEmailService</code> or <code>KylesSpammingService</code> itself and then using that, <code>FortuneCookieEmailer</code> should be provided with a reference to the desired service by something outside of <code>FortuneCookieEmailer</code>.</p>
+<h4 id="summary"><a aria-hidden="true" class="anchor-heading" href="#summary"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Summary</h4>
+<ul>
+<li>First situation: FortuneCookieEmailer actively goes out and gets the service that it needs.</li>
+<li>Second (IoC) situation: Someone else gives FortuneCookieEmailer the service that it should use.</li>
+</ul>
+<p>The benefit of the second approach is that we can configure our application to use different email services without having to even touch <code>FortuneCookieEmailer</code></p>
+<h3 id="text-editor-examples"><a aria-hidden="true" class="anchor-heading" href="#text-editor-examples"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Text Editor Examples</h3>
+<p>say your application has a text editor component and you want to provide spell checking. Your standard code would look something like this:</p>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TextEditor</span> <span class="token punctuation">{</span>
+
+	<span class="token keyword">private</span> <span class="token class-name">SpellChecker</span> checker<span class="token punctuation">;</span>
+
+	<span class="token keyword">public</span> <span class="token function">TextEditor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token keyword">this</span><span class="token punctuation">.</span>checker <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">SpellChecker</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>What we've done here creates a dependency between the TextEditor and the SpellChecker. In an IoC scenario we would instead do something like this:</p>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TextEditor</span> <span class="token punctuation">{</span>
+
+	<span class="token keyword">private</span> <span class="token class-name">IocSpellChecker</span> checker<span class="token punctuation">;</span>
+
+	<span class="token keyword">public</span> <span class="token function">TextEditor</span><span class="token punctuation">(</span><span class="token class-name">IocSpellChecker</span> checker<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token keyword">this</span><span class="token punctuation">.</span>checker <span class="token operator">=</span> checker<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>In the first code example we are instantiating <code>SpellChecker</code> (<code>this.checker = new SpellChecker();</code>), which means the <code>TextEditor</code> class directly depends on the <code>SpellChecker</code> class.</p>
+<p>In the second code example we are creating an abstraction by having the <code>SpellChecker</code> dependency class in <code>TextEditor</code>'s constructor signature (not initializing dependency in class). This allows us to call the dependency then pass it to the <code>TextEditor</code> class like so:</p>
+<pre class="language-cs"><code class="language-cs"><span class="token class-name">SpellChecker</span> sc <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">SpellChecker</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// dependency</span>
+<span class="token class-name">TextEditor</span> textEditor <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">TextEditor</span><span class="token punctuation">(</span>sc<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Now the client creating the TextEditor class has control over which SpellChecker implementation to use because we're injecting the dependency into the TextEditor signature.</p>
+<h3 id="analogy-to-understand-ioc"><a aria-hidden="true" class="anchor-heading" href="#analogy-to-understand-ioc"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Analogy to understand IoC</h3>
+<p>Inversion of Control, (or IoC), is about getting freedom (You get married, you lost freedom and you are being controlled. You divorced, you have just implemented Inversion of Control. That's what we called, "decoupled". Good computer system discourages some very close relationship.) more flexibility (The kitchen in your office only serves clean tap water, that is your only choice when you want to drink. Your boss implemented Inversion of Control by setting up a new coffee machine. Now you get the flexibility of choosing either tap water or coffee.) and less dependency (Your partner has a job, you don't have a job, you financially depend on your partner, so you are controlled. You find a job, you have implemented Inversion of Control. Good computer system encourages in-dependency.)</p>
+<p>With the above ideas in mind. We still miss a key part of IoC. In the scenario of IoC, the software/object consumer is a sophisticated framework. That means the code you created is not called by yourself. Now let's explain why this way works better for a web application.</p>
+<p>A traditional software framework will be like a garage with many tools. So the workers need to make a plan themselves and use the tools to build the car. Building a car is not an easy business, it will be really hard for the workers to plan and cooperate properly. A modern software framework will be like a modern car factory with all the facilities and managers in place. The workers do not have to make any plan, the managers (part of the framework, they are the smartest people and made the most sophisticated plan) will help coordinate so that the workers know when to do their job (framework calls your code). The workers just need to be flexible enough to use any tools the managers give to them (by using Dependency Injection).</p>
+<p>Although the workers give the control of managing the project on the top level to the managers (the framework). But it is good to have some professionals help out. This is the concept of IoC truly come from.</p>
+<p>Dependency Injection and Inversion of Control are related. Dependency Injection is at the micro level and Inversion of Control is at the macro level. You have to eat every bite (implement DI) in order to finish a meal (implement IoC).</p>
+<h1 id="ue-resources"><a aria-hidden="true" class="anchor-heading" href="#ue-resources"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>UE Resources</h1>
+<p><a href="https://martinfowler.com/bliki/InversionOfControl.html">Martin Fowler on IoC</a></p>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/OIBi54r4RJHlcy33iXLpD">Dependency Injection</a></li>
+<li><a href="/Digital-Garden/notes/PZkfa4RcWwEaVTOUoJ6hm">Block</a></li>
+</ul>

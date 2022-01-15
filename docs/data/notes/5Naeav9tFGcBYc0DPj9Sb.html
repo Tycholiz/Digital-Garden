@@ -1,0 +1,27 @@
+<h1 id="batching"><a aria-hidden="true" class="anchor-heading" href="#batching"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Batching</h1>
+<p>Batching is the process of taking a group of requests, combining them into one, and making a single request with the same data that all of the other queries would have made. </p>
+<ul>
+<li>This is usually done with a timing threshold. For example, with a threshold of 50ms, if a query is made from a component, instead of making the query immediately, the client waits 50ms. If any other queries are requested in that 50ms, all of those additional queries are requested at the same time, rather than separately.</li>
+</ul>
+<p>Naturally, batched operations are always as slow as the slowest operation in the batch.</p>
+<ul>
+<li>The downside of this comes if one of the underlying services is slower than the rest, the effects may be felt across the whole client app.</li>
+</ul>
+<p>Additionally, batching makes it much harder to debug network traffic.</p>
+<p>Because of its drawbacks, it's not recommended to batch unless there are performance issues that can't be resolved through some other means (like CDN caching)</p>
+<h3 id="in-graphql"><a aria-hidden="true" class="anchor-heading" href="#in-graphql"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>In Graphql</h3>
+<p>In GraphQL apps, batching usually takes one of two forms. </p>
+<ol>
+<li>
+<p>take all operations and combine them into a single operation using the <code>alias</code> feature in GraphQL. </p>
+<ul>
+<li>This approach is not recommended, however, since this removes the ease of tracking metrics on a per-operation basis and adds additional complexity to the client.</li>
+</ul>
+</li>
+<li>
+<p>send an array of operations to a GraphQL server, having the server recognize the request as an array of operations instead of a single one, and handle each operation separately. </p>
+<ul>
+<li>This method still requires only a single round-trip, while retaining the ability to track single operation performance. Apollo Client handles batching like this using <code>apollo-link-batch-http</code>. It’s also worth noting that this method requires the server to be able to receive an array of operations as well as single operations. Luckily, <code>apollo-server</code> supports this out of the box.</li>
+</ul>
+</li>
+</ol>

@@ -1,0 +1,35 @@
+<h1 id="buffer"><a aria-hidden="true" class="anchor-heading" href="#buffer"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Buffer</h1>
+<p>A Buffer is an in-memory collection of raw bytes.</p>
+<ul>
+<li>The <code>Buffer</code> class lets us access these spaces of memory, thereby allowing us to work with binary data.</li>
+</ul>
+<p>a <code>Buffer</code> is similar to an array of integers, but corresponds to a raw memory allocation outside the V8 heap.</p>
+<ul>
+<li>Unlike arrays, you cannot change the size of a buffer once it is created.</li>
+</ul>
+<p>Because computers store data in bytes, a simple way to think of a Buffer is to think of it as an array of bytes:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> buffer <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">11111111</span><span class="token punctuation">,</span> <span class="token number">11011001</span><span class="token punctuation">,</span> <span class="token number">10010001</span><span class="token punctuation">]</span>
+</code></pre>
+<p>Buffers are useful when you’re interacting with binary data, usually at lower networking levels.</p>
+<p>The <code>Buffer</code> class can set its encoding so we can put a <code>String</code> into it. This enables it to translate from <code>String</code> of UTF16 characters into an array of bytes. Once you have a <code>String</code> in byte form you can use it in computing communication.</p>
+<ul>
+<li>In Javascript, a <code>String</code> is a collection of characters in UTF16 encoding.
+<ul>
+<li>Under UTF16 encoding a single character may consist of multiple bytes (at least one, usually not more than four)</li>
+</ul>
+</li>
+</ul>
+<p>When we read from a file with <code>fs.readFile()</code>, the data returned to the Promise (or callback) is a <code>buffer</code> object.
+When we make HTTP requests in Node, they return data streams that are temporarily stored in an internal buffer when the client cannot process the stream all at once.</p>
+<h4 id="encoding"><a aria-hidden="true" class="anchor-heading" href="#encoding"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Encoding</h4>
+<p>Node supports the following encodings: ASCII, UTF-8, UTF-16, USC-2, Base64, Hexadecimal, binary (ISO/IEC 8859-1)</p>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/PZxxZ4iESzSlbbHJKxuAZ">Binary</a></li>
+</ul>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/XGc8RRvesEXCuJdqSzU34">Cook</a></li>
+</ol>

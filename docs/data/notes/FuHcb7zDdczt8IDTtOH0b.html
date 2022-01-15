@@ -1,0 +1,48 @@
+<h1 id="partitioning"><a aria-hidden="true" class="anchor-heading" href="#partitioning"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Partitioning</h1>
+<p>The justification for partitioning a database is that, after a certain scale point, it is cheaper and more feasible to scale horizontally by adding more machines than to grow it vertically by adding beefier servers.</p>
+<p>There are two challenges when we try to distribute data:</p>
+<ol>
+<li>How do we know on which node a particular piece of data will be stored?</li>
+<li>When we add or remove nodes, how do we know what data will be moved from existing nodes to the new nodes? Additionally, how can we minimize data movement when nodes join or leave?</li>
+</ol>
+<h2 id="partitioning-methods"><a aria-hidden="true" class="anchor-heading" href="#partitioning-methods"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Partitioning Methods</h2>
+<p>There are many different schemes one could use to decide how to break up an application database into multiple smaller DBs. Three of the most popular schemes used by various large-scale applications are:</p>
+<h3 id="horizontal-partitioning-aka-range-based-partitioning-data-sharding"><a aria-hidden="true" class="anchor-heading" href="#horizontal-partitioning-aka-range-based-partitioning-data-sharding"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Horizontal Partitioning (aka Range-based partitioning; Data Sharding)</h3>
+<p>See <a href="/Digital-Garden/notes/nMxAwbzkQChlhX37Gih8a">sharding</a>
+In this scheme, we put different rows into different tables. </p>
+<ul>
+<li>ex. if we store different places in a table, we can decide that locations with ZIP codes less than 10000 are stored in one table and places with ZIP codes greater than 10000 are stored in a separate table.
+<ul>
+<li>The key problem with this approach is that if the value whose range is used for Partitioning isn’t chosen carefully, then the partitioning scheme will lead to unbalanced servers. In the previous example, splitting locations based on their zip codes assume that places will be evenly distributed across the different zip codes. This assumption is not valid as there will be a lot of places in a thickly populated area like Manhattan as compared to its suburb cities.</li>
+</ul>
+</li>
+</ul>
+<p>Consider the flexibility afforded when you take a horizontal partitioning strategy. We can have a large number of logical partitions to accommodate future data growth, such that in the beginning, multiple logical partitions reside on a single physical database server. Since each database server can have multiple database instances running on it, we can have separate databases for each logical partition on any server. So whenever we feel that a particular database server has a lot of data, we can migrate some logical partitions from it to another server. We can maintain a config file (or a separate database) that can map our logical partitions to database servers; this will enable us to move partitions around easily. Whenever we want to move a partition, we only have to update the config file to announce the change.</p>
+<h3 id="vertical-partitioning"><a aria-hidden="true" class="anchor-heading" href="#vertical-partitioning"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Vertical Partitioning</h3>
+<p>In this scheme, we divide our data to store tables related to a specific feature in their own server. For example, if we are building an Instagram-like application - where we need to store data related to users, photos they upload, and people they follow - we can decide to place user profile information on one DB server, friend lists on another, and photos on a third server.</p>
+<p>Vertical Partitioning is straightforward to implement and has a low impact on the application. The main problem with this approach is that if our application experiences additional growth, then it may be necessary to further partition a feature specific DB across various servers (e.g. it would not be possible for a single server to handle all the metadata queries for 10 billion photos by 140 million users).</p>
+<h3 id="directory-based-partitioning"><a aria-hidden="true" class="anchor-heading" href="#directory-based-partitioning"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Directory-Based Partitioning</h3>
+<p>A loosely coupled approach to work around issues mentioned in the above schemes is to create a lookup service that knows your current partitioning scheme and abstracts it away from the DB access code. So, to find out where a particular data entity resides, we query the directory server that holds the mapping between each tuple key to its DB server. This loosely coupled approach means we can perform tasks like adding servers to the DB pool or changing our partitioning scheme without having an impact on the application.</p>
+<h2 id="problems-that-arise-from-partitioning-a-database"><a aria-hidden="true" class="anchor-heading" href="#problems-that-arise-from-partitioning-a-database"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Problems that arise from partitioning a database</h2>
+<p>Most of these constraints are due to the fact that operations across multiple tables or multiple rows in the same table will no longer run on the same server.</p>
+<ol>
+<li><em>Joins and Denormalization</em>: Performing joins on a database that is running on one server is straightforward, but once a database is partitioned and spread across multiple machines it is often not feasible to perform joins that span database partitions. Such joins will not be performance efficient since data has to be compiled from multiple servers. </li>
+</ol>
+<ul>
+<li>A common workaround for this problem is to denormalize the database so that queries that previously required joins can be performed from a single table. Of course, the service now has to deal with denormalization’s perils, such as data inconsistency.</li>
+</ul>
+<ol start="2">
+<li><em>Referential integrity</em>: just like how performing a cross-partition query on a partitioned database is not feasible, trying to enforce data integrity constraints such as foreign keys in a partitioned database can be extremely difficult.</li>
+</ol>
+<ul>
+<li>Most RDBMS do not support foreign keys constraints across databases on different database servers. This means, applications that require referential integrity on partitioned databases often have to enforce it in application code. Often in such cases, applications have to run regular SQL jobs to clean up dangling references.</li>
+</ul>
+<ol start="3">
+<li><em>Rebalancing</em>: There could be many reasons we have to change our partitioning scheme:
+<ul>
+<li>The data distribution is not uniform, e.g., there are a lot of places for a particular ZIP code that cannot fit into one database partition.</li>
+<li>There is a lot of load on a partition, e.g., there are too many requests being handled by the DB partition dedicated to user photos.</li>
+</ul>
+</li>
+</ol>
+<p>In such cases, either we have to create more DB partitions or have to rebalance existing partitions, which means the partitioning scheme changed and all existing data moved to new locations. Doing this without incurring downtime is extremely difficult. Using a scheme like directory-based Partitioning does make rebalancing a more palatable experience at the cost of increasing the complexity of the system and creating a new single point of failure (i.e. the lookup service/database).</p>

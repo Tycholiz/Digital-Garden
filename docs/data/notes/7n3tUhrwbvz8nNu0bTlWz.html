@@ -1,0 +1,87 @@
+<h1 id="event-bridge"><a aria-hidden="true" class="anchor-heading" href="#event-bridge"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Event Bridge</h1>
+<p>EventBridge is a serverless <a href="/Digital-Garden/notes/csPOCpGsdV9SQed4lZyWh">event bus</a>, implementing the <a href="/Digital-Garden/notes/NpY4iv9TwpGJODbVesQYe">pub/sub</a> architectural pattern.</p>
+<ul>
+<li>goal is to make it easier to build event-driven apps at scale using events originating from our applications.</li>
+</ul>
+<p>EventBridge logically separates routing using event buses, and you implement the routing logic using rules.</p>
+<ul>
+<li>You can filter and transform incoming messages at the service level, and route events to multiple targets, including <a href="/Digital-Garden/notes/OSdV9FvBG3wDbRNLllg0V">Lambdas</a>.</li>
+</ul>
+<p>EventBridge may be used to help us implement an <a href="/Digital-Garden/notes/D40foBDBtVWxx0BmKPDLJ">Event-driven architecture</a></p>
+<p>Data Sources may include:</p>
+<ul>
+<li>our own applications</li>
+<li>SaaS applications (<a href="https://aws.amazon.com/eventbridge/integrations/">list of 3rd party integrations</a>)
+<ul>
+<li>meaning we can authorize supported SaaS providers to send events directly from their EventBridge event bus to partner event buses in your account.</li>
+</ul>
+</li>
+<li>AWS services</li>
+</ul>
+<p>Targets may include:</p>
+<ul>
+<li><a href="/Digital-Garden/notes/OSdV9FvBG3wDbRNLllg0V">Lambda functions</a></li>
+<li>HTTP endpoints</li>
+<li>other event buses</li>
+</ul>
+<p>A single bus of EventBridge can handle tens of thousands of concurrent events, so it is conceivable that you'd only have a single bus for one business case.</p>
+<ul>
+<li>In other words, each user of your application wouldn't need have their own associated bus; all events no matter which users they are associated with can exist within a single bus.</li>
+</ul>
+<p>EventBridge provides at-least-once event delivery to targets, including retry with exponential backoff for up to 24 hours.</p>
+<h3 id="how-it-works"><a aria-hidden="true" class="anchor-heading" href="#how-it-works"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>How it works</h3>
+<p>EventBridge receives an event and applies a rule to route the event to a target.</p>
+<ul>
+<li>Each event contains a json event body, as well as several metadata fields.</li>
+</ul>
+<p>We the programmer provide EventBridge with a list of rules, which it uses to match events to targets</p>
+<ul>
+<li>These matches are made based on either <a href="https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-event-patterns.html">event patterns</a>, or schedules.
+<ul>
+<li>ex. when an <a href="/Digital-Garden/notes/T3myEQpNJczlAwIZCMpQB">EC2</a> instance changes from pending to running, you can have a rule that sends the event to a Lambda function.</li>
+</ul>
+</li>
+</ul>
+<p>All events that arrive at the doorstep of EventBridge will be associated with a particular <a href="https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-event-bus.html">event bus</a></p>
+<ul>
+<li>rules are tied to one specific event bus.</li>
+<li>EventBridge comes with a default event bus out of the box, which receives events from AWS services.</li>
+</ul>
+<hr>
+<h3 id="targets"><a aria-hidden="true" class="anchor-heading" href="#targets"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Targets</h3>
+<p>Targets allow us to do things like invoke a Lambda, start execution on a <a href="/Digital-Garden/notes/JzPLtwqCbwO0vc2SqmxAE">step function</a>, start a task with <a href="/Digital-Garden/notes/eW5X2mPVNTsXtgjdLpyEk">ESC</a> or <a href="/Digital-Garden/notes/03HDpnWl7zMR8KAWFSJ9B">Fargate</a></p>
+<p>The event bridge can be provisioned and manipulated programmatically to route incoming events to various destinations.</p>
+<p>The <a href="/Digital-Garden/notes/ffzLi2LmzZDiaqhpuOUDh">rules engine</a> allows for advanced pattern matching based on source, subject, version, or any key of the JSON body. Matched events can then be sent to a host of target destinations including Lambdas, other EventBridges, or even HTTP endpoints.</p>
+<h3 id="rules"><a aria-hidden="true" class="anchor-heading" href="#rules"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Rules</h3>
+<p>The rules engine provides the business logic of our EventBridge. This is where we (the configurer of EventBridge) can create rules that match selected events in the stream and route them to targets to take action.</p>
+<p>This is where we the configurer of EventBridge determine which events we are interested in, and what we will do when we encounter those events.</p>
+<ul>
+<li>namely, the event is routed to the target(s) associated with that rule.</li>
+</ul>
+<p>You can also use rules to take action on a predetermined schedule. For example, you can configure rules to:</p>
+<ul>
+<li>Automatically invoke an Lambda function to update DNS entries when an event notifies you that Amazon EC2 instance enters the running state.</li>
+<li>Direct specific API records from CloudTrail to an Amazon Kinesis data stream for detailed analysis of potential security or availability risks.</li>
+<li>Periodically invoke a built-in target to create a snapshot of an Amazon EBS volume.</li>
+</ul>
+<h3 id="schema-registry"><a aria-hidden="true" class="anchor-heading" href="#schema-registry"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Schema Registry</h3>
+<p>EventBridge has a built-in <a href="https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-schema.html">schema registry</a></p>
+<h3 id="competing-solutions"><a aria-hidden="true" class="anchor-heading" href="#competing-solutions"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Competing Solutions</h3>
+<ul>
+<li>Google PubSub</li>
+</ul>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/2cSifsJxXSKuWR8JiGxJe">SDK</a></li>
+<li><a href="/Digital-Garden/notes/QukN1H4jrogOyBjotZd7U">Svc</a></li>
+<li><a href="/Digital-Garden/notes/3E2oC3PsnDWowLW9hK0eZ">SNS</a></li>
+<li><a href="/Digital-Garden/notes/nRb6Im4Kcmc2ZWE7K1jZ1">Serverlesss Framework</a></li>
+<li><a href="/Digital-Garden/notes/Skg9BUUhw2xIBmwrkEP4u">Messaging Pattern</a></li>
+<li><a href="/Digital-Garden/notes/0pUoWXrTC07Z9B1ijwosK">Dead Letter Queue</a></li>
+</ul>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/oumG4nMOhqwkG8i87ei2J">Testing</a></li>
+</ol>

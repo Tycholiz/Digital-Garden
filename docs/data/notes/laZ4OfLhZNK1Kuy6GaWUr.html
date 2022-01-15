@@ -1,0 +1,23 @@
+<h1 id="hardware"><a aria-hidden="true" class="anchor-heading" href="#hardware"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Hardware</h1>
+<h3 id="what-happens-when-we-run-an-executable"><a aria-hidden="true" class="anchor-heading" href="#what-happens-when-we-run-an-executable"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>What happens when we run an executable?</h3>
+<ol>
+<li>as we type the characters <code>./hello</code> into the shell program, each letter is read into a register (in the CPU), and then stores it in memory</li>
+<li>When we hit <code>&#x3C;enter></code>, the shell loads the executable <code>hello</code> file by executing a sequence of instructions that copies the code and data in the <code>hello</code> object file from disk to main memory (included is the string of characters <code>"hello, world\n"</code>)</li>
+<li>the data then travels directly from disk to main memory, without passing through the processor (a technique known as <em>direct memory access</em>)</li>
+<li>Once the code and data of the <code>hello</code> file are loaded into memory, the processor begins executing machine-language instructions in the <code>hello</code> program's <code>main</code> function.
+<ul>
+<li>These instructions copy the bytes in the <code>"hello, world\n"</code> string from memory to the register file (CPU), and from there to the display device (monitor).</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/ya94FdkSkDQbHFM78PotT">ALU</a></li>
+<li><a href="/Digital-Garden/notes/OkmpvGkh22llzi6Mq9dPK">Bus</a></li>
+<li><a href="/Digital-Garden/notes/XkJ62K1L604NfWaUdxZi7">CPU</a></li>
+<li><a href="/Digital-Garden/notes/632E2ATahAPoVoa72ybpv">Circuit Board</a></li>
+<li><a href="/Digital-Garden/notes/7iLURlousehIzpOtpQ6eX">GPU</a></li>
+<li><a href="/Digital-Garden/notes/1afb5b6f-6d69-44cc-bf96-102e7a673e2d">Interfaces</a></li>
+<li><a href="/Digital-Garden/notes/siARuFkNsvSlUI0PLbh5E">RAM</a></li>
+</ol>

@@ -1,0 +1,30 @@
+<h1 id="cherrypick"><a aria-hidden="true" class="anchor-heading" href="#cherrypick"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Cherrypick</h1>
+<h1 id="overview"><a aria-hidden="true" class="anchor-heading" href="#overview"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Overview</h1>
+<p>Cherry-pick works by copying a commit diff (between it and its parent) onto the current branch</p>
+<p>cherry-picking results in the creation of a new commit that has an identical diff to the diff between the specified commit and its parent. When we run cherry-pick, the changes that were introduced in a single commit will be applied on top of HEAD.</p>
+<p>Instead of working bottom-up (or past to the present) like rebase, cherry-pick works top-down (or present back to the past)</p>
+<p>When you cherry-pick a commit, you also specify which parent commit to consider, with the <code>-m</code> parent-number argument. The cherry-pick command then generates a diff against that parent, so that the resulting diff can be applied now.</p>
+<p>Should you choose to cherry-pick a non-merge commit, there is only one parent, so you don't actually pass <code>-m</code> and the command uses the (single) parent to generate the diff. But the commit itself is still a snapshot, and it's the cherry-pick command that finds the diff of commit^1 (the first and only parent) vs commit and applies that.</p>
+<p>If you want something else done aside from applying the patch between a commit and it’s parent, then you don't want the cherry-pick command. For instance, if you just want a particular snapshot's version of some file, use <code>git checkout &#x3C;revspec> -- &#x3C;path></code>, or <code>git show &#x3C;revspec>:&#x3C;path></code></p>
+<p>It's crucial to recognize that cherry picking does not involve moving a commit on top of HEAD. Rather, it involves copying the diff produced by 2 commits, and applying that patch on top of HEAD. This process results in a new commit SHA.</p>
+<p>use cherry-pick when you want to rebase, but have more power over what exactly you want to bring over from one branch to another</p>
+<h3 id="resetting-and-cherrypicking"><a aria-hidden="true" class="anchor-heading" href="#resetting-and-cherrypicking"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Resetting and Cherrypicking</h3>
+<p>This lends itself to a strategy that is similar conceptually to <code>rebase</code></p>
+<p>Imagine we have 2 branches that have a common base, but have diverged. We want to get a series of commits to be placed onto the tip of an existing branch (much like rebase)</p>
+<ol>
+<li>from feature-branch, <code>git reset main --hard</code> to the HEAD of the master branch. These branches are now identical.</li>
+</ol>
+<ul>
+<li>Before doing this, we need to know which commits we want. It's probably even a good idea to duplicate the branch as a backup just in case.</li>
+</ul>
+<ol start="2">
+<li>cherry pick the range of commits on top of feature-branch.</li>
+</ol>
+<ul>
+<li>as a result, the only conflicts will be in the feature-branch commits.</li>
+</ul>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/3HMa8B2tgnBJzD4IGyuFV">Cherrypick</a></li>
+</ol>

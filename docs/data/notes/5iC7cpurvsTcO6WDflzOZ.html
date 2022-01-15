@@ -1,0 +1,34 @@
+<h1 id="node"><a aria-hidden="true" class="anchor-heading" href="#node"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Node</h1>
+<h1 id="how-it-works"><a aria-hidden="true" class="anchor-heading" href="#how-it-works"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>How it works</h1>
+<p>Node.js is a JavaScript runtime environment that processes incoming requests in a loop, called the event loop.
+Node runs as a single process. Other languages may handle "concurrency" by having multiple threads handle tasks. However, Node achieves this by having async. When an async action happens, the javascript code will not get blocked, and will continue to execute until the response has come. This makes node a very event-based language (hence its usefulness in the web word, which is fundamentally made up of requests). </p>
+<ul>
+<li>concurrency here is used liberally, since Node does not run its code concurrently at all. Alas, this is how Node solves the problem, which may be solved using multiple threads (concurrency) at a time. </li>
+</ul>
+<p>Node is built on top of v8, the engine that converts javascript to native machine code. These core javascript features form the basis of what Node is. Because Javascript is missing native features that server languages typically have, there comes a need of having to fulfill those tasks. Web server functions (such as I/O, networking, streams etc.) are fulfilled by having isolated modules that each have a single responsibility. Node.js is made up of many of these modules, all built on top of the base language of Javascript and its underlying v8 engine.</p>
+<ul>
+<li>ques:does this mean that all the language features of javascript are also available in node? Is there a global object? what about all of the javascript features that are considered useless, like exec? </li>
+</ul>
+<p>Node.js connects the ease of a scripting language (JavaScript) with the power of Unix network programming</p>
+<p>Node.js uses an event loop for scalability, rather than processes or threads</p>
+<h2 id="v8"><a aria-hidden="true" class="anchor-heading" href="#v8"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>V8</h2>
+<p>When it was first introduced, javascript was a simple scripting language, and processed commands in real time. This had performance implications, and made it very slow. This was the inspiration for V8, which did just in time compiling, making it a much faster and more capable language.</p>
+<p>With Node, the idea was "what if we took the V8 engine, and instead of using it in the context of the web, we allowed it to run terminal applications"</p>
+<h2 id="resources"><a aria-hidden="true" class="anchor-heading" href="#resources"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Resources</h2>
+<h3 id="ue-resources"><a aria-hidden="true" class="anchor-heading" href="#ue-resources"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>UE Resources</h3>
+<p><a href="https://medium.com/@marcinbaraniecki/extending-node-js-with-native-c-modules-63294a91ce4">Tutorial: creating a native node module with C++</a>
+<a href="https://github.com/substack/stream-handbook">Tutorial: creating streams in node</a></p>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/Ag4RGxbqigmzcZAUS9FRv">Lambda Function</a></li>
+</ul>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/94hga8xRvc0vJjH5B67Mo">Debugger</a></li>
+<li><a href="/Digital-Garden/notes/JzrVTFaVNPlOrsX4IRE6D">Modules</a></li>
+<li><a href="/Digital-Garden/notes/X2LZKYvX14JaSC1ElnQs3">Serial Port</a></li>
+<li><a href="/Digital-Garden/notes/69XdUJWoIpOY9c5kzBGOM">Types</a></li>
+<li><a href="/Digital-Garden/notes/atg3PeEVGZB4TOB4G0qnG">package.json</a></li>
+</ol>

@@ -1,0 +1,26 @@
+<h1 id="cook"><a aria-hidden="true" class="anchor-heading" href="#cook"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Cook</h1>
+<h4 id="issue-labeler"><a aria-hidden="true" class="anchor-heading" href="#issue-labeler"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Issue labeler</h4>
+<pre class="language-yml"><code class="language-yml"><span class="token key atrule">name</span><span class="token punctuation">:</span> <span class="token string">"Issue Labeler"</span>
+<span class="token key atrule">on</span><span class="token punctuation">:</span>
+  <span class="token key atrule">issues</span><span class="token punctuation">:</span>
+    <span class="token key atrule">types</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>opened<span class="token punctuation">,</span> edited<span class="token punctuation">]</span>
+
+<span class="token key atrule">jobs</span><span class="token punctuation">:</span>
+  <span class="token key atrule">triage</span><span class="token punctuation">:</span>
+    <span class="token key atrule">runs-on</span><span class="token punctuation">:</span> ubuntu<span class="token punctuation">-</span>latest
+    <span class="token key atrule">steps</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">uses</span><span class="token punctuation">:</span> github/issue<span class="token punctuation">-</span>labeler@v2.2
+        <span class="token key atrule">with</span><span class="token punctuation">:</span>
+          <span class="token key atrule">repo-token</span><span class="token punctuation">:</span> <span class="token string">"${{ secrets.GITHUB_TOKEN }}"</span>
+          <span class="token key atrule">configuration-path</span><span class="token punctuation">:</span> .github/config/issue<span class="token punctuation">-</span>labler/labler.yml
+          <span class="token key atrule">not-before</span><span class="token punctuation">:</span> <span class="token string">'2020-02-21T00:00:00Z'</span>
+          <span class="token key atrule">enable-versioned-regex</span><span class="token punctuation">:</span> <span class="token number">1</span>
+          <span class="token key atrule">versioned-regex</span><span class="token punctuation">:</span> <span class="token string">'issue_labeler_regex_version=(\d+)'</span>
+</code></pre>
+<p><code>labler.yml</code></p>
+<pre class="language-yml"><code class="language-yml"><span class="token key atrule">area.onboard</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token string">'- \[ ?(?:x|X) ?\] Onboard.'</span>
+<span class="token key atrule">area.create</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token string">'- \[ ?(?:x|X) ?\] Create.'</span>
+<span class="token comment"># ...</span>
+</code></pre>

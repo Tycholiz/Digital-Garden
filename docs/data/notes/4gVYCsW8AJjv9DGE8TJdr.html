@@ -1,0 +1,33 @@
+<h1 id="spy"><a aria-hidden="true" class="anchor-heading" href="#spy"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Spy</h1>
+<p>Spies are <a href="/Digital-Garden/notes/m0KzcQACLje5KS1v61t7v">stubs</a> that also record some information based on how they were called.</p>
+<ul>
+<li>ex. One form of this might be an email service that records how many messages it sent.</li>
+</ul>
+<p>For example, you’d use this when you wanted to be sure that the <code>login</code> method was called by your system.</p>
+<p>In your test you’d inject it like a stub, but then at the end of the test you’d check the <code>loginWasCalled</code> variable to make sure the system actually called <code>login</code>.</p>
+<ul>
+<li>therefore, a Spy spies on the caller.</li>
+</ul>
+<p>A Spy could be used to...</p>
+<ul>
+<li>count the number of invocations.</li>
+<li>see inside the workings of the algorithms you are testing.</li>
+</ul>
+<p>The more you spy, the tighter you couple your tests to the implementation of your system, leading to fragile tests.</p>
+<ul>
+<li>spec: this is because we are spying on specific implementations of modules that are not within the SUT. Therefore, these units are subject to change without the SUT even being aware. If their implementation changes, we would start getting failing tests. In this case, the spy would have to be updated to use the new implementation.</li>
+</ul>
+<pre class="language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AcceptingAuthorizerSpy</span> <span class="token keyword">implements</span> <span class="token class-name">Authorizer</span> <span class="token punctuation">{</span>
+  <span class="token keyword">public</span> <span class="token keyword">boolean</span> authorizeWasCalled <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">public</span> <span class="token class-name">Boolean</span> <span class="token function">login</span><span class="token punctuation">(</span><span class="token class-name">String</span> username<span class="token punctuation">,</span> <span class="token class-name">String</span> password<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	loginWasCalled <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+	<span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/965AqO8bdqbS0Et9bKsUO">Test Double</a></li>
+</ul>

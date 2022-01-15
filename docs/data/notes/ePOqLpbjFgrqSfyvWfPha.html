@@ -1,0 +1,27 @@
+<h1 id="blob"><a aria-hidden="true" class="anchor-heading" href="#blob"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Blob</h1>
+<h3 id="blob-1"><a aria-hidden="true" class="anchor-heading" href="#blob-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Blob</h3>
+<ul>
+<li>A particular version of one file
+<ul>
+<li>the only part of a file that is relevant to a blob is the file's contents. The object database does not care about the filename.
+<ul>
+<li>ex. if we write 2 different files with the same content to the object database, only one SHA will get recorded, since the same content hashed will always produce the same result.
+<ul>
+<li>the same can be said for a tree object, but not for a commit object, since the author and time of commit makes their content always unique.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>the blob itself doesn't have a name, but it is referred internally by the hash of its content
+<ul>
+<li>the "hash of its content" part of this last point means that as long as 2 different pieces of content are identical (ie. file contents are identical), the resulting hash will also be identical. This also illustrates the fact that blobs are decoupled from a (file)name, as it has no bearing on the produced hash.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/K5d4cyEMtCOR2Vraa99FV">Refs</a></li>
+</ul>

@@ -1,0 +1,26 @@
+<h1 id="extensions"><a aria-hidden="true" class="anchor-heading" href="#extensions"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Extensions</h1>
+<p>When installing new PG extensions, we often need to restart the DB. Extensions need to be registered in <code>shared_preload_libraries</code></p>
+<h2 id="pgxs"><a aria-hidden="true" class="anchor-heading" href="#pgxs"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>PGXS</h2>
+<p>We can compile extensions using a tool called <code>pgxs</code></p>
+<ul>
+<li>PGXS is a build infrastructure for extensions</li>
+<li>it allows us to build extensions against an already installed server.</li>
+</ul>
+<h2 id="misc"><a aria-hidden="true" class="anchor-heading" href="#misc"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Misc</h2>
+<ul>
+<li>When trying to install an extension, if we get the error message <code>cannot find "postgres.h"</code>, this means that to build the extension from source, the postgres header files are needed. There is a package called <code>postgres-server-dev-&#x3C;VERSION></code>. This will install all header files for us necessary for server development.</li>
+</ul>
+<h2 id="commands"><a aria-hidden="true" class="anchor-heading" href="#commands"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Commands</h2>
+<ul>
+<li>show installed extensions - <code>\dx</code> OR <code>SELECT * FROM pg_extension</code></li>
+<li>show available extensions - <code>SELECT * FROM pg_available_extensions</code></li>
+</ul>
+<h1 id="notable-extensions"><a aria-hidden="true" class="anchor-heading" href="#notable-extensions"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Notable Extensions</h1>
+<h3 id="pg_stat_statements"><a aria-hidden="true" class="anchor-heading" href="#pg_stat_statements"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>pg_stat_statements</h3>
+<p>Allows us to achieve a general system-wide analysis to help us with things like indexing strategy.</p>
+<p>It’s possible to have a list of the most common queries in terms of number of times the query is executed, and the cumulative time it took to execute the query.</p>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/BTXTjBx0smDUknAClmZeg">Pgloader</a></li>
+</ol>

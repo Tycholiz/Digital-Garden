@@ -1,0 +1,16 @@
+<h1 id="kube-proxy"><a aria-hidden="true" class="anchor-heading" href="#kube-proxy"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Kube Proxy</h1>
+<p>kube-proxy is a network proxy that runs on each node in your cluster</p>
+<p>kube-proxy maintains network rules on nodes.</p>
+<ul>
+<li>These network rules allow network communication to your Pods from network sessions inside or outside of your cluster.</li>
+</ul>
+<p>kube-proxy watches and detects when there are new services, and new endpoint objects.</p>
+<ul>
+<li>it also manages iptable rules which capture traffic to the Service port and redirect it to endpoints. For each endpoint object, it adds an iptables rule which selects a Pod.</li>
+</ul>
+<p>kube-proxy interfaces with the k8s API server and iptables</p>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/ryBzcGWSKyybRXnyKxteV">Service</a></li>
+</ul>

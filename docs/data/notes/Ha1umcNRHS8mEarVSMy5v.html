@@ -1,0 +1,32 @@
+<h1 id="sqs"><a aria-hidden="true" class="anchor-heading" href="#sqs"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>SQS</h1>
+<h1 id="sqs-simple-queue-service"><a aria-hidden="true" class="anchor-heading" href="#sqs-simple-queue-service"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>SQS (Simple Queue Service)</h1>
+<p>Highly-durable queue in the cloud</p>
+<ul>
+<li>put messages on one end, and a consumer takes them out from the other side.</li>
+</ul>
+<p>Messages are consumed <em>almost</em> in FIFO, but there is no strictness to adhere to this.</p>
+<ul>
+<li>Strictness <em>can</em> be guaranteed, but there is a performance cost.</li>
+</ul>
+<p>Queues are an important mechanism for providing fault tolerance in distributed systems.</p>
+<ul>
+<li>The service durably persists messages until they are processed by a downstream consumer.</li>
+</ul>
+<p>SQS scales elastically, and there is no limit to the number of messages per queue.</p>
+<p>SQS requires zero capacity management.</p>
+<ul>
+<li>no limit on the rate of messages enqueued or consumed</li>
+<li>don’t have to worry about any throttling limits.</li>
+<li>number of messages stored in SQS (the backlog size) is also unlimited.</li>
+</ul>
+<p>great default choice for dispatching asynchronous work.</p>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/QukN1H4jrogOyBjotZd7U">Svc</a></li>
+<li><a href="/Digital-Garden/notes/3E2oC3PsnDWowLW9hK0eZ">SNS</a></li>
+<li><a href="/Digital-Garden/notes/OSdV9FvBG3wDbRNLllg0V">Lambda</a></li>
+<li><a href="/Digital-Garden/notes/Skg9BUUhw2xIBmwrkEP4u">Messaging Pattern</a></li>
+<li><a href="/Digital-Garden/notes/Ag4RGxbqigmzcZAUS9FRv">Lambda Function</a></li>
+<li><a href="/Digital-Garden/notes/0pUoWXrTC07Z9B1ijwosK">Dead Letter Queue</a></li>
+</ul>

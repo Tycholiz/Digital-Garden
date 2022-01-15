@@ -1,0 +1,104 @@
+<h1 id="custom-functions"><a aria-hidden="true" class="anchor-heading" href="#custom-functions"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Custom Functions</h1>
+<p>A function is a reusable block of SQL code that returns a scalar value of a set of rows.</p>
+<ul>
+<li>Functions are transactional by nature. If there is an error somewhere in the function, then the function will be rolled back.
+<ul>
+<li>If a function is called within a transaction block, and the executing code does not reach the concluding <code>COMMIT</code>, then all code executed within the function will roll back as well.</li>
+<li>Any <code>BEGIN...EXCEPT</code> blocks within the function operate like savepoints like the <code>SAVEPOINT</code> and <code>ROLLBACK TO &#x3C;SAVEPOINT></code> SQL statements.</li>
+</ul>
+</li>
+<li>SQL functions execute an arbitrary list of SQL statements, returning the result of the last query in the list.
+<ul>
+<li>In the simple (non-set) case, the first row of the last query's result will be returned</li>
+<li>Alternatively, an SQL function can be declared to return a set, which allows <em>all</em> rows of the last query's result to be returned</li>
+</ul>
+</li>
+<li>allows us to write functions that can interact on the database. For instance, we can create a function that combines <code>first_name</code> and <code>last_name</code> to give us <code>fullName</code></li>
+<li>Since PostgreSQL permits function overloading, the function name alone does not uniquely identify the function to be called;
+<ul>
+<li>the parser must select the rigt function based on the data types of the supplied arguments.</li>
+</ul>
+</li>
+<li>Functions and operators in PostgreSQL support polymorphism and almost every part of the system can be extended.</li>
+<li>By default, functions can be executable by public</li>
+<li>anonymous IIFEs can be invoked anywhere in the SQL by escaping the function identifiers:</li>
+</ul>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">DO</span> \$\$
+<span class="token keyword">BEGIN</span>
+  <span class="token keyword">EXECUTE</span> <span class="token string">'GRANT appname TO '</span> <span class="token operator">||</span> <span class="token keyword">user</span><span class="token punctuation">;</span>
+  <span class="token keyword">EXECUTE</span> <span class="token string">'GRANT appname_authenticator TO '</span> <span class="token operator">||</span> <span class="token keyword">user</span><span class="token punctuation">;</span>
+<span class="token keyword">END</span><span class="token punctuation">;</span>
+\$\$ <span class="token keyword">LANGUAGE</span> PLPGSQL<span class="token punctuation">;</span>
+</code></pre>
+<h2 id="using-functions-in-queries"><a aria-hidden="true" class="anchor-heading" href="#using-functions-in-queries"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Using functions in queries</h2>
+<ul>
+<li>say we have a function that returns a composite type:</li>
+</ul>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">FUNCTION</span> new_emp<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">RETURNS</span> emp <span class="token keyword">AS</span> $$
+    <span class="token keyword">SELECT</span> <span class="token keyword">ROW</span><span class="token punctuation">(</span><span class="token string">'None'</span><span class="token punctuation">,</span> <span class="token number">1000</span><span class="token punctuation">,</span> <span class="token number">25</span><span class="token punctuation">,</span> <span class="token string">'yoyo'</span><span class="token punctuation">)</span>::emp<span class="token punctuation">;</span>
+$$ <span class="token keyword">LANGUAGE</span> <span class="token keyword">SQL</span><span class="token punctuation">;</span>
+</code></pre>
+<ul>
+<li>here we are returning a single column that is a composite type of the signature: string, int, int, string. We also coerce it to the composite type related to the whole <code>emp</code> table. This means that the <code>emp</code> table has all 4 of those rows, and the act of us coercing means the output of the function can be used anywhere that an explicit <code>emp</code> type is required.</li>
+<li>we could make a SELECT statement to get back a one-column table by using <code>SELECT new_emp()</code></li>
+<li>since the composite type is also a sort of virtual table, we can use the function as a "table function": <code>SELECT * FROM new_emp();</code>, which will return 4 columns.</li>
+</ul>
+<h2 id="syntax"><a aria-hidden="true" class="anchor-heading" href="#syntax"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Syntax</h2>
+<ul>
+<li>use <code>$$</code> to open and close the function:</li>
+<li>stable means that this function does not mutate the database</li>
+</ul>
+<p>Terms</p>
+<ul>
+<li><code>setof</code> - Sets emulate rows of tables.
+<ul>
+<li><code>returns setof</code> and <code>returns table(column)</code> are equivalent</li>
+<li>When an SQL function is declared as returning SETOF sometype, the function's final query is executed to completion, and each row it outputs is returned as an element of the result set.
+<ul>
+<li>This feature is normally used when calling the function in the FROM clause, since everything after FROM would get interpreted as if it were a base table. In other words, we can add some columns to a base table, and query it as if those added rows were permanent
+<ul>
+<li>ex. imagine having a function that determined if your salary was above $100,000. we can use a function to get the boolean result and attach it to the base table, so that we can use `FROM employee, getAboveHundred(emp1)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">FUNCTION</span> <span class="token keyword">add</span><span class="token punctuation">(</span>a <span class="token keyword">int</span><span class="token punctuation">,</span> b <span class="token keyword">int</span><span class="token punctuation">)</span> <span class="token keyword">returns</span> <span class="token keyword">int</span> <span class="token keyword">as</span> $$
+ <span class="token keyword">select</span> a <span class="token operator">+</span> b
+$$ <span class="token keyword">language</span> <span class="token keyword">sql</span> stable<span class="token punctuation">;</span>
+</code></pre>
+<h1 id="plpgsql"><a aria-hidden="true" class="anchor-heading" href="#plpgsql"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>PL/PGSQL</h1>
+<h3 id="declare"><a aria-hidden="true" class="anchor-heading" href="#declare"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Declare</h3>
+<ul>
+<li>Declare a variable of specified type</li>
+</ul>
+<h3 id="function-declarations"><a aria-hidden="true" class="anchor-heading" href="#function-declarations"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Function Declarations</h3>
+<h4 id="strict"><a aria-hidden="true" class="anchor-heading" href="#strict"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Strict</h4>
+<ul>
+<li>this means that if the function receives null input, then the function won't be called and the output will automatically be null as well.
+<ul>
+<li>ex. imagine we have a <code>register_user</code> function, that takes name, email and password as inputs. If the function does not receive <code>name</code>, we want it to fail.</li>
+</ul>
+</li>
+</ul>
+<h4 id="security-definerinvoker"><a aria-hidden="true" class="anchor-heading" href="#security-definerinvoker"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Security Definer/Invoker</h4>
+<ul>
+<li>Security Definer - "the privileges of the function use the privileges (security clearance) of the definer"</li>
+<li>Security invoker - "use privileges (security clearance) of the user who invoked the function</li>
+<li>this means that the function is created with the privileges of the pg role that created it.</li>
+<li>This is a way to heighten the rights of the function, and can be thought of similar to sudo, instead of rights being elevated to superuser, rights are only elevated to the creator of the function itself
+<ul>
+<li>ie. if we run our migrations with user <code>postgres</code>, then using <code>security definer</code> will give our function the rights of <code>postgres</code>. This is helpful if we want to insert into a table that is part of a very strict schema, such as <code>app_private</code></li>
+</ul>
+</li>
+<li>we can use <code>security definer</code> to by pass RLS</li>
+</ul>
+<h3 id="ue-resource"><a aria-hidden="true" class="anchor-heading" href="#ue-resource"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>UE Resource</h3>
+<p><a href="https://www.xspdf.com/resolution/50004699.html">insert returning into variable</a></p>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/TOnSHNN1hHvpjTS42iFZQ">Signature</a></li>
+</ol>

@@ -1,0 +1,29 @@
+<h1 id="class"><a aria-hidden="true" class="anchor-heading" href="#class"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Class</h1>
+<h4 id="define-a-class"><a aria-hidden="true" class="anchor-heading" href="#define-a-class"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Define a class</h4>
+<pre class="language-rb"><code class="language-rb"><span class="token keyword">class</span> <span class="token class-name">Greeter</span>
+	<span class="token keyword">def</span> <span class="token method-definition"><span class="token function">initialize</span></span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"world"</span><span class="token punctuation">)</span>
+		<span class="token variable">@name</span> <span class="token operator">=</span> name
+	<span class="token keyword">end</span>
+
+	<span class="token keyword">def</span> <span class="token method-definition"><span class="token function">say_hi</span></span>
+		puts <span class="token string">"hello <span class="token interpolation"><span class="token delimiter tag">#{</span><span class="token variable">@name</span><span class="token delimiter tag">}</span></span>"</span>
+	<span class="token keyword">end</span>
+<span class="token keyword">end</span>
+
+myGreeter <span class="token operator">=</span> <span class="token constant">Greeter</span><span class="token punctuation">.</span><span class="token keyword">new</span><span class="token punctuation">(</span><span class="token string">"Kyle"</span><span class="token punctuation">)</span>
+myGreeter<span class="token punctuation">.</span>say_hi
+</code></pre>
+<h4 id="get-instance-methods-of-a-class"><a aria-hidden="true" class="anchor-heading" href="#get-instance-methods-of-a-class"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Get instance methods of a class</h4>
+<pre class="language-rb"><code class="language-rb"><span class="token comment"># See all</span>
+<span class="token constant">Greeter</span><span class="token punctuation">.</span>instance_methods
+<span class="token comment"># See non-inherited</span>
+<span class="token constant">Greeter</span><span class="token punctuation">.</span>instance_methods<span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span>
+</code></pre>
+<h4 id="check-if-an-object-has-a-particular-method-on-it"><a aria-hidden="true" class="anchor-heading" href="#check-if-an-object-has-a-particular-method-on-it"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Check if an object has a particular method on it</h4>
+<pre class="language-rb"><code class="language-rb">myGreeter<span class="token punctuation">.</span>respond_to<span class="token operator">?</span><span class="token punctuation">(</span><span class="token string">'say_hi'</span><span class="token punctuation">)</span>
+</code></pre>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/8jrU7Rg1Dx1H0CQHnGJFA">Attribute Accessors</a></li>
+</ol>

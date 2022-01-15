@@ -1,0 +1,76 @@
+<h1 id="serverlesss-framework"><a aria-hidden="true" class="anchor-heading" href="#serverlesss-framework"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Serverlesss Framework</h1>
+<p>The idea with Serverless Framework is "let's think of our application in terms of events and functions. We recognize when events happen, and we know which functions to run when they do."</p>
+<p>Serverless is an IaC tool</p>
+<p>To accomplish this philosophy, the framework defined a <code>serverless.yml</code></p>
+<ul>
+<li>handles the logic of which function (<a href="/Digital-Garden/notes/OSdV9FvBG3wDbRNLllg0V">Lambda</a>) to call, and when to call it.
+<ul>
+<li>ex. we made decide to call that function when a particular event enters an <a href="/Digital-Garden/notes/7n3tUhrwbvz8nNu0bTlWz">event bus</a>. In this case, all we need to do in the <code>serverless.yml</code> is to specify the aws resourceId (ARN) of the event bus, and it will be subscribed to.</li>
+</ul>
+</li>
+</ul>
+<p>Serverless framework is cloud-provider agnostic; all examples just assume AWS</p>
+<p>What the Serverless framework does is that it automates the process of creating all the necessary services on the cloud provider. Once you run sls deploy the config file, which is called <code>serverless.yml</code> is transformed into a <a href="/Digital-Garden/notes/NbGOJJpZuEbf0hXs2UvAB">CloudFormation</a> template.</p>
+<ul>
+<li>once the <code>serverless.yml</code> has been transformed into a CloudFormation template it gets sent to AWS to create the services you specified; all API Gateway routes, all Lambdas etc.</li>
+<li>Apart from that, the Serverless framework also packages up all the code you have written and sends it to an <a href="/Digital-Garden/notes/2Rtof8yGX9K2Tq6tLljBb">S3</a> bucket.
+<ul>
+<li>This bucket will have all the versions of the code you have ever deployed. Effectively, the Serverless framework grabs the latest version from the bucket and sends it to the Lambda it created.</li>
+</ul>
+</li>
+</ul>
+<h3 id="serverlessyml"><a aria-hidden="true" class="anchor-heading" href="#serverlessyml"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>serverless.yml</code></h3>
+<p>The yml file is a configuration file that declaratively describes all the necessary services that should be deployed to the cloud provider.</p>
+<h4 id="functions"><a aria-hidden="true" class="anchor-heading" href="#functions"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>functions</code></h4>
+<p>Each function in this object basically says: "when an event comes through with these header properties, run this function."</p>
+<hr>
+<p>The serverless framework is just one of many ways to use serverless architectures. Alternatives include:</p>
+<ul>
+<li>Managing lambdas yourself in AWS's console (or equivalent for other platforms like Azure, etc)</li>
+<li>Building &#x26; deploying your application with chalice AWS Lambda &#x26; Python ONLY</li>
+<li>deploying your application with apex (AWS ONLY)</li>
+<li>deploy a traditional Python WSGI app to AWS using Zappa</li>
+<li>lots of other options.</li>
+</ul>
+<h3 id="stage"><a aria-hidden="true" class="anchor-heading" href="#stage"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Stage</h3>
+<p>using this to map to environments, resulting in a different environment variables that we have our build in.</p>
+<h3 id="alternatives"><a aria-hidden="true" class="anchor-heading" href="#alternatives"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Alternatives</h3>
+<ul>
+<li>AWS SAM</li>
+<li>AWS <a href="/Digital-Garden/notes/KutlqQVGLBAdLTslz3D9A">CDK</a>
+<ul>
+<li>essentially the same thing, but using a code language instead of Yaml</li>
+</ul>
+</li>
+</ul>
+<h2 id="example"><a aria-hidden="true" class="anchor-heading" href="#example"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Example</h2>
+<p>serverless.yml</p>
+<pre class="language-yml"><code class="language-yml"><span class="token key atrule">service</span><span class="token punctuation">:</span> The name of my app
+
+<span class="token key atrule">provider</span><span class="token punctuation">:</span>
+	<span class="token key atrule">name</span><span class="token punctuation">:</span> aws
+	<span class="token key atrule">runtime</span><span class="token punctuation">:</span> nodejs14.x
+
+<span class="token key atrule">functions</span><span class="token punctuation">:</span>
+	<span class="token key atrule">MyLambda</span><span class="token punctuation">:</span>
+		<span class="token key atrule">handler</span><span class="token punctuation">:</span> src/my<span class="token punctuation">-</span>lambda.handler
+		<span class="token key atrule">events</span><span class="token punctuation">:</span>
+			<span class="token punctuation">-</span> <span class="token key atrule">http</span><span class="token punctuation">:</span>
+				<span class="token key atrule">path</span><span class="token punctuation">:</span> hello/world
+				<span class="token key atrule">method</span><span class="token punctuation">:</span> get
+</code></pre>
+<p>src/my-lambda.ts</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token keyword">type</span> <span class="token punctuation">{</span> <span class="token maybe-class-name">APIGatewayProxyEvent</span> <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'aws-lambda'</span>
+<span class="token keyword">export</span> <span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">handler</span><span class="token punctuation">(</span>event<span class="token operator">:</span> <span class="token maybe-class-name">APIGatewayProxyEvent</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">return</span> <span class="token punctuation">{</span>
+		statusCode<span class="token operator">:</span> <span class="token number">200</span><span class="token punctuation">,</span>
+		body<span class="token operator">:</span> <span class="token string">'Hello world'</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Then run <code>serverless deploy</code></p>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/jqIxYA4fpGL6wIKJNkovK">artifact</a></li>
+</ul>

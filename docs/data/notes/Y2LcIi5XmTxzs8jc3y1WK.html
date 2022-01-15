@@ -1,0 +1,115 @@
+<h1 id="inner"><a aria-hidden="true" class="anchor-heading" href="#inner"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Inner</h1>
+<h1 id="inner-working-of-git"><a aria-hidden="true" class="anchor-heading" href="#inner-working-of-git"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Inner Working of Git</h1>
+<ul>
+<li>Git is a database of references. Essentially, it is just one giant acyclic graph
+<ul>
+<li>here, acyclic means that we can pick one commit and traverse its parents in one direction and there will never be a chain that begins and ends with the same commit</li>
+</ul>
+</li>
+<li>Each time we create a file and begin tracking it, git compresses it and stores it into its own structure</li>
+</ul>
+<h3 id="how-git-stores-the-data"><a aria-hidden="true" class="anchor-heading" href="#how-git-stores-the-data"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>How git stores the data</h3>
+<p>Commits are snapshots, not diffs</p>
+<ul>
+<li>Git takes snapshots (via commits), and stores it in something of a mini-filesystem. When Git stores a new version of a project, it stores a new tree (a bunch of blobs and a collection of pointers) that can be used to expand back out into the whole directory of files and directories.</li>
+<li>ex. if we change a single line in a single file, that is technically a new version of the project. However, Git is smart and it realizes that there were no changes in 99.9% of the files in the codebase. This "new version" of the project does in fact have its own tree, but because all (except one) of the blobs in this tree are just references to other blobs, this version of the project is extremely lightweight (in fact the only "weight" is the content of the new file). This way of handling snapshots is a core reason why Git is so efficient, yet so powerful.</li>
+</ul>
+<p>Git stores content similar to how a UNIX filesystem does. All content is stored as tree and blob objects</p>
+<ul>
+<li>trees would correspond to directories
+<ul>
+<li>Like UNIX filesystem, all a directory is is a file with its contents listed. (The relationship between parent-child is made via reference, not the child actually being inside parent)</li>
+</ul>
+</li>
+<li>blobs would correspond to file contents or inodes</li>
+</ul>
+<p>A single tree object contains one or more entries, which is a SHA of a sub-tree or blob (ie. directory or file)</p>
+<ul>
+<li>ex. imagine we had the following project structure:</li>
+</ul>
+<pre><code>.
+|-- README
+`-- lib
+    |-- inc
+    |   `-- tricks.rb
+    `-- mylib.rb
+</code></pre>
+<ul>
+<li>if we made a commit, we would create a tree object for each directory, and a blob object for each file. It would be represented like this:
+<img src="/Digital-Garden/assets/images/2021-03-06-16-14-27.png"></li>
+</ul>
+<p>The reason we can represent the history of the codebase as a tree is because each snapshot (commit) specifies its parent</p>
+<p>The object database is content-addressable, meaning that we can retrieve the data based on its content, rather than its location.</p>
+<ul>
+<li>This is a major reason why Git is so performant</li>
+</ul>
+<hr>
+<ul>
+<li>At the core of Git is a simple key-value store, with the value being the content, and the key being a SHA representing that content.</li>
+<li>With a fresh git repo, upon adding <code>foo.txt</code> to the index, a new object (in <code>.git/objects</code>) is created. If we run <code>git cat-file</code> on that object, we will see the contents of the file.</li>
+<li>Upon committing, 2 more objects will be created:
+<ol>
+<li>a tree object, which makes reference to <code>foo.txt</code>, which points to a blob object SHA
+<ul>
+<li>if we <code>git cat-file</code> that SHA, we will see the contents of <code>foo.txt</code>.
+<ul>
+<li>What this demonstrates is that we have a tree object which references a filename, which is associated with the content in the file. None of these things are glued together, but they merely make references to each other.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>a commit object, with reference to the tree (the same tree that was just created)
+<ul>
+<li>when we run <code>git commit</code>, the SHA of that commit object is output into the console</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>We have just demonstrated that a commit points to a tree, and a tree points to a blob. First a blob is created (when adding to index), then committing will create a commit and tree object.</li>
+</ul>
+</li>
+<li>Now with a clean tree, we create a new file <code>bar.txt</code>, and edit the contents of <code>foo.txt</code>. We add both those files to the index.
+<ul>
+<li>two more blob objects are created</li>
+</ul>
+</li>
+<li>With those 2 files in the staging area, we commit, and 2 more objects are created: a tree object and a commit object.
+<ul>
+<li>Since this is the second commit, it also references its parent commit</li>
+<li>The tree object will reference both <code>foo.txt</code> and <code>bar.txt</code></li>
+</ul>
+</li>
+<li>Again with a clean tree, we create a new file <code>baz.txt</code>, add it and commit it.
+<ul>
+<li>Interestingly, the tree object that just got created will reference all <code>foo</code>, <code>bar</code> and <code>baz</code>, even though only <code>baz</code> was changed in this commit.
+<ul>
+<li>This is because the commit object maintains the entire state of every file (and every version of the file) by SHA at that point in time.
+<ul>
+<li>This is precisely why we can cherry pick a commit and put it on disk</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="how-git-handles-renaming-files"><a aria-hidden="true" class="anchor-heading" href="#how-git-handles-renaming-files"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>How Git handles renaming files</h3>
+<p>There is no data structure in Git that stores a record that a file was renamed during a commit. Instead, Git attempts to detect renames during the dynamic diff calculation. </p>
+<ul>
+<li>There are 2 stages to this rename detection
+<ol>
+<li>exact renames— here, OIDs (of the blobs) are identical, meaning that the contents of the files are the same; just with a different name.</li>
+<li>edit-rename— here, Git must iterate through each added file and compare it against each deleted file. From there, Git calculates a <strong>similarity score</strong> as a percentage of lines in common (anything >50% counts as a potential edit-rename).</li>
+</ol>
+</li>
+</ul>
+<p>After computing the diff, Git inspects it to discover which paths were added/deleted</p>
+<ul>
+<li>naturally, a file moved from directory <code>A/</code> to directory <code>B/</code> would appear as a file being deleted in <code>A/</code> and a file being added in <code>B/</code>. Git attempts to match these deletions/additions to create a set of <em>inferred</em> renames.</li>
+<li>The first</li>
+</ul>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/9cuiey7KWECFD9HbIQhks">Object</a></li>
+</ol>

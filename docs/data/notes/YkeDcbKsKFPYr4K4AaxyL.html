@@ -1,0 +1,156 @@
+<h1 id="closures"><a aria-hidden="true" class="anchor-heading" href="#closures"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Closures</h1>
+<h2 id="closures-and-classes"><a aria-hidden="true" class="anchor-heading" href="#closures-and-classes"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Closures and Classes</h2>
+<p>When a closure returns an object, it can function as an alternative to a class.</p>
+<ul>
+<li>the key-value pairs of the closure correspond to the properties and methods of the class</li>
+</ul>
+<p>Notice that the following closure can be implemented as a class:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token function-variable function"><span class="token maybe-class-name">UserClosure</span></span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter"><span class="token punctuation">{</span> firstName<span class="token punctuation">,</span> lastName<span class="token punctuation">,</span> age<span class="token punctuation">,</span> occupation <span class="token punctuation">}</span></span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+	<span class="token keyword control-flow">return</span> <span class="token punctuation">(</span><span class="token punctuation">{</span>
+		<span class="token function-variable function">describeSelf</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+			<span class="token keyword">const</span> msg <span class="token operator">=</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">My name is </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>firstName<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>lastName<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">, I am </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>age<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> years old and I work as a </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>occupation<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span>
+			<span class="token keyword control-flow">return</span> msg
+		<span class="token punctuation">}</span><span class="token punctuation">,</span>
+		<span class="token function-variable function">getAge</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+			<span class="token keyword control-flow">return</span> age<span class="token punctuation">;</span>
+		<span class="token punctuation">}</span><span class="token punctuation">,</span>
+		<span class="token function-variable function">showStrength</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+			<span class="token keyword">let</span> howOld <span class="token operator">=</span> age<span class="token punctuation">;</span>
+			<span class="token keyword">let</span> output <span class="token operator">=</span> <span class="token string">'I am'</span><span class="token punctuation">;</span>
+			<span class="token keyword control-flow">while</span> <span class="token punctuation">(</span>howOld<span class="token operator">--</span> <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+				output <span class="token operator">+=</span> <span class="token string">' very'</span><span class="token punctuation">;</span>
+			<span class="token punctuation">}</span>
+			<span class="token keyword control-flow">return</span> output <span class="token operator">+</span> <span class="token string">' Strong'</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Closures and classes behave differently in JavaScript with a fundamental difference: closures support <a href="/Digital-Garden/notes/mkYg8t5iG0SCNIgj8cFnr">encapsulation</a>, while JavaScript classes don’t support it.</p>
+<ul>
+<li>in other words, we can create a closure where individual members of the closure are invisible to the outside world.</li>
+</ul>
+<p>When opting for closures over classes, closures offer simplicity, since we don’t have to worry about the context that this is referring to.</p>
+<ul>
+<li>If we are creating multiple instances of an object, classes will best suit our needs. Meanwhile, if we don’t plan to create multiple instances, the simplicity of closures may be a better fit for our project.</li>
+</ul>
+<hr>
+<h3 id="simple-state-management-with-closure"><a aria-hidden="true" class="anchor-heading" href="#simple-state-management-with-closure"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Simple state-management with closure</h3>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">function</span> <span class="token generic-function"><span class="token function">makeState</span><span class="token generic class-name"><span class="token operator">&#x3C;</span><span class="token constant">S</span><span class="token operator">></span></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> state<span class="token operator">:</span> <span class="token constant">S</span>
+  <span class="token keyword">function</span> <span class="token function">getState</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> state
+  <span class="token punctuation">}</span>
+  <span class="token keyword">function</span> <span class="token function">setState</span><span class="token punctuation">(</span>x<span class="token operator">:</span> <span class="token constant">S</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    state <span class="token operator">=</span> x
+  <span class="token punctuation">}</span>
+  <span class="token keyword">return</span> <span class="token punctuation">{</span> getState<span class="token punctuation">,</span> setState <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">const</span> <span class="token punctuation">{</span> getState<span class="token punctuation">,</span> setState <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">makeState</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token function">setState</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+<span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span><span class="token function">getState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 1</span>
+<span class="token function">setState</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span><span class="token function">getState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 2</span>
+</code></pre>
+<p>Observe that you can pass a type like so:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token generic-function"><span class="token function">makeState</span><span class="token generic class-name"><span class="token operator">&#x3C;</span><span class="token builtin">number</span><span class="token operator">></span></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre>
+<p>Then, when you go to use <code>getState</code> and <code>setState</code>, the generic <code>S</code> will become <code>number</code></p>
+<hr>
+<h3 id="innerouter-function-illustration"><a aria-hidden="true" class="anchor-heading" href="#innerouter-function-illustration"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Inner/Outer function illustration</h3>
+<p>From the context of an inner scope, there is a: local scope, any number of closure scopes, and a global scope. The closure scopes represent the different scopes of the surrounding code. If our current scope is nested 3 levels deep then there are 2 closure scopes. Within these scopes, there may exist variables.</p>
+<p>because of how lexical scope works, when we call a function that accesses a variable from outside its scope, it will capture it at the very time the function is created. This means even if that value changes in the future, the value it had <em>at the time</em> it was captured will be used.</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">var</span> <span class="token function-variable function">outer</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token keyword">var</span> innerFunc <span class="token operator">=</span> <span class="token function">outer</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre>
+<ul>
+<li>above, <code>innerFunc</code> causes <code>outer()</code> to execute, returning a function and setting its value to it. <code>innerFunc</code> has access to the local variables of its containing object (normally a containing function). Therefore, these "sibling" local variables are changeable from outside the function.</li>
+<li>Think of a closure as the lifeline that an inner function extends to the variables (that the inner function has used) defined in the outer function. They continue to exist because the closure exists. In other words, the inner function closes over (ie. captures/remembers) the variables defined in the outer function.</li>
+<li>Conceptually (but not actually), the closed over function (<code>outer</code>) has all of its variables put into an object. That is how <code>inner</code> is able to access those values. Something like this is happening:</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">outer</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> x <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+
+    <span class="token keyword control-flow">return</span> <span class="token keyword">function</span> <span class="token function">inner</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword control-flow">return</span> x<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>makes 2 objects like this:</p>
+<pre class="language-js"><code class="language-js">scopeOfOuter <span class="token operator">=</span> <span class="token punctuation">{</span>
+    x<span class="token operator">:</span> <span class="token number">1</span>
+<span class="token punctuation">}</span>
+
+scopeOfInner <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre>
+<p>then <code>scopeOfOuter</code> is set as the prototype of <code>scopeOfInner</code>, so when we try to access the value of x with <code>return scopeOfInner.x</code>, we see that <code>scopeOfInner</code> doesn't have an <code>x</code> property, so it goes up the prototype chain and finds an <code>x</code> property on <code>scopeOfOuter</code></p>
+<pre class="language-js"><code class="language-js"><span class="token known-class-name class-name">Object</span><span class="token punctuation">.</span><span class="token method function property-access">setPrototypeOf</span><span class="token punctuation">(</span> scopeOfInner<span class="token punctuation">,</span> scopeOfOuter <span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<ul>
+<li>Conceptually, the structure of a closure is not mutable. In other words, you can never add to or remove state from a closure</li>
+<li>closures are a subset of lambdas</li>
+</ul>
+<h3 id="how-scope-enables-closures-to-happen"><a aria-hidden="true" class="anchor-heading" href="#how-scope-enables-closures-to-happen"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>How scope enables closures to happen</h3>
+<p>In JS, a scope is created by a function or code block.</p>
+<ul>
+<li>When we have 2 separate functions at the same level of the code, both can use the same variable names and not have collisions. But what happens when one fn (<code>inner</code>) goes within another (<code>outer</code>)?</li>
+</ul>
+<p>In the following example, <code>myInnerFunc</code> is an instance of <code>innerFunc</code>, with the enhanced benefit of having access to <code>outerVar</code></p>
+<ul>
+<li>The reason it has access is because of lexical scope, which (importantly) is defined before any javascript code has run (ie. analyzed just by the source code)
+<img src="/Digital-Garden/:/8e496538fa28463a9e908e9164c39882" alt="dad83091392736b4fc218299b2073d6d.png"></li>
+<li>Therefore, a closure is a function that has access to its lexical scope, <em>even though</em> that function was executed from outside of that lexical scope.
+<ul>
+<li>Simpler, the closure is a function that remembers the variables from the place where it is defined (and not where it was executed)</li>
+</ul>
+</li>
+<li>A rule of thumb to identify a closure: if you see in a function an alien variable (not defined inside the function), most likely that function is a closure because the alien variable is captured.</li>
+</ul>
+<h3 id="analogy"><a aria-hidden="true" class="anchor-heading" href="#analogy"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Analogy</h3>
+<p>Imagine a magical paintbrush with an interesting property. If you paint with it some objects from real life, then the painting becomes a window you can interact with.</p>
+<p>Through this window, you can move the painted objects with your hands.</p>
+<p>Moreover, you can carry the magical painting anywhere, even far from the place where you’ve painted the objects. From there, through the magical painting as a window, you can still move the objects with your hands.</p>
+<p>The magical painting is a closure, while the painted objects are the lexical scope.
+<img src="/Digital-Garden/:/cee3345f41c44ceca614faea5e5cc400" alt="c40e3c1034d769d6bc5aa8f2100a83e7.png"></p>
+<h3 id="stale-closures"><a aria-hidden="true" class="anchor-heading" href="#stale-closures"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Stale closures</h3>
+<ul>
+<li>stale closures capture variables that have outdated values.</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">createIncrement</span><span class="token punctuation">(</span><span class="token parameter">i</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> value <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  <span class="token keyword">function</span> <span class="token function">increment</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    value <span class="token operator">+=</span> i<span class="token punctuation">;</span>
+    <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">const</span> message <span class="token operator">=</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Current value is </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>value<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
+    <span class="token keyword control-flow">return</span> <span class="token keyword">function</span> <span class="token function">logValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword control-flow">return</span> increment<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">const</span> inc <span class="token operator">=</span> <span class="token function">createIncrement</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> log1 <span class="token operator">=</span> <span class="token function">inc</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// logs 1</span>
+<span class="token keyword">const</span> log2 <span class="token operator">=</span> <span class="token function">inc</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>             <span class="token comment">// logs 2</span>
+<span class="token keyword">const</span> log3 <span class="token operator">=</span> <span class="token function">inc</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>             <span class="token comment">// logs 3</span>
+<span class="token function">log1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>             <span class="token comment">// logs "Current value is 1"</span>
+<span class="token function">log2</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>             <span class="token comment">// logs "Current value is 2"</span>
+<span class="token function">log3</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>             <span class="token comment">// logs "Current value is 3"</span>
+</code></pre>
+<ul>
+<li><code>log{1,2,3}()</code> are stale closures, because it has already captured the value <em>at the time</em> that <code>inc()</code> was called. What's important to note here is that <code>inc()</code> is called 3 times. Every time it is called, it runs through the <code>increment</code> function that was closed over. It then returns that value, and holds it (within a function called <code>logValue</code> that prints out the held value). In other words, it does not get updated with each subsequent call of <code>inc()</code>. It has already held onto that value, and there is nothing it can do to change that fact.</li>
+<li>Therefore, if we want to capture the freshest value, we have to figure out which closure it is that has those freshest variables.
+<ul>
+<li>Here, that variable would be the <em>latest</em> call of <code>inc()</code>.</li>
+</ul>
+</li>
+</ul>
+<h3 id="closures-vs-objects"><a aria-hidden="true" class="anchor-heading" href="#closures-vs-objects"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Closures vs Objects</h3>
+<p>closure offers granular change control and automatic privacy.
+object offers easier cloning of state</p>
+<p>Closures are made every time we create an event handler, a promise, setTimeout, and even within <code>useEffect</code> in React.</p>
+<h3 id="node-debugger"><a aria-hidden="true" class="anchor-heading" href="#node-debugger"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Node Debugger</h3>
+<p>closure scope is outside of local scope
+there are multiple layers of closure state</p>
+<p><img src="/Digital-Garden/assets/images/2021-10-26-09-37-54.png"></p>

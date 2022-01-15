@@ -1,0 +1,90 @@
+<h1 id="discriminated-union"><a aria-hidden="true" class="anchor-heading" href="#discriminated-union"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Discriminated Union</h1>
+<p>Discriminated unions are a concept closely related to <a href="/Digital-Garden/notes/FPzYyOund7l8onCiGxSn3">state machines</a>.</p>
+<p>Discriminated unions allow us to compose types and enforce some business logic rules <em>at compile-time</em>.
+For example, we can implement the following logic:</p>
+<blockquote>
+<p>Customer needs to provide either email or phone number.
+An obvious (and naive) solution to this is to just make both the <code>email</code> and <code>phone</code> properties optional; but then we end up with the possibility that neither is provided.</p>
+</blockquote>
+<p>Instead, we can create a new type <code>Contact</code> which is the union of 2 interfaces: 1 has a <code>phone</code> property, and the other has a <code>email</code> property:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">interface</span> <span class="token class-name"><span class="token maybe-class-name">EmailContact</span></span> <span class="token punctuation">{</span>
+    kind<span class="token operator">:</span> <span class="token string">'email'</span><span class="token punctuation">;</span>
+    email<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">interface</span> <span class="token class-name"><span class="token maybe-class-name">PhoneContact</span></span> <span class="token punctuation">{</span>
+    kind<span class="token operator">:</span> <span class="token string">'phone'</span><span class="token punctuation">;</span>
+    phone<span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+  
+<span class="token keyword">type</span> <span class="token class-name"><span class="token maybe-class-name">Contact</span></span> <span class="token operator">=</span> <span class="token maybe-class-name">EmailContact</span> <span class="token operator">|</span> <span class="token maybe-class-name">PhoneContact</span><span class="token punctuation">;</span>
+
+<span class="token keyword">interface</span> <span class="token class-name"><span class="token maybe-class-name">Customer</span></span> <span class="token punctuation">{</span>
+    name<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+    contact<span class="token operator">:</span> <span class="token maybe-class-name">Contact</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">printCustomerContact</span><span class="token punctuation">(</span><span class="token punctuation">{</span> contact <span class="token punctuation">}</span><span class="token operator">:</span> <span class="token maybe-class-name">Customer</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// Here comes the power of discriminated unions. TypeScript analyses the code and sees an if statement that checks whether contact.kind is equal to "email". If that’s true, it can be certain that the type of contact is EmailContact, so it narrows the type inside the first if branch. The only other option for contact is to be a PhoneContact, so the type is narrowed to PhoneContact in the second if branch.</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>contact<span class="token punctuation">.</span><span class="token property-access">kind</span> <span class="token operator">===</span> <span class="token string">'email'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// Type of `contact` is `EmailContact`!</span>
+        <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span>contact<span class="token punctuation">.</span><span class="token property-access">email</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        <span class="token comment">// Type of `contact` is `PhoneContact`!</span>
+        <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span>contact<span class="token punctuation">.</span><span class="token property-access">phone</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Each union member follows a special convention of having a <code>kind</code> property. This property is called a <em>discriminator</em>, and it encodes type information into the object so that it is available at runtime. Now, TypeScript can figure out which union member you’re dealing with by looking at the <code>kind</code> property.</p>
+<ul>
+<li><code>kind</code> is just a convention, and it can be any word.</li>
+</ul>
+<h3 id="example"><a aria-hidden="true" class="anchor-heading" href="#example"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Example</h3>
+<p>Users place orders for products. Users have contact information, email or postal addresses, and at least one is required. Orders should include price, product name, quantity, payment date, paid amount, sending date, and delivery date.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">type</span> <span class="token class-name"><span class="token maybe-class-name">Customer</span></span> <span class="token operator">=</span> <span class="token punctuation">{</span>
+  name<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+  contactInfo<span class="token operator">:</span> <span class="token maybe-class-name">ContactInfo</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">type</span> <span class="token class-name"><span class="token maybe-class-name">ContactInfo</span></span> <span class="token operator">=</span>
+  <span class="token operator">|</span> <span class="token punctuation">{</span> kind<span class="token operator">:</span> <span class="token string">"emailOnly"</span><span class="token punctuation">;</span> email<span class="token operator">:</span> <span class="token builtin">string</span> <span class="token punctuation">}</span>
+  <span class="token operator">|</span> <span class="token punctuation">{</span> kind<span class="token operator">:</span> <span class="token string">"postalOnly"</span><span class="token punctuation">;</span> address<span class="token operator">:</span> <span class="token builtin">string</span> <span class="token punctuation">}</span>
+  <span class="token operator">|</span> <span class="token punctuation">{</span> kind<span class="token operator">:</span> <span class="token string">"emailAndPostal"</span><span class="token punctuation">;</span> email<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span> address<span class="token operator">:</span> <span class="token builtin">string</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">type</span> <span class="token class-name"><span class="token maybe-class-name">PaidOrderData</span></span> <span class="token operator">=</span> <span class="token punctuation">{</span> paymentDate<span class="token operator">:</span> <span class="token known-class-name class-name">Date</span><span class="token punctuation">;</span> amount<span class="token operator">:</span> <span class="token builtin">number</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token keyword">type</span> <span class="token class-name"><span class="token maybe-class-name">SentOrderData</span></span> <span class="token operator">=</span> <span class="token punctuation">{</span> sendingDate<span class="token operator">:</span> <span class="token known-class-name class-name">Date</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token keyword">type</span> <span class="token class-name"><span class="token maybe-class-name">DeliveredOrderData</span></span> <span class="token operator">=</span> <span class="token punctuation">{</span> deliveryDate<span class="token operator">:</span> <span class="token known-class-name class-name">Date</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">type</span> <span class="token class-name"><span class="token maybe-class-name">OrderState</span></span> <span class="token operator">=</span>
+  <span class="token operator">|</span> <span class="token punctuation">{</span> kind<span class="token operator">:</span> <span class="token string">"new"</span> <span class="token punctuation">}</span>
+  <span class="token operator">|</span> <span class="token punctuation">{</span> kind<span class="token operator">:</span> <span class="token string">"paid"</span><span class="token punctuation">;</span> paidData<span class="token operator">:</span> <span class="token maybe-class-name">PaidOrderData</span> <span class="token punctuation">}</span>
+  <span class="token operator">|</span> <span class="token punctuation">{</span> kind<span class="token operator">:</span> <span class="token string">"sent"</span><span class="token punctuation">;</span> paidData<span class="token operator">:</span> <span class="token maybe-class-name">PaidOrderData</span><span class="token punctuation">;</span> sentData<span class="token operator">:</span> <span class="token maybe-class-name">SentOrderData</span> <span class="token punctuation">}</span>
+  <span class="token operator">|</span> <span class="token punctuation">{</span>
+      kind<span class="token operator">:</span> <span class="token string">"delivered"</span><span class="token punctuation">;</span>
+      data<span class="token operator">:</span> <span class="token maybe-class-name">PaidOrderData</span><span class="token punctuation">;</span>
+      sentData<span class="token operator">:</span> <span class="token maybe-class-name">SentOrderData</span><span class="token punctuation">;</span>
+      deliveredData<span class="token operator">:</span> <span class="token maybe-class-name">DeliveredOrderData</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">type</span> <span class="token class-name"><span class="token maybe-class-name">Order</span></span> <span class="token operator">=</span> <span class="token punctuation">{</span>
+  customer<span class="token operator">:</span> <span class="token maybe-class-name">Customer</span><span class="token punctuation">;</span>
+  state<span class="token operator">:</span> <span class="token maybe-class-name">OrderState</span><span class="token punctuation">;</span>
+  productName<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+  price<span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">;</span>
+  quantity<span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre>
+<h3 id="multi-value-discriminator"><a aria-hidden="true" class="anchor-heading" href="#multi-value-discriminator"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Multi-value Discriminator</h3>
+<p>a discriminator does not have to be a single property. A group of literal properties can also act as a discriminator! In such a case, every combination of values marks a different member of the union type.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">type</span> <span class="token class-name"><span class="token maybe-class-name">Foo</span></span> <span class="token operator">=</span>
+  <span class="token operator">|</span> <span class="token punctuation">{</span> kind<span class="token operator">:</span> <span class="token string">'A'</span><span class="token punctuation">,</span> <span class="token keyword">type</span><span class="token operator">:</span> <span class="token string">'X'</span><span class="token punctuation">,</span> abc<span class="token operator">:</span> <span class="token builtin">string</span> <span class="token punctuation">}</span>
+  <span class="token operator">|</span> <span class="token punctuation">{</span> kind<span class="token operator">:</span> <span class="token string">'A'</span><span class="token punctuation">,</span> <span class="token keyword">type</span><span class="token operator">:</span> <span class="token string">'Y'</span><span class="token punctuation">,</span> xyz<span class="token operator">:</span> <span class="token builtin">string</span> <span class="token punctuation">}</span>
+  <span class="token operator">|</span> <span class="token punctuation">{</span> kind<span class="token operator">:</span> <span class="token string">'B'</span><span class="token punctuation">,</span> <span class="token keyword">type</span><span class="token operator">:</span> <span class="token string">'X'</span><span class="token punctuation">,</span> rty<span class="token operator">:</span> <span class="token builtin">string</span> <span class="token punctuation">}</span>
+
+<span class="token keyword">declare</span> <span class="token keyword">const</span> foo<span class="token operator">:</span> <span class="token maybe-class-name">Foo</span><span class="token punctuation">;</span>
+
+<span class="token keyword">if</span> <span class="token punctuation">(</span>foo<span class="token punctuation">.</span><span class="token property-access">kind</span> <span class="token operator">===</span> <span class="token string">'A'</span> <span class="token operator">&#x26;&#x26;</span> foo<span class="token punctuation">.</span><span class="token keyword">type</span> <span class="token operator">===</span> <span class="token string">'X'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// here, the intellisense on `foo` would show how it's type is narrowed to the only type it could be, namely the first one shown in `Foo`</span>
+  <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span>foo<span class="token punctuation">.</span><span class="token property-access">abc</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>

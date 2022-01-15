@@ -1,0 +1,66 @@
+<h1 id="events"><a aria-hidden="true" class="anchor-heading" href="#events"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Events</h1>
+<p>Apple events are a high-level message-based form of Interprocess Communication (IPC), used to communicate between local or remote application processes</p>
+<p>An Apple Event contains:</p>
+<ol>
+<li>Attributes describing how the event should be handled</li>
+<li>optional parameters to the event handler that receives the event</li>
+</ol>
+<p>Example</p>
+<ul>
+<li>When we drag-n-drop a file onto the TextEdit.app icon in Finder, what happens is that Finder commands TextEdit to open that file by sending it an <code>odoc</code> (open doc) event with a list of file identifiers as its parameter
+<img src="/Digital-Garden/assets/images/2021-05-07-09-48-28.png"></li>
+</ul>
+<p>With proper bindings, Apple events can be created and sent with programming languages</p>
+<ul>
+<li>ex. from our client application, we might call <code>iTunes().play()</code>, causing a hook/Play event to be sent from the client application to iTunes, instructing it to start playing. Applications may respond to an incoming Apple event by sending a reply event back to the client application</li>
+</ul>
+<h2 id="apple-event-object-model-aeom"><a aria-hidden="true" class="anchor-heading" href="#apple-event-object-model-aeom"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Apple Event Object Model (AEOM)</h2>
+<p>The AEOM is a view-controller layer that provides a user-friendly representation of the application's internal data, allowing clients to identify and manipulate parts of that structure via Apple events</p>
+<ul>
+<li>An incoming Apple event representing a particular command (get, set, move, etc.) is unpacked, and any object specifiers in its parameter list are evaluated against the application's AEOM to identify the user-level object(s) upon which the command should act</li>
+<li>The command is then applied these objects, with the AEOM translating this into operations upon the application's implementation-level objects
+<ul>
+<li>These implementation-level objects are mostly user-data objects in the application's Model layer</li>
+</ul>
+</li>
+</ul>
+<p><img src="/Digital-Garden/assets/images/2021-05-07-09-57-56.png"></p>
+<ul>
+<li>The AEOM represents user data as a tree-shaped object graph, whose nodes are connected via 1:1 and/or 1:many relationships.</li>
+<li>AEOM objects are identified by high-level queries (comparable to XPath or CSS selectors), not low-level chained method calls.</li>
+<li>While the Apple Event Object Model is sometimes described by third-parties as being similar to DOM, this is inaccurate as AEOM operates at a much higher level of abstraction than DOM.</li>
+</ul>
+<p>The AEOM is a tree-like structure made up of objects. These objects may contain descriptive attributes such as class, name, id, size, or bounds; for example:</p>
+<pre><code>finder.version
+itunes.playerState
+textedit.frontmost
+finder.home
+textedit.documents
+itunes.playlists
+</code></pre>
+<p>Unlike other object models such as DOM, objects within the AEOM are associated with one another by relationships rather than simple physical containment
+Relationships between objects may be one-to-one:</p>
+<pre><code>finder.home
+itunes.currentTrack
+</code></pre>
+<p>or one-to-many:</p>
+<pre><code>finder.folders
+itunes.playlists
+</code></pre>
+<p>to show how how this tree-like structure is not related to containment (as the DOM is), consider that the following object specifiers all identify the same objects (files on the user's desktop):</p>
+<ul>
+<li>the first specifier describes the files' location by physical containment; the other two use other relationships provided by the application as convenient shortcuts</li>
+</ul>
+<pre><code>finder.disks["Macintosh HD"].folders["Users"].folders["kyletycholiz"].folders["Desktop"].files
+
+finder.desktop.files
+
+finder.files
+</code></pre>
+<p>Here is the AEOM for a simple hypothetical text editor:
+<img src="/Digital-Garden/assets/images/2021-05-07-10-08-32.png"></p>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/GIIgwcSFcmdbMSUXmc603">Applescript</a></li>
+</ul>

@@ -1,0 +1,25 @@
+<h1 id="enterprise-service-bus"><a aria-hidden="true" class="anchor-heading" href="#enterprise-service-bus"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Enterprise Service Bus</h1>
+<h3 id="enterprise-service-bus-esb"><a aria-hidden="true" class="anchor-heading" href="#enterprise-service-bus-esb"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Enterprise Service Bus (ESB)</h3>
+<p>An ESB implements a communication system between services in a Service Oriented Architecture.</p>
+<p>An ESB is a pattern, rather than any specific technology. We implement it using event-driven and message-oriented middleware (MOMs) in combination with <a title="Private" style="color: brown" href="https://wiki.dendron.so/notes/hfyvYGJZQiUwQaaxQO27q.html" target="_blank">message queues (Private)</a> as technology frameworks.</p>
+<p>The idea is you have some kind of pipeline with computers connected to it, and whenever one of them sends a message, it’s dispatched to all of the others. Then, they decide if they want to consume the given message or just discard it.</p>
+<p>An ESB represents a software architecture for <a href="/Digital-Garden/notes/vutujFFWxQu6TshWVuMpI">distributed computing</a></p>
+<ul>
+<li>It is a special variant of the <a href="/Digital-Garden/notes/g2jDjW3rfwpjkoQXFUDaY">client-server architecture</a>, where any service can act as the client or the server.</li>
+</ul>
+<p>ESB promotes agility and flexibility when it comes to high-level protocol communication between services.</p>
+<p>The idea of a <a href="/Digital-Garden/notes/OkmpvGkh22llzi6Mq9dPK">hardware bus</a> is not all that different to an event bus.</p>
+<ul>
+<li>in the analogy, the machines are your hardware components, the message is the event or the data you want to communicate, and the pipeline is your <code>EventBus</code> object.</li>
+</ul>
+<p>Event buses help loosen coupling between classes and promotes a <a href="/Digital-Garden/notes/NpY4iv9TwpGJODbVesQYe">publish-subscribe</a> pattern. It also help components interact without being aware of each other.</p>
+<ul>
+<li>Applications can integrate each other in a loosely coupled manner through this mediator (ie. the bus), so that they will not be dependent on each other's interfaces.</li>
+</ul>
+<p>A bus uses the <a href="/Digital-Garden/notes/NpY4iv9TwpGJODbVesQYe">pub-sub</a> model.</p>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/7n3tUhrwbvz8nNu0bTlWz">Event Bridge</a></li>
+<li><a href="/Digital-Garden/notes/Skg9BUUhw2xIBmwrkEP4u">Messaging Pattern</a></li>
+</ul>

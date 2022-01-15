@@ -1,0 +1,18 @@
+<h1 id="node"><a aria-hidden="true" class="anchor-heading" href="#node"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Node</h1>
+<h1 id="inode"><a aria-hidden="true" class="anchor-heading" href="#inode"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>inode</h1>
+<ul>
+<li>a data structure that describes a FS object (like a file/directory)</li>
+<li>an inode is a virtual filesystem entity (in other words, it exists in the VFS world)</li>
+<li>the inode stores metadata about the object, such as its disk block location, file size, file type </li>
+<li>it also stores owner/permission data about the object</li>
+<li>In reality, a directory is just a list of names that are each assigned to an inode
+<ul>
+<li>A directory contains an entry for itself, its parent, and each of its children.</li>
+</ul>
+</li>
+<li>on a UNIX system, files are user facing (ie. we work with them directly). the structure of a file exists only as a virtual FS entity in memory (there is no phsyical correspondent of it)</li>
+<li>From the point of view of the underlying filesystem, the inode abstracts away the files that the user would directly interact with. From the point of view of the user, the file abstracts away the inode.</li>
+<li>stands for <em>index node</em></li>
+</ul>
+<h2 id="dentry"><a aria-hidden="true" class="anchor-heading" href="#dentry"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Dentry</h2>
+<p>The dentry (directory entry) associates an inode with a file name</p>

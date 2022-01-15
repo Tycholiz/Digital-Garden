@@ -1,0 +1,13 @@
+<h1 id="command-query-responsibility-segregation"><a aria-hidden="true" class="anchor-heading" href="#command-query-responsibility-segregation"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Command-Query-Responsibility-Segregation</h1>
+<p>Command Query Responsibility Segregation (CQRS) is an architectural pattern that separates reading and writing into two different models. This means that every method should either be a Command that performs an action or a Query that returns data. A Command cannot return data and a Query cannot change the data</p>
+<ul>
+<li>ex. Redux attempts to follow this pattern. Consider that to write to state we must dispatch an action, and to read state we must use selectors. The implementations of reading and writing to state are decoupled.</li>
+</ul>
+<h1 id="ue-resources"><a aria-hidden="true" class="anchor-heading" href="#ue-resources"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>UE Resources</h1>
+<p><a href="https://martinfowler.com/bliki/CQRS.html">https://martinfowler.com/bliki/CQRS.html</a></p>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/l7V3v2ep1YdDCt7DOr7Ci">Redux</a></li>
+<li><a href="/Digital-Garden/notes/Ih2pbpNa1wZvBnFdTwfcN">Event Sourcing</a></li>
+</ul>

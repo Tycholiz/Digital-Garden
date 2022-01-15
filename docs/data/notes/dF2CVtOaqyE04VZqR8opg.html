@@ -1,0 +1,59 @@
+<h1 id="cicd"><a aria-hidden="true" class="anchor-heading" href="#cicd"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>CI/CD</h1>
+<h2 id="continuous-integration-ci"><a aria-hidden="true" class="anchor-heading" href="#continuous-integration-ci"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Continuous Integration (CI)</h2>
+<p>a CI system will automatically build code, run linters, run tests etc., and provide immediate feedback on the result of those actions.</p>
+<ul>
+<li>a CI can also automate other parts of your development process by managing deployments and notifications.</li>
+<li>"continuous" means that it happens with each "checkin" of the code (updating code on the host</li>
+</ul>
+<p>When you instruct a build to be made, the CI runner clones the github repo into a brand-new virtual env, and runs the tests and creates the build.</p>
+<ul>
+<li>if any of those tasks fail, the build is considered broken</li>
+<li>if all tasks succeed, the build passes and Travis CI can deploy the code</li>
+</ul>
+<h3 id="examples"><a aria-hidden="true" class="anchor-heading" href="#examples"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Examples</h3>
+<ul>
+<li><a href="/Digital-Garden/notes/NCTzcxTOAYdeXWxx1WIgK">Github Actions</a></li>
+<li>Travis CI</li>
+<li>Jenkins</li>
+<li>Circle CI</li>
+</ul>
+<h2 id="continuous-delivery"><a aria-hidden="true" class="anchor-heading" href="#continuous-delivery"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Continuous Delivery</h2>
+<p>One step past,  whereby we end up in a state where a deployment can be triggered, albeit manually.</p>
+<ul>
+<li>the imagery here is that you, as the representative of the engineers, are <em>delivering</em> a build to your bosses, which can be deployed at their whim.</li>
+</ul>
+<p>Continuous Delivery is about making sure that every change a developer makes can make it through the pipeline that includes subjecting our code to a series of tests </p>
+<ul>
+<li>does it compile? does it pass unit tests? does it pass E2E? etc</li>
+</ul>
+<p>It is slightly broader than Continuous Deployment, in the sense that not all changes that go through the pipeline need to necessarily make it into production.</p>
+<ul>
+<li>In this way, you could think of Continuous Delivery as baking in the business-level ability to trigger deployments. Putting code into production is a business-decision, not a technical one. The executives of a company may decide "we only want to deploy new releases every 2 weeks, so that the amount of change that user's experience isn't so jarring". The point is that from a technical standpoint, we can do this— we just decide not to for business reasons.
+<ul>
+<li>This above explanation shows that in order to do Continuous Delivery, we have to already be doing Continuous Deployment</li>
+</ul>
+</li>
+</ul>
+<h2 id="continuous-deployment"><a aria-hidden="true" class="anchor-heading" href="#continuous-deployment"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Continuous Deployment</h2>
+<p>This process is about taking all of the commits we make during the development process, and deploying them to the live (production) application automatically.</p>
+<ul>
+<li>As part of this process, we subject our code to a multitude of tests (unit, e2e etc.), which is CI.</li>
+</ul>
+<h3 id="why-use-cd-both-forms"><a aria-hidden="true" class="anchor-heading" href="#why-use-cd-both-forms"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Why use CD (both forms)?</h3>
+<ul>
+<li>reduced deployment risk
+<ul>
+<li>with smaller deployments, it's easier to spot when/where something goes wrong</li>
+</ul>
+</li>
+<li>user feedback
+<ul>
+<li>with incremental and automated change, it's easier to get more reliable feedback from users, rather than having to depend on what they tell you they want.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/lBasXzi1eHzGwL2pEuOv8">gitops</a></li>
+</ul>

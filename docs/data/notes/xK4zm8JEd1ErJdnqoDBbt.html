@@ -1,0 +1,21 @@
+<h1 id="cook"><a aria-hidden="true" class="anchor-heading" href="#cook"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Cook</h1>
+<h3 id="see-the-command-attached-to-a-bash-alias"><a aria-hidden="true" class="anchor-heading" href="#see-the-command-attached-to-a-bash-alias"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>See the command attached to a bash alias</h3>
+<p>run <code>type &#x3C;command></code></p>
+<h3 id="check-to-see-if-alias-exists-in-shell"><a aria-hidden="true" class="anchor-heading" href="#check-to-see-if-alias-exists-in-shell"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>check to see if alias exists in shell</h3>
+<p>run <code>which g</code></p>
+<h3 id="run-multiple-commands-in-sequence"><a aria-hidden="true" class="anchor-heading" href="#run-multiple-commands-in-sequence"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Run multiple commands in sequence</h3>
+<pre class="language-sh"><code class="language-sh">$ command1; command2
+</code></pre>
+<p>This is distinct from <code>&#x26;&#x26;</code>, since commands will be run regardless of exit status</p>
+<h3 id="run-previous-command-with-sudo-in-front"><a aria-hidden="true" class="anchor-heading" href="#run-previous-command-with-sudo-in-front"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Run previous command with <code>sudo</code> in front</h3>
+<pre class="language-sh"><code class="language-sh">╰─➤ $ rm -rf /var/www
+rm: /var/www: Permission denied
+╰─➤ $ sudo !!
+╰─➤ $ sudo rm -rf /var/www
+</code></pre>
+<h3 id="set-a-timer-to-report-how-long-an-operation-took"><a aria-hidden="true" class="anchor-heading" href="#set-a-timer-to-report-how-long-an-operation-took"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Set a timer to report how long an operation took</h3>
+<pre class="language-sh"><code class="language-sh">start=$SECONDS
+# do some operations
+duration=$(( SECONDS - start ))
+echo "build and bundle completed in ${duration}s"
+</code></pre>

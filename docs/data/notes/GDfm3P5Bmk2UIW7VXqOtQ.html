@@ -1,0 +1,37 @@
+<h1 id="backreferences"><a aria-hidden="true" class="anchor-heading" href="#backreferences"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backreferences</h1>
+<p>Backreferences match the same text as previously matched by a capturing group (with are made with parentheses <code>()</code>).</p>
+<ul>
+<li><code>\0</code> references the whole search, <code>\1</code> references the first capture group, <code>\2</code> the second group, and so on.</li>
+</ul>
+<p>use <code>%</code> to not capture the following parentheses</p>
+<ul>
+<li>imagine we want to find and replace all occurrences of a first and last name, then replace it by the format <code>LAST, FIRST</code>. Notice the where we use and omit the <code>%</code> in order to control which matches are going to the <code>\1</code> and <code>\2</code> registers. Here, we don't care whether "Drew" or "Andrew" was matched, so we don't bother registering it.
+<ul>
+<li><code>/\v(%(And|D)rew) (Neil)</code></li>
+<li><code>:%s//\2, \1/g</code></li>
+</ul>
+</li>
+<li>Another resource says that the way to negate is with <code>?:</code> immediately after the opening <code>(</code>.
+<ul>
+<li>ex. <code>color=(?:red|green|blue)</code></li>
+</ul>
+</li>
+</ul>
+<p>Surround all instances of a given word with <code>""</code> (using regex w/ vim replace)</p>
+<ul>
+<li>
+<p><code>:s/(dog)/"\1"</code></p>
+</li>
+<li>
+<p>ex. Suppose you want to match a pair of opening and closing HTML tags, and the text in between. By putting the opening tag into a backreference, we can reuse the name of the tag to let us match the closing tag: <code>&#x3C;([A-Z][A-Z0-9]*)\b[^>]*>.*?&#x3C;/\1></code></p>
+<ul>
+<li>note: this doesn't seem to work</li>
+</ul>
+</li>
+</ul>
+<p>To figure out the number of a particular backreference, scan the regular expression from left to right. Count the opening parentheses of all the numbered capturing groups.</p>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/midPuyHDHxnZW01AbRXde">Quantifiers</a></li>
+</ul>

@@ -1,0 +1,31 @@
+<h1 id="connection"><a aria-hidden="true" class="anchor-heading" href="#connection"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Connection</h1>
+<h1 id="connecting-to-postgres"><a aria-hidden="true" class="anchor-heading" href="#connecting-to-postgres"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Connecting to Postgres</h1>
+<ul>
+<li>When a new user connects to the database, postgres will fork a new process.
+<ul>
+<li>After this point the client and the new process communicate directly, without intervention from the original process.</li>
+<li>This shows the dependency on processes rather than threads, giving us more stability at the cost of higher connection start-up costs.</li>
+<li>each connection into Postgres is going to consume about 10 MB of memory from your database</li>
+<li>These start-up costs can be overcome with pooling</li>
+</ul>
+</li>
+<li>In postgres, each client connecting to the database has its own process 
+<ul>
+<li>connection can be verified by running <code>select true as "Connection test";</code></li>
+</ul>
+</li>
+<li><em>Connection String</em> - the database url used to connect to the database (<code>postgres:///...</code>)
+<ul>
+<li>if we specify the connection string as <code>postgres:///mydb</code>, then we are implicitly passing our computer's username and no password, which would be equivalent to <code>postgres:///kyletycholiz@localhost:5432/mydb</code> 
+<ul>
+<li>spec: are these default variables determined by env variables like PGHOST?</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/A9G9CB5OMFBaZgbsHw1Fy">Pools</a></li>
+</ol>

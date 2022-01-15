@@ -1,0 +1,225 @@
+<h1 id="promises"><a aria-hidden="true" class="anchor-heading" href="#promises"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Promises</h1>
+<p>A promise is an object which can be returned synchronously from an asynchronous function. </p>
+<ul>
+<li>This synchronous-part is reflected in the fact that a promise returns immediately, albeit in Pending state.</li>
+</ul>
+<p>A promise can be in one of 3 possible states:</p>
+<ul>
+<li><em>Fulfilled</em>: onFulfilled() will be called (e.g., resolve() was called)</li>
+<li><em>Rejected</em>: onRejected() will be called (e.g., reject() was called)</li>
+<li><em>Pending</em>: not yet fulfilled or rejected</li>
+</ul>
+<p>If it's either fulfilled or rejected, it's said to be <em>settled</em>. Otherwise, it's <em>pending</em>.</p>
+<ul>
+<li>Once settled, a promise can <em>not</em> be resettled. Calling resolve() or reject() again will have no effect. 
+<ul>
+<li>The immutability of a settled promise is an important feature.</li>
+</ul>
+</li>
+</ul>
+<p>A promise accepts a callback function as a parameter. The callback function accepts 2 parameters, <code>resolve</code> and <code>reject</code>. </p>
+<ul>
+<li>If the task is successfully performed, then it returns resolve. </li>
+<li>Else it returns the reject.</li>
+</ul>
+<p>Every promise must supply a <code>.then()</code> method with the following signature:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token function-variable function">then</span><span class="token operator">:</span> <span class="token punctuation">(</span>onFulfilled<span class="token operator">?</span><span class="token operator">:</span> <span class="token known-class-name class-name">Function</span><span class="token punctuation">,</span> onRejected<span class="token operator">?</span><span class="token operator">:</span> <span class="token known-class-name class-name">Function</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token known-class-name class-name">Promise</span>
+</code></pre>
+<p>Promises make some guarantees about their use:</p>
+<ul>
+<li>Callbacks added with <code>then()</code> will never be invoked before the completion of the current run of the event loop. These callbacks will be invoked even if they were added after the success or failure of the asynchronous operation (e.g. fetch for data) that the promise represents.  Multiple callbacks may be added by calling <code>then()</code> several times. They will be invoked one after another in a synchronous way.</li>
+</ul>
+<p>Promises are <a href="/Digital-Garden/notes/7YLxjeF1S1t2VVfkImBit">eager</a>, meaning that a promise will start doing whatever task you give it as soon as the promise constructor is invoked. </p>
+<ul>
+<li>If you need lazy, check out observables or tasks.</li>
+</ul>
+<p>using promises effectively abstracts time out of the picture.</p>
+<ul>
+<li>abstracting away time allows us to better handle race conditions</li>
+</ul>
+<h2 id="components-of-a-promise"><a aria-hidden="true" class="anchor-heading" href="#components-of-a-promise"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Components of a Promise</h2>
+<p>There are 2 sides to promises: the <code>executor</code> (the one doing the actions) and the <code>consumer</code> (the one waiting for the actions to be done so it can consume the result.
+Executor ex. <code>(resolve, reject) =></code>
+Consumer ex. <code>.then, .catch, .finally</code></p>
+<pre class="language-js"><code class="language-js"><span class="token comment">// Executor</span>
+<span class="token keyword">var</span> p1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">resolve<span class="token punctuation">,</span> reject</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+  <span class="token function">resolve</span><span class="token punctuation">(</span><span class="token string">'Success!'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment">// or</span>
+  <span class="token comment">// reject(new Error("Error!"));</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// Consumer</span>
+p1<span class="token punctuation">.</span><span class="token method function property-access">then</span><span class="token punctuation">(</span><span class="token parameter">value</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+  <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Success!</span>
+<span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token parameter">reason</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+  <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">error</span><span class="token punctuation">(</span>reason<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Error!</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h3 id="executor"><a aria-hidden="true" class="anchor-heading" href="#executor"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Executor</h3>
+<p>Executor is usually defined as part of a library, so it's often the case that this code is already written.</p>
+<p>A executor sends the data with <code>resolve(data)</code></p>
+<p>Executor gets run as soon as it's defined. Therefore, its state will either be resolved or rejected</p>
+<p><code>Promise.resolve()</code> and <code>Promise.reject()</code> are shortcuts to manually create an already resolved or rejected promise respectively. This can be useful at times.</p>
+<h3 id="consumer"><a aria-hidden="true" class="anchor-heading" href="#consumer"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Consumer</h3>
+<p>Think of <code>.then</code>, <code>.catch</code> and <code>.finally</code> as the way that consumers subscribe to the executor
+A consumer receives the data (<code>stuff</code>) sent via the executor (ie. <code>resolve(stuff)</code>) with <code>.then(stuff)</code></p>
+<pre class="language-js"><code class="language-js"><span class="token function">doSomething</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token method function property-access">then</span><span class="token punctuation">(</span><span class="token parameter">result</span> <span class="token arrow operator">=></span> <span class="token function">doSomethingElse</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token method function property-access">then</span><span class="token punctuation">(</span><span class="token parameter">newResult</span> <span class="token arrow operator">=></span> <span class="token function">doThirdThing</span><span class="token punctuation">(</span>newResult<span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token method function property-access">then</span><span class="token punctuation">(</span><span class="token parameter">finalResult</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+    <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Got the final result: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>finalResult<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token keyword control-flow">catch</span><span class="token punctuation">(</span>onRejected<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h4 id="then"><a aria-hidden="true" class="anchor-heading" href="#then"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a><code>.then()</code></h4>
+<p><code>.then</code> lets us chain (ie. compose) 2+ asynchronous operations.</p>
+<p>Signature:</p>
+<ul>
+<li>note: most often the onRejected is omitted, with responsibility delegated to a final <code>.catch</code></li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token function-variable function">then</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">onFulfilled<span class="token punctuation">,</span> onRejected</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token known-class-name class-name">Promise</span>
+</code></pre>
+<p>To avoid surprises, functions passed to <code>then()</code> will never be called synchronously, even with an already-resolved promise:</p>
+<ul>
+<li>Instead of running immediately, the passed-in function is put on a microtask queue, which means it runs later (only after the function which created it exits, and when the JavaScript execution stack is empty), just before control is returned to the event loop</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token known-class-name class-name">Promise</span><span class="token punctuation">.</span><span class="token method function property-access">resolve</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token method function property-access">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 1, 2</span>
+</code></pre>
+<p><code>.then()</code> is a method available on a Promise. It doesn't even matter if the Promise is <code>pending</code>, <code>fulfilled</code>, or <code>rejected</code>.</p>
+<ul>
+<li>if we call <code>.then</code> on an already resolved/rejected promise, the <code>.then</code> block will be triggered instantly; however, the handler functions will be triggered asynchronously. To illustrate:</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> resolvedProm <span class="token operator">=</span> <span class="token known-class-name class-name">Promise</span><span class="token punctuation">.</span><span class="token method function property-access">resolve</span><span class="token punctuation">(</span><span class="token number">33</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">let</span> thenProm <span class="token operator">=</span> resolvedProm<span class="token punctuation">.</span><span class="token method function property-access">then</span><span class="token punctuation">(</span><span class="token parameter">value</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+    <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span><span class="token string">"this gets called after the end of the main stack. the value received and returned is: "</span> <span class="token operator">+</span> value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword control-flow">return</span> value<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// instantly logging the value of thenProm</span>
+<span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span>thenProm<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// using setTimeout we can postpone the execution of a function to the moment the stack is empty</span>
+<span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+    <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span>thenProm<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// logs, in order:</span>
+<span class="token comment">// Promise {[[PromiseStatus]]: "pending", [[PromiseValue]]: undefined}</span>
+<span class="token comment">// "this gets called after the end of the main stack. the value received and returned is: 33"</span>
+<span class="token comment">// Promise {[[PromiseStatus]]: "resolved", [[PromiseValue]]: 33}</span>
+</code></pre>
+<p><code>.then</code> is analogous to adding another subscriber to the mailing list</p>
+<p>.then() may be called many times on the same promise. In other words, a promise can be used to aggregate callbacks.</p>
+<h5 id="handler-functions-onfulfilledonrejected"><a aria-hidden="true" class="anchor-heading" href="#handler-functions-onfulfilledonrejected"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Handler functions (<code>onFulfilled</code>/<code>onRejected</code>)</h5>
+<p>if the promise is resolved (ie. when the underlying async operation is completed), <code>onFulfilled</code> is called asynchronously (to be scheduled in the current thread loop).</p>
+<p>Signature:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token function-variable function">onFulfilled</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">fulfillmentValue</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> valueOfResolveFunction
+</code></pre>
+<p>Handler functions have some behaviours. If it...</p>
+<ul>
+<li>returns a value, the promise returned by then gets resolved with the returned value as its value.</li>
+<li>doesn't return anything, the promise returned by then gets resolved with an undefined value.</li>
+<li>throws an error, the promise returned by then gets rejected with the thrown error as its value.</li>
+<li>returns an already fulfilled promise, the promise returned by then gets fulfilled with that promise's value as its value.</li>
+<li>returns an already rejected promise, the promise returned by then gets rejected with that promise's value as its value.</li>
+<li>returns another pending promise object, the resolution/rejection of the promise returned by then will be subsequent to the resolution/rejection of the promise returned by the handler. Also, the resolved value of the promise returned by then will be the same as the resolved value of the promise returned by the handler.</li>
+</ul>
+<p>Think of async actions atomically, and make each step a <code>.then()</code> that returns the input for the next <code>.then()</code>
+Ex. First .then() returns the JSON data as an obj, second returns a subset of that data, third acts on it</p>
+<h4 id="rejecting-promises"><a aria-hidden="true" class="anchor-heading" href="#rejecting-promises"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Rejecting Promises</h4>
+<p><code>.catch(onRejected)</code> is short for <code>.then(null, onRejected)</code></p>
+<ul>
+<li>If there's an exception, the browser will look down the chain for <code>.catch()</code> handlers or <code>onRejected</code>.</li>
+</ul>
+<p>Whenever a promise is rejected, a <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/rejectionhandled_event">rejectionhandled event</a> is sent to the global scope (probably <code>window</code>).</p>
+<p>Just like <code>.then</code>, <code>.catch</code> returns a promise, meaning we can chain another <code>.then</code> onto <code>.catch</code> if we want to </p>
+<ul>
+<li>this is effectively saying "do this thing, even if some previous async operation failed"</li>
+</ul>
+<p>spec:when we wrap a function in <code>Promise(..)</code>, we are promisifying it</p>
+<ul>
+<li>The new function that returns this promisified function now returns a Promise that resolves to its original return value</li>
+</ul>
+<p>(Inside promises) if a promise is returned (eg. return Promise.resolve('stuff')), the next .then() will execute only when that promise has resolved (with 'stuff').
+If the return value is anything else besides a promise, then it will be passed immediately to the next .then()</p>
+<p>.resolve(value)
+If the value passed to it is a promise itself, this will automatically "follow" that promise chain and wait to pass back the final resolved value.</p>
+<ul>
+<li>Good to use if you are unsure if a value is a promise or not</li>
+</ul>
+<p><code>Promise.all</code> is a server at a restaurant waiting to bring everyone's food at the same time, even though one meal may be ready before the others</p>
+<h3 id="promises-vs-callbacks-to-achieve-asynchrony"><a aria-hidden="true" class="anchor-heading" href="#promises-vs-callbacks-to-achieve-asynchrony"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Promises vs Callbacks to achieve asynchrony</h3>
+<p>With the callback method of achieving asynchrony, the idea is to pass a callback into a function and call that function after some event has occurred. </p>
+<p>Promises work a bit differently. Essentially, we create this object called a Promise (which if we recall, returns immediately when invoked, albeit with <code>[Pending]</code> status). To this object, we attach 2 callback functions: <code>resolve</code> and <code>reject</code>.</p>
+<ul>
+<li>we call <code>resolve</code> if the async action succeeds</li>
+<li>we call <code>reject</code> if the async action fails
+<ul>
+<li>most commonly the <code>resolve</code> and <code>reject</code> callbacks are asynchronous functions that return a promise. Naturally, they get called upon completion/failure of the async operation (or in the case of a promise chain, they get called when the previous promise resolves.)</li>
+<li>both <code>resolve</code> and <code>reject</code> return void</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="wrapping-callbacks-in-promises"><a aria-hidden="true" class="anchor-heading" href="#wrapping-callbacks-in-promises"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Wrapping Callbacks in Promises</h2>
+<p>In an ideal world, all asynchronous functions would already return promises. Unfortunately, some APIs still expect success and/or failure callbacks, like <code>setTimeout()</code>.</p>
+<p>Luckily we can wrap <code>setTimeout</code> in a promise. </p>
+<ul>
+<li>Best practice is to wrap problematic functions at the lowest possible level, and then never call them directly again:</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token comment">// Basically, the promise constructor takes an executor function that lets us resolve or reject a promise manually. </span>
+<span class="token comment">// Since setTimeout() doesn't really fail, we left out reject in this case.</span>
+<span class="token keyword">const</span> <span class="token function-variable function">wait</span> <span class="token operator">=</span> <span class="token parameter">ms</span> <span class="token arrow operator">=></span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span><span class="token parameter">resolve</span> <span class="token arrow operator">=></span> <span class="token function">setTimeout</span><span class="token punctuation">(</span>resolve<span class="token punctuation">,</span> ms<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token function">wait</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token operator">*</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token method function property-access">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token function">saySomething</span><span class="token punctuation">(</span><span class="token string">"10 seconds"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token keyword control-flow">catch</span><span class="token punctuation">(</span>failureCallback<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h2 id="promises-are-only-ever-resolved-once-per-creation"><a aria-hidden="true" class="anchor-heading" href="#promises-are-only-ever-resolved-once-per-creation"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Promises are only ever resolved once per creation</h2>
+<p>In the following code it seems that we would connect to the database 2 times, but Promises don't work like that.</p>
+<ul>
+<li>since <code>databasePromise</code> is only defined one time, it can by definition only resolve one time.</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> databasePromise <span class="token operator">=</span> <span class="token function">connectDatabase</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> booksPromise <span class="token operator">=</span> databasePromise
+  <span class="token punctuation">.</span><span class="token method function property-access">then</span><span class="token punctuation">(</span>findAllBooks<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> userPromise <span class="token operator">=</span> databasePromise
+  <span class="token punctuation">.</span><span class="token method function property-access">then</span><span class="token punctuation">(</span>getCurrentUser<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token known-class-name class-name">Promise</span><span class="token punctuation">.</span><span class="token method function property-access">all</span><span class="token punctuation">(</span><span class="token punctuation">[</span>
+  booksPromise<span class="token punctuation">,</span>
+  userPromise
+<span class="token punctuation">]</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token method function property-access">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">values</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> books <span class="token operator">=</span> values<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">const</span> user <span class="token operator">=</span> values<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword control-flow">return</span> <span class="token function">pickTopRecommentations</span><span class="token punctuation">(</span>books<span class="token punctuation">,</span> user<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h2 id="sleep-example"><a aria-hidden="true" class="anchor-heading" href="#sleep-example"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Sleep example</h2>
+<ul>
+<li>We can use promises make a function who's purpose is to simply wait, before executing further code. We define it as such:</li>
+</ul>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">const</span> <span class="token function-variable function">sleep</span> <span class="token operator">=</span> <span class="token punctuation">(</span>ms<span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token keyword">new</span> <span class="token class-name"><span class="token known-class-name class-name">Promise</span><span class="token operator">&#x3C;</span><span class="token keyword">void</span><span class="token operator">></span></span><span class="token punctuation">(</span>resolve <span class="token arrow operator">=></span> <span class="token function">setTimeout</span><span class="token punctuation">(</span>resolve<span class="token punctuation">,</span> ms<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<ul>
+<li>as soon as we call <code>sleep(1000)</code>, a promise is returned to us. This means that javascript will say "ok, since we're waiting on that promise to resolve (or reject), I'm going to go do some other stuff, and once your promise resolves, I'll be back to execute the <code>.then()</code> code".
+<ul>
+<li>This is precicely why promises are said to "handle asynchronous things synchronously". It is because promises help us manage 2 different lines of execution at a time</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/Ag4RGxbqigmzcZAUS9FRv">Lambda Function</a></li>
+<li><a href="/Digital-Garden/notes/WPpFrk4iwauCzKf88i6f0">Async Iterator</a></li>
+<li><a href="/Digital-Garden/notes/o5M4VcoPps3ZR60CLRkj7">Async Await</a></li>
+</ul>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/o5M4VcoPps3ZR60CLRkj7">Async Await</a></li>
+<li><a href="/Digital-Garden/notes/P5nUdE8NTjpnjV6eLfJIg">Cook</a></li>
+</ol>

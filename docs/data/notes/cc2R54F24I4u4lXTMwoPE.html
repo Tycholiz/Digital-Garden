@@ -1,0 +1,13 @@
+<h1 id="cook"><a aria-hidden="true" class="anchor-heading" href="#cook"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Cook</h1>
+<h3 id="check-if-a-cli-package-is-installed"><a aria-hidden="true" class="anchor-heading" href="#check-if-a-cli-package-is-installed"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Check if a CLI package is installed</h3>
+<pre class="language-sh"><code class="language-sh">if ! aws_bin="$(which aws)" 2>/dev/null; then
+    echo "aws cli is missing; you can get it from https://aws.amazon.com/cli/"
+    exit 1
+fi
+</code></pre>
+<h4 id="variation-install-package-if-its-not-found"><a aria-hidden="true" class="anchor-heading" href="#variation-install-package-if-its-not-found"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Variation: install package if it's not found</h4>
+<pre class="language-sh"><code class="language-sh">[ $(which ts-node) ] || echo "ts-node not found. Installing..." &#x26;&#x26; npm i -g ts-node
+</code></pre>
+<h3 id="check-if-environment-variable-set"><a aria-hidden="true" class="anchor-heading" href="#check-if-environment-variable-set"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Check if environment variable set</h3>
+<pre class="language-sh"><code class="language-sh">if [ -z $APP_NAME ]; then echo "Error:'APP_NAME' is not set, it is required for serverless" &#x26;&#x26; exit 1; fi
+</code></pre>

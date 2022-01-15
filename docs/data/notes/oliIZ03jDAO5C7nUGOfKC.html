@@ -1,0 +1,60 @@
+<h1 id="fs"><a aria-hidden="true" class="anchor-heading" href="#fs"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Fs</h1>
+<h1 id="unix-filesystem"><a aria-hidden="true" class="anchor-heading" href="#unix-filesystem"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Unix filesystem</h1>
+<p>The UNIX filesystem unifies all physical hard drives and partitions into a single directory structure. It all starts at the top–the root (/) directory. All other directories and their subdirectories are located under the single Linux root directory. This means that there is only one single directory tree in which to search for files and programs.</p>
+<h2 id="types-of-files"><a aria-hidden="true" class="anchor-heading" href="#types-of-files"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Types of files</h2>
+<ul>
+<li>ordinary file</li>
+<li>directory</li>
+<li>special (device) file - represents a physical device (ex. printer).
+<ul>
+<li>special files are used for sending outputs to the device, and receiving inputs</li>
+</ul>
+</li>
+<li>pipe - a temporary file that gets created when we pipe commands into each other. Pipes are the mechanism through with programs chain together.</li>
+<li>socket - a stream of data very similar to network stream, but all the transactions are local to the filesystem.</li>
+<li>symbolic link</li>
+</ul>
+<h2 id="filesystem-metadata"><a aria-hidden="true" class="anchor-heading" href="#filesystem-metadata"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Filesystem metadata</h2>
+<ul>
+<li>The general file system model, to which any implemented file system needs to be reduced, consists of several well-defined metadata entities: <code>superblock</code>, <code>inode</code>, <code>file</code>, and <code>dentry</code>
+<ul>
+<li>they are metadata about the filesystem</li>
+</ul>
+</li>
+<li>each entity here interacts using the VFS, and each entity is treated as an object.</li>
+<li>each entity has its own data structure, and a pointer to a table of methods </li>
+</ul>
+<h2 id="mount-point"><a aria-hidden="true" class="anchor-heading" href="#mount-point"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Mount Point</h2>
+<ul>
+<li>a mount point is a special directory within the unix filesystem. It is special because when an external filesystem is mounted (ex. HDD, SSD, USB, SD), its contents are dumped into the mount point, which is accessible from the root folder (<code>/</code>)</li>
+<li>ex. <code>/media</code></li>
+<li>so when we run <code>mount /dev/hda2 /media/photos</code>, we are saying "hey, I want you take all of the contents of <code>/dev/hda2</code> (partition 2 of HDD), and make it all accessible through <code>/media/photos</code>".
+<ul>
+<li>spec:think of it like a map, where it will take the external file system on the USB (in FAT or NTFS format) and it will make all of the contents visible within the UNIX filesystem</li>
+<li>to carry out this "mapping", unix has filesystem drivers </li>
+</ul>
+</li>
+</ul>
+<h2 id="directory-structure"><a aria-hidden="true" class="anchor-heading" href="#directory-structure"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Directory structure</h2>
+<p><code>/bin</code> - binaries generally needed by all users of the system.
+<code>/lib</code> - contains system libraries
+<code>/usr</code> - contains executables, libraries, and shared resources that are not system critical (ex. X Window)
+<code>/usr/bin</code> - stores binaries distributed with the OS, that aren't in <code>/bin</code>
+<code>/usr/lib</code> - stores libraries for programs in <code>/usr</code>
+<code>/dev</code> - contains file representations of peripheral devices. Therefore, to view files, the external device needs to be mounted (see Mount Point below)
+<code>/media</code> - default mount point for removable devices
+<code>/mnt</code> - default mount point for temporary filesystems
+<code>/etc</code> - contains system-wide config files/system databases.
+<code>/proc</code> - contains all running processes displayed as their own files.
+<code>/tmp</code> - files that get cleaned frequently. Often, this directory gets cleared on reboot.
+<code>/var</code> - contains files that get changed often. usually where files go that are not managed by the system-wide package manager
+<code>/var/mail</code> - contains all incoming mail
+<code>/var/www/html</code> - default root folder of the web server (e.g. Apache)</p>
+<h3 id="subdirectories"><a aria-hidden="true" class="anchor-heading" href="#subdirectories"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Subdirectories</h3>
+<p><code>sys/</code> - operating system kernel, handling memory management, process scheduling, system calls etc.</p>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/wsOoHMOVcgNFNXSty3rcj">Ijs</a></li>
+<li><a href="/Digital-Garden/notes/duU5H5XqqeGDSgChlUbWV">Permissions</a></li>
+</ol>

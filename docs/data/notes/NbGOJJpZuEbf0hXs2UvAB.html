@@ -1,0 +1,29 @@
+<h1 id="cloud-formation"><a aria-hidden="true" class="anchor-heading" href="#cloud-formation"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Cloud Formation</h1>
+<h1 id="cloudformation"><a aria-hidden="true" class="anchor-heading" href="#cloudformation"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>CloudFormation</h1>
+<p>When working in AWS, you almost always want to use some CloudFormation (or a similar tool).
+It lets you create and update the things you have in AWS without having to click around on the console or write fragile scripts.</p>
+<ul>
+<li>for instance, gives us the ability to tear down everything cleanly and recreate your AWS set up in one click</li>
+<li>spec: the alternative to using CloudFormation is doing click-ops</li>
+</ul>
+<p>rule of thumb is to let CloudFormation deal with all the AWS things that are either static or change very rarely, like load balancers, deployment pipelines, VPC configs, security groups</p>
+<h3 id="overview"><a aria-hidden="true" class="anchor-heading" href="#overview"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Overview</h3>
+<ul>
+<li>define your AWS resources as a YAML script</li>
+<li>point CloudFormation to your AWS account, and it creates all the resources you defined idempotently.</li>
+<li>Updates can be rolled back.</li>
+</ul>
+<p>While CloudFormation is specific to AWS, we can use <a href="/Digital-Garden/notes/Ku1OgHMhELajzo61Gx7ye">Terraform</a>, which is platform agnostic.</p>
+<p>stack refers to all the lamdbas that are found in the projet</p>
+<ul>
+<li>for instance, if we are using serverless framework, the stack refers to all of the stuff in serverless.yml
+if we are looking for stacks, dt-fleet-event-bus stack</li>
+</ul>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/KutlqQVGLBAdLTslz3D9A">Cloud Development Kit</a></li>
+<li><a href="/Digital-Garden/notes/Q533wL2e7qYwr3GbGN46x">Terms</a></li>
+<li><a href="/Digital-Garden/notes/OSdV9FvBG3wDbRNLllg0V">Lambda</a></li>
+<li><a href="/Digital-Garden/notes/nRb6Im4Kcmc2ZWE7K1jZ1">Serverlesss Framework</a></li>
+</ul>

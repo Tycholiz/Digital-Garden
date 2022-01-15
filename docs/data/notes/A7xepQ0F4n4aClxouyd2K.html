@@ -1,0 +1,89 @@
+<h1 id="module-federation"><a aria-hidden="true" class="anchor-heading" href="#module-federation"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Module Federation</h1>
+<p>Module Federation allows multiple webpack builds to work together.</p>
+<ul>
+<li>From the runtime environment's perspective, modules from multiple different builds will behave like a huge connected module graph.</li>
+<li>From the developer's perspective, we will be able to import modules from specific remote builds, and use them with minimal restriction.</li>
+</ul>
+<h3 id="motivation"><a aria-hidden="true" class="anchor-heading" href="#motivation"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Motivation</h3>
+<p>Imagine we want to implement a micro frontend <a href="/Digital-Garden/notes/dXN7waVmwHQopWEjPpd0j">Micro Frontend</a>, which would have these qualities:</p>
+<ul>
+<li>It should take multiple separate builds to form a single application.</li>
+<li>These separate builds should not have dependencies between each other, so they can be developed and deployed individually</li>
+</ul>
+<p>There is a distinction between local and remote modules</p>
+<ul>
+<li>Local modules are normal modules which are part of the current build.</li>
+<li>Remote modules are modules that are not part of the current build and loaded from a so-called container at the runtime.
+<ul>
+<li>Loading remote modules is considered async (due to the network call involved). When using a remote module these asynchronous operations will be placed in the next chunk of loading operations that is between the remote module and the entrypoint. Chunk loading is necessary.</li>
+</ul>
+</li>
+</ul>
+<p>A container is created through a container entry, which exposes asynchronous access to the specific modules. The exposed access is separated into two steps:</p>
+<ol>
+<li>loading the module (asynchronous)
+<ul>
+<li>done during the chunk loading</li>
+</ul>
+</li>
+<li>evaluating the module (synchronous).
+<ul>
+<li>done during the module evaluation interleaved with other local and remote modules
+<ul>
+<li>This way, evaluation order is unaffected by converting a module from local to remote or the other way around.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="high-level-overview"><a aria-hidden="true" class="anchor-heading" href="#high-level-overview"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>High-level Overview</h3>
+<p>Each build acts as a container and also consumes other builds as containers. This way each build is able to access any other exposed module by loading it from its container.</p>
+<h3 id="goals-of-the-system"><a aria-hidden="true" class="anchor-heading" href="#goals-of-the-system"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Goals of the system</h3>
+<ul>
+<li>It should be possible to expose and use any module type that webpack supports.</li>
+<li>Chunk loading should load everything needed in parallel (web: single round-trip to server).</li>
+<li>Control from consumer to container
+<ul>
+<li>Overriding modules is a one-directional operation.</li>
+<li>Sibling containers cannot override each other's modules.</li>
+</ul>
+</li>
+<li>Concept should be environment-independent.
+<ul>
+<li>Usable in web, Node.js, etc.</li>
+</ul>
+</li>
+<li>Relative and absolute request in shared:
+<ul>
+<li>Will always be provided, even if not used.</li>
+<li>Will resolve relative to <code>config.context</code>.</li>
+<li>Does not use a <code>requiredVersion</code> by default.</li>
+</ul>
+</li>
+<li>Module requests in shared:
+<ul>
+<li>Are only provided when they are used.</li>
+<li>Will match all used equal module requests in your build.</li>
+<li>Will provide all matching modules.</li>
+<li>Will extract <code>requiredVersion</code> from package.json at this position in the graph.</li>
+<li>Could provide and consume multiple different versions when you have nested node_modules.</li>
+</ul>
+</li>
+<li>Module requests with trailing <code>/</code> in shared will match all module requests with this prefix.</li>
+</ul>
+<h3 id="use-cases"><a aria-hidden="true" class="anchor-heading" href="#use-cases"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Use cases</h3>
+<ul>
+<li>separate builds per page
+<ul>
+<li>Each page of a Single Page Application is exposed from container build in a separate build. This way each page can be separately deployed</li>
+</ul>
+</li>
+<li>Components library as container
+<ul>
+<li>Many applications share a common components library which could be built as a container with each component exposed. Each application consumes components from the components library container.</li>
+<li>Changes to the components library can be separately deployed without the need to re-deploy all applications.</li>
+</ul>
+</li>
+</ul>
+<h1 id="e-resources"><a aria-hidden="true" class="anchor-heading" href="#e-resources"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>E Resources</h1>
+<p><a href="https://webpack.js.org/concepts/module-federation/">Webpack docs</a></p>

@@ -1,0 +1,14 @@
+<h1 id="cli"><a aria-hidden="true" class="anchor-heading" href="#cli"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>CLI</h1>
+<h3 id="invoke-a-lambda"><a aria-hidden="true" class="anchor-heading" href="#invoke-a-lambda"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Invoke a Lambda</h3>
+<pre class="language-sh"><code class="language-sh">aws lambda invoke \
+	--function-name &#x3C;name/arn> \
+	--payload '{ "name": "Bob" }' \
+	--cli-binary-format raw-in-base64-out \
+	# --invocation-type &#x3C;RequestResponse (sync) | Event (async)>
+	response.json
+</code></pre>
+<hr>
+<h2 id="flags"><a aria-hidden="true" class="anchor-heading" href="#flags"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Flags</h2>
+<p>Get back base64 logs from command</p>
+<pre class="language-sh"><code class="language-sh">--log-type Tail \
+</code></pre>

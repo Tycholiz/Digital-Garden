@@ -1,0 +1,11 @@
+<h1 id="long-polling"><a aria-hidden="true" class="anchor-heading" href="#long-polling"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Long Polling</h1>
+<p>Long polling is a technique where the server elects to hold a client’s connection open for as long as possible, delivering a response only after data becomes available or a timeout threshold has been reached.</p>
+<ul>
+<li>Long polling is essentially a more efficient form of the original polling technique. The difference is that we don't need to make repeated requests.</li>
+</ul>
+<p>Implementing long polling is a server-side concern, meaning that if it is a third party application we plan to long poll, they must have built the functionality in.</p>
+<p>The only difference to basic polling, as far as the client is concerned, is that a client performing basic polling may deliberately leave a small time window between each request so as to reduce its load on the server, and it may respond to timeouts with different assumptions than it would for a server that does not support long polling.</p>
+<ul>
+<li>With long polling, the client may be configured to allow for a longer timeout period (via a Keep-Alive header) when listening for a response – something that would usually be avoided seeing as the timeout period is generally used to indicate problems communicating with the server.</li>
+</ul>
+<p>Long polling existed as the conventional technique to implementing (pseudo) real-time communication prior to the advent of WebSockets.</p>

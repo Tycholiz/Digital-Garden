@@ -1,0 +1,68 @@
+<h1 id="types"><a aria-hidden="true" class="anchor-heading" href="#types"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Types</h1>
+<h1 id="concepts"><a aria-hidden="true" class="anchor-heading" href="#concepts"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Concepts</h1>
+<h3 id="type-assignability"><a aria-hidden="true" class="anchor-heading" href="#type-assignability"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Type assignability</h3>
+<p>We say that type A is assignable to type B if you can use a value of type A in all places where a value of type B is required. For example:</p>
+<ul>
+<li>assigning a value to a variable</li>
+<li>passing a function argument</li>
+<li>returning a value from a function that has an explicit return type</li>
+</ul>
+<h3 id="optionality"><a aria-hidden="true" class="anchor-heading" href="#optionality"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Optionality</h3>
+<p>consider that by default, <code>null</code> and <code>undefined</code> are part of the <a title="Private" style="color: brown" href="https://wiki.dendron.so/notes/hfyvYGJZQiUwQaaxQO27q.html" target="_blank">domain (Private)</a> of virtually every type. That is, a string can be <code>null</code>, an object property can be <code>null</code>, and so on. When we enable strict null checking, we are removing <code>null</code> from the domains of these types
+<img src="/Digital-Garden/assets/images/2021-10-21-15-22-40.png"></p>
+<ul>
+<li><code>strictNullChecks</code> forces you to explicitly distinguish between values that can be <code>null</code> or <code>undefined</code> and those that cannot be.</li>
+</ul>
+<p>we could explicitly extend the type to once again include <code>null</code> as part of the type's domain:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">function</span> <span class="token function">bar</span><span class="token punctuation">(</span>person<span class="token operator">:</span> <span class="token maybe-class-name">Person</span> <span class="token operator">|</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+</code></pre>
+<p>But this may not be preferable. Instead we can use optional params (in functions and interfaces) to determine if something can be optional or not:</p>
+<ul>
+<li>also beneficial to use <a href="/Digital-Garden/notes/xVgoEZsY8etlwCk21qwfs">optional chaining</a> to achieve the effect of optionality, (spec:)as opposed to type guards</li>
+</ul>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">interface</span> <span class="token class-name"><span class="token maybe-class-name">Person</span></span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">hello</span><span class="token punctuation">(</span>person<span class="token operator">?</span><span class="token operator">:</span> <span class="token maybe-class-name">Person</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+<span class="token keyword">interface</span> <span class="token class-name"><span class="token maybe-class-name">Employee</span></span> <span class="token punctuation">{</span>
+  id<span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">;</span>
+  name<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+  supervisorId<span class="token operator">?</span><span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token function">hello</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> employee<span class="token operator">:</span> <span class="token maybe-class-name">Employee</span> <span class="token operator">=</span> <span class="token punctuation">{</span>
+  id<span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  name<span class="token operator">:</span> <span class="token string">'John'</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token comment">/* * * * */</span>
+<span class="token keyword">interface</span> <span class="token class-name"><span class="token maybe-class-name">Person</span></span> <span class="token punctuation">{</span> <span class="token function">hello</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token keyword">void</span> <span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">sayHello</span><span class="token punctuation">(</span>person<span class="token operator">:</span> <span class="token maybe-class-name">Person</span> <span class="token operator">|</span> <span class="token keyword">undefined</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  person<span class="token punctuation">.</span><span class="token method function property-access">hello</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 🔴 Error!</span>
+
+    <span class="token comment">// this is a type guard, and it allows the Typescript Type checker to </span>
+    <span class="token comment">// deduce that the type of person inside the if statement is narrowed to just `Person`</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>person<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        person<span class="token punctuation">.</span><span class="token method function property-access">hello</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// OK</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Consider that a <code>getUser</code> function might not return a user for a given ID. Therefore, we should set the return value of the function as a union between User and undefined.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token function">getUser</span><span class="token punctuation">(</span>id<span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token maybe-class-name">User</span> <span class="token operator">|</span> <span class="token keyword">undefined</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">users</span><span class="token punctuation">[</span>id<span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<hr>
+<p>spec: If we don't want to specify a new type, we can just do this:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">type</span> <span class="token class-name"><span class="token maybe-class-name">TodoPrevious</span></span> <span class="token operator">=</span> <span class="token maybe-class-name">Pick</span><span class="token operator">&#x3C;</span><span class="token maybe-class-name">Todo</span><span class="token punctuation">,</span> <span class="token string">"title"</span> <span class="token operator">|</span> <span class="token string">"completed"</span><span class="token operator">></span>
+</code></pre>
+<p>Here, <code>"title" | "completed"</code> resolves to a type. We could have written it like this:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">type</span> <span class="token class-name"><span class="token maybe-class-name">ValueKeys</span></span> <span class="token operator">=</span> <span class="token string">"tite"</span> <span class="token operator">|</span> <span class="token string">"completed"</span>
+<span class="token keyword">type</span> <span class="token class-name"><span class="token maybe-class-name">TodoPrevious</span></span> <span class="token operator">=</span> <span class="token maybe-class-name">Pick</span><span class="token operator">&#x3C;</span><span class="token maybe-class-name">Todo</span><span class="token punctuation">,</span> <span class="token maybe-class-name">ValueKeys</span><span class="token operator">></span>
+</code></pre>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/59nfP13cYdCJnQGZD4gdr">TS Config</a></li>
+</ul>

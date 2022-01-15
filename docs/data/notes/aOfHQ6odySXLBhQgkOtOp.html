@@ -1,0 +1,16 @@
+<h1 id="serverless"><a aria-hidden="true" class="anchor-heading" href="#serverless"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Serverless</h1>
+<p>Serverless is actually "server-less" in the same way that Javascript is "memory-less".</p>
+<ul>
+<li>In JS, memory is still there, it's just abstracted away from us. Put another way, we don't have to think in terms of memory management, because it's all handled under the surface.</li>
+</ul>
+<p>Serverless sometimes refers to the concept of "functions as a service", basically taking the microservices pattern and realizing "hey, because we're doing things this way, we basically can forget about the server"</p>
+<ul>
+<li>Somebody is still doing the heavy lifting (AWS, Google Cloud, etc.) but it's now an abstraction and you have limited ability to configure it, and this is fine if you're using it for the right use cases.</li>
+</ul>
+<p>In the case of AWS, you use Lambda as the compute service to run the code and API Gateway to create API endpoints to point at the Lambda functions. Under the hood, once a Lambda is invoked through the event trigger which is the API Gateway endpoint, a Docker container is spun up to run the code you deployed into the cloud.</p>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/oiA1xUpTCRAmh9L1Vxsiv">Functions</a></li>
+<li><a href="/Digital-Garden/notes/nRb6Im4Kcmc2ZWE7K1jZ1">Serverlesss Framework</a></li>
+</ol>

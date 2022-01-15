@@ -1,0 +1,32 @@
+<h1 id="react"><a aria-hidden="true" class="anchor-heading" href="#react"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>React</h1>
+<h2 id="rendering"><a aria-hidden="true" class="anchor-heading" href="#rendering"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Rendering</h2>
+<p>A client-side rendered React app starts out as a simple html file with virtually nothing but <code>&#x3C;script></code> tags in its <code>&#x3C;body></code>. When the browser downloads the html, it runs the scripts, which is the bundle/chunks.</p>
+<ul>
+<li>Once the browser downloads and parses those scripts, React will build up a picture of what the page should look like, and inject a bunch of DOM nodes to make it so.</li>
+</ul>
+<p>When we talk about "re-rendering" in react, we are talking about the shadow DOM, not the regular DOM. Re-rendering the shadow DOM is highly performant, which is why re-rendering components shouldn't be that big of a concern.</p>
+<ul>
+<li>React splits all work into the “render phase” and the “commit phase”.
+<ul>
+<li>Render phase is when React calls your components and performs reconciliation.</li>
+<li>Commit phase is when React touches the host tree. It is always synchronous.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<ul>
+<li>In React, anything other than updating the page is considered a side-effect. If you’re not using React to update state or render HTML, that’s a side effect. It’s any non-React thing.</li>
+</ul>
+<h1 id="ue-resources"><a aria-hidden="true" class="anchor-heading" href="#ue-resources"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>UE Resources</h1>
+<p><a href="https://www.pluralsight.com/guides/how-to-communicate-between-independent-components-in-reactjs">Implementing Pub/Sub in React</a></p>
+<ul>
+<li><a href="/Digital-Garden/notes/NpY4iv9TwpGJODbVesQYe">pubsub Dendron node</a></li>
+</ul>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/734beb81-47b0-41b5-a964-fe05af534458">Lang</a></li>
+<li><a href="/Digital-Garden/notes/cBYcVpRG0G8zcigUj7OS2">Patterns</a></li>
+<li><a href="/Digital-Garden/notes/KNWyaXC2MBdO5sAQlYL2O">React Typescript</a></li>
+<li><a href="/Digital-Garden/notes/pSN32AAdioKe2iNNc82XI">Tools</a></li>
+</ol>

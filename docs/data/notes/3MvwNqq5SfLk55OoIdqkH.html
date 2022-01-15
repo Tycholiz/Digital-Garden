@@ -1,0 +1,21 @@
+<h1 id="integration-testing"><a aria-hidden="true" class="anchor-heading" href="#integration-testing"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Integration Testing</h1>
+<p>With integration tests, we are testing relationships between services</p>
+<ul>
+<li>A naive approach might be to get all of the dependent services up and running for the testing environment. But this is unnecessary, and creates a lot of potential failure points from services that our outside of our control.
+<ul>
+<li>Instead, we could narrow it down by writing a few service integration tests using mocks and stubs.</li>
+</ul>
+</li>
+</ul>
+<p>In integration testing, the rules are different from unit tests. Here, you should only test the implementation and functionality that you have the control to edit. Mocks and stubs could be used for this purpose.</p>
+<p>In integration or E2E testing, the first step to uncovering what tests to write is to understand what could go wrong.</p>
+<p>Imagine we were making a banking app with the following 5 modules:
+<img src="/Digital-Garden/assets/images/2021-12-06-12-39-40.png"></p>
+<p>Even if we had all modules done except for the 5th, we could still test the integration. We would do this by stubbing the 5th service.</p>
+<p>Integration tests are notoriously more difficult to write when using a <a href="/Digital-Garden/notes/BX7Yh5IwYZCsV2BSxvunp">Service-oriented architecture</a></p>
+<hr>
+<h2 id="backlinks"><a aria-hidden="true" class="anchor-heading" href="#backlinks"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Backlinks</h2>
+<ul>
+<li><a href="/Digital-Garden/notes/LUrfhDWo8wuwZu7CN9TV8">Testing</a></li>
+<li><a href="/Digital-Garden/notes/NfY3pvmOMzpQg8TKrUMGd">Contract Testing</a></li>
+</ul>

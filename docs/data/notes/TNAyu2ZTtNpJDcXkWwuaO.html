@@ -1,0 +1,29 @@
+<h1 id="branch"><a aria-hidden="true" class="anchor-heading" href="#branch"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Branch</h1>
+<h1 id="branch-1"><a aria-hidden="true" class="anchor-heading" href="#branch-1"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Branch</h1>
+<ul>
+<li>Simply a pointer to a specific commit
+<ul>
+<li>Therefore, creating a branch is nothing more than writing 40 characters (a SHA) to a file.</li>
+</ul>
+</li>
+<li>The key difference is that it is moveable</li>
+<li>It’s important to realize that Git uses the tip of a branch to represent the entire branch. That is to say, a branch is actually a pointer to a single commit—not a container for a series of commits
+<ul>
+<li>this is why Git diagrams show commits pointing to other commits.</li>
+</ul>
+</li>
+<li>If we make a new branch from master, that branch will point to the same commit as master. Once we commit, this new branch will then point to the new commit. Therefore, the branches will have diverged.</li>
+<li>When we create a new branch, Git knows which commit to use because of the HEAD file.</li>
+</ul>
+<h2 id="slashes-in-branch-names"><a aria-hidden="true" class="anchor-heading" href="#slashes-in-branch-names"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Slashes in branch names</h2>
+<p>Imagine we had a branch named <code>stripe</code> already, and we wanted to make a new branch called <code>stripe/saved-methods</code>. This would cause an error, because as far as git knows, we have a file named <code>stripe</code>, and we are now trying to create a directory named <code>stripe</code>.</p>
+<ul>
+<li>Because they are just directories, deleting <code>stripe/saved-methods</code> branch will result in the <code>stripe</code> directory still existing.</li>
+</ul>
+<p>It's probably a good convention to stick to at most one level. Consider if we had a branch <code>wip/stripe</code>, and we then wanted to create <code>wip/stripe/saved-methods</code>, we would get an error because we are trying to create a directory <code>stripe</code>, when there is already a file called <code>stripe</code></p>
+<p>When we have a branch with slashes in it, it gets stored as a directory hierarchy under <code>.git/refs/heads</code>.</p>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/ckPjF4ZpNnHZHEK55F1t8">Cook</a></li>
+</ol>

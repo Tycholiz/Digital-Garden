@@ -1,0 +1,51 @@
+<h1 id="debugger"><a aria-hidden="true" class="anchor-heading" href="#debugger"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Debugger</h1>
+<h2 id="setup"><a aria-hidden="true" class="anchor-heading" href="#setup"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Setup</h2>
+<ol>
+<li>Create a Javascript Debug Terminal (from command palette)</li>
+<li>Run command to start servers (ie. <code>yarn start</code>)
+<ul>
+<li>command will take longer than normal to run, because vscode is attaching debuggers to all the processes that are about to run.</li>
+</ul>
+</li>
+<li>Set some breakpoints of where we want the code to stop</li>
+<li>Manually cause the code to be executed
+<ul>
+<li>ex. by visiting a url, clicking a button in UI etc.</li>
+</ul>
+</li>
+</ol>
+<h2 id="analysis"><a aria-hidden="true" class="anchor-heading" href="#analysis"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Analysis</h2>
+<ul>
+<li>We can see what each variable evaluates to in the main window</li>
+</ul>
+<h3 id="debug-panel"><a aria-hidden="true" class="anchor-heading" href="#debug-panel"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Debug panel</h3>
+<ul>
+<li>In the debugger left panel, we can see the variables</li>
+</ul>
+<h3 id="debug-console"><a aria-hidden="true" class="anchor-heading" href="#debug-console"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Debug Console</h3>
+<ul>
+<li>We can open the Debug Console to get a Debug Console REPL (cmd+shift+y)</li>
+</ul>
+<hr>
+<p>the debugger will not work for client-side code, since this code is executed in a browser. We would need to use the browser debugging tool to accomplish this.</p>
+<ul>
+<li>alternatively, we can have a <code>launch.json</code> file to allow us to debug</li>
+</ul>
+<h1 id="chrome-debugger"><a aria-hidden="true" class="anchor-heading" href="#chrome-debugger"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Chrome Debugger</h1>
+<ul>
+<li>The vscode debugger can connect to Chrome via its Chrome Debugger protocol. Doing this allows us to map files loaded in the browser to the files open in Visual Studio Code.
+<ul>
+<li>This enables developers to debug in vscode, by...
+<ul>
+<li>setting breakpoints directly in their source code.</li>
+<li>setting up variables to watch and see the full call stack when debugging</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/wE3B7Zel9NjVyM6NQ4W7Y">Actions</a></li>
+</ol>

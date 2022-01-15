@@ -1,0 +1,34 @@
+<h1 id="terms"><a aria-hidden="true" class="anchor-heading" href="#terms"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Terms</h1>
+<h3 id="resource"><a aria-hidden="true" class="anchor-heading" href="#resource"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Resource</h3>
+<p>a resource is an entity that you can work with. Put another way, it is an instance of an AWS object.</p>
+<ul>
+<li>ex. <a href="/Digital-Garden/notes/T3myEQpNJczlAwIZCMpQB">EC2</a> instance, a <a href="/Digital-Garden/notes/NbGOJJpZuEbf0hXs2UvAB">CloudFormation</a> stack, or an <a href="/Digital-Garden/notes/2Rtof8yGX9K2Tq6tLljBb">S3</a> bucket.</li>
+</ul>
+<h3 id="resource-group"><a aria-hidden="true" class="anchor-heading" href="#resource-group"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Resource Group</h3>
+<p>Allow us to manage multiple resources together as a group, so we don't have to move from one AWS service to another for each task.</p>
+<ul>
+<li>If you manage large numbers of related resources, such as EC2 instances that make up an application layer, you likely need to perform bulk actions on these resources at one time
+<ul>
+<li>ex. applying updates/patches, upgrading applications, opening/closing ports to network traffic, collecting logs from machine etc.</li>
+</ul>
+</li>
+</ul>
+<p>All resources in a resource group are in the same AWS Region.</p>
+<h3 id="arn-amazon-resource-name"><a aria-hidden="true" class="anchor-heading" href="#arn-amazon-resource-name"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>ARN (Amazon Resource Name)</h3>
+<p>Uniquely identify an AWS resource. Therefore, it is identifiable across all of AWS.</p>
+<ul>
+<li>shows region and account number.</li>
+</ul>
+<p>Format:</p>
+<pre><code>arn:partition:service:region:account-id:resource-type:resource-id
+</code></pre>
+<p>Example:</p>
+<pre><code>arn:aws:s3:::my_corporate_bucket/Development/*
+arn:aws:ec2:us-east-1:4575734578134:instance/i-054dsfg34gdsfg38
+</code></pre>
+<hr>
+<h2 id="children"><a aria-hidden="true" class="anchor-heading" href="#children"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Children</h2>
+<ol>
+<li><a href="/Digital-Garden/notes/hUvXun5sLRxKOZXIZFuV1">IAM (Identity and Access Management)</a></li>
+<li><a href="/Digital-Garden/notes/gn1dBCYys8bu5vIwxLQUV">Identity Federation</a></li>
+</ol>

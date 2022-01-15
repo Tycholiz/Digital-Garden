@@ -1,0 +1,36 @@
+<h1 id="functions"><a aria-hidden="true" class="anchor-heading" href="#functions"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Functions</h1>
+<p>the indent level of a function should not be greater than one or two.</p>
+<ul>
+<li>If a function does only those steps that are one level below the stated name of the function, then the function is doing one thing.</li>
+</ul>
+<h3 id="total-vs-partial-functions"><a aria-hidden="true" class="anchor-heading" href="#total-vs-partial-functions"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Total vs Partial Functions</h3>
+<p>Functions can be either total or partial.</p>
+<ul>
+<li>A total function is one that will succeed for all possible inputs, whereas a partial function may not.</li>
+</ul>
+<p>note: technically all functions in dynamic languages like Javscript are partial, because the function call will fail if we pass in the wrong type (something not possible in a statically typed language)</p>
+<h4 id="total-fn"><a aria-hidden="true" class="anchor-heading" href="#total-fn"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Total Fn</h4>
+<p>No matter what numbers you specify, this function will always return a value. You can be confident that under no circumstances will your program crash because of this function (Reality is slightly more complex, but this is close enough).
+As such, this function is a total function.</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">add</span><span class="token punctuation">(</span> <span class="token parameter">x<span class="token punctuation">,</span> y</span> <span class="token punctuation">)</span><span class="token punctuation">{</span> <span class="token keyword control-flow">return</span> x <span class="token operator">+</span> y <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token comment">// All numbers can be converted to strings, so this is a total function.</span>
+<span class="token keyword">function</span> <span class="token function">numberToString</span><span class="token punctuation">(</span> <span class="token parameter">num</span> <span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword control-flow">return</span> num<span class="token punctuation">.</span><span class="token method function property-access">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre>
+<h4 id="partial-fn"><a aria-hidden="true" class="anchor-heading" href="#partial-fn"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Partial Fn</h4>
+<p>This function has the possibility of crashing. If you specify the divisor as zero, you'll get an "Divide by zero" error.  therefore, this function is a partial function.</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">divide</span><span class="token punctuation">(</span> <span class="token parameter">number<span class="token punctuation">,</span> divisor</span> <span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword control-flow">return</span> number <span class="token operator">/</span> divisor <span class="token punctuation">}</span>
+
+<span class="token comment">// Not all strings can be converted to numbers, so some inputs to this might fail.</span>
+<span class="token comment">// therefore, this is a partial function.</span>
+<span class="token keyword">function</span> <span class="token function">stringTonumber</span><span class="token punctuation">(</span> <span class="token parameter">str</span> <span class="token punctuation">)</span><span class="token punctuation">{</span> <span class="token spread operator">...</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+</code></pre>
+<p>If a total function calls a partial function, then the total function becomes "infected", and therefore becomes a partial function.</p>
+<ul>
+<li>This makes sense, since now the function call can fail and throw an exception.</li>
+<li>the way we deal with this is by using a <code>try</code>/<code>catch</code>. We anticipate errors happening, and we give an alternative result. If our fetch for a user returns no results, we want to show a "user not found" notification to the user.
+<ul>
+<li>using <code>try</code>/<code>catch</code> blocks allows us to inch a partial function closer towards total function status, since we are reducing the probability of a generic error that breaks the program, or otherwise allows it to function in a state that was not intended.</li>
+</ul>
+</li>
+</ul>
