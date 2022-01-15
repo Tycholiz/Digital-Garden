@@ -2,4 +2,3 @@ node_modules
 .dendron.*
 build
 .next
-docs
