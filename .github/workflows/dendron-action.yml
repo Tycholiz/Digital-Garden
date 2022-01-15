@@ -3,8 +3,9 @@ name: Dendron
 on:
   push:
     branches:
-    - test
+    - auto-deploy-digital-garden
 
+  ## every day at midnight
   # schedule:
   # - cron: "0 0 * * *"
 
@@ -18,7 +19,7 @@ jobs:
         repository: Tycholiz/Dendron
         token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
         path: 'main'
-      
+
     - name: Checkout publishable repo
       uses: actions/checkout@v2
       with:
@@ -27,13 +28,27 @@ jobs:
     - name: Install node dependencies
       run: npm --prefix ./publishable install
 
-    - name: run a script
-      run: |
-        echo "here it is boys!"
-        cat main/tech/apollo.md
+    - name: Initialize or pull nextjs template
+      run: "(test -d publishable/.next) && (echo 'updating dendron nextjs site...' && cd publishable/.next && git reset --hard && git clean -f && git pull) || (echo 'init dendron next' && cd publishable && npx @dendronhq/dendron-cli publish init)"
 
-    - name: Build pod
-      run: "echo \"Y\" | npx @dendronhq/dendron-cli publish export --wsRoot publishable --target github"
+    - name: check ls of publishable/.next
+      run: ls -lah publishable/.next
+
+    - name: Install dependencies
+      run: cd publishable/.next && yarn && cd ../..
+
+    - name: Export notes
+      run: cd publishable && npx @dendronhq/dendron-cli publish build
+
+    - name: Prep notes for publish
+      run: cd publishable/.next && yarn && yarn export && cd ../..
+
+    - name: Remove docs if exist
+      run: '(test -d publishable/docs && rm -rf publishable/docs) || echo skipping'
+
+    - name: Update Notes
+      run: |
+      cd publishable/.next && mv out ../docs && touch ../docs/.nojekyll && cd ..
 
     - name: Deploy site to GH Pages
       uses: peaceiris/actions-gh-pages@v3
@@ -43,4 +58,3 @@ jobs:
         publish_dir: publishable/docs/
         force_orphan: true
         cname: "tycholiz.github.io"
-
