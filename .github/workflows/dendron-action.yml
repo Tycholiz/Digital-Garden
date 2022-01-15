@@ -34,6 +34,9 @@ jobs:
     - name: check ls of publishable/.next
       run: ls -lah publishable/.next
 
+    - name: check ls of publishable/docs
+      run: ls -lah publishable/docs
+
     - name: Install dependencies
       run: cd publishable/.next && yarn && cd ../..
 
