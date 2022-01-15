@@ -47,8 +47,7 @@ jobs:
       run: '(test -d publishable/docs && rm -rf publishable/docs) || echo skipping'
 
     - name: Update Notes
-      run: |
-      cd publishable/.next && mv out ../docs && touch ../docs/.nojekyll && cd ..
+      run: cd publishable/.next && mv out ../docs && touch ../docs/.nojekyll && cd ..
 
     - name: Deploy site to GH Pages
       uses: peaceiris/actions-gh-pages@v3
