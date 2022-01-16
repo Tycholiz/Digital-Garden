@@ -31,9 +31,7 @@ jobs:
       working-directory: ./publishable
 
     - name: Logs
-      run: |
-        "ls publishable"
-        "ls publishable/docs"
+      run: "ls publishable/docs"
 
     - name: Install npm dependencies
       run: npm install @dendronhq/dendron-cli@latest
