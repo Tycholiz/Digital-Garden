@@ -10,7 +10,7 @@ on:
   # - cron: "0 0 * * *"
 
 jobs:
-  build:
+  build-nextjs-site:
     runs-on: ubuntu-latest
     steps:
     - name: Clone Dendron (main) repo
@@ -46,10 +46,7 @@ jobs:
       run: npx dendron publish export --target github --yes
       working-directory: ./publishable
 
-    - name: Change directory before running GH-pages action
-      run: cd publishable
-
-    - name: Deploy site to GH Pages
+    - name: 🚀 Deploy site to GH Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
