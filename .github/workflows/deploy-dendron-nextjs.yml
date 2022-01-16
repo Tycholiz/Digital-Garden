@@ -24,7 +24,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         path: 'publishable'
-        ref: pages
+        ref: master
         fetch-depth: 0
 
     - name: Delete publishable cached files if present
@@ -43,14 +43,11 @@ jobs:
       run: npx dendron publish export --target github --yes --wsRoot .
       working-directory: ./publishable
 
-    - name: Logs
-      run: "ls publishable/docs/notes"
-
     - name: 🚀 Deploy site to GH Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_branch: pages
-        publish_dir: publishable/docs # deploy publishable/docs directory to pages branch
+        publish_dir: publishable # deploy publishable/docs directory to pages branch
         force_orphan: true
         cname: "tycholiz.github.io"
