@@ -40,7 +40,7 @@ jobs:
       working-directory: ./publishable
 
     - name: Export notes
-      run: npx dendron publish export --target github --yes
+      run: npx dendron publish export --target github --yes --wsRoot .
       working-directory: ./publishable
 
     - name: Logs
