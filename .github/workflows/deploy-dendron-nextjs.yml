@@ -27,9 +27,6 @@ jobs:
         ref: pages
         fetch-depth: 0
 
-    - name: Logs
-      run: "ls publishable"
-
     - name: Delete cache if present
       run: "rm -rf .next && rm -rf docs && rm -rf node_modules"
       working-directory: ./publishable
@@ -45,6 +42,9 @@ jobs:
     - name: Export notes
       run: npx dendron publish export --target github --yes
       working-directory: ./publishable
+
+    - name: Logs
+      run: "ls publishable/docs"
 
     - name: 🚀 Deploy site to GH Pages
       uses: peaceiris/actions-gh-pages@v3
