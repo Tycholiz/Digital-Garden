@@ -51,6 +51,6 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_branch: pages
-        publish_dir: publishable/docs
+        publish_dir: publishable/docs # deploy publishable/docs directory to pages branch
         force_orphan: true
         cname: "tycholiz.github.io"
