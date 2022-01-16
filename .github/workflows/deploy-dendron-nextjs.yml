@@ -44,13 +44,13 @@ jobs:
       working-directory: ./publishable
 
     - name: Logs
-      run: "ls publishable/docs"
+      run: "ls publishable/docs/notes"
 
     - name: 🚀 Deploy site to GH Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_branch: pages
-        publish_dir: docs
+        publish_dir: publishable/docs
         force_orphan: true
         cname: "tycholiz.github.io"
