@@ -30,6 +30,11 @@ jobs:
       run: "rm -rf .next && rm -rf docs && rm -rf node_modules"
       working-directory: ./publishable
 
+    - name: Logs
+      run: |
+        "ls publishable"
+        "ls publishable/docs"
+
     - name: Install npm dependencies
       run: npm install @dendronhq/dendron-cli@latest
       working-directory: ./publishable
