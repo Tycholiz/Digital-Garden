@@ -27,19 +27,19 @@ jobs:
         ref: pages
         fetch-depth: 0
 
-    - name: Delete cache if present
+    - name: Delete publishable cached files if present
       run: "rm -rf .next && rm -rf docs && rm -rf node_modules"
       working-directory: ./publishable
 
-    - name: Install npm dependencies
+    - name: Install npm dependencies of publishable
       run: npm install @dendronhq/dendron-cli@latest
       working-directory: ./publishable
 
-    - name: Initialize or pull nextjs template
+    - name: Clone the Dendron Next.js repository and install dependencies
       run: npx dendron publish init --wsRoot .
       working-directory: ./publishable
 
-    - name: Export notes
+    - name: Build static HTML and create the Nextjs static website
       run: npx dendron publish export --target github --yes --wsRoot .
       working-directory: ./publishable
 
