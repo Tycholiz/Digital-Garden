@@ -36,11 +36,11 @@ jobs:
       working-directory: ./publishable
 
     - name: Clone the Dendron Next.js repository and install dependencies
-      run: npx dendron publish init --wsRoot .
+      run: npx dendron publish init
       working-directory: ./publishable
 
     - name: Build static HTML and create the Nextjs static website
-      run: npx dendron publish export --target github --yes --wsRoot .
+      run: npx dendron publish export --target github --yes
       working-directory: ./publishable
 
     - name: 🚀 Deploy site to GH Pages
@@ -48,7 +48,7 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_branch: pages
-        publish_dir: publishable # deploy publishable/docs directory to pages branch
+        publish_dir: publishable # deploy publishable directory to pages branch
         force_orphan: true
         enable_jekyll: false
         cname: "tycholiz.github.io"
