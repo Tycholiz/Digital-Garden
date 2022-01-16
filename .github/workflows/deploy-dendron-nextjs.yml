@@ -6,8 +6,8 @@ on:
     - auto-deploy-digital-garden
 
   ## every day at midnight
-  # schedule:
-  # - cron: "0 0 * * *"
+  schedule:
+  - cron: "0 0 * * *"
 
 jobs:
   build-nextjs-site:
@@ -36,7 +36,7 @@ jobs:
       working-directory: ./publishable
 
     - name: Initialize or pull nextjs template
-      run: npx dendron publish init
+      run: npx dendron publish init --wsRoot .
       working-directory: ./publishable
 
     - name: Export notes
