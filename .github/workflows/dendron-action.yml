@@ -24,14 +24,15 @@ jobs:
       uses: actions/checkout@v2
       with:
         path: 'publishable'
+        ref: pages
         fetch-depth: 0
+
+    - name: Logs
+      run: "ls publishable"
 
     - name: Delete cache if present
       run: "rm -rf .next && rm -rf docs && rm -rf node_modules"
       working-directory: ./publishable
-
-    - name: Logs
-      run: "ls publishable"
 
     - name: Install npm dependencies
       run: npm install @dendronhq/dendron-cli@latest
