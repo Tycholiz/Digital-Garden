@@ -46,11 +46,14 @@ jobs:
       run: npx dendron publish export --target github --yes
       working-directory: ./publishable
 
+    - name: Change directory before running GH-pages action
+      run: cd publishable
+
     - name: Deploy site to GH Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_branch: master
-        publish_dir: publishable/docs/
+        publish_dir: publishable/docs
         force_orphan: true
         cname: "tycholiz.github.io"
