@@ -50,4 +50,5 @@ jobs:
         publish_branch: pages
         publish_dir: publishable # deploy publishable/docs directory to pages branch
         force_orphan: true
+        enable_jekyll: false
         cname: "tycholiz.github.io"
