@@ -6,15 +6,14 @@ useKatex: true
 dev:
     enablePreviewV2: true
 site:
-    assetsPrefix: /Digital-Garden
-    siteUrl: 'https://tycholiz.github.io'
+    siteUrl: 'https://tech.kyletycholiz.com'
     copyAssets: true
     siteHierarchies:
         - root
     siteRootDir: docs
     usePrettyRefs: true
     title: Dendron
-    description: Publishable tech notes
+    description: The Tech Digital Garden of Kyle Tycholiz
     duplicateNoteBehavior:
         action: useVault
         payload:
