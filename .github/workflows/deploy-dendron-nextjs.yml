@@ -2,7 +2,8 @@ name: Dendron
 
 on:
   schedule:
-  - cron: "0 0 * * *" # every 24hr at midnight
+  # - cron: "0 0 * * *" # every 24hr at midnight
+  - cron: "0 0 * * 0" # every week on sunday
 
 jobs:
   build-nextjs-site:
