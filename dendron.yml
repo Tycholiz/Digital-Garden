@@ -90,3 +90,6 @@ preview:
     enablePrettyRefs: true
     enableKatex: true
     automaticallyShowPreview: false
+publishing:
+    github:
+        cname: tech.kyletycholiz.com
