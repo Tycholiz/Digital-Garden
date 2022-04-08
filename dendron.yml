@@ -80,7 +80,7 @@ publishing:
         cname: tech.kyletycholiz.com
         enableEditLink: true
         editLinkText: Edit this page on GitHub
-        editBranch: main
+        editBranch: master
         editViewMode: tree
     enableFMTitle: true
     enableNoteTitleForLink: true
