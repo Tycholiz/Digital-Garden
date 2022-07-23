@@ -1,0 +1,11 @@
+<h1 id="causal-consistency"><a aria-hidden="true" class="anchor-heading icon-link" href="#causal-consistency"></a>Causal Consistency</h1>
+<p>Causal consistency is a consistency model whereby all participants of a system (say database <a href="/notes/gKVIPNGV7duiD0yRnld8J">replications</a>) observe causally-related operations in a common order. That is, they all agree on the order of the causally-related operations.</p>
+<ul>
+<li>if 2 operations are causally unrelated (that is, one doesn't cause the other), then the participants don't care about preserving their order. It only makes an effort to agree on the related operations.
+<ul>
+<li>if all participants <em>do</em> have to agree on every single operation, then that is known as <em>sequential consistency</em>.</li>
+</ul>
+</li>
+</ul>
+<p>Causal means "the possibility of being causally related". That is, if Process A performs a write operation, followed by Process B performing a write operation, we say that A "potentially causes" or "causally precedes" B. This means every participant in the system must agree on that order.</p>
+<p>The opposite of causal is concurrent (or, causally independent).</p>

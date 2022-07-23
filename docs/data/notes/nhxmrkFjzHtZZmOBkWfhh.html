@@ -1,0 +1,30 @@
+<h1 id="kubectl"><a aria-hidden="true" class="anchor-heading icon-link" href="#kubectl"></a>Kubectl</h1>
+<p><code>kubectl</code> is used to manage a cluster and applications running inside it.</p>
+<ul>
+<li>When we send commands with <code>kubectl</code>, we are sending commands to the master node of the cluster.</li>
+<li><code>kubectl</code> is a Kubernetes client that connects with the Kubernetes API, much like how psql is a client to a postgres server</li>
+</ul>
+<p>Most often, we provide information to <code>kubectl</code> in the form of a <code>.yml</code> file.</p>
+<ul>
+<li>kubectl converts the information to JSON when making the API request.</li>
+</ul>
+<p>Kubectl also supports the management of Kubernetes <a href="/notes/697fe32a-7fd3-40cb-aa25-9914c7dde11f">objects</a> using a <a href="/notes/zirmu2JLi2lSneEH562Wp">kustomization</a> file</p>
+<h3 id="kubeconfig-files"><a aria-hidden="true" class="anchor-heading icon-link" href="#kubeconfig-files"></a>Kubeconfig files</h3>
+<p><code>kubectl</code> uses kubeconfig files to find the information it needs to choose a cluster and communicate with the API server of a cluster.</p>
+<ul>
+<li>the kubeconfig file is used to configure access to clusters</li>
+<li>note: there is no single kubeconfig file; it is a generic way of referring to configuration files.</li>
+</ul>
+<p>By default, <code>kubectl</code> looks for a file named config in the <code>$HOME/.kube</code> directory</p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/HnABgT2HZRrecgV5YHg8X">Kubectl CLI</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/697fe32a-7fd3-40cb-aa25-9914c7dde11f">Kubernetes Objects</a></li>
+<li><a href="/notes/e8npja53q61750uotmn4hki">Dashboard</a></li>
+<li><a href="/notes/hecaydk40a6wqiprau7l8qz">API Server</a></li>
+</ul>

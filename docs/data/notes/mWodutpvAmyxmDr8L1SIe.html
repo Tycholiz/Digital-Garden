@@ -1,0 +1,21 @@
+<h1 id="daemonset"><a aria-hidden="true" class="anchor-heading icon-link" href="#daemonset"></a>DaemonSet</h1>
+<p>DaemonSets have many uses</p>
+<ul>
+<li>One common pattern is to use a DaemonSet to install/configure software on each host node in the cluster.
+<ul>
+<li>ex. we can use a DaemonSet to install a <a href="/notes/np3c1ykvnjqv5xoombpfwqz#datadog-agent1">Datadog Agent</a> in our cluster</li>
+</ul>
+</li>
+</ul>
+<p>Other typical uses of a DaemonSet are:</p>
+<ul>
+<li>running a cluster storage daemon on every node</li>
+<li>running a logs collection daemon on every node</li>
+<li>running a node monitoring daemon on every node</li>
+</ul>
+<p>DaemonSets provide a way to ensure that a copy of a pod is running on every node in the cluster. As a cluster grows and shrinks, the DaemonSet spreads these specially labeled Pods across all of the nodes.</p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/qxSOd6SPN8qf9ZUojVFDX">K8s</a></li>
+</ul>

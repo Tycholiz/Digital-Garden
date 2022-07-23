@@ -1,0 +1,62 @@
+<h1 id="cache"><a aria-hidden="true" class="anchor-heading icon-link" href="#cache"></a>Cache</h1>
+<p>Caches are used in almost every computing layer: hardware, operating systems, web browsers, web applications, and more. </p>
+<ul>
+<li>while they can exist at all levels in architecture, they are often found at the level nearest to the front end, where they are implemented to return data quickly without taxing downstream levels.</li>
+</ul>
+<h2 id="cache-invalidation"><a aria-hidden="true" class="anchor-heading icon-link" href="#cache-invalidation"></a>Cache invalidation</h2>
+<p>Cache Invalidation is the idea that if the data is modified in the data layer, it should be invalidated in the cache; if not, this can cause inconsistent application behavior.</p>
+<p>To solve this, there are three main schemes that are used:</p>
+<ol>
+<li>
+<p><em>Write-through cache</em>: Under this scheme, data is written into the cache and the corresponding database simultaneously. The cached data allows for fast retrieval and, since the same data gets written in the permanent storage, we will have complete data consistency between the cache and the storage. Also, this scheme ensures that nothing will get lost in case of a crash, power failure, or other system disruptions.</p>
+<ul>
+<li>Although write-through minimizes the risk of data loss, since every write operation must be done twice before returning success to the client, this scheme has the disadvantage of higher latency for write operations.</li>
+</ul>
+</li>
+<li>
+<p><em>Write-around cache</em>: This technique is similar to write-through cache, but data is written directly to permanent storage, bypassing the cache. This can reduce the cache being flooded with write operations that will not subsequently be re-read, but has the disadvantage that a read request for recently written data will create a “cache miss” and must be read from slower back-end storage and experience higher latency.</p>
+</li>
+<li>
+<p><em>Write-back cache</em>: Under this scheme, data is written to cache alone, and completion is immediately confirmed to the client. The write to the permanent storage is done after specified intervals or under certain conditions. This results in low-latency and high-throughput for write-intensive applications; however, this speed comes with the risk of data loss in case of a crash or other adverse event because the only copy of the written data is in the cache.</p>
+</li>
+</ol>
+<h3 id="cache-eviction-policies"><a aria-hidden="true" class="anchor-heading icon-link" href="#cache-eviction-policies"></a>Cache eviction policies</h3>
+<p>Cache eviction means to free the memory of the old, unused data in the cache.</p>
+<p>There are many cache eviction strategies, and what makes it difficult is that there is no one-size-fits-all approach. Agreeing to use one and not another can be a difficult endeavor.</p>
+<p>Following are some of the most common cache eviction policies:</p>
+<ul>
+<li>Least Recently Used (LRU): Discards the least recently used items first (most commonly used).</li>
+<li>Most Recently Used (MRU): Discards, in contrast to LRU, the most recently used items first.</li>
+<li>Least Frequently Used (LFU): Counts how often an item is needed. Those that are used least often are discarded first.</li>
+<li>First In First Out (FIFO): The cache evicts the first block accessed first without any regard to how often or how many times it was accessed before.</li>
+<li>Last In First Out (LIFO): The cache evicts the block accessed most recently first without any regard to how often or how many times it was accessed before.</li>
+<li>Random Replacement (RR): Randomly selects a candidate item and discards it to make space when necessary.</li>
+</ul>
+<h3 id="why-is-cache-invalidation-considered-difficult"><a aria-hidden="true" class="anchor-heading icon-link" href="#why-is-cache-invalidation-considered-difficult"></a>Why is cache invalidation considered difficult?</h3>
+<p>Success in a caching implementation involves seeing into the future, or multiple possible futures, which is hard in any non-deterministic situation.</p>
+<ul>
+<li>Sources of non-determinism include both your own workload as well as other workloads that may affect the cost of things you depend on (cache fill / eviction actions, for example).</li>
+</ul>
+<p>The two main reasons why cache invalidation is difficult:</p>
+<ol>
+<li>
+<p>Space complexity issues</p>
+<ul>
+<li>You have to guess when the data is not likely to be needed in memory; It can't be too short that the cache is useless, and too long that you'll get a memory leak.</li>
+<li>Suppose we had infinite memory, then cache all the data; but we don't so we have to decide what to cache that is meaningful to have the cache implemented (is a ??K cache size enough for your use case? Should you add more?) - It's the balance with the resources available.</li>
+</ul>
+</li>
+<li>
+<p>Time complexity issues</p>
+<ul>
+<li>The underlying data might get changed by another process and then your process that uses the cache will be working with incorrect data</li>
+<li>Suppose all your data was immutable, then cache all the data indefinitely. But this isn't always to case so you have to figure out what works for the given scenario (A person's mailing address doesn't change often, but their GPS position does).</li>
+</ul>
+</li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/6RhCjcv4DkPrzU888GWV3">Apollo Client Cache</a></li>
+<li><a href="/notes/kW6jznu1QgEOogMoby4E9">Distributed Cache</a></li>
+</ul>

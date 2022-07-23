@@ -1,0 +1,45 @@
+version: 1
+vaults:
+    -
+        fsPath: ../main/tech
+        name: tech
+useFMTitle: true
+useNoteTitleForLink: true
+noAutoCreateOnDefinition: true
+noLegacyNoteRef: true
+noXVaultWikiLink: true
+lookupConfirmVaultOnCreate: false
+mermaid: true
+useKatex: true
+autoFoldFrontmatter: true
+dev:
+    enablePreviewV2: true
+lookup:
+    note:
+        selectionType: selectionExtract
+journal:
+    dailyDomain: daily
+    name: journal
+    dateFormat: y.MM.dd
+    addBehavior: childOfDomain
+    firstDayOfWeek: 1
+scratch:
+    name: scratch
+    dateFormat: y.MM.dd.HHmmss
+    addBehavior: asOwnDomain
+site:
+    assetsPrefix: Digital-Garden
+    siteUrl: 'https://tycholiz.github.io'
+    copyAssets: true
+    siteHierarchies:
+        - root
+    siteRootDir: docs
+    usePrettyRefs: true
+    title: Dendron
+    description: Publishable tech notes
+    duplicateNoteBehavior:
+        action: useVault
+        payload:
+            - tech
+initializeRemoteVaults: true
+dendronVersion: 0.55.1

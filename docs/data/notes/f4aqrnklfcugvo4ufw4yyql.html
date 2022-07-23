@@ -1,0 +1,22 @@
+<h1 id="usememo"><a aria-hidden="true" class="anchor-heading icon-link" href="#usememo"></a>useMemo</h1>
+<p><code>useMemo</code> allows you to cache a value between renders.</p>
+<ul>
+<li>the cache is local to the component position within the tree</li>
+</ul>
+<p>It is similar to <a href="/notes/hEG7YxFDbOJ2PM8cVy66M">useCallback</a>, but instead of returning a function, it calls the function and gives us the return value of the function (again, only when one of the dependencies change)</p>
+<ul>
+<li>In other words, useMemo calls the passed function only when necessary and it returns a cached value on all the other renders.</li>
+<li><code>useMemo</code> "caches" the value, while <code>useCallback</code> "caches" the function itself.</li>
+</ul>
+<h3 id="example"><a aria-hidden="true" class="anchor-heading icon-link" href="#example"></a>Example</h3>
+<p>Imagine we had a function that we passed down to a child component.</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token function-variable function">getItems</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+	<span class="token keyword control-flow">return</span> <span class="token punctuation">[</span>number<span class="token punctuation">,</span> number <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> number <span class="token operator">+</span> <span class="token number">2</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p><a href="https://gist.github.com/fayezosaadi/8d54fe30d8bf855c23e6d7c13a31e346">Fayez example</a></p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/hEG7YxFDbOJ2PM8cVy66M">useCallback</a></li>
+</ul>

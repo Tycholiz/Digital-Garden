@@ -1,0 +1,16 @@
+<h1 id="materialized-view"><a aria-hidden="true" class="anchor-heading icon-link" href="#materialized-view"></a>Materialized View</h1>
+<p>In contrast to the way a view is queried, a materialized view actually takes up storage space, making it a proper table (and not just a conceptual table). When you query a materialized view, the result set is cached and stored (or, materialized) as a sort of pseudo table</p>
+<ul>
+<li>can be thought of as a snapshot of a query set</li>
+<li>makes queries more efficient at the expense of space</li>
+</ul>
+<p>The difference is that a materialized view is an actual copy of the query results, written to disk, whereas a virtual view is just a shortcut for writing queries.</p>
+<p>When the underlying data changes, a materialized view needs to be updated, because it is a denormalized copy of the data.</p>
+<ul>
+<li>The database can do that automatically, but such updates make writes more expensive, which is why materialized views are not often used in <a href="/notes/plfkq18cl5fwq46id8bfgpd">OLTP</a> databases.</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/5uuohllUAxCmbMFJb8Pj9">Dynamo Streams</a></li>
+</ul>

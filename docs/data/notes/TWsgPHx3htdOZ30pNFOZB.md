@@ -1,0 +1,30 @@
+
+([info](https://www.brianstorti.com/vim-registers/))
+- a space in memory with an identifier that vim uses to store text
+    - analogous to a clipboard
+- access register `a` - `"a`
+    - access register in *i mode* - `<C-r>` (instead of `"`)
+- vim has a default register, which is where any deleted or yanked text will be
+    - denoted `""` - so `p` is shorthand for `""p`
+    - this is more like copy/paste
+- when writing to a register, lowercase letters will overwrite the register, while uppercase will append to the register
+- Sequential register
+    - `"1` is most recent (or `""`), `"2` is second most recent, and so on
+    - this is only for `dd` and `yy` operation
+- Yank register
+    - `"0`
+- Blackhole register
+     - `"_` - prepending a command with this will prevent anything from entering a register.
+- Clipboard register
+    - `"+`/`"*` - gives access to the system clipboard
+- Expression register
+    - `"=`
+    - when fetching contents from the register, we enter command-line moe
+    - an exception to the idea that "registers are containers that hold a block of text"
+- use `:reg` to see all registers
+    - `:reg a b c` will show registers `a b c`
+- copy text into register `r`, then paste it - `"ry`, `"rp`
+- *Yank Register* - when yanking, the copied text is placed into the yank register (`"0`), as well as the default register.
+- *Delete/yank Register* - `"-`
+    - only small delete (ie. no `dd`)
+- when using visual mode to make a selection of text that we will replace with `p`, the highlighted text will go into the register as the *pasted* text exits

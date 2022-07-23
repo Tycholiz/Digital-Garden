@@ -1,0 +1,17 @@
+<h1 id="date"><a aria-hidden="true" class="anchor-heading icon-link" href="#date"></a>Date</h1>
+<h3 id="datenow-vs-new-date"><a aria-hidden="true" class="anchor-heading icon-link" href="#datenow-vs-new-date"></a><code>Date.now()</code> vs <code>new Date()</code></h3>
+<p><code>new Date()</code> - creates a Date object representing the current date/time
+<code>Date.now()</code> - returns the number of milliseconds since midnight 01 January, 1970 UTC</p>
+<ul>
+<li>we also get this with <code>new Date().valueOf()</code> and <code>new Date().getTime()</code></li>
+</ul>
+<p>As a general rule of thumb, use... </p>
+<ul>
+<li><code>Date.now()</code> in code that deals with intervals (usually subtracting an earlier date from a later date to calculate the time elapsed) </li>
+<li><code>new Date()</code> for timestamps, e.g. those written to a database.</li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/cNdaAvQYNbt5UoZQbd8et">Cook</a></li>
+</ol>

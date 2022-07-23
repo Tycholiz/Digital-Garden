@@ -1,0 +1,95 @@
+<h1 id="providers"><a aria-hidden="true" class="anchor-heading icon-link" href="#providers"></a>Providers</h1>
+<p>A provider is a class that can be injected into the constructor of other classes (dependency injection)</p>
+<p>A class is marked as a <code>provider</code> by using the <code>@Injectable()</code> decorator.</p>
+<p>The main idea of a provider is that it can be injected as dependency; this means objects can create various relationships with each other, and the function of "wiring up" instances of objects can largely be delegated to the Nest runtime system.</p>
+<p>A provider "provides" some value to the dependent that it is being used in. </p>
+<ul>
+<li>a service is a provider that, when injected into a class, allows the class to use the methods defined on the provider itself.
+<ul>
+<li>ex. we could have a <code>NuggetsService</code> provider, whose role is to fetch nuggets. Now, from other providers we can inject the <code>NuggetService</code>, allowing us to fetch nuggets from that other provider.</li>
+</ul>
+</li>
+</ul>
+<p>Providers normally have a lifetime ("scope") synchronized with the application lifecycle. </p>
+<ul>
+<li>When the application is bootstrapped, every dependency must be resolved, and therefore every provider has to be instantiated. </li>
+<li>Similarly, when the application shuts down, each provider will be destroyed. 
+<ul>
+<li>there are ways to make your provider lifetime request-scoped as well.</li>
+</ul>
+</li>
+</ul>
+<p>Providers are plain JavaScript classes that are declared as providers in a module.</p>
+<p>Responsible for things like:</p>
+<ul>
+<li>data storage and retrieval (Service)</li>
+<li>repositories, factories, helpers</li>
+</ul>
+<p>Nest has a built-in <a href="/notes/bXY3W37GW2ytFJOgbJiol#ioc-container1">IoC container</a> that resolves relationships between providers.</p>
+<p>The <code>@Injectable()</code> decorator attaches metadata, which declares that the class can be managed by the Nest IoC container</p>
+<h3 id="registration-process"><a aria-hidden="true" class="anchor-heading icon-link" href="#registration-process"></a>Registration process</h3>
+<p>Registration happens in the <code>module</code> file.</p>
+<p>Registration is about associating a token (name/id) with a class.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token comment">// app.module.ts</span>
+
+<span class="token comment">// this is shorthand</span>
+providers<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token maybe-class-name">CatsService</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+
+<span class="token comment">// for this</span>
+providers<span class="token operator">:</span> <span class="token punctuation">[</span>
+  <span class="token punctuation">{</span>
+    provide<span class="token operator">:</span> <span class="token maybe-class-name">CatsService</span><span class="token punctuation">,</span> <span class="token comment">// token</span>
+    useClass<span class="token operator">:</span> <span class="token maybe-class-name">CatsService</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Seeing the explicit construction helps to see how the registration process (into the Nestjs IoC container) is really just a mapping between the token and the class.</p>
+<ul>
+<li>This is done for convenience to simplify the most common use-case, where the token is used to request an instance of a class by the same name.</li>
+</ul>
+<h3 id="injecting-non-service-based-providers"><a aria-hidden="true" class="anchor-heading icon-link" href="#injecting-non-service-based-providers"></a>Injecting non-service based Providers</h3>
+<p>Though the most common use is to inject services, we can really inject any kind of value, allowing us to do things like put an external library into the Nest container, or replace a real implementation with a mock object (useful for testing).</p>
+<ul>
+<li>ex. here, we are associating a string-valued token (<code>'CONNECTION'</code>) with a pre-existing connection object we've imported from an external file:</li>
+</ul>
+<pre class="language-ts"><code class="language-ts">providers<span class="token operator">:</span> <span class="token punctuation">[</span>
+  <span class="token punctuation">{</span>
+    provide<span class="token operator">:</span> <span class="token string">'CONNECTION'</span><span class="token punctuation">,</span>
+    useValue<span class="token operator">:</span> connection<span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span><span class="token punctuation">,</span>
+</code></pre>
+<p>Which can be used in a provider:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token decorator"><span class="token at operator">@</span><span class="token function">Injectable</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword module">export</span> <span class="token keyword">class</span> <span class="token class-name"><span class="token maybe-class-name">CatsRepository</span></span> <span class="token punctuation">{</span>
+  <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token decorator"><span class="token at operator">@</span><span class="token function">Inject</span></span><span class="token punctuation">(</span><span class="token string">'CONNECTION'</span><span class="token punctuation">)</span> connection<span class="token operator">:</span> <span class="token maybe-class-name">Connection</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="asynchronous-providers"><a aria-hidden="true" class="anchor-heading icon-link" href="#asynchronous-providers"></a>Asynchronous providers</h3>
+<p>At times, the application start should be delayed until one or more asynchronous tasks are completed. </p>
+<ul>
+<li>ex. you may not want to start accepting requests until the connection with the database has been established. </li>
+</ul>
+<p>This can be accomplished by registering a provider as an <code>async</code> function along the <code>useFactory</code> syntax.</p>
+<pre class="language-ts"><code class="language-ts">providers<span class="token operator">:</span> <span class="token punctuation">[</span>
+  <span class="token punctuation">{</span>
+    provide<span class="token operator">:</span> <span class="token string">'ASYNC_CONNECTION'</span><span class="token punctuation">,</span>
+    <span class="token function-variable function">useFactory</span><span class="token operator">:</span> <span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+      <span class="token keyword">const</span> connection <span class="token operator">=</span> <span class="token keyword control-flow">await</span> <span class="token function">createConnection</span><span class="token punctuation">(</span>options<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword control-flow">return</span> connection<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
+</code></pre>
+<p>Which can be injected into a class like any other provider with <code>@Inject('ASYNC_CONNECTION')</code></p>
+<p>Here, Nest will await resolution of the <code>useFactory</code> promise before instantiating any class that depends on (injects) such a provider.</p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/613syb18hb3v0u1ydvor7ru">Nestjs</a></li>
+<li><a href="/notes/n9fg78mnpuk5u5xalihz2bp">Guard</a></li>
+<li><a href="/notes/saert7xobzak9v2h5jt72b3">Interceptor</a></li>
+<li><a href="/notes/y8044sa0ai1u2hyoka0lphz">Modules</a></li>
+<li><a href="/notes/oz006ng8c7qcbzg2ytasznj">Pipe</a></li>
+<li><a href="/notes/bXY3W37GW2ytFJOgbJiol">IoC (Inversion of Control)</a></li>
+</ul>

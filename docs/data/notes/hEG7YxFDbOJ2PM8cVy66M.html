@@ -1,0 +1,33 @@
+<h1 id="usecallback"><a aria-hidden="true" class="anchor-heading icon-link" href="#usecallback"></a>useCallback</h1>
+<p><code>useCallback</code> allows you to cache an instance of a function between renders.</p>
+<p>The purpose of useCallback (and <a href="/notes/f4aqrnklfcugvo4ufw4yyql">useMemo</a>) is to prevent unnecessary re-renders and make your code more efficient.</p>
+<ul>
+<li>In the days of class components, we had a <code>render()</code> function. Anything placed inside would get re-calculated on every render, but we could also give the class methods (putting functions outside of <code>render()</code>). These methods would not get recalculated on each render, and would lead to performance gains. Since functional components naturally call everything (<code>render()</code> method is implicit), they inherently have a performance issue. <code>useCallback</code> and <code>useMemo</code> exist to alleviate this problem.</li>
+<li>You should consider using useCallback and/or useMemo hooks on the following situations:
+1) Processing large amounts of data
+2) Working with interactive graphs and charts
+3) Implementing animations
+4) Incorporating component lazy loading (useMemo specifically)</li>
+</ul>
+<h2 id="usecallback-1"><a aria-hidden="true" class="anchor-heading icon-link" href="#usecallback-1"></a><code>useCallback</code></h2>
+<ul>
+<li>useCallback returns a memoized callback.</li>
+<li><code>useCallback</code> accepts a function, and returns the same instance of the function being passed instead of creating a new one when a component re-renders, which is the default behavior.</li>
+<li>with this hook, a new function is only created when the variables passed to the dependency array change (kind of like <code>useEffect</code>). Otherwise, we use the same instance of that function between re-renders of the component (ie. different instances of the same component).</li>
+<li>Recall that in React, components will only re-render (and will ALWAYS re-render) when there are changes to either its state or changes to the props it receives. This means that not only will the JSX re-render, but the functions defined in the component will be called each time. But what if we want to prevent those functions from being called each time, and only call them when some values change?</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> additionResult <span class="token operator">=</span> <span class="token function">useCallback</span><span class="token punctuation">(</span><span class="token function">add</span><span class="token punctuation">(</span>firstVal<span class="token punctuation">,</span> secondVal<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">[</span>firstVal<span class="token punctuation">,</span> secondVal<span class="token punctuation">]</span><span class="token punctuation">)</span>
+</code></pre>
+<ul>
+<li>
+<p>In this example, the <code>additionResult</code> doesn't necessarily get called each time the component re-renders. In fact, it only gets called if either <code>firstVal</code> or <code>secondVal</code> have changed between those 2 renders.</p>
+</li>
+<li>
+<p><a href="https://kentcdodds.com/blog/usememo-and-usecallback">when to use</a></p>
+</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/f4aqrnklfcugvo4ufw4yyql">useMemo</a></li>
+</ul>

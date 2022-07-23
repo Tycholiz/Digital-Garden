@@ -1,0 +1,24 @@
+<h1 id="pool"><a aria-hidden="true" class="anchor-heading icon-link" href="#pool"></a>Pool</h1>
+<p>A pool (a.k.a <em>object pool</em>) is used to manage object caching. </p>
+<ul>
+<li>A client can access the pool which will hold objects that have already been instantiated, thus negating the client's need to instantiate a new object itself.</li>
+<li>The pool is often self-managing, and will instantiate new objects as they are needed, and limit the creation of more to adhere to a pre-defined limit.</li>
+<li>When a client is done with the object, it is returned to the pool to be used by another client.</li>
+</ul>
+<p>The pool itself is designed to be a singleton (ie. there is only a single instance of it)</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">class</span> <span class="token class-name"><span class="token maybe-class-name">ObjectPool</span><span class="token operator">&#x3C;</span><span class="token constant">T</span><span class="token operator">></span></span> <span class="token punctuation">{</span>
+  <span class="token keyword">private</span> objects<span class="token operator">:</span> <span class="token constant">T</span><span class="token punctuation">[</span><span class="token punctuation">]</span>
+  <span class="token keyword">public</span> <span class="token function">acquire</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// take an object from the pool and give it to the client</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">public</span> <span class="token function">release</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// return an object from the client back to the pool</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/vyE7KGcgYlfSmN78Fpkqm">Connection Pools</a></li>
+<li><a href="/notes/A9G9CB5OMFBaZgbsHw1Fy">Connection Pool</a></li>
+</ul>

@@ -1,0 +1,260 @@
+<h1 id="nosql"><a aria-hidden="true" class="anchor-heading icon-link" href="#nosql"></a>Nosql</h1>
+<p>Relational databases assume that the relationships are of similar importance, document databases assume that relationships form a hierarchical structure and relationships between documents are less important</p>
+<p>NoSQL-type DBs get their power from the developer spending a lot more time and care in thinking about exactly how to access data. Many NoSQL databases loosen the constraints on what you can store in a given record, but in return they are a great deal more fussy about how you access records. If you want to skip careful design of how you access records, you want the relational DB.</p>
+<p>If your data cannot be represented on literally a sheet of paper, NoSQL is the wrong data store for you. And I don't mean sheets of paper with references that say "now turn to page 64 for the diagram", no, I mean a sheet of paper per document. That is what a normalized record looks like in a document store.</p>
+<p>Horizontal scaling is a distinct benefit of NoSQL, which is why companies like Netflix and Spotify use document databases.</p>
+<ul>
+<li>RDBMSs more lend themselves to vertical scaling, which can get costly.</li>
+</ul>
+<p>NoSQL databases fit better into the whole paradigm of distributed computing, and NoSQL databases make the most of cloud computing and storage. Cloud-based storage is an excellent cost-saving solution but requires data to be easily spread across multiple servers to scale up. Using commodity (affordable, smaller) hardware on-site or in the cloud saves you the hassle of additional software, and NoSQL databases like Cassandra are designed to be scaled across multiple data centers out of the box, without a lot of headaches.</p>
+<p>Generally, NoSQL databases sacrifice ACID compliance for scalability and processing speed</p>
+<p>Going from SQL to NoSQL is easier than from NoSQL to SQL</p>
+<p>When all the other components of our application are fast and seamless, NoSQL databases prevent data from being the bottleneck.</p>
+<ul>
+<li>Big data is contributing to a large success for NoSQL databases, mainly because it handles data differently than the traditional relational databases.</li>
+</ul>
+<h1 id="types-of-nosql-databases"><a aria-hidden="true" class="anchor-heading icon-link" href="#types-of-nosql-databases"></a>Types of NoSQL Databases</h1>
+<h2 id="document-based-databases"><a aria-hidden="true" class="anchor-heading icon-link" href="#document-based-databases"></a>Document-Based Databases</h2>
+<p>Document-based databases store the data in JSON objects. Each document has key-value pairs like structures:</p>
+<p>The document-based databases are easy for developers as the document directly maps to the objects as JSON is a very common data format used by web developers. They are very flexible and allow us to modify the structure at any time.</p>
+<p>Ex. Mongo, Couch, Couchbase, DocumentDB(?)</p>
+<h2 id="key-value-database"><a aria-hidden="true" class="anchor-heading icon-link" href="#key-value-database"></a>Key-Value Database</h2>
+<p>Here, keys and values can be anything like strings, integers, or even complex objects. They are highly partitionable and are the best in horizontal scaling. They can be really useful in session oriented applications where we try to capture the behavior of the customer in a particular session.</p>
+<p>key-value stores, in general, always maintain a certain number of replicas to offer reliability.</p>
+<p>Ex. DynamoDB, Redis, Cassandra</p>
+<h2 id="wide-column-based-database"><a aria-hidden="true" class="anchor-heading icon-link" href="#wide-column-based-database"></a>Wide Column-Based Database</h2>
+<p>This database stores the data in records similar to any relational database but it has the ability to store very large numbers of dynamic columns. It groups the columns logically into column families.</p>
+<ul>
+<li>For example, in a relational database, you have multiple tables but in a wide-column based database, instead of having multiple tables, we have multiple column families.
+Cassandra or key-value stores, in general, always maintain a certain number of replicas to offer reliability.</li>
+</ul>
+<p>Ex. Cassandra</p>
+<h1 id="implementations"><a aria-hidden="true" class="anchor-heading icon-link" href="#implementations"></a>Implementations</h1>
+<h2 id="cassandra"><a aria-hidden="true" class="anchor-heading icon-link" href="#cassandra"></a>Cassandra</h2>
+<p>A key-value store approach to NoSQL</p>
+<p>Cassandra's approach to data availability is as follows: Instead of having one master node, it utilizes multiple masters inside a cluster. With multiple masters present, there is no fear of any downtime. The redundant model ensures high availability at all times.</p>
+<p>Cassandra is designed to manipulate huge data arrays across multiple nodes. </p>
+<p>In contrast to the relational database organizing data records in rows, Cassandra’s data model is based on columns to provide faster data retrieval. The data is stored in the form of hash.</p>
+<p>designed to be scaled across multiple data centers out of the box, without a lot of headaches.</p>
+<h2 id="dynamodb-amazon"><a aria-hidden="true" class="anchor-heading icon-link" href="#dynamodb-amazon"></a>DynamoDB (Amazon)</h2>
+<p></p><p></p><div class="portal-container">
+<div class="portal-head">
+<div class="portal-backlink">
+<div class="portal-title">From <span class="portal-text-title">DynamoDB</span></div>
+<a href="/notes/gEztUcJYazBs8J8k0gi7o" class="portal-arrow">Go to text <span class="right-arrow">→</span></a>
+</div>
+</div>
+<div id="portal-parent-anchor" class="portal-parent" markdown="1">
+<div class="portal-parent-fader-top"></div>
+<div class="portal-parent-fader-bottom"></div><p>Dynamo is a fully-managed, highly available schemaless NoSQL database.</p>
+<ul>
+<li>The DB engine can manage structured or semi-structured data, including JSON documents.</li>
+<li>supports key–value and document data structures</li>
+</ul>
+<p>Uses tables, though this concept is loosely related to how tables are used in SQL.</p>
+<ul>
+<li>essentially, we would include all domain primitives of a single domain in a Dynamo table, and use <a href="/notes/gEztUcJYazBs8J8k0gi7o#global-secondary-index-gsi1">GSIs</a> as our means of "JOINing" the domain primitives together.</li>
+<li>One of the biggest mistakes people make with dynamo is thinking that it's just a relational database with no relations. It's not.</li>
+</ul>
+<p>To get the full benefits of Dynamo, and it requires you often to design your data layer very well up-front. Dynamo is not recommended for a system that hasn't mostly stabilized in design.</p>
+<h2 id="data-is-stored-as-partitions"><a aria-hidden="true" class="anchor-heading icon-link" href="#data-is-stored-as-partitions"></a>Data is stored as partitions</h2>
+<p>Data is stored as a partitioned <a href="/notes/UE8OS2s713jEk2CmjiAet">B-tree</a>.</p>
+<ul>
+<li>Items are distributed across 10-GB storage units, called partitions (physical storage internal to DynamoDB)</li>
+<li>Each table has one or more partitions</li>
+<li>DynamoDB uses the partition key’s value as an input to an internal hash function. The output from the hash function determines the partition in which the item is stored. Each item’s location is determined by the hash value of its partition key.</li>
+</ul>
+<p>Unlike <a href="/notes/gWAg15uBJgkS2B0wcpMAa">Redis</a>, in that it is immediately consistent and highly-durable, centered around that single data structure.</p>
+<ul>
+<li>If you put something into DynamoDB, you’ll be able to read it back immediately and, for all practical purposes, you can assume that what you have put will never get lost.</li>
+</ul>
+<h2 id="terms"><a aria-hidden="true" class="anchor-heading icon-link" href="#terms"></a>Terms</h2>
+<h3 id="items"><a aria-hidden="true" class="anchor-heading icon-link" href="#items"></a>Items</h3>
+<p>Analogous with row of a SQL table</p>
+<h3 id="attribute"><a aria-hidden="true" class="anchor-heading icon-link" href="#attribute"></a>Attribute</h3>
+<p>Analogous with column name of a SQL table</p>
+<h3 id="marshalling"><a aria-hidden="true" class="anchor-heading icon-link" href="#marshalling"></a>Marshalling</h3>
+<p>Before we can Create/Update a record in DynamoDB, a plain JS Object needs to be converted into a DynamoDB Record.</p>
+<ul>
+<li>Marshalling refers to our ability to convert a Javascript object into a DynamoDB Record.</li>
+</ul>
+<h4 id="example"><a aria-hidden="true" class="anchor-heading icon-link" href="#example"></a>Example</h4>
+<pre class="language-js"><code class="language-js"><span class="token constant">AWS</span><span class="token punctuation">.</span><span class="token property-access"><span class="token maybe-class-name">DynamoDB</span></span><span class="token punctuation">.</span><span class="token property-access"><span class="token maybe-class-name">Converter</span></span><span class="token punctuation">.</span><span class="token method function property-access">unmarshall</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token string-property property">"updated_at"</span><span class="token operator">:</span><span class="token punctuation">{</span><span class="token string-property property">"N"</span><span class="token operator">:</span><span class="token string">"146548182"</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token string-property property">"uuid"</span><span class="token operator">:</span><span class="token punctuation">{</span><span class="token string-property property">"S"</span><span class="token operator">:</span><span class="token string">"foo"</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token string-property property">"status"</span><span class="token operator">:</span><span class="token punctuation">{</span><span class="token string-property property">"S"</span><span class="token operator">:</span><span class="token string">"new"</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+<span class="token comment">// { updated_at: 146548182, uuid: 'foo', status: 'new' }</span>
+</code></pre>
+<hr>
+<p>Dynamo provides seamless integration with services such as Redshift (large scale data analysis), Cognito (identity pools), Elastic Map Reduce (EMR), Data Pipeline, Kinesis, and S3. Also, has tight integration with AWS lambda via Streams and aligns with the server-less philosophy; automatic scaling according to your application load, pay-per-what-you-use pricing, easy to get started with, and no servers to manage.</p>
+<hr>
+<h2 id="expression"><a aria-hidden="true" class="anchor-heading icon-link" href="#expression"></a>Expression</h2>
+<p></p><p></p><div class="portal-container">
+<div class="portal-head">
+<div class="portal-backlink">
+<div class="portal-title">From <span class="portal-text-title">Expression</span></div>
+<a href="/notes/ju2bxxwj4ma3dr4wbtesq21" class="portal-arrow">Go to text <span class="right-arrow">→</span></a>
+</div>
+</div>
+<div id="portal-parent-anchor" class="portal-parent" markdown="1">
+<div class="portal-parent-fader-top"></div>
+<div class="portal-parent-fader-bottom"></div><p>Expressions are used to denote the attributes that you want to read from an item.</p>
+<p>Expressions are strings that check for the validity of a particular statement.</p>
+<p>With expressions, we can use comparator operators (<code>=</code>, <code>&#x3C;</code>, <code>></code>), as well as built-in functions like <code>attribute_exists()</code>, <code>contains()</code>, <code>size()</code> and <code>begins_with()</code></p>
+<ul>
+<li>ex. use <code>attribute_not_exists(DateShipped)</code> to ensure we are not updating an item that has already shipped.</li>
+</ul>
+<p>You also use expressions when writing an item to indicate any conditions that must be met, and to indicate how the attributes are to be updated.</p>
+<p>By default, all items are returned with GET operations (like <code>GetItem</code>, <code>Query</code>, or <code>Scan</code>).</p>
+<ul>
+<li>to get only some items back, we use a <em>projection expression</em>, which is a string that identifies the attributes that you want.</li>
+</ul>
+<p>Expressions are used in a few different areas:</p>
+<ul>
+<li><em>condition expression</em> - update an item when certain conditions are true</li>
+<li><em>projection expression</em> - specify a subset of attributes you want to receive when reading Items</li>
+<li><em>update expression</em> - update a particular attribute in an existing Item.</li>
+<li><em>key condition expression</em> - query a table with a composite primary key to limit the items selected.</li>
+<li><em>filter expression</em> - filter the results of queries to make responses more efficient.</li>
+</ul>
+<p>Sometimes we cannot accurately represent our desired statement due to DynamoDB syntax limitations or when it's easier to use variable substitution to create the statement rather than building a string.</p>
+<ul>
+<li>we can use expression attribute names and expression attribute values to get around these limitations.</li>
+<li>these allow you to define expression variables outside of the expression string itself, then use replacement syntax to use these variables in your expression.</li>
+</ul>
+<h3 id="expression-attribute-names"><a aria-hidden="true" class="anchor-heading icon-link" href="#expression-attribute-names"></a>Expression attribute names</h3>
+<p>An expression attribute name is a placeholder that you use in an DynamoDB expression</p>
+<ul>
+<li>begins with <code>#</code></li>
+</ul>
+<p>There are times where we want to write an expression for a particular attribute, but can't properly represent that attribute name due to DynamoDB limitations. These limitations are:</p>
+<ul>
+<li>the attribute is a <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ReservedWords.html">reserved word</a></li>
+<li>attribute name contains a <code>.</code></li>
+<li>attribute name begins with a number</li>
+</ul>
+<p>To get around this, we pass in a map where the key is the placeholder to use in our expression and the value is the attribute name we want to expand to.</p>
+<pre class="language-js"><code class="language-js"><span class="token punctuation">{</span>
+  <span class="token string-property property">"#ts"</span><span class="token operator">:</span> <span class="token string">"timestamp"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Then, we can use <code>#a</code> when we want to refer to our <code>Age</code> attribute.</p>
+<h3 id="expression-attribute-values"><a aria-hidden="true" class="anchor-heading icon-link" href="#expression-attribute-values"></a>Expression attribute values</h3>
+<p>These are substitutes for the actual values that you want to compare— values that you might not know until runtime.</p>
+<ul>
+<li>begins with <code>:</code></li>
+</ul>
+<p>Similar to expression attribute names except that they are used for the values used to compare to values of attributes on an Item, rather than the name of the attribute.</p>
+<ul>
+<li>unlike expression attribute names, we must also specify the type:</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token punctuation">{</span><span class="token string-property property">":agelimit"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token string-property property">"N"</span><span class="token operator">:</span> <span class="token number">21</span><span class="token punctuation">}</span> <span class="token punctuation">}</span>
+</code></pre>
+<p>For example, we could have a <code>scan</code> operation that returns us all items from the <code>ProductCatalog</code> table where the color is black and the size is less than $500:</p>
+<pre class="language-sh"><code class="language-sh">aws dynamodb scan \
+    --table-name ProductCatalog \
+    --filter-expression "contains(Color, :c) and Price &#x3C;= :p" \
+    --expression-attribute-values { \
+        ":c": { "S": "Black" }, \
+        ":p": { "N": "500" } \
+      } \
+    }
+</code></pre></div></div><p></p><p></p>
+<hr>
+<h2 id="dynamodb-in-practice"><a aria-hidden="true" class="anchor-heading icon-link" href="#dynamodb-in-practice"></a>DynamoDB in practice</h2>
+<p>The general rule of thumb is to choose Dynamo for low throughput apps as writes are expensive and consistent reads are twice the cost of eventually consistent reads</p>
+<p>When to use DynamoDB?</p>
+<ul>
+<li>In case you are looking for a database that can handle simple key-value queries but those queries are very large in number</li>
+<li>In case you are working with OLTP workload like online ticket booking or banking where the data needs to be highly consistent</li>
+</ul>
+<p>When not use DynamoDB?</p>
+<ul>
+<li>In cases where you have to do computations on the data.
+<ul>
+<li>Relational databases run their queries close to the data, so if you’re trying to calculate the sum total value of orders per customer, then that rollup gets done while reading the data, and only the final summary (one row per customer) gets sent over the network. However, if you were to do this with DynamoDB, you’d have to get all the customer orders (one row per order), which involves a lot more data over the network, and then you have to do the rollup in your application, which is far away from the data.</li>
+</ul>
+</li>
+<li>If worried about high vendor lock-in.</li>
+</ul>
+<p>Pricing
+$256/TB/month</p>
+<p>By default, you should start with DynamoDB’s on-demand pricing and only consider the provisioned capacity as cost optimization. On-demand costs $1.25 per million writes, and $0.25 per million reads.</p>
+<ul>
+<li>Then, if your usage grows significantly, you will almost always want to consider moving to provisioned capacity (significant cost savings).</li>
+<li>if you believe that on-demand pricing is too expensive, then DynamoDB will very likely be too expensive, even with provisioned capacity. In that case, you might want to consider a relational database.</li>
+</ul>
+</div></div><p></p><p></p>
+<h2 id="elasticsearch"><a aria-hidden="true" class="anchor-heading icon-link" href="#elasticsearch"></a>Elasticsearch</h2>
+<p></p><p></p><div class="portal-container">
+<div class="portal-head">
+<div class="portal-backlink">
+<div class="portal-title">From <span class="portal-text-title">Elastic Search</span></div>
+<a href="/notes/xiSIDeEtIc8X0lpUQlppI" class="portal-arrow">Go to text <span class="right-arrow">→</span></a>
+</div>
+</div>
+<div id="portal-parent-anchor" class="portal-parent" markdown="1">
+<div class="portal-parent-fader-top"></div>
+<div class="portal-parent-fader-bottom"></div><p>ElasticSearch is an open-source, RESTful, distributed search and analytics engine built on Apache Lucene</p>
+<ul>
+<li>You can send data in the form of JSON documents to Elasticsearch using the API. Elasticsearch automatically stores the original document and adds a searchable reference to the document in the cluster’s index. You can then search and retrieve the document using the Elasticsearch API</li>
+<li>ES is NoSQL and is more powerful, flexible, and faster than SQL's LIKE</li>
+</ul>
+<p>ES is typically used when you have :</p>
+<ul>
+<li>high data volumes, and are likely to need multiple nodes to process the data</li>
+<li>unstructured or semi-structured data (log files, text, ...). You ingest the raw data in its original form.</li>
+<li>the data is never updated. It’s ingested once, queried, and then purged according to some bulk retention policy (e.g. older than 30 days)</li>
+<li>you need to access aggregate data more than individual records</li>
+</ul>
+<p>When to use ElasticSearch?</p>
+<ul>
+<li>If your use case requires a full-text search, Elasticsearch will be the best fit</li>
+<li>If your use case involves chatbots where these bots resolve most of the queries, such as when a person types something there are high chances of spelling mistakes. You can make use of the in-built fuzzy matching practices of the ElasticSearch</li>
+<li>Also, ElasticSearch is useful in storing logs data and analyzing it</li>
+</ul>
+<p>When you're searching for text. ES ranks search results based on how close the phrase or words are. SQL doesn't do this nearly as well.</p>
+<ul>
+<li>ES starts to shine when you start to do a lot of filtering</li>
+</ul>
+<p>Elastic search scales horizontally with your requirements.</p>
+<p>Secondary <a href="/notes/jiITIvU42MBAYcbXheWwI">indexes</a> are the raison d’être of search servers such as Elasticsearch.</p>
+<h1 id="tools"><a aria-hidden="true" class="anchor-heading icon-link" href="#tools"></a>Tools</h1>
+<p><a href="https://www.elastic.co/kibana">Kibana: a data visualization platform for Elasticsearch</a></p>
+</div></div><p></p><p></p>
+<h2 id="couchdb"><a aria-hidden="true" class="anchor-heading icon-link" href="#couchdb"></a>CouchDB</h2>
+<p>Like MongoDB, Couch is a document-oriented NoSQL databases, but Mongo and Couch diverge significantly in their implementations. </p>
+<ul>
+<li>CouchDB uses the semi-structured JSON format for storing data. Queries to a CouchDB database are made via a RESTful HTTP API, using HTTP or JavaScript. </li>
+<li>MongoDB uses BSON, a JSON variant that stores data in a binary format. MongoDB uses its own query language that is distinct from SQL, although they have some similarities. </li>
+</ul>
+<p>Like Mongo, Couch is schemaless.</p>
+<p>CouchDB and MongoDB differ in their approach to the <a href="/notes/ilOPfgNyiPSHOb9tNB6yL">CAP theorem</a> </p>
+<ul>
+<li>CouchDB favors availability and partition tolerance
+<ul>
+<li>CouchDB uses eventual consistency. Clients can write to a single database node, and this information is guaranteed to eventually propagate to the rest of the database. </li>
+</ul>
+</li>
+<li>MongoDB prefers consistency and partition tolerance.
+<ul>
+<li>MongoDB uses strict consistency. The database uses a replica set to provide redundancy but at the cost of availability. </li>
+</ul>
+</li>
+</ul>
+<p>As of this writing, Google projects the cost of deploying CouchDB on GCP at $34.72 per month. This estimate is based on a 30 day, 24 hours per day usage in the Central US region, a VM instance with 2 vCPUs and 8 GB of memory, and 10GB of a standard persistent disk.</p>
+<h2 id="couchbase"><a aria-hidden="true" class="anchor-heading icon-link" href="#couchbase"></a>Couchbase</h2>
+<p>Every Couchbase node consists of a data service, index service, query service, and cluster manager component. Starting with the 4.0 release, the three services can be distributed to run on separate nodes of the cluster if needed.</p>
+<p>In the parlance of CAP Theorem, Couchbase is typically run as a CP system (consistency &#x26; partition tolerant)</p>
+<p>Provides a SQL-like query language called <code>N1QL</code> for manipulating JSON data stored in Couchbase.</p>
+<h2 id="pouchdb"><a aria-hidden="true" class="anchor-heading icon-link" href="#pouchdb"></a>PouchDB</h2>
+<p>PouchDB was created to help web developers build applications that work as well offline as they do online.
+It enables applications to store data locally while offline, then synchronize it with CouchDB and compatible servers when the application is back online, keeping the user's data in sync no matter where they next login.
+Inspired by Couch</p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/4xb9cg487yio88c5b2j2bid">Transaction</a></li>
+</ul>

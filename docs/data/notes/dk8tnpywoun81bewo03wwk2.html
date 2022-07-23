@@ -1,0 +1,12 @@
+<h1 id="broker"><a aria-hidden="true" class="anchor-heading icon-link" href="#broker"></a>Broker</h1>
+<p>A Broker is a Kafka server that runs in a Kafka Cluster. Therefore, Kafka Brokers form a cluster. </p>
+<ul>
+<li>A Kafka cluster is made up of multiple Kafka Brokers that exist on multiple servers.</li>
+<li>Each Kafka Broker has a unique ID. </li>
+<li>Kafka Brokers contain topic log partitions. </li>
+</ul>
+<p>Connecting to one broker bootstraps a client to the entire Kafka cluster. </p>
+<ul>
+<li>For failover, you want to start with at least three to five brokers. A Kafka cluster can have, 10, 100, or 1,000 brokers in a cluster if needed.</li>
+</ul>
+<p>The default port for the broker is <code>9092</code></p>

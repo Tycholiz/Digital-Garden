@@ -1,0 +1,17 @@
+<h1 id="best-practices"><a aria-hidden="true" class="anchor-heading icon-link" href="#best-practices"></a>Best Practices</h1>
+<p>Instead of always trying to follow best practices, it's often a better idea to avoid <em>anti-patterns</em>.</p>
+<ul>
+<li>The term <em>best practices</em> seems to imply that there are clear cut paths set out for us, which is only true some of the time. Most of the time, there are exceptions in our specific use-case which throws a wrench in our plans to follow best practices.</li>
+</ul>
+<h3 id="fault-tolerance"><a aria-hidden="true" class="anchor-heading icon-link" href="#fault-tolerance"></a>Fault tolerance</h3>
+<p>The best way of building fault-tolerant systems is to find some general-purpose abstractions with useful guarantees, implement them once, and then let applications rely on those guarantees.</p>
+<ul>
+<li>ex. because of the abstraction provided by <a href="/notes/4xb9cg487yio88c5b2j2bid">transactions</a>, the application can pretend that there are no crashes (atomicity), that nobody else is concurrently accessing the database (isolation), and that storage devices are perfectly reliable (durability).</li>
+</ul>
+<h3 id="coupling"><a aria-hidden="true" class="anchor-heading icon-link" href="#coupling"></a>Coupling</h3>
+<p>Couping is a much worse problem than non-DRY code.</p>
+<h3 id="rules"><a aria-hidden="true" class="anchor-heading icon-link" href="#rules"></a>Rules</h3>
+<p>If you are going to make a rule about something, make sure to provide good error handling for the user. Put them in a position where they can get feedback about the rule as quickly as possible</p>
+<ul>
+<li>ex. if you make a rule about Git branch naming that "branches must not contain a <code>_</code> character", then you should set up the means to have the user warned any time they create a branch with naming like this.</li>
+</ul>

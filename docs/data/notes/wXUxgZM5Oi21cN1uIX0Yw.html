@@ -1,0 +1,42 @@
+<h1 id="json-web-key"><a aria-hidden="true" class="anchor-heading icon-link" href="#json-web-key"></a>JSON Web Key</h1>
+<p>The JSON Web Key (JWK) is a JSON object that contains a well-known public key which can be be used to validate the signature of a signed JWT.</p>
+<ul>
+<li>If the issuer of your JWT used an asymmetric key (like RS256) to sign the JWT, it will likely host a file called a JSON Web Key Set (JWKS). The JWKS is a JSON object that contains the property keys, which in turn holds an array of JWK objects.</li>
+</ul>
+<p>The service may only use one JWK for validating web tokens, however the JWKS may contain multiple keys if the service rotates signing certificates.</p>
+<ul>
+<li>we can use a service like Auth0 or Okta to store our JWKs, which will be located at an endpoint hosted at their domain. </li>
+<li>Any time your application validates a JWT, it will attempt to retrieve the JWK(S) from the issuer in order to ensure the JWT signature matches the content.</li>
+</ul>
+<p>JWKs enable us to rotate keys.</p>
+<h3 id="login"><a aria-hidden="true" class="anchor-heading icon-link" href="#login"></a>Login</h3>
+<ol>
+<li>user enters email/pw combination</li>
+<li>email/pw sent to server. The server takes in that password, appends the salt to it, then hashes it and compares it to the hashed pw stored in the database.</li>
+<li>if the passwords match, then the server will send back a signed JWT 
+<ul>
+<li>the jwt is composed of 3 parts:
+<ul>
+<li>header - usually contains type of token and signing algo used:
+<pre><code>{
+  "alg": "HS256",
+  "typ": "JWT"
+}
+</code></pre>
+</li>
+<li>claims (aka payload)
+<ul>
+<li>this is the data that we can encode into the token</li>
+</ul>
+</li>
+<li>signature</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="http-requests"><a aria-hidden="true" class="anchor-heading icon-link" href="#http-requests"></a>HTTP requests</h3>
+<ol>
+<li>server receives the request, along with the JWT.</li>
+<li>JWT header and claims are combined with the secret (stored on the server) to generate a "test signature", to compare against the original signature (also received in the JWT) </li>
+</ol>
