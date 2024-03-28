@@ -1,0 +1,38 @@
+<h1 id="refresh-token">Refresh Token<a aria-hidden="true" class="anchor-heading icon-link" href="#refresh-token"></a></h1>
+<p>The Refresh Token contains basically only the session ID which can be used to look up in the database to see if it’s an active session or not. If it is, then it can generate a new <a title="Private" href="https://wiki.dendron.so/notes/hfyvYGJZQiUwQaaxQO27q.html" target="_blank" class="private">access token (Private)</a> and that can be sent to the user</p>
+<ul>
+<li>A refresh token is a special token that is used to generate additional jwt tokens. This allows you to have short-lived access tokens (JWTs) without having to collect credentials every time one expires. The server sends the client this token alongside the access (JWT) and/or ID tokens as part of a user's initial authentication flow
+<ul>
+<li>The refresh token should be saved in the database in the relevant row of the user's table.
+<ul>
+<li>Therefore, we can handle the renewing login with Postgres.</li>
+</ul>
+</li>
+<li>the refresh token can be sent from the server to the client as an <code>HTTPOnly</code> cookie</li>
+</ul>
+</li>
+<li>A refresh token is not capable of authenticating a user on its own— its only use is to look up active sessions. If it finds one, then the refresh token can be used to generate a new access token.</li>
+<li>Every time a new access token is generated, a refresh token should be generated as well</li>
+<li>a Refresh token is what allows us to login to a website, close the browser, and still be logged in upon reopening it.
+<ul>
+<li>When a new session starts (reopening the browser tab), the app is able to see that there is no JWT in memory, so it triggers a <em>silent refresh</em></li>
+</ul>
+</li>
+<li>Imagine we set a jwt to have a lifetime of 15 minutes. Without the refresh token, this means that the server would send back an http 401: unauthorized every 15 minutes (probably at which point your app will log the user out and display the login screen)</li>
+<li>A refresh token has 2 properties:
+<ol>
+<li>It can be used to make an API call (say, <code>/refresh_token</code>) to fetch a new JWT token before the previous JWT expires.</li>
+<li>It can be safely persisted across sessions on the client!</li>
+</ol>
+</li>
+</ul>
+<p>Refresh tokens don't usually expire (or are long-lived) and is single use only.</p>
+<h3 id="why-use-refresh-tokens">Why use refresh tokens?<a aria-hidden="true" class="anchor-heading icon-link" href="#why-use-refresh-tokens"></a></h3>
+<p>Using refresh tokens in conjunction with access tokens helps us alleviate the problem of stale tokens. e</p>
+<p>refresh tokens are exchanged for an <a href="/notes/RXSECsORRrl4fC8oCEtsk">access token</a></p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/RXSECsORRrl4fC8oCEtsk">Access Token</a></li>
+<li><a href="/notes/6s5Oh0DUcMsShcFrmDaBK">JWT</a></li>
+</ul>

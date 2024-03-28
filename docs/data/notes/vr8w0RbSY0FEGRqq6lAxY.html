@@ -1,0 +1,16 @@
+<h1 id="cook">Cook<a aria-hidden="true" class="anchor-heading icon-link" href="#cook"></a></h1>
+<h4 id="run-shell-command">Run shell command<a aria-hidden="true" class="anchor-heading icon-link" href="#run-shell-command"></a></h4>
+<pre class="language-yml"><code class="language-yml"><span class="token key atrule">jobs</span><span class="token punctuation">:</span>
+  <span class="token key atrule">build</span><span class="token punctuation">:</span>
+    <span class="token key atrule">runs-on</span><span class="token punctuation">:</span> ubuntu<span class="token punctuation">-</span>latest
+    <span class="token key atrule">steps</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> run a script
+      <span class="token key atrule">run</span><span class="token punctuation">:</span> <span class="token punctuation">|</span><span class="token scalar string">
+        echo "here it is boys!"
+        ls main</span>
+</code></pre>
+<h4 id="run-a-command-in-a-specific-directory"><code>run</code> a command in a specific directory<a aria-hidden="true" class="anchor-heading icon-link" href="#run-a-command-in-a-specific-directory"></a></h4>
+<pre class="language-yml"><code class="language-yml"><span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Clean temp directory
+  <span class="token key atrule">run</span><span class="token punctuation">:</span> rm <span class="token punctuation">-</span>rf *
+  <span class="token key atrule">working-directory</span><span class="token punctuation">:</span> ./temp
+</code></pre>

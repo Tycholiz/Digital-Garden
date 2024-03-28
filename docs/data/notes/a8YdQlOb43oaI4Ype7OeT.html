@@ -1,0 +1,57 @@
+<h1 id="connection">Connection<a aria-hidden="true" class="anchor-heading icon-link" href="#connection"></a></h1>
+<p>A connection is a collection of objects with metadata such as <code>edges</code>, <code>pageInfo</code>...</p>
+<ul>
+<li>It is effectively the edges, and the metadata associated with their environment.</li>
+<li><code>pageInfo</code> will contain <code>hasNextPage</code>, <code>hasPreviousPage</code>, <code>startCursor</code>, <code>endCursor</code>
+<ul>
+<li><code>hasNextPage</code> will tell us if there are more edges available, or if we’ve reached the end of this connection.</li>
+</ul>
+</li>
+</ul>
+<p>A connection is a paginated field on an object — for example, the friends field on a user or the comments field on a blog post.</p>
+<ul>
+<li>very similar to <a href="/notes/LvwyDhSirG3TuxN3EX6T6">cursor-based pagination</a>.</li>
+</ul>
+<p>Connections are made up of edges, but a connection is more than just that, since it also contains metadata about the group of edges, such as <code>pageInfo</code>, which gives us pagination info (ex. what the most recent cursor was, if there is another page or not, etc)
+<img src="/assets/images/2021-03-09-21-57-34.png">
+In the above image, the connections would be all of the grey lines together as one. </p>
+<p>We might define our <code>User</code> type like this:</p>
+<pre class="language-gql"><code class="language-gql">type User {
+  id: ID!
+  name: String
+  friendsConnection(
+    first: Int,
+    after: String,
+    last: Int,
+    before: String
+  ): UserFriendsConnection
+}
+</code></pre>
+<p>This might lead to a query like so:</p>
+<pre class="language-gql"><code class="language-gql">{
+  user(id: "ZW5jaG9kZSBIZWxsb1dvcmxk") {
+    id
+    name
+    friendsConnection(first: 3) {
+      edges {
+        cursor
+        node {
+          id
+          name
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<p>A connection is a way to get all of the nodes that are connected to another node in a specific way</p>
+<ul>
+<li>In this case we want to get all of the nodes connected to our users that are friends. Another connection might be between a user node to all of the posts that they liked.</li>
+</ul>
+<p>A connection is by nature an abstract concept, and it is difficult to think about. An edge makes sense, because we can think of a user having a friendship with another user, or we think of a user authoring a post.</p>
+<p>A connection type may look like so:</p>
+<pre class="language-gql"><code class="language-gql">type UserFriendsConnection {
+  pageInfo: PageInfo!
+  edges: [UserFriendsEdge]
+}
+</code></pre>

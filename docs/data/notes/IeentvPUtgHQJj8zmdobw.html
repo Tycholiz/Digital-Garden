@@ -1,0 +1,14 @@
+<h1 id="cook">Cook<a aria-hidden="true" class="anchor-heading icon-link" href="#cook"></a></h1>
+<h3 id="packagejson-script-to-ensure-using-yarn">package.json script to ensure using yarn<a aria-hidden="true" class="anchor-heading icon-link" href="#packagejson-script-to-ensure-using-yarn"></a></h3>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"scripts"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">"preinstall"</span><span class="token operator">:</span> <span class="token string">"node -e \"if(process.env.npm_execpath.indexOf('yarn') === -1) throw new Error('You must use Yarn to install, not NPM')\""</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="install-package-with-an-alias">Install package with an alias<a aria-hidden="true" class="anchor-heading icon-link" href="#install-package-with-an-alias"></a></h3>
+<pre class="language-sh"><code class="language-sh">yarn add pouchdb-md5@npm:react-native-pouchdb-md5 react-native-quick-md5
+</code></pre>
+<p>will result in package.json dependencies property:</p>
+<pre class="language-json"><code class="language-json"><span class="token property">"pouchdb-md5"</span><span class="token operator">:</span> <span class="token string">"npm:react-native-pouchdb-md5"</span><span class="token punctuation">,</span>
+</code></pre>

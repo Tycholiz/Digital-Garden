@@ -1,0 +1,33 @@
+<h1 id="dir">Dir<a aria-hidden="true" class="anchor-heading icon-link" href="#dir"></a></h1>
+<h1 id="database-file">Database File<a aria-hidden="true" class="anchor-heading icon-link" href="#database-file"></a></h1>
+<ul>
+<li>known by the environment variable PGDATA, this is where all the data for a database cluster is stored.
+<ul>
+<li>likely <code>/etc/postgresql/&#x3C;VERSION>/main/</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="base">base/<a aria-hidden="true" class="anchor-heading icon-link" href="#base"></a></h3>
+<ul>
+<li>each directory within <code>base/</code> is used by a database node in our cluster. Each directory is named after the database's OID
+<ul>
+<li>the files inside are the actual data of the relations (ie. tables, indexes, sequences)</li>
+</ul>
+</li>
+<li>database examples: <code>postgres</code>, <code>template0</code>, <code>template1</code>, <code>neverforget</code>, which can be seen from psql with <code>\l</code>
+<ul>
+<li>the <code>postgres</code> database is not required to exist. It is simply a default that is connected to if no database is specified in the connection string.</li>
+<li><code>CREATE DATABASE</code> works by copying the <code>template1</code> database (<code>template0</code> can be thought of as a more primitive and stripped down version of <code>template1</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="pg_hbaconf">pg_hba.conf<a aria-hidden="true" class="anchor-heading icon-link" href="#pg_hbaconf"></a></h3>
+<ul>
+<li>a file that controls the authentication of clients to connect to the postgres database
+<ul>
+<li>HBA stands for host-based authentication.</li>
+</ul>
+</li>
+<li>after making changes to this file, to put them into effect run <code>SELECT pg_reload_conf();</code> or <code>pg_ctrl reload</code> with superuser.</li>
+<li>In <code>psql</code>, run <code>SHOW hba_file;</code></li>
+</ul>

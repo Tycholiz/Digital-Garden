@@ -1,0 +1,60 @@
+<h1 id="api">API<a aria-hidden="true" class="anchor-heading icon-link" href="#api"></a></h1>
+<p><code>useMutation</code> has an <code>update</code> function, whose purpose is to modify your cached data to match the modifications that a mutation makes to your back-end data</p>
+<ul>
+<li>this method allows us to interact with the cache as if we were interacting with a graphql API. 
+<ul>
+<li>ex. we can make general queries, as well as use fragments to help</li>
+</ul>
+</li>
+<li>we can interact directly with the cache with <code>readQuery, writeQuery, readFragment, writeFragment</code>, which are methods on the <code>ApolloClient</code> class</li>
+<li>we can get the cached version of an entity with <code>cache.identify</code>
+<ul>
+<li>an input <code>{ id: 1, title: '', mediaItems: [{...}] }</code> gives us <code>Nugget:1</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="apollo-cache-object">Apollo <code>cache</code> object<a aria-hidden="true" class="anchor-heading icon-link" href="#apollo-cache-object"></a></h2>
+<ul>
+<li>Here, queries mirror what our gql queries would look like to target the same data from a Graphql server. Therefore, it must be a complete and valid query.</li>
+<li>fragments on the other hand provide more <em>random access</em> (as opposed to <em>sequential access</em>) to our cached data.
+<ul>
+<li>therefore, we need to provide the cacheId as an argument to the fragment methods.</li>
+</ul>
+</li>
+</ul>
+<h3 id="readquery"><code>readQuery</code><a aria-hidden="true" class="anchor-heading icon-link" href="#readquery"></a></h3>
+<ul>
+<li>like a regular graphql query, only it is performed on the cache, rather than the GraphQL API</li>
+</ul>
+<h3 id="writequery"><code>writeQuery</code><a aria-hidden="true" class="anchor-heading icon-link" href="#writequery"></a></h3>
+<ul>
+<li>uses the same shape as <code>readQuery</code>, but requires us to include a <code>data</code> option with the modifications we wish to make</li>
+<li>the shape of our query is not enforced, and we can write fields that aren't present in our Graphql schema.</li>
+<li><a href="https://www.apollographql.com/docs/react/caching/cache-interaction/#writequery">docs</a></li>
+</ul>
+<h3 id="readfragment"><code>readFragment</code><a aria-hidden="true" class="anchor-heading icon-link" href="#readfragment"></a></h3>
+<p>If the object in the cache is missing fields that exist on the fragment, then we will be returned <code>null</code>.</p>
+<h3 id="writefragment"><code>writeFragment</code><a aria-hidden="true" class="anchor-heading icon-link" href="#writefragment"></a></h3>
+<p>Just like <code>readFragment</code>, but like <code>writeQuery</code>, it requires a <code>data</code> object with the fields that we are writing.</p>
+<h3 id="updatequery--updatefragment"><code>updateQuery</code> / <code>updateFragment</code><a aria-hidden="true" class="anchor-heading icon-link" href="#updatequery--updatefragment"></a></h3>
+<p>Allows us to read and write cached data in a single method call.</p>
+<ul>
+<li>ApolloClient 3.5 and later</li>
+<li><a href="https://www.apollographql.com/docs/react/caching/cache-interaction/#using-updatequery-and-updatefragment">docs</a></li>
+</ul>
+<h3 id="cachemodify"><code>cache.modify</code><a aria-hidden="true" class="anchor-heading icon-link" href="#cachemodify"></a></h3>
+<ul>
+<li><a href="https://www.apollographql.com/docs/react/caching/cache-interaction/#using-cachemodify">docs</a></li>
+</ul>
+<p><code>modify</code> is a method we can execute on our cache that lets us modify individual fields directly </p>
+<ul>
+<li>differs from <code>writeQuery</code> and <code>writeFragment</code> in that it will circumvent any <code>merge</code> function we have defined, meaning that fields are always overwritten with exactly the values you specify.</li>
+<li>cannot write fields that do not already exist on the object in the cache.</li>
+</ul>
+<h3 id="cacheidentify"><code>cache.identify</code><a aria-hidden="true" class="anchor-heading icon-link" href="#cacheidentify"></a></h3>
+<p>Returns the cacheId for the specified object</p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/6RhCjcv4DkPrzU888GWV3">Apollo Client Cache</a></li>
+</ul>

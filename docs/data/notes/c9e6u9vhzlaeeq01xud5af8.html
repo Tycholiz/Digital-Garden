@@ -1,0 +1,31 @@
+<h1 id="transcoding">Transcoding<a aria-hidden="true" class="anchor-heading icon-link" href="#transcoding"></a></h1>
+<p>Transcoding, encoding, and decoding are various terms used when a media file needs to be transformed to be better suited for a specific device, internet connection, or hardware</p>
+<p>The two main factors in streaming is the CPU (GPU) and internet bandwidth</p>
+<h3 id="transcoding-1">Transcoding<a aria-hidden="true" class="anchor-heading icon-link" href="#transcoding-1"></a></h3>
+<p>Imagine we had a movie on our NAS in the HEVC format, and we wanted to play it back on our iPhone which doesn't support that format.</p>
+<ul>
+<li>in this case, the Plex Media Server (on the NAS) will try to change the file to a more suitable version on the fly. This is transcoding.
+<ul>
+<li>this work is done by the NAS CPU, and takes a heavy toll on the CPU</li>
+</ul>
+</li>
+<li>In streaming apps like Plex, we can enable an option to allow the CPU to run to its full potential (<code>Transcoder Quality</code>: <code>Make My CPU Hurt</code> option in Plex)</li>
+</ul>
+<p>Locally, transcoding probably isn't necessary.</p>
+<ul>
+<li>when accessing media from remote locations with limited bandwidth, weaker internet connection, or smaller devices, you may want to access the media in lower quality, which is where transcoding (or real-time encoding), comes in.</li>
+</ul>
+<p>CPU needs for transcoding:</p>
+<ul>
+<li>In Intel or AMD Based Based CPU that is 64bit (x86) in Architecture</li>
+<li>Higher than 1.6Ghz in Frequency</li>
+<li>More than 2 Cores</li>
+</ul>
+<hr>
+<h3 id="bitrate">Bitrate<a aria-hidden="true" class="anchor-heading icon-link" href="#bitrate"></a></h3>
+<p>Bitrate refers to the quantity of data that is processed per unit of time</p>
+<ul>
+<li>ex. megabits per second (Mbps) for video </li>
+<li>ex. kilobits per second (kbps) for audio.</li>
+</ul>
+<p>The higher the bitrate, the better the quality and resolution of the media tends to be.</p>

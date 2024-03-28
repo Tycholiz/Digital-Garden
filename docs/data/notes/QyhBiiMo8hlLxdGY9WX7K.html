@@ -1,0 +1,117 @@
+<h1 id="rebase">Rebase<a aria-hidden="true" class="anchor-heading icon-link" href="#rebase"></a></h1>
+<p>From a feature branch (FB), if we rebase master, conceptually we are rewinding back to the point where the FB split from master and updating that point with master and then “replaying” the FB commits on top of that</p>
+<ul>
+<li>Therefore, rebase is an alternative way to get commits from a feature branch onto a master branch
+<ul>
+<li>with <code>git merge</code>, we take the diff between the feature branch and the master branch, and try and jam them together in order to make a new commit (the merge commit).</li>
+<li>with <code>git rebase</code>, (assuming rebase on top of master) we take all of the commits that are different between FB and master and move them on top of another. 
+<ul>
+<li>This involves rebasing first, then doing a regular merge (which will be fast-forward, since the base commit will now be a direct ancestor)</li>
+<li>When we run <code>git rebase master</code> from our feature branch, we say "hey master, I want to take all the work I've done so far and make it look like it was built directly on top of all of the work that <em>you</em> have"</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>If you're <code>rebase</code>ing, you will always have to <code>--force</code> when you push, because rebase rewrites history— That's simply how it works. Rewritten history isn't going to fast-forward on top of that same history by definition.</p>
+<ul>
+<li>only the commits that are being replayed are rewritten (and thus, new SHAs). If we are on FB and rebasing on top of master, the commits from master will remain unchanged (ie. history isn't being written here). However, the commits that only existed on FB will be rewritten, and thus will have new SHAs.</li>
+<li>While collaborating with others using the "rebase workflow", you should always <code>git pull --rebase</code> to avoid the circumstance where a merge commit is made. If one person rebases, and then pulls that code with merge commits, it will be a difficult rebase (spec:) due to the rewritten history.</li>
+</ul>
+<p>As the name suggests, rebase exists to change the base of a branch (ie. the origin commit). We do this by replaying a series of commits on top of a new base.</p>
+<ul>
+<li>
+<p>This is mostly needed when a series of local commits is deemed to start from an obsolete base (put another way, our local master is very out of sync with origin/master)</p>
+</li>
+<li>
+<p>behind the scenes, git is duplicating the commits of the feature branch, putting them on top of the master branch, and then blowing away those original feature branch's commits (hence why they are greyed out in the following image).</p>
+<ul>
+<li>therefore, in a sense it is rewriting history, as evidenced by the fact that the duplicated commits have a different SHA than the originals</li>
+</ul>
+</li>
+</ul>
+<p>Because rebase rewrites history, it's important that we pull all remote changes to our local master branch before rebasing, so that we are reanchoring our feature branch's commits to the current version of the code.</p>
+<ul>
+<li>ex. we are on branch <code>about</code>, which has diverged from <code>master</code>. We want to incorporate changes from master into <code>about</code>. From <code>about</code>, we run <code>git rebase master</code>:</li>
+</ul>
+<p>One should not rebase another branch onto a shared branch.</p>
+<ul>
+<li>ex. while on shared <code>development</code> branch, running <code>git rebase main</code></li>
+</ul>
+<h2 id="process">Process<a aria-hidden="true" class="anchor-heading icon-link" href="#process"></a></h2>
+<p>Git always squashes a newer commit into an older commit or “upward” as viewed on the interactive rebase todo list, that is into a commit on a previous line.</p>
+<ul>
+<li>This means if commit1 is a <code>WIP</code> commit, and commit2 is the one we want to keep (along with changes from commit1), then we must actually <code>squash</code> commit2 into commit1. Doing so will allow us modify the commit message (now a combination of the messages from commit1 and commit2) before rewriting the history.</li>
+</ul>
+<h3 id="behind-the-scenes">Behind the Scenes<a aria-hidden="true" class="anchor-heading icon-link" href="#behind-the-scenes"></a></h3>
+<ol>
+<li>Git will checkout the upstream branch and copy all the changes you've done since you last merged, placing them on the tip of the upstream branch.
+<ul>
+<li>ex. in the above image, to an outside observer it would seem that you had checked out the upstream branch from <strong><em>a</em></strong>b and then done your changes.</li>
+<li>note: here upstream most likely is origin/master or simply master, but it could be any branch we are "merging" into.</li>
+</ul>
+</li>
+<li>Git produces a series of patch files of your work and starts applying them to the upstream branch.
+<ul>
+<li>consider that these commits are actual copies with different commit SHAs</li>
+</ul>
+</li>
+</ol>
+<h3 id="process-1">Process<a aria-hidden="true" class="anchor-heading icon-link" href="#process-1"></a></h3>
+<ol>
+<li>when finished with feature branch, pull all remote changes onto master
+<ul>
+<li>if local master === origin/master, step 2 can be skipped, since it would have no effect anyway</li>
+</ul>
+</li>
+<li>from feature branch, run <code>git rebase master</code>, which will cause our feature branch commits to be anchored against the updated master branch
+<ul>
+<li>consider that when we checkout a new branch, we have a common base with the branch which we checked out from. Rebasing master here ensures that the remote changes that happened and got merged into master (remotely) are included as part of that anchor.</li>
+</ul>
+</li>
+<li>from master branch, run <code>git rebase feature-branch</code>, copying and placing the commits of the feature branch onto the main branch.</li>
+</ol>
+<h4 id="conflicts">Conflicts<a aria-hidden="true" class="anchor-heading icon-link" href="#conflicts"></a></h4>
+<ul>
+<li>say we are rebasing 8 commits onto the new branch — each one could cause a conflict, and we can resolve the conflicts introduced by each commit one by one.
+<ul>
+<li>fix the file, run <code>git add</code>, then run <code>git rebase --continue</code> (which moves us on to the next patch, until all are completed)</li>
+</ul>
+</li>
+</ul>
+<h3 id="when-to-use-rebase">When to use rebase<a aria-hidden="true" class="anchor-heading icon-link" href="#when-to-use-rebase"></a></h3>
+<ol>
+<li>Any time we are working on a long term branch that needs to stay somewhat up to date with master. It is better to keep it as up to date as possible, rather than staying diverged for a long time.
+<ul>
+<li>ex. Imagine working on an experimental branch and getting blocked at some point. This is a scenario that would cause your branch to diverge from master more and more over time. When it does come time to pick up work again, it would be a good time to rebase to the master branch. The result is that it would look just like you started from there.</li>
+</ul>
+</li>
+<li>Consider that in a perfect world, my coworker and I would have a linear commit history (even though we are developing asynchronously, it makes more sense looking back if we have a straight line of commits). In this ideal world, I would be developing my work off the base of my coworker's work, and vice versa.</li>
+<li>Imagine we have a <em>quick-fix</em> branch that we don't want muddying up the history. If master has not been touched since we branched, the ff merge is automatic. However, if master has indeed changed, then we need a way to tweak <em>quick-fix</em> so it becomes a direct descendent of <em>master</em> again.
+<ul>
+<li>In this scenario, we want our local master to have the same tip as origin/master. This would allow us to do a ff merge, thus avoiding muddying up history.</li>
+</ul>
+</li>
+</ol>
+<h3 id="drawbacks-to-rebase">Drawbacks to rebase<a aria-hidden="true" class="anchor-heading icon-link" href="#drawbacks-to-rebase"></a></h3>
+<ul>
+<li>doesn't play too well with open source projects, since it becomes hard to trace changes introduced to a codebase.</li>
+<li>doesn't work well when working on a shared branch, since commits are rewritten.</li>
+<li>only rebase when working on a local branch prior to pushing, or on remote repos where you are the only contributor (ex. for backup purposes).
+<ul>
+<li>In the second scenario, we'll need to force push (since we replaced its commit history with a fresh one).</li>
+<li>Issues arise when other people pull in objects that were orphaned by the rebase process.</li>
+</ul>
+</li>
+</ul>
+<h4 id="shared-branches">Shared branches<a aria-hidden="true" class="anchor-heading icon-link" href="#shared-branches"></a></h4>
+<p>Rebase is not a great candidate for shared branches. Because <code>git push --force</code> is a fact of life to the "rebase-way" of Git workflow, we would have to be careful to check if someone else has pushed to the remote branch first. This is why we should use <code>--force-with-lease</code>, so that we cannot overwrite commits that have been pushed already to that remote branch. If there have been, we will get errors, and we can <code>git pull --rebase</code> to incorporate those changes, before force pushing again.</p>
+<h2 id="long-lived-feature-branches-llfb">Long-lived Feature Branches (LLFB)<a aria-hidden="true" class="anchor-heading icon-link" href="#long-lived-feature-branches-llfb"></a></h2>
+<p>as the LLFB gets periodically rebased off master its commits get rewritten, so we end up with different SHAs for "the same" content of the commit.</p>
+<h1 id="e-resources">E Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#e-resources"></a></h1>
+<p><a href="https://m.youtube.com/watch?v=P5p71fguFNI">VS Code tip: Interactive rebase editor from the GitLens extension</a></p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/R6NsoPat1BmEDwycbn5q6">Cook</a></li>
+</ol>

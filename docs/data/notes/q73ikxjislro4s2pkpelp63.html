@@ -1,0 +1,58 @@
+<h1 id="strategy">Strategy<a aria-hidden="true" class="anchor-heading icon-link" href="#strategy"></a></h1>
+<p>The strategy pattern (a.k.a policy pattern) allows us to write client code that determines which algorithm to select at runtime.</p>
+<ul>
+<li>instead of implementing a single algoritm, we implement multiple, and based on some condition, select which algorithm to run.</li>
+<li>doing this allows the calling code to be more flexible and reusable.</li>
+</ul>
+<p>In the following example, we have some client code which needs to update the fields of a food item. The thing each, there are different classes of food items (those that are organic, those that are non-perishable, etc), and they all need to be handled differently. For instance, organic items degrade twice as fast, while non-perishable items don't degrade at all.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword module">export</span> <span class="token keyword">interface</span> <span class="token class-name"><span class="token maybe-class-name">FoodItemStrategy</span></span> <span class="token punctuation">{</span>
+  <span class="token function">update</span><span class="token punctuation">(</span>item<span class="token operator">:</span> <span class="token maybe-class-name">FoodItem</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token keyword">void</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword module">export</span> <span class="token keyword">class</span> <span class="token class-name"><span class="token maybe-class-name">PerishableFoodItemStrategy</span></span> <span class="token keyword">implements</span> <span class="token class-name"><span class="token maybe-class-name">FoodItemStrategy</span></span> <span class="token punctuation">{</span>
+  <span class="token function">update</span><span class="token punctuation">(</span>item<span class="token operator">:</span> <span class="token maybe-class-name">FoodItem</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token keyword">void</span> <span class="token punctuation">{</span>
+    <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span>item<span class="token punctuation">.</span><span class="token method function property-access">doesItemImproveWithAge</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      item<span class="token punctuation">.</span><span class="token method function property-access">increaseQuality</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword control-flow">else</span> <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span>item<span class="token punctuation">.</span><span class="token method function property-access">getSellInDaysValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&#x3C;=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      item<span class="token punctuation">.</span><span class="token method function property-access">decreaseQuality</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword control-flow">else</span> <span class="token punctuation">{</span>
+      item<span class="token punctuation">.</span><span class="token method function property-access">decreaseQuality</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    item<span class="token punctuation">.</span><span class="token method function property-access">decrementSellIn</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword module">export</span> <span class="token keyword">class</span> <span class="token class-name"><span class="token maybe-class-name">OrganicFoodItemStrategy</span></span> <span class="token keyword">implements</span> <span class="token class-name"><span class="token maybe-class-name">FoodItemStrategy</span></span> <span class="token punctuation">{</span>
+  <span class="token function">update</span><span class="token punctuation">(</span>item<span class="token operator">:</span> <span class="token maybe-class-name">FoodItem</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token keyword">void</span> <span class="token punctuation">{</span>
+    <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span>item<span class="token punctuation">.</span><span class="token method function property-access">getSellInDaysValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&#x3C;=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      item<span class="token punctuation">.</span><span class="token method function property-access">decreaseQuality</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword control-flow">else</span> <span class="token punctuation">{</span>
+      item<span class="token punctuation">.</span><span class="token method function property-access">decreaseQuality</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    item<span class="token punctuation">.</span><span class="token method function property-access">decrementSellIn</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword module">export</span> <span class="token keyword">class</span> <span class="token class-name"><span class="token maybe-class-name">NonPerishableFoodItemStrategy</span></span> <span class="token keyword">implements</span> <span class="token class-name"><span class="token maybe-class-name">FoodItemStrategy</span></span> <span class="token punctuation">{</span>
+  <span class="token function">update</span><span class="token punctuation">(</span>item<span class="token operator">:</span> <span class="token maybe-class-name">FoodItem</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token keyword">void</span> <span class="token punctuation">{</span>
+    <span class="token comment">// no-op</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* Implementation */</span>
+<span class="token keyword module">export</span> <span class="token keyword">class</span> <span class="token class-name"><span class="token maybe-class-name">StoreInventory</span></span> <span class="token punctuation">{</span>
+  <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token keyword">public</span> items<span class="token operator">:</span> <span class="token maybe-class-name">FoodItem</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+  <span class="token keyword">private</span> <span class="token function">updateFoodItem</span><span class="token punctuation">(</span>item<span class="token operator">:</span> <span class="token maybe-class-name">FoodItem</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token keyword">void</span> <span class="token punctuation">{</span>
+    <span class="token keyword">let</span> strategy<span class="token operator">:</span> <span class="token maybe-class-name">FoodItemStrategy</span><span class="token punctuation">;</span>
+    <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span>item<span class="token punctuation">.</span><span class="token method function property-access">isItemNonPerishable</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      strategy <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name"><span class="token maybe-class-name">NonPerishableFoodItemStrategy</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword control-flow">else</span> <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span>item<span class="token punctuation">.</span><span class="token method function property-access">isItemOrganic</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      strategy <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name"><span class="token maybe-class-name">OrganicFoodItemStrategy</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword control-flow">else</span> <span class="token punctuation">{</span>
+      strategy <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name"><span class="token maybe-class-name">PerishableFoodItemStrategy</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    strategy<span class="token punctuation">.</span><span class="token method function property-access">update</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>

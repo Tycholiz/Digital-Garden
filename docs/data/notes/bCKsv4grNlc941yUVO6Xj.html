@@ -1,0 +1,68 @@
+<h1 id="ssr-server-side-rendering">SSR (Server Side Rendering)<a aria-hidden="true" class="anchor-heading icon-link" href="#ssr-server-side-rendering"></a></h1>
+<p>The idea for SSR is that there is a large chunk of our website (if not all) that is static. It is expensive to ship a bundle of javascript to the client, and expect the client to do all the work of parsing it and converting it to html. The question becomes: "what if we could just pre-render this react into html beforehand on the server, and give that content to the client when it is requested? That way, the content can be served as fast as if we were using plain HTML/CSS/Javascript.</p>
+<p>The most common use case for server-side rendering is to handle the initial render when a user (or search engine crawler) first requests our app. When the server receives the request, it renders the required component(s) into an HTML string, and then sends it as a response to the client. From that point on, the client takes over rendering duties.</p>
+<h2 id="csr-vs-ssr">CSR vs SSR<a aria-hidden="true" class="anchor-heading icon-link" href="#csr-vs-ssr"></a></h2>
+<h3 id="csr-approach">CSR Approach<a aria-hidden="true" class="anchor-heading icon-link" href="#csr-approach"></a></h3>
+<p>Using CSR, the server will send a mostly empty HTML file to begin with. Through links, it will build up the page through a series of further HTTP requests.</p>
+<ol>
+<li>Browser requests <code>example.com/index.html</code></li>
+<li>Server responds with <code>&#x3C;script/></code> tag at end of <code>&#x3C;body/></code></li>
+<li>Browser makes an API request for the content in those script tags</li>
+<li>Server responds with that content.</li>
+<li>Browser makes async requests for Javascript bundles.
+<ul>
+<li>note: these bundles can be cached to speed things up in the future.</li>
+</ul>
+</li>
+</ol>
+<p>Cons of CSR:</p>
+<ul>
+<li>Loading content may take a while because requests have to travel all the way to the server, which can be very far away.</li>
+<li>SEO takes a hit because all search engines see is an empty HTML file.</li>
+</ul>
+<h3 id="ssr-approach">SSR Approach<a aria-hidden="true" class="anchor-heading icon-link" href="#ssr-approach"></a></h3>
+<p>In SSR, the whole web page is compiled on the server. The HTML is completely populated with the content before it is sent to the client.</p>
+<ol>
+<li>Browser requests <code>example.com/index.html</code></li>
+<li>Server makes co-located API requests to populate the HTML "template" with the data it needs</li>
+<li>Server sends that populated HTML back to the client.</li>
+</ol>
+<p>Cons of SSR:</p>
+<ul>
+<li>A page will have to be rendered on the server and reloaded every time a new page on the site is visited, which will lead to full page reloads.</li>
+<li>The server will receive frequent requests, which can easily lead to the server getting flooded with requests and slowing down.</li>
+</ul>
+<h2 id="implementations">Implementations<a aria-hidden="true" class="anchor-heading icon-link" href="#implementations"></a></h2>
+<h3 id="with-react">with React<a aria-hidden="true" class="anchor-heading icon-link" href="#with-react"></a></h3>
+<p>With simple client-side rendering, we have a root node <code>&#x3C;div id="root"></code> to which the entire React app gets attached to. This node is by default empty.
+With SSR, this node has some content by default. But, instead of replacing that content, we want React to attach a running application to it.</p>
+<p>This is where hydration comes in. During hydration, React works quickly in a virtual DOM to match up the existing content with what the application renders, saving time from manipulating the DOM unnecessarily. It is this hydration that makes SSR worthwhile.</p>
+<p>There are two big rules to hydrating an application in React.</p>
+<ol>
+<li>The initial render cycle of the application must result in the same markup, whether run on the client or the server.</li>
+<li>We must call ReactDOM.hydrate instead of ReactDOM.render in order to instruct React to hydrate from our SSR result.</li>
+</ol>
+<h3 id="with-redux">with Redux<a aria-hidden="true" class="anchor-heading icon-link" href="#with-redux"></a></h3>
+<ul>
+<li>When using Redux with server rendering, we must also send the state of our app along in our response, so the client can use it as the initial state. This is important because, if we preload any data before generating the HTML, we want the client to also have access to this data. Otherwise, the markup generated on the client won't match the server markup, and the client would have to load the data again.</li>
+<li>To send the data down to the client, we need to:</li>
+</ul>
+<ol>
+<li>create a fresh, new Redux store instance on every request;</li>
+<li>optionally dispatch some actions;</li>
+<li>pull the state out of store;</li>
+<li>and then pass the state along to the client.
+Redux's only job on the server side is to provide the initial state of our app.</li>
+</ol>
+<p>On the server, you will want each request to have its own store, so that different users get different preloaded data.</p>
+<h3 id="with-gatsby">with Gatsby<a aria-hidden="true" class="anchor-heading icon-link" href="#with-gatsby"></a></h3>
+<p>Sometimes Gatsby is referred to as doing SSR. More realistic is that its doing SPG (Static site generation)</p>
+<h1 id="ue-resource">UE Resource<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resource"></a></h1>
+<ul>
+<li><a href="https://www.freecodecamp.org/news/react-server-components/">Good breakdown of SSR</a></li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/Bqpifx2HX3vjLhX9yvhTV">Architecture</a></li>
+</ul>

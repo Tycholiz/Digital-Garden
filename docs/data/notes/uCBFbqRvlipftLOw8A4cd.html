@@ -1,0 +1,56 @@
+<h1 id="union">Union<a aria-hidden="true" class="anchor-heading icon-link" href="#union"></a></h1>
+<p>The pipe (<code>|</code>) in a union can be properly thought of as "or", since it means that "this variable can be of one type or the other"</p>
+<p>A Union is a way to achieve type composition (as are <a href="/notes/GaLKy1zDhVl2wURjIoh1O">intersections</a>)</p>
+<ul>
+<li>composition being a way to create new types from existing types</li>
+</ul>
+<p>The rule for union types is that we only allow an operation if it would be legal to do on each member of the union</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">let</span> ambiguouslyEmptyAlice<span class="token operator">:</span> <span class="token maybe-class-name">Person</span> <span class="token operator">|</span> <span class="token keyword null nil">null</span> <span class="token operator">|</span> <span class="token keyword nil">undefined</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Take the following union:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">interface</span> <span class="token class-name"><span class="token maybe-class-name">Foo</span></span> <span class="token punctuation">{</span>
+    foo<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+    xyz<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">interface</span> <span class="token class-name"><span class="token maybe-class-name">Bar</span></span> <span class="token punctuation">{</span>
+    bar<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+    xyz<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">const</span> <span class="token function-variable function">sayHello</span> <span class="token operator">=</span> <span class="token punctuation">(</span>obj<span class="token operator">:</span> <span class="token maybe-class-name">Foo</span> <span class="token operator">|</span> <span class="token maybe-class-name">Bar</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span> <span class="token comment">/* ... */</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Here, we are saying "<code>Foo | Bar</code> is a type that has either all required properties of <code>Foo</code> OR all required properties of <code>Bar</code>."</p>
+<ul>
+<li>In the absence of a guard, we'd only be able to access <code>obj.xyz</code>, since that is the only property that exists on either type.</li>
+</ul>
+<p>Union type is very often used with either null or undefined.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">const</span> <span class="token function-variable function">sayHello</span> <span class="token operator">=</span> <span class="token punctuation">(</span>name<span class="token operator">:</span> <span class="token builtin">string</span> <span class="token operator">|</span> <span class="token keyword nil">undefined</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span> <span class="token comment">/* ... */</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre>
+<h3 id="relation-to-unions-in-statistics">Relation to Unions in statistics<a aria-hidden="true" class="anchor-heading icon-link" href="#relation-to-unions-in-statistics"></a></h3>
+<p>When we consider <a title="Private" href="https://wiki.dendron.so/notes/hfyvYGJZQiUwQaaxQO27q.html" target="_blank" class="private">unions (Private)</a> in a statistical sense, it may seem counter-intuitive how Unions and Intersections are implemented in Typescript.</p>
+<ul>
+<li>If have have a union type <code>string | number</code>, it means the type has to be either string or number.</li>
+<li>If we have an intersection type, it means the type must have both.</li>
+</ul>
+<p>The lack of clarity lies in the perspective we are taking. We are meant to take the perspective of what is accepted as the union type.</p>
+<ul>
+<li>we say that the set of things that can be set to <code>string | number</code> is the union of the string set and the number set.
+<ul>
+<li>ex. imagine there was a big list of all strings and all numbers that were loaded into memory. The union of <code>string | number</code> would be the set of all of them</li>
+</ul>
+</li>
+<li>we say that the set of things that can be set to <code>string &#x26; number</code> is zero, because there is zero overlap between <code>string &#x26; number</code>.</li>
+</ul>
+<p>Put another way, the incorrect way to see it is: "a union is a set operator on the field". The correct way is "a union is a set operator of the sets of what each type represents."</p>
+<p><a href="https://www.reddit.com/r/typescript/comments/9qduq3/why_is_type_intersection_called_like_that_its/">ref</a></p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/xJFdoZNS6TJLVe94X8ntK">Discriminated Union</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/GaLKy1zDhVl2wURjIoh1O">Intersection</a></li>
+</ul>

@@ -1,0 +1,26 @@
+<h1 id="extensions">Extensions<a aria-hidden="true" class="anchor-heading icon-link" href="#extensions"></a></h1>
+<p>When installing new PG extensions, we often need to restart the DB. Extensions need to be registered in <code>shared_preload_libraries</code></p>
+<h2 id="pgxs">PGXS<a aria-hidden="true" class="anchor-heading icon-link" href="#pgxs"></a></h2>
+<p>We can compile extensions using a tool called <code>pgxs</code></p>
+<ul>
+<li>PGXS is a build infrastructure for extensions</li>
+<li>it allows us to build extensions against an already installed server.</li>
+</ul>
+<h2 id="misc">Misc<a aria-hidden="true" class="anchor-heading icon-link" href="#misc"></a></h2>
+<ul>
+<li>When trying to install an extension, if we get the error message <code>cannot find "postgres.h"</code>, this means that to build the extension from source, the postgres header files are needed. There is a package called <code>postgres-server-dev-&#x3C;VERSION></code>. This will install all header files for us necessary for server development.</li>
+</ul>
+<h2 id="commands">Commands<a aria-hidden="true" class="anchor-heading icon-link" href="#commands"></a></h2>
+<ul>
+<li>show installed extensions - <code>\dx</code> OR <code>SELECT * FROM pg_extension</code></li>
+<li>show available extensions - <code>SELECT * FROM pg_available_extensions</code></li>
+</ul>
+<h1 id="notable-extensions">Notable Extensions<a aria-hidden="true" class="anchor-heading icon-link" href="#notable-extensions"></a></h1>
+<h3 id="pg_stat_statements">pg_stat_statements<a aria-hidden="true" class="anchor-heading icon-link" href="#pg_stat_statements"></a></h3>
+<p>Allows us to achieve a general system-wide analysis to help us with things like indexing strategy.</p>
+<p>It’s possible to have a list of the most common queries in terms of number of times the query is executed, and the cumulative time it took to execute the query.</p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/BTXTjBx0smDUknAClmZeg">Pgloader</a></li>
+</ol>

@@ -1,0 +1,49 @@
+<h1 id="performance">Performance<a aria-hidden="true" class="anchor-heading icon-link" href="#performance"></a></h1>
+<h3 id="load">Load<a aria-hidden="true" class="anchor-heading icon-link" href="#load"></a></h3>
+<p>Load on a system can be described with <em>load parameters</em>, which depend on the architecture of our system. For example:</p>
+<ul>
+<li>requests per second to a web server </li>
+<li>ratio of reads to writes in a database</li>
+<li>number of simultaneously active users in a chat room</li>
+<li>hit rate on a cache</li>
+</ul>
+<p>Then we can analyze load in one of 2 ways:</p>
+<ol>
+<li>increase a load parameter and see how it impacts performance</li>
+<li>increase a load parameter and see how much system resources need to be increased to maintain the same performance</li>
+</ol>
+<p>Load can be tested with <a href="/notes/6rd2UlBxaM4Uc41t6VY63">Load Testing</a></p>
+<h3 id="response-time">Response Time<a aria-hidden="true" class="anchor-heading icon-link" href="#response-time"></a></h3>
+<p>Average response time is a poor metric if we want to know "typical response time", since it doesn't tell us how many users experienced any given outlier of a delay time.</p>
+<ul>
+<li>using percentiles is a lot better approach, because then we can make statements such as "90% (ie. p90) of our users experience a response time of 200ms or less"
+<ul>
+<li>to figure out how bad the outliers really are, we can look at high <em>p</em> values, like p99 or even p999 (99.9th percentile)</li>
+</ul>
+</li>
+<li>using high <em>p</em> values to determine our benchmarks is a good strategy, since users experiencing the longest response times probably have the most data to process, and thus tells us the latest "ceiling" value for how much data we can expect to process. 
+<ul>
+<li>also consider that those with the most data might therefore be the most important users, so it's important to keep them happy.</li>
+</ul>
+</li>
+</ul>
+<h2 id="metrics">Metrics<a aria-hidden="true" class="anchor-heading icon-link" href="#metrics"></a></h2>
+<p><img src="/assets/images/2023-04-04-09-43-59.png"></p>
+<h3 id="latency">Latency<a aria-hidden="true" class="anchor-heading icon-link" href="#latency"></a></h3>
+<p><em>Latency</em> is the duration that a request is waiting to be handled—during which it is latent, awaiting service.</p>
+<p>Low latency can be achieved by:</p>
+<ul>
+<li>Minimizing network latency: This can be done by reducing the distance and number of network hops between the client and server, using CDNs, and using the right network protocols.</li>
+<li>Using fast and efficient algorithms: This involves selecting algorithms that are optimized for speed and efficiency, such as hash tables and binary search.</li>
+<li>Using caching: This involves storing frequently accessed data in memory to reduce the time it takes to retrieve data from disk.</li>
+<li>Optimizing hardware and infrastructure: This involves using high-performance hardware, such as solid-state drives (SSDs) and GPUs, and using infrastructure that is designed for low latency, such as data centers with low-latency networking.</li>
+<li>Using asynchronous programming: This involves designing the system to handle multiple requests simultaneously, using techniques like event-driven programming and non-blocking I/O.</li>
+<li>Choosing the right (low level) programming language</li>
+</ul>
+<h3 id="response-time-1">Response Time<a aria-hidden="true" class="anchor-heading icon-link" href="#response-time-1"></a></h3>
+<p><em>Response time</em> is what the client sees: besides the actual time to process the request (the service time), it includes network delays and queueing delays</p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/HZSth7yP1s7aPaPPZRJPm">Scaling</a></li>
+</ul>

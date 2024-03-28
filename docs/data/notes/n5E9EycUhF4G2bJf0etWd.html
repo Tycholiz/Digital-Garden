@@ -1,0 +1,105 @@
+<h1 id="cmds">Cmds<a aria-hidden="true" class="anchor-heading icon-link" href="#cmds"></a></h1>
+<p>All psql commands are just convenience wrappers around underlying SQL statements that are being executed</p>
+<ul>
+<li>ex. <code>\l+</code> executes an sql query on the <code>pg_catalog.pg_database</code> table, joining the <code>pg_catalog.pg_tablespace</code> table</li>
+</ul>
+<h2 id="connecting-to-psql-from-shell">Connecting to psql (from shell)<a aria-hidden="true" class="anchor-heading icon-link" href="#connecting-to-psql-from-shell"></a></h2>
+<p>Either:</p>
+<pre><code>psql -d mydb -h localhost -p 5432 -U kyle
+</code></pre>
+<p>or simply:</p>
+<pre><code>psql -d postgresql://kyle@localhost:5432/mydb
+</code></pre>
+<p>note: <code>@</code> symbol must be entered as <code>%40</code> to properly interpret it.</p>
+<ul>
+<li>ex. if hostname=<code>kyle@db1464.azure.com</code>, I connect like <code>psql -d postgresql://kyle%40db1464.azure.com</code></li>
+</ul>
+<h1 id="cli-psqlpgcli">CLI (psql/pgcli)<a aria-hidden="true" class="anchor-heading icon-link" href="#cli-psqlpgcli"></a></h1>
+<ul>
+<li>
+<p>show help for a command - <code>\h &#x3C;sql command></code></p>
+</li>
+<li>
+<p>connect to db - <code>\c mydb</code></p>
+</li>
+<li>
+<p>show schemas - <code>\dn</code></p>
+</li>
+<li>
+<p>display tables in "public" schema - <code>\dt public.*</code></p>
+</li>
+<li>
+<p>display views in "public" schema - <code>\dv public.*</code></p>
+</li>
+<li>
+<p>display table signature <code>\d &#x3C;TABLENAME></code></p>
+</li>
+<li>
+<p>display types <code>\dT &#x3C;SCHEMA></code></p>
+</li>
+<li>
+<p>display enum values <code> \dT+ &#x3C;TYPE></code></p>
+</li>
+<li>
+<p>display s - <code>\du</code></p>
+</li>
+<li>
+<p>display schema - <code>\dn</code></p>
+</li>
+<li>
+<p>display functions - <code>\df</code></p>
+</li>
+<li>
+<p>display function definition - <code>\ef app_public.register_user</code></p>
+</li>
+<li>
+<p>display extensions - <code>\dx</code></p>
+</li>
+<li>
+<p>read in commands from a sql file- <code>\i</code></p>
+<ul>
+<li>ex. <code>\i migration.sql</code></li>
+<li>this is an alternative to shell-level <code>psql -h localhost -p 5432 -U kyletycholiz -d f1db &#x3C; migration.sql</code></li>
+</ul>
+</li>
+<li>
+<p>set variable in psql - <code>\set DATABASE_OWNER nf_dev</code></p>
+</li>
+<li>
+<p>set variable's value from command line - <code>psql --variable "DATABASE_OWNER=nf_dev"</code></p>
+</li>
+<li>
+<p>list all databases, and show their respective size on disk - <code>\l+</code></p>
+</li>
+<li>
+<p>display info about current connection - <code>\conninfo</code></p>
+<ul>
+<li>current user, database, port etc.</li>
+</ul>
+</li>
+<li>
+<p>cycle command history - <code>&#x3C;C-r></code></p>
+</li>
+</ul>
+<h2 id="named-queries">Named Queries<a aria-hidden="true" class="anchor-heading icon-link" href="#named-queries"></a></h2>
+<p>Create a new named query</p>
+<pre class="language-psql"><code class="language-psql">\ns &#x3C;name> select * from ...
+</code></pre>
+<p>Call named query</p>
+<pre class="language-psql"><code class="language-psql">\n &#x3C;name>
+</code></pre>
+<p>Delete a named query</p>
+<pre class="language-psql"><code class="language-psql">\nd &#x3C;name>
+</code></pre>
+<h3 id="positional-parameters">Positional Parameters<a aria-hidden="true" class="anchor-heading icon-link" href="#positional-parameters"></a></h3>
+<p>Named queries support shell-style parameter substitution. Save your named query with parameters as placeholders (e.g. $1, $2, $3, etc.):</p>
+<pre class="language-psql"><code class="language-psql">\ns user_by_name select * from users where name = '$1'
+</code></pre>
+<p>When you call a named query with parameters, just add the parameters after the query's name. You can put quotes around arguments that include spaces.</p>
+<pre class="language-psql"><code class="language-psql">\n user_by_name "Skelly McDermott"
+</code></pre>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/gW7VqrC7C0BfMZr5QKvYI">Copy</a></li>
+</ol>

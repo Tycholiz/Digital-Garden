@@ -1,0 +1,13 @@
+<h1 id="cook">Cook<a aria-hidden="true" class="anchor-heading icon-link" href="#cook"></a></h1>
+<h4 id="get-component-of-a-gameobj-within-a-script">Get component of a GameObj within a script<a aria-hidden="true" class="anchor-heading icon-link" href="#get-component-of-a-gameobj-within-a-script"></a></h4>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">private</span> <span class="token class-name">Rigidbody</span> playerRb<span class="token punctuation">;</span>
+<span class="token comment">// ...</span>
+<span class="token comment">// can also pass any component, like `Collider`</span>
+<span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    playerRb <span class="token operator">=</span> <span class="token generic-method"><span class="token function">GetComponent</span><span class="token generic class-name"><span class="token punctuation">&#x3C;</span>Rigidbody<span class="token punctuation">></span></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">Update</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// cause player to jump (obvs we need a Spacebar click-handler here)</span>
+    playerRb<span class="token punctuation">.</span><span class="token function">AddForce</span><span class="token punctuation">(</span>Vector3<span class="token punctuation">.</span>up <span class="token operator">*</span> jumpForce<span class="token punctuation">,</span> ForceMode<span class="token punctuation">.</span>Impulse<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>

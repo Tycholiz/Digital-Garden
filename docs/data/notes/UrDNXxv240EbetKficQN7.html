@@ -1,0 +1,14 @@
+<h1 id="while">While<a aria-hidden="true" class="anchor-heading icon-link" href="#while"></a></h1>
+<h3 id="use-whiletrue-and-break">Use <code>while(true)</code> and <code>break</code><a aria-hidden="true" class="anchor-heading icon-link" href="#use-whiletrue-and-break"></a></h3>
+<ul>
+<li>we can make a while loop that will continuously execute code until <code>break</code> is reached.</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token keyword control-flow">while</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword control-flow">try</span> <span class="token punctuation">{</span>
+		<span class="token keyword control-flow">await</span> client<span class="token punctuation">.</span><span class="token method function property-access">query</span><span class="token punctuation">(</span><span class="token string">'select true as "Connection test";'</span><span class="token punctuation">)</span>
+		<span class="token keyword control-flow">break</span> <span class="token comment">//if the promise above resolves, then break will be run and we will exit the while-block </span>
+	<span class="token punctuation">}</span> <span class="token keyword control-flow">catch</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword control-flow">await</span> <span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>

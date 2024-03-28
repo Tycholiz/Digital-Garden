@@ -1,0 +1,42 @@
+<h1 id="dns-resolver">DNS Resolver<a aria-hidden="true" class="anchor-heading icon-link" href="#dns-resolver"></a></h1>
+<p>The DNS resolvers constitute the client half of the system's <a href="/notes/g2jDjW3rfwpjkoQXFUDaY">client-server architecture</a></p>
+<ul>
+<li><a href="/notes/O6qGBZUWwgsnOyTDdvSAK">DNS Nameservers</a> are the server</li>
+</ul>
+<p>Resolvers are often just functions that create name resolution queries and send them across a network to a <a href="/notes/O6qGBZUWwgsnOyTDdvSAK">nameserver</a>. When the response is received, it hands it back to the program that requested it in the first place (e.g. spec: a browser)</p>
+<ul>
+<li>in other words, our computer initiates the resolver to query a nameserver at port 53, with the intention of resolving an IP address  </li>
+</ul>
+<p>The DNS resolver (ie. recursive resolver) is at the beginning of the DNS query (with the authoritative nameserver at the end).</p>
+<ul>
+<li>the resolver receives requests from web browsers, and in turn makes additional requests to the rest of the servers in a final effort to resolve the query. </li>
+<li>a resolver will tell us what the IP is, given a domain name. By default, if a resolver cannot tell us, then that is it. However, the fact that it is recursive means that not only can we query a resolver, but a resolver can make queries itself. Put another way, if it doesn't have the answer we are looking for, it has the capacity to make queries itself. </li>
+<li>After receiving a request for a webpage, the resolver will either respond with cached data (given to it by the nameservers), or will send a request to the <em>root nameserver</em>, followed by a request to a <em>TLD nameserver</em>, and then one last request to an <em>authoritative nameserver</em> (This is called <a href="/notes/9VuipvwFAqnEagcLCxomI">DNS Lookup</a>)
+<ul>
+<li>At each step, there is a possibility that a cached version of the website will be found, and it can immediately be returned to the client, rather than continuing to recurse down the DNS tree.</li>
+</ul>
+</li>
+<li>After receiving the requested IP address (from the authoritative nameserver), the recursive resolver sends a response to the client</li>
+</ul>
+<h2 id="configuration-file">Configuration file<a aria-hidden="true" class="anchor-heading icon-link" href="#configuration-file"></a></h2>
+<p>The resolver is configured in <code>/etc/resolv.conf</code></p>
+<ul>
+<li>run <code>scutil --dns</code> on Mac to see DNS configuration</li>
+</ul>
+<h3 id="directives">Directives<a aria-hidden="true" class="anchor-heading icon-link" href="#directives"></a></h3>
+<h4 id="search"><code>search</code><a aria-hidden="true" class="anchor-heading icon-link" href="#search"></a></h4>
+<p>For example, the directive:</p>
+<pre><code>search corp.hp.com paloalto.hp.com hp.com
+</code></pre>
+<p>instructs the resolver to search the corp.hp.com domain first, then paloalto.hp.com, and then the parent of both domains, hp.com.</p>
+<h4 id="nameserver"><code>nameserver</code><a aria-hidden="true" class="anchor-heading icon-link" href="#nameserver"></a></h4>
+<p>tells the resolver the IP address of a nameserver to query. For example, the line:</p>
+<pre><code>nameserver 15.32.17.2
+</code></pre>
+<p>instructs the resolver to send queries to the nameserver running at the IP address 15.32.17.2 instead of to the local host. This means that on hosts not running nameservers, you can use the nameserver directive to point them at a remote nameserver. Typically, you configure the resolvers on your hosts to query your own nameservers.</p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/O6qGBZUWwgsnOyTDdvSAK">DNS Nameservers</a></li>
+<li><a href="/notes/iwxx526gnnaqe29f8j5lplb">Nslookup</a></li>
+</ul>

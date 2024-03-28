@@ -1,0 +1,79 @@
+<h1 id="flexbox">Flexbox<a aria-hidden="true" class="anchor-heading icon-link" href="#flexbox"></a></h1>
+<p>The 2 main components of a flexbox system are the <code>flex container</code> and the <code>flex items</code></p>
+<ul>
+<li>therefore, some of the CSS properties are to be set on the container, while others are to be set on the items</li>
+</ul>
+<p>When aligning things with flexbox, we must consider the <strong>main axis</strong> and the <strong>cross axis</strong>.</p>
+<ul>
+<li>when using <code>flex-direction: row</code>, the main axis is horizontal, while the cross axis is vertical. This is swapped when we have <code>flex-direction: column</code>.</li>
+</ul>
+<p><img src="/assets/images/2023-08-28-10-19-25.png"></p>
+<ul>
+<li><strong>main axis</strong> – The main axis of a flex container is the primary axis along which flex items are laid out.</li>
+<li><strong>main-start | main-end</strong> – The flex items are placed within the container starting from main-start and going to main-end.</li>
+<li><strong>main size</strong> – A flex item's width or height, whichever is in the main dimension, is the item’s main size. The flex item’s main size property is either <code>width</code> (for <code>fd: row</code>) or <code>height</code> (for <code>fd: column</code>).</li>
+<li><strong>cross axis</strong> – The axis perpendicular to the main axis is called the cross axis.</li>
+<li><strong>cross-start | cross-end</strong> – Flex lines are filled with items and placed into the container starting on the cross-start side of the flex container and going toward the cross-end side.</li>
+<li><strong>cross size</strong> – The width or height of a flex item, whichever is in the cross dimension is the item's cross size. The cross size property is either <code>height</code> (for <code>fd: row</code>) or <code>width</code> (for <code>fd: column</code>).</li>
+</ul>
+<p>note: all examples below assume <code>flex-direction: row</code>. If <code>column</code>, then substitute width for height.</p>
+<h2 id="flex-container-properties">Flex Container Properties<a aria-hidden="true" class="anchor-heading icon-link" href="#flex-container-properties"></a></h2>
+<p>Using explicit margins breaks flexbox's ability to position things nicely, since it doesn't play nicely with the math that it's relying on</p>
+<p>When doing flexbox row, don't use margin left/right, and when doing column, don't use margin top bottom, because it interferes with the math that flex is doing</p>
+<ul>
+<li>try and use justify-content: space-between instead, and set flex: 0 49% for example, which will almost serve as our margin</li>
+</ul>
+<h3 id="gap"><code>gap</code><a aria-hidden="true" class="anchor-heading icon-link" href="#gap"></a></h3>
+<p><code>gap</code> should be used when determining spacing between flex items, since it only affects spacing between the items themselves. Therefore, <code>gap</code> will not add spacing to the side of a flex item that has no other item on that side.</p>
+<ul>
+<li>could be thought of as a minimum gutter, as if the gutter is bigger somehow (because of something like justify-content: space-between;) then the gap will only take effect if that space would end up smaller.</li>
+</ul>
+<h2 id="flex-item-properties">Flex Item Properties<a aria-hidden="true" class="anchor-heading icon-link" href="#flex-item-properties"></a></h2>
+<h3 id="flex-grow"><code>flex-grow</code><a aria-hidden="true" class="anchor-heading icon-link" href="#flex-grow"></a></h3>
+<ul>
+<li>when there is available space after all boxes have taken up their room, <code>flex-grow</code> will allow the item to grow proportionally to the other item's <code>flex-grow</code> property.
+<ul>
+<li>therefore, all items having <code>flex-grow: 1</code> is the same as all items having <code>flex-grow: 100</code>. Think of it as a proportional growth rate. 
+<ul>
+<li>ex.an item with <code>flex-grow: 3</code> will grow 3 times faster than an item with <code>flex-grow: 1</code> </li>
+</ul>
+</li>
+</ul>
+</li>
+<li>a value of <code>0</code> means the item won't be resized during the size calculation to
+accommodate the flex container's full main axis size</li>
+<li>Imagine we use different flex-basis for each flex item. Even if we have <code>flex-grow: 1</code> on each item, they will still grow at a different rate, because of the basis at which they started.</li>
+</ul>
+<h4 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h4>
+<p><a href="https://css-tricks.com/flex-grow-is-weird/">flex grow article</a></p>
+<h3 id="flex-shrink"><code>flex-shrink</code><a aria-hidden="true" class="anchor-heading icon-link" href="#flex-shrink"></a></h3>
+<ul>
+<li>The rate at which a flex item will shrink when the page is resized to a size smaller than the flex-containers most "comfortable" size.</li>
+</ul>
+<h3 id="flex-basis"><code>flex-basis</code><a aria-hidden="true" class="anchor-heading icon-link" href="#flex-basis"></a></h3>
+<p><code>flex-basis</code> defines the default size of a flex item before any available space is distributed among the flex items (which is determined according to flex-shrink and flex-grow). </p>
+<ul>
+<li>the value can either be a length (e.g. <code>20%</code>, <code>10px</code>) or a keyword (<code>auto</code> or <code>content</code>)</li>
+<li><code>flex-basis</code> will override any <code>width</code> property, unless left as <code>auto</code></li>
+<li><code>flex-basis</code> still obeys <code>min/max-width</code> settings</li>
+<li>In a sense, it is similar to <code>min-width</code> (although <code>flex-shrink</code> determines how the flex item will behave when the size of the whole flexbox shrinks below initial size)
+<ul>
+<li>If we were to use <code>min-width</code> and shrink the browser size, the browser would make us scroll horizontally to see all of the content.</li>
+</ul>
+</li>
+</ul>
+<h4 id="keywords">Keywords<a aria-hidden="true" class="anchor-heading icon-link" href="#keywords"></a></h4>
+<ul>
+<li><code>auto</code> (default): "look at my <code>width</code> or <code>height</code> property. If I have none, use the content of the item to determine size"</li>
+<li><code>content</code>: "size it based on the item's content"
+<ul>
+<li>may have some browser <a href="https://caniuse.com/?search=flex-basis%3A%20content">support issues</a></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="flex-shorthand">Flex Shorthand<a aria-hidden="true" class="anchor-heading icon-link" href="#flex-shorthand"></a></h2>
+<ul>
+<li>by default, it is <code>flex: 0 1 auto</code></li>
+<li><code>flex: 1 1 0</code> - ==flex-grow== ==flex-shrink== ==flex-basis==</li>
+</ul>

@@ -1,0 +1,32 @@
+<h1 id="authoritative-nameserver">Authoritative Nameserver<a aria-hidden="true" class="anchor-heading icon-link" href="#authoritative-nameserver"></a></h1>
+<p>The authoritative nameserver is the server that actually holds and is responsible for <a href="/notes/TALpAZmsruqyoUkJzegVv">resource records</a></p>
+<ul>
+<li>This could be considered the <a href="/notes/O6qGBZUWwgsnOyTDdvSAK">nameserver</a> of the <a href="/notes/nu4jr5d094zri5ni0kw247w">domain</a>.</li>
+</ul>
+<p>When a DNS server queries other DNS servers, it’s making an "upstream" query. Queries for a domain can go "upstream" until they lead back to domain’s authority, or "authoritative name server."</p>
+<ul>
+<li>
+<p>An authoritative name server is where administrators manage server names and IP addresses for their domains. Whenever a DNS administrator wants to add, change or delete a server name or an IP address, they make a change on their authoritative DNS server (sometimes called a "master DNS server").</p>
+</li>
+<li>
+<p>Holds information specific to the actual domain name it serves (eg. google.com), and will send the IP address back to the recursive resolver.</p>
+<ul>
+<li>The IP address it sends is found in the DNS A record.</li>
+</ul>
+</li>
+<li>
+<p>Each domain has its own authoritative NS</p>
+</li>
+<li>
+<p>spec: this nameserver holds the records that we see on our domain registrar dashboard for our domain. </p>
+</li>
+</ul>
+<p>a nameserver can be authoritative for more than one zone</p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/O6qGBZUWwgsnOyTDdvSAK">DNS Nameservers</a></li>
+<li><a href="/notes/TALpAZmsruqyoUkJzegVv">DNS Records</a></li>
+<li><a href="/notes/rKwvAx3SP99In467imzlg">DNS Zone</a></li>
+<li><a href="/notes/ao3YNN6kJWCtLwkju6kUP">NS Record</a></li>
+</ul>

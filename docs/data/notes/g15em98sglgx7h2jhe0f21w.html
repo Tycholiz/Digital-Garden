@@ -1,0 +1,71 @@
+<h1 id="render-prop">Render Prop<a aria-hidden="true" class="anchor-heading icon-link" href="#render-prop"></a></h1>
+<p>A render prop is a prop of the signature: <code>(data) => JSX</code> (ie. a function that returns JSX)</p>
+<p>Render props allow us to communicate with any rendered component without having to couple implementation details.</p>
+<ul>
+<li>we do this by passing data to the render prop as arguments</li>
+</ul>
+<p>With render props, we enable the child component to communicate with its parent before actually rendering</p>
+<p>A component with a render prop takes a function that returns a React element and calls it instead of implementing its own render logic.</p>
+<pre class="language-tsx"><code class="language-tsx"><span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span><span class="token class-name">DataProvider</span></span> <span class="token attr-name">render</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span>data <span class="token arrow operator">=></span> <span class="token punctuation">(</span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span>h1</span><span class="token punctuation">></span></span><span class="token plain-text">Hello </span><span class="token punctuation">{</span>data<span class="token punctuation">.</span><span class="token property-access">target</span><span class="token punctuation">}</span><span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;/</span>h1</span><span class="token punctuation">></span></span>
+<span class="token punctuation">)</span><span class="token punctuation">}</span></span><span class="token punctuation">/></span></span>
+</code></pre>
+<h2 id="enhancement">Enhancement<a aria-hidden="true" class="anchor-heading icon-link" href="#enhancement"></a></h2>
+<p>The traditional way of enhancing components is to have a component with the enhancement logic, and have it wrap another component, thereby giving that child component access to the enhancements. Render props flips this model on its head, and instead we have the component that needs access to the enhancements render the component providing those enhancements:</p>
+<p>For example, a common implementation is to provide a component with the ability to be dismissed. A naive implementation would be to have a <code>Dismiss</code> component which adds some dismissal logic, then renders the children it was passed:</p>
+<pre class="language-tsx"><code class="language-tsx"><span class="token keyword">const</span> <span class="token function-variable function"><span class="token maybe-class-name">Dismiss</span></span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">{</span> children <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> <span class="token function-variable function">dismiss</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+    <span class="token comment">// ...code to implement dismissal animations etc</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword control-flow">return</span> <span class="token punctuation">(</span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span>div</span><span class="token punctuation">></span></span><span class="token plain-text">
+      </span><span class="token punctuation">{</span>children<span class="token punctuation">}</span><span class="token plain-text">
+      </span><span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span>button</span> <span class="token attr-name">onClick</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span>dismiss<span class="token punctuation">}</span></span><span class="token punctuation">></span></span><span class="token plain-text">dismiss</span><span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;/</span>button</span><span class="token punctuation">></span></span><span class="token plain-text">
+    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;/</span>div</span><span class="token punctuation">></span></span>
+  <span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">const</span> <span class="token function-variable function"><span class="token maybe-class-name">Notification</span></span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+  <span class="token keyword control-flow">return</span> <span class="token punctuation">(</span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span><span class="token class-name">Dismiss</span></span><span class="token punctuation">></span></span><span class="token plain-text">
+      </span><span class="token punctuation">{</span> <span class="token comment">/* ...code */</span> <span class="token punctuation">}</span><span class="token plain-text">
+</span></code></pre>
+<p>The problem with the above implementation is that:</p>
+<ul>
+<li>the <code>dismiss</code> function can only be called from the <code>Dismiss</code> components</li>
+<li>we can't pass data to <code>children</code></li>
+</ul>
+<pre class="language-tsx"><code class="language-tsx"><span class="token keyword">const</span> <span class="token function-variable function"><span class="token maybe-class-name">Dismiss</span></span> <span class="token operator">=</span> <span class="token punctuation">(</span>props<span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> <span class="token function-variable function">dismiss</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+    <span class="token comment">// dismissal animations etc.</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword control-flow">return</span> props<span class="token punctuation">.</span><span class="token method function property-access">render</span><span class="token punctuation">(</span>dismiss<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">const</span> <span class="token function-variable function"><span class="token maybe-class-name">Notification</span></span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+  <span class="token keyword control-flow">return</span> <span class="token punctuation">(</span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span><span class="token class-name">Dismiss</span></span> <span class="token attr-name">render</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span>
+      dismiss <span class="token arrow operator">=></span> <span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span><span class="token class-name">Content</span></span> <span class="token attr-name">dismiss</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span>dismiss<span class="token punctuation">}</span></span> <span class="token punctuation">/></span></span>
+    <span class="token punctuation">}</span></span> <span class="token punctuation">/></span></span>
+  <span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>With this render prop implementation, we are no longer hard-coding the rendered JSX in the <code>Dismiss</code> component. Instead, now it is accepting the JSX to be rendered via props, and can render by simply calling <code>props.render()</code>.</p>
+<p>This implementation gives us flexibility to pass data to the render prop function, meaning <code>Dismiss</code> can communicate with the component being rendered, and vice versa.</p>
+<h3 id="implementing-higher-order-components">Implementing Higher-Order Components<a aria-hidden="true" class="anchor-heading icon-link" href="#implementing-higher-order-components"></a></h3>
+<p>render props also allow us to implement HOCs with minimal effort.</p>
+<pre class="language-jsx"><code class="language-jsx"><span class="token keyword">const</span> <span class="token function-variable function">withDismiss</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter"><span class="token maybe-class-name">Component</span></span><span class="token punctuation">)</span> <span class="token arrow operator">=></span>
+  <span class="token punctuation">(</span><span class="token parameter">props</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">(</span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span><span class="token class-name">Dismiss</span></span><span class="token punctuation">></span></span><span class="token plain-text">
+      </span><span class="token punctuation">{</span><span class="token punctuation">(</span><span class="token parameter">dismiss</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">(</span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span><span class="token class-name">Component</span></span> <span class="token attr-name">dismiss</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span>dismiss<span class="token punctuation">}</span></span> <span class="token spread"><span class="token punctuation">{</span><span class="token spread operator">...</span>props<span class="token punctuation">}</span></span> <span class="token punctuation">/></span></span>
+      <span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token plain-text">
+    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;/</span><span class="token class-name">Dismiss</span></span><span class="token punctuation">></span></span>
+  <span class="token punctuation">)</span>
+</code></pre>
+<h2 id="e-resources">E Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#e-resources"></a></h2>
+<ul>
+<li><a href="https://blog.logrocket.com/react-reference-guide-render-props/">https://blog.logrocket.com/react-reference-guide-render-props/</a></li>
+</ul>

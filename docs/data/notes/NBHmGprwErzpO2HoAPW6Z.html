@@ -1,0 +1,56 @@
+<h1 id="cname">CNAME<a aria-hidden="true" class="anchor-heading icon-link" href="#cname"></a></h1>
+<ul>
+<li>
+<p>Canonical name record
+A CNAME record maps an alias to its canonical (ie. proper) name.</p>
+</li>
+<li>
+<p>When a nameserver looks up a name and finds a CNAME record, it replaces the name with the canonical name and looks up the new name. </p>
+</li>
+<li>
+<p>ex. when the nameserver looks up wh.movie.edu, it finds a CNAME record pointing to wormhole.movie.edu. It then continues the lookup, and tries wormhole.movie.edu and returns both addresses.</p>
+</li>
+<li>
+<p>points to a domain, not an IP address</p>
+</li>
+<li>
+<p>CNAME records allow a machine to be known by more than one hostname</p>
+</li>
+<li>
+<p>map an alias name to a true (canonical) domain name</p>
+</li>
+<li>
+<p>typically used to map a subdomain, like <code>www.stuff.com</code> to <code>stuff.com</code>, or <code>stuff.com</code> to <code>blog.stuff.com</code>)</p>
+<ul>
+<li>This is good, because if the host IP address changes, then we only need to change the A record. The CNAME record depends on the domain, not the IP address it's associated with.</li>
+</ul>
+</li>
+<li>
+<p>anal: Imagine a scavenger hunt where each clue points to another clue, and the final clue points to the treasure. A domain with a CNAME record is like a clue that can point you to another clue (another domain with a CNAME record) or to the treasure (a domain with an A record).</p>
+</li>
+<li>
+<p>ex. imagine we give <code>blog.tycholiz.com</code> a CNAME with value <code>tycholiz.com</code>. This means that any time a DNS server hits the DNS records for <code>blog.tycholiz.com</code>, it actually triggers another DNS lookup to <code>tycholiz.com</code>, since we specified that as the CNAME</p>
+<ul>
+<li>in this example, the canonical name (true name) is <code>tycholiz.com</code></li>
+<li>from this example, you can see how CNAMEs are kind of like relays, since they don't map to an IP at all, but point to a domain name, which maps to an IP. In other words, CNAME records cause A records to resolve domain names. </li>
+</ul>
+</li>
+<li>
+<p>The CNAME record only points the client to the same IP address as the root domain</p>
+<ul>
+<li>Therefore, the CNAME record does not have to resolve to the same website as the domain it points to.</li>
+<li>ex. in the case where we hit <code>blog.example.com</code>, the DNS will return us the same IP as if we hit <code>example.com</code>.  
+<ul>
+<li>when the client actually connects to that IP address, the web server will look at the URL, see that it is blog.example.com, and deliver the blog page rather than the home page.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Pointing a CNAME to another CNAME is possible, but there is no point</p>
+</li>
+</ul>
+<hr>
+<ul>
+<li><a href="https://blog.cloudflare.com/introducing-cname-flattening-rfc-compliant-cnames-at-a-domains-root/">A little background on CName</a></li>
+</ul>

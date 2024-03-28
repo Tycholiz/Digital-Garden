@@ -1,0 +1,24 @@
+<h1 id="mysql">Mysql<a aria-hidden="true" class="anchor-heading icon-link" href="#mysql"></a></h1>
+<p>MySQL is not case sensitive</p>
+<h3 id="users">Users<a aria-hidden="true" class="anchor-heading icon-link" href="#users"></a></h3>
+<ul>
+<li>list all users - <code>SELECT User FROM mysql.user;</code></li>
+<li>connect as user "monica" - <code>mysql -u monica -p</code></li>
+<li>change user password - <code>ALTER USER 'userName'@'localhost' IDENTIFIED BY '&#x3C;my-password>';</code></li>
+</ul>
+<h3 id="databases">Databases<a aria-hidden="true" class="anchor-heading icon-link" href="#databases"></a></h3>
+<ul>
+<li>change database - <code>use monica;</code></li>
+<li>see open transactions - <code> SELECT * FROM information_schema.innodb_trx;</code></li>
+</ul>
+<h3 id="tables">Tables<a aria-hidden="true" class="anchor-heading icon-link" href="#tables"></a></h3>
+<ul>
+<li>show tables - <code>show tables;</code></li>
+<li>drop table - <code>drop table &#x3C;table-name></code></li>
+<li>show columns - <code>show columns from &#x3C;table-name></code></li>
+</ul>
+<h3 id="dump">Dump<a aria-hidden="true" class="anchor-heading icon-link" href="#dump"></a></h3>
+<ul>
+<li>Backup: <code>mysqldump -h &#x3C;hostname> -u &#x3C;user> -p &#x3C;databasename> > dump.sql</code></li>
+<li>Restore: <code>mysql -u root -h 127.0.0.1 -p my-database-name &#x3C; dump.sql</code></li>
+</ul>

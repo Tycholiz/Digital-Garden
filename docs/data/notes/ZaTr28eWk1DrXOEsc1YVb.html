@@ -1,0 +1,41 @@
+<h1 id="operating-system">Operating System<a aria-hidden="true" class="anchor-heading icon-link" href="#operating-system"></a></h1>
+<p>All user software needs to go through the operating system in order to use any of the hardware, whether it be as simple as a mouse or keyboard or as complex as an Internet component.</p>
+<h3 id="parts-of-the-os">Parts of the OS<a aria-hidden="true" class="anchor-heading icon-link" href="#parts-of-the-os"></a></h3>
+<p>The <a href="/notes/rfgplq6ia741ki4dn6gtabo">kernel</a> is the brain of the OS, but other parts provided by the OS are:</p>
+<ul>
+<li>User interface</li>
+<li>security</li>
+<li>networking ability</li>
+</ul>
+<h3 id="user-space-userland-and-kernel-space">User space (userland) and Kernel space<a aria-hidden="true" class="anchor-heading icon-link" href="#user-space-userland-and-kernel-space"></a></h3>
+<p>To mediate access to the same resources, the <a href="/notes/rfgplq6ia741ki4dn6gtabo">kernel</a> has special rights, reflected in the distinction of kernel space from user space.</p>
+<h4 id="kernel-space">Kernel space<a aria-hidden="true" class="anchor-heading icon-link" href="#kernel-space"></a></h4>
+<p>Kernel space is strictly reserved for running a privileged operating system kernel, kernel extensions, and most device drivers. Anything running with this privilege is fully trusted and has full control over the OS.</p>
+<p>Kernel space can be accessed by user module only through the use of system calls.</p>
+<h4 id="user-space">User space<a aria-hidden="true" class="anchor-heading icon-link" href="#user-space"></a></h4>
+<p>User space is the memory area where application software and some drivers execute. Processes running here are subject to the Principle of Least Privilege.</p>
+<ul>
+<li><em>userland</em> refers to all code that runs outside the operating system's kernel. These are programs and libraries that the operating system uses to interact with the kernel.</li>
+<li>ex. bash, vim, VSCode, WoW etc.</li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/rfgplq6ia741ki4dn6gtabo">Kernel</a></li>
+<li><a href="/notes/h4AAeyVt574EVXO3sy2X1">Process</a></li>
+<li><a href="/notes/9bqnjHI91quwXUuAu3GkR">Scheduling</a></li>
+<li><a href="/notes/LTtn2x9aVBeLPMsiR4H8j">Thread</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/93de42ca-53ea-460a-baa7-b9ec5c47cb1e">Linux</a></li>
+<li><a href="/notes/W5etsXYnFDHBWHEHSZKjp">Concurrency</a></li>
+<li><a href="/notes/7iLURlousehIzpOtpQ6eX">GPU</a></li>
+<li><a href="/notes/edXPi2m3nRh5ogw2LkZdY">MacOS</a></li>
+<li><a href="/notes/hJrvVw03nGGkjh0doYT4f">Osi Model</a></li>
+<li><a href="/notes/rfgplq6ia741ki4dn6gtabo">Kernel</a></li>
+<li><a href="/notes/LTtn2x9aVBeLPMsiR4H8j">Thread</a></li>
+<li><a href="/notes/g7huvr8z8rbvdpqm24z3kag">Device Driver</a></li>
+<li><a href="/notes/jwi79w2rbvd8pped6yf3im0">Streams</a></li>
+</ul>

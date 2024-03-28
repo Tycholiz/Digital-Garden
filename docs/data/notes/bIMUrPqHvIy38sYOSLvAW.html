@@ -1,0 +1,8 @@
+<h1 id="delete">Delete<a aria-hidden="true" class="anchor-heading icon-link" href="#delete"></a></h1>
+<h4 id="delete-using-join">Delete using join<a aria-hidden="true" class="anchor-heading icon-link" href="#delete-using-join"></a></h4>
+<p><code>DELETE JOIN</code> isn't supported, but we can imitate the functionality:</p>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">DELETE</span> <span class="token keyword">FROM</span> table_name1
+<span class="token keyword">USING</span> table_expression <span class="token comment">-- the table(s) we are "joining"</span>
+<span class="token keyword">WHERE</span> condition
+<span class="token keyword">RETURNING</span> returning_columns<span class="token punctuation">;</span>
+</code></pre>

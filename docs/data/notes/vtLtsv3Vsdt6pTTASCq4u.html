@@ -1,0 +1,82 @@
+<h1 id="streaming-architecture">Streaming Architecture<a aria-hidden="true" class="anchor-heading icon-link" href="#streaming-architecture"></a></h1>
+<p>A streaming architecture is a defined set of technologies that work together to handle <a href="/notes/zyhhxi0nal0pii1cxtk7uxd">stream processing</a>, which is the practice of taking action on a series of data at the time the data is created.</p>
+<p>While streaming is an architectural-level concept, there are multiple ways it could be implemented. Most commonly, we can use <a href="/notes/NpY4iv9TwpGJODbVesQYe">pubsub</a>, but we can also use source/sink.</p>
+<ul>
+<li>common sources and sinks are <a href="/notes/WQoMTf6VXBaxCgksXAVsj">Kafka</a>, Hadoop</li>
+</ul>
+<p>Whenever you build a streaming based architecture, you have to account for anti-entropy in your streams.</p>
+<ul>
+<li>You have to consider that the sources of data can be unreliable, causing the stream to vary in bandwidth. You have to account for outages in any of the services you're connected to.
+<ul>
+<li>This is usually a problem in cases where we are counting on a fully up-to-date state of the world. In cases like the Facebook News feed, we don't really have this functional requirement.</li>
+</ul>
+</li>
+</ul>
+<h2 id="consuming-a-stream">Consuming a stream<a aria-hidden="true" class="anchor-heading icon-link" href="#consuming-a-stream"></a></h2>
+<p>Broadly, there are 3 things we can do with the events of a stream once we have it:</p>
+<ol>
+<li>You can take the data in the events and write it to a database, cache, search index, or similar storage system, from where it can then be queried by other clients.</li>
+</ol>
+<ul>
+<li>this is a good way of keeping a database in sync with changes happening in other parts of the system—especially if the stream consumer is the only client writing to the database.</li>
+</ul>
+<ol start="2">
+<li>You can push the events to users in some way</li>
+</ol>
+<ul>
+<li>ex. by sending email alerts or push notifications, or by streaming the events to a real-time dashboard where they are visualized. 
+<ul>
+<li>In this case, a human is the ultimate consumer of the stream.</li>
+</ul>
+</li>
+</ul>
+<ol start="3">
+<li>You can process one or more input streams to produce one or more output streams. Streams may go through a pipeline consisting of several such processing stages before they eventually end up at an output (option 1 or 2).</li>
+</ol>
+<h2 id="four-key-building-blocks">four key building blocks:<a aria-hidden="true" class="anchor-heading icon-link" href="#four-key-building-blocks"></a></h2>
+<h3 id="the-message-broker--stream-processor">The Message Broker / Stream Processor<a aria-hidden="true" class="anchor-heading icon-link" href="#the-message-broker--stream-processor"></a></h3>
+<p>This is the element that takes data from a source, called a producer, translates it into a standard message format, and streams it on an ongoing basis. Other components can then listen in and consume the messages passed on by the broker.</p>
+<h3 id="batch-and-real-time-etl-tools">Batch and Real-time ETL tools<a aria-hidden="true" class="anchor-heading icon-link" href="#batch-and-real-time-etl-tools"></a></h3>
+<p>Data streams from one or more message brokers need to be aggregated, transformed and structured before data can be analyzed with SQL-based analytics tools</p>
+<h3 id="data-analytics--serverless-query-engine">Data Analytics / Serverless Query Engine<a aria-hidden="true" class="anchor-heading icon-link" href="#data-analytics--serverless-query-engine"></a></h3>
+<p>After streaming data is prepared for consumption by the stream processor, it must be analyzed to provide value.</p>
+<h2 id="dsms-data-stream-management-system">DSMS (Data Stream Management System)<a aria-hidden="true" class="anchor-heading icon-link" href="#dsms-data-stream-management-system"></a></h2>
+<p>While traditional databases have <a href="/notes/T8TbspD4PDNyJI9oRNlmL">DBMSs</a>, streaming architectures use a DSMS (data stream management system). </p>
+<p>While a DBMS holds static data, a DSMS holds dynamic data, the true size of which cannot be known (since it is always changing)</p>
+<p>A DBMS also offers a flexible query processing so that the information needed can be expressed using queries. a DSMS executes a continuous query that is not only performed once, but is permanently installed (and therefore continuously executed).</p>
+<ul>
+<li>Unlike queries executed in a traditional DBMS, which return a result and exit, queries executed in a DSMS do not exit, generating results continuously as new data become available.</li>
+</ul>
+<p>While data in a DBMS is accessed randomly (ie. random access), data in a DSMS is accessed sequentially</p>
+<p>One of the biggest challenges for a DSMS is to handle potentially infinite data streams using a fixed amount of memory and no random access to the data. </p>
+<ul>
+<li>there are 2 broad ways to limit the amount of data that needs to be processed at any given time (ie. processing step)
+<ol>
+<li>Synopses - Take the raw data and compress it. This “compression” may be through sampling (ie. taking random data points to represent the whole picture). It may also be through calculating a running average of the values that come through the stream, since to calculate an average we only need the total members, along with the current average.</li>
+</ol>
+<ul>
+<li>naturally, this doesn’t give us accurate results. </li>
+</ul>
+<ol start="2">
+<li>Window - only look at a portion of the data at a given time. This approach is motivated by the idea that only the most recent data are relevant. Therefore, a window continuously cuts out a part of the data stream, e.g. the last ten data stream elements, and only considers these elements during the processing. </li>
+</ol>
+<ul>
+<li>there are different types of windows, such as sliding windows (similar to FIFO), and tumbling windows. Windows can also be element-based, such as considering only the last 10 elements, or time-based, such as considering only the most recent 10 seconds of data.</li>
+</ul>
+</li>
+</ul>
+<p>Most query languages for a DSMS are based on SQL, but are not standardized, and thus vary from implementation to implementation.</p>
+<hr>
+<h1 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h1>
+<ul>
+<li><a href="https://hazelcast.com/glossary/kappa-architecture/">Kappa Architecture: Arch for processing streaming data</a>
+<ul>
+<li>in use by Twitter</li>
+</ul>
+</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/pei7iv8dyljvkkc7g1m3zoj">Reactive</a></li>
+</ul>

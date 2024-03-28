@@ -1,0 +1,33 @@
+<h1 id="redux-observable">redux-observable<a aria-hidden="true" class="anchor-heading icon-link" href="#redux-observable"></a></h1>
+<p><code>redux-observable</code> is a redux middlware allowing us to <code>map</code> and <code>filter</code> an <code>action$</code> (ie. an action as an observable) with RxJS operators.</p>
+<ul>
+<li>While javascript <code>map</code> and <code>reduce</code> allows us to transform arrays, these versions allow us to transform <em>streams of actions</em></li>
+</ul>
+<h2 id="epic">Epic<a aria-hidden="true" class="anchor-heading icon-link" href="#epic"></a></h2>
+<ul>
+<li><strong><em>def</em></strong> - a function that takes in a stream of actions, and returns a modified stream of actions.
+<ul>
+<li>receive an observable as input</li>
+</ul>
+</li>
+<li>epics can be thought of as a description of what additional actions redux-observable should dispatch</li>
+<li>epics are analogous to sagas from redux-saga</li>
+</ul>
+<p>example:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token function-variable function">pingEpic</span> <span class="token operator">=</span> <span class="token parameter">action$</span> <span class="token arrow operator">=></span> action$<span class="token punctuation">.</span><span class="token method function property-access">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">ofType</span><span class="token punctuation">(</span><span class="token string">'PING'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token comment">//equivalent to filter(action => action.type === 'PING')</span>
+  <span class="token function">mapTo</span><span class="token punctuation">(</span><span class="token punctuation">{</span> <span class="token literal-property property">type</span><span class="token operator">:</span> <span class="token string">'PONG'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// later...</span>
+<span class="token function">dispatch</span><span class="token punctuation">(</span><span class="token punctuation">{</span> <span class="token literal-property property">type</span><span class="token operator">:</span> <span class="token string">'PING'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<ul>
+<li>pingEpic will listen for actions of type PING and map them to a new action, PONG. This example is functionally equivalent to doing this:</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token function">dispatch</span><span class="token punctuation">(</span><span class="token punctuation">{</span> <span class="token literal-property property">type</span><span class="token operator">:</span> <span class="token string">'PING'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">dispatch</span><span class="token punctuation">(</span><span class="token punctuation">{</span> <span class="token literal-property property">type</span><span class="token operator">:</span> <span class="token string">'PONG'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<ul>
+<li>Epics run alongside the normal Redux dispatch channel, after the reducers have already received them. When you map an action to another one, you are not preventing the original action from reaching the reducers; that action has already been through them</li>
+</ul>

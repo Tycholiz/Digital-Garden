@@ -1,0 +1,33 @@
+<h1 id="nextjs">Nextjs<a aria-hidden="true" class="anchor-heading icon-link" href="#nextjs"></a></h1>
+<p>create pre-rendered react websites, offered from SSR</p>
+<p>jsx is rendered already into html on the server, and is sent to the client to be displayed</p>
+<ul>
+<li>vanilla-react will do everything at runtime.</li>
+</ul>
+<p>helps with SEO</p>
+<p>next takes care of routing for us</p>
+<ul>
+<li>we define new pages in the <code>pages/</code> directory, and next picks up on them automatically, giving us the url out of the box.
+<ul>
+<li>next defines a component <code>&#x3C;Link /></code> we can use to handle routes</li>
+</ul>
+</li>
+</ul>
+<p>next is smart and will not re-render the same content, if it has rendered it already</p>
+<p>If we had a function in a Next.js component that referred to the <code>window</code> object, we would get errors. This is because that code is being run on the server, which of course has no concept of the browser's global variables. However, if we were to use <code>window</code> in the <code>useEffect</code> call, we would indeed get access to the <code>window</code> object. This shows that <code>useEffect</code> is still done client side, even though functions are understood server-side</p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/D1mw86FYbz1LlDUZKYPDW">Cook</a></li>
+<li><a href="/notes/qhgqCVDefplGuxkiNiaiM">Methods</a></li>
+<li><a href="/notes/95IRPMCDLmCSjZwOQRyDH">Page</a></li>
+<li><a href="/notes/O5qwHXOcqhlWnJyKG23s8">Prerendering</a></li>
+<li><a href="/notes/hI0nKFaSZOQYTMGombx9P">Rehydration</a></li>
+<li><a href="/notes/9Vt9Mc6TMI4j4q3SQhyxw">Styled Components in Nextjs</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/qC5GxCZBmNb4Ip6c0kU8x">Jekyll</a></li>
+<li><a href="/notes/Bqpifx2HX3vjLhX9yvhTV">Architecture</a></li>
+</ul>

@@ -1,0 +1,40 @@
+<h1 id="operators">Operators<a aria-hidden="true" class="anchor-heading icon-link" href="#operators"></a></h1>
+<p>RxJS operators are inspired by array methods (map, filter, reduce, every, etc).</p>
+<p>Operators are pure functions that enable a functional programming style of dealing with collections with operations</p>
+<p>Operators are the bread and butter of RxJS. They are what allow us to take complex async code and easily compose it in a declarative manner.</p>
+<p>There are 2 types of operator:</p>
+<ol>
+<li>pipeable operators</li>
+<li>creation operators</li>
+</ol>
+<h2 id="pipeable-operators">Pipeable Operators<a aria-hidden="true" class="anchor-heading icon-link" href="#pipeable-operators"></a></h2>
+<p>operators that can be piped to observables using the <code>.pipe(operator)</code> syntax.</p>
+<ul>
+<li>ex. <code>filter</code>, <code>mergeMap</code>.</li>
+<li>these operators return a new Observable, whose subscription logic is based on the first Observable.</li>
+<li>since pipeable operators are just functions, we could technically just use them like ordinary functions: <code>op()(obs)</code>, but since normally we have multiple operators combined together, they would very quickly become unreadable. This is the purpose of <code>pipe()</code>.
+<ul>
+<li>compare <code>op4()(op3()(op2()(op1()(obs))))</code> to <code>obs.pipe(op1(), op2(), op3(), op4())</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="creation-operators">Creation Operators<a aria-hidden="true" class="anchor-heading icon-link" href="#creation-operators"></a></h2>
+<p>operators that can be called as standalone functions to create a new Observable.</p>
+<ul>
+<li>ex. <code>of(1, 2, 3)</code> creates an observable that will emit 1, 2 and 3, one right after another.</li>
+</ul>
+<p>Their purpose is to create an Observable with some common predefined behavior or by joining other Observables.</p>
+<ul>
+<li>ex. the <code>interval</code> function takes a number and produces an Observable.</li>
+</ul>
+<p><a href="https://rxjs.dev/guide/operators#creation-operators-list">creation operator list</a></p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/h1af8tson44dl8ke4vgz34s">API</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/h1af8tson44dl8ke4vgz34s">API</a></li>
+</ul>

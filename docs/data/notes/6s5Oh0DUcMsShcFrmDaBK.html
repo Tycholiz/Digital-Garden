@@ -1,0 +1,298 @@
+<h1 id="jwt">JWT<a aria-hidden="true" class="anchor-heading icon-link" href="#jwt"></a></h1>
+<h2 id="what-is-it">What is it?<a aria-hidden="true" class="anchor-heading icon-link" href="#what-is-it"></a></h2>
+<p>A JWT is simply a JSON payload containing a particular <a href="/notes/1VJ1TOJSxesXFEIXjtamD">claim</a> (typically about the permission a user has)</p>
+<ul>
+<li>The key property of JWTs is that in order to confirm if they are valid we only need to look at the token itself (we don't have to contact a third-party service or keep it in-memory between requests).</li>
+</ul>
+<p>When used as an authentication token, a JWT is a security token format that is used for exchanging authentication and authorization data between parties</p>
+<p>The most common implementations of JWT that we will see are as <a href="/notes/RXSECsORRrl4fC8oCEtsk">access tokens</a> and <a href="/notes/Pp08kttb1g4TIC3R5Lt06">refresh tokens</a></p>
+<p>The JWT should include the roles of the user, so that the backend knows what that user can do solely from the JWT itself.</p>
+<p>a JWT is not encrypted. So any information that we put in the token is still readable to anyone who intercepts the token.</p>
+<ul>
+<li>therefore, we should never put anything in the JWT that a bad actor could leverage directly.</li>
+</ul>
+<p>Resource servers that verify the signature of JWTs are performing <a href="/notes/facc2b01-755a-409f-99f6-57bef2d1501f#authorization-vs-authentication">Authorization</a> (not Authentication), since identity is not verified; only access rights.</p>
+<p>a JWT is actually Base64Url, not <a href="/notes/YYt62mSW964cwb5nP0hva">Base64</a></p>
+<ul>
+<li>this is virtually the same, except a couple characters are different so that it can exist as a URL param.
+<ul>
+<li>ex. <code>=</code> is displayed as <code>%3D</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="flow">Flow<a aria-hidden="true" class="anchor-heading icon-link" href="#flow"></a></h3>
+<ol>
+<li>User sends credentials to auth service. </li>
+<li>If the credentials are valid, the authentication service generates a JWT with the user's identity and any necessary claims (e.g., user roles or permissions) and signs it with a secret key known only to the auth service.</li>
+<li>The auth service returns the JWT to the client</li>
+<li>The client includes the JWT in subsequent requests for resources (e.g. to invoice service)</li>
+<li>The invoice service extracts the JWT from the request and verifies the signature of the JWT using the secret key shared from the auth service.</li>
+<li>If the signature is valid, the invoice service decodes the JWT to extract the user's identity and any relevant claims.</li>
+<li>The invoice service checks to see if the claim offers sufficient permissions to access the resource. If it does, then it accesses it and returns it to the client.</li>
+</ol>
+<h3 id="construction">Construction<a aria-hidden="true" class="anchor-heading icon-link" href="#construction"></a></h3>
+<p>A JWT is made of 3 parts: the Header, the Payload and the Signature</p>
+<h4 id="payload-claim">Payload (claim)<a aria-hidden="true" class="anchor-heading icon-link" href="#payload-claim"></a></h4>
+<p></p><p></p><div class="portal-container">
+<div class="portal-head">
+<div class="portal-backlink">
+<div class="portal-title">From <span class="portal-text-title">JWT Claim</span></div>
+<a href="/notes/1VJ1TOJSxesXFEIXjtamD" class="portal-arrow">Go to text <span class="right-arrow">→</span></a>
+</div>
+</div>
+<div id="portal-parent-anchor" class="portal-parent" markdown="1">
+<div class="portal-parent-fader-top"></div>
+<div class="portal-parent-fader-bottom"></div><p>the core of a JWT, since they are the data contained in the JWT</p>
+<ul>
+<li>claims are pieces of information that are "claimed" about a subject (most often a user). In other words, they are just properties of an object.
+<ul>
+<li>ex. name, sub, admin</li>
+<li>ex. "the holder of this token is able to create/read/update/delete a specified resource"</li>
+</ul>
+</li>
+<li>the claim refers to the key, not the value</li>
+<li>usually not encrypted, meaning if we don't use https, this information is potentially compromised.</li>
+<li>anyone will be able to decode them and to read them, we cannot store any sensitive data in here
+<ul>
+<li>not an issue because of the secret</li>
+</ul>
+</li>
+</ul>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+	<span class="token property">"sub"</span><span class="token operator">:</span> <span class="token string">"1234567890"</span><span class="token punctuation">,</span>
+	<span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"John Doe"</span><span class="token punctuation">,</span>
+	<span class="token property">"admin"</span><span class="token operator">:</span> <span class="token boolean">true</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<ul>
+<li>when the server receives a JWT from an HTTP request's authorization header, like so:</li>
+</ul>
+<blockquote>
+<p>Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhIjoxLCJiIjoyLCJjIjozfQ.hxhGCCCmGV9nT1slief1WgEsOsfdnlVizNrODxfh1M8</p>
+</blockquote>
+<p>it will verify the token using the secret, and then will serialize the claims in that token to the database. </p>
+<ul>
+<li>If using Postgres, this would enable access to the data in <code>current_settings</code>, e.g. <code>current_setting('request.jwt.claim.email', true)</code></li>
+</ul>
+<p>Claims can be used as a means to differentiate users. Imagine we are building a postgres database and decide that all signed-in users will have the group role <code>user_login</code>. We can use the claims in the jwt to distinguish users</p>
+<p><em>Registered claim</em> - recommended pre-defined claims</p>
+<ul>
+<li><strong>iss</strong> (issuer)</li>
+<li><strong>exp</strong> (expiration time)</li>
+<li><strong>sub</strong> (subject)</li>
+<li><strong>aud</strong> (audience)</li>
+</ul>
+<h2 id="properties">Properties<a aria-hidden="true" class="anchor-heading icon-link" href="#properties"></a></h2>
+<ul>
+<li><code>iss</code> means the issuing entity, in this case, our authentication server</li>
+<li><code>iat</code> is the timestamp of creation of the JWT (in seconds since Epoch)</li>
+<li><code>sub</code> contains the technical identifier of the user</li>
+<li><code>exp</code> contains the token expiration timestamp</li>
+</ul></div></div><p></p><p></p>
+<h4 id="header">Header<a aria-hidden="true" class="anchor-heading icon-link" href="#header"></a></h4>
+<p>The receiver of the JWT needs to know what type of signature is used (here <code>RS256</code>).</p>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"alg"</span><span class="token operator">:</span> <span class="token string">"RS256"</span><span class="token punctuation">,</span>
+  <span class="token property">"typ"</span><span class="token operator">:</span> <span class="token string">"JWT"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h4 id="signature">Signature<a aria-hidden="true" class="anchor-heading icon-link" href="#signature"></a></h4>
+<p></p><p></p><div class="portal-container">
+<div class="portal-head">
+<div class="portal-backlink">
+<div class="portal-title">From <span class="portal-text-title">JWT Signature</span></div>
+<a href="/notes/O4UfJsjTp829l2zZQe0pL" class="portal-arrow">Go to text <span class="right-arrow">→</span></a>
+</div>
+</div>
+<div id="portal-parent-anchor" class="portal-parent" markdown="1">
+<div class="portal-parent-fader-top"></div>
+<div class="portal-parent-fader-bottom"></div><p>The signature is the key part of the JWT and is the part that provides its level of security.</p>
+<ul>
+<li>The signature is what enables a fully stateless server to be sure that a given HTTP request belongs to a given user, just by looking at a JWT token present in the request itself, and without forcing the password to be sent each time with the request.</li>
+<li>The signature is what proves that the payload is correct, and that it was actually sent by a given third party.</li>
+</ul>
+<p>While we can take the JWT header and payload and decode it with a base64 decoder, we cannot do the same with the signature. </p>
+<ul>
+<li>in other words, it is not JSON; it is a cryptographic signature.</li>
+</ul>
+<p>The JWT signature is created using the header, the claims AND the secret. Therefore, this unique combination creates a hash, and if something in the claim were to change, then the signature would be different and would no longer match up. </p>
+<ul>
+<li>What this means is that if the 1st and 2nd set of the JWT don't change, than neither will the 3rd (of course assuming the secret remains unchanging)</li>
+<li>Therefore, the signature of a JWT can only be produced by someone in possession of both the payload (plus the header) and a given secret key.</li>
+<li>in practice, a JWT will always be different between instances of the same user signing in, since the <code>exp</code> variable will always be different</li>
+</ul>
+<!-- TODO: broken image -->
+<p><img src="/:/fa5c3e7e2d95477e85f51bed49c6b4d9" alt="8ded9f2b6239d7464fa7e85badce77c6.png"></p>
+<p>The signature is a MAC (Message Authentication Code)</p>
+<p>Here is how the signature is used to ensure Authentication:</p>
+<ol>
+<li>the user submits the username and password to an Authentication server, which might be our Application server, but it's typically a separate server</li>
+<li>the Authentication server validates the username and password combination and creates a JWT token with a payload containing the user technical identifier and an expiration timestamp</li>
+<li>the Authentication server then takes a secret key, and uses it to sign the Header plus Payload and sends it back to the user browser</li>
+<li>the browser takes the signed JWT and starts sending it with each HTTP request to our Application server</li>
+<li>the signed JWT acts effectively as a temporary user credential, that replaces the permanent credential wich is the username and password combination</li>
+</ol>
+<p>From there, here is what our Application server does with the JWT token:</p>
+<ol>
+<li>our Application server checks the JWT signature and confirms that indeed someone in possession of the secret key signed this particular Payload. They know this because they can take the JWT header plus the payload and hash it together with the password (if HS256, the password must be the same as the possessed by the original issuer)</li>
+<li>The Payload identifies a particular user via a technical identifier</li>
+<li>Only the Authentication server is in possession of the private key, and the Authentication server only gives out tokens to users that submit the correct password</li>
+<li>therefore our Application server can safely be sure that this token was indeed given to this particular user by the Authentication server, meaning that it's indeed the user as it had the right password</li>
+<li>The server proceeds with processing the HTTP request assuming that it indeed it belongs to that user</li>
+</ol>
+<h3 id="signature-types">Signature types<a aria-hidden="true" class="anchor-heading icon-link" href="#signature-types"></a></h3>
+<p>There are many types of signature for JWTs, but two main types: HS256 and RS256.</p>
+<h4 id="hs256">HS256<a aria-hidden="true" class="anchor-heading icon-link" href="#hs256"></a></h4>
+<p>HS256 is a <a href="/notes/u0xXQ2GmDkPpk20TB9Y0N">cryptographic hashing function</a></p>
+<ul>
+<li>It is a symmetric algorithm, which means that there is only one private key that must be kept secret, and it is shared between the two parties</li>
+<li>can be brute forced if the input secret key is weak (could also be said about many other key-based technologies)</li>
+<li>requires the existence of a previously agreed upon secret between the original issuer of the JWT and any other server consuming JWTs (e.g. application server). Therefore, to change the secret is non-trivial.
+<ul>
+<li>this means everyone who has the secret password can create JWTs. This also means there are more places where the secret can be stolen.</li>
+</ul>
+</li>
+</ul>
+<h4 id="rs256-preferred">RS256 (preferred)<a aria-hidden="true" class="anchor-heading icon-link" href="#rs256-preferred"></a></h4>
+<p>RS256 uses a <a href="/notes/bO8xztJCzUxsN2sM4YsBE">public-key/private-key</a> paradigm. The implication is that while only the authentication provider can sign (create) JWTs, the servers that consume JWTs can only validate them.</p>
+<ul>
+<li>It is an asymmetric algorithm, which means that there are two keys: one public key and one private key that must be kept secret
+<ul>
+<li>The auth server has the private key used to generate the signature, and the consumer of the JWT retrieves a public key from the metadata endpoints provided by the auth server and uses it to validate the JWT signature.</li>
+</ul>
+</li>
+<li>the auth server cannot validate tokens.</li>
+</ul>
+<p>RS256 is preferred, since:</p>
+<ul>
+<li>you are sure that only the holder of the private key (ie. the auth server) can sign tokens, while anyone can check if the token is valid using the public key.</li>
+<li>if the private key is compromised, you can implement key rotation without having to re-deploy your application or API with the new secret (which you would have to do if using HS256).</li>
+</ul>
+<p>RS256 signatures use RSA keys (which uses one key to encrypt and another to decrypt)</p>
+<ul>
+<li>this isn't a hashing function, since the operation is reversible.</li>
+</ul>
+</div></div><p></p><p></p>
+<h2 id="why-use-it">Why use it?<a aria-hidden="true" class="anchor-heading icon-link" href="#why-use-it"></a></h2>
+<p>The biggest advantage of JWTs (when compared to <a href="/notes/0NyqVKRyLLG6J1NDvFX5k">user session management</a> using an in-memory random token) is that they enable the delegation of the authentication logic to a third-party server, such as:</p>
+<ul>
+<li>a centralized in-house auth server </li>
+<li>LDAP (Lightweight Directory Access Protocol)</li>
+<li>third-party authentication provider like Auth0</li>
+</ul>
+<p>This allows a system where:</p>
+<ul>
+<li>The external authentication server can be completely separate from our application server. There is no secret key that has to be shared over the network. This means all the application server has to do is check the JWT.
+<ul>
+<li>the authentication server has the private key, while the application server has the public key.</li>
+</ul>
+</li>
+<li>No direct live link between the application server and the authentication server is needed</li>
+<li>The application server can be completely stateless (since we don't need to keep tokens in-memory between requests). The authentication server can issue the token, send it back and then immediately discard it.</li>
+</ul>
+<p>The only way for an attacker to impersonate a user would be to either </p>
+<ul>
+<li>steal both its username and personal login password </li>
+<li>steal the secret signing key from the Authentication server.</li>
+</ul>
+<p>JWTs are tamper-proof.</p>
+<ul>
+<li>in the days of <a href="/notes/gmHyIstUcxJ1M04jtEZa6">cookie</a>-based authentication, if an attacker gained access to that cookie, they could tamper it and cause that client to issue hostile requests to the server. If an attacker tried to tamper with a JWT, it would destroy the hash and would no longer match the decoded data of the JWT.</li>
+</ul>
+<p>JWTs allow servers to be decoupled from authentication.</p>
+<ul>
+<li>Consider the <em>Basic Authentication</em> method of HTTP. In this scheme, we pass the <code>username:password</code> as a <a href="/notes/YYt62mSW964cwb5nP0hva">base64</a> encoded string to the server with each request. This means that the server needs to know how to verify user account credentials. This coupling is remedied by having JWTs, since a querying client just has to present the valid JWT in order to be considered a legitimate user. Now, the server doesn't need any knowledge about authentication, it just has to know how to verify the JWT.</li>
+</ul>
+<h2 id="how-do-they-work">How do they work?<a aria-hidden="true" class="anchor-heading icon-link" href="#how-do-they-work"></a></h2>
+<ol>
+<li>User logs in with email and password</li>
+<li>The Authentication server issues a JWT to the client</li>
+<li>The client goes to view a list of private data, so a request to the resource server is made.</li>
+<li>The resource server validates the content of the payload by inspecting the signature. 
+<ul>
+<li>validation can be done by using <em>asynchronous cryptographic signatures</em> or by using a shared signing key.</li>
+</ul>
+</li>
+</ol>
+<p><img src="/assets/images/2022-12-14-13-10-02.png"></p>
+<p>There are multiple types of signature, so one of the things that the receiver needs to know is for example which type of signature to look for.</p>
+<ul>
+<li>this is found in the header</li>
+</ul>
+<p>hashing the header and payload makes it much smaller. therefore hashing is not an functional part of it (ie. it's not about making it more secure); it's a performance part.</p>
+<h3 id="analogy-money-vs-cheque">Analogy: Money vs Cheque<a aria-hidden="true" class="anchor-heading icon-link" href="#analogy-money-vs-cheque"></a></h3>
+<p>When we give a $20 bill to someone, there is not a second thought as to where this money came from or if the bearer is the legitimate owner. The person who we are giving this money to does not need to verify with anyone of its legitimacy, and it is simply trusted</p>
+<p>On the other hand, when we pay with a cheque, a call needs to be made to the central authority (the bank) to verify if this cheque-holder is who they say they are.</p>
+<p>In this analogy, the cash is like a JWT: the system is designed where we can just trust the bearer of the money.</p>
+<hr>
+<h3 id="token-ex-jwt">Token (ex. JWT)<a aria-hidden="true" class="anchor-heading icon-link" href="#token-ex-jwt"></a></h3>
+<ul>
+<li>When user logs in, the server creates a JWT with the secret, and sends it to the client. The client stores the JWT in local storage, and includes that JWT in every request.</li>
+<li>The biggest difference here is that the user’s state is not stored on the server, as the state is stored inside the token on the client side instead</li>
+</ul>
+<p>The whole point of JWTs is to not require centralized coordination.</p>
+<ul>
+<li>this is why there is no <code>/logout</code> endpoint to hit when we use JWTs for authentication. Instead, we just need to delete it from local storage.</li>
+</ul>
+<p>A JWT is just a regular javascript object that is stringified, hashed, and cryptographically signed.</p>
+<ul>
+<li>Your token is signed with the secret, known only by the server. If someone changes the token on client side, it would fail validation and the server side framework would reject it. Therefore you can trust your token. Of course, the jwtSecret should be a secret only known by your authentication server and resource server.</li>
+</ul>
+<p>JWTs are agnostic to what form of authentication you are using (ex. email, OAuth etc). Regardless, the response will contain the JWT.</p>
+<p>You generate the token only if you trust the user who requested it.</p>
+<ul>
+<li>You trust the token as long as it has not expired and can be verified with the secret.</li>
+<li>The information in a JWT can be read by anyone, so do not put private information in a JWT. What makes JWTs secure is that unless they were signed by our secret, we can not accept the information inside the JWT as truth.</li>
+</ul>
+<p>JWTs guarantee that the bearer of the token also owns the data that he is requesting.</p>
+<ul>
+<li>However JWTs don't guarantee encryption, which is why HTTPS is required. Otherwise, a man in the middle could take that server response (with the jwt) and use it to authenticate itself on your behalf, gaining access to all data.</li>
+</ul>
+<p>JWTs come with a death sentence— that is, by nature they have an expiry date.</p>
+<ul>
+<li>this value is stored in the <code>iat</code> property. This can be thought of as the <code>date_of_death</code> property.</li>
+<li>The server determines the lifespan of the JWT, since it controls the expiry date. Therefore, JWTs give a uniform lifespan to all JWTs, but like God, it has control over ending your life prematurely in order to deny access.</li>
+</ul>
+<p>JWTs are stateless (while <a href="/notes/0NyqVKRyLLG6J1NDvFX5k">sessions</a> are stateful). This fact enables them to be verified on the server, without having to make a database call. This in principle makes them faster than using sessions (since sessions need to be stored).</p>
+<ul>
+<li>In reality, it's likely that the times we need to authenticate ourseleves with the JWT are also times that we need to interact with the database. This makes "saving trips to the database" more of a pipe-dream than a reality. At the end of the day, if we need to make a database interaction <em>and</em> authenticate ourselves, we are quicker just using a session rather than authenticating with a JWT (due to their size)
+<ul>
+<li>spec: The assumption here is that Sessions are stored in the same database as our app resources. If instead we have a separate session manager service, then we will always have to make 2 requests.</li>
+</ul>
+</li>
+</ul>
+<p>JWTs are huge. Storing a userid in a cookie is 6 bytes, while storing in the JWT (along with headers+secret) makes it 304 bytes.</p>
+<p><img src="/assets/images/2021-03-08-16-41-50.png"></p>
+<ul>
+<li>unlike a cookie, a JWT can contain an unlimited amount of data</li>
+</ul>
+<h3 id="logout">Logout<a aria-hidden="true" class="anchor-heading icon-link" href="#logout"></a></h3>
+<p>There is no <code>/logout</code> endpoint to hit, as all we need to do is delete the JWT kept on the client.</p>
+<ul>
+<li>This means the token is still valid even after you logout. This is why keeping a short expiry date is important</li>
+</ul>
+<h3 id="analogy">Analogy<a aria-hidden="true" class="anchor-heading icon-link" href="#analogy"></a></h3>
+<p><em>"Pretend I’m blind and hard of hearing. Let’s also pretend that last week you bought me lunch, and now I need your bank account number to pay you back. If I ask you for your bank account number in person, and someone else shouts their bank account number, I might accidentally send them the money I owe you.
+That’s because I heard someone shout a bank account number, and I trusted that it was you, even though in this case, it wasn’t.
+JWTs were designed to prevent this sort of thing from happening. JWTs give people an easy way to pass data between each other, while at the same time verifying who created the data in the first place.
+If I received 1,000,000 different JWTs that contained a bank account number, I’d easily be able to tell which one actually came from you.</em>"</p>
+<h2 id="e-resources">E Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#e-resources"></a></h2>
+<ul>
+<li><a href="https://blog.logrocket.com/jwt-authentication-best-practices/#:~:text=A%20JWT%20needs%20to%20be,storage%20(or%20session%20storage).">Good high level overview. Includes links to other good content</a></li>
+<li><a href="https://blog.angular-university.io/angular-jwt/">Full guide</a></li>
+</ul>
+<p>e being used to store user information that was used to authenticate them with a resource server. This is dangerous, b</p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/wXUxgZM5Oi21cN1uIX0Yw">JSON Web Key</a></li>
+<li><a href="/notes/1VJ1TOJSxesXFEIXjtamD">JWT Claim</a></li>
+<li><a href="/notes/O4UfJsjTp829l2zZQe0pL">JWT Signature</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/0NyqVKRyLLG6J1NDvFX5k">Session</a></li>
+<li><a href="/notes/97fecf63-24b2-46d0-86f6-f88b4813d1f3">Auth Tokens</a></li>
+<li><a href="/notes/yBNgydTx5k1BfiGgW3BbD">Federated Identity</a></li>
+</ul>

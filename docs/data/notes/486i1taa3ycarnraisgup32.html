@@ -1,0 +1,17 @@
+<h1 id="authorization">Authorization<a aria-hidden="true" class="anchor-heading icon-link" href="#authorization"></a></h1>
+<p>The simple way to handle authentication is by passing a basic authorization header:</p>
+<pre><code>Authorization: Basic am9lc2htb2U6MTIzNDU=
+</code></pre>
+<p>Where the value is <code>username:password</code> <a href="/notes/YYt62mSW964cwb5nP0hva">base64</a> encoded.</p>
+<p>This puts an unnecessary strain however on the database server, since it needs to compute the hash with each request.</p>
+<p>One database per user is the general recommended approach for storage in CouchDB. Therefore, each user would store their own couchdb login credentials.</p>
+<ul>
+<li><a href="https://docs.couchdb.org/en/3.2.0/config/couch-peruser.html">https://docs.couchdb.org/en/3.2.0/config/couch-peruser.html</a></li>
+</ul>
+<h2 id="security">Security<a aria-hidden="true" class="anchor-heading icon-link" href="#security"></a></h2>
+<p>Security in a single CouchDB can only be set up to do either:</p>
+<ul>
+<li>Everyone can read/write everything (admin party)</li>
+<li>Everyone can read, some can write</li>
+<li>Some can read everything, and those same people can write everything</li>
+</ul>

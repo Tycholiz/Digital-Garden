@@ -1,0 +1,215 @@
+<h1 id="kafka">Kafka<a aria-hidden="true" class="anchor-heading icon-link" href="#kafka"></a></h1>
+<h2 id="what-is-it">What is it?<a aria-hidden="true" class="anchor-heading icon-link" href="#what-is-it"></a></h2>
+<p>Kafka is a <a href="/notes/vutujFFWxQu6TshWVuMpI">distributed</a> <a href="/notes/NpY4iv9TwpGJODbVesQYe">Pub-Sub</a> messaging system.</p>
+<ul>
+<li>capable of handling a high volume of data</li>
+<li>messages are persisted on disk and replicated within the cluster to prevent data loss.</li>
+</ul>
+<p>Kafka is built on top of the ZooKeeper synchronization service.</p>
+<p>Traditionally, we use only databases as sole data storage, and think of that data in terms of "things", along with their state.</p>
+<ul>
+<li>Kafka encourages us to think of events first, and things second.</li>
+</ul>
+<p>Kafka stores data in a distributed log instead of a traditional database.</p>
+<ul>
+<li>a log is an ordered sequence of events, along with state and a description of what happened</li>
+<li>Kafka is a system for managing these logs (in Kafka, a log is called a <a href="/notes/1j2qlelnxiyklb52ev5vzeu">topic</a>)</li>
+</ul>
+<p>Kafka's key attributes are:</p>
+<ul>
+<li>
+<p>immutable data</p>
+</li>
+<li>
+<p>high availability</p>
+</li>
+<li>
+<p>high throughput</p>
+</li>
+<li>
+<p>scalable</p>
+</li>
+<li>
+<p>logs are easy to build at scale</p>
+</li>
+<li>
+<p>Implementations of Kafka are declarative</p>
+</li>
+<li>
+<p>Kafka can be quite complex to operate.</p>
+<ul>
+<li>AWS offers MSK (Managed Streaming for Kafka), making the management of a Kafka cluster trivial.</li>
+</ul>
+</li>
+<li>
+<p>Kafka provides database-like durability guarantees</p>
+</li>
+</ul>
+<p>Apache Kafka is based on the commit log, and it allows users to subscribe to it and publish data to any number of systems or real-time applications. </p>
+<h2 id="why-use-it">Why use it?<a aria-hidden="true" class="anchor-heading icon-link" href="#why-use-it"></a></h2>
+<p>Example applications include managing passenger and driver matching at Uber</p>
+<p>Data schemas are paramount in Kafka, since malformed events sent through the system can crash downstream subscribers</p>
+<ul>
+<li>therefore, Kafka’s streams can require both backward and forward <a href="/notes/8oqgkmx1xgbiizfv36gv5de">compatibility</a>: old messages must be readable by new consumers; new messages must be readable by old consumers.
+<ul>
+<li>this is why Confluent offers a schema registry tool.</li>
+</ul>
+</li>
+</ul>
+<p>There are five major APIs in Kafka:</p>
+<ul>
+<li><em>Producer API</em> – Permits an application to publish streams of records.</li>
+<li><em>Consumer API</em> – Permits an application to subscribe to topics and processes streams of records.</li>
+<li><em>Connector API</em> – Executes the reusable producer and consumer APIs that can link the topics to the existing applications.</li>
+<li><em>Streams API</em> – This API converts the input streams to output and produces the result.</li>
+<li><em>Admin API</em> – used to manage Kafka topics, brokers and other Kafka objects.</li>
+</ul>
+<h3 id="topic">Topic<a aria-hidden="true" class="anchor-heading icon-link" href="#topic"></a></h3>
+<p></p><p></p><div class="portal-container">
+<div class="portal-head">
+<div class="portal-backlink">
+<div class="portal-title">From <span class="portal-text-title">Topic</span></div>
+<a href="/notes/1j2qlelnxiyklb52ev5vzeu" class="portal-arrow">Go to text <span class="right-arrow">→</span></a>
+</div>
+</div>
+<div id="portal-parent-anchor" class="portal-parent" markdown="1">
+<div class="portal-parent-fader-top"></div>
+<div class="portal-parent-fader-bottom"></div><p>A topic is an ordered collection of events (ie. messages, records) stored in a durable way.</p>
+<ul>
+<li>A topic represents a single type of event</li>
+<li>Durable - written to disk, and replicated</li>
+</ul>
+<p>A topic can be thought of as a feed name.</p>
+<p>Messages in a topic must be first serialized so that it can be efficiently transmitted and stored in a Kafka topic.</p>
+<ul>
+<li>when you communicate with Kafka using a native client, that native client contains serializers that know how to serialize the data (in the case of producers) and deserialize the data (in the case of consumers)</li>
+</ul>
+<p>A topic has a Log which is the topic’s storage on disk.</p>
+<ul>
+<li>a log is broken up into partitions and segments</li>
+</ul>
+<p>Can be thought of as a <em>real-time stream</em></p>
+<ul>
+<li>Topics can be thought of as a database table
+<ul>
+<li>ex. if we were doing this in Postgres, we could have tables <code>geofence_entry_events</code>, <code>low_tire_pressure_warning_events</code></li>
+</ul>
+</li>
+</ul>
+<p>Kafka Services can be used as a sort of glue between microservices of an application. A microservice can consume a message from the Kafka Topic, and produce an output which gets registered to another Topic.</p>
+<ul>
+<li>Since it can act as glue between many services, we can produce an output from these Topics that can be consumed by a new service to perform real-time analysis of that data
+<ul>
+<li>This is contrast to the old-school method of running a batch-process overnight</li>
+</ul>
+</li>
+</ul>
+<p>Events in a topic are guaranteed to be in order (spec: by id)</p>
+<h3 id="partitioned-nature-of-topics">Partitioned nature of Topics<a aria-hidden="true" class="anchor-heading icon-link" href="#partitioned-nature-of-topics"></a></h3>
+<p>Topics are partitioned, meaning a topic is spread over a number of "buckets" located on different Kafka brokers.</p>
+<ul>
+<li>When a new event is published to a topic, it is actually appended to one of the topic's partitions</li>
+<li>Each partition in the Kafka cluster has a leader and a set of replicas among the brokers.</li>
+</ul>
+<p>Kafka guarantees that any consumer of a given topic-partition will always read that partition's events in exactly the same order as they were written.</p>
+<p>Events with the same event key (e.g., a customerId or vehicleId) are written to the same partition</p>
+<p>Partition strategy: related events should be on the same partition</p>
+</div></div><p></p><p></p>
+<h3 id="kafka-connect">Kafka Connect<a aria-hidden="true" class="anchor-heading icon-link" href="#kafka-connect"></a></h3>
+<p>Imagine we have multiple databases, a legacy service, and a SaaS product, and we want a way to get the data that they produce into Kafka.</p>
+<ul>
+<li>Kafka Connect helps us get that data into Kafka, and back out again.</li>
+<li>Kafka Connect is a general term to refer to 100's of pluggable modules that handle the I/O of the whatever service we are connecting to.
+<ul>
+<li>ex. There would be a connector to capture row-level changes in a Postgres database.</li>
+</ul>
+</li>
+</ul>
+<p>Connectors are either Source or Sink Connectors, and are responsible for a some of the Task management, but not the actual data movement.</p>
+<h3 id="kafka-streams">Kafka Streams<a aria-hidden="true" class="anchor-heading icon-link" href="#kafka-streams"></a></h3>
+<ul>
+<li>A Java API that performs helps us perform grouping, aggregating, filtering, enrichment (ie. table joining)
+<ul>
+<li>in other words, it's an expression-based language-embedded approach to relational queries.</li>
+</ul>
+</li>
+<li>the API would be used from within the services</li>
+<li>This is available to us out of the box as a consequence of using Kafka.</li>
+</ul>
+<p>Kafka Streams is a client library which provides an abstraction to an underlying Kafka cluster, and allows for stream manipulation operations to be performed on the hosting client. The abstraction provided for us is load-balanced by default,</p>
+<h4 id="ksql">KSQL<a aria-hidden="true" class="anchor-heading icon-link" href="#ksql"></a></h4>
+<ul>
+<li>a language that allows us to to use SQL-like syntax to query data from one Topic, and output it into another Topic.</li>
+<li>Solves the problem statement: imagine we want to perform some analysis on data kept in Kafka, but we don't want to stand up a separate service to consume that data.</li>
+</ul>
+<h3 id="confluent">Confluent<a aria-hidden="true" class="anchor-heading icon-link" href="#confluent"></a></h3>
+<ul>
+<li>a distribution of Kafka.</li>
+<li>open source, but offers a paid managed service (similar to Docker)</li>
+</ul>
+<h3 id="kafka-vs-logstash">Kafka vs Logstash<a aria-hidden="true" class="anchor-heading icon-link" href="#kafka-vs-logstash"></a></h3>
+<p><a href="https://stackoverflow.com/questions/40864312/how-logstash-is-different-than-kafka">Kafka is a cluster; Logstash is a single instance</a></p>
+<h3 id="kafka-vs-rabbitmq">Kafka vs RabbitMQ<a aria-hidden="true" class="anchor-heading icon-link" href="#kafka-vs-rabbitmq"></a></h3>
+<p>These are different forms of communicating. When service A calls service B to exchange information, it's similar to a phone conversation. I ask you a question, and you respond. In the meantime we're both occupied with that conversation; you have to have time to talk with me, and so do I.</p>
+<p>RabbitMQ and Kafka (and similar tools) also support two more types of communication:</p>
+<ol>
+<li><em>Topics</em>: a topic is a one-way one to many conversation. Basically it's like standing on a soapbox and shouting to a megaphone. Whoever is interested can listen; I don't care if that is zero people or a hundred. I send my message and the broker (kafka/rabbit) makes sure whoever is subscribed to the topic all get the message.</li>
+<li><em>Queues</em>: a queue is similar to sending letters to a company. I send a letter complaining about their service, and within that company someone opens and reads this letter. I'm not involved anymore after I send  the letter. While there may be a hundred workers opening letters, only one of them is going to be handling mine. Copies don't magically appear.</li>
+</ol>
+<p>So both queues and topics are one-way communication that are fire and forget (asynchronous). This as opposed to TCP (and HTTP on top of that) that are two-way synchronous communication. The broker guarantees that the other side gets the message. Depending on how you configure (for example) Kafka; you can either have a single service get a message (queue example), all of the services get the same message (topic example) or something in between.</p>
+<p>When working with microservices you want every unit to be as decoupled as possible.</p>
+<ul>
+<li>Let's say you have a component that handles user information (<code>A</code>) and you have some other module that need to do something every time a user updates his info (<code>B</code>). The classic way to do it would be to make <code>A</code> send some signal (usually an http request) to <code>B</code> so it knows it has work to do. But, for that, <code>A</code> needs to know a lot about <code>B</code>. And what if you now have <code>C</code> that needs to be triggered to? Or <code>D</code> that needs to process just some of the users? <code>A</code> would need to keep track of all of this, meanings they are highly coupled.</li>
+<li>With a broker, <code>A</code> just publishes that there's a change, and all other components can subscribe to this event and react accordingly. This way, components can be added or removed with minimal impact on the overall structure.</li>
+</ul>
+<h2 id="do-you-need-kafka">Do you need Kafka?<a aria-hidden="true" class="anchor-heading icon-link" href="#do-you-need-kafka"></a></h2>
+<p>From Reddit <a href="https://www.reddit.com/r/apachekafka/comments/hyxezo/kafka_when_to_use_and_when_not_to_use/">thread</a>:</p>
+<p>Kafka is like an event bus for distributed messages. It can't solve the intractable problem of distributed systems, but it does provide a nice framework for handling messages at scale.</p>
+<p>I would say if you don't need Kafka, then that's a perfectly good reason not to use it. You might have a monolith, you might have a series of services that all own their data within a database, and they all communicate via REST APIs. If that works, then Kafka won't really serve a purpose.</p>
+<p>You start to need Kafka when you run into the constraints of distributed scale. If you have more events than any single worker can handle, and you've decided you can't increase the available CPU and memory any further, then you start facing distributed messaging problems.</p>
+<p>As soon as two computers located some distance from each other try to determine what is true, and what happened first, you'll run into problems. Your next goal is to try and figure out which constraints you're willing to bend.</p>
+<p>Maybe your pipeline doesn't actually care about order, but absolutely cares that you don't drop a single record. Maybe you only care about throughput. Maybe you care about order, but not about availability. Eventually somethings gotta give. Kafka just helps you manage that infrastructure, it doesn't solve the underlying issues.</p>
+<p>If you run an app that collects logs and metrics, order might not matter. Just send everything down the pipe and you'll aggregate later. But you probably wouldn't run your banking transaction on it.</p>
+<h3 id="using-kafka-in-a-logging-system">Using Kafka in a Logging system<a aria-hidden="true" class="anchor-heading icon-link" href="#using-kafka-in-a-logging-system"></a></h3>
+<p>"There are plenty of open-source tools available for logging. We decided to use Graylog—an excellent tool for logging—and Apache Kafka, a messaging system to collect and digest logs from our containers. The containers send logs to Kafka, and Kafka hands them off to Graylog for indexing. We chose to make the application components send logs to Kafka themselves so that we could stream logs in an easy-to-index format. Alternatively, there are tools that retrieve logs from outside the container and forward them to a logging solution."</p>
+<h2 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h2>
+<ul>
+<li><a href="https://kafka-tutorials.confluent.io/">The place to start learning Kafka</a></li>
+<li><a href="https://developer.confluent.io/learn-kafka/apache-kafka/topics/">Kafka course from Confluence</a></li>
+<li><a href="https://www.confluent.io/blog/getting-started-with-kafkajs/">Getting Started with Kafkajs</a></li>
+<li><a href="https://github.com/Azure/azure-functions-kafka-extension">Kafka with Azure Functions</a></li>
+<li><a href="https://medium.com/@Instaclustr/apache-kafka-connect-architecture-overview-842097d3eb96">Connect Architecture</a></li>
+<li><a href="https://developers.redhat.com/articles/2022/05/03/fine-tune-kafka-performance-kafka-optimization-theorem#">Fine-tuning Kafka performance</a></li>
+<li><a href="https://notes.stephenholiday.com/Kafka.pdf">Kafka Whitepaper</a></li>
+</ul>
+<h2 id="tools">Tools<a aria-hidden="true" class="anchor-heading icon-link" href="#tools"></a></h2>
+<ul>
+<li><a href="https://github.com/cloudhut/kowl">Kafka dashboard</a></li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/dk8tnpywoun81bewo03wwk2">Broker</a></li>
+<li><a href="/notes/m1ugcz0q19q3k8biaf9q74l">CLI</a></li>
+<li><a href="/notes/19azbksfmjmqv0voc9xdnkm">Connect</a></li>
+<li><a href="/notes/1u9hxzro1d2jd3mekt38lgx">Consumer</a></li>
+<li><a href="/notes/6c0c0dt6yitq5u3231qayzx">Local</a></li>
+<li><a href="/notes/t30166dyj75zi946168kbol">Producer</a></li>
+<li><a href="/notes/7diu8z6ojbm610237nmot5l">Schema Registry</a></li>
+<li><a href="/notes/se427npjl4bazz30m40drsc">Stream</a></li>
+<li><a href="/notes/1j2qlelnxiyklb52ev5vzeu">Topic</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/ulicRRwo3lSFzh3tMfWH9">Apache Flink</a></li>
+<li><a href="/notes/xISza0hg9S9FjXgmkfYgB">Data Mesh</a></li>
+<li><a href="/notes/7n3tUhrwbvz8nNu0bTlWz">EventBridge</a></li>
+<li><a href="/notes/mP0bWcHx4tIFklY9Ge8vh">Kinesis</a></li>
+<li><a href="/notes/3r7tbyDBkWsTEM3czdzZZ">Lambda</a></li>
+<li><a href="/notes/vtLtsv3Vsdt6pTTASCq4u">Streaming Architecture</a></li>
+<li><a href="/notes/Skg9BUUhw2xIBmwrkEP4u">Messaging Pattern</a></li>
+<li><a href="/notes/wbs6c9snnonnyzm8vk2t4b9">Strategies</a></li>
+<li><a href="/notes/i0cxm46r54o0242vn13g38n">Observable</a></li>
+<li><a href="/notes/0pUoWXrTC07Z9B1ijwosK">Dead Letter Queue</a></li>
+</ul>

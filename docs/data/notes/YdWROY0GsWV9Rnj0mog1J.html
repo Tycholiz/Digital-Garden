@@ -1,0 +1,40 @@
+<h1 id="tls">TLS<a aria-hidden="true" class="anchor-heading icon-link" href="#tls"></a></h1>
+<p>TLS consists of two phases: </p>
+<ol>
+<li>secure connection establishment </li>
+<li>the use of that encrypted channel for further communication.</li>
+</ol>
+<p>A TCP handshake and connection must be established before messages to create a TLS connection are exchanged.</p>
+<ul>
+<li>the handshake is done in one round trip. </li>
+<li>after the first two steps, all messages are encrypted.</li>
+</ul>
+<p>TLS involves public-key cryptography to establish a shared secret that is then used to encrypt future communication</p>
+<p>TLS (Transport Layer Security) replaced SSL (Secure Sockets Layer), which is deprecated</p>
+<p>spec:TLS is an agreement (protocol) between 2 IP addresses (your own and the web server you are connecting to).</p>
+<p>Certificates are bound to domain names instead of IP addresses, so the "Not Secure" (<code>ERR_CERT_COMMON_NAME_INVALID</code>) warning will still appear if you connect via an IP address.</p>
+<h3 id="ssl-termination">SSL Termination<a aria-hidden="true" class="anchor-heading icon-link" href="#ssl-termination"></a></h3>
+<ul>
+<li>the act of data reaching the end of the SSL chain and getting decrypted (or offloaded) so the recipient can read the data.
+<ul>
+<li>happens at the server end of an SSL connection</li>
+</ul>
+</li>
+<li>SSL termination helps speed the decryption process and reduces the processing burden on backend servers.
+<img src="/assets/images/2021-03-09-09-46-03.png"></li>
+</ul>
+<h3 id="wildcard-ssl-certificate">Wildcard SSl Certificate<a aria-hidden="true" class="anchor-heading icon-link" href="#wildcard-ssl-certificate"></a></h3>
+<p>a single ssl certificate that lets us have SSL on any <code>*.mydomain.com</code></p>
+<h3 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h3>
+<ul>
+<li><a href="https://medium.com/@jonatascastro12/understanding-self-signed-certificate-in-chain-issues-on-node-js-npm-git-and-other-applications-ad88547e7028">self-signed certificates</a></li>
+<li><a href="https://developers.cloudflare.com/ssl/">cloudflare guide on SSL</a></li>
+</ul>
+<h3 id="e-resources">E Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#e-resources"></a></h3>
+<p>[setting up a private CA](<a href="https://www.digitalocean.com/community/tutorials/how-to-">https://www.digitalocean.com/community/tutorials/how-to-</a></p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/KlUjwISNTuoz0nrv3hrFc">ALPN Protocol</a></li>
+<li><a href="/notes/J9fet9TmIJefcdWudoYyF">TLS Certificates</a></li>
+</ol>

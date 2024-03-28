@@ -1,0 +1,42 @@
+<h1 id="help">Help<a aria-hidden="true" class="anchor-heading icon-link" href="#help"></a></h1>
+<h1 id="overview">Overview<a aria-hidden="true" class="anchor-heading icon-link" href="#overview"></a></h1>
+<p>The Vim documentation consists of two parts:</p>
+<ol>
+<li>The User manual
+Task oriented explanations, from simple to complex.  Reads from start to
+end like a book.</li>
+<li>The Reference manual
+Precise description of how everything in Vim works.</li>
+</ol>
+<p>If you only have a generic keyword to search for, use <code>:helpgrep</code> and open the quickfix window:</p>
+<pre><code>:helpgrep quickfix
+:copen
+</code></pre>
+<h1 id="how-to">How to...<a aria-hidden="true" class="anchor-heading icon-link" href="#how-to"></a></h1>
+<h2 id="navigate">Navigate<a aria-hidden="true" class="anchor-heading icon-link" href="#navigate"></a></h2>
+<p>Jump to a subject</p>
+<ul>
+<li>put cursor on a subject tag (blue text), and hit <code>&#x3C;C-]></code>
+<ul>
+<li>In fact, this works on any word</li>
+</ul>
+</li>
+<li>return with <code>&#x3C;C-o></code>, or <code>&#x3C;C-t></code></li>
+</ul>
+<h2 id="get-specific-help">Get specific help<a aria-hidden="true" class="anchor-heading icon-link" href="#get-specific-help"></a></h2>
+<p>we can prepend a binding with the mode to see what it does, and get help on it</p>
+<ul>
+<li>ex. <code>:help v_u</code> to get help on what <code>u</code> command does in visual mode.</li>
+<li>ex. <code>:help CTRL-W_CTRL-I</code></li>
+<li>ex. <code>:help i_CTRL-G_&#x3C;Down></code></li>
+<li>ex. <code>:help i^W</code></li>
+</ul>
+<p>prefixes:
+visual mode - <code>v_</code>
+insert mode - <code>i_</code>,
+Ex mode - <code>:</code></p>
+<ul>
+<li>normal mode has no prefix</li>
+</ul>
+<h1 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h1>
+<p><a href="https://vi.stackexchange.com/questions/2136/how-do-i-navigate-to-topics-in-vims-documentation">Guide to using vim help</a></p>

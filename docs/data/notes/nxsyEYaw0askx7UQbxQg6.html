@@ -1,0 +1,41 @@
+<h1 id="volumes">Volumes<a aria-hidden="true" class="anchor-heading icon-link" href="#volumes"></a></h1>
+<p>Volumes are the primary way to persist data that exists in a Container</p>
+<ul>
+<li>in a node app, we specify the following <code>volume</code> field attributes</li>
+</ul>
+<pre class="language-yml"><code class="language-yml"><span class="token key atrule">volumes</span><span class="token punctuation">:</span>
+<span class="token punctuation">-</span> <span class="token string">'.:/app'</span>
+<span class="token punctuation">-</span> <span class="token string">'/app/node_modules'</span>
+</code></pre>
+<ul>
+<li>This first line is saying "map the host's PWD (.) to the <code>/app</code> directory in the container". The next line says "persist the node-modules directory in the container so that when we mount the host directory (the first line) at runtime, the node-modules won't get overwritten"
+<ul>
+<li>In other words, this would happen:
+<ul>
+<li>Build - The node_modules directory is created in the image.</li>
+<li>Run - The current directory is mounted into the container, overwriting the node_modules that were installed during the build.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="bind-mount">Bind Mount<a aria-hidden="true" class="anchor-heading icon-link" href="#bind-mount"></a></h2>
+<p>When using a bind mount, a file/directory on the host machine is mounted into a container</p>
+<ul>
+<li>This is in contrast to using volumes, which involves Docker creating a directory on the host that a container can have full access to (volume)</li>
+<li>A bind mount lets us create something similar to a symbolic linked directory, whereby a directory or file on the host machine gets mounted into the container.
+<ul>
+<li>This means that we can make changes to the directory/file on the host machine, and those changes will reflected in the docker container's version of the directory/file. </li>
+<li>On the other hand, when you use a volume, a new directory is created on the host machine, which is created within Docker's storage directory (which is managed by Docker)</li>
+</ul>
+</li>
+<li>bind mounts are created in <code>docker-compose.yml</code> with the <code>volumes</code> directive</li>
+<li>Bind mounts have limited functionality compared to volumes.</li>
+</ul>
+<h1 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h1>
+<p><a href="https://docs.docker.com/storage/volumes/">Primer</a></p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/qcdt2f7jo51muquo5r95dpo">Kibana</a></li>
+</ul>

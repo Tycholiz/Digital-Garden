@@ -1,0 +1,40 @@
+<h1 id="payment-intent">Payment Intent<a aria-hidden="true" class="anchor-heading icon-link" href="#payment-intent"></a></h1>
+<p>There should be exactly one payment_intent for each order or customer session so we can reference the PaymentIntent later to see the history of payment attempts for a particular session.</p>
+<ul>
+<li>The PaymentIntent API tracks a payment, from initial creation through the entire checkout process, and triggers additional authentication steps when required. Therefore, a payment intent has different states during its lifetime.</li>
+</ul>
+<p>When you use a PaymentIntent to collect payment from a customer, Stripe creates a charge behind the scenes</p>
+<ul>
+<li>The best practice is to create a PaymentIntent as soon as the purchase amount is known
+<ul>
+<li>ex. this might be when the customer begins the checkout process. This would be fine, since we can always update the amount if the user backs out, adds another item to their cart, then begins checkout again</li>
+</ul>
+</li>
+<li>We should store the <code>PaymentIntentID</code> in our database, to be associated with the customer's shopping cart (order). If this isn't feasible, then we can store it on their session.
+<ul>
+<li>This would allow us to track and failed payment attempts for a given cart (or session)</li>
+</ul>
+</li>
+<li>We should provide an <code>idempotency key</code> to the PaymentIntent
+<ul>
+<li>Doing this will help us avoid creating duplicate PaymentIntents for the same purchase</li>
+<li>this key would be an ID associated with the cart/session, which we store in the database</li>
+</ul>
+</li>
+<li>The PaymentIntent contains a client secret key which is unique to the individual PaymentIntent. In other words, a client secret uniquely identifies a payment intent.
+<ul>
+<li>This client secret is used as a parameter when calling <code>stripe.confirmCardPayment</code> on the client.</li>
+<li>We retrieve the client secret from the PaymentIntent on our server, which we then can pass to the client. There are different approaches to getting the client secret to the client side.</li>
+</ul>
+</li>
+<li>The client secret of a paymentintent is dependent on the paymentintentid.
+<ul>
+<li>An example of the secret is <code>pi_1IR0JiKQXfStDK4vk3nikCNH_secret_GAWuc4MSiWoezicYMqMe5qgWj</code>, showing that the client secret would change if the payment intent was different.</li>
+</ul>
+</li>
+<li>If the customer leaves the CheckoutSession incomplete, it will expire and cancel the PaymentIntent automatically after 24 hours.</li>
+</ul>
+<h2 id="refunds">Refunds<a aria-hidden="true" class="anchor-heading icon-link" href="#refunds"></a></h2>
+<ul>
+<li>We can provide an <code>amount</code> parameter to the Refunds API. Otherwise, the default amount will be the exact amount paid in the initial payment intent</li>
+</ul>

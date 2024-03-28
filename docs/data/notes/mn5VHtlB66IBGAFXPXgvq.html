@@ -1,0 +1,104 @@
+<h1 id="http-methods">HTTP Methods<a aria-hidden="true" class="anchor-heading icon-link" href="#http-methods"></a></h1>
+<p>When deciding on which HTTP method to use, always consider it from the client's perspective.</p>
+<ul>
+<li>ex. if the UI of a webapp has an option to delete content, you may decide that your backend will only soft-delete that content (ie. it will keep the data in the database, but give it a flag such as <code>isDeleted: true</code>). This implementation detail is of no concern to the client, and therefore while we may be tempted to implement this functionality as a <code>PATCH</code> (since we are modifying data instead of actually deleting it), because the client has no knowledge of that, we should use the <code>DELETE</code> HTTP method.</li>
+</ul>
+<h2 id="get">GET<a aria-hidden="true" class="anchor-heading icon-link" href="#get"></a></h2>
+<ul>
+<li>GET requests can be cached</li>
+<li>GET requests remain in the browser history</li>
+<li>GET requests can be bookmarked</li>
+<li>GET requests should never be used when dealing with sensitive data</li>
+<li>GET requests have length restrictions</li>
+<li>GET requests should be used only to retrieve data</li>
+</ul>
+<h3 id="return-codes">Return codes<a aria-hidden="true" class="anchor-heading icon-link" href="#return-codes"></a></h3>
+<ul>
+<li>200 (OK)</li>
+<li>400 (Bad Request)</li>
+<li>404 (Not found)</li>
+</ul>
+<h2 id="post">POST<a aria-hidden="true" class="anchor-heading icon-link" href="#post"></a></h2>
+<p>Use POST when you want to create resources <em>without</em> knowing the URI for the new resource</p>
+<ul>
+<li>
+<p>however, a POST does not necessarily have to result in a resource that can be identified by a URI.</p>
+</li>
+<li>
+<p>POST requests are never cached</p>
+</li>
+<li>
+<p>POST requests do not remain in the browser history</p>
+</li>
+<li>
+<p>POST requests cannot be bookmarked</p>
+</li>
+<li>
+<p>POST requests have no restrictions on data length</p>
+</li>
+<li>
+<p>POST requests are not idempotent</p>
+</li>
+</ul>
+<h3 id="status-codes">Status codes<a aria-hidden="true" class="anchor-heading icon-link" href="#status-codes"></a></h3>
+<ul>
+<li>200 (OK) - more than 1 resource created</li>
+<li>201 (Created) - only 1 resource created</li>
+<li>204 (No Content) - no new resource created (or if a resource was created, but the response doesn't include an entity that describes the result)</li>
+<li>400 (Bad Request)</li>
+</ul>
+<h2 id="put">PUT<a aria-hidden="true" class="anchor-heading icon-link" href="#put"></a></h2>
+<p>For PUT requests the client <em>needs</em> to know the exact URI of the resource.</p>
+<ul>
+<li>ex. We cannot send a PUT request to <code>/projects</code> and expect a new resource to be created at <code>/projects/123</code></li>
+<li>this doesn't mean we can't create new resources with PUT; but it does mean the client needs to know how to generate the URI/ID of the new resource.
+<ul>
+<li>In cases where this ID is knowable by the client, PUT should actually be preferred over POST, since PUT is idempotent.</li>
+</ul>
+</li>
+<li>Therefore, PUT can be thought of as "create or update" resource.</li>
+</ul>
+<p>PUT should replace the existing resource with the new one. This means we cannot do partial updates.</p>
+<ul>
+<li>if we want to mimic a partial update, then we'd have to send the whole resource (with the modified field).</li>
+</ul>
+<h3 id="status-codes-1">Status codes<a aria-hidden="true" class="anchor-heading icon-link" href="#status-codes-1"></a></h3>
+<ul>
+<li>201 (Created) - a new resource is created</li>
+<li>200 (OK) - an existing resource is modified</li>
+<li>204 (No Content) - an existing resource is modified, but the entity isn't included in the response</li>
+</ul>
+<h2 id="patch">PATCH<a aria-hidden="true" class="anchor-heading icon-link" href="#patch"></a></h2>
+<p>PATCH allows us to perform partial modifications to an existing resource.</p>
+<p>PATCH requests are neither safe nor idempotent</p>
+<p>For document-oriented databases, <a href="https://jsonpatch.com/">JSON PATCH</a> is a good way to make changes only to fields that have changed.</p>
+<h3 id="status-codes-2">Status codes<a aria-hidden="true" class="anchor-heading icon-link" href="#status-codes-2"></a></h3>
+<ul>
+<li>200 (OK)</li>
+<li>400 (Bad Request) </li>
+<li>404 (Not found)</li>
+<li>422 (Unprocessable Entity)</li>
+</ul>
+<h2 id="delete">Delete<a aria-hidden="true" class="anchor-heading icon-link" href="#delete"></a></h2>
+<h3 id="status-codes-3">Status codes<a aria-hidden="true" class="anchor-heading icon-link" href="#status-codes-3"></a></h3>
+<ul>
+<li>204 (No Content)</li>
+<li>400 (Bad Request)</li>
+<li>404 (Not found)</li>
+</ul>
+<hr>
+<h2 id="properties-of-http-methods">Properties of HTTP methods<a aria-hidden="true" class="anchor-heading icon-link" href="#properties-of-http-methods"></a></h2>
+<h3 id="safe">Safe<a aria-hidden="true" class="anchor-heading icon-link" href="#safe"></a></h3>
+<p>HTTP methods are considered safe if they do not alter the server state, so safe methods can only be used for read-only operations.</p>
+<p>Safe HTTP methods are GET, HEAD, OPTIONS and TRACE</p>
+<h3 id="idempotent">Idempotent<a aria-hidden="true" class="anchor-heading icon-link" href="#idempotent"></a></h3>
+<p><a href="/notes/ViJXhvpmoU53iSK9Wr4nG">main note</a></p>
+<p>The idempotent methods are GET, HEAD, OPTIONS, TRACE, PUT and DELETE.</p>
+<p>All safe HTTP methods are idempotent but PUT and DELETE are idempotent but not safe.</p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/vdrlg4e7sdnza4h5h9zythh">REST</a></li>
+<li><a href="/notes/wgfov5g4fh7cnji0a1ho70c">JSON Patch</a></li>
+<li><a href="/notes/h160fafboo30ix91n52wfky">Fetch</a></li>
+</ul>

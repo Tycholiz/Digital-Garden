@@ -1,0 +1,78 @@
+<h1 id="port-forwarding">Port Forwarding<a aria-hidden="true" class="anchor-heading icon-link" href="#port-forwarding"></a></h1>
+<p>Think of port forwarding as a secret tunnel that bores straight through your router’s firewall, allowing outside traffic to connect directly with a device inside your local network.</p>
+<p>Port forwarding (or port mapping) allows remote computers to connect to a specific computer or service on a private network. This allows you to run a web server, game server or a service of your choosing from behind a router.</p>
+<ul>
+<li>In a typical network, the router has the public IP address and computers/servers obtain a private IP address from the router that is not addressable from outside the network. When you forward a specific port on your router, you are telling your router where to direct traffic for that port.
+<ul>
+<li>use the <a href="https://canyouseeme.org/">canyouseeme utility</a> to verify the success of that process.</li>
+</ul>
+</li>
+<li>Port Forwarding is the act of directly forwarding data packets from one interface (or physical link) to another. This is not really proxying; instead, think of railroad tracks: without port forwarding the track ends at a station, but with port forwarding the track seamlessly continues to the next station.</li>
+<li>If I were to try and ssh into my home computer from halfway around the world by using my home's public IP address, my home router would receive the request, and not know what to do with it, since the private IP address would then be needed to complete the send.</li>
+<li>We can specify to a router "hey, when you receive requests from the internet with ssh (port 22), I need you to pass them along to 192.168.1.74" 
+<ul>
+<li>We give the router a forwarding IP address (the internal IP that the packets are destined for) and a port. The router external IP and port number together serve as a unique identifier, and we specify what happens when the router receives the combination  
+<ul>
+<li>"upon receiving a request on port 8000, forward that request on to 196.168.1.74"</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>we need to specify an <strong>external port</strong>, which is the port on the router that is open and facing the internet.
+<ul>
+<li>some numbers will be in use already, such as services from email and web server.</li>
+<li>pick port above 5000</li>
+</ul>
+</li>
+<li>Port forwarding settings are found in the router (using the modem's IP) </li>
+</ul>
+<h3 id="external-port-range">External port range<a aria-hidden="true" class="anchor-heading icon-link" href="#external-port-range"></a></h3>
+<ul>
+<li>normally identical to the internal port range. For security purposes, we may change this.</li>
+<li>We may not like the fact that people on the outside can see what ports are being used. 
+<ul>
+<li>ex. 5432 is the normal port for postgres. Recognizability like this introduces security issues.</li>
+</ul>
+</li>
+<li>To get around this issue, we can employ external port ranges. We can specify 11111 as the external port, and 5432 as the internal port, and now whenever a request comes in with port 11111, it will get forwarded to the specified internal IP and the internal port. </li>
+</ul>
+<h3 id="internal-port">Internal port<a aria-hidden="true" class="anchor-heading icon-link" href="#internal-port"></a></h3>
+<ul>
+<li>port of the service running on the internal IP host. 
+<ul>
+<li>ex, we are running an express server on port 8000</li>
+</ul>
+</li>
+<li>we may want to expose port 22 (SSH), port 21 (FTP) </li>
+</ul>
+<h2 id="safety">Safety<a aria-hidden="true" class="anchor-heading icon-link" href="#safety"></a></h2>
+<ul>
+<li>Port forwarding is generally considered safe as long as your network has a strong firewall. 
+<ul>
+<li>Port forwarding on Xbox and PlayStation is safe while port forwarding on PC or for camera surveillance comes with a little more risk. </li>
+</ul>
+</li>
+</ul>
+<p>Tips:</p>
+<ul>
+<li>Only use safe, well-known ports</li>
+<li>Limit the number of ports you use</li>
+<li>Use port forwarding sparingly</li>
+<li>Adjust your firewall rules so only specific IP addresses can get access to the port</li>
+<li>Regularly update your router firmware and device operating systems</li>
+<li>Use a VPN on the devices you haven’t used with port forwarding to improve their security</li>
+<li>Monitor your network for suspicious activity</li>
+</ul>
+<h2 id="resources">Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#resources"></a></h2>
+<ul>
+<li><a href="https://caddy.community/t/using-caddy-as-a-reverse-proxy-in-a-home-network/9427">Caddy Reverse Proxy: Setting up for home network</a>
+<ul>
+<li><a href="/notes/1TaH8zDTM98FZ9SYaeXLM">Caddy</a></li>
+</ul>
+</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/jpq1HwjcA1Cfx1djcWL8z">Router</a></li>
+</ul>

@@ -1,0 +1,139 @@
+<h1 id="iam-identity-and-access-management">IAM (Identity and Access Management)<a aria-hidden="true" class="anchor-heading icon-link" href="#iam-identity-and-access-management"></a></h1>
+<h2 id="iam-identity">IAM Identity<a aria-hidden="true" class="anchor-heading icon-link" href="#iam-identity"></a></h2>
+<p>An IAM identity provides access to the resources under management by an AWS account.</p>
+<p>An IAM identity represents a user, and can be authenticated and then authorized to perform actions in AWS.</p>
+<p>Each IAM identity can be associated with one or more policies.</p>
+<ul>
+<li>Policies determine what actions a user, role, or member of a user group can perform, on which AWS resources, and under what conditions.</li>
+</ul>
+<h3 id="user">User<a aria-hidden="true" class="anchor-heading icon-link" href="#user"></a></h3>
+<p>An IAM user is an entity that you create in AWS.</p>
+<ul>
+<li>The IAM user uniquely represents the person or service who uses the IAM user to interact with AWS.</li>
+</ul>
+<p>A primary use for IAM users is to give people the ability to sign in to the AWS Management Console for interactive tasks and to make programmatic requests to AWS services using the API or CLI.</p>
+<p>A user in AWS consists of a name, a password, and up to 2 access keys used to access the API/CLI.</p>
+<p>When you create an IAM user, you grant it permissions by making it a member of a user group that has appropriate permission policies attached</p>
+<ul>
+<li>you can also directly attaching policies to the user, though this is less recommended.</li>
+</ul>
+<p>When you create an IAM user, you can choose to allow console or programmatic access. </p>
+<ul>
+<li>if console access is allowed, the IAM user can sign in to the console using a user name and password. </li>
+<li>if programmatic access is allowed, the user can use access keys to work with the CLI or API.</li>
+</ul>
+<h4 id="use-an-iam-user-when">Use an IAM user when...<a aria-hidden="true" class="anchor-heading icon-link" href="#use-an-iam-user-when"></a></h4>
+<ul>
+<li>You created an AWS account and you're the only person who works in your account.
+<ul>
+<li>In this case, create an IAM user for yourself and use the credentials for that user when you work with AWS.</li>
+</ul>
+</li>
+<li>Other people in your user group need to work in your AWS account, and your user group is using no other identity mechanism.
+<ul>
+<li>In this case, create IAM users for the individuals who need access to your AWS resources, assign appropriate permissions to each user, and give each user his or her own credentials.</li>
+</ul>
+</li>
+</ul>
+<h3 id="user-group">User Group<a aria-hidden="true" class="anchor-heading icon-link" href="#user-group"></a></h3>
+<p>A user group is a collection of IAM users managed as a unit, allowing us to specify permissions for a collection of users</p>
+<ul>
+<li>ex. you could have a user group called <code>Admins</code> and give that user group the types of permissions that administrators typically need</li>
+</ul>
+<h3 id="role">Role<a aria-hidden="true" class="anchor-heading icon-link" href="#role"></a></h3>
+<p>A role is a collection of policies which can be applied to a user / other service.</p>
+<p>A role can only be added at time of instance and user creation though. </p>
+<ul>
+<li>A role cannot be added after the fact (though permissions for that role can be)</li>
+</ul>
+<p>An IAM role is very similar to a user, in that it is an identity with permission policies that determine what the identity can and cannot do in AWS.</p>
+<ul>
+<li>However, a role does not have any credentials (password or access keys) associated with it.</li>
+</ul>
+<p>Once a role is given, it can interact with AWS via a CLI or SDK and does not need to authenticate or provide credentials (which is all done behind the scenes)</p>
+<p>A user can also assume a role, either from the same AWS account (via federated login with identity provider) or a different AWS account (via <code>AssumeRole</code>)</p>
+<p>A role is intended to be used by anyone who needs it, and therefore it is not necessarily associated with a single person.</p>
+<ul>
+<li>that is, an IAM user can assume a role to temporarily take on different permissions for a specific task.</li>
+</ul>
+<p>If we didn't have roles, the client (potentially itself a AWS service) accessing another AWS service would need to hold the access key and secret key of a user, and those credentials would be used to access the AWS resource</p>
+<h4 id="use-an-iam-role-when">Use an IAM role when...<a aria-hidden="true" class="anchor-heading icon-link" href="#use-an-iam-role-when"></a></h4>
+<ul>
+<li>You're creating an application that runs on an <a href="/notes/T3myEQpNJczlAwIZCMpQB">Elastic Compute Cloud (EC2)</a> instance, and it makes requests to AWS.</li>
+<li>You're creating an app that runs on a mobile phone and that makes requests to AWS.</li>
+<li>Users in your company are authenticated in your corporate network and want to be able to use AWS without having to sign in again—that is, you want to allow users to federate into AWS.
+<ul>
+<li>In this case, don't create IAM users. Configure a federation relationship between your enterprise identity system and AWS.</li>
+</ul>
+</li>
+</ul>
+<h3 id="policy">Policy<a aria-hidden="true" class="anchor-heading icon-link" href="#policy"></a></h3>
+<p>A policy is a whitelist of permissions for an <a href="https://docs.aws.amazon.com/IAM/latest/APIReference/API_Operations.html">action</a>. We then take that policy and attach it to an IAM identity (ie. user, user group or role)</p>
+<ul>
+<li>ex. <code>AmazonGlacierFullAccess</code>, <code>AmazonGlacierReadOnlyAccess</code>, <code>AWSLambdaRole</code></li>
+<li>it does not matter if the resource is accessed from the AWS Management Console, the AWS CLI, or the AWS API.</li>
+<li>e.g. actions: <code>secretsmanager:GetSecretValue</code></li>
+</ul>
+<p>When an <em>IAM principal</em> (user or role) makes a request, AWS will evaluate the policy and determine if the request is allowed or not.</p>
+<p>Policies are stored as JSON documents, like so:</p>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"Version"</span><span class="token operator">:</span> <span class="token string">"2012-10-17"</span><span class="token punctuation">,</span>
+  <span class="token property">"Statement"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">{</span>
+      <span class="token property">"Effect"</span><span class="token operator">:</span> <span class="token string">"Allow"</span><span class="token punctuation">,</span>
+      <span class="token property">"Action"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token string">"lambda:InvokeFunction"</span>
+      <span class="token punctuation">]</span><span class="token punctuation">,</span>
+      <span class="token property">"Resource"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token string">"*"</span>
+      <span class="token punctuation">]</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>AWS supports six types of policies (<a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html#access_policy-types">docs</a>): </p>
+<ul>
+<li>identity-based policies</li>
+<li>resource-based policies</li>
+<li>permissions boundaries</li>
+<li>Organizations SCPs</li>
+<li>access control lists (ACLs)</li>
+<li>session policies</li>
+</ul>
+<p>Policies may be AWS managed, meaning they are created by AWS, or they may be Customer managed, meaning they are created by the AWS root user. In the latter case, we create the JSON policy ourselves, defining the permissions that it would grant when attached to an entity.</p>
+<h4 id="identity-based-policies">Identity-based Policies<a aria-hidden="true" class="anchor-heading icon-link" href="#identity-based-policies"></a></h4>
+<p>Identity-based policies are JSON permissions policy documents that control what actions an identity (users, groups of users, and roles) can perform, on which resources, and under what conditions.</p>
+<p>Identity-based policies can be either:</p>
+<ul>
+<li>Managed - standalone policies that can be attached to multiple users, groups and roles of the AWS account. They can either be managed by AWS or by the account holder.</li>
+<li>Inline - policies that get added directly to a single user, group or role (ie. one-to-one relationship).</li>
+</ul>
+<h4 id="resource-based-policies">Resource-based Policies<a aria-hidden="true" class="anchor-heading icon-link" href="#resource-based-policies"></a></h4>
+<p>JSON policy documents that we attach to a resource (e.g. S3 bucket)</p>
+<ul>
+<li>this grants the specified principal (ie. user/role) permission to perform specific actions on that resource and defines under what conditions this applies</li>
+</ul>
+<h2 id="gotchas">Gotchas<a aria-hidden="true" class="anchor-heading icon-link" href="#gotchas"></a></h2>
+<ul>
+<li>IAM role names and policy names exist at a global namespace (IAM namespace), so if we had <a href="/notes/OSdV9FvBG3wDbRNLllg0V">lambdas</a> in both us-east-1 and us-west-2 and wanted to create IAM policies for each, we'd have to name the policies/roles differently (e.g. add a region suffix).</li>
+</ul>
+<h3 id="aws-iam-vs-aws-iam-identity-center">AWS IAM vs AWS IAM Identity Center<a aria-hidden="true" class="anchor-heading icon-link" href="#aws-iam-vs-aws-iam-identity-center"></a></h3>
+<p>These are 2 different AWS console applications</p>
+<p><em>AWS IAM</em> manages access to AWS services and resources within an AWS account securely for entities (e.g. IAM users)</p>
+<p><em>AWS Identity Center</em> manages access to all AWS services and resources within an AWS organization, as well as access to other cloud applications, e.g., Salesforce.</p>
+<ul>
+<li>ideal for managing multiple AWS accounts</li>
+<li>This service is the successor to <em>AWS Single Sign-on</em></li>
+</ul>
+<h1 id="e-resources">E Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#e-resources"></a></h1>
+<p><a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id.html">AWS Docs</a></p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/ol133ebafijc4h508bqiz1e">AWS Regionality</a></li>
+<li><a href="/notes/mO2rzcwfMls7YDt3r3iGX">Data Source</a></li>
+<li><a href="/notes/C84fC8TYNY902iA8f7nCD">Terragrunt</a></li>
+<li><a href="/notes/T3myEQpNJczlAwIZCMpQB">Elastic Compute Cloud (EC2)</a></li>
+<li><a href="/notes/tn4qi4x8bodysdvtd5rq0f4">SAM</a></li>
+<li><a href="/notes/gn1dBCYys8bu5vIwxLQUV">Identity Federation</a></li>
+</ul>

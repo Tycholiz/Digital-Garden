@@ -1,0 +1,80 @@
+<h1 id="outer-join">Outer Join<a aria-hidden="true" class="anchor-heading icon-link" href="#outer-join"></a></h1>
+<p>When doing an inner join, if either table is unmatched by the other, then those rows will be excluded from the result set.</p>
+<ul>
+<li>Outer joins allow us to select rows from one table that may or may not have the corresponding rows in other tables.
+<ul>
+<li>a LEFT JOIN returns only the unmatched rows from the left table (the original table we are joining onto)
+<ul>
+<li>"get me all rows from the left table, even if there are no matching rows in the right table"</li>
+</ul>
+</li>
+<li>a RIGHT JOIN returns only the unmatched rows from the right table (the new table we are adding)</li>
+</ul>
+</li>
+<li>Making a LEFT JOIN and then putting a column from the outer table in the WHERE clause would give us an error, (spec): since that column would be unselectable.</li>
+</ul>
+<h3 id="example-songs-and-artists">Example: songs and artists<a aria-hidden="true" class="anchor-heading icon-link" href="#example-songs-and-artists"></a></h3>
+<p>Imagine we have songs and artists. Each song has 0 or more artists. This is possible because a song might not have an attributed author.</p>
+<p>Imagine we query the songs table, then left join artists. This would allow us a result set that includes all the songs without artist. If we had done an inner join, then the songs without an artist would not have ended up in the result set</p>
+<h2 id="left-outer-join">Left Outer Join<a aria-hidden="true" class="anchor-heading icon-link" href="#left-outer-join"></a></h2>
+<ul>
+<li>called <em>left outer</em> because the table on the left of the join operator will have each of its rows in the output at least once, whereas the table on the right will only have those rows output that match some row of the left table.
+<ul>
+<li>if there is not right-table match, a null value will be substituted in for right-table columns.</li>
+<li>a common way to distinguish the left and right side of the join is to use aliases</li>
+</ul>
+</li>
+<li>Left join semantics are to keep the whole result set of the table lexically on the left of the operator, and to fill-in the columns for the table on the right of the left join operator when some data is found that matches the join condition, otherwise using NULL as the column’s value.</li>
+<li>there are times when we do want to include data where there isn't a match (ex. there is no matching FK for a given PK between 2 tables of a corresponding row). In these cases, we have to use an OUTER JOIN.
+<ul>
+<li>ex. we are doing a left join on "bucket", and we have buckets in our db that have no nuggets. this would result in a <code>null</code> value for the "nugget" column associated with that row.
+<img src="/:/2af5c67cf5fb4b898d5323ce1cb0849b" alt="2890a1430af9f888455d50224e795554.png"></li>
+</ul>
+</li>
+<li>It's the LEFT or RIGHT keyword that makes the JOIN an "OUTER" JOIN
+<ul>
+<li>ie, all JOINs designated either LEFT or RIGHT are by definition OUTER JOINs</li>
+<li>We use LEFT, RIGHT or FULL to specify which table should have all of its rows returned, regardless of the condition being met.</li>
+</ul>
+</li>
+<li>the first table is the "left" table</li>
+<li>best practice is to avoid Right Outer Joins</li>
+<li>when joining tables, all rows inclded in the left table will show up on the new table, even if one of the cells is missing, as in prev. example.</li>
+<li>the left outer join starts selecting data from the left table. it compares the 2 values (specified after <code>ON</code>).
+<ul>
+<li>If they are equal, a new row is created that contains columns of both tables and adds the new row to the result set</li>
+<li>if they are not equal, a new row is still created, but the right table's columns will be filled with <code>null</code></li>
+<li>If we want, we can add a WHERE clause to this query to only return rows from the left table that do not having matching rows in the right table
+<ul>
+<li>this effectively cuts out the intersection from the venn diagram</li>
+<li>ex. <code>...WHERE tableb_col IS NULL;</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>if we made a venn diagram of table1 and table2, an outer join would give us the outer parts of the venn diagram Union.
+<ul>
+<li>we will get all of the rows of the left table, but only the "rows in common" that the right table has
+<ul>
+<li>ex. if the left table has <code>1</code>, <code>2</code>, <code>3</code>, those will always show up no matter what. If the right table has <code>2</code>, <code>3</code>, <code>4</code>, then only <code>2</code> and <code>3</code> will show up (the rest will be null)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Venn diagram illustrates the left join that returns rows from the left table that do not have matching rows from the right table:
+<img src="/:/69d6642385194490a8d62f93f8cf1bdb" alt="6457179c137a03db0dd9765c9cd6c988.png"></li>
+</ul>
+<h2 id="full-outer-join">Full Outer Join<a aria-hidden="true" class="anchor-heading icon-link" href="#full-outer-join"></a></h2>
+<ul>
+<li>returns a result set that contains all rows from both left and right tables, with the matching rows from both sides if available.
+<ul>
+<li>In case there is no match, the columns of the table will be filled with NULL.</li>
+</ul>
+</li>
+<li>similar to the above techniques using <code>WHERE</code> clause to cut out the intersection, we can do the same here
+<pre><code>- This would give us the rows from one table that do not have the corresponding rows in another table
+</code></pre>
+<img src="/:/56dbccd24a6d449fa4d6ba8a0427d96a" alt="9e04ed55193420bac12aa21a38c81141.png"></li>
+</ul>
+<h3 id="left-vs-right-join">Left vs Right Join<a aria-hidden="true" class="anchor-heading icon-link" href="#left-vs-right-join"></a></h3>
+<p>Imagine we have <code>paymnent_sources</code>, which has a <code>payment_method_id</code> column, and both <code>coupons</code> and <code>credit_cards</code> has also have a <code>payment_method_id</code> column. In other words, a payment_source can reference either a credit_card or a coupon. Let's say we want to query all payment_sources, including all credit_cards and coupons. We would <code>select from payment_sources</code>, then <code>left outer join</code> the credit_cards table and the coupons table. Therefore, <code>left join</code> is the concept of "I have a baseline group of records, and I want to get all attachments to that baseline, without caring about how each attachment relates to other attachements (e.g. credit_cards to coupons)</p>

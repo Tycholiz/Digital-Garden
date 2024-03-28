@@ -1,0 +1,39 @@
+<h1 id="controllers">Controllers<a aria-hidden="true" class="anchor-heading icon-link" href="#controllers"></a></h1>
+<p>Controllers are responsible for handling incoming requests and returning responses to the client.</p>
+<ul>
+<li>Controllers should only handle HTTP requests; delegating more complex tasks to providers</li>
+</ul>
+<p>Most often, providers are injected into controllers, allowing the controller the ability to call methods on the instantiated provider</p>
+<ul>
+<li>to do this, both the controller and the provider must be registered in the module</li>
+</ul>
+<p>The routing mechanism controls which controller receives which requests.</p>
+<p>Normally, each controller has more than one route, and different routes can perform different actions.</p>
+<ul>
+<li>in a REST api, <code>/customers</code> and <code>/products</code> would be 2 different controllers
+<ul>
+<li>ex. route path prefix implemented as <code>@Controller('customers')</code></li>
+</ul>
+</li>
+</ul>
+<p>The decorators (e.g. <code>@Controller</code>, <code>@Get</code>) associate classes with required metadata and enable Nest to create a routing map (which associates which requests belong with which controllers)</p>
+<p>Route handlers can either return a <a href="/notes/FVbSefFiCJPpdtkRRsogA">Promise</a> or an <a href="/notes/PwvObIRuk7dy0GXweZT0c">observable</a> stream:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token comment">// Promise approach</span>
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">Get</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">async</span> <span class="token function">findAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token known-class-name class-name">Promise</span><span class="token operator">&#x3C;</span><span class="token builtin">any</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  <span class="token keyword control-flow">return</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// Observable approach</span>
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">Get</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token function">findAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token maybe-class-name">Observable</span><span class="token operator">&#x3C;</span><span class="token builtin">any</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  <span class="token keyword control-flow">return</span> <span class="token keyword">of</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>If returning an observable stream, Nest will automatically subscribe to the source underneath and take the last emitted value (once the stream is completed)</p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/613syb18hb3v0u1ydvor7ru">Nestjs</a></li>
+<li><a href="/notes/oz006ng8c7qcbzg2ytasznj">Pipe</a></li>
+</ul>

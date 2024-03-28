@@ -1,0 +1,71 @@
+<h1 id="commit">Commit<a aria-hidden="true" class="anchor-heading icon-link" href="#commit"></a></h1>
+<p>A commit is the immutable state of a folder structure at a given point in time. It is a snapshot— not a diff</p>
+<ul>
+<li>There is a misconception that Git stores diffs, since we see diffs when using github, or using common commands like <code>git diff</code>. However, these diffs are dynamically generated, given 2 different commit snapshots. In fact, we can see a diff of any 2 commits. If Git stored diffs, we wouldn't be able to see a diff between 2 commits that are far apart from each other.
+<ul>
+<li>Under the hood, Git is comparing the root <a href="/notes/J9Z9E8d7dzzJA7BiOVy8W">trees</a> of each commit, and taking note of the paths that have different Object Ids
+<ul>
+<li>ex. if we have 2 commits and the only different is an edit made in the README, Git is able to get that diff by introspecting on the trees, and noticing that the objects representing that README file have different OIDs. When the OIDs do not match, it means they have different contents</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>You tell Git you want to save a snapshot of your project with <code>git commit</code> and it basically records a manifest of what all of the files in your project look like at that point</p>
+<pre><code>- Most of the git commands interact with those manifests in some way
+</code></pre>
+<p>We can think about Git as a tool for storing, comparing and merging snapshots of our project</p>
+<ul>
+<li>We can get a snapshot of an individual file with <code>git checkout &#x3C;Commit SHA> &#x3C;filename></code></li>
+<li>A snapshot is basically a commit</li>
+<li>Snapshot is to a repository as screenshot is to a video, since it represents one moment of time in that video</li>
+</ul>
+<h2 id="aheadbehind">Ahead/Behind<a aria-hidden="true" class="anchor-heading icon-link" href="#aheadbehind"></a></h2>
+<ul>
+<li>If your current branch is 3 commits <em>ahead</em> of master, it means the current branch has 3 commits that don't exist on master</li>
+<li>If the current branch is 3 commits <em>behind</em> master, it means there are 3 commits on master that don't exit on the current branch</li>
+<li>The ahead number tells you roughly how much impact the current branch will have on the base branch should it be merged.</li>
+<li>The behind number tells you how much work has happened on the base branch since this branch was started.
+<ul>
+<li>If the number is high, it's an indication that there will not be a clean merge. This would be a good time to merge master (or other base branch) into the current branch, which would bring the "behind" number to 0</li>
+</ul>
+</li>
+<li>In the follow diagram:
+<ul>
+<li>A is 2 commits behind and 0 commits ahead of B</li>
+<li>B is 0 commits behind and 2 commits ahead of A</li>
+<li>C is 1 commit behind and 2 commits ahead of A</li>
+<li>C is 3 commits behind and 2 commits ahead of B</li>
+</ul>
+</li>
+</ul>
+<p><img src="/assets/images/2021-03-06-16-45-56.png"></p>
+<h2 id="detached-state">Detached State<a aria-hidden="true" class="anchor-heading icon-link" href="#detached-state"></a></h2>
+<ul>
+<li>Occurs when we check out a commit or a remote branch, as opposed to a local branch.
+<ul>
+<li>Put another way, any ref that does not originate from your line of commits (and would thus be unable to trace any sort of history with the code you'd been working on)</li>
+</ul>
+</li>
+<li>If we were to develop in detached mode then try to merge it into master, git would complain to us, because by definition, detached mode means there is no path to get back into master. (ie. there is no way to reference that feature "branch")</li>
+</ul>
+<h2 id="fast-forward-commit">Fast-Forward commit<a aria-hidden="true" class="anchor-heading icon-link" href="#fast-forward-commit"></a></h2>
+<ul>
+<li>Occurs when we tell git to merge our feature branch into master, but git realizes that there are no 2 branches to merge, but instead the master just needs to be brought up to speed to the current feature branch. This is known as <em>fast-forwarding</em></li>
+<li>effectively what is happening is Git engine is moving the current branch tip up to the target branch tip.</li>
+<li>If the tip of master hasn't moved since we branched off, no merge commit will be made. The HEAD will simply move to the most recent commit of the feature branch.
+<ul>
+<li>In a ff merge scenario, since the master has not changed since we branched, a "merging/melding" of branches is not relevant here.</li>
+</ul>
+</li>
+</ul>
+<h3 id="forcing-a-ff-merge">Forcing a FF Merge<a aria-hidden="true" class="anchor-heading icon-link" href="#forcing-a-ff-merge"></a></h3>
+<p>This ff may not be desirable. Imagine we want to merge in a branch called <em>oauth</em>. This is a pretty significant feature, and we'd like to keep the branch in our history. This is a scenario where we can merge with <code>--no-ff</code>.</p>
+<p><img src="/:/5edfa6a1c2a4442faff1e60705f87d32" alt="240d716cd6708b64cbefb47f30773132.png"></p>
+<ul>
+<li><strong><em>non fast-forwarding</em></strong> (a.k.a <em>3 way merge</em>) ex. - we create a feature branch from master. We do some work on feature, then decide to merge into master. Since we had branched off from master, other feature branches have been merged into master. This means the git engine has to figure out how to <em>merge</em> the master branch (which is now different from how our feature remembers it) and our feature branch.
+<ul>
+<li>If this were a <em>fast-forward merge</em>, then there would have been no merges into master during the time that our feature branch existed.</li>
+</ul>
+</li>
+</ul>

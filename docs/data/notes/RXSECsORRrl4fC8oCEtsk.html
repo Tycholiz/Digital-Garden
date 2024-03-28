@@ -1,0 +1,15 @@
+<h1 id="access-token">Access Token<a aria-hidden="true" class="anchor-heading icon-link" href="#access-token"></a></h1>
+<p>An access token is used to inform an API that the bearer of the token has been authorized to access the API</p>
+<p>The access token doesn't have any concept of sessions. All it cares about is user information. If we are leaving out refresh tokens, then we would only care if the user has an access token or not. If they do, then we trust that they are who they say they are, and we allow access.</p>
+<p>The access token contains only the session ID and the user ID, and it expires when the user closes that browser window.</p>
+<p>Access tokens are typically short lived (compared to the typically longer-lived <a href="/notes/Pp08kttb1g4TIC3R5Lt06">Refresh Token</a>)</p>
+<ul>
+<li>the benefit here is that if the access token is intercepted, the damage can be limited, since the token will expire imminently.</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/0NyqVKRyLLG6J1NDvFX5k">Session</a></li>
+<li><a href="/notes/6s5Oh0DUcMsShcFrmDaBK">JWT</a></li>
+<li><a href="/notes/Pp08kttb1g4TIC3R5Lt06">Refresh Token</a></li>
+</ul>

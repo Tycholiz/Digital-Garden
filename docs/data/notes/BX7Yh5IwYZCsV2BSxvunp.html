@@ -1,0 +1,50 @@
+<h1 id="service-oriented-architecture">Service-Oriented Architecture<a aria-hidden="true" class="anchor-heading icon-link" href="#service-oriented-architecture"></a></h1>
+<p>SOA is kind of a precursor to microservices. Microservices solved a lot of issues that SOA had, such as their heavy weight.</p>
+<p>SOA is well suited in an environment where services are provided between software components using a communication protocol (like HTTP).</p>
+<p>Service orientation is a way of thinking in terms of services and the outcomes of those services.</p>
+<p>There are 4 properties of a service:</p>
+<ol>
+<li>It logically represents a repeatable business activity with a specified outcome</li>
+<li>It is self contained.</li>
+<li>Those who consume the service view it as a black box.</li>
+<li>The service may be composed of other services.</li>
+</ol>
+<h3 id="service-mesh">Service Mesh<a aria-hidden="true" class="anchor-heading icon-link" href="#service-mesh"></a></h3>
+<p>A SOA architecture may employ a Service Mesh, which is a dedicated infrastructure layer for facilitating service-to-service communication.</p>
+<p>The service mesh uses a proxy</p>
+<p>The service mesh can provide some benefits, such as:</p>
+<ul>
+<li>provide observability into communications (ie. system monitoring)</li>
+<li>provide secure connections</li>
+<li>automating retries</li>
+</ul>
+<p>A service mesh consists of network proxies paired with each service, along with a set of task management processes.</p>
+<ul>
+<li>proxies are known as the Data Plane.
+<ul>
+<li>Data plane intercepts calls between different services and processes them</li>
+</ul>
+</li>
+<li>management processes known as Control Plane.
+<ul>
+<li>Control plane is the brain of the mesh that coordinates behaviour of proxies and provides APIs for operations personnel to manipulate and observe the entire network.</li>
+</ul>
+</li>
+</ul>
+<p><a href="https://www.ibm.com/cloud/blog/soa-vs-microservices">Difference between SOA and microservices</a></p>
+<h1 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h1>
+<p><a href="https://www.infoq.com/articles/SOA-anti-patterns/">Anti-patterns in SOA</a></p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/csPOCpGsdV9SQed4lZyWh">Enterprise Service Bus</a></li>
+<li><a href="/notes/ffzLi2LmzZDiaqhpuOUDh">Rules Engine</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/D40foBDBtVWxx0BmKPDLJ">Event-driven Architecture</a></li>
+<li><a href="/notes/4JrFhUJpywlucgow6EX7j">Microservice</a></li>
+<li><a href="/notes/3MvwNqq5SfLk55OoIdqkH">Integration Testing</a></li>
+<li><a href="/notes/csPOCpGsdV9SQed4lZyWh">Enterprise Service Bus</a></li>
+</ul>

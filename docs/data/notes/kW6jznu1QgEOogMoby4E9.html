@@ -1,0 +1,32 @@
+<h1 id="distributed-cache">Distributed Cache<a aria-hidden="true" class="anchor-heading icon-link" href="#distributed-cache"></a></h1>
+<p>Distributed <a href="/notes/8swgk5qh3sy2b9kkfuwx3uu">caches</a> take advantage of the <em>locality of reference principle</em>: recently requested data is likely to be requested again.</p>
+<h4 id="shopping-cart-example">Shopping cart example<a aria-hidden="true" class="anchor-heading icon-link" href="#shopping-cart-example"></a></h4>
+<p>Let's say User1 adds 5 different things in their shopping cart. The inventory count of those items are cached in Redis or Memcached.</p>
+<p>While the user is checking out, a Manual Inventory has been completed and gets loaded into the system. A manual inventory is the result of someone walking through a warehouse and counting items by hand. They discover that there are actually zero of a certain item that happens to be in User1's digital cart. The inventory person obviously doesn't know that.</p>
+<p>User1 pays for the items that the system says they still have inventory for. Ideally, an error occurs as the purchasing system attempts to move a number of items from "in stock" to "sold", as there are actually none "in stock". This happens a lot when one item is next to another item and they have very similar packaging. Warehouse employees will accidentally ship the wrong item. If the cart checkout code was less defensive, it may just set a negative "in stock" value and the company would have a more serious problem of selling something they didn't own.</p>
+<p>Hopefully, the person who wrote the Manual Inventory Entry code knows about the caching that the shopping cart does and sends them some sort of message that "inventory has been updated. Please invalidate these cache entries." But that requires that they know exactly what is being cached and how it's being cached; otherwise they may not give the right information to ensure that data is being invalidated. ie- "Please invalidate the following SKU's - " vs "Please invalidate all SKU's associated with Vendor XYZ".</p>
+<h3 id="when-to-cache">When to cache<a aria-hidden="true" class="anchor-heading icon-link" href="#when-to-cache"></a></h3>
+<ul>
+<li>We don't want to cache many keys that change continuously.</li>
+<li>We don't want to cache many keys that are requested very rarely.</li>
+<li>We want to cache keys that are requested often and change at a reasonable rate. For an example of key not changing at a reasonable rate, think at a global counter that is continuously incremented.</li>
+</ul>
+<h2 id="parameter-cache-requirements">Parameter cache requirements<a aria-hidden="true" class="anchor-heading icon-link" href="#parameter-cache-requirements"></a></h2>
+<h3 id="cache-memory">Cache memory<a aria-hidden="true" class="anchor-heading icon-link" href="#cache-memory"></a></h3>
+<p>How much cache memory should we have? We can start with 20% of daily traffic and, based on clients’ usage patterns, we can adjust how many cache servers we need.</p>
+<ul>
+<li>Alternatively, we can use a couple of smaller servers to store all the cached data.</li>
+<li>Since a modern-day server can have 256GB of memory, we can easily fit all the cache into one machine.</li>
+</ul>
+<h2 id="examples">Examples<a aria-hidden="true" class="anchor-heading icon-link" href="#examples"></a></h2>
+<ul>
+<li><a href="/notes/gWAg15uBJgkS2B0wcpMAa">Redis</a></li>
+<li>Memcached</li>
+<li>Riak</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/mytCOts26Pidush65tdRW">DNS</a></li>
+<li><a href="/notes/VNbeSk3PfO4gigzuwv2UZ">CDN</a></li>
+</ul>

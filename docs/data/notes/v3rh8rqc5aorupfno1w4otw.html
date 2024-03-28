@@ -1,0 +1,101 @@
+<h1 id="functions">Functions<a aria-hidden="true" class="anchor-heading icon-link" href="#functions"></a></h1>
+<h3 id="activation-function">Activation Function<a aria-hidden="true" class="anchor-heading icon-link" href="#activation-function"></a></h3>
+<p>The activation function is used to determine the output of the neuron. It's called an activation function, because the result is either that the neuron lights up, or it doesn't.</p>
+<p>Each hidden layer has its own activation function, which passes information from the previous layer into the next one.</p>
+<ul>
+<li>Once all the outputs from the hidden layers are generated, then they are used as inputs to calculate the final output of the neural network</li>
+</ul>
+<p>The activation function of a current node is applied to the weighted sum of all nodes of the previous layer to that current node, plus the bias. That is:</p>
+<p>activation of a node <span class="math math-inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>=</mo><mi>σ</mi><mo stretchy="false">(</mo><msub><mi>w</mi><mn>1</mn></msub><msub><mi>a</mi><mn>1</mn></msub><mo>+</mo><msub><mi>w</mi><mn>2</mn></msub><msub><mi>a</mi><mn>2</mn></msub><mo>+</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo>+</mo><msub><mi>w</mi><mi>n</mi></msub><msub><mi>a</mi><mi>n</mi></msub><mo>+</mo><mi>b</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">= \sigma(w_{1}a_{1} + w_{2}a_{2} +...+ w_{n}a_{n} + b)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0269em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0269em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">...</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0269em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">b</span><span class="mclose">)</span></span></span></span></span></p>
+<ul>
+<li><span class="math math-inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>σ</mi></mrow><annotation encoding="application/x-tex">\sigma</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span></span></span></span></span> - activation function (e.g. Sigmoid, ReLU)</li>
+<li><span class="math math-inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi></mrow><annotation encoding="application/x-tex">w</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span></span></span></span></span> - weight of connection</li>
+<li><span class="math math-inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">a</span></span></span></span></span> - activation level of previous layer's node</li>
+<li><span class="math math-inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi></mrow><annotation encoding="application/x-tex">b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span></span></span></span></span> - bias</li>
+</ul>
+<p>The most common activation function is <em>ReLU</em>, but historically <em>Sigmoid</em> was also used.</p>
+<p>The Activation Functions can be basically divided into 2 types:</p>
+<ol>
+<li>Linear Activation Function</li>
+<li>Non-linear Activation Functions
+<ul>
+<li>most common</li>
+</ul>
+</li>
+</ol>
+<h3 id="loss-function-aka-cost-functionerror-function">Loss Function (a.k.a Cost Function/Error Function)<a aria-hidden="true" class="anchor-heading icon-link" href="#loss-function-aka-cost-functionerror-function"></a></h3>
+<p>A loss function tells us how far off the output of a neural network is from the real-world expectation. As a result, the purpose is to tell us how well the neural network is performing and provide a value that can be used to update the model's parameters during the training process.</p>
+<p>Loss functions enable the model to learn from the training data by minimizing the discrepancy between predictions and ground truth.</p>
+<ul>
+<li>By iteratively adjusting the model's parameters to minimize the loss function, the model improves its ability to make accurate predictions.</li>
+</ul>
+<p>The goal during training is to minimize the output of the loss function by adjusting the model's parameters.</p>
+<p>To get the value of the loss function, for each output node, we take the difference between its activation value and the value we expected to have, square it, then add them all up.</p>
+<ul>
+<li>the closer the result is to ideal, the lower the sum will be.</li>
+</ul>
+<p>In the below example, the results of the model are shown in the yellow-outlined layer. We see that the model incorrectly predicted the number <span class="math math-inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn></mrow><annotation encoding="application/x-tex">3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">3</span></span></span></span></span>, thereby resulting in a high value from the loss function.
+<img src="/assets/images/2023-08-11-21-21-27.png"></p>
+<p>It's important to remember that this loss function involves an average over all of the training data, meaning if we minimize the output of the function, it means it's a better performance on all of that sample data.</p>
+<p>When we talk about a network "learning", all we mean is that the network is just minimizing the output of its loss function.</p>
+<p>The loss function takes as input all the weights/biases of the network's neurons, and outputs a single number (the measure of how effective the model was)</p>
+<p>The gradient of the loss function tells us how to alter the weights/biases cause the fastest change to the output of the loss function</p>
+<ul>
+<li>in other words, it answers the question "which changes to which weights matter the most?"</li>
+</ul>
+<p>In Pytorch, the term <em>criterion</em> may be used to refer to a loss function.</p>
+<p>Loss functions</p>
+<ul>
+<li>Mean Absolute Error &#x26; Mean Square Error - used for regression problems (therefore, predicting a number)</li>
+<li>Cross Entropy Loss - used with classification problems</li>
+</ul>
+<h4 id="mean-absolute-error-mae">Mean Absolute Error (MAE)<a aria-hidden="true" class="anchor-heading icon-link" href="#mean-absolute-error-mae"></a></h4>
+<p>The below image shows the first stage of our model. It gives us:</p>
+<ul>
+<li>our training data (blue)</li>
+<li>our ideal testing data (green), ie. what the model should ideally predict</li>
+<li>our initial (random) prediction
+<img src="/assets/images/2023-08-19-18-12-05.png"></li>
+</ul>
+<p>If we were using a Mean Absolute Error loss function, what we would essentially do is get the distance between each red dot and its corresponding green dot (say the first is 0.4 difference), then get the mean of that difference amongst all of the dots. This would be our Mean Absolute Error, and the result of our loss function.</p>
+<ul>
+<li>note: In <a href="/notes/i2it5id8qwtg27n4usg8bo1">Pytorch</a>, the MAE loss function is <a href="https://pytorch.org/docs/stable/generated/torch.nn.L1Loss.html">nn.L1Loss</a></li>
+</ul>
+<h3 id="optimization-algorithm-aka-optimizer">Optimization Algorithm (a.k.a Optimizer)<a aria-hidden="true" class="anchor-heading icon-link" href="#optimization-algorithm-aka-optimizer"></a></h3>
+<p>The optimization algorithm is responsible for updating the model's parameters iteratively based on the gradients of the loss function.</p>
+<p>The optimization algorithm aims to find the set of parameter values that minimizes the <em>loss function</em>, leading to improved model performance.</p>
+<p>The loss function and optimization algorithm work hand in hand during training. The loss function provides a measure of how well the model is doing, and the optimization algorithm guides the updates of the model's parameters to minimize the loss function.</p>
+<h4 id="gradient-descent">Gradient Descent<a aria-hidden="true" class="anchor-heading icon-link" href="#gradient-descent"></a></h4>
+<p>Gradient descent is an example of an optimization function.</p>
+<ul>
+<li>The main objective of gradient descent is to find the parameters (like the weights in a neural network) that minimize the loss function.</li>
+</ul>
+<p>Gradient descent is the process of repeatedly nudging an input of a function by some multiple of the negative gradient, and it's a way to converge upon some local minimum of a loss function (demonstrated as a valley in the graph below).</p>
+<p><img src="/assets/images/2023-08-11-21-36-24.png"></p>
+<p>An important note to understand about gradients is that it is reasonably easy to find a local lowest point, but it is difficult to find the global lowest point.</p>
+<h4 id="hyperparameters">Hyperparameters<a aria-hidden="true" class="anchor-heading icon-link" href="#hyperparameters"></a></h4>
+<p>see <a href="/notes/r9fy49qm440b41yo8sqfwz5#hyperparameter">Hyperparameters</a></p>
+<ul>
+<li><em>Learning Rate</em> - the higher the learning rate, the more it adjusts each of the model's parameters with each iteration of the model (ie. each time the optimization function gets called)</li>
+</ul>
+<h3 id="backpropagation">Backpropagation<a aria-hidden="true" class="anchor-heading icon-link" href="#backpropagation"></a></h3>
+<p>Backpropagation is the algorithm used in supervised learning for computing the gradient efficiently. This is effectively the heart of how a neural network learns.</p>
+<ul>
+<li>It involves calculating the gradients of the loss with respect to the network's parameters (weights and biases). 
+<ul>
+<li>This is achieved by applying the chain rule of calculus. </li>
+</ul>
+</li>
+<li>The gradients tell us how much each parameter should be adjusted to minimize the loss.</li>
+</ul>
+<p>Given a <a href="/notes/k4ib1hhlkmzcrfx8vljz7sg">neural network</a> and a loss function, the backpropagation calculates the gradient of the error function with respect to the neural network's weights.</p>
+<ul>
+<li>it does this by performing a backward pass to adjust the network model's parameters, aiming to minimize the mean squared error (MSE).</li>
+</ul>
+<p>The "backwards" part of the name stems from the fact that calculation of the gradient proceeds backwards through the network, with the gradient of the final layer of weights being calculated first and the gradient of the first layer of weights being calculated last.</p>
+<p>Backpropagation is short for "backward propagation of errors"</p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/03o3n0hz9v9jtb7j889zpd4">Machine Learning</a></li>
+</ul>

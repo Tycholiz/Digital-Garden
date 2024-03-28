@@ -1,0 +1,24 @@
+<h1 id="methods">Methods<a aria-hidden="true" class="anchor-heading icon-link" href="#methods"></a></h1>
+<h3 id="getinitialprops"><code>getInitialProps</code><a aria-hidden="true" class="anchor-heading icon-link" href="#getinitialprops"></a></h3>
+<p>This function is called and returns props to the react component before rendering the templates in <code>/pages</code>. This is a perfect place for fetching the data you want for a page.</p>
+<p><code>getInitialProps</code> works only in files in the pages folder and are used for routing, i.e it will not be called for react components that are included in these pages</p>
+<p>Adding a custom getInitialProps in your <code>_app.js</code> will disable Automatic Static Optimization in pages without Static Generation.</p>
+<h3 id="getserversideprops"><code>getServerSideProps</code><a aria-hidden="true" class="anchor-heading icon-link" href="#getserversideprops"></a></h3>
+<p>When we specify this function, the Nextjs server will pre-render the html <strong>on each request</strong> before returning it to the client</p>
+<ul>
+<li>Inside <code>getServerSideProps</code>, you can fetch data, perform server-side operations, or do anything you need to prepare the page's data.</li>
+</ul>
+<p><code>getServerSideProps</code> returns JSON which will be used to render the page.</p>
+<p>Use <code>getServerSideProps</code> only if you need to render a page whose data must be fetched at request time.</p>
+<ul>
+<li>If you do not need to render the data during the request, then you should consider fetching data on the client side or <code>getStaticProps</code>.</li>
+</ul>
+<ol>
+<li>When a user makes a request to a page with <code>getServerSideProps</code>, the Next.js server executes this function on the server.</li>
+<li>The data you fetch inside the function is then used to pre-render the page's HTML on the server, including the initial data.</li>
+<li>The fully rendered HTML page is sent as a response to the client's browser.
+<ul>
+<li>When the client's browser receives the HTML, it can display the page immediately without needing to wait for client-side JavaScript to load and render the content.</li>
+</ul>
+</li>
+</ol>

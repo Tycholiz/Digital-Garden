@@ -1,0 +1,90 @@
+<h1 id="variables">Variables<a aria-hidden="true" class="anchor-heading icon-link" href="#variables"></a></h1>
+<p>A variable is set at runtime, allowing us to vary Terraform's behaviour. </p>
+<ul>
+<li>Therefore, if Terraform were a function, a variable would be an input to the function.</li>
+<li>note: not to be confused with <code>locals</code>, which themselves are actually more like variables as used in general programming</li>
+</ul>
+<pre class="language-hcl"><code class="language-hcl"><span class="token keyword">variable<span class="token type variable"> "bucket_name" </span></span><span class="token punctuation">{</span>
+    <span class="token property">type</span> <span class="token punctuation">=</span> string
+    <span class="token comment"># describe what this variable is used for</span>
+    <span class="token property">description</span> <span class="token punctuation">=</span> <span class="token string">"the name of the bucket we are creating"</span>
+    <span class="token property">default</span> <span class="token punctuation">=</span> <span class="token string">"default_bucket_name"</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">resource <span class="token type variable">"aws_s3_bucket"</span></span> <span class="token string">"bucket"</span> <span class="token punctuation">{</span>
+    <span class="token property">bucket</span> <span class="token punctuation">=</span> var.bucket_name
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Variables can be more complex too:</p>
+<pre class="language-tfvars"><code class="language-tfvars">instance_map = {
+    dev = "t3.small"
+    test = "t3.medium"
+    prod = "t3.large"
+}
+
+environment_type = "dev"
+</code></pre>
+<p>And referenced like:</p>
+<pre class="language-hcl"><code class="language-hcl"><span class="token keyword">variable<span class="token type variable"> "instance_map" </span></span><span class="token punctuation">{</span>
+    <span class="token property">type</span> <span class="token punctuation">=</span> map(string)
+<span class="token punctuation">}</span>
+<span class="token keyword">variable<span class="token type variable"> "environment_type" </span></span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+<span class="token keyword">output<span class="token type variable"> "selected_instance" </span></span><span class="token punctuation">{</span>
+    <span class="token property">value</span> <span class="token punctuation">=</span> var.instance_map<span class="token punctuation">[</span>var.environment_type<span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h4 id="types">Types<a aria-hidden="true" class="anchor-heading icon-link" href="#types"></a></h4>
+<ul>
+<li><code>string</code></li>
+<li><code>bool</code></li>
+<li><code>number</code></li>
+<li><code>list(&#x3C;TYPE>)</code></li>
+<li><code>set(&#x3C;TYPE>)</code>
+<ul>
+<li>each value is unique</li>
+</ul>
+</li>
+<li><code>map(&#x3C;TYPE>)</code></li>
+<li><code>object()</code>
+<ul>
+<li>like a map, but values can be different types</li>
+</ul>
+</li>
+<li><code>tuple([&#x3C;TYPE>, …])</code>
+<ul>
+<li>number of values and order is preserved</li>
+</ul>
+</li>
+<li><code>any</code>
+<ul>
+<li>unlike <code>any</code> type from <a href="/notes/S2sBltrPfd8a7ICuD7CuH">Typescript</a>; this <code>any</code> allows Terraform to infer based on the actual value.</li>
+</ul>
+</li>
+</ul>
+<h4 id="providing-variables-4-ways">Providing variables (4 ways)<a aria-hidden="true" class="anchor-heading icon-link" href="#providing-variables-4-ways"></a></h4>
+<ol>
+<li>
+<p>When we run <code>terraform init</code> and <code>terraform apply</code>, we will be prompted to provide a value for the variable(s).</p>
+</li>
+<li>
+<p>pass the value with:</p>
+</li>
+</ol>
+<pre class="language-sh"><code class="language-sh">terraform apply -var bucket_name=my_bucket
+</code></pre>
+<ol start="3">
+<li><code>export</code> environment variables in the terminal prefixed with <code>TF_VAR_</code>:</li>
+</ol>
+<pre class="language-sh"><code class="language-sh">export TF_VAR_bucket_name=my_bucket
+</code></pre>
+<ol start="4">
+<li>create a <code>terraform.tfvars</code> file (or <code>&#x3C;ANYNAME>.auto.tfvars</code>):</li>
+</ol>
+<pre class="language-tfvars"><code class="language-tfvars">bucket_name = "my_bucket"
+</code></pre>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/Ku1OgHMhELajzo61Gx7ye">Terraform</a></li>
+</ul>

@@ -1,0 +1,26 @@
+<h1 id="cloudflare-workers">Cloudflare Workers<a aria-hidden="true" class="anchor-heading icon-link" href="#cloudflare-workers"></a></h1>
+<p>Cloudflare workers are serverless functions that allow us to intercept HTTP requests (and run code before the request hits the server, and before the response reaches the client).</p>
+<p>There are notable differences with serverless functions:</p>
+<ul>
+<li>Workers run on the edge. This means that they are available on a number of Cloudflare servers around the world so your user will get the lowest possible latency. This is not how cloud functions usually work. For example in AWS you have Lambda and Lambda at Edge.</li>
+<li>Since workers are running in Cloudflare's infrastructure they have access to some unique API to interact with the CDN and caching which is the main Cloudflare product. So you can receive a request to your worker and then decide "hey, put this image in the cache for next time".</li>
+<li>Workers have access to a Key Value (KV) store which is storing data on the edge.</li>
+</ul>
+<p>Workers runs code on Cloudflare's edge. And each Worker is assigned to at least one HTTP endpoint. So these are scripts that live ~10ms away from most users and can be updated globally easily.</p>
+<p>Cloudflare workers run their own version of Javascript, not <a href="/notes/5iC7cpurvsTcO6WDflzOZ">Node</a></p>
+<ul>
+<li>The API is almost the same as the web workers API</li>
+</ul>
+<p>ex. Workers can be used to apply http headers if you use a serverless setup for hosting.
+ex. You can host every static website / react SPA on cloudfare workers
+ex. You can use workers to inject headers into responses without having to change Nginx configs</p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/9qIHgFUT1inWQGyWFX8R4">Cloudflare Workers Key-Value Storage</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/nRb6Im4Kcmc2ZWE7K1jZ1">Serverless Framework</a></li>
+</ul>

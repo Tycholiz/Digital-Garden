@@ -1,0 +1,22 @@
+<h1 id="state-machine">State Machine<a aria-hidden="true" class="anchor-heading icon-link" href="#state-machine"></a></h1>
+<p>A state machine is a directed graph where nodes represent all possible states of a view or of the whole app, and where edges represent possible transitions between the states.</p>
+<p>State machines are particularly useful when the state is very complex and involves multiple transitions.</p>
+<p>Turnstile:
+<img src="/assets/images/2021-10-27-09-53-05.png"></p>
+<p>An arrow between two nodes means that it’s possible to go through one state to another via some action. All non-listed transitions are not possible. There can be a meaningful transition from a state to the same state that is marked by a circular arrow.</p>
+<p>Here is a state machine for the storage of fetched data that is to be stored in the browser
+<img src="/assets/images/2021-10-27-09-56-33.png"></p>
+<p>There are four states:</p>
+<ul>
+<li>empty - fetching has not started yet or has been canceled</li>
+<li>loading - fetching is in progress</li>
+<li>withData - fetching was successful</li>
+<li>error - fetching failed</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/8btni2bf5ybjfvpt6b5d0im">Circuit Breaker</a></li>
+<li><a href="/notes/xJFdoZNS6TJLVe94X8ntK">Discriminated Union</a></li>
+<li><a href="/notes/ZfTggwHvmu70ISoNdC3QV">Animator</a></li>
+</ul>

@@ -1,0 +1,58 @@
+<h1 id="dns">DNS<a aria-hidden="true" class="anchor-heading icon-link" href="#dns"></a></h1>
+<h2 id="what-is-it">What is it?<a aria-hidden="true" class="anchor-heading icon-link" href="#what-is-it"></a></h2>
+<p>DNS can be thought of as a directory service for the internet.</p>
+<ul>
+<li>Consider that a real-life directory service works like this: You have the name of someone, and you consult an agent to get "directions" (or a phone number) on how to reach them. A DNS is a similar entity which when given a domain name, can give us the IP address that it represents.</li>
+<li>DNS is used by virtually all inter-networking software, including <a href="/notes/0jxgntiLNHWFuCbzqtFGF">email</a>, <a href="/notes/squwLesfbBb0bxWjzGf2O">ssh</a>, <a href="/notes/0bPog4QVihVwPQgSlUbvV">FTP programs</a>, and <a href="/notes/nMCtMXVvjBsJk3iw1zoIO">browsers</a></li>
+<li>DNS is essentially made up of geo-replicated caches</li>
+</ul>
+<p>The DNS is a <a title="Private" href="https://wiki.dendron.so/notes/hfyvYGJZQiUwQaaxQO27q.html" target="_blank" class="private">distributed database (Private)</a>. The management of host information is split among many sites and organizations</p>
+<ul>
+<li>You don’t need to submit your data to some central site or periodically retrieve copies of the "master" database. You simply make sure your section (called a <a href="/notes/rKwvAx3SP99In467imzlg">zone</a>) is up to date on your <a href="/notes/O6qGBZUWwgsnOyTDdvSAK">nameservers</a>.</li>
+<li>This structure allows local control of the segments of the overall database, yet data in each segment is available across the entire network through a client/server scheme.</li>
+<li><a href="/notes/gKVIPNGV7duiD0yRnld8J">replication</a> and <a href="/notes/kW6jznu1QgEOogMoby4E9">caching</a> is used to achieve robustness and high performance.</li>
+</ul>
+<p>The DNS can be thought of the administrative assistant of the internet. It carries all the administrative responsibility of making things work, albeit behind the scenes. </p>
+<p>The DNS is made up of Internet nameservers and a communication protocol</p>
+<p>note: There is no way to specify port numbers in DNS. If you are running a website, your server must respond to HTTP requests on port 80</p>
+<h2 id="why-use-it">why use it?<a aria-hidden="true" class="anchor-heading icon-link" href="#why-use-it"></a></h2>
+<p>If it were just us, we could keep a simple key-value storage on our computer of IP addresses and domain names. </p>
+<ul>
+<li>The DNS system takes this simple concept and makes it remotely accessibly to anyone on the internet.</li>
+<li>in reality, more than just the IP is stored in the <a href="/notes/k2zer05sauofvckrz99agvh">DNS Database</a>. Also included is information about mail routing, etc.</li>
+</ul>
+<p>DNS illustrates how a piece of core network functionality (network-name to network-address translation) can be implemented at the application layer of the internet.</p>
+<h2 id="history">History<a aria-hidden="true" class="anchor-heading icon-link" href="#history"></a></h2>
+<p>DNS is based on a distributed database that takes time to update globally. In the early internet days, the database (a simple <code>HOSTS.txt</code> file) was small and could be updated by hand. As the internet grew, this became unfeasible, so a new management structure was introduced: the concept of <em>domain name registrars</em>. The idea was that the updates to the database would be handled by the registrars</p>
+<ul>
+<li>nowadays, when you make updates to domain name management settings, the registrar will push out the updated information to other DNS servers. </li>
+</ul>
+<h1 id="resources">Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#resources"></a></h1>
+<p><a href="https://shapeshed.com/unix-traceroute/">https://shapeshed.com/unix-traceroute/</a>
+<a href="https://activedirectorypro.com/dns-best-practices/#dns-aging-scavenging">https://activedirectorypro.com/dns-best-practices/#dns-aging-scavenging</a></p>
+<h1 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h1>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/DNS_sinkhole">DNS sinkhole</a></li>
+<li><a href="https://howdns.works/">How DNS works guide</a></li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/cxev6kbbx8vnx57fyeufe8g">BIND</a></li>
+<li><a href="/notes/bbKda8RUhMyba10WiIZYg">Cook</a></li>
+<li><a href="/notes/m6HlZrr2gNEVu8WLvEEaJ">DNS Cache</a></li>
+<li><a href="/notes/k2zer05sauofvckrz99agvh">DNS Database</a></li>
+<li><a href="/notes/9VuipvwFAqnEagcLCxomI">DNS Lookup</a></li>
+<li><a href="/notes/O6qGBZUWwgsnOyTDdvSAK">DNS Nameservers</a></li>
+<li><a href="/notes/TALpAZmsruqyoUkJzegVv">DNS Records</a></li>
+<li><a href="/notes/uQ1OlrkssyoguJ6mCM7hj">DNS Resolver</a></li>
+<li><a href="/notes/nu4jr5d094zri5ni0kw247w">Domain</a></li>
+<li><a href="/notes/i8iYUbFDztECu3XVddUAo">Domain Name Registry</a></li>
+<li><a href="/notes/xHF5lUf0BM77RbUxbSN86">Dynamic DNS</a></li>
+<li><a href="/notes/iwxx526gnnaqe29f8j5lplb">Nslookup</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/cmdTAwLkVkTxP7JsFC8jN">Route53</a></li>
+</ul>

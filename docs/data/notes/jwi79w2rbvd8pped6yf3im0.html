@@ -1,0 +1,62 @@
+<h1 id="streams">Streams<a aria-hidden="true" class="anchor-heading icon-link" href="#streams"></a></h1>
+<p>Large swathes of the web platform are built on streaming data</p>
+<ul>
+<li>that is, data that is created, processed, and consumed in an incremental fashion, without ever reading all of it into memory.</li>
+<li>the web has the Streams Standard which provides a common set of APIs for creating and interfacing with such streaming data, embodied in <em>readable streams</em>, <em>writable streams</em>, and <em>transform streams</em> (which consist of both a readable stream and a writable stream).
+<ul>
+<li>these APIs are designed to efficiently map to low-level I/O primitives</li>
+<li>they allow us to efficiently compose streams together into <em>pipe chains</em></li>
+</ul>
+</li>
+</ul>
+<p>Streams are primarily used by piping them to each other.</p>
+<h2 id="source">Source<a aria-hidden="true" class="anchor-heading icon-link" href="#source"></a></h2>
+<h3 id="underlying-source">Underlying Source<a aria-hidden="true" class="anchor-heading icon-link" href="#underlying-source"></a></h3>
+<p>The underlying source is a lower-level I/O source. Most readable streams will wrap the underlying source.</p>
+<p>There are two types of underlying source: <em>push sources</em> and <em>pull sources</em>. </p>
+<h4 id="push-source">Push Source<a aria-hidden="true" class="anchor-heading icon-link" href="#push-source"></a></h4>
+<p>Push sources push data at you, whether or not you are listening for it. </p>
+<ul>
+<li>They may also provide a mechanism for pausing and resuming the flow of data. </li>
+<li>ex. a <a href="/notes/d2e2hSjyVoKd0AmH4P1Yj">TCP</a> socket, where data is constantly being pushed from the <a href="/notes/ZaTr28eWk1DrXOEsc1YVb">Operating System</a> level, at a rate that can be controlled by changing the TCP window size.</li>
+</ul>
+<h4 id="pull-source">Pull Source<a aria-hidden="true" class="anchor-heading icon-link" href="#pull-source"></a></h4>
+<p>Pull sources require you to request data from them. </p>
+<ul>
+<li>The data may be available synchronously 
+<ul>
+<li>e.g. if it is held by the operating system’s in-memory buffers, or asynchronously, </li>
+<li>e.g. if it has to be read from disk. </li>
+</ul>
+</li>
+<li>ex. a file handle is a pull source, where you seek to specific locations and read specific amounts.</li>
+</ul>
+<h3 id="readable-streams">Readable Streams<a aria-hidden="true" class="anchor-heading icon-link" href="#readable-streams"></a></h3>
+<p>A readable stream represents a source of data, from which you can read (ie. data comes out of a <code>ReadableStream</code> instance)</p>
+<p>A readable stream can be piped directly to a writable stream, using its <code>pipeTo()</code> method, or it can be piped through one or more transform streams first, using its <code>pipeThrough()</code> method.</p>
+<p>Readable streams are designed to wrap both <em>push sources</em> and <em>pull sources</em> behind a single, unified interface.</p>
+<hr>
+<h2 id="sink">Sink<a aria-hidden="true" class="anchor-heading icon-link" href="#sink"></a></h2>
+<h3 id="underlying-sink">Underlying Sink<a aria-hidden="true" class="anchor-heading icon-link" href="#underlying-sink"></a></h3>
+<p>Analogously to readable streams, most writable streams wrap a lower-level I/O sink, called the underlying sink. </p>
+<ul>
+<li>Writable streams work to abstract away some of the complexity of the underlying sink, by queuing subsequent writes and only delivering them to the underlying sink one by one.</li>
+</ul>
+<p>Code that writes into a writable stream using its public interface is known as a producer.</p>
+<h3 id="writable-stream">Writable Stream<a aria-hidden="true" class="anchor-heading icon-link" href="#writable-stream"></a></h3>
+<p>A writable stream represents a destination for data, into which you can write (ie. data goes into a <code>WritableStream</code> instance).</p>
+<hr>
+<h3 id="chunk">Chunk<a aria-hidden="true" class="anchor-heading icon-link" href="#chunk"></a></h3>
+<p>A chunk is a single piece of data that is written to or read from a stream.</p>
+<p>It can be of any type; streams can even contain chunks of different types.</p>
+<p>A chunk will often not be the most atomic unit of data for a given stream</p>
+<ul>
+<li>ex. a byte stream might contain chunks consisting of 16 KiB <code>Uint8Arrays</code>, rather than single bytes.</li>
+</ul>
+<h3 id="pipe-chain">Pipe chain<a aria-hidden="true" class="anchor-heading icon-link" href="#pipe-chain"></a></h3>
+<p>Once a pipe chain is constructed, it will propogate signals giving information as to how fast chunks should flow through it. If any step in the chain cannot yet process more chunks, it will propogate a signal backwards through the pipe chain until it eventually reaches the original source, which is told to stop producing chunks so fast. This process is called <em>backpressure</em>.</p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/h160fafboo30ix91n52wfky">Fetch</a></li>
+</ul>

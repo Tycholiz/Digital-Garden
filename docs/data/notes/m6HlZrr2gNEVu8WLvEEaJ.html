@@ -1,0 +1,19 @@
+<h1 id="dns-cache">DNS Cache<a aria-hidden="true" class="anchor-heading icon-link" href="#dns-cache"></a></h1>
+<p>There are multiple caches involved in the entire DNS. They are checked in sequential order. </p>
+<ol>
+<li>Browser</li>
+<li>OS - the process that handles this query is called a <strong>stub resolver</strong>, or <strong>DNS Client</strong> 
+<ul>
+<li>the stub resolver will first check to see if it has the cached data, and if not, will call the DNS query that gets handled by the resolver (which is hosted by the ISP).</li>
+</ul>
+</li>
+</ol>
+<p>A residential router internally runs a DNS cache and DNS proxy server</p>
+<ul>
+<li>it also advertises itself as the DNS server in all <a href="/notes/N9mY1iHMSznlRnVANB9Ip#dynamic-host-configuration-protocol-dhcp">DHCP</a> responses.</li>
+</ul>
+<p>There are actually DNS caches at every hierarchy of the lookup process</p>
+<ul>
+<li>The computer reaches your router, which contacts your ISP, which might hit another ISP before ending up at what's called the "root DNS servers." Each of those points in the process has a DNS cache for the same reason, which is to speed up the name resolution process.</li>
+<li>spec:the DNS cache caches records.</li>
+</ul>

@@ -1,0 +1,27 @@
+<h1 id="two-pointers">Two Pointers<a aria-hidden="true" class="anchor-heading icon-link" href="#two-pointers"></a></h1>
+<p>Useful for problems where we deal with sorted arrays (or LinkedLists) and need to find a set of elements that fulfill certain constraints</p>
+<ul>
+<li>the set of elements could be a pair, a triplet or even a subarray</li>
+</ul>
+<h3 id="example-find-sum-of-pairs-in-array">Example: find sum of pairs in array<a aria-hidden="true" class="anchor-heading icon-link" href="#example-find-sum-of-pairs-in-array"></a></h3>
+<p>Given an array of sorted numbers and a target sum, find a pair in the array whose sum is equal to the given target.</p>
+<p>Since the array is sorted, we can just move inwards from the ends of the array, comparing the sums to the <code>target</code> until we find the match. We could alternatively brute-force this by using a nested for-loop and iterating over each element twice, but since the array is sorted, we can leverage this fact to be smart about which comparisons we make
+<img src="/assets/images/2021-10-10-11-45-01.png"></p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">findSumPairs</span><span class="token punctuation">(</span><span class="token parameter">arr<span class="token punctuation">,</span> target</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">let</span> frontIndex <span class="token operator">=</span> <span class="token number">0</span>
+    <span class="token keyword">let</span> backIndex <span class="token operator">=</span> arr<span class="token punctuation">.</span><span class="token property-access">length</span> <span class="token operator">-</span> <span class="token number">1</span>
+
+    <span class="token keyword">let</span> tempSum
+    <span class="token keyword control-flow">while</span> <span class="token punctuation">(</span>frontIndex <span class="token operator">!==</span> backIndex<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        tempSum <span class="token operator">=</span> arr<span class="token punctuation">[</span>frontIndex<span class="token punctuation">]</span> <span class="token operator">+</span> arr<span class="token punctuation">[</span>backIndex<span class="token punctuation">]</span>
+        <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span>tempSum <span class="token operator">&#x3C;</span> target<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            frontIndex<span class="token operator">++</span>
+        <span class="token punctuation">}</span> <span class="token keyword control-flow">else</span> <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span>tempSum <span class="token operator">></span> target<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            backIndex<span class="token operator">--</span>
+        <span class="token punctuation">}</span> <span class="token keyword control-flow">else</span> <span class="token punctuation">{</span>
+            <span class="token keyword control-flow">return</span> <span class="token boolean">true</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword control-flow">return</span> <span class="token boolean">false</span>
+<span class="token punctuation">}</span>
+</code></pre>

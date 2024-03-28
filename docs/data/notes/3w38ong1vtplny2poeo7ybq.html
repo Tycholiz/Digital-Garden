@@ -1,0 +1,20 @@
+<h1 id="cook">Cook<a aria-hidden="true" class="anchor-heading icon-link" href="#cook"></a></h1>
+<h3 id="ignore-directory-to-be-synced-with-synology-drive-client">Ignore directory to be synced with Synology Drive Client<a aria-hidden="true" class="anchor-heading icon-link" href="#ignore-directory-to-be-synced-with-synology-drive-client"></a></h3>
+<ol>
+<li>open <code>~/Library/Application Support/SynologyDrive/data/session/{1,2,3...}/conf/blacklist.filter</code></li>
+<li>add</li>
+</ol>
+<pre><code>[Directory]
+black_name = "node_modules"
+</code></pre>
+<h3 id="rsync">Rsync<a aria-hidden="true" class="anchor-heading icon-link" href="#rsync"></a></h3>
+<ul>
+<li><a href="https://www.truetoad.com/Blog/copy-data-between-two-synology-nas">guide</a></li>
+<li>enable Rsync (both devices) - Control Panel -> File Services -> Rsync -> Enable Sync Service</li>
+<li>On source NAS, Control Panel -> File Services -> Advanced -> Task List</li>
+</ul>
+<h3 id="download-logs">Download logs<a aria-hidden="true" class="anchor-heading icon-link" href="#download-logs"></a></h3>
+<p>Support Centre -> Support Services -> Log Generation</p>
+<ul>
+<li>this will download a <code>.dat</code> file. Unzip it in a new directory to get access to the contents</li>
+</ul>

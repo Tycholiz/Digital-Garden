@@ -1,0 +1,39 @@
+<h1 id="master-node">Master Node<a aria-hidden="true" class="anchor-heading icon-link" href="#master-node"></a></h1>
+<p>The Master node (or, control plane) is considered the brain of the cluster</p>
+<ul>
+<li>we send desired state in the form of a <code>yml</code> file to the master node, and it figures out how to achieve that through the worker nodes
+<ul>
+<li>this comparison of desired state to actual state is always happening, and the master node is constantly working to make sure the actual matches the desired.</li>
+</ul>
+</li>
+</ul>
+<p>The control plane is accessible by the internet via a URL.</p>
+<p>The control plane is the brain of the cluster. It is responsible for maintaining the desired state of the cluster, such as which applications are running and which container images they use.</p>
+<p>Nodes actually run the applications and workloads, and are spun up during the cluster creation process.</p>
+<p>The cluster enables Kubernetes to schedule and run containers across a group of machines.</p>
+<ul>
+<li>The heart of this whole idea is that Kubernetes containers aren’t tied to individual machines. Rather, they’re abstracted across the cluster.</li>
+</ul>
+<p>A Kubernetes cluster has a desired state, which defines which applications or other workloads should be running, along with which images they use, which resources should be made available for them, and other such configuration details.</p>
+<ul>
+<li>This desired state is described in a YAML file</li>
+</ul>
+<p>The control plane includes the K8s API server, storage, scheduler and core <a href="/notes/MsBnaMq62gg9DHWeOttQy">resource controllers</a></p>
+<ul>
+<li>it is therefore responsible for determining what gets run on all of the cluster's nodes.</li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/bb6ox6r8y6r6f3ezmeo16ud">Master node Components</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/qxSOd6SPN8qf9ZUojVFDX">K8s</a></li>
+<li><a href="/notes/39hv81n4dr40bwg1mlii3zp">Kubernetes Node</a></li>
+<li><a href="/notes/jfPWYYm0N62ErYEgNJnLh">Endpoint Controller</a></li>
+<li><a href="/notes/iuja3tlxkdniv862fq9h1v4">Worker Node</a></li>
+<li><a href="/notes/cnkzosrbq8pdbru80p9c7h0">HorizontalPodAutoscaler</a></li>
+<li><a href="/notes/hecaydk40a6wqiprau7l8qz">API Server</a></li>
+</ul>

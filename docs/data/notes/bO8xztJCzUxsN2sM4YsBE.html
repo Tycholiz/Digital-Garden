@@ -1,0 +1,138 @@
+<h1 id="public-key-cryptography">Public Key Cryptography<a aria-hidden="true" class="anchor-heading icon-link" href="#public-key-cryptography"></a></h1>
+<p>A public key certificate is a file whose purpose is to verify the validity of a public key.</p>
+<ul>
+<li>a certificate <em>contains</em> a public key.</li>
+</ul>
+<p>Think about the public key as a lock-only mechanism, so you need to know the private key to unwrap, unlock or decode data again.</p>
+<p>The certificate contains information about:</p>
+<ul>
+<li>the public key</li>
+<li>the identity of the public key's owner (called the <em>subject</em>)</li>
+<li>the digital signature of an authority that has verified the certificate's contents (the <em>issuer</em>)</li>
+</ul>
+<p>Typically, a certificate is itself signed by a certificate authority (CA) using CA's private key. This verifies the authenticity of the certificate.</p>
+<p>When the issuer can confirm that the digial signature is valid (ie. when the issuer <em>signs</em> the message), it will have effectively authenticated the other party (the subject). That is, it is highly confident that the other party is who they say they are.</p>
+<ul>
+<li>also, the issuer knows that the message was never altered in transit (<em>integrity</em>).</li>
+</ul>
+<p>spec: the certificate is used with the public key to sign the message. Therefore, the issuer can be assured that the message that was sent to them originates from the correct identity.</p>
+<h3 id="types-of-certificate">Types of certificate<a aria-hidden="true" class="anchor-heading icon-link" href="#types-of-certificate"></a></h3>
+<ul>
+<li><a href="/notes/J9fet9TmIJefcdWudoYyF">TLS Certificates</a></li>
+<li>Email certificate</li>
+<li>Self-signed certificate - a certificate with a <code>Subject</code> that matches its issuer, and a signature that can be verified by its own public key.
+<ul>
+<li>a self-signed certificate is mostly useless, but a the digital certificate chain of trust must start with a self-signed certificate (ie. a <em>root certificate</em>). A <a href="/notes/GLX9Wh0NbQGCEHLaQlkdN">certificate authority</a> self-signs a root certificate to be able to sign other certificates.</li>
+</ul>
+</li>
+<li>Intermediate certificate - has a similar purpose to the root certificate; its only use is to sign other certificate, but the intermediate certificate is not self-signed; it must be signed by either a root certificate or another intermediate certificate.</li>
+<li>Code signing certificate - sign binaries so the identity of the developer is verified as the one who created the binary.</li>
+</ul>
+<h3 id="public-key-infrastructure-pki">Public Key Infrastructure (PKI)<a aria-hidden="true" class="anchor-heading icon-link" href="#public-key-infrastructure-pki"></a></h3>
+<p>The PKI is the underlying system needed to create, manage, distribute, use, store and revoke digital certificates and manage public-key encryption.</p>
+<ul>
+<li>at its core, it is a set of roles, policies, hardware, software and procedures that enable us to create/manage/distribute the keys.</li>
+</ul>
+<p>The PKI performs trust services, meaning it serves to trust the actions/outputs of entities, whether they are computers or people.</p>
+<ul>
+<li>the objective of a trust service is 1+ of the following:
+<ul>
+<li>Confidentiality - Assurance that no entity can maliciously or unwittingly view a payload in clear text</li>
+<li>Integrity - Assurance that it would be obvious if an entity tampered with transmitted data</li>
+<li>Authenticity - Assurance that you have certainty of what you are connecting to (server-side authentication; typically used when authenticating to a web server using a password), or evidencing your legitimacy when connecting to a protected service (client-side authentication; sometimes used when authenticating using a smart card, ie. hosting a digital certificate and private key).</li>
+</ul>
+</li>
+</ul>
+<h3 id="difference-between-symmetric-encryption-and-asymmetric-encryption">Difference between Symmetric encryption and Asymmetric encryption<a aria-hidden="true" class="anchor-heading icon-link" href="#difference-between-symmetric-encryption-and-asymmetric-encryption"></a></h3>
+<p>In a simple cryptographic system, I have some message that I can encrypt using a key. I can then give you that key along with the information, and you can decrypt it and read the message.</p>
+<ul>
+<li>This is known as Symmetric Encryption</li>
+<li>The problem with this, is that I need to send you the key. Since we have not yet established a secure connection, we cannot be sure that no one is listening in.</li>
+</ul>
+<p>In Public Key Cryptography, we generate a key pair: a private key and public key.</p>
+<ul>
+<li>This is known as Asymmetric Encryption</li>
+<li>It is Asymmetric because one key is used to encrypt the message, while the other is used to decrypt it.
+<ul>
+<li>ie. Anything we encrypt with key A can only be decrypted with key B, and anything encrypted with key B can only be decrypted with key A</li>
+</ul>
+</li>
+<li>Now we can have a situation where both you and I have our own key-pairs, with each person's public key being widely distributable. 
+<ul>
+<li>Now if I want to send something to you, I just need your public key. I can encrypt the message like this, and you are the only person that can decrypt it, since you have the private key. </li>
+</ul>
+</li>
+<li>This system also allows the receiver of a message know exactly who sent it. Consider that if I use my private key to encrypt a message and send it out, anyone with my public key can decrypt it. 
+<ul>
+<li>This has an important implication, which is that if you were able to successfully decrypt my message, then you know for a fact that I was the one who encrypted it. </li>
+</ul>
+</li>
+<li>See: Diffie-Helman</li>
+</ul>
+<h3 id="mail-poker-example">Mail Poker Example<a aria-hidden="true" class="anchor-heading icon-link" href="#mail-poker-example"></a></h3>
+<ul>
+<li>
+<p><em>note:</em> is this an actual analogy of public key, or something else?</p>
+</li>
+<li>
+<p><a href="https://www.youtube.com/watch?v=mthPiiCS24A&#x26;list=PLt5AfwLFPxWLXe-ZqZyu0kSsaWd4FjXbj">source</a></p>
+</li>
+<li>
+<p>Imagine we wanted to play a game over poker over the mail. Of course, each player needs to be assured that the same rules apply as if the game was in person (neither side knows the other's cards, each side only takes 5 cards, etc). </p>
+</li>
+<li>
+<p>Player 1 puts each card in an envelope, and attaches a lock. This lock is only openable by player 1, but only one key is needed to open all the locks.</p>
+</li>
+<li>
+<p>Player 1 mails all 52 cards to Player 2. Player 2 then puts his own lock on all envelopes. Again, his key will open all envelopes. Then Player 2 will send the double-locked envelopes back to Player 1. (the randomized nature of the mail process acts as a secure and trusted method of shuffling) </p>
+<ul>
+<li>note: we have created a situation where neither player can reveal any card on their own. </li>
+</ul>
+</li>
+<li>
+<p>Player 1 now has 52 double-locked envelopes, so now must choose 5 cards for Player 2. Once they are chosen, Player 1 takes his lock off those cards and mails just those 5 cards. Once Player 2 receives those cards, he can unlock them and now knows his hand. </p>
+</li>
+<li>
+<p>Player 1 now has 47 double-locked envelopes, so now he must choose 5 for himself. Once he chooses, he sends them to Player 2. Player 2 removes his lock from those 5 cards, and sends them back to Player 1. Player 1 removes his lock, and now knows his own hand.</p>
+</li>
+<li>
+<p>This system of double-locking creates what is called <em>commutativity</em>. A commutative crypographic algorithm is one that is order-independent (ie. it doesn't matter which order the locks are taken off)  </p>
+</li>
+</ul>
+<h4 id="bridging-the-analogy-gap">Bridging the Analogy Gap<a aria-hidden="true" class="anchor-heading icon-link" href="#bridging-the-analogy-gap"></a></h4>
+<ul>
+<li>If this game of poker were to take place over the internet, each of the 52 cards would have a numeric value (1-52). We need a way to "lock" each card. Player 1 creates his key (<code>k</code>) by choosing a random number. He then takes that number and raises each card to that value.
+<ul>
+<li>ex. if <code>k = 3</code>, then each card value is raised to the 3rd power. This is equivalent of locking the envelopes, as long as Player 2 doesn't know what <code>k</code> is.</li>
+</ul>
+</li>
+<li>Player 2 then can create his own key (<code>j</code>), and raise each (already encrypted) card value to that value. Now we have double-locked cards.
+<ul>
+<li>It's important to note that <code>(2^5)^3</code> is mathematiacally equivalent to <code>(2^3)^5</code>. In other words, the locks can be applied or removed in any order. </li>
+</ul>
+</li>
+<li>Now, to remove the locks, each player simply needs to multiple the exponent by the inverse of their key (if Player 1 wants to remove the locks of 5 cards, then he just needs to multiply the exponent by <code>-3</code>)</li>
+</ul>
+<hr>
+<p>Generating the keys</p>
+<pre class="language-sh"><code class="language-sh"># generate RSA private key
+$ openssl genrsa > private.pem
+
+# derive public key
+$ openssl rsa -in private.pem -pubout -out public.pem
+</code></pre>
+<hr>
+<p><em>Sharing identical keys works fine among 2 people. What if Alice want to exchange stuff with another guy named Carl, and Alice doesn’t want anybody to see their stuff too? Alice can’t use the same lock and key that she shared with Bob, else Bob can unlock the box easily!  Of course Alice can share a completely new and different lock and key with Carl, but what if Alice wants to exchange stuff with 10 different people? She will need to keep and manage 10 different keys!  So Alice come out with a brilliant solution. Now, she only maintains one key (private key). She distribute the same padlocks (public key) to her friends. Anyone can close the padlocks (encrypt), but only she has the key to open (decrypt) them. Now, anyone can send stuff to Alice using the padlock she distributed, and Alice no longer have to manage different keys for different people.  If Alice wants to send something to Carl, she will ask for Carl’s padlock (public key) so that she can use it to lock (encrypt) her stuff and send it to Carl.  The basic principle is: everyone has their own private key to decrypt message, and they will provide senders their own public key for message encryption.</em></p>
+<h2 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=fdJKk89hTkw">Keychain Access in Macos</a></li>
+<li><a href="https://superuser.com/questions/620121/what-is-the-difference-between-a-certificate-and-a-key-with-respect-to-ssl">stackoverflow</a></li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/u3zcndycwqessho5h6x0nz9">Bitcoin</a></li>
+<li><a href="/notes/oqqxgal7q5lpuowyq9iz2hg">Deployment</a></li>
+<li><a href="/notes/wXUxgZM5Oi21cN1uIX0Yw">JSON Web Key</a></li>
+<li><a href="/notes/O4UfJsjTp829l2zZQe0pL">JWT Signature</a></li>
+</ul>

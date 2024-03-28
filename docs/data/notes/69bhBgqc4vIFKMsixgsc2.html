@@ -1,0 +1,37 @@
+<h1 id="iterator">Iterator<a aria-hidden="true" class="anchor-heading icon-link" href="#iterator"></a></h1>
+<p>There are two iteration protocols: <em>iterable protocol</em> and <em>iterator protocol</em>.</p>
+<h3 id="iterator-protocol">Iterator protocol<a aria-hidden="true" class="anchor-heading icon-link" href="#iterator-protocol"></a></h3>
+<p>An object is an iterator when it implements an interface that answers two questions:</p>
+<ul>
+<li>Is there any element left?</li>
+<li>If there is, what is the element?</li>
+</ul>
+<p>Technically speaking, an object is qualified as an iterator when it has a <code>next()</code> method that returns an object with two properties:</p>
+<ul>
+<li><code>done</code>: a boolean value indicating whether or not  there are any more elements that could be iterated upon.</li>
+<li><code>value</code>: the current element.</li>
+</ul>
+<p>If we call <code>next()</code> after the last value has returned, we are returned:</p>
+<pre class="language-js"><code class="language-js"><span class="token punctuation">{</span><span class="token literal-property property">done</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token operator">:</span> value<span class="token operator">:</span> <span class="token keyword nil">undefined</span><span class="token punctuation">}</span>
+</code></pre>
+<p>Array, Maps, and Sets have built-in iterators (ie. the protocol is already implemented)</p>
+<ul>
+<li>If you have a custom type and want to make it iterable so that you can use the <code>for...of</code> loop construct, you must implement the iteration protocols by hand.</li>
+</ul>
+<h3 id="iterable-protocol">Iterable protocol<a aria-hidden="true" class="anchor-heading icon-link" href="#iterable-protocol"></a></h3>
+<p>An object is iterable when it contains a method called <code>[Symbol.iterator]</code> that takes no argument and returns an object which conforms to the iterator protocol (ie. has <code>next()</code>, and an object <code>{ value: x, done: false }</code>).</p>
+<ul>
+<li>The <code>[Symbol.iterator]</code> is one of the built-in well-known symbols in ES6.</li>
+</ul>
+<h3 id="iterable">Iterable<a aria-hidden="true" class="anchor-heading icon-link" href="#iterable"></a></h3>
+<p>An iterable is an object that defines its iteration behavior. </p>
+<p>Custom iterators and iterables are useful, but are complicated to build, since you need to take care of the internal state. A generator is a special function that allows you to write an algorithm that maintains its own state. They are factories for iterators. A generator function is a function marked with the * and has at least one yield-statement in it.</p>
+<p>Iterable objects are a generalization of arrays. That's a concept that allows us to make any object useable in a for..of the loop.</p>
+<p>The iterable is an interface that specifies that an object can be accessible if it implements a method who is key is <code>[symbol.iterator]</code>.</p>
+<h1 id="e-resources">E Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#e-resources"></a></h1>
+<p><a href="https://www.javascripttutorial.net/es6/javascript-iterator/">Roll your own iterable object</a></p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/wHT87HSjyOmffkNWsBUXY">For</a></li>
+</ul>

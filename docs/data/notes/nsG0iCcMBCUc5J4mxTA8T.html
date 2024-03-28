@@ -1,0 +1,203 @@
+<h1 id="triggers">Triggers<a aria-hidden="true" class="anchor-heading icon-link" href="#triggers"></a></h1>
+<p>A trigger is a callback that is executed whenever a table (or view) is modified. Triggers can also be set to listen for specific user actions much like a callback.</p>
+<ul>
+<li>Can also be set up to be executed by using the INSTEAD OF condition.</li>
+</ul>
+<p>2 main types of trigger:</p>
+<ol>
+<li>row-level trigger</li>
+<li>statement-level trigger</li>
+</ol>
+<ul>
+<li>the difference between these two is in how many times each would be called in response to an event. 
+<ul>
+<li>ex. if you issue an UPDATE statement that affects 20 rows, the row-level trigger will be invoked 20 times, while the statement level trigger will be invoked 1 time.</li>
+</ul>
+</li>
+</ul>
+<p>examples</p>
+<ul>
+<li>restrict DML (actions that modify the db) operations to business hours </li>
+<li>Automatically generate derived column values</li>
+</ul>
+<p>We can think of a trigger like a middleware that sits between the user's request (that interacts with the db) and the sql server. Every time our db is interacted with, listeners are able "intercept" the query and act on it</p>
+<ul>
+<li>Most triggers are only activated by either INSERT or UPDATE statements.</li>
+<li>We can specify columns on a trigger, which will cause the trigger to only fire if those columns are operated on (ex. we update those columns)</li>
+<li>If multiple triggers of the same kind are defined for the same event, they will be fired in alphanumerical order.
+<ul>
+<li>which is why it is useful to prepend them with numbers</li>
+</ul>
+</li>
+</ul>
+<h2 id="syntax">Syntax<a aria-hidden="true" class="anchor-heading icon-link" href="#syntax"></a></h2>
+<ul>
+<li>A trigger that is marked <code>FOR EACH ROW</code> is called once for every row that the operation modifies.</li>
+<li>a trigger that is marked <code>FOR EACH STATEMENT</code> only executes once for any given operation</li>
+<li><code>WHEN</code> allows us to determine whether or not the trigger should be fired
+<ul>
+<li>In row-level triggers the <code>WHEN</code> condition can examine the old and/or new values of columns of the row</li>
+<li>ex. only execute the function if <code>OLD.balance</code> does not equal <code>NEW.balance</code>
+<ul>
+<li><code>WHEN (OLD.balance IS DISTINCT FROM NEW.balance)</code></li>
+</ul>
+</li>
+<li>ex. only execute function if anything has changed
+<ul>
+<li><code>WHEN (OLD.* IS DISTINCT FROM NEW.*)</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>CONSTRAINT</code> allows us to adjust the timing of when the trigger actually fires.
+<ul>
+<li>The trigger can be fired either:
+<ul>
+<li>At the end of the statement which caused the triggering event</li>
+<li>At the end of the containing transaction, which is the <code>COMMIT</code> (called deferred triggers)</li>
+</ul>
+</li>
+<li>Each constraint has its own IMMEDIATE or DEFERRED mode.</li>
+<li>only available <code>AFTER ROW</code></li>
+</ul>
+</li>
+</ul>
+<h1 id="parts-of-a-trigger">Parts of a Trigger<a aria-hidden="true" class="anchor-heading icon-link" href="#parts-of-a-trigger"></a></h1>
+<ul>
+<li>2 parts to a trigger: the trigger itself, and the function that is executed by the trigger</li>
+</ul>
+<h2 id="trigger">Trigger<a aria-hidden="true" class="anchor-heading icon-link" href="#trigger"></a></h2>
+<h3 id="beforeafter-triggers">Before/After Triggers<a aria-hidden="true" class="anchor-heading icon-link" href="#beforeafter-triggers"></a></h3>
+<p>The trigger can be specified to fire before the operation is attempted on a row, or after the operation has completed (after constraints are checked and the INSERT, UPDATE, or DELETE has completed)</p>
+<ul>
+<li>Trigger can also be set to fire <em>instead of</em> having the operation be performed. This only works on views</li>
+</ul>
+<h4 id="before">Before<a aria-hidden="true" class="anchor-heading icon-link" href="#before"></a></h4>
+<ul>
+<li>the constraints will not-yet have been checked, allowing us to perform some action before the actual operation has taken place.
+<ul>
+<li>ex. Imagine we want to keep only one of the user's credit cards specified as <code>is_primary</code>. Because of the uniqueness constraints applied on the table (allowing only one <code>is_primary</code> card per user), we must set <code>is_primary</code> to <code>false</code> for all of our cards, any time the user attempts to insert a new card where <code>is_primary</code> is true. 
+<ul>
+<li>If we had instead ran the trigger <em>after</em> the <code>insert</code>, then we might have gotten an error, since we are potentially trying to insert a new card with <code>is_primary = true</code>, while one may already exist.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>If the trigger fires before the event, the trigger can skip the operation for the current row, or change the row being inserted (for INSERT and UPDATE operations only)</li>
+<li>in <code>BEFORE</code>, the <code>WHEN</code> condition is evaluated just before the function is executed
+<ul>
+<li>Therefore, using <code>WHEN</code> (in the trigger itself) has the same effect as testing the same condition at the beginning of the triggered function with <code>TG_WHEN</code></li>
+<li>The implication of this is that the <code>NEW</code> value seen by the function is the current value, and not the value that would exist <em>following</em> the operation
+<ul>
+<li>Also consider that while this "current value" normally means "prior to the operation being performed", there is the possibility that previous triggers in the chain have already executed, potentially changing what "current value" means to us.</li>
+</ul>
+</li>
+<li>Another implication is that in <code>BEFORE</code>, a trigger's <code>WHEN</code> condition cannot examine the columns of the <code>NEW</code> row that is to be inserted/updated (because they wouldn't have been set yet)</li>
+</ul>
+</li>
+</ul>
+<h4 id="after">After<a aria-hidden="true" class="anchor-heading icon-link" href="#after"></a></h4>
+<ul>
+<li>rows will be impacted with consideration to the constraints</li>
+<li>If the trigger fires after the event, all changes, including the effects of other triggers, are "visible" to the trigger.</li>
+<li>in <code>AFTER</code>, the <code>WHEN</code> condition is evaluated after the row update occurs.
+<ul>
+<li>The <code>WHEN</code> condition here also determines whether an event is queued to fire a trigger, following the operation.
+<ul>
+<li>Therefore, if <code>WHEN</code> does not return true, we do not have to queue an event; nor to re-fetch the row at the end of the statement
+<ul>
+<li>This can result in significant speedups in statements that modify many rows, if the trigger only needs to be fired for a few of the rows.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="trigger-function">Trigger Function<a aria-hidden="true" class="anchor-heading icon-link" href="#trigger-function"></a></h2>
+<p>A trigger function returns a <code>trigger</code></p>
+<ul>
+<li>The function body must return either <code>NULL</code> or a row value having exactly the structure of the table the trigger was fired for.
+<ul>
+<li>ie. the the row being returned must have the same type of the table.</li>
+</ul>
+</li>
+</ul>
+<p>Depending on if we are using row-level triggers or table-level triggers, the function will be called for each row that is affected, or will be called once per table.</p>
+<h3 id="infinite-loops">Infinite loops<a aria-hidden="true" class="anchor-heading icon-link" href="#infinite-loops"></a></h3>
+<p>if a trigger function updates a row in the same table that the trigger is for and the operation is the same, then it will trigger a recursive infinite loop, since the trigger function will cause the trigger to fire in response to the </p>
+<ul>
+<li>ex. we have a trigger that is set to fire on update of <code>users</code> table, and the trigger function itself updates a row in that table. This update, will cause the trigger to fire again, and so on.</li>
+</ul>
+<h3 id="return-value-of-trigger-functions">Return value of trigger functions<a aria-hidden="true" class="anchor-heading icon-link" href="#return-value-of-trigger-functions"></a></h3>
+<p><code>BEFORE</code></p>
+<ul>
+<li>if we return <code>null</code> from the function, we are signalling to the trigger manager signal that we want to skip the rest of the operation for this row, meaning 2 things happen:
+<ol>
+<li>subsequent triggers will be short-circuited </li>
+<li>the operation will not occur for this row.</li>
+</ol>
+</li>
+<li>if we return a non-<code>null</code> value, then the operation proceeds with that value. 
+<ul>
+<li>returning a row value that is different from the original value of <code>NEW</code> will alter the row to be inserted/updated
+<ul>
+<li>Therefore, if we want the trigger to succeed normally without altering the <code>NEW</code> row value, then we must return <code>NEW</code>
+<ul>
+<li>This means that we could alter single columns in the row, with <code>NEW.col = X</code>, and proceeding to return <code>NEW</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>a statement-level trigger fired <code>BEFORE</code> always ignores the return value of the trigger function, so it might as well be <code>null</code>.</li>
+</ul>
+<p><code>AFTER</code></p>
+<ul>
+<li>return value of a row-level trigger (or statement-level trigger) fired <code>AFTER</code> will always be ignored, so it might as well be <code>null</code></li>
+</ul>
+<h3 id="trigger-local-variables">Trigger Local Variables<a aria-hidden="true" class="anchor-heading icon-link" href="#trigger-local-variables"></a></h3>
+<p>A function called by a trigger receives data about its calling environment (called <code>TriggerData</code>)</p>
+<ul>
+<li>prefixed by <code>TG_</code></li>
+</ul>
+<p><code>NEW</code> </p>
+<ul>
+<li>variable holding the new database row for INSERT/UPDATE operations in row-level triggers</li>
+<li>type: <code>record</code></li>
+<li>in statement-level triggers and <code>DELETE</code> operations, this value is <code>null</code>
+<ul>
+<li>this shows why we can return <code>null</code> from the trigger function on <code>DELETE</code> operations. There is nothing to return to the table!</li>
+<li>must still return a non-<code>null</code> value from a DELETE trigger function, or we will short-circuit the trigger action. Normally, <code>OLD</code> is returned, since <code>NEW</code> is null</li>
+</ul>
+</li>
+</ul>
+<p><code>OLD</code></p>
+<ul>
+<li>variable holding the old database row for UPDATE/DELETE operations in row-level triggers</li>
+<li>type: <code>record</code></li>
+<li>in statement-level triggers and <code>INSERT</code> operations, this value is <code>null</code></li>
+</ul>
+<p><code>TG_WHEN</code></p>
+<ul>
+<li>evaluates to BEFORE, AFTER, or INSTEAD OF, depending on the trigger's definition.</li>
+<li>type: <code>text</code></li>
+</ul>
+<p><code>TG_OP</code></p>
+<ul>
+<li>evaluates to INSERT, UPDATE, DELETE, or TRUNCATE telling for which operation the trigger was fired.</li>
+<li>type: <code>text</code></li>
+</ul>
+<p><code>TG_ARGV</code></p>
+<ul>
+<li>the arguments passed in to the trigger's function call</li>
+<li>type: <code>text[]</code></li>
+</ul>
+<p>Also
+<code>TG_TABLE_NAME</code>, <code>TG_TABLE_SCHEMA</code>, <code>TG_NARGS</code> (# of args)</p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/wbs6c9snnonnyzm8vk2t4b9">Strategies</a></li>
+</ul>

@@ -1,0 +1,34 @@
+<h1 id="browser">Browser<a aria-hidden="true" class="anchor-heading icon-link" href="#browser"></a></h1>
+<p>Events are the native way to deal with user input in browser based web applications. Events are not part of the language of JavaScript itself, but they are part of the browser environment that JavaScript runs in</p>
+<p>Browsers are single threaded and this single thread (The UI thread) is shared between the rendering engine and the js engine.</p>
+<ul>
+<li>Therefore, if the thing you want to do takes a lot of time, it could halt the rendering (flow and paint).</li>
+<li>In browsers there also exists "The bucket" where all events are first put in wait for the UI thread to be done with whatever it´s doing. As soon as the thread is done it looks in the bucket and picks the task first in line.
+<ul>
+<li>Using <code>setTimeout</code> you create a new task in the bucket after the delay and let the thread deal with it as soon as it´s available for more work.</li>
+</ul>
+</li>
+</ul>
+<h3 id="ajax">Ajax<a aria-hidden="true" class="anchor-heading icon-link" href="#ajax"></a></h3>
+<p>Ajax is when a client-side JavaScript application running inside a web browser uses XMLHttpRequest to become an HTTP client, enabling it to make requests.</p>
+<ul>
+<li>the request is probably for JSON, rather than HTML, as is the traditional response data format for HTTP requests from a browser.</li>
+</ul>
+<h2 id="resources">Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#resources"></a></h2>
+<ul>
+<li><a href="https://systemdesign.one/what-happens-when-you-type-url-into-your-browser/">What happens when typing URL into address bar</a></li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/VxAdPJHMMIvNzNrr5GdA6">Browser Workers</a></li>
+<li><a href="/notes/gmHyIstUcxJ1M04jtEZa6">Cookies</a></li>
+<li><a href="/notes/OVODP7MLQgGI0WohlQEk3">DOM</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/mytCOts26Pidush65tdRW">DNS</a></li>
+<li><a href="/notes/xnvtbyacgdz71bijpclhlv7">Shim</a></li>
+<li><a href="/notes/9xKdcGBAmZHfv1f9UOkF5">Adapter Pattern</a></li>
+</ul>

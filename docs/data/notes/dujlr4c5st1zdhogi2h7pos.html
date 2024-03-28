@@ -1,0 +1,9 @@
+<h1 id="service-accou">Service Accou<a aria-hidden="true" class="anchor-heading icon-link" href="#service-accou"></a></h1>
+<p>ServiceAccount objects allow clients within the Kubernetes cluster to authenticate to the <a href="/notes/hecaydk40a6wqiprau7l8qz">API Server</a></p>
+<ul>
+<li>A service account provides an identity for processes that run in a Pod, and maps to a ServiceAccount object.</li>
+</ul>
+<p>When Pods contact the API server, they authenticate as a particular ServiceAccount. </p>
+<ul>
+<li>There is always at least one ServiceAccount in each namespace (If you do not specify a ServiceAccount when you create a Pod, <code>default</code> is used).</li>
+</ul>

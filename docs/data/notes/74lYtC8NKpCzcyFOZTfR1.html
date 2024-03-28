@@ -1,0 +1,68 @@
+<h1 id="json-schema">JSON Schema<a aria-hidden="true" class="anchor-heading icon-link" href="#json-schema"></a></h1>
+<p>JSON Schema allows us to validate our JSON documents (including through automated tests). We can create a <code>json</code> file for each domain object (ie. what we would find in each table of an <a href="/notes/2bhftt8rGuxYu4pFgNqru">SQL</a> db), and we specify things like...</p>
+<ul>
+<li>what properties this object has</li>
+<li>what types they are</li>
+<li>which ones are required</li>
+<li>what restraints they have (e.g. max length, regex match etc.)</li>
+</ul>
+<p>The first key-value pair of the schema should be declaring which dialect of JSON Schema that our schema uses:</p>
+<ul>
+<li>this is called a <em>meta schema</em>, since it is a schema that describes another schema.</li>
+</ul>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"$schema"</span><span class="token operator">:</span> <span class="token string">"https://json-schema.org/draft/2020-12/schema"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="code-reuse">Code reuse<a aria-hidden="true" class="anchor-heading icon-link" href="#code-reuse"></a></h2>
+<p>Like any other code, schemas are easier to maintain if they can be broken down into logical units that reference each other as necessary. </p>
+<ul>
+<li>In order to reference a schema, we need a way to identify a schema. Schema documents are identified by non-relative URIs.</li>
+</ul>
+<p>Schemas need an identifier (ie. <code>$id</code>) if we want to reference them from other schemas.</p>
+<ul>
+<li>schemas without an identifier are known as <em>anonymous schemas</em>.</li>
+</ul>
+<h3 id="methods">Methods<a aria-hidden="true" class="anchor-heading icon-link" href="#methods"></a></h3>
+<h4 id="json-pointer">JSON Pointer:<a aria-hidden="true" class="anchor-heading icon-link" href="#json-pointer"></a></h4>
+<p></p><p></p><div class="portal-container">
+<div class="portal-head">
+<div class="portal-backlink">
+<div class="portal-title">From <span class="portal-text-title">JSON</span></div>
+<a href="/notes/sEoBNAEuaTxwSmTXDonZt" class="portal-arrow">Go to text <span class="right-arrow">→</span></a>
+</div>
+</div>
+<div id="portal-parent-anchor" class="portal-parent" markdown="1">
+<div class="portal-parent-fader-top"></div>
+<div class="portal-parent-fader-bottom"></div><p>A JSON Pointer describes a slash-separated path to traverse the keys in the objects in the document. Therefore, <code>/properties/street_address</code> means:</p>
+<ol>
+<li>find the value of the key <code>properties</code></li>
+<li>within that object, find the value of the key <code>street_address</code></li>
+</ol>
+<p>The URI <code>https://example.com/schemas/address#/properties/street_address</code> identifies the highlighted subschema in the following schema.</p>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"$id"</span><span class="token operator">:</span> <span class="token string">"https://example.com/schemas/address"</span><span class="token punctuation">,</span>
+  <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"object"</span><span class="token punctuation">,</span>
+  <span class="token property">"properties"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"street_address"</span><span class="token operator">:</span>
+      <span class="token punctuation">{</span> <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"string"</span> <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div></div><p></p><p></p>
+<h4 id="ref">$ref<a aria-hidden="true" class="anchor-heading icon-link" href="#ref"></a></h4>
+<p>The value of <code>$ref</code> is a URI-reference that is resolved against the schema’s Base URI (ie. the value of <code>$id</code>).</p>
+<h2 id="tools">Tools<a aria-hidden="true" class="anchor-heading icon-link" href="#tools"></a></h2>
+<h3 id="json-schema-to-typescript"><code>json-schema-to-typescript</code><a aria-hidden="true" class="anchor-heading icon-link" href="#json-schema-to-typescript"></a></h3>
+<p>We can use <a href="https://github.com/bcherny/json-schema-to-typescript">this library</a> to generate types from the json schema.</p>
+<h3 id="ajv">Ajv<a aria-hidden="true" class="anchor-heading icon-link" href="#ajv"></a></h3>
+<p>We can use <code>ajv</code> to take in our json schema, and generate validation functions to make sure the data coming in adheres to the schema.</p>
+<h2 id="resources">Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#resources"></a></h2>
+<ul>
+<li><a href="https://www.jsonschemavalidator.net/">Online JSON Schema Validator</a></li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/4hRmipi8lxpBLyzWu5JVB">Open API</a></li>
+<li><a href="/notes/7diu8z6ojbm610237nmot5l">Schema Registry</a></li>
+</ul>

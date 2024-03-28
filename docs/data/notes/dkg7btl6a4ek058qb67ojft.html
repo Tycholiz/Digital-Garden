@@ -1,0 +1,42 @@
+<h1 id="change-streams">Change Streams<a aria-hidden="true" class="anchor-heading icon-link" href="#change-streams"></a></h1>
+<p>To use Change Streams, we switch to the collection (<code>use &#x3C;collection></code>) then open a cursor on a collection with:</p>
+<pre class="language-sh"><code class="language-sh">let cursor = db['collection-name'].watch()
+</code></pre>
+<ul>
+<li>we can also open it on a whole database with <code>db.watch()</code></li>
+</ul>
+<p>We poll for change events using:</p>
+<ul>
+<li><code>cursor.hasNext()</code> - returns boolean</li>
+<li><code>cursor.next()</code> - return the next change event (or error)</li>
+<li><code>cursor.tryNext()</code> - returns the next change event (or null)</li>
+</ul>
+<p>Change Event:</p>
+<ul>
+<li><code>_id</code> - change eventId (not the <code>_id</code> of the document that was changeed)
+<ul>
+<li>this is used as a <code>ResumeToken</code></li>
+</ul>
+</li>
+<li><code>operationType</code> - insert, delete, update, replace etc.</li>
+<li><code>fullDocument</code> - the latest version of an entire document of insert, delete, update, and replace events.
+<ul>
+<li>if there are multiple changes on the same document over a period of time but none of those change events got processed in the intervening period, the <code>fullDocument</code> will still show the latest data, as opposed to the data we'd have as a result of any specific operation.</li>
+</ul>
+</li>
+<li><code>updateDescription</code> - fields that were updated or removed and the values of those fields after the change.</li>
+</ul>
+<p>Change Streams are filterable, which is accomplished by defining an <a href="/notes/fVTFn9AI72cwNWVr4hVKS">aggregation</a> pipeline.</p>
+<p>Change Streams are resumable, which is accomplished by passing either ResumeTokens or timestamps (<code>resumeAfter</code>) when configuring the <a href="/notes/zlEdxEGVFpeN3FoYf3Npz">cursor</a>.</p>
+<ul>
+<li>A strategy is to store ResumeTokens in some data layer (e.g. another collection of the same Mongo database) so that the consumer of the stream knows from where to start polling.
+<ul>
+<li>ex. if we are using Lambda to consume events, the Lambda will have to know from where to resume polling, since Lambdas are ephemeral.</li>
+</ul>
+</li>
+</ul>
+<h2 id="cook">Cook<a aria-hidden="true" class="anchor-heading icon-link" href="#cook"></a></h2>
+<p>All commands can be run from <code>mongo</code> shell</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">let</span> cursor <span class="token operator">=</span> db<span class="token punctuation">.</span><span class="token property-access">collection</span><span class="token punctuation">.</span><span class="token property-access">myCollection</span><span class="token punctuation">.</span><span class="token method function property-access">watch</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+cursor<span class="token punctuation">.</span><span class="token method function property-access">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre>

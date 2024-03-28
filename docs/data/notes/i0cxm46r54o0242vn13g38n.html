@@ -1,0 +1,158 @@
+<h1 id="observable">Observable<a aria-hidden="true" class="anchor-heading icon-link" href="#observable"></a></h1>
+<p>An observable is a <a href="/notes/zyhhxi0nal0pii1cxtk7uxd">stream</a> object, which has methods for interacting with that stream.</p>
+<ul>
+<li>because it is a stream, the data it represents is naturally asynchronous. Therefore, we interact with the observable in an asynchronous way, and the observable listens to a <em>producer</em> of data.</li>
+</ul>
+<p>The problem is this: we can consider an array where we already know all the values as eager, and an array that receives values (ie. increases length) at a set interval (1s) as lazy. Normally, we perform data processing in an eager way, since the data is processed immediately as it's received, which is instant. What if we are in a position where the array grows over time? It would be beneficial if we could call a method on an array value as it enters the array. In this sense, we need to subscribe to the array to execute a method when the array grows.</p>
+<p>observables are conceptually similar to a fancy event emitter.</p>
+<p>There are 2 sides to an observable: producer and consumer</p>
+<ul>
+<li><strong>Producer</strong> - adds to the array
+<ul>
+<li>ex. button clicks add that click event to the array</li>
+</ul>
+</li>
+<li><strong>Consumer</strong> - calls the function on the new array item
+<ul>
+<li>ex. calls <code>console.log</code> in response to the new click event</li>
+</ul>
+</li>
+</ul>
+<p>Just as promises abstract time away from our concern for a single asynchronous operation, observables abstract time away from a set of data (eg. array)</p>
+<p>If you combine the functionality of an Observer and an Observable, you get a Subject</p>
+<ul>
+<li>
+<p>subject: you can send to it and receive from it.</p>
+</li>
+<li>
+<p>Observable: you can receive from it only.</p>
+</li>
+<li>
+<p>each operator on an Observable returns a new Observable, meaning they are chainable (this is known as a <em>stream</em>)</p>
+</li>
+<li>
+<p>A map(..) on an array runs its mapping function once for each value currently in the array, putting all the mapped values in the outcome array. A map(..) on an Observable runs its mapping function once for each value, whenever it comes in, and pushes all the mapped values to the output Observable.</p>
+</li>
+</ul>
+<h2 id="characteristics">Characteristics<a aria-hidden="true" class="anchor-heading icon-link" href="#characteristics"></a></h2>
+<ul>
+<li>They are time-independent (ie. lazy)</li>
+<li>They are mostly used in asynchronous data streams, like web sockets or multiple concurrent api calls</li>
+<li>An <code>Observer</code> subscribes (ie. is consumer) to an <code>Observable</code>
+<ul>
+<li>an observer is a collection of callbacks</li>
+</ul>
+</li>
+</ul>
+<h3 id="differences-with-other-async-approaches">Differences with other async approaches<a aria-hidden="true" class="anchor-heading icon-link" href="#differences-with-other-async-approaches"></a></h3>
+<p>The following table shows what role observables fulfill. When we want to get a single value for a synchronous action, we set the value to a variable. When we want to get a single value for an async action, we use promises. When we want to get the value for an array synchronously, we use an array. Finally, when we want to get the value of an array of values asynchronously, we use observables.</p>
+<ul>
+<li><a href="/notes/yoh4pwoXcfELInGKRdYf6">Rxjs</a> has a function <code>lastValueFrom</code>, which converts an observable to a promise
+<ul>
+<li>when we call that function, it will subscribe to the observable. Once it is complete, it resolves the returned promise with the last value from the observed stream.</li>
+</ul>
+</li>
+</ul>
+<div class="table-responsive">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>sync</th><th>async</th></tr></thead><tbody><tr><td>single</td><td>variable</td><td>promise</td></tr><tr><td>collection</td><td>array</td><td>observable</td></tr></tbody></table></div>
+<ul>
+<li>while <a href="/notes/FVbSefFiCJPpdtkRRsogA">promises</a> handle data processing in an eager way, an observable does it lazily. That is, it sits around waiting for the event to happen, then it will respond.</li>
+<li>In a traditional workflow, we take a pull approach by calling a function to do something for us. That is, the consumer decides when it's going to get the data. Functions are naturally <em>pull</em>, because whoever uses the function is "pulling" out a single return value from its call.</li>
+</ul>
+<p>Observables are like arrays because they represent a collection of events but are also like promises as they’re asynchronous: each event in the collection arrives at some indeterminate point in the future.</p>
+<ul>
+<li>This is distinct from a collection of promises (like <code>Promise.all</code>) as an observable can handle an arbitrary number of events, and a promise can only track one thing.</li>
+</ul>
+<p>Observables are lazy Push collections of multiple values. They fill the missing spot in the following table:</p>
+<div class="table-responsive">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>Single</th><th>Multiple</th></tr></thead><tbody><tr><td>Pull</td><td>Function</td><td>Iterator</td></tr><tr><td>Push</td><td>Promise</td><td>Observable</td></tr></tbody></table></div>
+<ul>
+<li>They <em>push</em> with <code>.next()</code></li>
+</ul>
+<p>An observable can be used to model clicks of a button. It represents all the clicks that will happen over the application’s lifetime, but the clicks will happen at some point in the future that we can’t predict.</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">let</span> myObs$ <span class="token operator">=</span> <span class="token function">clicksOnButton</span><span class="token punctuation">(</span>myButton<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<hr>
+<p>When we create an observable, we add subscribers (ie. observers) to it</p>
+<pre class="language-ts"><code class="language-ts"><span class="token punctuation">{</span>
+  subscriber<span class="token punctuation">.</span><span class="token method function property-access">next</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  subscriber<span class="token punctuation">.</span><span class="token method function property-access">next</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  subscriber<span class="token punctuation">.</span><span class="token method function property-access">next</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+    subscriber<span class="token punctuation">.</span><span class="token method function property-access">next</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    subscriber<span class="token punctuation">.</span><span class="token method function property-access">complete</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre>
+<p>While an observable is by design a type of stream, consider the different scales at which a stream like <a href="/notes/WQoMTf6VXBaxCgksXAVsj">Kafka</a> sits compares to where observables sit.</p>
+<ul>
+<li>
+<p>A Kafka stream (ie. topic) has potentially many subscribers to its set of data. Many are consuming the same set.</p>
+</li>
+<li>
+<p>An observable stream is local to one set of data for one user (ie. they are said to be <em>cold observables</em>).</p>
+<ul>
+<li>ex. Think of movie data of Netflix represented as an observable. When you press play, you are effectively subscribing to an observable. You are the only subscriber of this stream (unicast) and have full control of when it starts/stops. When someone in a different household watches the same movie as you a brand new observable is created and they are subscribed to it.</li>
+</ul>
+</li>
+<li>
+<p>If you wanted to subscribe to the reactive way of programming, then you could just "observable all the things"</p>
+</li>
+<li>
+<p>Observables are cancellable.</p>
+</li>
+</ul>
+<h3 id="example-weather-report">Example: Weather report<a aria-hidden="true" class="anchor-heading icon-link" href="#example-weather-report"></a></h3>
+<p>Consider that if you want to know the weather for the day, you can either look it up to get a single response, or you can turn on your radio and get a constant stream of updates. That is, as long as you are subscribed to it (ie. as long as the radio is turned on), you will get all the latest information about the weather. </p>
+<ul>
+<li>While the weather itself is observable, in this example the user is actually subscribed to the radio, which is another observable. </li>
+<li>Behind that, the radio gets its data from a weatherman, which is another observable. </li>
+<li>Even more beyond that, the weatherman gets his data from a meteorologist report, yet another observable (here we say the data received by the weatherman is a function of the data from the meteorologist report). </li>
+<li>the meteorologist report gets its data from the instruments (baromoter, wind gauge etc.), which is another observable, </li>
+<li>finally, the instruments get their data from the weather itself, yet another observable.</li>
+<li>all in all this whole sequence shows at least 5 observables. The radio is the <code>output</code> observable, and the weather itself is the <code>source</code> observable. All the observables in between represent the <code>PIPE FUNCTION</code>.</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/yoh4pwoXcfELInGKRdYf6">Rxjs</a></li>
+<li><a href="/notes/rluwlir1bxtd1qe8cjrfamg">Microservices</a></li>
+</ul>

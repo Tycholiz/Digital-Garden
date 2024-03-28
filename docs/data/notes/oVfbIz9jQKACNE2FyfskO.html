@@ -1,0 +1,75 @@
+<h1 id="test-driven-development">Test-Driven Development<a aria-hidden="true" class="anchor-heading icon-link" href="#test-driven-development"></a></h1>
+<p>The objective of TDD is to test behaviours in the system.</p>
+<ul>
+<li>this is accomplished by writing tests first that describe behaviour of the software, then writing code that passes those tests.</li>
+</ul>
+<p>While TDD is accomplished with <a href="/notes/AQjiAvYdKm3JHmww0q2V6">Unit Testing</a>, the <em>unit</em> does not necessarily correpond to a class/module. Instead, the system under test can be thought of as an API that implements some behaviour. As a result, a unit may encompass multiple classes, so long as they all achieve some higher level behaviour of the system.</p>
+<h2 id="behaviour-nature-of-tdd">Behaviour nature of TDD<a aria-hidden="true" class="anchor-heading icon-link" href="#behaviour-nature-of-tdd"></a></h2>
+<p>TDD could be thought of as <em>behavioural testing</em>, if that term wasn't already appropriated by <a href="/notes/Io6ynzCU93aEuqY3g8opd">BDD (Behaviour-Driven Development)</a>. The idea is that we view isolation as modules of behaviour, rather than as individual classes. We define our units as modules that don't cross a port (such as making a network call, or accessing the filesystem). In other words, we test at the level of our <em>units</em>, which perform some self-isolated action that we can test for. Therefore, a unit may involve more than one class. The implementation details are immaterial. What matters is that we can test the inputs and outputs of this unit (the surface area). What this means is that we can structure our unit tests in such a way where we are testing for behaviour. Then, once all the tests are written, we can start to implement the code. Subsequent refactorings of the code shouldn't involve changes to the tests, since tests don't worry about implementation details. The implementation could be one big function, or it could be several.</p>
+<ul>
+<li>here, isolation is about not crossing ports, rather than sticking to a single class.</li>
+</ul>
+<p>Typically, the trigger to following a TDD cycle is the necessity of a new method on a class. People think "I need to add a method that does this and that, so I will first write a test to cover that implementation, then write the method to make all tests pass". This is the wrong way to go about it.</p>
+<ul>
+<li>instead, the trigger should be that the system has a new requirement. Therefore, "I want the software to do this new thing, so I will start by writing tests that test that this system does that thing".</li>
+<li>this shows how testing should be declarative, not imperative.
+<ul>
+<li>we don't test that <code>foo()</code> gets called 2 times when <code>bar()</code> is called. This is a flaky test, since if our implementation changes, it's likely the test will change too.</li>
+</ul>
+</li>
+<li>Thought of another way, we want to test the API of our software, not the implementation details.</li>
+</ul>
+<p>When we think of individual classes as our units, we tend to mock more heavily. This leads to overspecified tests, whereby we know all the implementation details of our classes via our mocks and how they are called.</p>
+<ul>
+<li>an overspecified test is a test that makes too many assumptions about how the system under test is implemented, rather than focusing on the system's surface (API). These assumptions lead to tests that break when implementation details change.</li>
+</ul>
+<p>Because of the focus on software behaviour, TDD forces us to think in terms of what the consumer of that API would find useful. What results are tests that match the way that consumers actually use the code.</p>
+<h3 id="red-green-refactor">Red, Green, Refactor<a aria-hidden="true" class="anchor-heading icon-link" href="#red-green-refactor"></a></h3>
+<p>Commonly thought to mean <em>"write a test, make sure it fails. Write some code to pass the test. Tidy up a bit"</em>, but actually means:</p>
+<ol>
+<li>Write a test that represents the behaviour that is needed from the system. It compiles, but the test fails.</li>
+</ol>
+<ul>
+<li>this represents a requirement for the program</li>
+<li>we want to see our test fail because there are no tests for tests.</li>
+</ul>
+<ol start="2">
+<li>Write some minimal code to make the test pass. This is as quick-n-dirty as it needs to be, and involves no patterns, no designs, and no structure. Just stick code in a method that might not even belong in that class. As long as it gets the job done, it's good</li>
+</ol>
+<ul>
+<li>we do this because once we've made the test pass, we've understood how to implement the requirements. 
+<ul>
+<li>at this point we can move fast. We can feel more free to go to Stackoverflow and copy some code. </li>
+</ul>
+</li>
+<li>another reason we do this is because we are focusing on one thing at a time: get the behaviour of the code right, then engineer it well. It is far more difficult to do both at the same time, and what often results is either an overengineered solution, or analysis paralysis.</li>
+</ul>
+<ol start="3">
+<li>Add design: Extract methods, implement a design pattern, create additional classes etc. Clean up the quick-n-dirty</li>
+</ol>
+<ul>
+<li>refactoring is a process of making safe moves that let us change the design of the code without changing the behaviour. Therefore, no new tests are written at this point.</li>
+<li>refactoring is about changing implementation details, not about how that interface has changed. If we think of this in terms of <a href="/notes/12a2891c-e26b-47db-9e2e-7a3de90b672b">OOP</a> it can be thought of as <em>"refactoring doesn't happen in your public properties, only your private ones"</em>. This of course is not absolute, and is more of a guideline. The idea is that we don't want to change our public API, because others depend on it. Instead, our refactoring should focus on how something has been implemented.</li>
+</ul>
+<p>When we approach testing this way, we move away from creating <a href="/notes/965AqO8bdqbS0Et9bKsUO">test doubles</a> for each class of our classes to depend on, and instead start to create test classes only to replace dependencies at the port (e.g. at the level of network call, file access etc.) </p>
+<p>If we isolate testing at the level of classes (as is more typically done), what happens is that we find ourselves having to modify the tests whenever the implementations themselves get refactored. Most of the time the culprit is <a href="/notes/JUu4GPp6TBnRJBbzNQbFw">mocks</a> that need to be changed.</p>
+<ul>
+<li>modifying tests becomes more problematic down the road when we forget how our tests work (since tests are typically more imperative than the implementations, they can be more difficult to understand)</li>
+</ul>
+<hr>
+<p>We may also take a bit of an inverse approach with TDD, and write the code first. In this case, the idea is to write some production code - enough to pass a test or two - and then write those tests. Then, to determine how much code you need to pass a test or two, think of a couple of tests to pass, then write the code that would pass those tests. Then write the tests.</p>
+<ul>
+<li>In order to work in small chunks, you have to imagine the tests that you'll be writing; so that you can write code that is testable.</li>
+<li>The core insight of TDD is the size of the cycle, not so much whether or not you write the test first. The reason we write the tests first is that it encourages us to keep the cycles really short, but we would get pretty much the same benefit if we took a code-first approach, but in similar size cycles.</li>
+<li><a href="https://blog.cleancoder.com/uncle-bob/2016/11/10/TDD-Doesnt-work.html">source</a></li>
+</ul>
+<h2 id="e-resources">E Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#e-resources"></a></h2>
+<ul>
+<li><a href="https://www.stevefenton.co.uk/2013/05/my-unit-testing-epiphany/">https://www.stevefenton.co.uk/2013/05/my-unit-testing-epiphany/</a></li>
+<li><a href="https://www.youtube.com/watch?v=EZ05e7EMOLM">https://www.youtube.com/watch?v=EZ05e7EMOLM</a></li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/Io6ynzCU93aEuqY3g8opd">BDD (Behaviour-Driven Development)</a></li>
+</ul>

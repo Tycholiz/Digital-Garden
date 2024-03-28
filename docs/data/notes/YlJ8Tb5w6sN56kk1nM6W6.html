@@ -1,0 +1,27 @@
+<h1 id="transactions">Transactions<a aria-hidden="true" class="anchor-heading icon-link" href="#transactions"></a></h1>
+<p><a href="/notes/4xb9cg487yio88c5b2j2bid">see also</a></p>
+<p>If a function call has failed within a transaction block and we try to commit, we will instead rollback. Observe:</p>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">BEGIN</span><span class="token punctuation">;</span>
+<span class="token keyword">SELECT</span> <span class="token number">1</span><span class="token operator">/</span><span class="token number">0</span><span class="token punctuation">;</span> <span class="token comment">-- ERROR: division by zero</span>
+<span class="token keyword">COMMIT</span><span class="token punctuation">;</span> <span class="token comment">-- error detected, ROLLBACK executed</span>
+</code></pre>
+<p>Postgres transactions are isolated to individual clients, meaning that the same client must be the one to execute all code in a transaction block.</p>
+<ul>
+<li>In <code>node-postgres</code>, we cannot use <code>pool.query</code> because of this, (spec: because a pool may be seen as multiple different clients to the postgres server) </li>
+</ul>
+<p>In Postgres</p>
+<ul>
+<li>To execute a transaction in Postgres, use BEGIN / COMMIT / ROLLBACK</li>
+<li>in Postgres, DDL commands are transactional, except when the commands are "high-caliber", such as creating and deleting DATABASE, TABLESPACE, CLUSTER</li>
+<li>PostgreSQL supports multi-level transactions on save points level
+<ul>
+<li>If an error occurs inside a transaction, PostgreSQL rolls back the whole transaction but demands a command to complete the current transaction (COMMIT, ROLLBACK, ABORT)</li>
+</ul>
+</li>
+<li>Postgres treats every SQL statement as being executed within a transaction implicitly. If we do not issue a BEGIN command, then each statement will be surrounded with BEGIN..COMMIT</li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/Yy2ls7193pLyuJ7Kfn7c6">Transaction Variables</a></li>
+</ol>

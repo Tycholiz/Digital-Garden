@@ -1,0 +1,50 @@
+<h1 id="storage">Storage<a aria-hidden="true" class="anchor-heading icon-link" href="#storage"></a></h1>
+<p>When it comes to high-availability (HA) clusters, the two main replication topologies you’ll encounter in data storage are:</p>
+<ol>
+<li>Active/active clusters</li>
+<li>Active/passive clusters</li>
+</ol>
+<div class="table-responsive">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>Active/Active</th><th>Active/Passive</th></tr></thead><tbody><tr><td><strong>Benefits</strong></td><td>- Better resource utilization since both nodes can handle traffic.<br>- No failover needed.<br>- Higher availability, with no single point of failure<br>- Better scalability since load is spread across multiple nodes.<br>- Easy to scale out by adding more database shards</td><td>- Only one node is active at a time, so there is no contention for resources.<br>- Simplified data consistency as there is only one active node handling write operations.<br>- Simpler configuration and management.<br>- Easier to test failover since it only happens when the active node fails.</td></tr><tr><td><strong>Drawbacks</strong></td><td>- Can be more complex to configure and manage.<br>- Scaling limitations on a single host.<br>- Inflexible data model<br>- hot spots and underutilization of shards due to the difficulty in re-sharding<br>- Synchronization and consistency issues need to be carefully addressed.<br>- Increased latency due to the need to synchronize data between nodes.</td><td>- Higher resource utilization since only one node is active.<br>- Failover can take longer since the passive node needs to start up and take over.<br>- Potential for data loss if the active node fails before changes have been replicated to the passive node.</td></tr></tbody></table></div>
+<h2 id="activeactive">Active/Active<a aria-hidden="true" class="anchor-heading icon-link" href="#activeactive"></a></h2>
+<p>In Active/active, client machines connect to a <a href="/notes/ixUb4q9KIlc89hsmLFvb5">load balancer</a> that distributes their workloads across multiple active servers.</p>
+<ul>
+<li>with active/active, the database can be written to from any region. Therefore if there is a degradation in one of the regions, there won't be any perceived downtime for end users.</li>
+</ul>
+<h3 id="when-to-use">When to use<a aria-hidden="true" class="anchor-heading icon-link" href="#when-to-use"></a></h3>
+<ul>
+<li>Suitable for applications that require high availability and demand continuous operation even during planned or unplanned maintenance or node failures.</li>
+<li>Use active-active when you need to distribute the workload across multiple nodes to handle high traffic and achieve better performance, responsiveness, and throughput.</li>
+<li>Beneficial for mission-critical applications, real-time systems, or cloud services that require seamless scalability and minimal downtime during maintenance.</li>
+</ul>
+<h2 id="activepassive">Active/Passive<a aria-hidden="true" class="anchor-heading icon-link" href="#activepassive"></a></h2>
+<p>In Active/passive, client machines connect to the main server, which handles the full workload, while a backup server remains on standby, only activating in the event of a failure.</p>
+<ul>
+<li>with active/passive, we’d have some short period of time where nobody could login in (even if they could still keep querying) while we stand up a new primary</li>
+</ul>
+<h3 id="when-to-use-1">When to use<a aria-hidden="true" class="anchor-heading icon-link" href="#when-to-use-1"></a></h3>
+<ul>
+<li>Suitable for applications where high availability is critical, but the primary concern is minimizing downtime in the event of a failure or maintenance.</li>
+</ul>
+<h2 id="analogy-building-power-generators">Analogy: Building Power Generators<a aria-hidden="true" class="anchor-heading icon-link" href="#analogy-building-power-generators"></a></h2>
+<p>An active/active cluster is like having two separate generators that are both running and providing power to the building simultaneously. If one generator were to fail, the other would continue to provide power without interruption. This is similar to a building with redundant power sources that are both actively providing power, and if one source were to fail, the other would seamlessly take over.</p>
+<p>On the other hand, an active/passive cluster is like having a primary generator that is providing power to the building, with a secondary backup generator that is on standby in case the primary one fails. In this setup, the secondary generator is not actively providing power to the building until it is needed, at which point it would be switched on and take over from the primary generator. This is similar to a building with a backup generator that is not running until the primary power source fails, at which point the backup generator would start up and provide power.</p>

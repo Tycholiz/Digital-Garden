@@ -1,0 +1,38 @@
+<h1 id="scheduler">Scheduler<a aria-hidden="true" class="anchor-heading icon-link" href="#scheduler"></a></h1>
+<p>Scheduling is the action of assigning resources to perform tasks. </p>
+<ul>
+<li>The resources may be processors, network links or expansion cards. </li>
+<li>The tasks may be threads, processes or data flows.</li>
+</ul>
+<p>Schedulers are designed so as to keep all computer resources busy</p>
+<ul>
+<li>therefore, they analaglous to <a href="/notes/ixUb4q9KIlc89hsmLFvb5">load balancers</a></li>
+</ul>
+<p>Schedulers also manage how each user shares system resources effectively.</p>
+<p>Scheduling is fundamental to computation itself, and an intrinsic part of the execution model of a computer system</p>
+<hr>
+<h3 id="kernel-thread">Kernel thread<a aria-hidden="true" class="anchor-heading icon-link" href="#kernel-thread"></a></h3>
+<p>A kernel thread is a "lightweight" unit of kernel scheduling</p>
+<p>At least one kernel thread exists within each process. </p>
+<ul>
+<li>If multiple kernel threads exist within a process, then they share the same memory and file resources. </li>
+</ul>
+<p>Kernel threads are preemptively multitasked if the operating system's process scheduler is preemptive. Kernel threads do not own resources except for a stack, a copy of the registers including the program counter, and thread-local storage (if any), and are thus relatively cheap to create and destroy.</p>
+<ul>
+<li>Thread switching is also relatively cheap</li>
+</ul>
+<hr>
+<h3 id="cooperative-multitasking-non-preemptive-multitasking">Cooperative multitasking (non-preemptive multitasking)<a aria-hidden="true" class="anchor-heading icon-link" href="#cooperative-multitasking-non-preemptive-multitasking"></a></h3>
+<ul>
+<li>In this scheduling paradigm, the OS has its role as a scheduler reduced. Instead of the scheduler determining which process' turn it is to get run, the processes themselves voluntarily perform this duty. That is, each process knows when its turn is over, and cedes processing power to the next process in line.</li>
+<li>In this scheme, the process scheduler of an operating system is known as a cooperative scheduler, having its role reduced down to starting the processes and letting them return control back to it voluntarily</li>
+</ul>
+<p>This paradigm is widely used in memory-constrained embedded systems</p>
+<ul>
+<li>the concept of scheduling makes it possible to have computer multitasking with a single <a href="/notes/XkJ62K1L604NfWaUdxZi7">CPU</a>.</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/h4AAeyVt574EVXO3sy2X1">Process</a></li>
+</ul>

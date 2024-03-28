@@ -1,0 +1,359 @@
+<h1 id="terraform">Terraform<a aria-hidden="true" class="anchor-heading icon-link" href="#terraform"></a></h1>
+<h2 id="what-is-it">What is it?<a aria-hidden="true" class="anchor-heading icon-link" href="#what-is-it"></a></h2>
+<p>Terraform is a cloud-agnostic <a title="Private" href="https://wiki.dendron.so/notes/hfyvYGJZQiUwQaaxQO27q.html" target="_blank" class="private">IaC (Private)</a> solution.</p>
+<p>Terraform is split into two parts:</p>
+<ul>
+<li>One part is the Terraform engine, which understands... 
+<ul>
+<li>how to read state from a provider</li>
+<li>read HCL code</li>
+<li>how to get from the state your infrastructure is currently into the state you want your infrastructure to be in.</li>
+</ul>
+</li>
+<li>The other part is the provider, which talks to the infrastructure to find out the current state and make changes using the infrastructure’s API.</li>
+</ul>
+<h2 id="provisioning-workflow">Provisioning Workflow<a aria-hidden="true" class="anchor-heading icon-link" href="#provisioning-workflow"></a></h2>
+<p>There are 3 main CLI commands that involve creating, modifying and destroying infrastructure: <code>plan</code>, <code>apply</code> and <code>destroy</code>.</p>
+<p><a href="/notes/Ky3O7oxftnwQbcZlZ0nEe">Terraform CLI</a></p>
+<h2 id="terminology">Terminology<a aria-hidden="true" class="anchor-heading icon-link" href="#terminology"></a></h2>
+<h3 id="provider">Provider<a aria-hidden="true" class="anchor-heading icon-link" href="#provider"></a></h3>
+<p></p><p></p><div class="portal-container">
+<div class="portal-head">
+<div class="portal-backlink">
+<div class="portal-title">From <span class="portal-text-title">Provider</span></div>
+<a href="/notes/0aidQMXuED5nPrEAqPSwg" class="portal-arrow">Go to text <span class="right-arrow">→</span></a>
+</div>
+</div>
+<div id="portal-parent-anchor" class="portal-parent" markdown="1">
+<div class="portal-parent-fader-top"></div>
+<div class="portal-parent-fader-bottom"></div><p>A provider is a connection that allows Terraform to manage infrastructure using an interface (e.g. AWS API)</p>
+</div></div><p></p><p></p>
+<h3 id="resource">Resource<a aria-hidden="true" class="anchor-heading icon-link" href="#resource"></a></h3>
+<p></p><p></p><div class="portal-container">
+<div class="portal-head">
+<div class="portal-backlink">
+<div class="portal-title">From <span class="portal-text-title">Resource</span></div>
+<a href="/notes/Nt5U2FxZNGStbEcYYBjKE" class="portal-arrow">Go to text <span class="right-arrow">→</span></a>
+</div>
+</div>
+<div id="portal-parent-anchor" class="portal-parent" markdown="1">
+<div class="portal-parent-fader-top"></div>
+<div class="portal-parent-fader-bottom"></div><p>A resource represents a piece of real world infrastructure </p>
+<p>Examples:</p>
+<ul>
+<li>an S3 bucket</li>
+<li>an EKS (Elastic Kubernetes) cluster</li>
+<li>a Postgres <a href="/notes/WRqfLQI6kPDa2M8aIurYo">role</a></li>
+</ul>
+</div></div><p></p><p></p>
+<h3 id="module">Module<a aria-hidden="true" class="anchor-heading icon-link" href="#module"></a></h3>
+<p></p><p></p><div class="portal-container">
+<div class="portal-head">
+<div class="portal-backlink">
+<div class="portal-title">From <span class="portal-text-title">Module</span></div>
+<a href="/notes/zSuIFLNNKKEtLtwhe8nez" class="portal-arrow">Go to text <span class="right-arrow">→</span></a>
+</div>
+</div>
+<div id="portal-parent-anchor" class="portal-parent" markdown="1">
+<div class="portal-parent-fader-top"></div>
+<div class="portal-parent-fader-bottom"></div><p>A Terraform module is a set of Terraform configuration files in a single directory that can be considered its own standalone Terraform project.</p>
+<ul>
+<li>it can therefore...
+<ul>
+<li>contain its own resources, data sources, locals, etc.</li>
+<li>take variables (ie. inputs on a per-module basis)</li>
+</ul>
+</li>
+</ul>
+</div></div><p></p><p></p>
+<h3 id="data-source">Data source<a aria-hidden="true" class="anchor-heading icon-link" href="#data-source"></a></h3>
+<p></p><p></p><div class="portal-container">
+<div class="portal-head">
+<div class="portal-backlink">
+<div class="portal-title">From <span class="portal-text-title">Data Source</span></div>
+<a href="/notes/mO2rzcwfMls7YDt3r3iGX" class="portal-arrow">Go to text <span class="right-arrow">→</span></a>
+</div>
+</div>
+<div id="portal-parent-anchor" class="portal-parent" markdown="1">
+<div class="portal-parent-fader-top"></div>
+<div class="portal-parent-fader-bottom"></div><p>A data source is used to fetch data from a resource that is not managed by the current Terraform project.</p>
+<ul>
+<li>think of it as a read-only resource that already exists</li>
+</ul>
+</div></div><p></p><p></p>
+<h3 id="local">Local<a aria-hidden="true" class="anchor-heading icon-link" href="#local"></a></h3>
+<p>A <code>local</code> is Terraform's representation of a variable.</p>
+<ul>
+<li>note: not to be confused with Terraform variables.</li>
+</ul>
+<h3 id="variable">Variable<a aria-hidden="true" class="anchor-heading icon-link" href="#variable"></a></h3>
+<p></p><p></p><div class="portal-container">
+<div class="portal-head">
+<div class="portal-backlink">
+<div class="portal-title">From <span class="portal-text-title">Variables</span></div>
+<a href="/notes/456RSqs23EDalVWwggIy1" class="portal-arrow">Go to text <span class="right-arrow">→</span></a>
+</div>
+</div>
+<div id="portal-parent-anchor" class="portal-parent" markdown="1">
+<div class="portal-parent-fader-top"></div>
+<div class="portal-parent-fader-bottom"></div><p>A variable is set at runtime, allowing us to vary Terraform's behaviour. </p>
+<ul>
+<li>Therefore, if Terraform were a function, a variable would be an input to the function.</li>
+<li>note: not to be confused with <code>locals</code>, which themselves are actually more like variables as used in general programming</li>
+</ul>
+<pre class="language-hcl"><code class="language-hcl"><span class="token keyword">variable<span class="token type variable"> "bucket_name" </span></span><span class="token punctuation">{</span>
+    <span class="token property">type</span> <span class="token punctuation">=</span> string
+    <span class="token comment"># describe what this variable is used for</span>
+    <span class="token property">description</span> <span class="token punctuation">=</span> <span class="token string">"the name of the bucket we are creating"</span>
+    <span class="token property">default</span> <span class="token punctuation">=</span> <span class="token string">"default_bucket_name"</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">resource <span class="token type variable">"aws_s3_bucket"</span></span> <span class="token string">"bucket"</span> <span class="token punctuation">{</span>
+    <span class="token property">bucket</span> <span class="token punctuation">=</span> var.bucket_name
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Variables can be more complex too:</p>
+<pre class="language-tfvars"><code class="language-tfvars">instance_map = {
+    dev = "t3.small"
+    test = "t3.medium"
+    prod = "t3.large"
+}
+
+environment_type = "dev"
+</code></pre>
+<p>And referenced like:</p>
+<pre class="language-hcl"><code class="language-hcl"><span class="token keyword">variable<span class="token type variable"> "instance_map" </span></span><span class="token punctuation">{</span>
+    <span class="token property">type</span> <span class="token punctuation">=</span> map(string)
+<span class="token punctuation">}</span>
+<span class="token keyword">variable<span class="token type variable"> "environment_type" </span></span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+<span class="token keyword">output<span class="token type variable"> "selected_instance" </span></span><span class="token punctuation">{</span>
+    <span class="token property">value</span> <span class="token punctuation">=</span> var.instance_map<span class="token punctuation">[</span>var.environment_type<span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h4 id="types">Types<a aria-hidden="true" class="anchor-heading icon-link" href="#types"></a></h4>
+<ul>
+<li><code>string</code></li>
+<li><code>bool</code></li>
+<li><code>number</code></li>
+<li><code>list(&#x3C;TYPE>)</code></li>
+<li><code>set(&#x3C;TYPE>)</code>
+<ul>
+<li>each value is unique</li>
+</ul>
+</li>
+<li><code>map(&#x3C;TYPE>)</code></li>
+<li><code>object()</code>
+<ul>
+<li>like a map, but values can be different types</li>
+</ul>
+</li>
+<li><code>tuple([&#x3C;TYPE>, …])</code>
+<ul>
+<li>number of values and order is preserved</li>
+</ul>
+</li>
+<li><code>any</code>
+<ul>
+<li>unlike <code>any</code> type from <a href="/notes/S2sBltrPfd8a7ICuD7CuH">Typescript</a>; this <code>any</code> allows Terraform to infer based on the actual value.</li>
+</ul>
+</li>
+</ul>
+<h4 id="providing-variables-4-ways">Providing variables (4 ways)<a aria-hidden="true" class="anchor-heading icon-link" href="#providing-variables-4-ways"></a></h4>
+<ol>
+<li>
+<p>When we run <code>terraform init</code> and <code>terraform apply</code>, we will be prompted to provide a value for the variable(s).</p>
+</li>
+<li>
+<p>pass the value with:</p>
+</li>
+</ol>
+<pre class="language-sh"><code class="language-sh">terraform apply -var bucket_name=my_bucket
+</code></pre>
+<ol start="3">
+<li><code>export</code> environment variables in the terminal prefixed with <code>TF_VAR_</code>:</li>
+</ol>
+<pre class="language-sh"><code class="language-sh">export TF_VAR_bucket_name=my_bucket
+</code></pre>
+<ol start="4">
+<li>create a <code>terraform.tfvars</code> file (or <code>&#x3C;ANYNAME>.auto.tfvars</code>):</li>
+</ol>
+<pre class="language-tfvars"><code class="language-tfvars">bucket_name = "my_bucket"
+</code></pre></div></div><p></p><p></p>
+<h3 id="state">State<a aria-hidden="true" class="anchor-heading icon-link" href="#state"></a></h3>
+<p></p><p></p><div class="portal-container">
+<div class="portal-head">
+<div class="portal-backlink">
+<div class="portal-title">From <span class="portal-text-title">State</span></div>
+<a href="/notes/NsY5hHUmyMhwB61BfihyD" class="portal-arrow">Go to text <span class="right-arrow">→</span></a>
+</div>
+</div>
+<div id="portal-parent-anchor" class="portal-parent" markdown="1">
+<div class="portal-parent-fader-top"></div>
+<div class="portal-parent-fader-bottom"></div><p>State is the place where Terraform stores of all of the resources (and their metadata) it has created.</p>
+<ul>
+<li>run <code>terraform state list</code> to see all resources existing in state.</li>
+</ul>
+<p>This state is used by Terraform to work out how changes need to be made.</p>
+<p>State is stored in <code>terraform.tfstate</code></p>
+<p>If we want to move resource creation from one project to another, state needs to be manipulated directly </p>
+<ul>
+<li>
+<p>this can be handled by (example uses a AWS VPC resource)</p>
+<ol>
+<li>running <code>terraform state rm aws_vpc.my_vpc</code> command, which will remove the resource from state (so Terraform is no longer managing it), but will not delete the resource in the cloud.</li>
+<li>in the new project, copy+paste over the resource and run <code>terraform import aws_vpc.my_pc &#x3C;VPC_ID></code></li>
+<li>run <code>terraform apply</code></li>
+</ol>
+</li>
+<li>
+<p>some resources do not support <code>import</code>. In this case, use <code>terraform state mv</code></p>
+</li>
+</ul>
+<h3 id="remote-state">Remote state<a aria-hidden="true" class="anchor-heading icon-link" href="#remote-state"></a></h3>
+<p>Multiple people working on the same Terraform project can introduce a lot of complexity, since a local state file is used to store a record of what has been created. If we run terraform commands on a second machine, it will try to create double the resources.</p>
+<ul>
+<li>to get around this issue, we can store state in a remote location (e.g. in an S3 bucket)</li>
+</ul>
+<p>We specify the remote state location using the <code>backend</code> keyword. Here we are using an S3 bucket:</p>
+<pre class="language-tf"><code class="language-tf"># state.tf
+backend "s3" {
+    bucket = "&#x3C;bucket-name>"
+    key = "my-project.state"
+    region = "us-west-1"
+}
+</code></pre>
+<p>The remote state backend needs to support "locking", which prevents changes to the state while Terraform commands are running.</p>
+<p>A good idea is to use S3 bucket versioning so we can time travel through different Terraform states.</p></div></div><p></p><p></p>
+<h3 id="workspaces">Workspaces<a aria-hidden="true" class="anchor-heading icon-link" href="#workspaces"></a></h3>
+<p>Workspaces solve the problem "how do we create multiple environments using the same code?"</p>
+<p><code>terraform.workspace</code> is a special variable that resolves to the current workspace we are running in.</p>
+<p>Unless we explicitly specify, we are running in the <code>default</code> workspace.</p>
+<p>Local workspaces are stored in <code>terraform.tfstate.d/</code></p>
+<ul>
+<li>each workspace has its own state</li>
+</ul>
+<h4 id="cli">CLI<a aria-hidden="true" class="anchor-heading icon-link" href="#cli"></a></h4>
+<ul>
+<li>List workspaces -  <code>terraform workspaces list</code></li>
+<li>Create new workspace - <code>terraform workspace new development</code></li>
+<li>Switch workspaces - <code>terraform workspace select development</code></li>
+</ul>
+<h3 id="terraform-cloud">Terraform Cloud<a aria-hidden="true" class="anchor-heading icon-link" href="#terraform-cloud"></a></h3>
+<p>Terraform cloud provides us with a method to change our input variables at the top level, meaning each set of infra (for each environment) can have its own set of variables.</p>
+<p>With it, we:</p>
+<ol>
+<li>create a workspace </li>
+<li>point it at a source control repo containing your Terraform code</li>
+<li>set the variables for that workspace</li>
+</ol>
+<h3 id="lifecycle">Lifecycle<a aria-hidden="true" class="anchor-heading icon-link" href="#lifecycle"></a></h3>
+<p>Each resource has a special attribute block called <code>lifecycle</code> that gives us extra control.</p>
+<p>It allows us to:</p>
+<ul>
+<li><code>create_before_destroy</code>, to ensure a new resource is created prior to deleting the old one</li>
+<li><code>prevent_destroy</code>, to prevent Terraform from ever deleting the resource, so long as the property exists</li>
+</ul>
+<pre class="language-tf"><code class="language-tf">lifecycle {
+  prevent_destroy = true
+}
+</code></pre>
+<h3 id="provisioner">Provisioner<a aria-hidden="true" class="anchor-heading icon-link" href="#provisioner"></a></h3>
+<p>Provisioners allow us to run a script (remotely or locally) after a resource has been created.</p>
+<ul>
+<li>provisioners allow us to step in and solve problems ourselves when they are not solved out of the box by the provider we are using.</li>
+<li>because provisioners are imperative, they are seen as a last resort approach to solving our problem.</li>
+</ul>
+<hr>
+<h2 id="misc">Misc<a aria-hidden="true" class="anchor-heading icon-link" href="#misc"></a></h2>
+<h3 id="multi-line-string">Multi-line string<a aria-hidden="true" class="anchor-heading icon-link" href="#multi-line-string"></a></h3>
+<p>Multi-line strings are declared between <code>&#x3C;&#x3C;ANYWORD</code> and <code>ANYWORD</code>:</p>
+<pre class="language-tf"><code class="language-tf">resource "aws_iam_policy" "my_bucket_policy" {
+    name = "my-bucket-policy"
+
+    policy = &#x3C;&#x3C;POLICY
+    {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Action": [
+                    "s3:ListBucket"
+                ],
+                "Effect": "Allow",
+                "Resource": [
+                    "${data.aws_s3_bucket.bucket.arn}"
+                ]
+            }
+        ]
+    }
+    POLICY
+}
+</code></pre>
+<p>String interpolation (<code>${interpolated_value}</code>) can be used inside a multi-line string.</p>
+<ul>
+<li>only needed when inside quotes (<code>""</code>)</li>
+</ul>
+<h3 id="outputting-to-console-stdout">Outputting to console (stdout)<a aria-hidden="true" class="anchor-heading icon-link" href="#outputting-to-console-stdout"></a></h3>
+<pre class="language-tf"><code class="language-tf">output "message" {
+    value = aws_s3_bucket.my_bucket.id
+}
+</code></pre>
+<p>or we can print all attributes exported by a resource:</p>
+<pre class="language-tf"><code class="language-tf">output "all" {
+    aws_s3_bucket.my_bucket
+}
+</code></pre>
+<h3 id="folder-structure">Folder structure<a aria-hidden="true" class="anchor-heading icon-link" href="#folder-structure"></a></h3>
+<p>All Terraform files should be in a single directory (the Terraform project) at the top level. Any files within subdirectories will be ignored. Conceptually, when we run Terraform commands, everything will be appended into a single file anyway.</p>
+<ul>
+<li>child directories are used to set up Modules</li>
+</ul>
+<p>By convention,</p>
+<ul>
+<li>set up providers in <code>main.tf</code>.</li>
+<li>resources named after their type (e.g. <code>sqs.tf</code>, <code>api-gateway.tf</code>)</li>
+<li>variables in <code>variables.tf</code></li>
+</ul>
+<hr>
+<h2 id="tools">Tools<a aria-hidden="true" class="anchor-heading icon-link" href="#tools"></a></h2>
+<ul>
+<li><a href="https://www.runatlantis.io/">Atlantis</a> - Pull Request automation for Terraform
+<ul>
+<li>purpose is to have improved code review for infra changes.</li>
+</ul>
+</li>
+<li>Terratest - a unit testing framework for Terraform</li>
+</ul>
+<h2 id="alternatives">Alternatives<a aria-hidden="true" class="anchor-heading icon-link" href="#alternatives"></a></h2>
+<ul>
+<li>Chef/Puppet - these are configuration management tools. They are designed to configure and manage the already existing infrastructure, while Terraform is designed to set up the infrastructre itself.
+<ul>
+<li>In other words, Puppet and Chef would be used to configure servers, while Terraform would be used to create the server itself.</li>
+</ul>
+</li>
+<li>Pulumi - This IaC tool uses a programming language (like Typescript) instead of a configuration language.</li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/mO2rzcwfMls7YDt3r3iGX">Data Source</a></li>
+<li><a href="/notes/zSuIFLNNKKEtLtwhe8nez">Module</a></li>
+<li><a href="/notes/0aidQMXuED5nPrEAqPSwg">Provider</a></li>
+<li><a href="/notes/Nt5U2FxZNGStbEcYYBjKE">Resource</a></li>
+<li><a href="/notes/NsY5hHUmyMhwB61BfihyD">State</a></li>
+<li><a href="/notes/Ky3O7oxftnwQbcZlZ0nEe">Terraform CLI</a></li>
+<li><a href="/notes/C84fC8TYNY902iA8f7nCD">Terragrunt</a></li>
+<li><a href="/notes/456RSqs23EDalVWwggIy1">Variables</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/KutlqQVGLBAdLTslz3D9A">CDK</a></li>
+<li><a href="/notes/7Hd68M5niADEkip4CdU85">IaC (Infrastructure-as-Code)</a></li>
+<li><a href="/notes/C84fC8TYNY902iA8f7nCD">Terragrunt</a></li>
+<li><a href="/notes/NbGOJJpZuEbf0hXs2UvAB">CloudFormation</a></li>
+<li><a href="/notes/OSdV9FvBG3wDbRNLllg0V">AWS Lambda</a></li>
+<li><a href="/notes/tn4qi4x8bodysdvtd5rq0f4">SAM</a></li>
+<li><a href="/notes/begrl6j3rxln3bcsz87ornn">Xray</a></li>
+<li><a href="/notes/lBasXzi1eHzGwL2pEuOv8">GitOps</a></li>
+</ul>

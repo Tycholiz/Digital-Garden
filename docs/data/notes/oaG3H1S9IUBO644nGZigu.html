@@ -1,0 +1,26 @@
+<h1 id="web">Web<a aria-hidden="true" class="anchor-heading icon-link" href="#web"></a></h1>
+<h2 id="website-vs-webapp">Website vs Webapp<a aria-hidden="true" class="anchor-heading icon-link" href="#website-vs-webapp"></a></h2>
+<ul>
+<li>Web sites are documents; they are content‐centric. Sites are geared towards content consumption.</li>
+<li>webapps are tools; they are behaviour‐centric. Apps are geared towards content creation and manipulation.
+<ul>
+<li>in some sense, state management is what distinguishes a webapp.</li>
+</ul>
+</li>
+</ul>
+<p>It can be argued that there is a false dichotomy between a webapp and website, and that it is really more of a continuum</p>
+<ul>
+<li>a site, built out of static documents, connected via links, is on the left end and a pure behaviour driven, contentless application like an online photo editor is on the right.</li>
+</ul>
+<p>If you would position your project on the left side of this spectrum, an integration on webserver level is a good fit. With this model a server collects and concatenates HTML strings from all components that make up the page requested by the user. Updates are done by reloading the page from the server or replacing parts of it via ajax.</p>
+<p>When your user interface has to provide instant feedback, even on unreliable connections, a pure server rendered site is not sufficient anymore. To implement techniques like Optimistic UI or Skeleton Screens you need to be able to also update your UI on the device itself.</p>
+<p>Of course, some are firmly in one camp or the other:</p>
+<ul>
+<li>ex.  a simple online brochure for a university programme that contains nothing but text, images, and hyperlinks is clearly a document. It is clearly a site. An HTML‐based Photoshop clone, on the other hand, is clearly an app — it has no inherent content of its own. Instead, it is used to create and manipulate content.</li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/l7ujdu3kacs340gzo7ylfce">Analytics</a></li>
+<li><a href="/notes/yGYzJ5yDemtAisBudv9ea">WASM</a></li>
+</ol>

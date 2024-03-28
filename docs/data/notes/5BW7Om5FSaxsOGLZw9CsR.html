@@ -1,0 +1,38 @@
+<h1 id="sliding-window">Sliding Window<a aria-hidden="true" class="anchor-heading icon-link" href="#sliding-window"></a></h1>
+<p>Time Complexity - The time complexity of this pattern is <code>0(N)</code></p>
+<p>Space Complexity - The algorithm runs in constant space <code>O(1)</code></p>
+<h3 id="example-calculate-averages">Example: Calculate averages<a aria-hidden="true" class="anchor-heading icon-link" href="#example-calculate-averages"></a></h3>
+<p>This function takes in an array, and sums the first <code>k</code> elements, computes its average then sticks it in the array. Then it sums the next <code>k</code> elements, computes average, adds to an array, and so on until the end of the array. Consider that we could brute-force this by having each iteration take a sum then average of each <code>k</code> sized window. However this has a major inefficiency, which is that the same elements are counted multiple times needlessly.</p>
+<p>Instead, our approach here lets us leverage previously summed up numbers by simply removing the start of the window (<code>frontIndex</code>) and adding the end of the window (<code>backIndex</code>) on each iteration.
+<img src="/assets/images/2021-10-10-11-11-22.png"></p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token function-variable function">calculateAverages</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">arr<span class="token punctuation">,</span> size</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+    <span class="token keyword">let</span> backIndex <span class="token operator">=</span> size <span class="token operator">-</span> <span class="token number">1</span>
+    <span class="token keyword">let</span> frontIndex <span class="token operator">=</span> <span class="token number">0</span>
+    <span class="token keyword">const</span> averageResults <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    <span class="token keyword">let</span> sum <span class="token operator">=</span> arr
+        <span class="token punctuation">.</span><span class="token method function property-access">slice</span><span class="token punctuation">(</span>frontIndex<span class="token punctuation">,</span> backIndex <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token method function property-access">reduce</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">acc<span class="token punctuation">,</span> val</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> acc <span class="token operator">+</span> val<span class="token punctuation">)</span>
+
+    <span class="token keyword control-flow">while</span> <span class="token punctuation">(</span>backIndex <span class="token operator">&#x3C;</span> arr<span class="token punctuation">.</span><span class="token property-access">length</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        averageResults<span class="token punctuation">.</span><span class="token method function property-access">push</span><span class="token punctuation">(</span>sum <span class="token operator">/</span> size<span class="token punctuation">)</span>
+        
+        <span class="token comment">// remove the front of the window, and add the back of the window</span>
+        sum <span class="token operator">=</span> sum <span class="token operator">-</span> arr<span class="token punctuation">[</span>frontIndex<span class="token punctuation">]</span> <span class="token operator">+</span> arr<span class="token punctuation">[</span>backIndex <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span>
+
+        frontIndex<span class="token operator">++</span>
+        backIndex<span class="token operator">++</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword control-flow">return</span> averageResults
+<span class="token punctuation">}</span>
+
+<span class="token keyword">const</span> arr <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span>
+<span class="token keyword">const</span> k <span class="token operator">=</span> <span class="token number">5</span>
+
+<span class="token keyword">const</span> averages <span class="token operator">=</span> <span class="token function">calculateAverages</span><span class="token punctuation">(</span>arr<span class="token punctuation">,</span> k<span class="token punctuation">)</span>
+<span class="token comment">// [ 2.2, 2.8, 2.4, 3.6, 2.8]</span>
+</code></pre>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/n8usaompbr8xl7pzw869fgy">Window</a></li>
+</ul>

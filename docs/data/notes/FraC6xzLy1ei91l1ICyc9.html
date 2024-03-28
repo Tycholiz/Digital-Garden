@@ -1,0 +1,86 @@
+<h1 id="vim">Vim<a aria-hidden="true" class="anchor-heading icon-link" href="#vim"></a></h1>
+<h1 id="operators-and-motions">Operators and Motions<a aria-hidden="true" class="anchor-heading icon-link" href="#operators-and-motions"></a></h1>
+<ul>
+<li>Operator --> Number --> Motion</li>
+</ul>
+<h2 id="operator-verb">operator (Verb)<a aria-hidden="true" class="anchor-heading icon-link" href="#operator-verb"></a></h2>
+<ul>
+<li>what we are doing</li>
+<li><strong><em>ex.</em></strong> - <code>d</code>, <code>c</code>, <code>y</code>, <code>f</code>, <code>t</code>
+<ul>
+<li><code>f#</code>/<code>F#</code> - (<em>mn.</em> find)
+<ul>
+<li>inclusively go to first occurrence of <code>#</code> in the line</li>
+<li><code>;</code> to cycle through, <code>,</code> to go backwards</li>
+</ul>
+</li>
+<li><code>t#</code>/<code>T#</code> - (<em>mn.</em> til)
+<ul>
+<li>exclusively go to first occurrence of <code>#</code> in the line</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="modifier">Modifier<a aria-hidden="true" class="anchor-heading icon-link" href="#modifier"></a></h2>
+<ul>
+<li>more specific information about the modifier</li>
+<li><strong><em>ex.</em></strong> - <code>i</code> (inside), <code>a</code> (around)</li>
+</ul>
+<p>Combine with numbers to further specify text objects</p>
+<ul>
+<li><strong><em>ex.</em></strong> - <code>d2f:</code> - delete until the second <code>:</code> character</li>
+<li><strong><em>ex.</em></strong> - <code>d2/:&#x3C;cr></code> - delete until the second <code>:</code> character</li>
+</ul>
+<h2 id="motion-noun---what-we-are-operating-on">motion (noun) - what we are operating on<a aria-hidden="true" class="anchor-heading icon-link" href="#motion-noun---what-we-are-operating-on"></a></h2>
+<ul>
+<li><strong><em>ex.</em></strong> - <code>$</code>, <code>0</code>, <code>w</code>, <code>e</code>, <code>b</code></li>
+</ul>
+<hr>
+<!-- # strat submodules
+Structure the vim module from the perspective of a user who is trying to accomplish a certain task in vim.
+- Are they trying to substitute all occurrences in a file?
+- are they trying to modify text in some way (surround, uppercase, )
+
+- nav (moving the cursor around)
+    - line
+        - search
+        - find
+    - buffer
+        - search
+    - windows
+    - tree
+        - netrw
+        - MRU
+        - <C-6>
+- modify
+    - surround
+    - substitute
+        - greplace
+    - uppercase
+- feat
+    - marks
+    - macro
+    - shell (execute shell commands)
+- plug
+    - fzf
+    - fugitive
+    - guter (git-gutter)
+- repeating -->
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/B8D6gIyQzBKkdEDeGj90G">Cmds</a></li>
+<li><a href="/notes/ee17da05-fd4b-4e3e-a440-915c8edb0820">Config</a></li>
+<li><a href="/notes/a7f905c5-18dc-4e64-b1a2-c216f17ccd30">Feat</a></li>
+<li><a href="/notes/765e0JcdMxHzidMscbuyd">Help</a></li>
+<li><a href="/notes/jTZF4s2EbKNQfH8GTgape">Inner</a></li>
+<li><a href="/notes/b79cca0c-d7cd-4513-a338-361d64925267">Modes</a></li>
+<li><a href="/notes/b0f9ffe8-9af0-423c-9021-07f026cbbce7">Nav</a></li>
+<li><a href="/notes/859081c5-87e5-4585-abcf-520f2d874947">Plug</a></li>
+<li><a href="/notes/OxrnKmM8ywca3TMLHnp8v">Regex</a></li>
+<li><a href="/notes/MfIUb6z6nFunMfSEqhRPo">Search</a></li>
+<li><a href="/notes/qPrMRY9yF2OAd54zHV5v4">Settings</a></li>
+<li><a href="/notes/4mnc2V8HZ4C7jpoVYzHZU">Substitution</a></li>
+<li><a href="/notes/vJYnFxgy3BORKf7jzgHZ9">Vim-Fugitive</a></li>
+</ol>

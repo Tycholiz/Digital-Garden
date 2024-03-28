@@ -1,0 +1,69 @@
+<h1 id="dns-records">DNS Records<a aria-hidden="true" class="anchor-heading icon-link" href="#dns-records"></a></h1>
+<p>A resource record is where the data associated with the <a href="/notes/nu4jr5d094zri5ni0kw247w">domain</a> name is stored.</p>
+<p>Resource records exist together in a single file known as a <em>zone datafile</em></p>
+<p>The resource records describe all the hosts in the <a href="/notes/rKwvAx3SP99In467imzlg">zone</a> and mark any delegation of subdomains</p>
+<p>Records are divided into classes, but the most common class is <em>internet</em>.</p>
+<ul>
+<li>every class of records defines its own <em>address</em> record.</li>
+</ul>
+<p>Resource records are associated with a single <a href="/notes/rKwvAx3SP99In467imzlg">zone</a> (as a result, they are also known as <em>zone files</em>)</p>
+<p>DNS Resource Records are instructions that live in <a href="/notes/vuSZhKeQU8JmAXynHqZvf">authoritative DNS servers</a> and provide information about a domain</p>
+<ul>
+<li>ex. You can think of a set of DNS records like a business listing on Yelp. That listing will give you a bunch of useful information about a business such as their location, hours, services offered, etc</li>
+<li>a DNS record is a mapping between domain name and IP address. </li>
+</ul>
+<p>when we enter <code>facebook.com</code> in an address bar, we request an A record from the DNS. When we send an email, we request an MX record from the DNS. </p>
+<ul>
+<li>A record is therefore the thing that we (the client) query for when engaging with the DNS</li>
+</ul>
+<h2 id="rr-field-values">RR Field Values<a aria-hidden="true" class="anchor-heading icon-link" href="#rr-field-values"></a></h2>
+<p>Values</p>
+<ul>
+<li><code>@</code> - indicates that this is a record for the root domain</li>
+<li><code>*</code> - indicates a wildcard, which will match all subdomains.</li>
+</ul>
+<h3 id="ttl-time-to-live">TTL (Time to Live)<a aria-hidden="true" class="anchor-heading icon-link" href="#ttl-time-to-live"></a></h3>
+<p>How long the website will live in the caching nameserver before a new one is requested. If the TTL is 1 hour, then the server will only request a new version of the site every hour. All requests made to that URL will be made to the cached version, until the hour is up, and a new version is used.</p>
+<ul>
+<li>ex. a value of 14400 for TTL means that if a record gets updated, it takes 240 minutes (14400 seconds) to take effect.</li>
+</ul>
+<p>As we know, there are many layers to DNS. It could be the case that we are able to resolve the domain name in the ISP nameserver, but we also may need to recurve further. The TTL will give us the max amount of time that particular resolution can exist on the ISP nameserver</p>
+<ul>
+<li>In other words, how long can a given mapping of domain to IP address live for in the cache, before we need to make a more recursive query? </li>
+</ul>
+<h3 id="record-data">Record Data<a aria-hidden="true" class="anchor-heading icon-link" href="#record-data"></a></h3>
+<ul>
+<li>Think of it like environment variables. We are passing data to the record. Naturally, whatever data we pass will vary in result depending on what type of record we have designated. </li>
+</ul>
+<h3 id="record-class">Record Class<a aria-hidden="true" class="anchor-heading icon-link" href="#record-class"></a></h3>
+<ul>
+<li>this is the namespace of the record information.
+<ul>
+<li>The most commonly used namespace is that of the Internet (<code>IN</code>)</li>
+</ul>
+</li>
+</ul>
+<h1 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h1>
+<ul>
+<li><a href="https://www.linode.com/docs/networking/dns/dns-records-an-introduction/">DNS records - an introduction</a></li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/dG0EOFLhB3CJeeBwLDvbi">A Record</a></li>
+<li><a href="/notes/JJT2q0S4m5Vz8jSV2kuMH">ANAME Record</a></li>
+<li><a href="/notes/NBHmGprwErzpO2HoAPW6Z">CNAME</a></li>
+<li><a href="/notes/0QtI74zrYXgqRMf6pbBIe">MX Record</a></li>
+<li><a href="/notes/ao3YNN6kJWCtLwkju6kUP">NS Record</a></li>
+<li><a href="/notes/dfQVfNvMKPOE5n9M1Bykb">SOA Record</a></li>
+<li><a href="/notes/6rOA1qY7HiRAaSdpBxGwt">SPF</a></li>
+<li><a href="/notes/jPKaIHIAcIoZaeBWQqWLO">SRV Record</a></li>
+<li><a href="/notes/eLzidwnBHudgdz3J0QGS2">TXT Record</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/9VuipvwFAqnEagcLCxomI">DNS Lookup</a></li>
+<li><a href="/notes/O6qGBZUWwgsnOyTDdvSAK">DNS Nameservers</a></li>
+<li><a href="/notes/vuSZhKeQU8JmAXynHqZvf">Authoritative Nameserver</a></li>
+</ul>

@@ -1,0 +1,42 @@
+<h1 id="state">State<a aria-hidden="true" class="anchor-heading icon-link" href="#state"></a></h1>
+<p>State is the place where Terraform stores of all of the resources (and their metadata) it has created.</p>
+<ul>
+<li>run <code>terraform state list</code> to see all resources existing in state.</li>
+</ul>
+<p>This state is used by Terraform to work out how changes need to be made.</p>
+<p>State is stored in <code>terraform.tfstate</code></p>
+<p>If we want to move resource creation from one project to another, state needs to be manipulated directly </p>
+<ul>
+<li>
+<p>this can be handled by (example uses a AWS VPC resource)</p>
+<ol>
+<li>running <code>terraform state rm aws_vpc.my_vpc</code> command, which will remove the resource from state (so Terraform is no longer managing it), but will not delete the resource in the cloud.</li>
+<li>in the new project, copy+paste over the resource and run <code>terraform import aws_vpc.my_pc &#x3C;VPC_ID></code></li>
+<li>run <code>terraform apply</code></li>
+</ol>
+</li>
+<li>
+<p>some resources do not support <code>import</code>. In this case, use <code>terraform state mv</code></p>
+</li>
+</ul>
+<h3 id="remote-state">Remote state<a aria-hidden="true" class="anchor-heading icon-link" href="#remote-state"></a></h3>
+<p>Multiple people working on the same Terraform project can introduce a lot of complexity, since a local state file is used to store a record of what has been created. If we run terraform commands on a second machine, it will try to create double the resources.</p>
+<ul>
+<li>to get around this issue, we can store state in a remote location (e.g. in an S3 bucket)</li>
+</ul>
+<p>We specify the remote state location using the <code>backend</code> keyword. Here we are using an S3 bucket:</p>
+<pre class="language-tf"><code class="language-tf"># state.tf
+backend "s3" {
+    bucket = "&#x3C;bucket-name>"
+    key = "my-project.state"
+    region = "us-west-1"
+}
+</code></pre>
+<p>The remote state backend needs to support "locking", which prevents changes to the state while Terraform commands are running.</p>
+<p>A good idea is to use S3 bucket versioning so we can time travel through different Terraform states.</p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/Ku1OgHMhELajzo61Gx7ye">Terraform</a></li>
+<li><a href="/notes/C84fC8TYNY902iA8f7nCD">Terragrunt</a></li>
+</ul>

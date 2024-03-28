@@ -1,0 +1,63 @@
+<h1 id="cors">CORS<a aria-hidden="true" class="anchor-heading icon-link" href="#cors"></a></h1>
+<h2 id="what-is-it">What is it?<a aria-hidden="true" class="anchor-heading icon-link" href="#what-is-it"></a></h2>
+<p>CORS is an HTTP-header based mechanism that allows a server to indicate any origins other than its own from which a browser should permit loading resources.</p>
+<ul>
+<li>An <strong>origin</strong> is a combination of scheme, domain and port (ie. <code>https://</code> + <code>example.com</code> + <code>:443</code>)
+<ul>
+<li>therefore <code>https://example.com</code> and <code>https://api.example.com</code> are different origins</li>
+</ul>
+</li>
+<li>It does this by modifying the response headers returned from the server.</li>
+<li>ex. if your app uses a headless CMS, then that headless CMS server must be configured to allow requests from your website <code>www.mypersonalwebsite.com</code>.</li>
+<li>note: a scheme can be a <em>local scheme</em> (<code>about://</code>, <code>blob://</code>, <code>data://</code>, <code>file://</code>) or an <em>http scheme</em> (<code>http://</code>)</li>
+</ul>
+<p>When a website can access a resource or execute commands on another domain via HTTP requests, the process is called <em>cross-origin resource sharing</em>.</p>
+<ul>
+<li>ex. you are on a blogging website, and clicking on one of their buttons sends an HTTP request to your bank's website requesting that all money be transferred out.</li>
+<li>Because of CORS, this of course cannot occur. So if we want to allow certain domains to send requests to be handled by the server, the server needs to have some sort of whitelist of domains.</li>
+</ul>
+<p>By default, if you are trying to access a resource that has a different domain from the one that serves your main website, then CORS will prevent that from happening.</p>
+<p>In a browser console, the following code snippet will always result in a CORS error unless:</p>
+<ul>
+<li>I'm already on google.com</li>
+<li>Google's server has enabled cross-origin requests from whatever website (hostname) I'm on </li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token function">fetch</span><span class="token punctuation">(</span><span class="token string">"https://google.com"</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">error<span class="token punctuation">,</span> meta<span class="token punctuation">,</span> body</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span>body<span class="token punctuation">.</span><span class="token method function property-access">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Consider that CORS restrictions don't come into play for all cross-origin resource sharing, meaning we can request resources without their consent.</p>
+<ul>
+<li>ex. <code>&#x3C;img></code>, <code>&#x3C;script></code>, <code>&#x3C;link></code>, <code>&#x3C;iframe></code>, <code>&#x3C;video></code>, <code>&#x3C;audio></code></li>
+</ul>
+<h4 id="enabling-cors-for-a-host">Enabling CORS for a host<a aria-hidden="true" class="anchor-heading icon-link" href="#enabling-cors-for-a-host"></a></h4>
+<p>The server is the one that enables the cross-origin requests, not the client</p>
+<ul>
+<li>
+<p><a href="https://enable-cors.org/server.html">Adding CORS support to server</a></p>
+</li>
+<li>
+<p>If a resource never contains private data, then it's safe to put <code>Access-Control-Allow-Origin: *</code>.</p>
+</li>
+<li>
+<p>If a resources sometimes contains private data depending on cookies, it's safe to add <code>Access-Control-Allow-Origin: *</code> as long as you also include a <code>Vary: Cookie</code> header.</p>
+</li>
+</ul>
+<pre class="language-js"><code class="language-js">router<span class="token punctuation">.</span><span class="token method function property-access">use</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">req<span class="token punctuation">,</span>res<span class="token punctuation">,</span>next</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span><span class="token string">'/'</span> <span class="token operator">+</span> req<span class="token punctuation">.</span><span class="token property-access">method</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  res<span class="token punctuation">.</span><span class="token method function property-access">header</span><span class="token punctuation">(</span><span class="token string">"Access-Control-Allow-Origin"</span><span class="token punctuation">,</span> <span class="token string">"https://google.com"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>If you want to make a request from one domain to another, then you need to enable CORS on the server</p>
+<hr>
+<h3 id="terminology">Terminology<a aria-hidden="true" class="anchor-heading icon-link" href="#terminology"></a></h3>
+<p>Origin - the User Agent that initiated the request. In other words, the client.</p>
+<hr>
+<h2 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h2>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS">MDN guide</a></p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/fTvLu9uP5fI2N9cA7i9fZ">headers</a></li>
+</ol>

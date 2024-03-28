@@ -1,0 +1,20 @@
+<h1 id="guard">Guard<a aria-hidden="true" class="anchor-heading icon-link" href="#guard"></a></h1>
+<p>A Guard is a <a href="/notes/38yyqdyxub4tyjdj0jl4ulg">provider</a> that enables us to implement <a href="/notes/facc2b01-755a-409f-99f6-57bef2d1501f">authorization</a></p>
+<ul>
+<li>in traditional <a href="/notes/L5JUZlGAGvTxrsEBB7DY8">Express</a> apps this is usually handled by middleware.
+<ul>
+<li>the main difference is that middleware is dumb, not knowing which handler will get called after it calls <code>next()</code>. On the other hand Guards have access to the <code>ExecutionContext</code> instance. Therefore, they know exactly what will be executed next.</li>
+</ul>
+</li>
+</ul>
+<p>Guards are invoked before <a href="/notes/oz006ng8c7qcbzg2ytasznj">pipes</a> or <a href="/notes/saert7xobzak9v2h5jt72b3">interceptors</a></p>
+<p>A guard is created by making a class that extends the <code>CanActivate</code> interface and is annotated with the <code>@Injectable()</code> decorator.</p>
+<p>Guards determine (at run-time) whether a given request will be handled by the route handler.</p>
+<ul>
+<li>ex. they can check conditions such as permissions, roles, ACLs, etc. to make that determination.</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/613syb18hb3v0u1ydvor7ru">Nestjs</a></li>
+</ul>

@@ -1,0 +1,54 @@
+<h1 id="connect">Connect<a aria-hidden="true" class="anchor-heading icon-link" href="#connect"></a></h1>
+<p>Kafka Connect is Kafka's integration API and subsystem, and answers questions like:</p>
+<ul>
+<li>"how do we get data from other systems into our Kafka topics?"
+<ul>
+<li>answer: source connectors</li>
+</ul>
+</li>
+<li>"how do we get data from our Kafka topics into our other systems (sink)?"
+<ul>
+<li>answer: sink connectors</li>
+</ul>
+</li>
+</ul>
+<p><img src="/assets/images/2023-06-27-08-49-13.png"></p>
+<p>Kafka Connect is an ecosystem of pluggable connectors</p>
+<ul>
+<li>a connector is simply a <code>.JAR</code> file </li>
+</ul>
+<p>The job of many source/sink connectors is part of the well trodden path.</p>
+<ul>
+<li>that is, the code that moves data from a topic to an S3 bucket, from a topic to ElasticSearch, from a topic to records in a relational database is unlikely to vary from one business to the next.</li>
+</ul>
+<p>Connect abstracts away much of the data integration code, and allows us to write JSON config in its place.</p>
+<ul>
+<li>ex. the following JSON is how we would stream data from Kafka into ElasticSearch
+<ul>
+<li>by doing this, we no longer need to write the code that subscribes to a topic, gets messages, and uses the ElasticSearch API</li>
+<li>As long as someone has already written an ElasticSearch connector, we can deploy that connector to our Connect cluster and POST the JSON file to the REST endpoint of the Connect cluster. By doing this, the <code>.JAR</code> file that is deployed to the cluster becomes instantiated as a runtime connector.</li>
+</ul>
+</li>
+</ul>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+ <span class="token property">"connector.class"</span><span class="token operator">:</span> <span class="token string">"io.confluent.connect.elasticsearch.ElasticsearchSinkConnector"</span><span class="token punctuation">,</span>
+ <span class="token property">"tasks.max"</span><span class="token operator">:</span> <span class="token string">"1"</span><span class="token punctuation">,</span>
+ <span class="token property">"topics"</span><span class="token operator">:</span> <span class="token string">"simple.elasticsearch.data"</span><span class="token punctuation">,</span>
+ <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"simple-elasticsearch-connector"</span><span class="token punctuation">,</span>
+ <span class="token property">"connection.url"</span><span class="token operator">:</span> <span class="token string">"http://elasticsearch:9200"</span><span class="token punctuation">,</span>
+ <span class="token property">"type.name"</span><span class="token operator">:</span> <span class="token string">"_doc"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>To a Kafka cluster, Connect looks like a producer or consumer (or both)</p>
+<p>Connect runs on hardware that is independent of the Kafka brokers themselves.</p>
+<p>Connect is designed to be scalable and fault-tolerant</p>
+<ul>
+<li>this means we can have a cluster of Connect workers to share the load of moving data in and out of Kafka topics.</li>
+</ul>
+<h3 id="worker">Worker<a aria-hidden="true" class="anchor-heading icon-link" href="#worker"></a></h3>
+<p>A Connect Worker is a node in the Connect cluster. </p>
+<p>The worker runs 1+ Connectors.</p>
+<h2 id="resources">Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#resources"></a></h2>
+<ul>
+<li><a href="https://www.confluent.io/hub/">Confluent hub: list of connectors</a></li>
+</ul>

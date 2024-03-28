@@ -1,0 +1,100 @@
+<h1 id="deployment">Deployment<a aria-hidden="true" class="anchor-heading icon-link" href="#deployment"></a></h1>
+<h2 id="overview">Overview<a aria-hidden="true" class="anchor-heading icon-link" href="#overview"></a></h2>
+<p>A Deployment controls the deployment and running of a pod on your cluster.</p>
+<p>Deployment objects manage the creation of pods for us. </p>
+<ul>
+<li>If we run a <a href="/notes/a9WtJDyCZ4NvEaAZ4p3bd">Kubernetes Pod</a> directly and it fails, Kubernetes will not automatically reschedule it.</li>
+</ul>
+<p>Aside from rescheduling our pods when they die, Deployments can also:</p>
+<ul>
+<li>scale our applications by increasing or decreasing the number of replicas we have running</li>
+<li>handle the rollout of new versions of our application, so we can go from v1 to v2 without any downtime. </li>
+<li>allow us to easily rollback bad releases, as well as preventing bad releases from going through altogether </li>
+</ul>
+<p>Kubernetes Deployments are all about: how do we swap out the old <a href="/notes/DoF6o4TQOhpbUAx16L24H">ReplicaSets</a> with the new ones, and not lose any downtime in the process? How do we gently replace them 1 by 1, without having to replace them all at once?</p>
+<ul>
+<li>ex. Imagine that we want to start using the Docker image <code>Postgres:12.2</code> instead of <code>Postgres:11.0</code>. The deploy.yml file specifies that we want to have 3 ReplicaSets. The implication of this, is that if we run <code>kubectl set image -f deploy.yml &#x3C;containername>=postgres:12.2</code>, we would expect the Kubernetes engine to drop one <code>11.0</code> RS, and add a <code>12.2</code>, then drop another <code>11.0</code> and add a <code>12.2</code>, and so on until the rollout is complete and we only have <code>12.2</code>.
+<ul>
+<li>note: when we rollback (ie. undo a rollout), this process happens in reverse.</li>
+</ul>
+</li>
+</ul>
+<p>Imagine the systems of Kubernetes, Docker, and everything in between. If Docker were at the bottom of a physical chain, we could run containers ourselves with <code>docker run</code>. Moving up, we can create pods directly with `kubectl create pod</p>
+<h3 id="the-problem">The Problem<a aria-hidden="true" class="anchor-heading icon-link" href="#the-problem"></a></h3>
+<p>With just <a href="/notes/a9WtJDyCZ4NvEaAZ4p3bd">Pods</a>, <a href="/notes/DoF6o4TQOhpbUAx16L24H">ReplicaSets</a> and <a href="/notes/ryBzcGWSKyybRXnyKxteV">Services</a>, we can deploy, scale and enable communication for our application. </p>
+<ul>
+<li>However, this is all useless if we cannot update those applications with new releases. This is the problem that Deployments solve.</li>
+</ul>
+<p>The desired state of our applications is changing all the time. The most common reasons for new states are new releases. The process is relatively simple. We make a change and commit it to a code repository. We build it, and we test it. Once we’re confident that it works as expected, we deploy it to a cluster.</p>
+<ul>
+<li>It does not matter whether that deployment is to a development, test, staging, or production environment. We need to deploy a new release to a cluster, even when that is a single-node Kubernetes running on a laptop. No matter how many environments we have, the process should always be the same or, at least, as similar as possible. We need to do all of this with zero-downtime. Deployments allow us to do that.</li>
+</ul>
+<h3 id="what-is-it">What is it?<a aria-hidden="true" class="anchor-heading icon-link" href="#what-is-it"></a></h3>
+<p>A deployment is a higher-level abstraction that controlling and scaling a set of pods</p>
+<ul>
+<li>Behind the scenes, it uses a ReplicaSet to keep the Pods running, but it offers sophisticated logic for deploying, updating, and scaling a set of Pods within a cluster.</li>
+</ul>
+<p>A Deployment provides declarative updates for Pods and ReplicaSets.</p>
+<ul>
+<li>You describe a desired state in a Deployment, and the Deployment Controller changes the actual state to the desired state at a controlled rate</li>
+</ul>
+<p>The service in front of the deployment has an IP address, but this address only exists within the Kubernetes cluster. This means the service isn’t available to the Internet at all.</p>
+<h3 id="zero-downtime-deployment">Zero-Downtime Deployment<a aria-hidden="true" class="anchor-heading icon-link" href="#zero-downtime-deployment"></a></h3>
+<p>Deployments support rolling updates and rollbacks</p>
+<p>Similar to <a href="/notes/kF916Ow84qpJJeMRkWMIo">Graphile-Migrate's</a> opinion about rolling forward only (ie. adding new migrations rather than removing them), we should follow this approach to deployments in Kubernetes (although the opinion is not as strong as Graphile-Migrate's).</p>
+<ul>
+<li>We definitely do not want to rollback (ie. <code>kubectl rollout undo</code>) in the situation where there is a database change, which would result in backend services that depend on a different version of the database.</li>
+</ul>
+<p>New deployments do not destroy ReplicaSets, but rather scale them to 0. Therefore, to undo a rollout all we need to do is scale the bad ReplicaSets to 0 and scale the good ReplicaSets to our desired number.</p>
+<ul>
+<li>This fact is reflected when we run <code>kubectl rollout history</code>. When we rollback, what we will see is that the associated command with the new revision will be the initial command that was used to create it (eg. <code>kubectl create --filename=deploy/go-demo-2-api.yml</code>). It might be natural to think that the command would be <code>kubectl set image</code>, but this is not the case.</li>
+</ul>
+<hr>
+<p>Just as we are not supposed to create Pods directly but using other controllers like ReplicaSet, we are not supposed to create ReplicaSets either. Kubernetes Deployments will create them for us.</p>
+<ul>
+<li>Therefore, if we naively observe creating Pods via the 2 procedures, there is no difference:
+<ul>
+<li>Deployment -> ReplicaSet -> Pods</li>
+<li>ReplicaSet -> Pods</li>
+</ul>
+</li>
+</ul>
+<p>However, the advantage becomes evident if we try to change some of its aspects.</p>
+<ul>
+<li>ex. we might choose to upgrade MongoDB to version 3.4.</li>
+</ul>
+<p>The Deployment Controller is what creates the objects that are listed in the <code>deploy.yml</code> file. It watches the API server for new events, and creates the objects (eg. ReplicaSet) in response.</p>
+<ul>
+<li>Once the ReplicaSet is created, the ReplicaSet Controller (which also watches for API events) notices that a new ReplicaSet was created, and in response, creates the Pods that it specified.</li>
+<li>From there, the scheduler takes over, which watches for unassigned pods and assigns them to nodes.</li>
+<li>Following that, Kubelet (which is watching for pods being assigned to nodes) causes the containers to be run (via Docker), then sends a signal to the API server indicating the updated status of the Pods.</li>
+</ul>
+<p>Below, we tell the Deployment that it is to manage all the pods that have a label called <code>app</code> with the value <code>nginx</code></p>
+<p>Example object spec for a Kubernetes Deployment:</p>
+<pre class="language-yml"><code class="language-yml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> apps/v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> Deployment
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> nginx<span class="token punctuation">-</span>deployment
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">selector</span><span class="token punctuation">:</span>
+    <span class="token key atrule">matchLabels</span><span class="token punctuation">:</span>
+      <span class="token key atrule">app</span><span class="token punctuation">:</span> nginx
+  <span class="token key atrule">replicas</span><span class="token punctuation">:</span> <span class="token number">2</span> <span class="token comment"># tells deployment to run 2 pods matching the template</span>
+  <span class="token key atrule">template</span><span class="token punctuation">:</span>
+    <span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+      <span class="token key atrule">labels</span><span class="token punctuation">:</span>
+        <span class="token key atrule">app</span><span class="token punctuation">:</span> nginx
+    <span class="token key atrule">spec</span><span class="token punctuation">:</span>
+      <span class="token key atrule">containers</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> nginx
+        <span class="token key atrule">image</span><span class="token punctuation">:</span> nginx<span class="token punctuation">:</span>1.14.2
+        <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+        <span class="token punctuation">-</span> <span class="token key atrule">containerPort</span><span class="token punctuation">:</span> <span class="token number">80</span>
+</code></pre>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/DoF6o4TQOhpbUAx16L24H">ReplicaSet</a></li>
+<li><a href="/notes/cnkzosrbq8pdbru80p9c7h0">HorizontalPodAutoscaler</a></li>
+<li><a href="/notes/ei6fj7h4u5o03ldxxj4392h">Helm</a></li>
+</ul>

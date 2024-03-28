@@ -1,0 +1,466 @@
+<h1 id="nestjs">Nestjs<a aria-hidden="true" class="anchor-heading icon-link" href="#nestjs"></a></h1>
+<p>Nestjs is a server-side application framework</p>
+<ul>
+<li>highly opinionated</li>
+<li>supports multiple data paradigms, such as ClientServer, <a href="/notes/NpY4iv9TwpGJODbVesQYe">pub/sub</a> etc.</li>
+<li>achieves SOLID principles by the use of <a href="/notes/y8044sa0ai1u2hyoka0lphz">modules</a>.</li>
+<li>module dependency is achieved with <a href="/notes/OIBi54r4RJHlcy33iXLpD#nestjs-constructor-dependency-injection">constructor dependency injection</a>. 
+<ul>
+<li>Modules import <a href="/notes/38yyqdyxub4tyjdj0jl4ulg">providers</a> to perform some purpose (such as retrieve data from a database, send a message etc.), and those providers are made available within the module. To pass</li>
+</ul>
+</li>
+<li>Nestjs provides an all-tools-supplied approach. 
+<ul>
+<li>ex. It has modules out of the box for connections to most types of databases/datastreams (e.g. RDBs, Redis, Kafka, RabbitMQ) and </li>
+</ul>
+</li>
+</ul>
+<h2 id="platform">Platform<a aria-hidden="true" class="anchor-heading icon-link" href="#platform"></a></h2>
+<p>Nestjs is built on top of an HTTP Node framework</p>
+<ul>
+<li>default options are <a href="/notes/L5JUZlGAGvTxrsEBB7DY8">Express</a> and Fastify</li>
+</ul>
+<p>Depending on which underlying platform we use, we will get access to its API (<code>NestExpressApplication</code> or <code>NestFastifyApplication</code>)</p>
+<ul>
+<li>the resulting <code>app</code> object will have access to the methods of whichever underlying platform we choose.</li>
+</ul>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">const</span> app <span class="token operator">=</span> <span class="token keyword control-flow">await</span> <span class="token maybe-class-name">NestFactory</span><span class="token punctuation">.</span><span class="token generic-function"><span class="token function">create</span><span class="token generic class-name"><span class="token operator">&#x3C;</span><span class="token maybe-class-name">NestExpressApplication</span><span class="token operator">></span></span></span><span class="token punctuation">(</span><span class="token maybe-class-name">AppModule</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>in Nest, almost everything is shared across incoming requests. </p>
+<ul>
+<li>ex. We have a connection pool to the database, singleton services with global state, etc.</li>
+</ul>
+<p>By default, modules are eagerly loaded (which means that as soon as the application loads, so do all the modules, whether or not they are immediately necessary).</p>
+<ul>
+<li>this is fine for the most part, but if we are running in a <a href="/notes/aOfHQ6odySXLBhQgkOtOp">serverless</a> environment, this would be problematic.
+<ul>
+<li>in this case we want to lazy load the modules.</li>
+</ul>
+</li>
+</ul>
+<p><img src="/assets/images/2022-05-16-13-27-38.png"></p>
+<h3 id="lifecycle">Lifecycle<a aria-hidden="true" class="anchor-heading icon-link" href="#lifecycle"></a></h3>
+<p>A Nest application, as well as every application element, has a lifecycle managed by Nest. </p>
+<ul>
+<li>Nest provides lifecycle hooks that give visibility into key lifecycle events, and the ability to run registered code in your <code>module</code>, <code>injectable</code> or <code>controller</code> when they occur.</li>
+</ul>
+<p>Lifecycle events can be broken into 3 phases: <em>initializing</em>, <em>running</em> and <em>terminating</em></p>
+<h3 id="dependency-injection-and-decorators">Dependency Injection and Decorators<a aria-hidden="true" class="anchor-heading icon-link" href="#dependency-injection-and-decorators"></a></h3>
+<p>Nest is built around the pattern of <a href="/notes/OIBi54r4RJHlcy33iXLpD">dependency injection</a>, which is achieved through <a href="/notes/j8xi6ftco6n2pbjqw6sbijg">decorators</a>.</p>
+<ul>
+<li>This is mostly done through the constructor (therefore, it's constructor-based dependency injection)</li>
+</ul>
+<p>The general pattern is that we create a <a href="/notes/38yyqdyxub4tyjdj0jl4ulg">provider</a> by decorating a class with <code>@Injectable</code>, then we pass that class into another c</p>
+<ul>
+<li>the <code>@Injectable</code> decorator enables the class to be registered and managed by the <a href="/notes/bXY3W37GW2ytFJOgbJiol">IoC</a> container (<code>@Modules</code>)</li>
+</ul>
+<p>When we inject a class into another class, Nest will instantiate the class and pass it to the controller's constructor.</p>
+<p>Because of Typescript in Nestjs, it is very easy to manage dependencies, since they are resolved by type.</p>
+<h3 id="context">Context<a aria-hidden="true" class="anchor-heading icon-link" href="#context"></a></h3>
+<p>Guards, filters and interceptors are meant to be generic. That is, they don't care if they are being used in an HTTP context or WebSockets context.</p>
+<ul>
+<li>Nestjs provides utility classes that provide information about the current execution context.
+<ul>
+<li>this information can be used to build generic <a href="/notes/n9fg78mnpuk5u5xalihz2bp">guards</a>, filters, and <a href="/notes/saert7xobzak9v2h5jt72b3">interceptors</a> that can work across a broad set of <a href="/notes/nqv4bkm2rp1nljndftgqxdx">controllers</a>, methods, and execution contexts.</li>
+</ul>
+</li>
+<li>Two of these utility classes are <code>ArgumentsHost</code> and <code>ExecutionContext</code>.</li>
+</ul>
+<h4 id="argumentshost"><code>ArgumentsHost</code><a aria-hidden="true" class="anchor-heading icon-link" href="#argumentshost"></a></h4>
+<p><code>ArgumentsHost</code> is simply an abstraction over a handler's arguments.</p>
+<ul>
+<li>ex. for HTTP server applications, the <code>host</code> object encapsulates Express's <code>[request, response, next]</code> array</li>
+<li>ex. for Graphql server applications, the <code>host</code> object contains the <code>[root, args, context, info]</code> array.</li>
+</ul>
+<p>This class provides methods for retrieving the arguments being passed to a handler. With it, we choose the appropriate context, and then we retrieve the arguments.</p>
+<h5 id="methods">Methods<a aria-hidden="true" class="anchor-heading icon-link" href="#methods"></a></h5>
+<ul>
+<li><code>getType()</code> tells us which context is being used (<code>http</code>, <code>rpc</code> etc.)</li>
+<li><code>getArgs()</code> gets us back an array of arguments being passed to the handler
+<ul>
+<li>this is generic, since we don't know what arguments we are getting back (since the context has not been specified). For this reason, using <code>switchTo...</code> methods might be preferable, since they return more specific types (such as <code>HttpArgumentsHost</code> or <code>RpcArgumentsHost</code>)</li>
+</ul>
+</li>
+<li><code>switchToHttp()</code></li>
+</ul>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">const</span> ctx <span class="token operator">=</span> host<span class="token punctuation">.</span><span class="token method function property-access">switchToHttp</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> request <span class="token operator">=</span> ctx<span class="token punctuation">.</span><span class="token generic-function"><span class="token function">getRequest</span><span class="token generic class-name"><span class="token operator">&#x3C;</span><span class="token maybe-class-name">Request</span><span class="token operator">></span></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h4 id="executioncontext"><code>ExecutionContext</code><a aria-hidden="true" class="anchor-heading icon-link" href="#executioncontext"></a></h4>
+<p><code>ExecutionContext</code> extends <code>ArgumentsHost</code>, and gives us additional details about the current execution process.</p>
+<p>Nest provides an instance of <code>ExecutionContext</code> in places you may need it, such as in the <code>canActivate()</code> method of a guard and the <code>intercept()</code> method of an interceptor. </p>
+<h5 id="methods-1">Methods<a aria-hidden="true" class="anchor-heading icon-link" href="#methods-1"></a></h5>
+<ul>
+<li><code>getClass()</code> Returns the type of the controller class which the current handler belongs to.</li>
+<li><code>getHandler()</code> Returns a reference to the handler (method) that will be invoked next in the request pipeline.
+<ul>
+<li>ex. in an HTTP context, if the currently processed request is a POST request, bound to the <code>create()</code> method on the <code>CatsController</code>, <code>getHandler()</code> returns a reference to the <code>create()</code> method and <code>getClass()</code> returns the <code>CatsController</code> type (not instance).</li>
+</ul>
+</li>
+</ul>
+<p>The ability to access these references gives us the opportunity to access the metadata set through the <code>@SetMetadata()</code> decorator from within guards or interceptors.</p>
+<h3 id="metadata-and-reflection">Metadata and Reflection<a aria-hidden="true" class="anchor-heading icon-link" href="#metadata-and-reflection"></a></h3>
+<ul>
+<li><a href="https://docs.nestjs.com/fundamentals/execution-context#reflection-and-metadata">docs</a></li>
+</ul>
+<p>We can attach custom metadata to route handlers with the <code>@SetMetadata()</code> decorator, which can then be accessed from within the class via dependency injection (with the <code>Reflector</code> helper class) to make certain decisions.</p>
+<ul>
+<li>ex. we can create some metadata about the roles that a user has.</li>
+</ul>
+<hr>
+<h2 id="core-components">Core Components<a aria-hidden="true" class="anchor-heading icon-link" href="#core-components"></a></h2>
+<h3 id="modules">Modules<a aria-hidden="true" class="anchor-heading icon-link" href="#modules"></a></h3>
+<p></p><p></p><div class="portal-container">
+<div class="portal-head">
+<div class="portal-backlink">
+<div class="portal-title">From <span class="portal-text-title">Modules</span></div>
+<a href="/notes/y8044sa0ai1u2hyoka0lphz" class="portal-arrow">Go to text <span class="right-arrow">→</span></a>
+</div>
+</div>
+<div id="portal-parent-anchor" class="portal-parent" markdown="1">
+<div class="portal-parent-fader-top"></div>
+<div class="portal-parent-fader-bottom"></div><p>Modules are the way to organize your components in Nest.</p>
+<ul>
+<li>Decorating a class with <code>@Module</code> provides metadata that Nest makes use of to organize the application structure.</li>
+</ul>
+<p>Each application has at least one module, a root module. </p>
+<ul>
+<li>this is the starting point Nest uses to build the application graph, which is the internal data structure used to resolve module and provider relationships and dependencies.</li>
+<li>this is the module that we register in our <code>main.ts</code> with <code>NestFactory.create(AppModule)</code></li>
+</ul>
+<p>For most applications, the resulting architecture will employ multiple modules, each encapsulating a closely related set of capabilities.</p>
+<ul>
+<li>good practice is to have each module correspond to a <a href="/notes/GDJoTJocO8OKbTtSjn2CW">domain</a></li>
+</ul>
+<p>The module encapsulates providers by default</p>
+<ul>
+<li>This means that in order to inject providers into a different module, they must be exported from the imported module.</li>
+</ul>
+<p>modules are singletons by default</p>
+<ul>
+<li>thus you can share the same instance of any provider between multiple modules effortlessly.</li>
+<li>Every module is automatically a shared module: Once created it can be reused by any module
+<ul>
+<li>to do this, simply add the service to the <code>exports</code> array of the shared module. Now, any module that imports the shared module will have access to the service listed in that <code>exports</code> array.</li>
+</ul>
+</li>
+</ul>
+<p><img src="/assets/images/2023-01-23-12-12-32.png"></p>
+<pre class="language-ts"><code class="language-ts"><span class="token decorator"><span class="token at operator">@</span><span class="token function">Module</span></span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  <span class="token comment">// correspond to the HttpService class that gets injected into the provider (service).</span>
+  imports<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token maybe-class-name">HttpModule</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  providers<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token maybe-class-name">AutomationService</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  exports<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token maybe-class-name">AutomationService</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword module">export</span> <span class="token keyword">class</span> <span class="token class-name"><span class="token maybe-class-name">AutomationModule</span></span> <span class="token punctuation">{</span>
+  <span class="token comment">// Modules can inject providers (e.g. for configuration purposes):</span>
+  <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token keyword">private</span> automationService<span class="token operator">:</span> <span class="token maybe-class-name">AutomationService</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Modules themselves cannot be injected due to circular dependency.</p>
+<h2 id="parts-of-a-module">Parts of a module<a aria-hidden="true" class="anchor-heading icon-link" href="#parts-of-a-module"></a></h2>
+<p>The <code>@Module()</code> decorator takes a single object whose properties describe the module:</p>
+<ul>
+<li><code>providers</code> </li>
+<li><code>controllers</code></li>
+<li><code>imports</code></li>
+<li><code>exports</code></li>
+</ul>
+<h3 id="providers"><code>providers</code><a aria-hidden="true" class="anchor-heading icon-link" href="#providers"></a></h3>
+<p>The <code>providers</code> property is an array of providers that will be instantiated by the Nest injector and that may be shared at least across this module. </p>
+<ul>
+<li>When we put a provider here, we are registering it with the <a href="/notes/bXY3W37GW2ytFJOgbJiol#ioc-container1">IoC container</a> (ie. the NestJS runtime) so that it can be instantiated at the site where it is injected (this is dependency injection).</li>
+</ul>
+<h3 id="controllers"><code>controllers</code><a aria-hidden="true" class="anchor-heading icon-link" href="#controllers"></a></h3>
+<p>the set of controllers defined in this module which have to be instantiated</p>
+<h3 id="imports"><code>imports</code><a aria-hidden="true" class="anchor-heading icon-link" href="#imports"></a></h3>
+<p>the list of imported modules that export the providers which are required in this module</p>
+<ul>
+<li>put another way, if there is a provider from another module and we want to use it in our module, then we must add the provider to that module's <code>exports</code> list, and then include that module in our <code>imports</code> list.</li>
+</ul>
+<p>this array enables sharing of providers across modules</p>
+<p>Don't add the same provider to multiple modules. Instead, export the provider, and import the module.</p>
+<h3 id="exports"><code>exports</code><a aria-hidden="true" class="anchor-heading icon-link" href="#exports"></a></h3>
+<p>the subset of providers that are provided by this module and should be available in other modules which import this module. You can use either the provider itself or just its token (provide value)</p>
+<p>you may consider the exported providers as the module's API</p>
+<p>Modules can export their internal providers</p>
+<ul>
+<li>In addition, they can re-export modules that they import.</li>
+</ul>
+<h2 id="dynamic-modules">Dynamic Modules<a aria-hidden="true" class="anchor-heading icon-link" href="#dynamic-modules"></a></h2>
+<p>Dynamic modules enable us to easily create customizable modules that can register and configure <a href="/notes/38yyqdyxub4tyjdj0jl4ulg">providers</a> dynamically.</p>
+<p>Dynamic modules are created in the module class:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword module">import</span> <span class="token imports"><span class="token punctuation">{</span> createDatabaseProviders <span class="token punctuation">}</span></span> <span class="token keyword module">from</span> <span class="token string">'./database.providers'</span><span class="token punctuation">;</span>
+<span class="token keyword module">import</span> <span class="token imports"><span class="token punctuation">{</span> <span class="token maybe-class-name">Connection</span> <span class="token punctuation">}</span></span> <span class="token keyword module">from</span> <span class="token string">'./connection.provider'</span><span class="token punctuation">;</span>
+
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">Module</span></span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  providers<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token maybe-class-name">Connection</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword module">export</span> <span class="token keyword">class</span> <span class="token class-name"><span class="token maybe-class-name">DatabaseModule</span></span> <span class="token punctuation">{</span>
+  <span class="token comment">// forRoot may be async or sync</span>
+  <span class="token keyword">static</span> <span class="token function">forRoot</span><span class="token punctuation">(</span>entities <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> options<span class="token operator">?</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token maybe-class-name">DynamicModule</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> providers <span class="token operator">=</span> <span class="token function">createDatabaseProviders</span><span class="token punctuation">(</span>options<span class="token punctuation">,</span> entities<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword control-flow">return</span> <span class="token punctuation">{</span>
+      module<span class="token operator">:</span> <span class="token maybe-class-name">DatabaseModule</span><span class="token punctuation">,</span>
+      providers<span class="token operator">:</span> providers<span class="token punctuation">,</span>
+      exports<span class="token operator">:</span> providers<span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<ul>
+<li><a href="https://docs.nestjs.com/fundamentals/dynamic-modules">docs</a></li>
+</ul>
+<h2 id="global-modules">Global Modules<a aria-hidden="true" class="anchor-heading icon-link" href="#global-modules"></a></h2>
+<p>Global modules are useful for when you want to provide a set of providers which should be available everywhere out-of-the-box (e.g., helpers, database connections, etc.)</p>
+<p>We can make a set of providers global with the <code>@Global</code> decorator:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token decorator"><span class="token at operator">@</span><span class="token function">Global</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">Module</span></span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  <span class="token comment">// Module configuration</span>
+</code></pre>
+<h2 id="cli">CLI<a aria-hidden="true" class="anchor-heading icon-link" href="#cli"></a></h2>
+<ul>
+<li>generate a module named "cats" - <code>nest g module cats</code></li>
+</ul></div></div><p></p><p></p>
+<h3 id="controllers-1">Controllers<a aria-hidden="true" class="anchor-heading icon-link" href="#controllers-1"></a></h3>
+<p></p><p></p><div class="portal-container">
+<div class="portal-head">
+<div class="portal-backlink">
+<div class="portal-title">From <span class="portal-text-title">Controllers</span></div>
+<a href="/notes/nqv4bkm2rp1nljndftgqxdx" class="portal-arrow">Go to text <span class="right-arrow">→</span></a>
+</div>
+</div>
+<div id="portal-parent-anchor" class="portal-parent" markdown="1">
+<div class="portal-parent-fader-top"></div>
+<div class="portal-parent-fader-bottom"></div><p>Controllers are responsible for handling incoming requests and returning responses to the client.</p>
+<ul>
+<li>Controllers should only handle HTTP requests; delegating more complex tasks to providers</li>
+</ul>
+<p>Most often, providers are injected into controllers, allowing the controller the ability to call methods on the instantiated provider</p>
+<ul>
+<li>to do this, both the controller and the provider must be registered in the module</li>
+</ul>
+<p>The routing mechanism controls which controller receives which requests.</p>
+<p>Normally, each controller has more than one route, and different routes can perform different actions.</p>
+<ul>
+<li>in a REST api, <code>/customers</code> and <code>/products</code> would be 2 different controllers
+<ul>
+<li>ex. route path prefix implemented as <code>@Controller('customers')</code></li>
+</ul>
+</li>
+</ul>
+<p>The decorators (e.g. <code>@Controller</code>, <code>@Get</code>) associate classes with required metadata and enable Nest to create a routing map (which associates which requests belong with which controllers)</p>
+<p>Route handlers can either return a <a href="/notes/FVbSefFiCJPpdtkRRsogA">Promise</a> or an <a href="/notes/PwvObIRuk7dy0GXweZT0c">observable</a> stream:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token comment">// Promise approach</span>
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">Get</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">async</span> <span class="token function">findAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token known-class-name class-name">Promise</span><span class="token operator">&#x3C;</span><span class="token builtin">any</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  <span class="token keyword control-flow">return</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// Observable approach</span>
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">Get</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token function">findAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token maybe-class-name">Observable</span><span class="token operator">&#x3C;</span><span class="token builtin">any</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  <span class="token keyword control-flow">return</span> <span class="token keyword">of</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>If returning an observable stream, Nest will automatically subscribe to the source underneath and take the last emitted value (once the stream is completed)</p></div></div><p></p><p></p>
+<h3 id="providers-1">Providers<a aria-hidden="true" class="anchor-heading icon-link" href="#providers-1"></a></h3>
+<p></p><p></p><div class="portal-container">
+<div class="portal-head">
+<div class="portal-backlink">
+<div class="portal-title">From <span class="portal-text-title">Providers</span></div>
+<a href="/notes/38yyqdyxub4tyjdj0jl4ulg" class="portal-arrow">Go to text <span class="right-arrow">→</span></a>
+</div>
+</div>
+<div id="portal-parent-anchor" class="portal-parent" markdown="1">
+<div class="portal-parent-fader-top"></div>
+<div class="portal-parent-fader-bottom"></div><h2 id="what-is-it">What is it?<a aria-hidden="true" class="anchor-heading icon-link" href="#what-is-it"></a></h2>
+<p>A provider is a class that can be injected into the constructor of other classes (dependency injection)</p>
+<ul>
+<li>We mark the class as a <code>provider</code> by using the <code>@Injectable()</code> decorator, which lets us pass the class into a controller (spec: not limited to controllers), where it is then instantiated by the <a href="/notes/bXY3W37GW2ytFJOgbJiol#ioc-container1">IoC container</a> (ie. the NestJS runtime)</li>
+</ul>
+<p>The main idea of a provider is that it can be injected as dependency; this means objects can create various relationships with each other, and the function of "wiring up" instances of objects can largely be delegated to the Nest runtime system.</p>
+<p>A provider "provides" some value to the dependent that it is being used in. </p>
+<ul>
+<li>a service is a provider that, when injected into a class, allows the class to use the methods defined on the provider itself.
+<ul>
+<li>ex. we could have a <code>NuggetsService</code> provider, whose role is to fetch nuggets. Now, from other providers we can inject the <code>NuggetService</code>, allowing us to fetch nuggets from that other provider.</li>
+</ul>
+</li>
+</ul>
+<p>By default, a Provider belonging to a Module will be available within the module.</p>
+<ul>
+<li>in other words, it does not have to be imported in the <code>module</code> if we are accessing the provider from within it.</li>
+</ul>
+<p>Providers normally have a lifetime ("scope") synchronized with the application lifecycle. </p>
+<ul>
+<li>When the application is bootstrapped, every dependency must be resolved, and therefore every provider has to be instantiated. </li>
+<li>Similarly, when the application shuts down, each provider will be destroyed. 
+<ul>
+<li>there are ways to make your provider lifetime request-scoped as well.</li>
+</ul>
+</li>
+</ul>
+<p>Providers are plain JavaScript classes that are declared as providers in a module.</p>
+<p>Responsible for things like:</p>
+<ul>
+<li>data storage and retrieval (Service)</li>
+<li>repositories, factories, helpers</li>
+</ul>
+<p>Nest has a built-in <a href="/notes/bXY3W37GW2ytFJOgbJiol#ioc-container1">IoC container</a> that resolves relationships between providers.</p>
+<p>The <code>@Injectable()</code> decorator attaches metadata, which declares that the class can be managed by the Nest IoC container</p>
+<h2 id="how-does-it-work">How does it work?<a aria-hidden="true" class="anchor-heading icon-link" href="#how-does-it-work"></a></h2>
+<p>the syntax <code>providers: [CatsService]</code> is short-hand for the more complete syntax:</p>
+<pre class="language-ts"><code class="language-ts">providers<span class="token operator">:</span> <span class="token punctuation">[</span>
+  <span class="token punctuation">{</span>
+    provide<span class="token operator">:</span> <span class="token maybe-class-name">CatsService</span><span class="token punctuation">,</span>
+    useClass<span class="token operator">:</span> <span class="token maybe-class-name">CatsService</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span><span class="token punctuation">;</span>
+</code></pre>
+<ul>
+<li>with this syntax, we can clearly see that the <code>CatsService</code> token is being associated with the class <code>CatsService</code>
+<ul>
+<li>the shorthand exists since the most common use-case is that a token is used to request an instance of a class by the same name.</li>
+</ul>
+</li>
+<li>the value for <code>provide</code> (ie. the token) can also be a string or <a href="/notes/NeWmMgh6EOtTIMkuYRkKe">Symbol</a>. In this case, it can only be injected with the <code>@Inject</code> decorator, where the token is then referenced: <code>@Inject('CONNECTION') connection: Connection</code></li>
+</ul>
+<h3 id="registration-process">Registration process<a aria-hidden="true" class="anchor-heading icon-link" href="#registration-process"></a></h3>
+<p>Registration happens in the <code>module</code> file.</p>
+<p>Registration is about associating a token (name/id) with a class.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token comment">// app.module.ts</span>
+
+<span class="token comment">// this is shorthand</span>
+providers<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token maybe-class-name">CatsService</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+
+<span class="token comment">// for this</span>
+providers<span class="token operator">:</span> <span class="token punctuation">[</span>
+  <span class="token punctuation">{</span>
+    provide<span class="token operator">:</span> <span class="token maybe-class-name">CatsService</span><span class="token punctuation">,</span> <span class="token comment">// token</span>
+    useClass<span class="token operator">:</span> <span class="token maybe-class-name">CatsService</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Seeing the explicit construction helps to see how the registration process (into the Nestjs IoC container) is really just a mapping between the token and the class.</p>
+<ul>
+<li>This is done for convenience to simplify the most common use-case, where the token is used to request an instance of a class by the same name.</li>
+</ul>
+<h3 id="injecting-non-service-based-providers">Injecting non-service based Providers<a aria-hidden="true" class="anchor-heading icon-link" href="#injecting-non-service-based-providers"></a></h3>
+<p>Though the most common use is to inject services, we can really inject any kind of value, allowing us to do things like put an external library into the Nest IoC container, or replace a real implementation with a mock object (useful for testing).</p>
+<ul>
+<li>ex. here, we are associating a string-valued token (<code>'CONNECTION'</code>) with a pre-existing connection object we've imported from an external file:</li>
+</ul>
+<pre class="language-ts"><code class="language-ts">providers<span class="token operator">:</span> <span class="token punctuation">[</span>
+  <span class="token punctuation">{</span>
+    provide<span class="token operator">:</span> <span class="token string">'CONNECTION'</span><span class="token punctuation">,</span>
+    useValue<span class="token operator">:</span> connection<span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span><span class="token punctuation">,</span>
+</code></pre>
+<p>Which can be used in a provider:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token decorator"><span class="token at operator">@</span><span class="token function">Injectable</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword module">export</span> <span class="token keyword">class</span> <span class="token class-name"><span class="token maybe-class-name">CatsRepository</span></span> <span class="token punctuation">{</span>
+  <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token decorator"><span class="token at operator">@</span><span class="token function">Inject</span></span><span class="token punctuation">(</span><span class="token string">'CONNECTION'</span><span class="token punctuation">)</span> connection<span class="token operator">:</span> <span class="token maybe-class-name">Connection</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="asynchronous-providers-usefactory">Asynchronous providers (<code>useFactory</code>)<a aria-hidden="true" class="anchor-heading icon-link" href="#asynchronous-providers-usefactory"></a></h3>
+<p>At times, the application start should be delayed until one or more asynchronous tasks are completed. </p>
+<ul>
+<li>ex. you may not want to start accepting requests until the connection with the database has been established. </li>
+</ul>
+<p>This can be accomplished by registering a provider as an <code>async</code> function along with the <code>useFactory</code> syntax.</p>
+<pre class="language-ts"><code class="language-ts">providers<span class="token operator">:</span> <span class="token punctuation">[</span>
+  <span class="token punctuation">{</span>
+    provide<span class="token operator">:</span> <span class="token string">'ASYNC_CONNECTION'</span><span class="token punctuation">,</span>
+    <span class="token function-variable function">useFactory</span><span class="token operator">:</span> <span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+      <span class="token keyword">const</span> connection <span class="token operator">=</span> <span class="token keyword control-flow">await</span> <span class="token function">createConnection</span><span class="token punctuation">(</span>options<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword control-flow">return</span> connection<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
+</code></pre>
+<p>This factory function returns a provider, which can then be injected into a class like any other provider with <code>@Inject('ASYNC_CONNECTION')</code></p>
+<p>Here, Nest will await resolution of the <code>useFactory</code> promise before instantiating any class that depends on (injects) such a provider.</p>
+<hr>
+<h2 id="custom-providers">Custom Providers<a aria-hidden="true" class="anchor-heading icon-link" href="#custom-providers"></a></h2>
+<p>Custom providers let us do things like:</p>
+<ul>
+<li>instantiate a provider by ourselves (instead of delegating that responsibility to the Nestjs runtime)</li>
+<li>re-use an existing class in a second dependency</li>
+<li>override a class with a mock version for testing</li>
+</ul>
+<h3 id="class-provider-useclass">Class Provider (<code>useClass</code>)<a aria-hidden="true" class="anchor-heading icon-link" href="#class-provider-useclass"></a></h3>
+<p><code>useClass</code> is the default way to specify which provider the token will resolve to.</p>
+<ul>
+<li>in other words, the shortform will resolve to this syntax.</li>
+</ul>
+<p>We can dynamically determine the class that the token will resolve to by using a ternary operator in the <code>useClass</code> key.</p>
+<ul>
+<li>ex. imagine you have a default <code>ConfigService</code> (therefore, high level of generality/abstraction). Depending on which environment we are in, we want to provide the Nestjs IoC container with a different implementation of the class.</li>
+</ul>
+<h3 id="value-provider-usevalue">Value Provider (<code>useValue</code>)<a aria-hidden="true" class="anchor-heading icon-link" href="#value-provider-usevalue"></a></h3>
+<p>Specifying a provider like this is useful for injecting a constant value.</p>
+<ul>
+<li>ex. putting an external libary into the Nestjs container.</li>
+<li>ex. replace a real implementation with a mock object</li>
+</ul>
+<p>The value to <code>useValue</code> will be a simple object that has the same interface as the service it is replacing.</p>
+<h3 id="factory-provider">Factory Provider<a aria-hidden="true" class="anchor-heading icon-link" href="#factory-provider"></a></h3></div></div><p></p><p></p>
+<h3 id="middleware">Middleware<a aria-hidden="true" class="anchor-heading icon-link" href="#middleware"></a></h3>
+<p></p><p></p><div class="portal-container">
+<div class="portal-head">
+<div class="portal-backlink">
+<div class="portal-title">From <span class="portal-text-title">Middleware</span></div>
+<a href="/notes/9oglq5pogy5inbt24yjk3hp" class="portal-arrow">Go to text <span class="right-arrow">→</span></a>
+</div>
+</div>
+<div id="portal-parent-anchor" class="portal-parent" markdown="1">
+<div class="portal-parent-fader-top"></div>
+<div class="portal-parent-fader-bottom"></div><p>Nestjs middleware is equivalent to <a href="/notes/inMGAxYKmDgpSWcHN6tXN">Express middleware</a></p>
+<p>Custom middleware is implemented either in either a function, or in a class with an <code>@Injectable()</code> decorator.</p>
+<ul>
+<li>The class should implement the <code>NestMiddleware</code> interface, while the function does not have any special requirements.</li>
+</ul>
+<p>Middleware fully supports dependency injection.</p>
+<p>We set up middleware using the <code>configure()</code> method of the module class. </p>
+<ul>
+<li>Modules that include middleware have to implement the <code>NestModule</code> interface.</li>
+</ul>
+<pre class="language-ts"><code class="language-ts"><span class="token decorator"><span class="token at operator">@</span><span class="token function">Module</span></span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  imports<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token maybe-class-name">CatsModule</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword module">export</span> <span class="token keyword">class</span> <span class="token class-name"><span class="token maybe-class-name">AppModule</span></span> <span class="token keyword">implements</span> <span class="token class-name"><span class="token maybe-class-name">NestModule</span></span> <span class="token punctuation">{</span>
+  <span class="token function">configure</span><span class="token punctuation">(</span>consumer<span class="token operator">:</span> <span class="token maybe-class-name">MiddlewareConsumer</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    consumer
+      <span class="token punctuation">.</span><span class="token method function property-access">apply</span><span class="token punctuation">(</span><span class="token maybe-class-name">LoggerMiddleware</span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token method function property-access">forRoutes</span><span class="token punctuation">(</span><span class="token string">'cats'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div></div><p></p><p></p>
+<h2 id="misc">Misc<a aria-hidden="true" class="anchor-heading icon-link" href="#misc"></a></h2>
+<ul>
+<li>In Nest, a microservice is defined as an application that uses a different transport layer than HTTP.</li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/y2pkv1qotvf5os9vzkt9lu3">CLI</a></li>
+<li><a href="/notes/nqv4bkm2rp1nljndftgqxdx">Controllers</a></li>
+<li><a href="/notes/n9fg78mnpuk5u5xalihz2bp">Guard</a></li>
+<li><a href="/notes/saert7xobzak9v2h5jt72b3">Interceptor</a></li>
+<li><a href="/notes/rluwlir1bxtd1qe8cjrfamg">Microservices</a></li>
+<li><a href="/notes/9oglq5pogy5inbt24yjk3hp">Middleware</a></li>
+<li><a href="/notes/y8044sa0ai1u2hyoka0lphz">Modules</a></li>
+<li><a href="/notes/oz006ng8c7qcbzg2ytasznj">Pipe</a></li>
+<li><a href="/notes/38yyqdyxub4tyjdj0jl4ulg">Providers</a></li>
+<li><a href="/notes/10w9l0kg4v6ik1ceqcfopn2">Runtim</a></li>
+<li><a href="/notes/0lnvdlokt83ssdfl15292vm">Testing in Nestjs</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/L5JUZlGAGvTxrsEBB7DY8">Express</a></li>
+<li><a href="/notes/bXY3W37GW2ytFJOgbJiol">IoC (Inversion of Control)</a></li>
+<li><a href="/notes/OIBi54r4RJHlcy33iXLpD">Dependency Injection</a></li>
+</ul>

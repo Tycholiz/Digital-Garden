@@ -1,0 +1,38 @@
+<h1 id="auth">Auth<a aria-hidden="true" class="anchor-heading icon-link" href="#auth"></a></h1>
+<h2 id="authorization-vs-authentication">Authorization vs Authentication<a aria-hidden="true" class="anchor-heading icon-link" href="#authorization-vs-authentication"></a></h2>
+<p>Because "auth" is ambiguous, we often see the distinguishing terms "authn" (authentication) and "authz" (authorization)</p>
+<p>Both are an important part of identity and access management (IAM), but...</p>
+<ul>
+<li>authn has to do with identity (who someone is)
+<ul>
+<li>authn can be carried out with username/password, 2FA, public key certificates, biometric etc.</li>
+</ul>
+</li>
+<li>authz has to do with permissions (what an authenticated user is allowed to do)
+<ul>
+<li>authz can be carried out with RBAC (role-based access control), ABAC (attribute-based access control)</li>
+</ul>
+</li>
+</ul>
+<p>anal: think of authorization as a subway ticket. The ticket is in no way attached to your identity, since you just got it from the machine. You could give this ticket to someone else, and it would <em>authorize</em> them to enter the platform and board the train. Authentication on the other hand, is about identity. If Authorization is a subway ticket, then Authentication is a finger print scan.</p>
+<hr>
+<h3 id="basic-authentication">Basic Authentication<a aria-hidden="true" class="anchor-heading icon-link" href="#basic-authentication"></a></h3>
+<p>HTTP provides its own form of basic authentication out of the box. It works by combining the username and password with a <code>:</code> separator, then base64 encoding the string.</p>
+<ul>
+<li>dangerous, since we are passing the password on every request.</li>
+</ul>
+<hr>
+<p>Because of SSL, sending plaintext passwords from the client to the server is perfectly fine.</p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/97fecf63-24b2-46d0-86f6-f88b4813d1f3">Auth Tokens</a></li>
+<li><a href="/notes/FILr1tUewUD7w2L5dRboS">Passport</a></li>
+<li><a href="/notes/0NyqVKRyLLG6J1NDvFX5k">Session</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/n9fg78mnpuk5u5xalihz2bp">Guard</a></li>
+<li><a href="/notes/6s5Oh0DUcMsShcFrmDaBK">JWT</a></li>
+</ul>

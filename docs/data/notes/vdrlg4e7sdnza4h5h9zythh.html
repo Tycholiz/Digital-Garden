@@ -1,0 +1,16 @@
+<h1 id="rest">REST<a aria-hidden="true" class="anchor-heading icon-link" href="#rest"></a></h1>
+<p>REST is a set of architectural constraints for an API.</p>
+<p>REST is typically built on top of <a href="/notes/a6448e8a-d962-4e22-b70c-154121a95cd3">HTTP</a></p>
+<p>When a client makes a request to a REST API, the request serves as a representation of the state of the resource.</p>
+<p>The API is client-facing. Therefore, any questions about what an API endpoint does should ultimately fall back to the user's expectations. </p>
+<ul>
+<li>ex. soft-delete is a common implementation, where a column on a database item called <code>isDeleted</code> is simply switched to <code>true</code>, rather than actually removing an item from a table. From an API design standpoint, the question then becomes "which <a href="/notes/mn5VHtlB66IBGAFXPXgvq">http method</a> is this, a DELETE request, or PATCH request?". If a DELETE request is for <em>deleting resources</em>, then surely we'd want to use a PATCH request. However, the logic is that the API hides implementation details behind its interface. The implementation of a soft-delete is of no importance to the client using the API, therefore none of the interface should reflect any kind of implementation details. A DELETE http request is the right choice here because of this.</li>
+</ul>
+<h2 id="terminology">Terminology<a aria-hidden="true" class="anchor-heading icon-link" href="#terminology"></a></h2>
+<ul>
+<li><em>resource</em> - any piece of information that can be accessed from the API
+<ul>
+<li>Each resource has a unique name, called the <em>resource identifier</em>.</li>
+</ul>
+</li>
+</ul>

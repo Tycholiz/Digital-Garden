@@ -1,0 +1,24 @@
+<h1 id="union">Union<a aria-hidden="true" class="anchor-heading icon-link" href="#union"></a></h1>
+<p>"Take 2+ tables with equal number of columns and combine them into a single result set."</p>
+<ul>
+<li>ie. combines results of 2+ SELECTs into a single result set.</li>
+<li>"append" could have also been an appropriate name</li>
+</ul>
+<p>UNION is conceptually opposite of JOIN; it expands the result set in the other direction (y instead of x)</p>
+<ul>
+<li>JOIN is for taking 2 tables and combining their columns, while UNION is for taking 2 tables and combining their rows(ie. records)</li>
+</ul>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> select_list_1
+<span class="token keyword">FROM</span> table1
+<span class="token keyword">UNION</span>
+<span class="token keyword">SELECT</span> select_list_2
+<span class="token keyword">FROM</span> table2
+</code></pre>
+<ul>
+<li>The number and the order of the columns in the select list of both queries must be the same.</li>
+<li>The UNION operator by default removes all duplicate rows from the combined data set (<code>UNION ALL</code> will bring them back)</li>
+<li>In practice, you often use the UNION operator to combine data from similar tables, which are not perfectly normalized</li>
+<li>ex. with 2 tables: <code>popular_movies</code>, <code>top_rated_movies</code>, return the movies found in both tables, removing any duplicates along the way
+<!-- TODO fix imagine -->
+<img src="/:/202885018e6045e4acd744771788c297" alt="8d2bb4d874e9ee042506b53f0a5eb8cd.png"></li>
+</ul>

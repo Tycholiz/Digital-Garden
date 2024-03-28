@@ -1,0 +1,256 @@
+<h1 id="aws-lambda">AWS Lambda<a aria-hidden="true" class="anchor-heading icon-link" href="#aws-lambda"></a></h1>
+<p>A Lambda is like an anonymous function (or a callback) that runs code in response to events.</p>
+<ul>
+<li>Think of them like event handlers, but for web services, not components within a webpage</li>
+</ul>
+<p>Effectively, everything is abstracted away aside from a function interface.</p>
+<h2 id="concepts">Concepts<a aria-hidden="true" class="anchor-heading icon-link" href="#concepts"></a></h2>
+<h3 id="function">Function<a aria-hidden="true" class="anchor-heading icon-link" href="#function"></a></h3>
+<p></p><p></p><div class="portal-container">
+<div class="portal-head">
+<div class="portal-backlink">
+<div class="portal-title">From <span class="portal-text-title">Lambda Function</span></div>
+<a href="/notes/Ag4RGxbqigmzcZAUS9FRv" class="portal-arrow">Go to text <span class="right-arrow">→</span></a>
+</div>
+</div>
+<div id="portal-parent-anchor" class="portal-parent" markdown="1">
+<div class="portal-parent-fader-top"></div>
+<div class="portal-parent-fader-bottom"></div><p>A function is a resource that you can invoke to run your code in Lambda. A function has code to process the events that you pass into the function or that other AWS services send to the function.</p>
+<p>Functions can be invoked directly with...</p>
+<ul>
+<li>the Lambda console</li>
+<li>the Lambda API</li>
+<li>AWS SDK</li>
+<li>AWS CLI</li>
+<li>AWS toolkits</li>
+</ul>
+<p>Functions can also be invoked <em>indirectly</em>...</p>
+<ul>
+<li>by configuring other AWS services to invoke it
+<ul>
+<li>ex. invoke your function when an object is created in <a href="/notes/2Rtof8yGX9K2Tq6tLljBb">S3</a></li>
+</ul>
+</li>
+<li>configuring Lambda to read from a stream or queue and invoke it.</li>
+</ul>
+<h3 id="sync-vs-async-invocation">Sync vs Async Invocation<a aria-hidden="true" class="anchor-heading icon-link" href="#sync-vs-async-invocation"></a></h3>
+<ul>
+<li>With synchronous invocation, you wait for the function to process the event and return a response.</li>
+<li>With asynchronous invocation, Lambda queues the event for processing and returns a response immediately.
+<ul>
+<li>Therefore, in <a href="/notes/5iC7cpurvsTcO6WDflzOZ">Node</a> it returns a <a href="/notes/FVbSefFiCJPpdtkRRsogA">Promise</a></li>
+</ul>
+</li>
+</ul>
+<p>When you invoke a function synchronously, you receive errors in the response and can retry. When you invoke asynchronously, use an event source mapping, or configure another service to invoke your function, the retry requirements and the way that your function scales to handle large numbers of events can vary.</p>
+<p>When you invoke a function asynchronously, you don't wait for a response from the function code. You hand off the event to Lambda and Lambda handles the rest. You can configure how Lambda handles errors, and can send invocation records to a downstream resource to chain together components of your application.</p>
+<p>You can also configure Lambda to send an invocation record to another service. Lambda supports the following destinations for asynchronous invocation.</p>
+<ul>
+<li>an <a href="/notes/Ha1umcNRHS8mEarVSMy5v">SQS</a> queue</li>
+<li>an <a href="/notes/3E2oC3PsnDWowLW9hK0eZ">SNS (Simple Notification Service)</a> topic</li>
+<li>a <a href="/notes/OSdV9FvBG3wDbRNLllg0V">Lambda</a> function</li>
+<li>Amazon EventBridge – An EventBridge event bus.</li>
+</ul>
+<p>Several AWS services, such as <a href="/notes/2Rtof8yGX9K2Tq6tLljBb">S3</a> and <a href="/notes/3E2oC3PsnDWowLW9hK0eZ">SNS</a> invoke functions asynchronously to process events.</p>
+</div></div><p></p><p></p>
+<h3 id="triggers">Triggers<a aria-hidden="true" class="anchor-heading icon-link" href="#triggers"></a></h3>
+<p>A trigger is a resource or configuration that invokes a Lambda function. Triggers include AWS services that you can configure to invoke a function and event source mappings.</p>
+<p>A trigger can be configured to invoke your function in response to lifecycle events, external requests, or on a schedule.</p>
+<p>Each trigger acts as a client invoking your function independently. Each event that Lambda passes to your function has data from only one client or trigger.</p>
+<h3 id="event">Event<a aria-hidden="true" class="anchor-heading icon-link" href="#event"></a></h3>
+<p>An event is a JSON-formatted document that contains data for a Lambda function to process. The runtime converts the event to an object and passes it to your function code.</p>
+<p></p><p></p><div class="portal-container">
+<div class="portal-head">
+<div class="portal-backlink">
+<div class="portal-title">From <span class="portal-text-title">Lambda Event</span></div>
+<a href="/notes/sk9JvTdjqKG2LEMfkpf0j" class="portal-arrow">Go to text <span class="right-arrow">→</span></a>
+</div>
+</div>
+<div id="portal-parent-anchor" class="portal-parent" markdown="1">
+<div class="portal-parent-fader-top"></div>
+<div class="portal-parent-fader-bottom"></div><p>When we invoke a function, we determine the structure and contents of the event:</p>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"TemperatureK"</span><span class="token operator">:</span> <span class="token number">281</span><span class="token punctuation">,</span>
+  <span class="token property">"WindKmh"</span><span class="token operator">:</span> <span class="token number">-3</span><span class="token punctuation">,</span>
+  <span class="token property">"HumidityPct"</span><span class="token operator">:</span> <span class="token number">0.55</span><span class="token punctuation">,</span>
+  <span class="token property">"PressureHPa"</span><span class="token operator">:</span> <span class="token number">1020</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>When an AWS service invokes your function, the service defines the shape of the event:</p>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"Records"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">{</span>
+      <span class="token property">"Sns"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">"Timestamp"</span><span class="token operator">:</span> <span class="token string">"2019-01-02T12:45:07.000Z"</span><span class="token punctuation">,</span>
+        <span class="token property">"Signature"</span><span class="token operator">:</span> <span class="token string">"tcc6faL2yUC6dgZdmrwh1Y4cGa/ebXEkAi6RibDsvpi+tE/1+82j...65r=="</span><span class="token punctuation">,</span>
+        <span class="token property">"MessageId"</span><span class="token operator">:</span> <span class="token string">"95df01b4-ee98-5cb9-9903-4c221d41eb5e"</span><span class="token punctuation">,</span>
+        <span class="token property">"Message"</span><span class="token operator">:</span> <span class="token string">"Hello from SNS!"</span><span class="token punctuation">,</span>
+        <span class="token comment">// ...</span>
+</code></pre></div></div><p></p><p></p>
+<h2 id="lambda-runtime">Lambda Runtime<a aria-hidden="true" class="anchor-heading icon-link" href="#lambda-runtime"></a></h2>
+<p>Process:</p>
+<ol>
+<li>Our Lambdas will be stored as zipped files in <a href="/notes/2Rtof8yGX9K2Tq6tLljBb">S3 (Simple Storage Service)</a>.</li>
+<li>The execution environment will be started (e.g. Node runtime, Python, C# etc.)</li>
+<li>execute initialization code (the code outside the main <code>handler</code> function of the Lambda, which includes imports)
+<ul>
+<li>variables defined here will live in between invocations of our Lambda</li>
+</ul>
+</li>
+<li>execute the <code>handler</code> code</li>
+</ol>
+<h3 id="execution-environment">Execution Environment<a aria-hidden="true" class="anchor-heading icon-link" href="#execution-environment"></a></h3>
+<p>Lambda provides a secure and isolated runtime environment for your Lambda function. It manages the processes and resources that are required to run the function.</p>
+<p>The execution environment provides lifecycle support for the function and for any extensions associated with your function.</p>
+<p><a href="https://docs.aws.amazon.com/lambda/latest/dg/runtimes-context.html">more on Lambda Execution Environment</a></p>
+<h3 id="deployment">Deployment<a aria-hidden="true" class="anchor-heading icon-link" href="#deployment"></a></h3>
+<p>You deploy your Lambda function code using a deployment package. Lambda supports two types of deployment packages:</p>
+<ul>
+<li>A .zip file archive that contains your function code and its dependencies.</li>
+<li>Your Lambda + its dependencies as a <a href="/notes/SQwuv6ixxiQtYGEQnoSZo">Docker image</a>. You can then load that container into something like AWS Elastic Container Registry (ECR)
+<ul>
+<li>Dockerizing Lambdas is a slower approach.</li>
+</ul>
+</li>
+</ul>
+<h2 id="cold-start">Cold start<a aria-hidden="true" class="anchor-heading icon-link" href="#cold-start"></a></h2>
+<p>Only 1, 2 and 3 of the above process are relevant to cold starts.</p>
+<p>Lambas will stay alive for ~5-30 min, but the time-frame is highly variable and unpredictable.</p>
+<p>A cold start happens any time a new Lambda instance is created</p>
+<ul>
+<li>in other words, going from 0 Lambdas to 1 Lambda is a single cold start, just like going from 499 to 500 is a single cold start.</li>
+</ul>
+<p>Cold starts are essentially unavoidable, and all we can do is reduce the frequency of their occurrence.</p>
+<h3 id="concurrency-controls">Concurrency controls<a aria-hidden="true" class="anchor-heading icon-link" href="#concurrency-controls"></a></h3>
+<p>There are 2 types of concurrency controls available: provisioned concurrency and reserved concurrency</p>
+<h4 id="provisioned-concurrency">Provisioned Concurrency<a aria-hidden="true" class="anchor-heading icon-link" href="#provisioned-concurrency"></a></h4>
+<p>This is an AWS setting that allows us to keep a set number of Lambdas warm.</p>
+<ul>
+<li>there is a cost associated with keeping Lambdas warm, and if the load exceeds the number of Lambdas we've set to keep warm, we will still have cold starts.</li>
+</ul>
+<h4 id="reserved-concurrency">Reserved Concurrency<a aria-hidden="true" class="anchor-heading icon-link" href="#reserved-concurrency"></a></h4>
+<p>This lets us guarantee a maximum number of concurrent instances for a function. When a function has reserved concurrency, no other function can use that concurrency.</p>
+<hr>
+<h3 id="lambda-extensions">Lambda Extensions<a aria-hidden="true" class="anchor-heading icon-link" href="#lambda-extensions"></a></h3>
+<p>We can include extensions to support our lambdas
+</p><p></p><div class="portal-container">
+<div class="portal-head">
+<div class="portal-backlink">
+<div class="portal-title">From <span class="portal-text-title">Lambda Extensions</span></div>
+<a href="/notes/7dGIPwR7D3fnuwYVCvFn7" class="portal-arrow">Go to text <span class="right-arrow">→</span></a>
+</div>
+</div>
+<div id="portal-parent-anchor" class="portal-parent" markdown="1">
+<div class="portal-parent-fader-top"></div>
+<div class="portal-parent-fader-bottom"></div><p>Lambda Extensions API can be used to integrate Lambda with their preferred tools for monitoring, observability, security, and governance.</p>
+<p>Your extension can register for function and execution environment lifecycle events. In response to these events, you can start new processes, run logic, and control and participate in all phases of the Lambda lifecycle: initialization, invocation, and shutdown.</p>
+<p>An extension runs as an independent process in the execution environment and can continue to run after the function invocation is fully processed.</p>
+<ul>
+<li>Because extensions run as processes, you can write them in a different language than the function, though a compiled language is recommended so the extension is a self-contained binary.</li>
+</ul>
+</div></div><p></p><p></p>
+<h3 id="concurrency">Concurrency<a aria-hidden="true" class="anchor-heading icon-link" href="#concurrency"></a></h3>
+<p><a href="/notes/W5etsXYnFDHBWHEHSZKjp">Concurrency</a> is the number of requests that your function is serving at any given time. When your function is invoked, Lambda provisions an instance of it to process the event. When the function code finishes running, it can handle another request. If the function is invoked again while a request is still being processed, another instance is provisioned, increasing the function's concurrency.</p>
+<h2 id="features">Features<a aria-hidden="true" class="anchor-heading icon-link" href="#features"></a></h2>
+<h3 id="event-source-mapping">Event Source Mapping<a aria-hidden="true" class="anchor-heading icon-link" href="#event-source-mapping"></a></h3>
+<p>An event source mapping is a resource in Lambda that reads items from a stream or queue and sends the items to your function in batches.</p>
+<ul>
+<li>Each event that your function processes can contain hundreds or thousands of items.</li>
+</ul>
+<p>Lambda reads events from <a href="/notes/mP0bWcHx4tIFklY9Ge8vh">Kinesis</a>, <a href="/notes/gEztUcJYazBs8J8k0gi7o">Dynamoc</a>, <a href="/notes/Ha1umcNRHS8mEarVSMy5v">SQS</a>, among a few others.</p>
+<p>You can use event source mappings to process items from a stream or queue in services that don't invoke Lambda functions directly</p>
+<p>Event source mappings maintain a local queue of unprocessed items and handle retries if the function returns an error or is throttled.</p>
+<h3 id="destination">Destination<a aria-hidden="true" class="anchor-heading icon-link" href="#destination"></a></h3>
+<p>A destination is an AWS resource that receives invocation records for a function</p>
+<ul>
+<li>The invocation record contains details about the request and response in JSON format, including the function's response, and the reason that the record was sent.
+<ul>
+<li>this is something we'd want to send to the <a href="/notes/0pUoWXrTC07Z9B1ijwosK">DLQ</a> in the event a message fails to be sent.</li>
+</ul>
+</li>
+</ul>
+<p>We can configure separate destinations depending on whether invocations pass or fail.</p>
+<hr>
+<h3 id="how-it-works">How it works<a aria-hidden="true" class="anchor-heading icon-link" href="#how-it-works"></a></h3>
+<p>Lambda provides a Programming Model, which is common to all runtimes (Node, C# etc). It defines the interface between your code and the Lambda system:</p>
+<ul>
+<li>You tell Lambda the entry point to your function by defining a handler in the function configuration. The runtime passes in objects to the handler that contain the invocation event and the context (such as the function name and request ID).</li>
+</ul>
+<p>When the handler finishes processing the first event, the runtime sends it another.</p>
+<ul>
+<li>The function's class stays in memory, so clients and variables that are declared outside of the handler method in initialization code can be reused.</li>
+<li>Therefore, to save processing time on subsequent events, create reusable resources like AWS SDK clients during initialization. Once initialized, each instance of your function can process thousands of requests.</li>
+</ul>
+<h3 id="when-to-use">When to use<a aria-hidden="true" class="anchor-heading icon-link" href="#when-to-use"></a></h3>
+<p>Unless going with a serverless architecture, Lambda is most suitable for small snippets of code that rarely change.</p>
+<ul>
+<li>think of Lambda functions as part of the infrastructure rather than part of the application
+<ul>
+<li>The justification for adhering to this principle diminishes when we consider advancements like IaC (ex. <a href="/notes/Ku1OgHMhELajzo61Gx7ye">Terraform</a>).</li>
+</ul>
+</li>
+</ul>
+<p>Lambda can be used as a plugin system for other AWS services, for example:</p>
+<ul>
+<li>S3 doesn’t come with an API to resize an image after uploading it to a bucket, but with Lambda, you can add that capability to S3.</li>
+</ul>
+<h3 id="limitations">Limitations<a aria-hidden="true" class="anchor-heading icon-link" href="#limitations"></a></h3>
+<ul>
+<li>Your functions will suffer a cold start when a function is invoked after a period of inactivity</li>
+<li>limit of 250 MB for your code bundle, including all your dependencies. This limit should not present an issue.</li>
+</ul>
+<hr>
+<h3 id="lambda-application">Lambda Application<a aria-hidden="true" class="anchor-heading icon-link" href="#lambda-application"></a></h3>
+<p>An AWS Lambda application is a combination of Lambda functions, event sources, and other resources that work together to perform tasks.</p>
+<ul>
+<li>With it, you can use <a href="/notes/NbGOJJpZuEbf0hXs2UvAB">CloudFormation</a> and other tools to collect your application's components into a single package that can be deployed and managed as one resource.</li>
+</ul>
+<p>Applications make your Lambda projects portable</p>
+<hr>
+<h2 id="misc">Misc<a aria-hidden="true" class="anchor-heading icon-link" href="#misc"></a></h2>
+<p>Your function also has access to local storage in the /tmp directory. Instances of your function that are serving requests remain active for a few hours before being recycled.</p>
+<p>The runtime captures logs from your function and sends it to Amazon CloudWatch Logs. We get:</p>
+<ul>
+<li>the return value of the function.</li>
+<li>entries detailing when functions were invoked, and when they failed.</li>
+</ul>
+<p>Lambdas should be considered stateless, though we can use local storage and class-level objects to increase performance</p>
+<p>By default, Lambda runs your functions in a secure VPC. Lambda owns this VPC, which isn't connected to your account's default VPC.</p>
+<ul>
+<li>When you connect a function to a VPC in your account, the function can't access the internet unless your VPC provides access.</li>
+</ul>
+<p>You can configure a function to mount an Amazon Elastic File System (Amazon EFS) file system to a local directory. With Amazon EFS, your function code can access and modify shared resources safely and at high concurrency.</p>
+<p>Lambda provides runtimes for .NET (PowerShell, C#), Go, Java, Node.js, Python, and Ruby.</p>
+<p>It may take 5 to 10 minutes for logs to show up in <a href="/notes/gJBzCsQsFbZ0AESictJ8g">Cloudwatch</a> after a Lambda function invocation.</p>
+<p>Lambdas are billed by GB/second, which means if we allocate more memory to our Lambdas, the cost/second will be higher.</p>
+<p>When using <a href="/notes/UkLhcujsRG1aNy2DcLcor#commonjs-imports1">CommonJS</a>, barrel files (<code>index.js</code> file that <code>exports</code> all of the modules within the same directory) are potentially problematic with projects that implement Lambdas, since every module exported from the <code>index.js</code> file will be imported when we try to import a module.</p>
+<h2 id="resources">Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#resources"></a></h2>
+<ul>
+<li><a href="https://blog.neverendingqs.com/2021/04/16/aws-lambda-always-allocate-1024-mb.html">always allocate at least 1024mb</a></li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/n6qNDv2CNZCf1Mkaat3Vf">Lambda CLI</a></li>
+<li><a href="/notes/sk9JvTdjqKG2LEMfkpf0j">Lambda Event</a></li>
+<li><a href="/notes/7dGIPwR7D3fnuwYVCvFn7">Lambda Extensions</a></li>
+<li><a href="/notes/Ag4RGxbqigmzcZAUS9FRv">Lambda Function</a></li>
+<li><a href="/notes/mHVMjAHm9xjTEnRdsGi96">Lambda Layer</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/nRb6Im4Kcmc2ZWE7K1jZ1">Serverless Framework</a></li>
+<li><a href="/notes/6b96d1cy19ooewp49vo4x5d">Replication</a></li>
+<li><a href="/notes/T3myEQpNJczlAwIZCMpQB">Elastic Compute Cloud (EC2)</a></li>
+<li><a href="/notes/3E2oC3PsnDWowLW9hK0eZ">SNS (Simple Notification Service)</a></li>
+<li><a href="/notes/2UZZGnoMlDKmvo3kgJ6ym">VPC (Virtual Private Cloud)</a></li>
+<li><a href="/notes/o1Bu4i5kWHRsosQdOI2fR">API Gateway</a></li>
+<li><a href="/notes/7n3tUhrwbvz8nNu0bTlWz">EventBridge</a></li>
+<li><a href="/notes/begrl6j3rxln3bcsz87ornn">Xray</a></li>
+<li><a href="/notes/hUvXun5sLRxKOZXIZFuV1">IAM (Identity and Access Management)</a></li>
+<li><a href="/notes/jqIxYA4fpGL6wIKJNkovK">Artifact</a></li>
+<li><a href="/notes/0anj54rvp4jnu577vv4wq1w">Pixel</a></li>
+<li><a href="/notes/5uuohllUAxCmbMFJb8Pj9">Dynamo Streams</a></li>
+<li><a href="/notes/Ag4RGxbqigmzcZAUS9FRv">Lambda Function</a></li>
+</ul>

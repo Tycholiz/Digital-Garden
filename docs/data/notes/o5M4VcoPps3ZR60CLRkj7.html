@@ -1,0 +1,91 @@
+<h1 id="async-await">Async-Await<a aria-hidden="true" class="anchor-heading icon-link" href="#async-await"></a></h1>
+<p>every function annotated with async returns an implicit promise</p>
+<ul>
+<li><em>"The async function declaration defines an asynchronous function, which returns an AsyncFunction object. An asynchronous function is a function which operates asynchronously via the event loop, using an implicit Promise to return its result."</em></li>
+</ul>
+<p>every time we see <code>await</code>, it means the promise must resolve before moving on. If it is rejected, then an error is thrown, and it's up to us to <code>catch</code> it.</p>
+<p>Using async-await is fantastic when the tasks we’re trying to be accomplished are supposed to be sequential and the asynchronous function calls need to happen in series. If we need true parallelism, we need to go back to vanilla <a href="/notes/FVbSefFiCJPpdtkRRsogA">Promises</a> .</p>
+<p>The return value of an async function is implicitly wrapped in <code>Promise.resolve</code> - if it's not already a promise itself</p>
+<p><code>await</code> must appear directly inside an <code>async</code> function. Therefore, we cannot do this:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token function-variable function">myFunc</span> <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> mapResult <span class="token operator">=</span> dataFromA<span class="token punctuation">.</span><span class="token method function property-access">map</span><span class="token punctuation">(</span><span class="token parameter">item</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> dataFromB <span class="token operator">=</span> <span class="token keyword control-flow">await</span> <span class="token function">doApiCallHere</span><span class="token punctuation">(</span>item<span class="token punctuation">.</span><span class="token property-access">id</span><span class="token punctuation">)</span>
+
+    <span class="token keyword control-flow">return</span> <span class="token punctuation">{</span>
+      <span class="token spread operator">...</span>dataFromA<span class="token punctuation">,</span>
+      dataFromB<span class="token punctuation">,</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Here, we are trying to use <code>await</code> within a <code>map</code> function. </p>
+<ul>
+<li>spec: since <code>map</code> is not asynchronous, this wouldn't make sense.</li>
+</ul>
+<p>If we wanted to do this, we would need to pass an <code>async</code> function to map:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> mapResult <span class="token operator">=</span> dataFromA<span class="token punctuation">.</span><span class="token method function property-access">map</span><span class="token punctuation">(</span><span class="token keyword">async</span> <span class="token parameter">item</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+<span class="token spread operator">...</span>
+</code></pre>
+<p><code>map</code> now returns an array of promises, which we can then <code>Promise.all</code> over:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token function-variable function">myFunc</span> <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> promises <span class="token operator">=</span> dataFromA<span class="token punctuation">.</span><span class="token method function property-access">map</span><span class="token punctuation">(</span><span class="token keyword">async</span> <span class="token parameter">item</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> dataFromB <span class="token operator">=</span> <span class="token keyword control-flow">await</span> <span class="token function">doApiCallHere</span><span class="token punctuation">(</span>item<span class="token punctuation">.</span><span class="token property-access">id</span><span class="token punctuation">)</span>
+
+    <span class="token keyword control-flow">return</span> <span class="token punctuation">{</span>
+      <span class="token spread operator">...</span>dataFromA<span class="token punctuation">,</span>
+      dataFromB<span class="token punctuation">,</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+  <span class="token known-class-name class-name">Promise</span><span class="token punctuation">.</span><span class="token method function property-access">all</span><span class="token punctuation">(</span>promises<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Awaiting a non-promise will have the same effect as awaiting a resolved promise that is resolved with the non-promise value. So</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword control-flow">await</span> <span class="token function">abc</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">// returns undefined</span>
+</code></pre>
+<p>Is the same as</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword control-flow">await</span> <span class="token known-class-name class-name">Promise</span><span class="token punctuation">.</span><span class="token method function property-access">resolve</span><span class="token punctuation">(</span><span class="token keyword nil">undefined</span><span class="token punctuation">)</span>
+</code></pre>
+<p>The await will pause the current function (as it always does) then continue running it on the next microtask tick since no additional waiting is needed for a resolved promise and then continue on with the rest of the function.</p>
+<p>await doesn't care if a function is async. It only looks for promises. Non async functions can also return promises though async functions always do. If it doesn't find a promise it pretends like it did by treating the value it's awaiting as a resolved promise.</p>
+<h2 id="how-async-await-converts-to-promises">How async-await converts to Promises<a aria-hidden="true" class="anchor-heading icon-link" href="#how-async-await-converts-to-promises"></a></h2>
+<p>The body of an async function can be thought of as being split by zero or more await expressions. </p>
+<ul>
+<li>Top-level code, up to and including the first await expression (if there is one), is run synchronously. 
+<ul>
+<li>In this way, an async function without an await expression will run synchronously. If there is an await expression inside the function body, however, the async function will always complete asynchronously.</li>
+</ul>
+</li>
+</ul>
+<p>For example:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">foo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   <span class="token keyword control-flow">await</span> <span class="token number">1</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>...is equivalent to:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">foo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   <span class="token keyword control-flow">return</span> <span class="token known-class-name class-name">Promise</span><span class="token punctuation">.</span><span class="token method function property-access">resolve</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token method function property-access">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token keyword nil">undefined</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Code after each await expression can be thought of as existing in a <code>.then</code> callback.</p>
+<ul>
+<li>In this way a promise chain is progressively constructed with each reentrant step through the function. The return value forms the final link in the chain.</li>
+<li>the promise chain is not built-up in one go. Instead, the promise chain is constructed in stages as control is successively yielded from and returned to the async function. As a result, we must be mindful of error handling behavior when dealing with concurrent asynchronous operations. In the following example, <code>p2</code> will not be "wired into" the promise chain until control returns from <code>p1</code>.</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">foo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   <span class="token keyword">const</span> p1 <span class="token operator">=</span> <span class="token keyword control-flow">await</span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">resolve</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token function">resolve</span><span class="token punctuation">(</span><span class="token string">'1'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+   <span class="token keyword">const</span> p2 <span class="token operator">=</span> <span class="token keyword control-flow">await</span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">resolve</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token function">resolve</span><span class="token punctuation">(</span><span class="token string">'2'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<hr>
+<h3 id="top-level-await-es2022">Top-level Await (ES2022)<a aria-hidden="true" class="anchor-heading icon-link" href="#top-level-await-es2022"></a></h3>
+<p>Top-level await allows us to use await outside of a function marked <code>async</code></p>
+<ul>
+<li>Essentially, our code becomes asynchronous at the module level. This can affect how your module behaves, especially if you have other code that relies on the module's exports being available immediately. Once you use top-level await, all other modules that import your asynchronous module must wait until all of the top-level awaits have been resolved.
+<ul>
+<li>Therefore, if you're not loading dependencies for your exports you might not want to be using top-level await.</li>
+</ul>
+</li>
+</ul>
+<p>In cases where your module's primary purpose is to initialize and configure something essential for the module's operation (e.g., fetching secrets), using top-level await can be a straightforward and efficient approach.</p>
+<p>To use top-level await, you must be using ESModules, not CommonJS (ie. set the package.json field <code>"type": "module"</code>)</p>

@@ -1,0 +1,19 @@
+<h1 id="components">Components<a aria-hidden="true" class="anchor-heading icon-link" href="#components"></a></h1>
+<p>Purity and immutability between components is critical. Mutability within a component is fine, as long as that mutation doesn't affect state/props.</p>
+<ul>
+<li>ex. pushing onto an array within a component is fine.</li>
+</ul>
+<p>When React is interpreting JSX, it will treat custom components (<code>&#x3C;Form></code>) as recursive functions, and regular elements (<code>&#x3C;form></code>) as the finality of the chain</p>
+<ul>
+<li>ex. We say "React, render a <code>&#x3C;Sidebar></code> for me". React responds "ok what's in a <code>&#x3C;Sidebar></code>?", and it will go on like this until React gets to the html elements and it has therefore built up the entire component tree.</li>
+</ul>
+<p>A component that receives another component as props will always re-render, since <a href="/notes/5qazkxdesski9rpqdpqemv6">JSX</a> syntax always produces a new immutable React component</p>
+<h2 id="re-rendering">Re-rendering<a aria-hidden="true" class="anchor-heading icon-link" href="#re-rendering"></a></h2>
+<p>React components will re-render for various reasons:</p>
+<ul>
+<li>Props values changed: When a component's parent passes new props to it, the component will re-render. React will compare the new props with the previous props to determine if the component needs to update.</li>
+<li>State changed: When the <code>setState</code> function is called in a component, it triggers a re-render. </li>
+<li>If a parent component re-renders, all of its child components will also re-render. </li>
+</ul>
+<h3 id="higher-order-components">Higher-order components<a aria-hidden="true" class="anchor-heading icon-link" href="#higher-order-components"></a></h3>
+<p>Higher-Order Components are generic functions, as they only care about the argument being a component. The type of the component’s properties is not important.</p>

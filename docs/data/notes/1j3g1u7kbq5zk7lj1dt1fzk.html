@@ -1,0 +1,25 @@
+<h1 id="abstraction">Abstraction<a aria-hidden="true" class="anchor-heading icon-link" href="#abstraction"></a></h1>
+<p>Implementations exist at a given level of abstraction. If the term abstraction in essence refers to how low-level or high-level our context headspace is, then the tools we have at our disposal each operate at a certain level of abstraction.</p>
+<ul>
+<li><a href="/notes/l7V3v2ep1YdDCt7DOr7Ci">Redux</a> in my React app operates at a certain level of abstraction, and the <a href="/notes/rfgplq6ia741ki4dn6gtabo">Kernel</a> in my OS operates at a totally different one, but in essence, the Redux application depends on the kernel doing its job properly.</li>
+</ul>
+<p>The root of all abstractions is electricity. From that, a <a href="/notes/zyhhxi0nal0pii1cxtk7uxd">stream</a> of 0s and 1s are produced, and so forth. Developers design and build programs that operate at a certain level of abstraction.</p>
+<ul>
+<li>ex. wires exist at a level of abstraction as much as an <a href="/notes/h4AAeyVt574EVXO3sy2X1">Process</a> does. When we think about it, wires are technology that has been developed to serve a purpose; no different than any other implementation (or outcome) of code.</li>
+</ul>
+<h3 id="leaky-abstraction">Leaky Abstraction<a aria-hidden="true" class="anchor-heading icon-link" href="#leaky-abstraction"></a></h3>
+<p>A leaky abstraction is one that doesn't provide a clean and complete separation between higher-level and lower-level systems, causing developers to deal with the underlying complexities when they should ideally be shielded from them.</p>
+<p>A leaky abstraction occurs when we have built some abstraction, but some of the implementation details of the lower-level things we were supposed to have abstracted leaked through the API and are made available to the user of the abstraction.</p>
+<ul>
+<li>the problem with this is that it needlessly makes the abstraction more complex</li>
+<li>also, if those lower-level implementation details are modifiable, it makes the abstraction brittle, since changes to the lower-level details can break modules that depend on it.</li>
+</ul>
+<p>If an abstraction is leaky, it means that the consumer of that API must know <em>exactly</em> how it works in order to avoid pitfalls.</p>
+<h4 id="example-abstraction-to-hide-sql-specific-implementations">Example: Abstraction to hide SQL-specific implementations<a aria-hidden="true" class="anchor-heading icon-link" href="#example-abstraction-to-hide-sql-specific-implementations"></a></h4>
+<p>Imagine we had a module that abstracted away details about whether the user was using MySQL, Postgres or any other SQL engine. Ideally, the user of the abstraction doesn't have to be aware of which engine they are using. We would have a leaky abstraction if the user had to eschew this pretense and do something "the MySQL way" in order to solve a problem. </p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/I01hENHnh8Tqu3Ok8sLzG">Memory</a></li>
+<li><a href="/notes/rfgplq6ia741ki4dn6gtabo">Kernel</a></li>
+</ul>

@@ -1,0 +1,24 @@
+<h1 id="cook">Cook<a aria-hidden="true" class="anchor-heading icon-link" href="#cook"></a></h1>
+<h3 id="prevent-render-of-component-until-data-arrives">Prevent render of component until data arrives<a aria-hidden="true" class="anchor-heading icon-link" href="#prevent-render-of-component-until-data-arrives"></a></h3>
+<p>For example, a header that must show either a login button or a profile dropdown depending on if the user is logged in or not. Until we know, we should render nothing:</p>
+<p>because the HTML file is built at compile-time in Next, every single user gets an identical copy of that HTML, regardless of whether they're logged in or not. Only once the js bundle is parsed and executed can we render the proper header state.</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token function-variable function"><span class="token maybe-class-name">Header</span></span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+    <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span><span class="token keyword">typeof</span> <span class="token dom variable">window</span> <span class="token operator">===</span> <span class="token string">'undefined'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword control-flow">return</span> <span class="token keyword null nil">null</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">const</span> user <span class="token operator">=</span> <span class="token function">getUser</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span>user<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword control-flow">return</span> <span class="token punctuation">(</span>
+        <span class="token operator">&#x3C;</span><span class="token maybe-class-name">AuthenticatedNav</span>
+            user<span class="token operator">=</span><span class="token punctuation">{</span>user<span class="token punctuation">}</span>
+        <span class="token operator">/</span><span class="token operator">></span>
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword control-flow">return</span> <span class="token punctuation">(</span>
+        <span class="token operator">&#x3C;</span>nav<span class="token operator">></span>
+            <span class="token operator">&#x3C;</span>a href<span class="token operator">=</span><span class="token string">"/login"</span><span class="token operator">></span><span class="token maybe-class-name">Login</span><span class="token operator">&#x3C;</span><span class="token operator">/</span>a<span class="token operator">></span>
+        <span class="token operator">&#x3C;</span><span class="token operator">/</span>nav<span class="token operator">></span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre>

@@ -1,0 +1,40 @@
+<h1 id="event-bubbling">Event Bubbling<a aria-hidden="true" class="anchor-heading icon-link" href="#event-bubbling"></a></h1>
+<p>When you click on a button, you are inadvertently clicking on things that inside the button, as well as things that contain the button</p>
+<ul>
+<li>ex. when you click on a strong tag, the event happens on that strong tag. But if nothing happens with that event, then it will bubble up to the surrounding element (ex. a Button). If the button wasn't listening for that specific event, then it will keep bubbling up onto the next surrounding element. </li>
+<li>This is necessary, because if we have a <code>&#x3C;strong></code> tag inside a <code>&#x3C;button></code> and we click on that <code>&#x3C;strong></code> (which doesn't have a click handler), then our Button needs some way of being notified of that click event.</li>
+<li><code>event.target</code> is a reference to the object onto which the event was dispatched.
+<ul>
+<li>ex. if we click a button, then <code>event.target</code> is the <code>&#x3C;button></code> tag.</li>
+</ul>
+</li>
+</ul>
+<p>We can think of this as the "clicked element".</p>
+<p>Event capturing</p>
+<ul>
+<li>the process of figuring out what got clicked. Happens after the bubbling phase</li>
+<li>ex. when you click on a <code>span</code>, the browser starts at the top: "user clicked on the <code>window</code> > <code>html</code> > <code>body</code> > <code>div</code> > <code>button</code> > <code>span</code>"</li>
+</ul>
+<p>When we add an event listener, we can specify that it triggers on the capture phase or bubble phase</p>
+<ul>
+<li>bubble phase is default, and is what we want 99% of the time.</li>
+</ul>
+<h3 id="currenttarget-vs-target">currentTarget vs target<a aria-hidden="true" class="anchor-heading icon-link" href="#currenttarget-vs-target"></a></h3>
+<p><code>currentTarget</code></p>
+<ul>
+<li>what actually got clicked, prior to any bubbling happening</li>
+<li>ex. we have a <code>span</code> inside a <code>button</code>. If the user clicks the <code>span</code>, then <code>span</code> is the <code>currentTarget</code> that got clicked, and the <code>button</code> is the <code>target</code></li>
+</ul>
+<p><code>target</code></p>
+<ul>
+<li>what you listened for a click on (what the bubbling ended up at)</li>
+</ul>
+<h1 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h1>
+<ul>
+<li><a href="https://javascript.info/event-delegation">Event Delegation</a></li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/c4Z7ETcOHUILRMH32Sfjw">Svelte</a></li>
+</ul>

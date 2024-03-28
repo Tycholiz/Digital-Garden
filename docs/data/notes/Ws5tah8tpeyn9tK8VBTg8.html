@@ -1,0 +1,40 @@
+<h1 id="react-native">React Native<a aria-hidden="true" class="anchor-heading icon-link" href="#react-native"></a></h1>
+<h2 id="how-react-native-works">How React Native Works<a aria-hidden="true" class="anchor-heading icon-link" href="#how-react-native-works"></a></h2>
+<ul>
+<li>When we <code>debug remotely</code>, we are running our JS code in the browser, as opposed to on the device.
+<ul>
+<li>when we do this, a web socket connection is made between the device and the browser</li>
+<li>Since this is a different JS engine than would be used in production, it's possible that errors occur in one but not the other.</li>
+</ul>
+</li>
+<li>You can consider React Native as a browser that instead of rendering divs, spans, h1, inputs it renders instead native components. The nice thing is that the native components run in their own native thread (that means you get native performance) and your javascript runs in it's own thread and orchestrates all the native components.</li>
+<li>In production, when the application starts, it starts running code from your javascript bundle and that will drive which components are to be created on the screen.</li>
+<li>In development, React Native uses watchman to detect when you've made code changes and then automatically build and push the update your device without you needing to manually refresh it.</li>
+</ul>
+<h3 id="building-the-app-run-iosrun-android">Building the app (run-ios/run-android)<a aria-hidden="true" class="anchor-heading icon-link" href="#building-the-app-run-iosrun-android"></a></h3>
+<ul>
+<li>When we run <code>react-native run-ios</code>, a list of iOS simulators is searched, and the default one is started.</li>
+<li>Since by default it is run in Debug mode (ie. development mode), a series of <code>xcrun</code> commands are run, culminating in the <code>xcodebuild</code> commands being run, which results in the app being built on the device.</li>
+<li>Once the app is successfully built, a request is sent to the metro bundler URL (API at port 8081 mentioned above). Metro will bundle the javascript in response to the app having been built.
+<ul>
+<li>In Release mode (ie. production), the bundle is pre-packaged, which is why we need to change where the ios device looks for the bundle (<code>App.Delegate.m</code> file)</li>
+</ul>
+</li>
+</ul>
+<h2 id="resources">Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#resources"></a></h2>
+<ul>
+<li><a href="https://github.com/obytes/react-native-template-obytes">Starter project (template)</a></li>
+<li><a href="https://github.com/anisurrahman072/React-Native-Advanced-Guide">React Native advanced guide</a></li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/dzmj5jdkz5mkjv0tygdmrbx">Layout</a></li>
+<li><a href="/notes/2flzVqaAbFHXGk0CzrvSb">Metro Bundler</a></li>
+<li><a href="/notes/6swc9f9viiad2fecbyp3ro5">Native Module</a></li>
+<li><a href="/notes/4pK6q3EwMepS2BScAxjxv">Performance</a></li>
+<li><a href="/notes/t9vr0n7ukrslcunk69u0tei">React Native Architecture</a></li>
+<li><a href="/notes/7a6mq82psllvadxx3htau8e">Setup</a></li>
+<li><a href="/notes/y1szclodjwd0o2z20njjc0n">Storage</a></li>
+<li><a href="/notes/EDrGo9vVqNpo9Yn8U4OH2">Threads</a></li>
+</ol>

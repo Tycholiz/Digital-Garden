@@ -1,0 +1,45 @@
+<h1 id="s3-simple-storage-service">S3 (Simple Storage Service)<a aria-hidden="true" class="anchor-heading icon-link" href="#s3-simple-storage-service"></a></h1>
+<p>Fundamentally, you can think of S3 as a highly-durable hash table in the cloud.</p>
+<ul>
+<li>The key can be any string, and</li>
+<li>the value any blob/object of data up to 5 TB.</li>
+</ul>
+<p>Object storage is used for purposes such as storing photos on Facebook, songs on Spotify, or files in online collaboration services, such as Dropbox.</p>
+<p>When using S3, always consider implementing it alongside a CDN like <a href="/notes/HyP5vSI4XeV8dR6shXQ7c">CloudFront</a></p>
+<ul>
+<li>ex. if you were building a video streaming platform, you would want to cache egress data so that 2 users living in a similar geographical location would be able to benefit from content that is cached at the edge.</li>
+</ul>
+<p>Data gets streamed at a rate of around 90 MB/s.</p>
+<p>You can have as many parallel uploads and downloads as you want, thus, the infinite bandwidth.</p>
+<p>S3 offers built-in redundancy.</p>
+<p>At first you can start with the default storage class and ignore all the other classes. Don't bother with the implications of the different storage classes until you really need to start saving money from S3 storage costs.</p>
+<h3 id="event-notifications">Event Notifications<a aria-hidden="true" class="anchor-heading icon-link" href="#event-notifications"></a></h3>
+<p>Like webhooks, allows us to receive notifications when certain events happen in your S3 bucket.</p>
+<h3 id="limitations">Limitations<a aria-hidden="true" class="anchor-heading icon-link" href="#limitations"></a></h3>
+<ul>
+<li>cannot append to objects.</li>
+<li>It doesn’t support HTTPS when used as a static website host, so you cannot host static websites</li>
+</ul>
+<hr>
+<ul>
+<li>Alternatives: Azure Blob</li>
+</ul>
+<p>Pricing
+$23.55/TB/month
+$5/million uploads and $0.40/million downloads</p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/nRb6Im4Kcmc2ZWE7K1jZ1">Serverless Framework</a></li>
+<li><a href="/notes/Q533wL2e7qYwr3GbGN46x">AWS Cloud Terms</a></li>
+<li><a href="/notes/wywXc6giwBv8xoiEMJlJW">Data Lake</a></li>
+<li><a href="/notes/Pwqwjb0dVneqNCKA0YkoA">Javascript Bundler</a></li>
+<li><a href="/notes/mO2rzcwfMls7YDt3r3iGX">Data Source</a></li>
+<li><a href="/notes/Nt5U2FxZNGStbEcYYBjKE">Resource</a></li>
+<li><a href="/notes/RGkbZIJolJX74PcNj4xCI">Lake Formation</a></li>
+<li><a href="/notes/OSdV9FvBG3wDbRNLllg0V">AWS Lambda</a></li>
+<li><a href="/notes/cmdTAwLkVkTxP7JsFC8jN">Route53</a></li>
+<li><a href="/notes/ltM0gjy87NV4go37RWkbd">Cache</a></li>
+<li><a href="/notes/0anj54rvp4jnu577vv4wq1w">Pixel</a></li>
+<li><a href="/notes/Ag4RGxbqigmzcZAUS9FRv">Lambda Function</a></li>
+</ul>

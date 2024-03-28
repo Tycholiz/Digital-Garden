@@ -1,0 +1,45 @@
+<h1 id="shader">Shader<a aria-hidden="true" class="anchor-heading icon-link" href="#shader"></a></h1>
+<p>A shader's role is to convert 3D assets into 2D pixels onto the screen.</p>
+<p>The term "shader" is a bit of a misnomer in the present day. While their original purpose was to <em>shade</em> things, their use has since extended beyond that.</p>
+<ul>
+<li>originally, a shader was a small piece of code that ran on the GPU to decide for each pixel what color it should be so that you could shade the objects being rendered, achieving the illusion of lighting and shadows. Nowadays, shaders loosely refer to any program that runs on the GPU.</li>
+</ul>
+<p>Shaders work something like this: You upload a data buffer to your GPU and tell it how to interpret that data as a series of triangles. Each vertex occupies a chunk of that data buffer, describing that vertex’ position in 3D space, but probably also auxillary data like color, texture IDs, normals and other things. Each vertex in the list is processed by the GPU in the vertex stage, running the vertex shader on each vertex, which will apply translation, rotation or perspective distortion.</p>
+<ul>
+<li>This system of passing data to a vertex shader, then to a fragment shader and then outputting it directly onto the screen is called a pipeline</li>
+</ul>
+<p>Consider that a triangle (in 3D space) is made up of three 3D points (vertices), for example:</p>
+<pre><code>(-1.03,  0.00,  0.00)
+( 0.69,  0.00,  1.00)
+( 0.69,  0.00, -1.00)
+</code></pre>
+<p>To show a triangle on the screen, we need to convert these 3D points into 2D points onto a virtual screen (called a Viewport)</p>
+<ul>
+<li>To figure this out, we need to consider the position/rotation of the triangle, as well as the position/rotation of the camera itself.</li>
+<li>All transformations required to convert a 3D point into a 2D point in the viewport can be encoded in a single 4x4 matrix:</li>
+</ul>
+<pre><code>[0, 0, 0, 0]
+[0, 0, 0, 0]
+[0, 0, 0, 0]
+[0, 0, 0, 0]
+</code></pre>
+<p>When you write a Shader, you are primarily responsible for writing a <em>vertex function</em> and a <em>fragment function</em>. The graphics system makes use of these functions, and handles the rest.</p>
+<ul>
+<li>vertex function is responsible for conversion from 3D to 2D (most of the complicated math can be handled for us by utilizing APIs)</li>
+<li>fragment function is responsible for determining which color each pixel within the triangle will be (ie. The fragment function returns a color)
+<ul>
+<li>this occurs right after rasterization.</li>
+</ul>
+</li>
+</ul>
+<p>Vertex function is also responsible for telling the interpolation system what information to interpolate.</p>
+<ul>
+<li>whatever data is returned from the vertex function will be interpolated for each pixel and sent to the fragment function:</li>
+</ul>
+<p>Vertex function runs once for each vertex in the triangle (ie. 3 times per triangle)
+Fragment function runs once per pixel that is covered by the triangle.
+The rasterization and interpolation step ties the vertex function and fragment function steps</p>
+<p>Vertex Function -> position, UV etc -> Interpolation system -> Fragment function -> pixel color to be written to the screen</p>
+<h3 id="rasterization">Rasterization<a aria-hidden="true" class="anchor-heading icon-link" href="#rasterization"></a></h3>
+<p>With a 2D triangle on the screen, rasterization is the process of figuring out which pixels in the screen belong within the triangle.</p>
+<h2 id="lighting">Lighting<a aria-hidden="true" class="anchor-heading icon-link" href="#lighting"></a></h2>

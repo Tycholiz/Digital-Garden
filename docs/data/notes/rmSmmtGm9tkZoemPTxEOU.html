@@ -1,0 +1,16 @@
+<h1 id="event-loop">Event Loop<a aria-hidden="true" class="anchor-heading icon-link" href="#event-loop"></a></h1>
+<p>When you create a new click handler on an HTML element, that click handler is being registered with the event loop, meaning that the event loop is now listening for that handler to be called. Every time it witnesses the event to happen, it causes a certain snippet of code to be executed.</p>
+<p>An event loop must exist because of the fact Javascript is an asynchronous language. What happens is that we put what we need to do in the queue (eg. fetch data), and tell it "when you're finished, do this". The result is non-blocking code.</p>
+<p>The event loop is a <a href="/notes/LTtn2x9aVBeLPMsiR4H8j">thread</a>. Javascript only has a single thread which listens for events and executes user specified functions when the event occurs.</p>
+<ul>
+<li>although the application appears to run on a single thread from the programmer's perspective, the runtime internally uses multiple threads to handle tasks. The main difference is that the programmer does not have to deal with these internal threads and the challenges of coordination between them. All the programmer has to do is specify callback functions to be executed on the main thread when those background tasks have completed.</li>
+</ul>
+<h1 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h1>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=8aGhZQkoFbQ">High quality recommended resource for understanding Event Loop</a></li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/8AyRVnb9vPBVuFpEHnZ2n">Event Bubbling</a></li>
+</ol>

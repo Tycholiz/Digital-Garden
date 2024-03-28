@@ -1,0 +1,25 @@
+<h1 id="connecting-to-postgres">Connecting to Postgres<a aria-hidden="true" class="anchor-heading icon-link" href="#connecting-to-postgres"></a></h1>
+<p>When a new user connects to the database, postgres will fork a new process.</p>
+<ul>
+<li>After this point the client and the new process communicate directly, without intervention from the original process.</li>
+<li>This shows the dependency on processes rather than threads, giving us more stability at the cost of higher connection start-up costs.</li>
+<li>each connection into Postgres is going to consume about 10 MB of memory from your database</li>
+<li>These start-up costs can be overcome with pooling</li>
+</ul>
+<p>In postgres, each client connecting to the database has its own process </p>
+<ul>
+<li>connection can be verified by running <code>select true as "Connection test";</code></li>
+</ul>
+<p><em>Connection String</em> - the database url used to connect to the database (<code>postgres:///...</code>)</p>
+<ul>
+<li>if we specify the connection string as <code>postgres:///mydb</code>, then we are implicitly passing our computer's username and no password, which would be equivalent to <code>postgres:///kyletycholiz@localhost:5432/mydb</code> 
+<ul>
+<li>spec: are these default variables determined by env variables like PGHOST?</li>
+</ul>
+</li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/A9G9CB5OMFBaZgbsHw1Fy">Connection Pool</a></li>
+</ol>

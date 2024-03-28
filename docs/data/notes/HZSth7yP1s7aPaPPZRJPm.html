@@ -1,0 +1,47 @@
+<h1 id="scaling">Scaling<a aria-hidden="true" class="anchor-heading icon-link" href="#scaling"></a></h1>
+<p>It is meaningless to say “X is scalable” or “Y doesn’t scale.” Rather, discussing scalability means considering questions like "If the system grows in a particular way, what are our options for coping with the growth?" and "How can we add computing resources to handle the additional load?"</p>
+<p>A system that is designed to handle 100,000 requests per second, each 1 kB in size, looks very different from a system that is designed for 3 requests per minute, each 2 GB in size—even though the two systems have the same data throughput.</p>
+<ul>
+<li>the 100,000 requests per second system must optimize for low <a href="/notes/j0ZVTb0cyNKaYUu1g6a2g#latency">latency</a> and high throughput. This means designing the system to minimize the time it takes to process each request and maximizing the number of requests that can be processed simultaneously. In this case, sacrificing storage efficiency may be tolerable.
+<ul>
+<li>You might achieve this system by using techniques like <a href="/notes/ixUb4q9KIlc89hsmLFvb5">load balancing</a>, horizontal scaling, and <a href="/notes/8swgk5qh3sy2b9kkfuwx3uu">caching</a>.</li>
+</ul>
+</li>
+<li>the 3 requests per minute system must optimize for storage and retrieval. This means designing the system to efficiently store and retrieve large data objects, and to handle the performance requirements of large data transfers. In this case, sacrificing latency and throughput may be tolerable.
+<ul>
+<li>You might achieve this system by using techniques like sharding, compression, and content delivery networks.</li>
+</ul>
+</li>
+</ul>
+<h2 id="scaling-types">Scaling Types<a aria-hidden="true" class="anchor-heading icon-link" href="#scaling-types"></a></h2>
+<h3 id="vertical-scaling-aka-scaling-up">Vertical Scaling (a.k.a. <em>scaling up</em>)<a aria-hidden="true" class="anchor-heading icon-link" href="#vertical-scaling-aka-scaling-up"></a></h3>
+<p>getting bigger machines to handle the increasing workload.</p>
+<ul>
+<li>ie. make each node more powerful (adding CPUs etc)</li>
+</ul>
+<p>The cost of vertical scaling is not linear: twice as much RAM, CPU and disk space costs significantly more than 2x</p>
+<ul>
+<li>also, due to bottlenecks, a machine with 2x the resources cannot necessarily handle twice the load.</li>
+</ul>
+<p>A concern with vertical scaling might be the issue of <a href="/notes/d9VcIHWuATcb5hABBes7W">locking</a>, in cases where multiple clients are trying to modify the data simultaneously.</p>
+<h3 id="horizontal-scaling-aka-scaling-out">Horizontal Scaling (a.k.a. <em>scaling out</em>)<a aria-hidden="true" class="anchor-heading icon-link" href="#horizontal-scaling-aka-scaling-out"></a></h3>
+<p>getting many more smaller machines to handle the increase.</p>
+<ul>
+<li>ie. add more nodes</li>
+</ul>
+<p>A system that has taken a horizontally scaled approach is said to be a <em>shared-nothing system</em></p>
+<ul>
+<li>ex. Kubernetes does this by spinning up new containers</li>
+<li>ex. Serverless functions do this by spinning up new function handler instances</li>
+<li>ex. Database can do this by <a href="/notes/nMxAwbzkQChlhX37Gih8a">sharding</a></li>
+</ul>
+<h3 id="z-axis-scaling">Z-Axis Scaling<a aria-hidden="true" class="anchor-heading icon-link" href="#z-axis-scaling"></a></h3>
+<p><a href="https://microservices.io/articles/scalecube.html">source</a></p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/g7ulqi8no93ezeocbesc3ll">CouchDB</a></li>
+<li><a href="/notes/qbp4ovujvmv5l5011wnv4ri">Cluster</a></li>
+<li><a href="/notes/gKVIPNGV7duiD0yRnld8J">Replication</a></li>
+<li><a href="/notes/cnkzosrbq8pdbru80p9c7h0">HorizontalPodAutoscaler</a></li>
+</ul>

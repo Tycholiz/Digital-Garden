@@ -1,0 +1,29 @@
+<h1 id="audio">Audio<a aria-hidden="true" class="anchor-heading icon-link" href="#audio"></a></h1>
+<h3 id="audio-source">Audio source<a aria-hidden="true" class="anchor-heading icon-link" href="#audio-source"></a></h3>
+<h4 id="spatial-blend">spatial blend<a aria-hidden="true" class="anchor-heading icon-link" href="#spatial-blend"></a></h4>
+<p>This property allows us to increase the volume of objects as a character gets nearer to them</p>
+<h4 id="rolloff">rolloff<a aria-hidden="true" class="anchor-heading icon-link" href="#rolloff"></a></h4>
+<p>this property defines its range in 3D space, and the rate at which it fades at greater distances and becomes inaudible. You can set the rolloff of your sounds to simulate the ways that different sounds carry.</p>
+<h4 id="3d-sound-settings">3D sound settings<a aria-hidden="true" class="anchor-heading icon-link" href="#3d-sound-settings"></a></h4>
+<p>this property is the quality of audio that it changes orientation based on where the player is.</p>
+<ul>
+<li>
+<p>accomplished with an Audio Listener component (attached to MainCamera)</p>
+</li>
+<li>
+<p>the the parameters of the 3D Sound Settings property control how volume and pitch can change based on the positions of the Audio Source and the Audio Listener.<br>
+<img src="/assets/images/2021-08-16-17-07-11.png"></p>
+</li>
+</ul>
+<h4 id="minmax-distance">min/max distance<a aria-hidden="true" class="anchor-heading icon-link" href="#minmax-distance"></a></h4>
+<p>If a character is closer to a source of sound than the <code>minimum distance</code> (ie. character distance &#x3C; minimum distance), then the audio plays at max volume
+The <code>max distance</code> will define the most quiet that this object can possibly be</p>
+<ul>
+<li>min and max denoted by the thin blue spheres around the red pot in the centre
+<img src="/assets/images/2021-08-16-17-14-38.png"></li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/6v0bK3q1N24Bd4hZqqDqW">Cook</a></li>
+</ol>

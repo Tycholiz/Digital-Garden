@@ -1,0 +1,25 @@
+<h1 id="resource">Resource<a aria-hidden="true" class="anchor-heading icon-link" href="#resource"></a></h1>
+<h2 id="summary">Summary<a aria-hidden="true" class="anchor-heading icon-link" href="#summary"></a></h2>
+<p>A resource represents a piece of real world infrastructure </p>
+<p>Examples:</p>
+<ul>
+<li>an S3 bucket</li>
+<li>an EKS (Elastic Kubernetes) cluster</li>
+<li>a Postgres <a href="/notes/WRqfLQI6kPDa2M8aIurYo">role</a></li>
+</ul>
+<h3 id="example-declaring-an-s3-bucket">Example: Declaring an S3 bucket<a aria-hidden="true" class="anchor-heading icon-link" href="#example-declaring-an-s3-bucket"></a></h3>
+<p>This is how we might declare an <a href="/notes/2Rtof8yGX9K2Tq6tLljBb">S3 bucket</a>. You can reference this in different components, and then everything will deploy together when running <code>terraform apply</code>.</p>
+<pre class="language-tf"><code class="language-tf">resource "aws_s3_bucket" "my_bucket" {
+    bucket = "my-test-bucket"
+    acl = "private"
+    tags = {
+        Name = "My bucket"
+        Environment = "Dev"
+    }
+}
+</code></pre>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/Ku1OgHMhELajzo61Gx7ye">Terraform</a></li>
+</ul>

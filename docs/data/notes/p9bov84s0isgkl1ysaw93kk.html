@@ -1,0 +1,33 @@
+<h1 id="usenet">Usenet<a aria-hidden="true" class="anchor-heading icon-link" href="#usenet"></a></h1>
+<p>With usenet, you are downloading a file directly from a server. The speed of your download, assuming a good provider, will almost certainly be the maximum your ISP allows.</p>
+<p>Another point to mention is that with torrents, access to certain files can be limited to the specific torrent sites you are using. With usenet, when a file gets uploaded to a group, every indexer that is indexing that group has access to the same file. Whether a particular file gets posted or not, and whether certain obfuscation can be read, is up to the automation process of the indexer.</p>
+<p>Before you are able to download anything with Usenet, you will need 3 things:</p>
+<ol>
+<li>Provider</li>
+<li>NZB Indexer</li>
+<li>A Usenet client</li>
+</ol>
+<h3 id="providers">Providers<a aria-hidden="true" class="anchor-heading icon-link" href="#providers"></a></h3>
+<p>The provider grabs the files you need from your search by granting you access to the Usenet servers that host the files.</p>
+<ul>
+<li>
+<p><a href="https://www.reddit.com/r/usenet/wiki/providers/">List of providers</a></p>
+</li>
+<li>
+<p>ex. SABnzbd</p>
+</li>
+</ul>
+<h3 id="indexers">Indexers<a aria-hidden="true" class="anchor-heading icon-link" href="#indexers"></a></h3>
+<p>Think of these as your search engines. These are the sites that will tell you where all the files for whatever thing you are looking for are (e.g NZB files)</p>
+<ul>
+<li>ex. NZBGeek, DrunkenSlug, and NinjaCentral </li>
+</ul>
+<p>The indexer information gets input into Sonarr/Radarr</p>
+<h3 id="usenet-client">Usenet client<a aria-hidden="true" class="anchor-heading icon-link" href="#usenet-client"></a></h3>
+<p>Once the NZB file is obtained via the Indexer, it is loaded into the usenet client. The client then connects to the Usenet server, downloads the required files, and may also handle the decoding of files that are often split into multiple parts or encoded for transmission efficiency.</p>
+<ul>
+<li>ex. NZBGet</li>
+</ul>
+<p>Provider information gets put into the download client</p>
+<h3 id="nzb-files">NZB Files<a aria-hidden="true" class="anchor-heading icon-link" href="#nzb-files"></a></h3>
+<p>Instead of browsing Usenet directly, users often rely on NZB files. An NZB file is a small XML format file that contains information about the files available for download on Usenet</p>

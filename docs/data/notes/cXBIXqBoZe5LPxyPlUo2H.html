@@ -1,0 +1,37 @@
+<h1 id="state-management">State Management<a aria-hidden="true" class="anchor-heading icon-link" href="#state-management"></a></h1>
+<h3 id="using-a-class-to-manage-state">Using a class to manage state<a aria-hidden="true" class="anchor-heading icon-link" href="#using-a-class-to-manage-state"></a></h3>
+<p>Consider the <a href="https://eloquentjavascript.net/07_robot.html#p_md/LJiyP4s">Robot delivery game</a>, where we have a robot going around delivering parcels to different villages. For state, we need to track:</p>
+<ol>
+<li>Robot's current location</li>
+<li>The array of parcels (inc. current location, and destination)</li>
+</ol>
+<p>To accomplish this, a class <code>VillageState</code> was used, which looks like this:</p>
+<pre class="language-js"><code class="language-js"><span class="token maybe-class-name">VillageState</span> <span class="token punctuation">{</span>
+  <span class="token literal-property property">place</span><span class="token operator">:</span> <span class="token string">'Post Office'</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">parcels</span><span class="token operator">:</span> <span class="token punctuation">[</span> <span class="token punctuation">{</span> <span class="token literal-property property">place</span><span class="token operator">:</span> <span class="token string">'Post Office'</span><span class="token punctuation">,</span> <span class="token literal-property property">address</span><span class="token operator">:</span> <span class="token string">"Alice's House"</span> <span class="token punctuation">}</span> <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>In taking this approach to state management, the next question to ask is: "what methods should exist that will result in a new state to be computed?". The answer here is the action of the robot moving from location to location, so we add a <code>move</code> method. The signature of this function is:</p>
+<ul>
+<li>taking in the desired destination, and returns the new <code>VillageState</code>.</li>
+</ul>
+<p>Taking this approach lets us think of our program in terms of "turns". If two people were competing to see who could deliver all of the parcels in less turns, then conceptually we can think of each new computation of state (ie. an instance of <code>VillageState</code>) as being a turn.</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">class</span> <span class="token class-name">VillageState</span> <span class="token punctuation">{</span>
+  <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token parameter">place<span class="token punctuation">,</span> parcels</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">place</span> <span class="token operator">=</span> place<span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">parcels</span> <span class="token operator">=</span> parcels<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token function">move</span><span class="token punctuation">(</span><span class="token parameter">destination</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>roadGraph<span class="token punctuation">[</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">place</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token method function property-access">includes</span><span class="token punctuation">(</span>destination<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword control-flow">return</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword control-flow">else</span> <span class="token punctuation">{</span>
+      <span class="token keyword">let</span> parcels <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">parcels</span><span class="token punctuation">.</span><span class="token method function property-access">map</span><span class="token punctuation">(</span><span class="token parameter">p</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+        <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span>p<span class="token punctuation">.</span><span class="token property-access">place</span> <span class="token operator">!=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">place</span><span class="token punctuation">)</span> <span class="token keyword control-flow">return</span> p<span class="token punctuation">;</span>
+        <span class="token keyword control-flow">return</span> <span class="token punctuation">{</span><span class="token literal-property property">place</span><span class="token operator">:</span> destination<span class="token punctuation">,</span> <span class="token literal-property property">address</span><span class="token operator">:</span> p<span class="token punctuation">.</span><span class="token property-access">address</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token method function property-access">filter</span><span class="token punctuation">(</span><span class="token parameter">p</span> <span class="token arrow operator">=></span> p<span class="token punctuation">.</span><span class="token property-access">place</span> <span class="token operator">!=</span> p<span class="token punctuation">.</span><span class="token property-access">address</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword control-flow">return</span> <span class="token keyword">new</span> <span class="token class-name">VillageState</span><span class="token punctuation">(</span>destination<span class="token punctuation">,</span> parcels<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>

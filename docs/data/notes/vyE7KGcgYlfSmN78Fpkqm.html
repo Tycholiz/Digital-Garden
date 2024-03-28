@@ -1,0 +1,40 @@
+<h1 id="connection-pools">Connection Pools<a aria-hidden="true" class="anchor-heading icon-link" href="#connection-pools"></a></h1>
+<h2 id="what-is-it">What is it?<a aria-hidden="true" class="anchor-heading icon-link" href="#what-is-it"></a></h2>
+<p>A cache of database connections maintained so that the connections can be reused when future requests to the database are required</p>
+<ul>
+<li>after a connection is created, it is placed in the <a href="/notes/siv9mfowne69vizthsp3rcw">pool</a> and it is used again so that a new connection does not have to be established</li>
+</ul>
+<h2 id="why-do-it">Why do it?<a aria-hidden="true" class="anchor-heading icon-link" href="#why-do-it"></a></h2>
+<p>Connecting a new client to the PostgreSQL server requires a handshake which can take 20-30 milliseconds. During this time passwords are negotiated, SSL may be established, and configuration information is shared with the client &#x26; server. Incurring this cost every time we want to execute a query would substantially slow down our application.</p>
+<p>The client pool allows you to have a reusable pool of clients you can check out, use, and return</p>
+<ul>
+<li>used to enhance the performance of executing commands on a database</li>
+<li>If you're working on a web application or other software which makes frequent queries you'll want to use a connection pool.</li>
+</ul>
+<h2 id="how-does-it-work">How does it work?<a aria-hidden="true" class="anchor-heading icon-link" href="#how-does-it-work"></a></h2>
+<ol>
+<li>When the connection pool is created by the client (most often at the same time as when the client server starts), it pre-establishes a set number of database connections. These connections sit ready to be used (ie. with status <code>available</code>) by clients to the database server.</li>
+<li>When <code>.connect()</code> is called on the database client, one of the connections is borrowed from the pool. The connection that is assigned to the client gets marked as <code>inUse</code></li>
+<li>After the client finishes the query, it calls <code>'.close()</code>, which returns the connection back to the pool (instead of actually closing it), and gets marked as <code>available</code></li>
+<li>If a client request comes in and there are no available connections, the Pool Manager will either:
+<ul>
+<li>create a new connection (up to the configured maximum limit)</li>
+<li>or wait until a connection becomes available.</li>
+</ul>
+</li>
+</ol>
+<p>We can configure the pool to have a minimum number of idle connections, and a maximum number of connections that can possibly be created</p>
+<p>Typically, each database client would have its own pool</p>
+<ul>
+<li>ex. If there are 4 Express servers running, then there will be 4 pools</li>
+<li>between those 4 servers and the users sending requests to them sits a <em>load balancer</em></li>
+</ul>
+<p>The pool sits between the application server(s) and the database:</p>
+<blockquote>
+<p>front end client → load balancer → application server → pool → database</p>
+</blockquote>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/siv9mfowne69vizthsp3rcw">Pool</a></li>
+</ul>

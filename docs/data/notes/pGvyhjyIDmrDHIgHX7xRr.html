@@ -1,0 +1,44 @@
+<h1 id="elements">Elements<a aria-hidden="true" class="anchor-heading icon-link" href="#elements"></a></h1>
+<h3 id="the-problem-with-building-isolated-components-using-csshtml">The problem with building isolated components using CSS+HTML<a aria-hidden="true" class="anchor-heading icon-link" href="#the-problem-with-building-isolated-components-using-csshtml"></a></h3>
+<p>A fundamental problem of building isolated components with HTML+CSS is that the CSS <code>display</code> property sets both an element's inner layout (how it lays out its children) and its outer layout (how it is laid inside it parent).</p>
+<ul>
+<li>ex. you have to make an element <code>display: inline-flex</code> to make it an inline flexbox. You can't just make it <code>flex</code> and have the parent decide whether it is inline, a block or whatever.</li>
+</ul>
+<p>The consequence of this is that a parent component cannot properly layout a child component without knowing its internal layout structure. And if it doesn't don't know the child's layout (if it's dynamically supplied for example) then it can't safely do anything with it. So long as this limitation exists, there will never be true layout encapsulation on the web platform.</p>
+<hr>
+<h2 id="element-types-the-display-property">Element Types: the <code>display</code> property<a aria-hidden="true" class="anchor-heading icon-link" href="#element-types-the-display-property"></a></h2>
+<h3 id="block-level-elements">Block-level elements<a aria-hidden="true" class="anchor-heading icon-link" href="#block-level-elements"></a></h3>
+<p>Occupies the entire horizontal space of its parent element, and vertical space equal to the height of its contents, thereby creating a "block".
+Browsers display the block-level element with a newline both before and after the element. </p>
+<ul>
+<li>You can visualize them as a stack of boxes.</li>
+</ul>
+<p>The block-level element</p>
+<h4 id="examples">Examples<a aria-hidden="true" class="anchor-heading icon-link" href="#examples"></a></h4>
+<p><code>&#x3C;div></code>, <code>&#x3C;p></code>, <code>&#x3C;h1></code>, <code>&#x3C;ul></code></p>
+<h3 id="inline-elements">Inline elements<a aria-hidden="true" class="anchor-heading icon-link" href="#inline-elements"></a></h3>
+<p>Only occupy the space bounded by the tags defining the element.
+Does not start on a new line, and only takes up the width it needs.
+Does not break the flow of the content.
+You can't put block elements inside inline elements.
+The block-direction margin is ignored entirely
+The padding on inline elements doesn’t affect the height of the line of text</p>
+<ul>
+<li>ex. <code>padding-top</code> on an <code>&#x3C;a></code> tag won't cause the height of the line of text to change</li>
+</ul>
+<p>All inline elements (not just text) can be laid out by a parent with the <code>text-align</code> property</p>
+<ul>
+<li>also with <code>vertical-align</code>, which would be the inverse property, manipulating upon the vertical axis.</li>
+</ul>
+<h4 id="inline-block-elements">Inline-block elements<a aria-hidden="true" class="anchor-heading icon-link" href="#inline-block-elements"></a></h4>
+<p>Able to have width/height values set.
+While <code>transform</code> property can't be used on inline elements, it can be used on inline-block.</p>
+<p>Be careful with inline-block elements. The components you build with them may look fine, but the quirks may cause them not to place nicely with their parents:
+<img src="/assets/images/2021-11-02-10-53-16.png"> </p>
+<h4 id="inline-flex">Inline-flex<a aria-hidden="true" class="anchor-heading icon-link" href="#inline-flex"></a></h4>
+<p>Virtually the same as <code>display: flex</code>, except the flex container itself is inline, instead of block.</p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/swQXpP9Vf2burB1ja2OkM">Pseudo</a></li>
+</ol>

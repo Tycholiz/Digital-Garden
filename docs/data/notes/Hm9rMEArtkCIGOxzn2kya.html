@@ -1,0 +1,68 @@
+<h1 id="array">Array<a aria-hidden="true" class="anchor-heading icon-link" href="#array"></a></h1>
+<p>Arrays technically aren't a type in Javascript.</p>
+<p>Since everything in Javascript is an object, <code>Array</code> doesn't follow the same limitations as an actual <a title="Private" href="https://wiki.dendron.so/notes/hfyvYGJZQiUwQaaxQO27q.html" target="_blank" class="private">array (Private)</a>, such as being of fixed length.</p>
+<ul>
+<li>for example, the <code>length</code> property returns the size of the internal storage area for indexed items of the array. </li>
+</ul>
+<p>in JavaScript, array indexes are coerced to strings by an implicit <code>toString()</code> call.</p>
+<h2 id="when-to-use-arrays-for-lists-of-data">When to use Arrays for lists of data<a aria-hidden="true" class="anchor-heading icon-link" href="#when-to-use-arrays-for-lists-of-data"></a></h2>
+<p>If you have a list of data that you are going to be transforming somehow, or mapping over it somehow, you should try to structure that data as an array</p>
+<ul>
+<li>expl: if you had an object of keys, and each key was a list item, then to operate on that might get a little messy and imperative. Imagine if we stored taxes in an object like this:</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> taxes <span class="token operator">=</span> <span class="token punctuation">{</span>
+    <span class="token constant">GST</span><span class="token operator">:</span> <span class="token number">0.05</span><span class="token punctuation">,</span>
+    <span class="token constant">PST</span><span class="token operator">:</span> <span class="token number">0.07</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>We can loop over this with <code>Object.entries</code> without problem, but now imagine that we want to map over each entry, and display it in the UI in React. That might look something like this:</p>
+<pre class="language-jsx"><code class="language-jsx"><span class="token known-class-name class-name">Object</span><span class="token punctuation">.</span><span class="token method function property-access">entries</span><span class="token punctuation">(</span>taxes<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token method function property-access">map</span><span class="token punctuation">(</span><span class="token parameter">tax</span> <span class="token arrow operator">=></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span></span><span class="token punctuation">></span></span><span class="token plain-text">
+        </span><span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span>p</span><span class="token punctuation">></span></span><span class="token plain-text">Tax type: </span><span class="token punctuation">{</span>tax<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">}</span><span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;/</span>p</span><span class="token punctuation">></span></span><span class="token plain-text">
+        </span><span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span>p</span><span class="token punctuation">></span></span><span class="token plain-text">Amount: </span><span class="token punctuation">{</span>tax<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">}</span><span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;/</span>p</span><span class="token punctuation">></span></span><span class="token plain-text">
+    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;/</span></span><span class="token punctuation">></span></span>
+<span class="token punctuation">)</span>
+</code></pre>
+<p>Alternatively, imagine we structured taxes like this:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> taxes <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">{</span>
+        <span class="token literal-property property">jurisdiction</span><span class="token operator">:</span> <span class="token string">'PST'</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">percentage</span><span class="token operator">:</span> <span class="token number">0.05</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">{</span>
+        <span class="token literal-property property">jurisdiction</span><span class="token operator">:</span> <span class="token string">'GST'</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">percentage</span><span class="token operator">:</span> <span class="token number">0.05</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span>
+</code></pre>
+<p>Although this is less succinct, there is a benefit to doing it this way. This is how we would handle that React task:</p>
+<pre class="language-js"><code class="language-js">taxes<span class="token punctuation">.</span><span class="token method function property-access">map</span><span class="token punctuation">(</span><span class="token parameter">tax</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+    <span class="token operator">&#x3C;</span><span class="token operator">></span>
+        <span class="token operator">&#x3C;</span>p<span class="token operator">></span><span class="token maybe-class-name">Tax</span> type<span class="token operator">:</span> <span class="token punctuation">{</span>tax<span class="token punctuation">.</span><span class="token property-access">jurisdiction</span><span class="token punctuation">}</span><span class="token operator">&#x3C;</span><span class="token operator">/</span>p<span class="token operator">></span>
+        <span class="token operator">&#x3C;</span>p<span class="token operator">></span><span class="token maybe-class-name">Amount</span><span class="token operator">:</span> <span class="token punctuation">{</span>tax<span class="token punctuation">.</span><span class="token property-access">percentage</span><span class="token punctuation">}</span><span class="token operator">&#x3C;</span><span class="token operator">/</span>p<span class="token operator">></span>
+    <span class="token operator">&#x3C;</span><span class="token operator">/</span><span class="token operator">></span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+</code></pre>
+<p>This is yet another example of why you should go from a data-consumption perspective (in other words, consider how it will be used; think of the end-user of that code.)</p>
+<hr>
+<h3 id="extra-commas-in-array-literals">Extra commas in Array literals<a aria-hidden="true" class="anchor-heading icon-link" href="#extra-commas-in-array-literals"></a></h3>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> fish <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">"Lion"</span><span class="token punctuation">,</span> <span class="token punctuation">,</span> <span class="token string">"Angel"</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span>fish<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// [ 'Lion', &#x3C;1 empty item>, 'Angel' ]</span>
+</code></pre>
+<ul>
+<li>note that the second item is "empty", which is not exactly the same as the actual <code>undefined</code> value. When using array-traversing methods like <code>.map</code>, empty slots are skipped. However, index-accessing fish[1] still returns <code>undefined</code>.</li>
+<li>naturally, if the final element is followed by a comma, that gets removed.</li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/Je0OPCR6TH1jO5RWHnaDw">Cook</a></li>
+<li><a href="/notes/D5Y3BOYdtS1nFI3dAD5zh">Method</a></li>
+<li><a href="/notes/zkadz7hm1cdwlcq7r1nbag0">Set Theory</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/wHT87HSjyOmffkNWsBUXY">For</a></li>
+</ul>

@@ -1,0 +1,79 @@
+<h1 id="docker-containers">Docker Containers<a aria-hidden="true" class="anchor-heading icon-link" href="#docker-containers"></a></h1>
+<p>A Container is an instance of an <a href="/notes/SQwuv6ixxiQtYGEQnoSZo">Image</a></p>
+<p>Containers decouple the machine's OS from the application dependencies and the code.</p>
+<ul>
+<li>Each container had its own filesystem (provided by a Docker image)</li>
+<li>Image includes everything needed to run an application
+<ul>
+<li>inc. the application code, runtimes, dependencies etc</li>
+</ul>
+</li>
+<li>Containers are designed to be transient and temporary, but they can be stopped and restarted, which launches the container into the same state as when it was stopped.</li>
+<li>Containers can communicate with each other by attaching (<code>docker attach</code>). They do this by attaching stdin, stdout and stderr steams to one another so that one container's output can be piped into another container as their input 
+<ul>
+<li>When we run <code>docker attach</code> with a specified container, we are piping our stdin/stdout/stderr to the container, so we are effectively able to write commands in the container's terminal</li>
+</ul>
+</li>
+</ul>
+<p>containers can be created from any point in an image’s history, much like source control.</p>
+<h2 id="from-the-containers-perspective">From the container's perspective<a aria-hidden="true" class="anchor-heading icon-link" href="#from-the-containers-perspective"></a></h2>
+<p>The container by default has no access to the outside world. When the docker host specifies the <code>-p</code> option when spinning up a new container, the container opens up the specified ports and maps them to the docker host's port.</p>
+<ul>
+<li>For all the container knows, it is a regular computer. It has a network interface, including an IP address, a gateway, a routing table etc. </li>
+</ul>
+<p><img src="/:/26150f69cbf24c1583bf667d69c6ac9b" alt="9ede10f99d18b464b0087150a5679308.png"></p>
+<ul>
+<li>Containers guarantee our applications will run the same anywhere, whether it's our own machine, a data centre, or anything else</li>
+</ul>
+<h2 id="run-container">Run container<a aria-hidden="true" class="anchor-heading icon-link" href="#run-container"></a></h2>
+<p><code>docker run --name *&#x3C;NAME OF CONTAINER>* -d -v /tmp/mongodb:/data/db -p 27017:27017 *&#x3C;NAME OF IMAGE:IMAGE TAG>*</code></p>
+<ul>
+<li><code>--name</code>: Name of the container.</li>
+<li><code>-v</code>: Attach the /tmp/mongodb volume of the host system to /data/db volume of the container.</li>
+<li><code>-p</code>: Map the host port to the container port.
+Last argument is the name/id of the image.</li>
+</ul>
+<h2 id="running-commands-in-the-container">Running commands in the container<a aria-hidden="true" class="anchor-heading icon-link" href="#running-commands-in-the-container"></a></h2>
+<ul>
+<li>we can use <code>docker exec</code> to run commands.</li>
+<li>by default, the command is executed in the WORKDIR variable that is declared in the Dockerfile</li>
+<li>often, we see <code>docker exec -it &#x3C;containerID> /bin/bash</code>
+<ul>
+<li>this executes the command <code>/bin/bash</code> within the specified container, opening a new bash session for us.</li>
+<li><code>-t</code> tells docker to open a terminal session</li>
+<li><code>-i</code> for interactive, ensures that our stdin input stream remains open </li>
+</ul>
+</li>
+</ul>
+<h2 id="stopping-container">Stopping container<a aria-hidden="true" class="anchor-heading icon-link" href="#stopping-container"></a></h2>
+<ul>
+<li><code>docker stop</code>: Send SIGTERM(termination signal), and if needed SIGKILL(kill signal)
+<ul>
+<li>use when you wish to clear up memory or delete all of the processes' -cached- data. Simply put, you no longer care about the processes in the container and are comfortable with killing them.</li>
+</ul>
+</li>
+<li><code>docker pause</code>: Send SIGSTOP(pause signal)
+<ul>
+<li>use when you only want to suspend the processes in the container; you do not want them to lose data or state.</li>
+</ul>
+</li>
+</ul>
+<h2 id="actions">Actions<a aria-hidden="true" class="anchor-heading icon-link" href="#actions"></a></h2>
+<ul>
+<li>get IP of container - <code>docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' &#x3C;my-container-name></code></li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/FRdn0IROldw7ZGXtcWnvC">CLI</a></li>
+<li><a href="/notes/Pt2x5vqEvGjEwxT8PZGeY">Cook</a></li>
+<li><a href="/notes/VoxiPgkMS1PFdBAyjrXKW">Networks</a></li>
+<li><a href="/notes/nxsyEYaw0askx7UQbxQg6">Volumes</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/00Zg2MBUOK3gzRljklTOp">Jobs</a></li>
+<li><a href="/notes/iuja3tlxkdniv862fq9h1v4">Worker Node</a></li>
+<li><a href="/notes/NfY3pvmOMzpQg8TKrUMGd">Contract Testing</a></li>
+</ul>

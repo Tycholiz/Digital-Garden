@@ -1,0 +1,35 @@
+<h1 id="bitcoin">Bitcoin<a aria-hidden="true" class="anchor-heading icon-link" href="#bitcoin"></a></h1>
+<p>A coin is a chain of transaction records, where each record represents each time an owner transferred the coin to a new owner as payment. </p>
+<ul>
+<li>The latest transaction record in the chain shows the coin's current owner.</li>
+</ul>
+<p>Each coin owner has a <a href="/notes/bO8xztJCzUxsN2sM4YsBE">public/private key</a> pair which the network uses to verify the integrity of transactions.</p>
+<p>When the current owner of a coin wants to transfer the coin to a new owner, they create a transaction record which contains:</p>
+<ul>
+<li>The public key of the coin's new owner.</li>
+<li>A hash of the previous transaction record in the chain.</li>
+<li>A signature of the above hash signed with the current owner's private key.</li>
+</ul>
+<p>This information allows the new owner to verify that it received the coin from the right owner.</p>
+<h2 id="the-bitcoin-blockchain">The Bitcoin Blockchain<a aria-hidden="true" class="anchor-heading icon-link" href="#the-bitcoin-blockchain"></a></h2>
+<p>Each block of the <a href="/notes/DVpVUmavSoVDA7UIlPzLX">blockchain</a> is identified with a <a href="/notes/u0xXQ2GmDkPpk20TB9Y0N">hash</a> and contains:</p>
+<ul>
+<li>The hash of the previous block in the chain.</li>
+<li>A set of transactions.</li>
+<li>A nonce</li>
+</ul>
+<p>When you make a payment, the payee won't accept it until the transaction is in the blockchain. </p>
+<ul>
+<li>since all transactions are in the blockchain, the payee will find out if the coin has been spent before.</li>
+</ul>
+<h3 id="adding-a-block-to-the-blockchain-ie-mining">Adding a block to the blockchain (ie. mining)<a aria-hidden="true" class="anchor-heading icon-link" href="#adding-a-block-to-the-blockchain-ie-mining"></a></h3>
+<p>When a peer receives new transactions, it collects them into a block. Before it can add the block to the blockchain, it needs to do actual CPU work (called <em>proof-of-work</em>).</p>
+<p>The process of finding the <em>nonce</em> is calling <em>mining</em></p>
+<p>It takes 10 minutes on average for a peer to mine a new block, which means that the parties involved in a transaction have to wait for about 10 minutes before it appears on the blockchain.</p>
+<ul>
+<li>A peer broadcasts a block to all peers after finding its proof of work. </li>
+</ul>
+<h1 id="e-resources">E Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#e-resources"></a></h1>
+<ul>
+<li><a href="https://timilearning.com/posts/mit-6.824/lecture-19-bitcoin/">https://timilearning.com/posts/mit-6.824/lecture-19-bitcoin/</a></li>
+</ul>

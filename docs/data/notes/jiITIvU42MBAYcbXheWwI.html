@@ -1,0 +1,185 @@
+<h1 id="index">Index<a aria-hidden="true" class="anchor-heading icon-link" href="#index"></a></h1>
+<h2 id="what-is-it">What is it?<a aria-hidden="true" class="anchor-heading icon-link" href="#what-is-it"></a></h2>
+<p>The general idea behind indexes is to keep some additional metadata on the side, which acts as a signpost and helps you to locate the data you want. </p>
+<ul>
+<li>If you want to search the same data in several different ways, you may need several different indexes on different parts of the data.</li>
+</ul>
+<p>An index is an additional structure that is derived from the primary data.</p>
+<p>Indexes are hidden objects that can exist against a table. You can create an index against a set of columns and the database engine can jump to the specific record based on the index.</p>
+<ul>
+<li>One way of optimizing queries is to create an index on a column or columns you might commonly filter/join against.</li>
+</ul>
+<p>a condition in a query is said to be <em>sargable</em> if the DBMS engine can take advantage of an index to speed up the execution of the query.</p>
+<ul>
+<li>Sargable operators: =, >, &#x3C;, >=, &#x3C;=, BETWEEN, LIKE, IS [NOT] NULL</li>
+<li>sargable -> Search ARGument ABLE</li>
+</ul>
+<p>When deciding what indexes to create, you need to consider a number of factors, including your query shapes, query volume, read-to-write ratio, and the size of your database</p>
+<p>Think about what happens when you run <code>CREATE INDEX</code> to create a new index in a relational database. The database has to scan over a consistent snapshot of a table, pick out all of the field values being indexed, sort them, and write out the index. Then it must process the backlog of writes that have been made since the consistent snapshot was taken (assuming the table was not locked while creating the index, so writes could continue). Once that is done, the database must continue to keep the index up to date whenever a transaction writes to the table.</p>
+<h3 id="primary-index">Primary Index<a aria-hidden="true" class="anchor-heading icon-link" href="#primary-index"></a></h3>
+<p>Other rows in the database can refer to a row via its primary key. The primary index is used to resolve these references.</p>
+<h3 id="secondary-index">Secondary Index<a aria-hidden="true" class="anchor-heading icon-link" href="#secondary-index"></a></h3>
+<p>Imagine you had a bunch of data related to a single user: their <code>address</code>, their <code>favorite_books</code> etc., all connected by the <code>user_id</code> on each of these tables. If we added an index to the <code>user_id</code> row, then we could more quickly find all the rows belonging to this single user.</p>
+<p>A key-value index maps perfectly to a primary key, since each primary key is unique, but for secondary keys, this isn't the case. To solve this, we can either:</p>
+<ul>
+<li>make each value in the index a list of matching row identifiers (like a postings list in a full-text index) </li>
+<li>make each key unique by appending a row identifier to it</li>
+</ul>
+<p>Secondary indexes are the bread and butter of relational databases, and they are common in document databases too.</p>
+<p>A secondary index usually doesn’t identify a record uniquely, but rather is a way of searching for occurrences of a particular value: </p>
+<ul>
+<li>ex. find all actions by user 123, find all articles containing the word hogwash, find all cars whose color is red etc.</li>
+</ul>
+<p>Secondary indexes add considerable complexity when it comes to <a href="/notes/FuHcb7zDdczt8IDTtOH0b">partitioning</a> our database.</p>
+<ul>
+<li>The problem with secondary indexes is that they don’t map neatly to partitions. With a primary index, we just need to determine which partition the data will belong on based on the primary key.</li>
+</ul>
+<h3 id="analogy-umbrella">Analogy: Umbrella<a aria-hidden="true" class="anchor-heading icon-link" href="#analogy-umbrella"></a></h3>
+<p>The metal tips on the edge of an umbrella represent the items that are available for retrieval in a database. If you were not using an index, you'd have to look at each tip to see if it's the item you want or not. With an index, you look from the top of the umbrella, and each arm leading to the tip would light up, indicating which items should be retrieved.</p>
+<ul>
+<li>therefore, indexes basically tell us how to get a certain piece of data.</li>
+</ul>
+<h3 id="analogy-textbook">Analogy: Textbook<a aria-hidden="true" class="anchor-heading icon-link" href="#analogy-textbook"></a></h3>
+<p>Imagine studying for a test and you stumbled upon a topic you don't understand or forgot. You might consider looking at the INDEX at the back of the textbook for the topic. The index will tell you which page to go find the information. You can then jump straight to the correct page. Now imagine not having an index at the back of the textbook. You'd have to skim through the ENTIRE book until you found what you were looking for.</p>
+<h2 id="why-use-it">Why use it?<a aria-hidden="true" class="anchor-heading icon-link" href="#why-use-it"></a></h2>
+<p>Indexing makes querying by a column faster, at the slight expense of create/update speed and database size.</p>
+<ul>
+<li>For example, you will often want to query all comments belonging to a post (that is, query comments by its <code>post_id</code> column), and so you should mark the <code>post_id</code> column as indexed.</li>
+<li>However, if you rarely query all comments by its author, indexing <code>author_id</code> is probably not worth it.</li>
+<li>In general, most <code>_id</code> fields are indexed. Sometimes, boolean fields are worth indexing if you often use it for queries. However, you should almost never index date (<code>_at</code>) columns or string columns.</li>
+</ul>
+<p>Consider the following SQL statement: </p>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> first_name <span class="token keyword">FROM</span> people <span class="token keyword">WHERE</span> last_name <span class="token operator">=</span> <span class="token string">'Smith'</span><span class="token punctuation">;</span>
+</code></pre>
+<p>To process this statement without an index the database software must look at the <code>last_name</code> column on every row in the table (ie. it must perform a full table scan). </p>
+<ul>
+<li>With an index, the database simply follows the index data structure (typically a <a href="/notes/UE8OS2s713jEk2CmjiAet">B-tree</a>) until the Smith entry has been found; this is much less computationally expensive than a full table scan.</li>
+</ul>
+<p>We should index the things that we are likely to query on. If we frequently want to retrieve books from the db filtered by a certain year, we'd want to add an index onto the "year" column, making that data easier to retrieve.</p>
+<ul>
+<li>otherwise the DBMS would have to search through every single book to see if it satisfies the filter requirements for the year we are seeking.</li>
+</ul>
+<p>Querying by an index changes the performance of your query from <span class="math math-inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></span> to <span class="math math-inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>l</mi><mi>o</mi><mi>g</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(log(n))</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">))</span></span></span></span></span></p>
+<ul>
+<li>With 80 million documents, this would mean around 26 operations, rather than 80 million operations</li>
+</ul>
+<p>In the case of data sets that are many terabytes in size, but have very small payloads (e.g., 1 KB), indexes are a necessity for optimizing data access. Finding a small payload in such a large dataset can be a real challenge, since we can’t possibly iterate over that much data in any reasonable time.</p>
+<ul>
+<li>Furthermore, it is very likely that such a large data set is spread over several physical devices—this means we need some way to find the correct physical location of the desired data. Indexes are the best way to do this.</li>
+</ul>
+<p>An index allows the system to have new options to find the data that your queries need</p>
+<ul>
+<li>In the absence of an index, the only option available to your database is a sequential scan of your tables. The index access methods are meant to be faster than a sequential scan, by fetching the data directly where it is.</li>
+</ul>
+<p>Indexes add overhead, especially on writes.</p>
+<ul>
+<li>The index also needs to be updated every time data is written.</li>
+<li>consider that it's going to be difficult to out-perform simply appending to a file (as opposed to random writes)</li>
+<li>anal: Using a knowledge-management system like Dendron comes at a cost of write speed, since we need to consider where we want to store the note. If we wanted to optimize "write speed" and nothing else, we would just put all of our notes in a single massive text file. However, since we care about retrieval, we sacrifice write speed for the benefit of retrieving it faster. This is the concept of an Index.</li>
+</ul>
+<p>Depending on whether our data store is <a href="/notes/plfkq18cl5fwq46id8bfgpd">OLAP</a> or OLTP, our indexing strategies will be very different.</p>
+<h2 id="how-does-it-work">How does it work?<a aria-hidden="true" class="anchor-heading icon-link" href="#how-does-it-work"></a></h2>
+<p>The key in an index is the thing that queries search for, but the value can be one of two things: </p>
+<ol>
+<li>it could be the actual row (document, vertex) in question</li>
+<li>it could be a reference to the row stored elsewhere</li>
+</ol>
+<ul>
+<li>this "elsewhere" is known as a <em>heap file</em></li>
+</ul>
+<h2 id="types">Types<a aria-hidden="true" class="anchor-heading icon-link" href="#types"></a></h2>
+<h3 id="hash-index">Hash Index<a aria-hidden="true" class="anchor-heading icon-link" href="#hash-index"></a></h3>
+<p>This is a common index employed with key-value data.</p>
+<p>The index itself is a key-value index</p>
+<p>This indexing strategy works best when there are lots of writes, but not too many distinct keys (so that keeping it all in-memory is feasible)</p>
+<p>Imagine our database was a simple append-only file of key-value pairs. To implement indexing, we could have a <a href="/notes/ZUd363O9M6pAs1hRNA94o">hash map</a>.</p>
+<p>Every time we append a new entry to the database file, </p>
+<p>Imagine our database file was:</p>
+<pre class="language-json"><code class="language-json"><span class="token number">123456</span><span class="token operator">:</span><span class="token punctuation">{</span>
+  <span class="token property">"name"</span><span class="token operator">:</span><span class="token string">"London"</span><span class="token punctuation">,</span>
+  <span class="token property">"attractions"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"Big Ben"</span><span class="token punctuation">,</span><span class="token string">"London Eye"</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span> 
+<span class="token number">42</span><span class="token operator">:</span><span class="token punctuation">{</span> 
+  <span class="token property">"name"</span><span class="token operator">:</span><span class="token string">"San Francisco"</span><span class="token punctuation">,</span>
+  <span class="token property">"attractions"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"Golden Gate Bridge"</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>All we need to do is minify it (remove all spaces and newlines), and then make our index hash map as a series of key-value pairs, where each key maps to a byte offset of characters from the start.</p>
+<ul>
+<li>ex. key <code>123456</code> maps to <code>0</code>, since it is at the start. Key <code>42</code> maps to <code>64</code>, since it is 64 bytes (characters) from the start:</li>
+</ul>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token number">123456</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+  <span class="token number">42</span><span class="token operator">:</span> <span class="token number">64</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="b-tree">B-Tree<a aria-hidden="true" class="anchor-heading icon-link" href="#b-tree"></a></h3>
+<p><a href="/notes/UE8OS2s713jEk2CmjiAet">B-tree</a></p>
+<p>B-tree is a key-value index.</p>
+<h3 id="clustered-index">Clustered Index<a aria-hidden="true" class="anchor-heading icon-link" href="#clustered-index"></a></h3>
+<p>A clustered index determines the physical order of data in a table. </p>
+<ul>
+<li>Therefore, a table has only one clustered index (primary key/composite key).</li>
+</ul>
+<p>Clustered indexes are indexes whose order of the rows in the data pages corresponds to the order of the rows in the index</p>
+<p>A clustered index defines the order in which data is physically stored in a table</p>
+<p>Having a clustered index involves storing all row data within the index</p>
+<h3 id="non-clustered-index">Non-clustered Index<a aria-hidden="true" class="anchor-heading icon-link" href="#non-clustered-index"></a></h3>
+<p>Having a non-clustered index involves storing only references to the data (the heap file) within the index</p>
+<p>A non clustered index is analogous to an index in a Book. The data is stored in one place. The index is stored in another place and the index has pointers to the storage location. this help in the fast search of data. For this reason, a table has more than 1 Nonclustered index.</p>
+<h3 id="multi-column-index">Multi-column Index<a aria-hidden="true" class="anchor-heading icon-link" href="#multi-column-index"></a></h3>
+<p>The previous indexes only map a single key to a value, but what if we need to query multiple columns of a table simultaneously?</p>
+<h4 id="concatenated-index">Concatenated Index<a aria-hidden="true" class="anchor-heading icon-link" href="#concatenated-index"></a></h4>
+<p>Most common type of Multi-column index is called a <em>concatenated index</em></p>
+<ul>
+<li>works by simply combining several fields into one key by appending one column to another</li>
+<li>anal: a phone book uses the format <code>last name, first name</code> as an index. This provides benefits to quick searching by last name. However, the drawback is that order matters. Therefore, it is trivial to find out how many Smiths (ie. last name) there are in total, but it is very difficult to find out how many Johns (ie. first name) there are. </li>
+</ul>
+<h3 id="multi-dimensional-index">Multi-dimensional Index<a aria-hidden="true" class="anchor-heading icon-link" href="#multi-dimensional-index"></a></h3>
+<p>Allow us to more easily query several columns at once. In other words, it allows us to narrow down our query based on multiple columns at once, rather than having to search by a single column, then filter out the ones that don't find our query.</p>
+<h4 id="example-location-queries">Example: location queries<a aria-hidden="true" class="anchor-heading icon-link" href="#example-location-queries"></a></h4>
+<p>imagine we had an application using Google maps, and depending on the user's current zoom radius, we need to query the database for locations within that area.</p>
+<ul>
+<li>this is an example of a two-dimensional range query</li>
+</ul>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> restaurants 
+  <span class="token keyword">WHERE</span> latitude <span class="token operator">></span> <span class="token number">51.4946</span> 
+    <span class="token operator">AND</span> latitude <span class="token operator">&#x3C;</span> <span class="token number">51.5079</span> 
+    <span class="token operator">AND</span> longitude <span class="token operator">></span> <span class="token operator">-</span><span class="token number">0.1162</span> 
+    <span class="token operator">AND</span> longitude <span class="token operator">&#x3C;</span> <span class="token operator">-</span><span class="token number">0.1004</span><span class="token punctuation">;</span>
+</code></pre>
+<p>A standard B-tree or LSM-tree index cannot perform this query efficiently. By its nature, it would make us choose between:</p>
+<ul>
+<li>all the restaurants in a range of latitudes (but at any longitude)</li>
+<li>all the restaurants in a range of longitudes (but anywhere between the North and South poles)</li>
+</ul>
+<h4 id="other-examples">Other examples<a aria-hidden="true" class="anchor-heading icon-link" href="#other-examples"></a></h4>
+<ul>
+<li>on an e-commerce website, we could allow the user to query for products in a certain range of color (e.g. only red, green or blue)</li>
+<li>in a weather database, we could allow the user to query on both <code>date</code> AND <code>temperature</code>, giving us the ability to search for all observations of 40+ degree weather within 2020.
+<ul>
+<li>to do this with single-dimensional indexes, we'd have to scan over <em>all</em> the records from 2020 and then filter them by temperature (or vice versa)</li>
+</ul>
+</li>
+</ul>
+<h3 id="full-text-search-and-fuzzy-indexes">Full-text search and Fuzzy Indexes<a aria-hidden="true" class="anchor-heading icon-link" href="#full-text-search-and-fuzzy-indexes"></a></h3>
+<p>These type of indexes are good if we don't know exactly what we are searching for (ie. we are searching for similar keys, such as misspelled words)</p>
+<p>Consider the allowances that a search engine gives for a full-text search query:</p>
+<ul>
+<li>synonyms are included</li>
+<li>regional spelling differences are ignored (e.g. organization vs organisation)</li>
+<li>vicinity of the searched word to other searched words in the same document</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/f529cc34-aba0-45ca-ad7e-02ddda318941">DB</a></li>
+<li><a href="/notes/xiSIDeEtIc8X0lpUQlppI">Elastic Search</a></li>
+<li><a href="/notes/QluMb2rW1BPTgsbEkQPgc">Pagination</a></li>
+<li><a href="/notes/57vhdkmrif0e4rdsokr4xyo">Design Document</a></li>
+<li><a href="/notes/nu4jr5d094zri5ni0kw247w">Domain</a></li>
+<li><a href="/notes/vhyhna89umrxkmonh18di4y">View</a></li>
+<li><a href="/notes/2k8qfv0q9ce2cai8hf5313m">Map Reduce</a></li>
+<li><a href="/notes/GaCcZKgDzM45bM18qlbvY">Indexes</a></li>
+<li><a href="/notes/UE8OS2s713jEk2CmjiAet">B-tree</a></li>
+</ul>

@@ -1,0 +1,111 @@
+<h1 id="modules">Modules<a aria-hidden="true" class="anchor-heading icon-link" href="#modules"></a></h1>
+<p>Modules are the way to organize your components in Nest.</p>
+<ul>
+<li>Decorating a class with <code>@Module</code> provides metadata that Nest makes use of to organize the application structure.</li>
+</ul>
+<p>Each application has at least one module, a root module. </p>
+<ul>
+<li>this is the starting point Nest uses to build the application graph, which is the internal data structure used to resolve module and provider relationships and dependencies.</li>
+<li>this is the module that we register in our <code>main.ts</code> with <code>NestFactory.create(AppModule)</code></li>
+</ul>
+<p>For most applications, the resulting architecture will employ multiple modules, each encapsulating a closely related set of capabilities.</p>
+<ul>
+<li>good practice is to have each module correspond to a <a href="/notes/GDJoTJocO8OKbTtSjn2CW">domain</a></li>
+</ul>
+<p>The module encapsulates providers by default</p>
+<ul>
+<li>This means that in order to inject providers into a different module, they must be exported from the imported module.</li>
+</ul>
+<p>modules are singletons by default</p>
+<ul>
+<li>thus you can share the same instance of any provider between multiple modules effortlessly.</li>
+<li>Every module is automatically a shared module: Once created it can be reused by any module
+<ul>
+<li>to do this, simply add the service to the <code>exports</code> array of the shared module. Now, any module that imports the shared module will have access to the service listed in that <code>exports</code> array.</li>
+</ul>
+</li>
+</ul>
+<p><img src="/assets/images/2023-01-23-12-12-32.png"></p>
+<pre class="language-ts"><code class="language-ts"><span class="token decorator"><span class="token at operator">@</span><span class="token function">Module</span></span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  <span class="token comment">// correspond to the HttpService class that gets injected into the provider (service).</span>
+  imports<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token maybe-class-name">HttpModule</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  providers<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token maybe-class-name">AutomationService</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  exports<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token maybe-class-name">AutomationService</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword module">export</span> <span class="token keyword">class</span> <span class="token class-name"><span class="token maybe-class-name">AutomationModule</span></span> <span class="token punctuation">{</span>
+  <span class="token comment">// Modules can inject providers (e.g. for configuration purposes):</span>
+  <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token keyword">private</span> automationService<span class="token operator">:</span> <span class="token maybe-class-name">AutomationService</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Modules themselves cannot be injected due to circular dependency.</p>
+<h2 id="parts-of-a-module">Parts of a module<a aria-hidden="true" class="anchor-heading icon-link" href="#parts-of-a-module"></a></h2>
+<p>The <code>@Module()</code> decorator takes a single object whose properties describe the module:</p>
+<ul>
+<li><code>providers</code> </li>
+<li><code>controllers</code></li>
+<li><code>imports</code></li>
+<li><code>exports</code></li>
+</ul>
+<h3 id="providers"><code>providers</code><a aria-hidden="true" class="anchor-heading icon-link" href="#providers"></a></h3>
+<p>The <code>providers</code> property is an array of providers that will be instantiated by the Nest injector and that may be shared at least across this module. </p>
+<ul>
+<li>When we put a provider here, we are registering it with the <a href="/notes/bXY3W37GW2ytFJOgbJiol#ioc-container1">IoC container</a> (ie. the NestJS runtime) so that it can be instantiated at the site where it is injected (this is dependency injection).</li>
+</ul>
+<h3 id="controllers"><code>controllers</code><a aria-hidden="true" class="anchor-heading icon-link" href="#controllers"></a></h3>
+<p>the set of controllers defined in this module which have to be instantiated</p>
+<h3 id="imports"><code>imports</code><a aria-hidden="true" class="anchor-heading icon-link" href="#imports"></a></h3>
+<p>the list of imported modules that export the providers which are required in this module</p>
+<ul>
+<li>put another way, if there is a provider from another module and we want to use it in our module, then we must add the provider to that module's <code>exports</code> list, and then include that module in our <code>imports</code> list.</li>
+</ul>
+<p>this array enables sharing of providers across modules</p>
+<p>Don't add the same provider to multiple modules. Instead, export the provider, and import the module.</p>
+<h3 id="exports"><code>exports</code><a aria-hidden="true" class="anchor-heading icon-link" href="#exports"></a></h3>
+<p>the subset of providers that are provided by this module and should be available in other modules which import this module. You can use either the provider itself or just its token (provide value)</p>
+<p>you may consider the exported providers as the module's API</p>
+<p>Modules can export their internal providers</p>
+<ul>
+<li>In addition, they can re-export modules that they import.</li>
+</ul>
+<h2 id="dynamic-modules">Dynamic Modules<a aria-hidden="true" class="anchor-heading icon-link" href="#dynamic-modules"></a></h2>
+<p>Dynamic modules enable us to easily create customizable modules that can register and configure <a href="/notes/38yyqdyxub4tyjdj0jl4ulg">providers</a> dynamically.</p>
+<p>Dynamic modules are created in the module class:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword module">import</span> <span class="token imports"><span class="token punctuation">{</span> createDatabaseProviders <span class="token punctuation">}</span></span> <span class="token keyword module">from</span> <span class="token string">'./database.providers'</span><span class="token punctuation">;</span>
+<span class="token keyword module">import</span> <span class="token imports"><span class="token punctuation">{</span> <span class="token maybe-class-name">Connection</span> <span class="token punctuation">}</span></span> <span class="token keyword module">from</span> <span class="token string">'./connection.provider'</span><span class="token punctuation">;</span>
+
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">Module</span></span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  providers<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token maybe-class-name">Connection</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword module">export</span> <span class="token keyword">class</span> <span class="token class-name"><span class="token maybe-class-name">DatabaseModule</span></span> <span class="token punctuation">{</span>
+  <span class="token comment">// forRoot may be async or sync</span>
+  <span class="token keyword">static</span> <span class="token function">forRoot</span><span class="token punctuation">(</span>entities <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> options<span class="token operator">?</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token maybe-class-name">DynamicModule</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> providers <span class="token operator">=</span> <span class="token function">createDatabaseProviders</span><span class="token punctuation">(</span>options<span class="token punctuation">,</span> entities<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword control-flow">return</span> <span class="token punctuation">{</span>
+      module<span class="token operator">:</span> <span class="token maybe-class-name">DatabaseModule</span><span class="token punctuation">,</span>
+      providers<span class="token operator">:</span> providers<span class="token punctuation">,</span>
+      exports<span class="token operator">:</span> providers<span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<ul>
+<li><a href="https://docs.nestjs.com/fundamentals/dynamic-modules">docs</a></li>
+</ul>
+<h2 id="global-modules">Global Modules<a aria-hidden="true" class="anchor-heading icon-link" href="#global-modules"></a></h2>
+<p>Global modules are useful for when you want to provide a set of providers which should be available everywhere out-of-the-box (e.g., helpers, database connections, etc.)</p>
+<p>We can make a set of providers global with the <code>@Global</code> decorator:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token decorator"><span class="token at operator">@</span><span class="token function">Global</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">Module</span></span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  <span class="token comment">// Module configuration</span>
+</code></pre>
+<h2 id="cli">CLI<a aria-hidden="true" class="anchor-heading icon-link" href="#cli"></a></h2>
+<ul>
+<li>generate a module named "cats" - <code>nest g module cats</code></li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/613syb18hb3v0u1ydvor7ru">Nestjs</a></li>
+<li><a href="/notes/rluwlir1bxtd1qe8cjrfamg">Microservices</a></li>
+<li><a href="/notes/bXY3W37GW2ytFJOgbJiol">IoC (Inversion of Control)</a></li>
+</ul>

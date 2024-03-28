@@ -1,0 +1,124 @@
+<h1 id="dns-nameservers">DNS Nameservers<a aria-hidden="true" class="anchor-heading icon-link" href="#dns-nameservers"></a></h1>
+<p>The DNS nameservers constitute the server half of the system's <a href="/notes/g2jDjW3rfwpjkoQXFUDaY">client-server architecture</a></p>
+<ul>
+<li><a href="/notes/uQ1OlrkssyoguJ6mCM7hj">Resolvers</a> are the client</li>
+</ul>
+<p>Nameservers contain information about some segments of the <a href="/notes/rKwvAx3SP99In467imzlg">DNS database</a> and make that information available to <a href="/notes/uQ1OlrkssyoguJ6mCM7hj">resolvers</a>.</p>
+<ul>
+<li>nameservers have complete information about some part of the domain namespace. This information is either loaded directly from a file (if the nameserver is authoritative about that particular zone), or from another (upstream) nameserver. This is called <em>name resolution</em>.</li>
+<li>if the nameserver has the information on file, then it is known as <a href="/notes/vuSZhKeQU8JmAXynHqZvf">authoritative</a></li>
+</ul>
+<p>A nameserver needs only one piece of information to find its way to any point in the tree: the domain names and addresses of the root nameservers. </p>
+<ul>
+<li>A nameserver can issue a query to a <a href="/notes/VfIJgKsqWBx9PXv054wx7">root nameserver</a> for any domain name in the domain namespace, and the root nameserver will start the nameserver on its way.</li>
+</ul>
+<p>Each nameserver queried either gives the querier information about how to get closer to the answer it’s seeking or provides the answer itself.</p>
+<p>Nameservers listen on port 53</p>
+<ul>
+<li>A DNS nameserver is a server that stores the DNS records for a domain
+<ul>
+<li>a DNS nameserver responds with answers to queries against its database.</li>
+</ul>
+</li>
+<li>Nameservers point to DNS providers</li>
+<li>A nameserver is a computer designated to translate domain names into IP addresses</li>
+<li>Nameservers can be "authoritative", meaning that they give answers to queries about domains under their control. Otherwise, they may point to other servers, or serve cached copies of other name servers’ data.</li>
+<li>nameservers make your zone’s data available to all the other nameservers on the network.</li>
+<li>due to the distributed nature of the DNS database, nameservers are able to navigate through the database and find data in any zone.</li>
+<li>more than one nameserver can store data about a zone, which sometimes leads to inconsistencies between copies of the zone data.</li>
+</ul>
+<h2 id="master-and-slave-nameservers">Master and Slave Nameservers<a aria-hidden="true" class="anchor-heading icon-link" href="#master-and-slave-nameservers"></a></h2>
+<p>The DNS specification defines two types of nameserver: Master and Slave (a.k.a primary master and secondary master)</p>
+<ul>
+<li>A master nameserver for a zone reads the data for the zone from a file on its host</li>
+<li>A slave nameserver for a zone gets the zone data from another nameserver authoritative for the zone, called its master server
+<ul>
+<li>often, the master server is the zone's master</li>
+</ul>
+</li>
+</ul>
+<p>A slave can load zone data from another slave.</p>
+<p>When a slave starts up, it contacts its master nameserver and, if necessary, pulls the zone data over (<em>zone transfer</em>).</p>
+<p>Both the master and slave nameservers are <a href="/notes/vuSZhKeQU8JmAXynHqZvf">authoritative</a> for that zone.</p>
+<p>Once you’ve created the data for your zone and set up a master nameserver, you don’t need to copy that data from host to host to create new nameservers for the zone. All you need to do is set up slave nameservers that load their data from the primary master for the zone.</p>
+<ul>
+<li>when new zone data becomes available, the slaves will handle its transfer.</li>
+</ul>
+<p>a nameserver can be a master for one zone and a slave for another.</p>
+<p>master nameservers load their zone data from <em>zone datafiles</em></p>
+<ul>
+<li>these datafiles contain <a href="/notes/TALpAZmsruqyoUkJzegVv">resource records</a> that describe the zone.</li>
+</ul>
+<h2 id="dns-server">DNS Server<a aria-hidden="true" class="anchor-heading icon-link" href="#dns-server"></a></h2>
+<p>There are only 4 types of DNS Server:</p>
+<ol>
+<li>DNS Recursor
+<ul>
+<li>the server that responds to a DNS query and asks another DNS server for the address, or already has the IP address for the site saved.</li>
+</ul>
+</li>
+<li>Root nameserver
+<ul>
+<li>A root name server is the name server for the root zone. It responds to direct requests and can return a list of authoritative name servers for the corresponding top-level domain.</li>
+</ul>
+</li>
+<li>TLD nameserver
+<ul>
+<li>The top-level domain server (TLD) is one of the high-level DNS servers on the internet. When you search for <a href="http://www.varonis.com">www.varonis.com</a>, a TLD server for the ‘.com’ will respond first, then DNS will search for ‘varonis.’</li>
+</ul>
+</li>
+<li>Authoritative nameserver
+<ul>
+<li>The authoritative name server is the final stop for a DNS query. The authoritative name server has the DNS record for the request.</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>In instances where the query is for a subdomain such as <code>foo.example.com</code>, an additional nameserver will be added to the sequence after the authoritative nameserver, which is responsible for storing the subdomain’s <code>CNAME</code> record.</li>
+<li>the ISP typically supplies the nameserver, but you can use public servers, like those offered by Google (which have IP <code>8.8.8.8</code> and <code>8.8.4.4</code>) or Cloudflare (<code>1.1.1.1</code> and <code>1.0.0.1</code>)
+<ul>
+<li>You could consider each IP address here to be a resolver.</li>
+</ul>
+</li>
+<li>The DNS server has expanded its role beyond only resolving domain names, and has other anciliary functionality
+<ul>
+<li>ex. a real-time blackhole list for spam</li>
+</ul>
+</li>
+<li>The DNS database is traditionally stored in a structured text file (the <em>Zone File</em>)
+<ul>
+<li>The Zone File describes a DNS Zone, and contains all RR for every domain in the zone.</li>
+</ul>
+</li>
+</ul>
+<p>Your home network typically relies on a DNS Server supplied by your ISP</p>
+<ul>
+<li>therefore your ISP's DNS servers see every domain you request.</li>
+<li>some ISPs have found a way to monetize their DNS service. When you hit an erroneous domain, one that has no actual IP address, they divert your browser to a search and advertising page preloaded with a search phrase derived from the domain name</li>
+</ul>
+<h3 id="library-analogy">Library Analogy<a aria-hidden="true" class="anchor-heading icon-link" href="#library-analogy"></a></h3>
+<ul>
+<li><em>Resolver</em> - a librarian who, given a title, is asked to go fetch a book</li>
+<li><em>Root NS</em> - the blocks of bookshelves in the library</li>
+<li><em>TLD NS</em> - the specific rack within the bookshelf block</li>
+<li><em>Authoritative NS</em> - the specific book you asked for.</li>
+</ul>
+<h2 id="misc">Misc<a aria-hidden="true" class="anchor-heading icon-link" href="#misc"></a></h2>
+<p>the same domain name may have multiple IP addresses associated with it.</p>
+<p>Anything that can be done with a DNS address can also be done with an IP address, since all a DNS does is translate from hostname (www.____.com) to IP.</p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/vuSZhKeQU8JmAXynHqZvf">Authoritative Nameserver</a></li>
+<li><a href="/notes/VfIJgKsqWBx9PXv054wx7">Root Nameserver</a></li>
+<li><a href="/notes/48fb0C5ptI5MyCOmmVod6">Self-Hosted DNS Server</a></li>
+<li><a href="/notes/63wlsDao3REeTUwL8pZgM">TLD Nameserver</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/mytCOts26Pidush65tdRW">DNS</a></li>
+<li><a href="/notes/uQ1OlrkssyoguJ6mCM7hj">DNS Resolver</a></li>
+<li><a href="/notes/rKwvAx3SP99In467imzlg">DNS Zone</a></li>
+<li><a href="/notes/vuSZhKeQU8JmAXynHqZvf">Authoritative Nameserver</a></li>
+</ul>

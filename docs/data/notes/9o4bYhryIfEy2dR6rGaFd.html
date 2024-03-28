@@ -1,0 +1,32 @@
+<h1 id="destructuring">Destructuring<a aria-hidden="true" class="anchor-heading icon-link" href="#destructuring"></a></h1>
+<p>With the destructuring technique we can pull out values from an array or object declaratively</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> arr <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span>
+<span class="token keyword">const</span> <span class="token punctuation">[</span> a<span class="token punctuation">,</span> <span class="token punctuation">,</span> b <span class="token punctuation">]</span> <span class="token operator">=</span> arr
+<span class="token comment">// a = 1</span>
+<span class="token comment">// b = 4</span>
+</code></pre>
+<ul>
+<li>when spreading, we are unpacking a variable one level deeper (into an array, object etc)
+<ul>
+<li>the <code>...</code> is unpacking, the <code>{}</code> is putting it into an object</li>
+<li><strong><em>ex.</em></strong> - if we had an array of objects, the unpacking by itself would result in us having an invalid javascript, since it would just be a group of objects with no "bucket" to house them (such as an array or object). This is why <code>{ ...arrayOfObjects }</code> will result in those "stray" objects having found a home in the surrounding <code>{}</code></li>
+</ul>
+</li>
+</ul>
+<pre class="language-js"><code class="language-js">newObj <span class="token operator">=</span> <span class="token punctuation">{</span>
+    <span class="token number">0</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token number">1</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token spread operator">...</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<pre class="language-js"><code class="language-js"><span class="token operator">&#x3C;</span><span class="token maybe-class-name">Component</span> a<span class="token operator">=</span><span class="token punctuation">{</span>obj<span class="token punctuation">.</span><span class="token property-access">a</span><span class="token punctuation">}</span><span class="token punctuation">,</span> b<span class="token operator">=</span><span class="token punctuation">{</span>obj<span class="token punctuation">.</span><span class="token property-access">b</span><span class="token punctuation">}</span> c<span class="token operator">=</span><span class="token punctuation">{</span>obj<span class="token punctuation">.</span><span class="token property-access">c</span><span class="token punctuation">}</span> <span class="token operator">/</span><span class="token operator">></span> <span class="token operator">===</span> <span class="token operator">&#x3C;</span><span class="token maybe-class-name">Component</span> <span class="token punctuation">{</span><span class="token spread operator">...</span>obj<span class="token punctuation">}</span> <span class="token operator">/</span><span class="token operator">></span>
+</code></pre>
+<p>we can rename the object keys of a destructured object like so:</p>
+<ul>
+<li>an object is returned from calling <code>useQuery</code> with fields <code>loading</code> and <code>error</code>, which we rename.</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token punctuation">{</span> <span class="token literal-property property">loading</span><span class="token operator">:</span> queryLoading<span class="token punctuation">,</span> <span class="token literal-property property">error</span><span class="token operator">:</span> queryError<span class="token punctuation">,</span> data <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">useQuery</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre>
+<p>Destructuring creates a shallow copy</p>
+<h1 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h1>
+<p><a href="https://dmitripavlutin.com/javascript-object-destructuring/">advanced destructuring</a></p>

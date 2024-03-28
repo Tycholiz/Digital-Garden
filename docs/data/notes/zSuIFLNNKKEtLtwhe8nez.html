@@ -1,0 +1,51 @@
+<h1 id="module">Module<a aria-hidden="true" class="anchor-heading icon-link" href="#module"></a></h1>
+<h2 id="summary">Summary<a aria-hidden="true" class="anchor-heading icon-link" href="#summary"></a></h2>
+<p>A Terraform module is a set of Terraform configuration files in a single directory that can be considered its own standalone Terraform project.</p>
+<ul>
+<li>it can therefore...
+<ul>
+<li>contain its own resources, data sources, locals, etc.</li>
+<li>take variables (ie. inputs on a per-module basis)</li>
+</ul>
+</li>
+</ul>
+<h3 id="what-are-they-for">What are they for?<a aria-hidden="true" class="anchor-heading icon-link" href="#what-are-they-for"></a></h3>
+<p>Modules are useful as they allow us to define a reusable block of Terraform code of which we can have many instances in our main Terraform project.</p>
+<ul>
+<li>even a single directory with a single <code>.tf</code> file is considered a module.</li>
+</ul>
+<p>A convention is to use a common prefix for resources from a single module</p>
+<p>A Terraform module is similar to the concept of a package (e.g. npm package), providing many of the same benefits.</p>
+<ul>
+<li>As a result, any non-trivial real-world Terraform configuration would use modules.</li>
+</ul>
+<p>Example:</p>
+<pre class="language-tf"><code class="language-tf">module "work_queue" {
+    source = "./directory-of-module"
+    variable_name = "passed_in_value"
+}
+</code></pre>
+<h3 id="returning-values-from-modules-output">Returning values from modules (<code>output</code>)<a aria-hidden="true" class="anchor-heading icon-link" href="#returning-values-from-modules-output"></a></h3>
+<p>Most modules return values to make them easier to use.</p>
+<ul>
+<li>to reference those values, use <code>module.&#x3C;module_identifier>.&#x3C;output_name></code></li>
+</ul>
+<p>It is possible to return a whole resource from a module. </p>
+<ul>
+<li>This allows us to return all of the fields from the resource that we created</li>
+</ul>
+<h3 id="remote-modules">Remote modules<a aria-hidden="true" class="anchor-heading icon-link" href="#remote-modules"></a></h3>
+<p>Modules can be specified with a URL pointing to a remote git repo, designating them as <em>remote modulues</em>.</p>
+<ul>
+<li>these modules get cloned to <code>.terraform/modules/</code>, which is similar to <code>node_modules/</code> in <a href="/notes/5iC7cpurvsTcO6WDflzOZ">Node.js</a></li>
+</ul>
+<p>Remote modules should be specified with a <a href="/notes/FyjPhqg8vM9DQh4Ch5614">git tag</a> to peg a specific version</p>
+<ul>
+<li>ex. <code>github.com/Tycholiz/my-terraform-module?ref=0.0.1</code></li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/Ku1OgHMhELajzo61Gx7ye">Terraform</a></li>
+<li><a href="/notes/C84fC8TYNY902iA8f7nCD">Terragrunt</a></li>
+</ul>

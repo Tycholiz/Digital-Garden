@@ -1,0 +1,51 @@
+<h1 id="coalesce">Coalesce<a aria-hidden="true" class="anchor-heading icon-link" href="#coalesce"></a></h1>
+<p><code>??</code> is the Nullish Coalescing operator </p>
+<p>The nullish coalescing operator can be seen as a special case of the logical OR (<code>||</code>) operator</p>
+<p>In Javascript we often reach for <code>||</code> when we want to get the RH value if the LH value is falsy</p>
+<ul>
+<li>ex.</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> valA <span class="token operator">=</span> nullValue <span class="token operator">??</span> <span class="token string">"default for A"</span><span class="token punctuation">;</span>
+</code></pre>
+<p>This way of doing it works most of the time, but if our business logic considers falsy values like <code>0</code> or <code>''</code> as legitimate values, then our program will have unexpected behavior. Using <code>??</code> gives us more predictable results, and should be used most of the time instead of <code>||</code></p>
+<p>Prefer <code>??</code> over <code>&#x26;&#x26;</code>.</p>
+<ul>
+<li><code>&#x26;&#x26;</code> will return the right-hand side for anything falsy</li>
+<li><code>??</code> will return the right-hand side for only <code>null</code> and <code>undefined</code></li>
+</ul>
+<h3 id="nullish-coalescing-assignment-">Nullish Coalescing Assignment (<code>??=</code>)<a aria-hidden="true" class="anchor-heading icon-link" href="#nullish-coalescing-assignment-"></a></h3>
+<p>Works great for defaults</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token function-variable function">myFunction</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">options</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+	options<span class="token punctuation">.</span><span class="token property-access">interval</span><span class="token operator">??=</span> <span class="token number">10</span>
+	options<span class="token punctuation">.</span><span class="token property-access">timeout</span><span class="token operator">??=</span> <span class="token number">1000</span>
+	<span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span>options<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token function">myFunction</span><span class="token punctuation">(</span><span class="token punctuation">{</span> <span class="token literal-property property">interval</span><span class="token operator">:</span> <span class="token number">50</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+</code></pre>
+<h3 id="assigning-a-default-value-to-a-variable">Assigning a default value to a variable<a aria-hidden="true" class="anchor-heading icon-link" href="#assigning-a-default-value-to-a-variable"></a></h3>
+<p>In the past, when one wanted to assign a default value to a variable, a common pattern was to use the logical OR operator (<code>||</code>):</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">let</span> foo<span class="token punctuation">;</span>
+
+<span class="token comment">//  foo is never assigned any value so it is still undefined</span>
+<span class="token keyword">let</span> someDummyText <span class="token operator">=</span> foo <span class="token operator">||</span> <span class="token string">'Hello!'</span><span class="token punctuation">;</span>
+</code></pre>
+<p>However, this is kind of hacky when we consider what we are doing. <code>||</code> is a boolean logical opertor (ie. it performs "math" on booleans). In order to do boolean math on 2 variables, it has to make sure both values are booleans. If they are not, they have to be coerced (Of course, JS is notorious for its sometimes unpredictable coercion behaviour).</p>
+<ul>
+<li>With boolean logical operators, the only two values that are considered are truthy values and falsy values. This might work most of the time, but imagine our business logic dictates that <code>0</code> is valid, and should therefore be considered a truthy value. If this is the case, then</li>
+</ul>
+<p>Example:</p>
+<p>Below, <code>quantityOfApples</code> will not be <code>0</code> as we want. Rather, the default value of <code>10</code> is being used, because <code>0</code> is considered falsy in the eyes of the boolean logical operator.</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> count <span class="token operator">=</span> <span class="token number">0</span>
+
+<span class="token keyword">const</span> quantityOfApples <span class="token operator">=</span> count <span class="token operator">||</span> <span class="token number">10</span> <span class="token comment">// 10 — unexpected!</span>
+<span class="token keyword">const</span> actualQuantityOfApples <span class="token operator">=</span> count <span class="token operator">??</span> <span class="token number">10</span> <span class="token comment">// 0 — totally expected</span>
+</code></pre>
+<h3 id="misc">Misc<a aria-hidden="true" class="anchor-heading icon-link" href="#misc"></a></h3>
+<ul>
+<li>It is not possible to combine both the AND (<code>&#x26;&#x26;</code>) and OR operators (<code>||</code>) directly with <code>??</code>
+<ul>
+<li>To accomplish this, we need to use parentheses (<code>(null || undefined) ?? "foo";</code>)</li>
+</ul>
+</li>
+</ul>

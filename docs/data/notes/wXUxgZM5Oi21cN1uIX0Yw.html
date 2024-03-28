@@ -1,0 +1,56 @@
+<h1 id="json-web-key">JSON Web Key<a aria-hidden="true" class="anchor-heading icon-link" href="#json-web-key"></a></h1>
+<p>The JSON Web Key (JWK) is a JSON object that contains a well-known public key which can be be used to validate the signature of a signed JWT.</p>
+<ul>
+<li>The members of the object represent properties of the key, including its value.</li>
+<li>If the issuer of your JWT used an asymmetric key (like RS256) to sign the JWT, it will likely host a file called a JSON Web Key Set (JWKS). The JWKS is a JSON object that contains the property keys, which in turn holds an array of JWK objects.</li>
+</ul>
+<p>The service may only use one JWK for validating web tokens, however the JWKS may contain multiple keys if the service rotates signing certificates.</p>
+<ul>
+<li>we can use a service like Auth0 or Okta to store our JWKs, which will be located at an endpoint hosted at their domain. </li>
+<li>Any time your application validates a JWT, it will attempt to retrieve the JWK(S) from the issuer in order to ensure the JWT signature matches the content.</li>
+</ul>
+<p>JWKs enable us to rotate keys.</p>
+<p>Example of a JWK representing an RSA public key:</p>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"alg"</span><span class="token operator">:</span> <span class="token string">"RSA"</span><span class="token punctuation">,</span>
+  <span class="token property">"kid"</span><span class="token operator">:</span> <span class="token string">"1"</span><span class="token punctuation">,</span>
+  <span class="token property">"use"</span><span class="token operator">:</span> <span class="token string">"sig"</span><span class="token punctuation">,</span>
+  <span class="token property">"n"</span><span class="token operator">:</span> <span class="token string">"qDABcd7-bvFz1MC1Upu5r1QhIwe8U7Gd0bY5"</span><span class="token punctuation">,</span>
+  <span class="token property">"e"</span><span class="token operator">:</span> <span class="token string">"AQAB"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Where:</p>
+<ul>
+<li><code>alg</code>: specifies the type of cryptographic key. In this example, it's "RSA".
+<ul>
+<li>sometimes <code>kty</code> is used, for Key Type</li>
+</ul>
+</li>
+<li><code>kid</code>: Key ID, a unique identifier for the key.</li>
+<li><code>use</code>: How the key is intended to be used. In this example, it's "sig" for signing.</li>
+<li><code>n</code>: Modulus, a large integer value that is part of the RSA public key.</li>
+<li><code>e</code>: Exponent, a small integer value that is part of the RSA public key.</li>
+</ul>
+<h2 id="json-web-key-set-jwks">JSON Web Key Set (JWKS)<a aria-hidden="true" class="anchor-heading icon-link" href="#json-web-key-set-jwks"></a></h2>
+<p>A JWKS is an object holding a set of JWKs containing the <a href="/notes/bO8xztJCzUxsN2sM4YsBE">public keys</a> used to verify any JWT issued by the Authorization Server and signed using the RS256 signing algorithm.</p>
+<p>The auth server (e.g. AWS Cognito, Auth0) exposes a JWKS endpoint for each tenant, which contains the JWK used to verify all JWTs issued by the auth server for that particular tenant.</p>
+<p>Example JWKS:</p>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"keys"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">{</span>
+      <span class="token property">"alg"</span><span class="token operator">:</span> <span class="token string">"RSA"</span><span class="token punctuation">,</span>
+      <span class="token property">"kid"</span><span class="token operator">:</span> <span class="token string">"1"</span><span class="token punctuation">,</span>
+      <span class="token property">"use"</span><span class="token operator">:</span> <span class="token string">"sig"</span><span class="token punctuation">,</span>
+      <span class="token property">"n"</span><span class="token operator">:</span> <span class="token string">"qDABcd7-bvFz1MC1Upu5r1QhIwe8U7Gs3hhdk93d"</span><span class="token punctuation">,</span>
+      <span class="token property">"e"</span><span class="token operator">:</span> <span class="token string">"AQAB"</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">{</span>
+      <span class="token property">"alg"</span><span class="token operator">:</span> <span class="token string">"RSA"</span><span class="token punctuation">,</span>
+      <span class="token property">"kid"</span><span class="token operator">:</span> <span class="token string">"2"</span><span class="token punctuation">,</span>
+      <span class="token property">"use"</span><span class="token operator">:</span> <span class="token string">"sig"</span><span class="token punctuation">,</span>
+      <span class="token property">"n"</span><span class="token operator">:</span> <span class="token string">"t5yOfCnYfJzFREvSxqOUHzUzL5KkHzzx2JgYB49"</span><span class="token punctuation">,</span>
+      <span class="token property">"e"</span><span class="token operator">:</span> <span class="token string">"AQAB"</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre>

@@ -1,0 +1,16 @@
+<h1 id="data-source">Data Source<a aria-hidden="true" class="anchor-heading icon-link" href="#data-source"></a></h1>
+<h3 id="what-is-it">What is it<a aria-hidden="true" class="anchor-heading icon-link" href="#what-is-it"></a></h3>
+<p>A data source generally sits on a server, and acts as the broker between the server and the data from the data layer. A data source offers generic methods that declaratively show what information the data source can provide. How the data source actually accesses that data is abstracted away from those who use the data source.</p>
+<ul>
+<li>you can think of a <em>data source</em> as the "client" on a server, since it's essentially the interface to the data layer.</li>
+</ul>
+<h3 id="why-use-it">Why use it?<a aria-hidden="true" class="anchor-heading icon-link" href="#why-use-it"></a></h3>
+<p>The benefit here is that if something changes on the data layer (such as the shape of the data), we only need to make adjustments in the data source. Without a data source, every component that consumes data from the database would need to change how it receives that data.</p>
+<h3 id="other-value-adds">Other value-adds<a aria-hidden="true" class="anchor-heading icon-link" href="#other-value-adds"></a></h3>
+<p>Apollo server has a data source class that can help with caching, <a href="/notes/4JYrGNzRXRthALIZVzD4d">deduplication</a></p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/dnld8js1c9r1ec3sap7c00p">Repository Design Pattern</a></li>
+<li><a href="/notes/Luqwbu4DMVwVSCJuJaDBp">Context Object</a></li>
+</ul>

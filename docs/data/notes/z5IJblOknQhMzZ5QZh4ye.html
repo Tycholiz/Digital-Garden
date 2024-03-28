@@ -1,0 +1,24 @@
+<h1 id="homebrew">Homebrew<a aria-hidden="true" class="anchor-heading icon-link" href="#homebrew"></a></h1>
+<h3 id="services">Services<a aria-hidden="true" class="anchor-heading icon-link" href="#services"></a></h3>
+<p>Homebrew has a services aspect to it. We can run <code>brew services list</code> to see the services that are currently running from Homebrew. We can run <code>brew services start</code> to start a service.</p>
+<ul>
+<li>ex. Redis, Postgres, vault, caddyserver </li>
+</ul>
+<h3 id="cask">Cask<a aria-hidden="true" class="anchor-heading icon-link" href="#cask"></a></h3>
+<p>brew cask is an extension to brew that allows management of MacOS graphical applications</p>
+<h3 id="tap">Tap<a aria-hidden="true" class="anchor-heading icon-link" href="#tap"></a></h3>
+<p>a Git repository of Formulae and/or commands</p>
+<p>When you <em>tap</em> a repository, you are essentially informing Homebrew about the existence of this external repository so that it can be used to install packages or formulas from that repository.</p>
+<ul>
+<li>Homebrew is designed to be modular and lightweight. By default, it doesn't come with every package or formula available. Instead, it provides the core functionality and allows users to extend it by tapping additional repositories.</li>
+</ul>
+<h3 id="keg">Keg<a aria-hidden="true" class="anchor-heading icon-link" href="#keg"></a></h3>
+<p>the installation prefix of a Formula</p>
+<hr>
+<h3 id="installation-directories">Installation directories<a aria-hidden="true" class="anchor-heading icon-link" href="#installation-directories"></a></h3>
+<p><code>/opt/homebrew/Cellar/</code></p>
+<h2 id="cli">CLI<a aria-hidden="true" class="anchor-heading icon-link" href="#cli"></a></h2>
+<h4 id="search-available-packages">Search available packages<a aria-hidden="true" class="anchor-heading icon-link" href="#search-available-packages"></a></h4>
+<p><code>brew search _____</code></p>
+<h4 id="see-where-package-is-installed">See where package is installed<a aria-hidden="true" class="anchor-heading icon-link" href="#see-where-package-is-installed"></a></h4>
+<p><code>brew info postgresql</code></p>

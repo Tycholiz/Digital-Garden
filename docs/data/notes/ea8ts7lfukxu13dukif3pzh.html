@@ -1,0 +1,29 @@
+<h1 id="errors">Errors<a aria-hidden="true" class="anchor-heading icon-link" href="#errors"></a></h1>
+<p>When the <code>throw</code> statement is called, execution of the current function will stop and control will be passed to the first catch block in the call stack.</p>
+<ul>
+<li>If no catch block exists among caller functions, the program will terminate.</li>
+</ul>
+<p>executing <code>throw</code> generates an exception that penetrates through the call stack.</p>
+<p>In practice, the exception you throw should always be an Error object or an instance of an Error subclass, such as RangeError</p>
+<ul>
+<li>this is because code that catches the error may expect certain properties, such as <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/message">message</a>, to be present on the caught value. For example, web APIs typically throw DOMException instances, which inherit from Error.prototype.</li>
+</ul>
+<h3 id="trycatch"><code>try...catch</code><a aria-hidden="true" class="anchor-heading icon-link" href="#trycatch"></a></h3>
+<p>If any statement within the try block (or in a function called from within the try block) throws an exception, control immediately shifts to the catch block. </p>
+<ul>
+<li>If no exception is thrown in the try block, the catch block is skipped. </li>
+</ul>
+<h4 id="finally"><code>finally</code><a aria-hidden="true" class="anchor-heading icon-link" href="#finally"></a></h4>
+<ul>
+<li>The finally block executes after the try and catch blocks execute but before the statements following the <code>try...catch</code> statement.</li>
+<li>You can use the finally block to make your script fail gracefully when an exception occurs. 
+<ul>
+<li>ex. you may need to release a resource that your script has tied up (e.g. close db connection, close a file)</li>
+</ul>
+</li>
+<li>code within the <code>finally</code> will <em>always</em> execute. Even if the <code>catch</code> block returns a value, a return in the <code>finally</code> block will overwrite it.
+<ul>
+<li>therefore, if there is a return value in the <code>finally</code> block, that will always be the return value of the <code>try..catch..finally</code> block.</li>
+</ul>
+</li>
+</ul>

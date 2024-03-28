@@ -1,0 +1,28 @@
+<h1 id="broker">Broker<a aria-hidden="true" class="anchor-heading icon-link" href="#broker"></a></h1>
+<p>A message broker (also known as a message queue) is essentially a kind of database that is optimized for handling message streams.</p>
+<p>The message broker runs as a server, with both producer and consumers connecting to it as clients.</p>
+<ul>
+<li>Producers write messages to the broker, and consumers receive them by reading them from the broker.</li>
+<li>By centralizing the data in the broker, these systems can more easily tolerate clients that come and go (connect, disconnect, and crash), and the question of durability is moved to the broker instead.</li>
+</ul>
+<p>Using a broker is an alternative to using direct network communication between producers and consumers without going via intermediary nodes.</p>
+<ul>
+<li>forgoing a broker is done in situations where latency is very important, such as stock market feeds.</li>
+</ul>
+<p>Since networks are unreliable, forgoing a message broker requires the application code to be aware of the possibility of message loss.</p>
+<ul>
+<li>even if the protocols detect and retransmit packets that are lost in the network, they generally assume that producers and consumers are constantly online.</li>
+<li>If a consumer is offline, it may miss messages that were sent while it is unreachable. Some protocols allow the producer to retry failed message deliveries, but this approach may break down if the producer crashes, losing the buffer of messages that it was supposed to retry.</li>
+</ul>
+<p>most message brokers automatically delete a message when it has been successfully delivered to its consumers</p>
+<p>Consumers may crash at any time, so it could happen that a broker delivers a message to a consumer but the consumer never processes it, or only partially processes it before crashing. In order to ensure that the message is not lost, message brokers use <em>acknowledgments</em>: a client must explicitly tell the broker when it has finished processing a message so that the broker can remove it from the queue.</p>
+<ul>
+<li>If the connection to a client is closed or times out without the broker receiving an acknowledgment, it assumes that the message was not processed, and therefore it delivers the message again to another consumer.</li>
+</ul>
+<p>message brokers often support some way of subscribing to a subset of topics matching some pattern.</p>
+<p>When multiple consumers read messages in the same topic, two main patterns of messaging are used:</p>
+<ol>
+<li>Load balancing - In an effort to parallelize the processing, each message is delivered to one of the consumers so the consumers can share the work of processing the messages in the topic.</li>
+<li>Fan-out - Each message is delivered to all of the consumers.</li>
+</ol>
+<p>The two patterns can be combined: for example, two separate groups of consumers may each subscribe to a topic, such that each group collectively receives all messages, but within each group only one of the nodes receives each message.</p>

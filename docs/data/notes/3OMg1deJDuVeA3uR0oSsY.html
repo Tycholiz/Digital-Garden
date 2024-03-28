@@ -1,0 +1,22 @@
+<h1 id="materialized-view">Materialized View<a aria-hidden="true" class="anchor-heading icon-link" href="#materialized-view"></a></h1>
+<p>In contrast to the way a view is queried, a materialized view actually takes up storage space, making it a proper table (and not just a conceptual table). When you query a materialized view, the result set is <a href="/notes/8swgk5qh3sy2b9kkfuwx3uu">cached</a> and stored (or, materialized) as a sort of pseudo table</p>
+<ul>
+<li>can be thought of as a snapshot of a query set that is updated periodically (or on-demand) to keep the data up-to-date.</li>
+<li>makes queries more efficient at the expense of space</li>
+</ul>
+<p>The difference is that a materialized view is an actual copy of the query results, written to disk, whereas a virtual view is just a shortcut for writing queries.</p>
+<p>When the underlying data changes, a materialized view needs to be updated, because it is a denormalized copy of the data.</p>
+<ul>
+<li>The database can do that automatically, but such updates make writes more expensive, which is why materialized views are not often used in <a href="/notes/plfkq18cl5fwq46id8bfgpd">OLTP</a> databases.</li>
+</ul>
+<h3 id="how-does-it-work">How does it work?<a aria-hidden="true" class="anchor-heading icon-link" href="#how-does-it-work"></a></h3>
+<ol>
+<li>identify frequently executed and resource-intensive SQL queries in your application and create materialized views for these queries. These are the queries that can benefit from caching.</li>
+<li>Once the materialized views are created, you can store them in the cache server</li>
+<li>When a user or application requests data, the cache server checks if the requested data is available in the materialized view cache. If the data is found, the cache server can quickly serve the result without executing the SQL query against the database.</li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/5uuohllUAxCmbMFJb8Pj9">Dynamo Streams</a></li>
+</ul>

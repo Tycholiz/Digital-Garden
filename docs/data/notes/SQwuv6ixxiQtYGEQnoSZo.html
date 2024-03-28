@@ -1,0 +1,76 @@
+<h1 id="docker-image">Docker Image<a aria-hidden="true" class="anchor-heading icon-link" href="#docker-image"></a></h1>
+<h2 id="overview">Overview<a aria-hidden="true" class="anchor-heading icon-link" href="#overview"></a></h2>
+<p>an image is an immutable snapshot of a system</p>
+<ul>
+<li>The fact that it is immutable gives it predictability. In other words, it will always work as-is</li>
+</ul>
+<h2 id="under-the-hood">Under the hood<a aria-hidden="true" class="anchor-heading icon-link" href="#under-the-hood"></a></h2>
+<p>an image has a tree hierarchy. There is a base image (aka Parent Image), which is initiated with the <code>FROM</code> command in the Dockerfile. It sets the base for the rest of the images generated in the Dockerfile.</p>
+<ul>
+<li>Therefore, every Dockerfile must have a <code>FROM</code> directive</li>
+</ul>
+<h2 id="layers">Layers<a aria-hidden="true" class="anchor-heading icon-link" href="#layers"></a></h2>
+<p>Docker image is made up of a series of read-only <code>layers</code></p>
+<ul>
+<li>Each line in the <code>dockerfile</code> creates a <code>layer</code>
+<ul>
+<li>Therefore, a layer contains only the differences between the preceding layer and the current layer.</li>
+</ul>
+</li>
+<li>On top of the layers, there is a writable layer (the current one) which is called the container layer</li>
+<li>layers may be shared between images
+<ul>
+<li>this means if the layer <code>COPY . /app</code> is used in multiple places, each iteration of it (from other Dockerfiles) will not contribute to Docker's overall footprint.</li>
+<li>When the Dockerfile is run with <code>docker build</code>, each layer gets executed and its result cached</li>
+</ul>
+</li>
+<li>The following Dockerfile instructions create a layer and influence the size of the image:
+<ul>
+<li><code>RUN</code></li>
+<li><code>COPY</code></li>
+<li><code>ADD</code></li>
+</ul>
+</li>
+<li>The other Dockerfile instructions create intermediate layers, and do not increase the size of the image</li>
+<li>When we build an image from Dockerfile, we'll notice that it says <code>removing intermediate container</code>, rather than what we might expect: <code>removing intermediate layer</code>. This is because a build step (ie. a line in the Dockerfile) is executed in an intermediate container, which is no longer needed once the build step is done</li>
+<li>if we run <code>docker history &#x3C;image-id></code>, we can recognize the intermediate containers as the ones having 0B size
+<ul>
+<li>There are also a lot of containers labelled <code>missing</code>, meaning that those layers are built on a different system and are not available locally.</li>
+</ul>
+</li>
+</ul>
+<pre class="language-dockerfile"><code class="language-dockerfile"><span class="token comment"># create a layer from the ubuntu:15.04 image. </span>
+<span class="token instruction"><span class="token keyword">FROM</span> ubuntu:15.04</span>
+<span class="token comment"># add some files from your Docker client’s current directory. </span>
+<span class="token instruction"><span class="token keyword">COPY</span> . /app</span>
+<span class="token comment"># build your application using the make command. </span>
+<span class="token instruction"><span class="token keyword">RUN</span> make /app</span>
+<span class="token comment"># specifies what command to run within the container.</span>
+<span class="token instruction"><span class="token keyword">CMD</span> python /app/app.py</span>
+</code></pre>
+<p>In the previous example, we spun up a container whose basis is a Ubuntu server. We can just as easily spin up a continer whose basis is nodejs.</p>
+<h2 id="image-hierarchy">Image Hierarchy<a aria-hidden="true" class="anchor-heading icon-link" href="#image-hierarchy"></a></h2>
+<p>The image you inspect may have one or more base images. This means the author of the image used other images as starting points when building the image.</p>
+<ul>
+<li>Often these base images are either OS images such as Debian or Ubuntu, or programming language images such as Python, Node or Java.</li>
+</ul>
+<h2 id="tags">Tags<a aria-hidden="true" class="anchor-heading icon-link" href="#tags"></a></h2>
+<ul>
+<li>an alias to the ID of an image. ie. they are just a a way to refer to a specific image</li>
+<li>anal: git tags can be used to refer to a specific commit (ex. map tag SHA 3fhd883nnf9 to v1.4)</li>
+</ul>
+<h2 id="architecture">Architecture<a aria-hidden="true" class="anchor-heading icon-link" href="#architecture"></a></h2>
+<p>Images are built to run on particular platforms. Therefore, their architectures must be specified while being built (e.g. <code>arm64</code>, <code>amd64</code>)
+<code>docker buildx build --platform linux/amd64 -t neverforget-server:0.0.4 .</code></p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/aKUNicL6BcYzCtaWOR8wH">CLI</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/a9w8WlKMHZZRdHc8EPBsD">Docker Containers</a></li>
+<li><a href="/notes/OSdV9FvBG3wDbRNLllg0V">AWS Lambda</a></li>
+<li><a href="/notes/mHVMjAHm9xjTEnRdsGi96">Lambda Layer</a></li>
+</ul>

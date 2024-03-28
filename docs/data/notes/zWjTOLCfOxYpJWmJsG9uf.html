@@ -1,0 +1,31 @@
+<h1 id="symbol">Symbol<a aria-hidden="true" class="anchor-heading icon-link" href="#symbol"></a></h1>
+<p><a href="/notes/o4e8Bc8UEDoIFw5vYVsfZ">See</a></p>
+<p>Symbols are defined by prepending a variable with <code>:</code>.</p>
+<p>Symbols have the distinct feature that any two symbols named the same will be identical:</p>
+<pre class="language-rb"><code class="language-rb"><span class="token string-literal"><span class="token string">"foo"</span></span><span class="token punctuation">.</span>equal<span class="token operator">?</span> <span class="token string-literal"><span class="token string">"foo"</span></span>  <span class="token comment"># false</span>
+<span class="token symbol">:foo</span><span class="token punctuation">.</span>equal<span class="token operator">?</span> <span class="token symbol">:foo</span>    <span class="token comment"># true</span>
+</code></pre>
+<p>This makes comparing two symbols really fast (since only a pointer comparison is involved, as opposed to comparing all the characters like you would in a string)</p>
+<p>Keys in a hash are implemented as symbols. Hashes were originally implemented in Ruby like this:</p>
+<pre class="language-rb"><code class="language-rb">hash <span class="token operator">=</span> <span class="token punctuation">{</span>
+   <span class="token symbol">:key</span> <span class="token operator">=></span> <span class="token string-literal"><span class="token string">"value"</span></span><span class="token punctuation">,</span>
+   <span class="token symbol">:another_key</span> <span class="token operator">=></span> <span class="token number">4</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>But the syntax was simplified in v1.9:</p>
+<pre class="language-rb"><code class="language-rb">hash <span class="token operator">=</span> <span class="token punctuation">{</span>
+   <span class="token symbol">key</span><span class="token operator">:</span> <span class="token string-literal"><span class="token string">"value"</span></span><span class="token punctuation">,</span>
+   <span class="token symbol">another_key</span><span class="token operator">:</span> <span class="token number">4</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="should-you-use-string-or-symbol">Should you use String or Symbol?<a aria-hidden="true" class="anchor-heading icon-link" href="#should-you-use-string-or-symbol"></a></h3>
+<p>No clear answer exists, only guidelines:</p>
+<ul>
+<li>if the text at hand is "data", then use a string;if it's "code", then use a symbol, especially when used as keys in hashes</li>
+<li>symbols aren't really text, even though they read well. Instead, they are unique identifiers, like numbers, or bar codes. While strings represent data that can change, symbols represent unique values, which are static.</li>
+<li>if you use strings that contain the same text in your code multiple times, then a new string object will be created every time.
+<ul>
+<li>ex. <code>puts "hello"</code> 10 times will create 10 string objects.</li>
+</ul>
+</li>
+</ul>

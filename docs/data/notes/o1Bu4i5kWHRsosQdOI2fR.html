@@ -1,0 +1,55 @@
+<h1 id="api-gateway">API Gateway<a aria-hidden="true" class="anchor-heading icon-link" href="#api-gateway"></a></h1>
+<p>API Gateway is a fully managed service that allows us to <em>create</em>, <em>publish</em>, <em>maintain</em>, <em>monitor</em>, and <em>secure</em> APIs at any scale</p>
+<p>Allows us to create 2 types of API:</p>
+<ul>
+<li>RESTful APIs</li>
+<li>Web APIs, that enable real-time two-way communication applications</li>
+</ul>
+<p>Handles all the tasks involved in accepting and processing up to hundreds of thousands of concurrent API calls, including:</p>
+<ul>
+<li>traffic management</li>
+<li>CORS support</li>
+<li>authorization and access control</li>
+<li>throttling</li>
+<li>monitoring</li>
+<li>API version management</li>
+</ul>
+<p>API Gateway’s REST API type allows users to setup HTTP proxy integrations, which can be used for forwarding incoming requests with different path patterns to different origin servers according to the API specifications
+<img src="/assets/images/2021-12-07-12-18-22.png"></p>
+<p>Supports containerized and serverless workloads, as well as web applications.</p>
+<p>Pay for the API calls you receive and the amount of data transferred out</p>
+<p>API Gateway is combined well with Lambda, whereby we make an endpoint and cause the endpoint to trigger the <a href="/notes/OSdV9FvBG3wDbRNLllg0V">AWS Lambda</a></p>
+<h2 id="authorizers">Authorizers<a aria-hidden="true" class="anchor-heading icon-link" href="#authorizers"></a></h2>
+<h3 id="lambda-authorizers">Lambda Authorizers<a aria-hidden="true" class="anchor-heading icon-link" href="#lambda-authorizers"></a></h3>
+<p>When a client makes a request to one of your API's methods, API Gateway calls your Lambda authorizer, which takes the caller's identity as input and returns an IAM policy as output.</p>
+<p>A Lambda authorizer is useful if you want to implement a custom authorization scheme that uses a bearer token authentication strategy such as OAuth or SAML, or that uses request parameters to determine the caller's identity.</p>
+<p>There are two types of Lambda authorizers:</p>
+<ul>
+<li><strong>token-based</strong> - the authorizer receives the caller's identity in a bearer token (e.g. JWT or OAuth)</li>
+<li><strong>request parameter-based</strong> - the authorizer receives the caller's identity in a combination of headers, query string parameters, stageVariables, and $context variables.</li>
+</ul>
+<h4 id="api-gateway-lambda-authorization-workflow">API Gateway Lambda authorization workflow<a aria-hidden="true" class="anchor-heading icon-link" href="#api-gateway-lambda-authorization-workflow"></a></h4>
+<ol>
+<li>The client calls a method on an API Gateway API method, passing a bearer token (or request parameters).</li>
+<li>API Gateway checks whether a Lambda authorizer is configured for the method. If it is, API Gateway calls the Lambda function.</li>
+<li>The Lambda function authenticates the caller by means such as the following:</li>
+</ol>
+<ul>
+<li>Calling out to an OAuth provider to get an OAuth access token.</li>
+<li>Calling out to a SAML provider to get a SAML assertion.</li>
+<li>Generating an IAM policy based on the request parameter values.</li>
+<li>Retrieving credentials from a database.</li>
+</ul>
+<ol start="4">
+<li>If the call succeeds, the Lambda function grants access by returning an output object containing at least an IAM policy and a principal identifier.</li>
+<li>API Gateway evaluates the policy.</li>
+</ol>
+<ul>
+<li>If access is denied, API Gateway returns a suitable HTTP status code, such as 403 ACCESS_DENIED.</li>
+<li>If access is allowed, API Gateway executes the method. If caching is enabled in the authorizer settings, API Gateway also caches the policy so that the Lambda authorizer function doesn't need to be invoked again.</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/8qojup535mzwcxl0c09cfhm">API Gateway</a></li>
+</ul>

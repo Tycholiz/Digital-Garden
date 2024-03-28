@@ -1,0 +1,7 @@
+<h1 id="apache-reverse-proxy">Apache Reverse Proxy<a aria-hidden="true" class="anchor-heading icon-link" href="#apache-reverse-proxy"></a></h1>
+<p>We need to load the proxy and proxy_http modules in Apache, and the most basic configuration would look like this (for one domain):</p>
+<pre class="language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span>VirtualHost</span> <span class="token attr-name"><span class="token namespace">*:</span>80</span><span class="token punctuation">></span></span>
+    ServerName foo.example.com
+    ProxyPass / http://192.168.2.x
+<span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;/</span>VirtualHost</span><span class="token punctuation">></span></span>
+</code></pre>

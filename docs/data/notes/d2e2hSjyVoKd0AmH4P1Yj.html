@@ -1,0 +1,66 @@
+<h1 id="tcp">TCP<a aria-hidden="true" class="anchor-heading icon-link" href="#tcp"></a></h1>
+<h2 id="why-use-it">Why use it?<a aria-hidden="true" class="anchor-heading icon-link" href="#why-use-it"></a></h2>
+<p><a href="/notes/0w98vh6pnzlzjxe4rd4808x">IP</a> is unreliable, in that we can't guarantee that the data that's sent is received without being corrupted. IP cannot even guarantee that the data arrives. </p>
+<ul>
+<li>TCP is reliable. Interestingly, TCP is built on top of IP. The question is, how is a reliable technology built on top of an unreliable one? The answer is that TCP acts as sort of the manager of a transaction of data from one place to another. If data arrives corrupted, it will repeat the request until data comes in fully-formed. It ensures that missing packets are retransmitted, duplicates are eliminated, and packets are reassembled into the order in which they were sent.</li>
+<li>Since the end-user never knows about the data-loss that might have occurred somewhere along the way, TCP is effectively an abstraction</li>
+</ul>
+<p>TCP considers a packet to be lost if it is not acknowledged within some timeout (which is calculated from observed round-trip times), and lost packets are automatically retransmitted.</p>
+<ul>
+<li>Although the application does not see the packet loss and retransmission, it does see the resulting delay.</li>
+</ul>
+<p>TCP is said to exist between the <a href="/notes/5T9TTS59VHnhqvlEeGgP2">sockets</a> of two processes</p>
+<p>On the TCP level, the tuple (source ip, source port, destination ip, destination port) must be unique for each simultaneous connection. That means a single client cannot open more than 65535 simultaneous connections to a single server. But a server can (theoretically) serve 65535 simultaneous connections per client.</p>
+<ul>
+<li>So in practice the server is only limited by how much CPU power, memory etc. it has to serve requests, not by the number of TCP connections to the server.</li>
+</ul>
+<p>The connection between 2 processes via TCP is full-duplex, meaning the two processes can send messages to each other simultaneously.</p>
+<ul>
+<li>
+<p>When the application finishes sending a message, it must tear down the connection</p>
+</li>
+<li>
+<p>TCP transports application-layer messages such as HTTP requests.</p>
+</li>
+<li>
+<p>Works by establishing a connection between 2 hosts.</p>
+</li>
+<li>
+<p>Data is guaranteed to be delivered, and in the order it was sent.</p>
+</li>
+<li>
+<p>TCP breaks long messages in to shorter segments.</p>
+</li>
+</ul>
+<h3 id="when-not-to-use-tcp">When not to use TCP<a aria-hidden="true" class="anchor-heading icon-link" href="#when-not-to-use-tcp"></a></h3>
+<ul>
+<li>TCP is not a suitable protocol for applications that require data to be transmitted in real-time or with strict timing requirements, such as audio or video streaming applications, where even minor delays or packet loss can lead to a degraded user experience. In cases like this a protocol like <a href="/notes/dQttRQk9tVYxtKhW5ikRp">UDP</a> is preferred.</li>
+</ul>
+<h3 id="tcp-flow-control">TCP flow control<a aria-hidden="true" class="anchor-heading icon-link" href="#tcp-flow-control"></a></h3>
+<p>TCP performs flow control (also known as congestion avoidance or backpressure), in which a node limits its own rate of sending in order to avoid overloading a network link or the receiving node. </p>
+<ul>
+<li>This means additional queueing at the sender before the data even enters the network.</li>
+</ul>
+<h3 id="contrasting-a-tcp-network-connection-with-a-circuit-switched-network-eg-telephone-connection">Contrasting a TCP network connection with a Circuit-switched network (e.g. telephone connection)<a aria-hidden="true" class="anchor-heading icon-link" href="#contrasting-a-tcp-network-connection-with-a-circuit-switched-network-eg-telephone-connection"></a></h3>
+<p>A phone network is synchronous. </p>
+<p>When you make a call over the telephone network, it establishes a circuit: a fixed, guaranteed amount of bandwidth is allocated for the call, along the entire route between the two callers. This circuit remains in place until the call ends.</p>
+<ul>
+<li>an ISDN network runs at a fixed rate of 4,000 frames per second. When a call is established, it is allocated 16 bits of space per frame. Therefore, for the duration of the call, each side is guaranteed to be able to send exactly 16 bits of audio data every 250 microseconds.</li>
+<li>even as data passes through several routers, it does not suffer from queueing, because the 16 bits of space for the call have already been reserved in the next hop of the network</li>
+<li>also, because there is no queueing, the maximum end-to-end latency of the network is fixed. We call this a <em>bounded delay</em>.</li>
+</ul>
+<p>This is very different from a TCP connection:</p>
+<ul>
+<li>a circuit is a fixed amount of reserved bandwidth which nobody else can use while the circuit is established.</li>
+<li>the packets of a TCP connection opportunistically use whatever network bandwidth is available.</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/vutujFFWxQu6TshWVuMpI">Distributed Computing</a></li>
+<li><a href="/notes/0w98vh6pnzlzjxe4rd4808x">IP</a></li>
+<li><a href="/notes/dQttRQk9tVYxtKhW5ikRp">UDP</a></li>
+<li><a href="/notes/a6448e8a-d962-4e22-b70c-154121a95cd3">HTTP</a></li>
+<li><a href="/notes/qbp4ovujvmv5l5011wnv4ri">Cluster</a></li>
+<li><a href="/notes/jwi79w2rbvd8pped6yf3im0">Streams</a></li>
+</ul>

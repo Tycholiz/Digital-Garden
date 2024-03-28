@@ -1,0 +1,29 @@
+<h1 id="is-keyword">Is Keyword<a aria-hidden="true" class="anchor-heading icon-link" href="#is-keyword"></a></h1>
+<p><code>is</code> is a keyword that is used in compile-time to tell the developers the code will have a chance to have a runtime error.</p>
+<ul>
+<li><code>is</code> is a type guard that lets us model the behaviour that "this variable will be of <em>this</em> type within any guarded blocks of code"</li>
+</ul>
+<pre class="language-ts"><code class="language-ts"><span class="token comment">// we say "test is string", meaning that inside any blocks that are guarded by this function, the value must be a string</span>
+<span class="token keyword">function</span> <span class="token function">isString</span><span class="token punctuation">(</span>test<span class="token operator">:</span> <span class="token builtin">any</span><span class="token punctuation">)</span><span class="token operator">:</span> test <span class="token keyword">is</span> <span class="token builtin">string</span><span class="token punctuation">{</span>
+    <span class="token keyword control-flow">return</span> <span class="token keyword">typeof</span> test <span class="token operator">===</span> <span class="token string">"string"</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">example</span><span class="token punctuation">(</span>foo<span class="token operator">:</span> <span class="token builtin">any</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token comment">// because of the "test is string" part above, we give a guarantee to typescript that "if isString" is returning true, then we guarantee that the foo value will be a string</span>
+    <span class="token keyword control-flow">if</span><span class="token punctuation">(</span><span class="token function">isString</span><span class="token punctuation">(</span>foo<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span><span class="token string">"it is a string"</span> <span class="token operator">+</span> foo<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span>foo<span class="token punctuation">.</span><span class="token property-access">length</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// string function</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token function">example</span><span class="token punctuation">(</span><span class="token string">"hello world"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Another example:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword module">export</span> <span class="token keyword">function</span> <span class="token function">isBook</span><span class="token punctuation">(</span>x<span class="token operator">:</span> <span class="token maybe-class-name">Item</span><span class="token punctuation">)</span><span class="token operator">:</span> x <span class="token keyword">is</span> <span class="token maybe-class-name">Book</span> <span class="token punctuation">{</span>
+  <span class="token keyword control-flow">return</span> x<span class="token punctuation">.</span><span class="token property-access">itemType</span> <span class="token operator">===</span> <span class="token string">'book'</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// imagine we have an array of objects with an `itemType` field</span>
+<span class="token keyword">const</span> filtered <span class="token operator">=</span> items<span class="token punctuation">.</span><span class="token method function property-access">find</span><span class="token punctuation">(</span>isBook<span class="token punctuation">)</span>
+</code></pre>
+<h2 id="e-resources">E Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#e-resources"></a></h2>
+<p><a href="https://stackoverflow.com/questions/40081332/what-does-the-is-keyword-do-in-typescript">https://stackoverflow.com/questions/40081332/what-does-the-is-keyword-do-in-typescript</a></p>

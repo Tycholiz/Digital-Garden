@@ -1,0 +1,51 @@
+<h1 id="kernel">Kernel<a aria-hidden="true" class="anchor-heading icon-link" href="#kernel"></a></h1>
+<p>The kernel is the part of the OS that serves as the master control program of all processes thought of as back-end.</p>
+<ul>
+<li>it is the lowest level of <a href="/notes/1j3g1u7kbq5zk7lj1dt1fzk">Abstraction</a> in the <a href="/notes/ZaTr28eWk1DrXOEsc1YVb">Operating System</a>.</li>
+<li>It provides an interface to hardware devices, and manages system processes, memory and other resources</li>
+</ul>
+<p>The OS runs the kernel as fully trusted software. Once root access (kernel space) is granted to the kernel, a user can command the OS to do anything.</p>
+<ul>
+<li>therefore, the kernel is what must implement protection mechanisms that cannot be subverted by untrusted software executing in <a href="/notes/ZaTr28eWk1DrXOEsc1YVb#user-space-userland-and-kernel-space1">user space</a>.</li>
+</ul>
+<p>The <a href="/notes/ZaTr28eWk1DrXOEsc1YVb">operating system</a> uses the kernel to perform grunt work involved in bridging the gap between the computer's hardware and its software.</p>
+<ul>
+<li>the kernel talks to the hardware via drivers (which are loaded as kernel extensions) and/or firmware</li>
+<li>ex. when an application wants to change the system volume, it submits a request to the kernel to perform the action. Because of the speaker drivers which it has access to via the kernel module (like a built-in extension; provides the same benefit), the kernel can control the volume</li>
+</ul>
+<p>The kernel provides services that...</p>
+<ul>
+<li>handle I/O</li>
+<li>maniupulate the file system</li>
+<li>start and stop programs</li>
+<li>schedule access to avoid conflicts when programs try to access the same resource or device simultaneously. </li>
+<li>handle other common "low-level" tasks that most programs share, </li>
+</ul>
+<p>The kernel also plays a big part in resource management, managing resources like memory and CPU.</p>
+<ul>
+<li>the kernel must manage how memory is used, which means it has to be fully aware of how it is being used. It has to know exactly where in memory any process's resources will reside.</li>
+<li>naturally, the kernel tries to optimize the usage of the resources it manages. It is fine if memory usage is high, even for moderate usage. The kernel knows how to remove things from memory in order to make space for the higher priority data.</li>
+</ul>
+<p>Failures can lead to deadlocks, resulting in the whole system halting because resources used by one application are needed by another.</p>
+<p>Technically speaking, <a href="/notes/93de42ca-53ea-460a-baa7-b9ec5c47cb1e">Linux</a> is not an operating system; it refers to the kernel itself. This misunderstanding is somewhat justified, given how integral the kernel is to the <a href="/notes/ZaTr28eWk1DrXOEsc1YVb">Operating System</a></p>
+<ul>
+<li>examples of operating systems in Linux are Ubuntu, Mint, Debian etc.</li>
+</ul>
+<p>Like any piece of software, the kernel is versioned. If we want to see our kernel and its version, issue:</p>
+<pre class="language-sh"><code class="language-sh">uname
+uname -r
+</code></pre>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/g7huvr8z8rbvdpqm24z3kag">Device Driver</a></li>
+<li><a href="/notes/o3pgogrf5w0a9ex1s4bgx7x">Scheduler</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/ZaTr28eWk1DrXOEsc1YVb">Operating System</a></li>
+<li><a href="/notes/pkzexc7idaumzqrad29kp3n">Virtual Memory</a></li>
+<li><a href="/notes/1j3g1u7kbq5zk7lj1dt1fzk">Abstraction</a></li>
+<li><a href="/notes/g7huvr8z8rbvdpqm24z3kag">Device Driver</a></li>
+</ul>

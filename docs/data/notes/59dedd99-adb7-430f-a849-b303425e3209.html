@@ -1,0 +1,69 @@
+<h1 id="hooks">Hooks<a aria-hidden="true" class="anchor-heading icon-link" href="#hooks"></a></h1>
+<p>The value of using Hooks is being able to decouple React-y logic things, like state management and side effects, from the actual component that it is actually existing in</p>
+<p>Hooks should be <a href="/notes/ViJXhvpmoU53iSK9Wr4nG">idempotent</a>.</p>
+<p>Hooks are functions, but they aren't pure functions.</p>
+<ul>
+<li>this is why testing hooks is a little more involved— we can't just call the function and assert its output.</li>
+</ul>
+<p>Each incovation of a hook is indepdendent. Therefore, if the hook manages state (e.g. via a <code>useState</code> or <code>useContext</code> hook), that state will be independent on each invocation of the hook.</p>
+<ul>
+<li>Therefore, if we have a hook <code>useStagingArea</code> that manages state with <code>useState</code> and use it in 2 different components, the state of those two hooks will be independent
+<ul>
+<li>if we wish to share the state, then we must use something like a <a href="/notes/76219hztmusgt35ds3ivwks">context</a>.</li>
+</ul>
+</li>
+</ul>
+<h2 id="testing">Testing<a aria-hidden="true" class="anchor-heading icon-link" href="#testing"></a></h2>
+<p>If we can, it's generally not a bad idea to test hooks by simply testing the component that they are used in.</p>
+<ul>
+<li>naturally, if the component tests pass, then the hook must be working properly.</li>
+</ul>
+<p>Alternatively, we can use a setup helper that renders a dummy component (since a rule of hooks is that they must be called from within a component):</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">setup</span><span class="token punctuation">(</span><span class="token parameter"><span class="token spread operator">...</span>args</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> returnVal <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+  <span class="token keyword">function</span> <span class="token function"><span class="token maybe-class-name">TestComponent</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token known-class-name class-name">Object</span><span class="token punctuation">.</span><span class="token method function property-access">assign</span><span class="token punctuation">(</span>returnVal<span class="token punctuation">,</span> <span class="token function">useUndo</span><span class="token punctuation">(</span><span class="token spread operator">...</span>args<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword control-flow">return</span> <span class="token keyword null nil">null</span>
+  <span class="token punctuation">}</span>
+  <span class="token function">render</span><span class="token punctuation">(</span><span class="token operator">&#x3C;</span><span class="token maybe-class-name">TestComponent</span> <span class="token operator">/</span><span class="token operator">></span><span class="token punctuation">)</span>
+  <span class="token keyword control-flow">return</span> returnVal
+<span class="token punctuation">}</span>
+
+<span class="token function">test</span><span class="token punctuation">(</span><span class="token string">'should ...'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> undoData <span class="token operator">=</span> <span class="token function">setup</span><span class="token punctuation">(</span><span class="token string">'one'</span><span class="token punctuation">)</span>
+
+  <span class="token comment">// assert initial state</span>
+  <span class="token function">expect</span><span class="token punctuation">(</span>undoData<span class="token punctuation">.</span><span class="token property-access">loading</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token method function property-access">toBe</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span>
+
+  <span class="token comment">// add second value (set is a function returned from the hook)</span>
+  <span class="token function">act</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+    undoData<span class="token punctuation">.</span><span class="token method function property-access">set</span><span class="token punctuation">(</span><span class="token string">'two'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+  <span class="token comment">// assert next state</span>
+  <span class="token function">expect</span><span class="token punctuation">(</span>undoData<span class="token punctuation">.</span><span class="token property-access">loading</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token method function property-access">toBe</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span>
+</code></pre>
+<p>Even more alternatively, we can use <code>@testing-library/react-hooks</code>, which gives us:</p>
+<ul>
+<li>similar benefit to the <code>setup</code> function above</li>
+<li>Utility to "rerender" the component that's rendering the hook (to test effect dependency changes for example)</li>
+<li>Utility to "unmount" the component that's rendering the hook (to test effect cleanup functions for example)</li>
+<li>Several async utilities to wait an unspecified amount of time (to test async logic)</li>
+</ul>
+<h2 id="resources">Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#resources"></a></h2>
+<ul>
+<li><a href="https://github.com/rehooks">Rehooks: premade react hooks</a></li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/hEG7YxFDbOJ2PM8cVy66M">useCallback</a></li>
+<li><a href="/notes/HBiP5GIRzCiKzuCXYODmn">useEffect</a></li>
+<li><a href="/notes/f4aqrnklfcugvo4ufw4yyql">useMemo</a></li>
+<li><a href="/notes/rxq08jCCgT0B2mfYNr9TU">useReducer</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/cz88l4wb78wxb7eb4gbr5ok">HoC (Higher-Order Component)</a></li>
+</ul>

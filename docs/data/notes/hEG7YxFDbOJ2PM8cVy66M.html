@@ -1,0 +1,53 @@
+<h1 id="usecallback">useCallback<a aria-hidden="true" class="anchor-heading icon-link" href="#usecallback"></a></h1>
+<p><code>useCallback</code> returns a memoized callback.</p>
+<ul>
+<li>it accepts a function, and returns the same instance of the function being passed instead of creating a new one when a component re-renders, which is the default behavior.</li>
+</ul>
+<p><code>useCallback</code> allows you to cache an instance of a function between renders.</p>
+<ul>
+<li>by default, all variables (including functions) defined in a component body will be regenerated on each rendering of the component. <code>useCallback</code> allows us to say "I know that this function body will not change unless <em>this</em> prop (or state) changes. Therefore, I want to opt-out of the automatic regeneration of the function <em>unless</em> that prop changes."</li>
+</ul>
+<p>The purpose of <code>useCallback</code> is to prevent unnecessarily re-defining functions between component renders, making our code more efficient.</p>
+<ul>
+<li><a href="/notes/f4aqrnklfcugvo4ufw4yyql">useMemo</a> "caches" the value, while <code>useCallback</code> "caches" the function itself.</li>
+<li>In the days of class components, we had a <code>render()</code> function. Anything placed inside would get re-calculated on every render, but we also had the option of defining functions as class methods (by putting functions outside of <code>render()</code>). These methods would not get recalculated on each render, and would lead to performance gains. Since functional components naturally call everything (since <code>render()</code> method is implicit), they inherently have a performance issue. <code>useCallback</code> and <code>useMemo</code> exist to alleviate this problem.</li>
+</ul>
+<p>You should consider using useCallback and/or useMemo hooks on the following situations:</p>
+<ol>
+<li>Processing large amounts of data</li>
+<li>Working with interactive graphs and charts</li>
+<li>Implementing animations</li>
+<li>Incorporating component lazy loading (<code>useMemo</code> specifically)</li>
+</ol>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> additionResult <span class="token operator">=</span> <span class="token function">useCallback</span><span class="token punctuation">(</span><span class="token function">add</span><span class="token punctuation">(</span>firstVal<span class="token punctuation">,</span> secondVal<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">[</span>firstVal<span class="token punctuation">,</span> secondVal<span class="token punctuation">]</span><span class="token punctuation">)</span>
+</code></pre>
+<ul>
+<li>In this example, the <code>additionResult</code> function only gets re-defined if either <code>firstVal</code> or <code>secondVal</code> have changed between those 2 renders.</li>
+</ul>
+<h3 id="example">Example<a aria-hidden="true" class="anchor-heading icon-link" href="#example"></a></h3>
+<p>Imagine we had a function that we passed down to a child component.</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token function-variable function">getItems</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+	<span class="token keyword control-flow">return</span> <span class="token punctuation">[</span>number<span class="token punctuation">,</span> number <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> number <span class="token operator">+</span> <span class="token number">2</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>This can get expensive. Instead we can memoize the callback:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> getItems <span class="token operator">=</span> <span class="token function">useCallback</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+	<span class="token keyword control-flow">return</span> <span class="token punctuation">[</span>number<span class="token punctuation">,</span> number <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> number <span class="token operator">+</span> <span class="token number">2</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">[</span>number<span class="token punctuation">]</span><span class="token punctuation">)</span>
+</code></pre>
+<p>Now, the <code>getItems</code> function:</p>
+<pre class="language-js"><code class="language-js"><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+	<span class="token keyword control-flow">return</span> <span class="token punctuation">[</span>number<span class="token punctuation">,</span> number <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> number <span class="token operator">+</span> <span class="token number">2</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Only gets redefined when the <code>number</code> prop changes.</p>
+<h2 id="additional-reading">Additional reading<a aria-hidden="true" class="anchor-heading icon-link" href="#additional-reading"></a></h2>
+<ul>
+<li><a href="https://kentcdodds.com/blog/usememo-and-usecallback">when to use</a></li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/Bqpifx2HX3vjLhX9yvhTV">Architecture</a></li>
+<li><a href="/notes/f4aqrnklfcugvo4ufw4yyql">useMemo</a></li>
+</ul>

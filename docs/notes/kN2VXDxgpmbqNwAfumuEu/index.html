@@ -1,0 +1,196 @@
+<!DOCTYPE html><html><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width"/><link rel="icon" href="/favicon.ico"/><title>Conf</title><meta name="robots" content="index,follow"/><meta name="googlebot" content="index,follow"/><meta name="description" content="The Tech Digital Garden of Kyle Tycholiz"/><meta property="og:title" content="Conf"/><meta property="og:description" content="The Tech Digital Garden of Kyle Tycholiz"/><meta property="og:url" content="https://tech.kyletycholiz.com/notes/kN2VXDxgpmbqNwAfumuEu/"/><meta property="og:type" content="article"/><meta property="article:published_time" content="3/31/2021"/><meta property="article:modified_time" content="2/23/2022"/><link rel="canonical" href="https://tech.kyletycholiz.com/notes/kN2VXDxgpmbqNwAfumuEu/"/><meta name="next-head-count" content="14"/><link rel="preload" href="/_next/static/css/8e7b7e4bce421c0a.css" as="style"/><link rel="stylesheet" href="/_next/static/css/8e7b7e4bce421c0a.css" data-n-g=""/><noscript data-n-css=""></noscript><script defer="" nomodule="" src="/_next/static/chunks/polyfills-c67a75d1b6f99dc8.js"></script><script src="/_next/static/chunks/webpack-3d209faeb64f2f97.js" defer=""></script><script src="/_next/static/chunks/framework-28c999baf2863c3d.js" defer=""></script><script src="/_next/static/chunks/main-104451f3d1a5c4bc.js" defer=""></script><script src="/_next/static/chunks/pages/_app-6b338472289fe290.js" defer=""></script><script src="/_next/static/chunks/935-4dee79e80b8641c6.js" defer=""></script><script src="/_next/static/chunks/6-50972def09142ee2.js" defer=""></script><script src="/_next/static/chunks/pages/notes/%5Bid%5D-78d472fa3b924116.js" defer=""></script><script src="/_next/static/fo6gubzKP_KV9RZPhaoiQ/_buildManifest.js" defer=""></script><script src="/_next/static/fo6gubzKP_KV9RZPhaoiQ/_ssgManifest.js" defer=""></script></head><body><div id="__next" data-reactroot=""><section class="ant-layout" style="width:100%;min-height:100%"><header class="ant-layout-header" style="position:fixed;isolation:isolate;z-index:1;width:100%;border-bottom:1px solid #d4dadf;height:64px;padding:0 24px 0 2px"><div class="ant-row ant-row-center" style="max-width:992px;justify-content:space-between;margin:0 auto"><div style="display:flex" class="ant-col ant-col-xs-20 ant-col-sm-4"></div><div class="ant-col gutter-row ant-col-xs-0 ant-col-sm-20 ant-col-md-20 ant-col-lg-19"><div class="ant-select ant-select-lg ant-select-auto-complete ant-select-single ant-select-allow-clear ant-select-show-search" style="width:100%"><div class="ant-select-selector"><span class="ant-select-selection-search"><input type="search" autoComplete="off" class="ant-select-selection-search-input" role="combobox" aria-haspopup="listbox" aria-owns="undefined_list" aria-autocomplete="list" aria-controls="undefined_list" aria-activedescendant="undefined_list_0" value=""/></span><span class="ant-select-selection-placeholder">For full text search please use the &#x27;?&#x27; prefix. e.g. ? Onboarding</span></div></div></div><div style="display:none;align-items:center;justify-content:center" class="ant-col ant-col-xs-4 ant-col-sm-4 ant-col-md-0 ant-col-lg-0"><span role="img" aria-label="menu" style="font-size:24px" tabindex="-1" class="anticon anticon-menu"><svg viewBox="64 64 896 896" focusable="false" data-icon="menu" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M904 160H120c-4.4 0-8 3.6-8 8v64c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-64c0-4.4-3.6-8-8-8zm0 624H120c-4.4 0-8 3.6-8 8v64c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-64c0-4.4-3.6-8-8-8zm0-312H120c-4.4 0-8 3.6-8 8v64c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-64c0-4.4-3.6-8-8-8z"></path></svg></span></div></div></header><section class="ant-layout" style="margin-top:64px;display:flex;flex-direction:row"><div class="site-layout-sidebar" style="flex:0 0 auto;width:calc(max((100% - 992px) / 2, 0px) + 200px);min-width:200px;padding-left:calc((100% - 992px) / 2)"><aside class="ant-layout-sider ant-layout-sider-dark" style="position:fixed;overflow:auto;height:calc(100vh - 64px);background-color:transparent;flex:0 0 200px;max-width:200px;min-width:200px;width:200px"><div class="ant-layout-sider-children"></div></aside></div><main class="ant-layout-content side-layout-main" style="max-width:1200px;min-width:0;display:block"><div style="padding:0 24px"><div class="main-content" role="main"><div class="ant-row"><div class="ant-col ant-col-24"><div class="ant-row" style="margin-left:-10px;margin-right:-10px"><div style="padding-left:10px;padding-right:10px" class="ant-col ant-col-xs-24 ant-col-md-18"><div><h1 id="conf">Conf<a aria-hidden="true" class="anchor-heading icon-link" href="#conf"></a></h1>
+<p>nginx.conf building blocks </p>
+<ul>
+<li>
+<p>worker process    : should be equal to number cores of the server (or auto)</p>
+</li>
+<li>
+<p>worker connection : 1024 (per thread. nginx doesn't block) </p>
+</li>
+<li>
+<p>rate limiting     : prevent brute force attacks.</p>
+</li>
+<li>
+<p>proxy buffers     : (when used as proxy server)limits how much data to store as cache
+gzip /brotil or compression</p>
+</li>
+<li>
+<p>upload file size  : it should match php max upload size and nginx client max body size.</p>
+</li>
+<li>
+<p>timeouts          : php to nginx communication time.</p>
+</li>
+<li>
+<p>log rotation      : error log useful to know the errors and monitor resources</p>
+</li>
+<li>
+<p>fastcgi cache     : very important to boost the performance for static sties.</p>
+</li>
+<li>
+<p>SSL Configuration : there are default setting available with nginx itself
+(also see ssl performance tuning).</p>
+</li>
+</ul>
+<p>Example nginx.conf: </p>
+<pre class="language-conf"><code class="language-conf">user www-data;                                   
+load_module modules/my_favourite_module.so;      
+pid /run/nginx.pid;
+    | Alternative global config for 
+    | [4 cores, 8 threads, 32GB RAM] 
+    | handling  50000request/sec
+    |
+worker_processes auto;                           | worker_processes 8;
+    | worker_priority -15;
+include /etc/nginx/modules-enabled/*.conf;       | 
+worker_rlimit_nofile 100000;                     | worker_rlimit_nofile 400000;                                  
+    | timer_resolution 10000ms;
+    |
+events {                                         | events {
+    worker_connections 1024;                       |     worker_connections 20000;                       
+    multi_accept on;                               |     use epoll;
+}                                                |     multi_accept on;
+| }
+
+http {               ←  global config            
+    index index.php index.html index.htm;          
+    # Basic Settings                               
+
+    sendfile on;                                   
+    tcp_nopush on;
+    tcp_nodelay on;
+    sendfile_max_chunk 512;
+    keepalive_timeout 300;
+    keepalive_requests 100000;
+    types_hash_max_size 2048;
+    server_tokens off;
+
+    server_names_hash_bucket_size 128;
+    # server_name_in_redirect off;
+
+    include /etc/nginx/mime.types;
+    default_type application/octet-stream;
+    ##
+    # SSL Settings
+    ##
+
+    #ssl_protocols TLSv1 TLSv1.1 TLSv1.2; # Dropping SSLv3, ref: POODLE
+    #ssl_prefer_server_ciphers on;
+    #rate limit zone
+
+    limit_req_zone $binary_remote_addr zone=one:10m rate=3r/m;
+    #buffers
+
+    client_body_buffer_size 128k;
+    client_max_body_size 10m;
+    client_header_buffer_size 32k;
+    large_client_header_buffers 16 256k;
+    output_buffers 1 32k;
+    postpone_output 1460;
+    #Porxy buffers
+    proxy_buffer_size 256k;
+    proxy_buffers 8 128k;
+    proxy_busy_buffers_size 256k;
+    proxy_max_temp_file_size 2048m;
+    proxy_temp_file_write_size 2048m;
+
+    ## fast cgi PHP
+    fastcgi_buffers 8 16k;
+    fastcgi_buffer_size 32k;
+    fastcgi_connect_timeout 300;
+    fastcgi_send_timeout 300;
+    fastcgi_read_timeout 300;
+    #static caching css/js/img
+
+    open_file_cache max=10000 inactive=5m;
+    open_file_cache_valid 2m;
+    open_file_cache_min_uses 1;
+    open_file_cache_errors on;
+    #timeouts
+
+    client_header_timeout 3m;
+    client_body_timeout 3m;
+    send_timeout 3m;
+
+    # Logging Settings
+
+    log_format main_ext ‘$remote_addr – $remote_user [$time_local] “$request” ‘
+    ‘$status $body_bytes_sent “$http_referer” ‘
+    ‘”$http_user_agent” “$http_x_forwarded_for” ‘
+    ‘”$host” sn=”$server_name” ‘
+    ‘rt=$request_time ‘
+    ‘ua=”$upstream_addr” us=”$upstream_status” ‘
+    ‘ut=”$upstream_response_time” ul=”$upstream_response_length” ‘
+    ‘cs=$upstream_cache_status’ ;
+
+    #access_log /var/log/nginx/access.log main_ext;
+    error_log /var/log/nginx/error.log warn;   Read more on nginx error log&#x26;common errors
+
+    ##
+    # Gzip Settings #brotil
+    ##
+
+    gzip on;
+    gzip_disable “msie6”;
+
+    gzip_vary on;
+    gzip_proxied any;
+    gzip_comp_level 6;
+    gzip_buffers 16 8k;
+    gzip_http_version 1.1;
+    gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript application/x-font-ttf font/opentype image/svg+xml image/x-icon;
+    ##
+    # Virtual Host Configs
+    ##
+
+    include /etc/nginx/conf.d/*.conf;
+    include /etc/nginx/sites-enabled/*;   
+}
+
+server {             ← Domain level 
+    listen 0.0.0.0:443 rcvbuf=64000 sndbuf=120000 backlog=20000 ssl http2;
+    server_name example.com www.example.com;
+    keepalive_timeout         60;
+    ssl                       on;
+    ssl_protocols             TLSv1.2 TLSv1.1 TLSv1;
+    ssl_ciphers               'ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:ECDH+3DES:DH+3DES:RSA+AESGCM:RSA+AES:RSA+3DES:!aNULL:!MD5:!DSS:!RC4';
+    ssl_prefer_server_ciphers on;
+    ssl_session_cache         shared:TLSSL:30m;
+    ssl_session_timeout       10m;
+    ssl_buffer_size           32k;
+    ssl_certificate           /etc/letsencrypt/live/example.com/fullchain.pem;
+    ssl_certificate_key       /etc/letsencrypt/live/example.com/privkey.pem;
+    ssl_dhparam           /etc/ssl/certs/dhparam.pem;
+    more_set_headers          "X-Secure-Connection: true";
+    add_header                Strict-Transport-Security max-age=315360000;
+    root       /var/www;
+
+    location {         ← Directory level 
+        root /var/www;
+        index index.php index.html;
+    }
+
+    location ~ .php$ {  
+    fastcgi_keep_conn on;
+    fastcgi_pass   unix:/run/php5.6-fpm.sock;
+    fastcgi_index  index.php;
+    fastcgi_param  SCRIPT_FILENAME /var/www$fastcgi_script_name;
+    include fastcgi_params;
+    fastcgi_intercept_errors off;
+    fastcgi_buffer_size 32k;
+    fastcgi_buffers 32 32k;
+    fastcgi_connect_timeout 5;
+    }
+
+    location ~* ^.+.(jpg|jpeg|gif|png|svg|ico|css|less|xml|html?|swf|js|ttf)$ { 
+        root /var/www;
+        expires 10y;
+    }
+
+}
+</code></pre>
+<ul>
+<li>/etc/nginx/conf.d/*: user defined config files</li>
+</ul>
+<p>See also:
+<a href="https://github.com/trimstray/nginx-admins-handbook">https://github.com/trimstray/nginx-admins-handbook</a>
+<a href="https://github.com/tldr-devops/nginx-common-configuration">https://github.com/tldr-devops/nginx-common-configuration</a></p></div></div><div style="padding-left:10px;padding-right:10px" class="ant-col ant-col-xs-0 ant-col-md-6"><div><div class=""><div class="ant-anchor-wrapper dendron-toc" style="max-height:calc(100vh - 64px);z-index:1"><div class="ant-anchor"><div class="ant-anchor-ink"><span class="ant-anchor-ink-ball"></span></div></div></div></div></div></div></div></div></div></div></div><div class="ant-divider ant-divider-horizontal" role="separator"></div><footer class="ant-layout-footer" style="padding:0 24px 24px"></footer></main></section></section></div><script id="__NEXT_DATA__" type="application/json">{"props":{"pageProps":{"note":{"id":"kN2VXDxgpmbqNwAfumuEu","title":"Conf","desc":"","updated":1645633620777,"created":1617169094756,"custom":{},"fname":"nginx.conf","type":"note","vault":{"fsPath":"../main/tech","name":"tech"},"contentHash":"6a9ff71d4b42a15003352f5471d7101b","links":[],"anchors":{},"children":[],"parent":"AzfWDH3wp7jFpL2EYxBcW","data":{}},"body":"\u003ch1 id=\"conf\"\u003eConf\u003ca aria-hidden=\"true\" class=\"anchor-heading icon-link\" href=\"#conf\"\u003e\u003c/a\u003e\u003c/h1\u003e\n\u003cp\u003enginx.conf building blocks \u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\n\u003cp\u003eworker process    : should be equal to number cores of the server (or auto)\u003c/p\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003cp\u003eworker connection : 1024 (per thread. nginx doesn't block) \u003c/p\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003cp\u003erate limiting     : prevent brute force attacks.\u003c/p\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003cp\u003eproxy buffers     : (when used as proxy server)limits how much data to store as cache\ngzip /brotil or compression\u003c/p\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003cp\u003eupload file size  : it should match php max upload size and nginx client max body size.\u003c/p\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003cp\u003etimeouts          : php to nginx communication time.\u003c/p\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003cp\u003elog rotation      : error log useful to know the errors and monitor resources\u003c/p\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003cp\u003efastcgi cache     : very important to boost the performance for static sties.\u003c/p\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003cp\u003eSSL Configuration : there are default setting available with nginx itself\n(also see ssl performance tuning).\u003c/p\u003e\n\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eExample nginx.conf: \u003c/p\u003e\n\u003cpre class=\"language-conf\"\u003e\u003ccode class=\"language-conf\"\u003euser www-data;                                   \nload_module modules/my_favourite_module.so;      \npid /run/nginx.pid;\n    | Alternative global config for \n    | [4 cores, 8 threads, 32GB RAM] \n    | handling  50000request/sec\n    |\nworker_processes auto;                           | worker_processes 8;\n    | worker_priority -15;\ninclude /etc/nginx/modules-enabled/*.conf;       | \nworker_rlimit_nofile 100000;                     | worker_rlimit_nofile 400000;                                  \n    | timer_resolution 10000ms;\n    |\nevents {                                         | events {\n    worker_connections 1024;                       |     worker_connections 20000;                       \n    multi_accept on;                               |     use epoll;\n}                                                |     multi_accept on;\n| }\n\nhttp {               ←  global config            \n    index index.php index.html index.htm;          \n    # Basic Settings                               \n\n    sendfile on;                                   \n    tcp_nopush on;\n    tcp_nodelay on;\n    sendfile_max_chunk 512;\n    keepalive_timeout 300;\n    keepalive_requests 100000;\n    types_hash_max_size 2048;\n    server_tokens off;\n\n    server_names_hash_bucket_size 128;\n    # server_name_in_redirect off;\n\n    include /etc/nginx/mime.types;\n    default_type application/octet-stream;\n    ##\n    # SSL Settings\n    ##\n\n    #ssl_protocols TLSv1 TLSv1.1 TLSv1.2; # Dropping SSLv3, ref: POODLE\n    #ssl_prefer_server_ciphers on;\n    #rate limit zone\n\n    limit_req_zone $binary_remote_addr zone=one:10m rate=3r/m;\n    #buffers\n\n    client_body_buffer_size 128k;\n    client_max_body_size 10m;\n    client_header_buffer_size 32k;\n    large_client_header_buffers 16 256k;\n    output_buffers 1 32k;\n    postpone_output 1460;\n    #Porxy buffers\n    proxy_buffer_size 256k;\n    proxy_buffers 8 128k;\n    proxy_busy_buffers_size 256k;\n    proxy_max_temp_file_size 2048m;\n    proxy_temp_file_write_size 2048m;\n\n    ## fast cgi PHP\n    fastcgi_buffers 8 16k;\n    fastcgi_buffer_size 32k;\n    fastcgi_connect_timeout 300;\n    fastcgi_send_timeout 300;\n    fastcgi_read_timeout 300;\n    #static caching css/js/img\n\n    open_file_cache max=10000 inactive=5m;\n    open_file_cache_valid 2m;\n    open_file_cache_min_uses 1;\n    open_file_cache_errors on;\n    #timeouts\n\n    client_header_timeout 3m;\n    client_body_timeout 3m;\n    send_timeout 3m;\n\n    # Logging Settings\n\n    log_format main_ext ‘$remote_addr – $remote_user [$time_local] “$request” ‘\n    ‘$status $body_bytes_sent “$http_referer” ‘\n    ‘”$http_user_agent” “$http_x_forwarded_for” ‘\n    ‘”$host” sn=”$server_name” ‘\n    ‘rt=$request_time ‘\n    ‘ua=”$upstream_addr” us=”$upstream_status” ‘\n    ‘ut=”$upstream_response_time” ul=”$upstream_response_length” ‘\n    ‘cs=$upstream_cache_status’ ;\n\n    #access_log /var/log/nginx/access.log main_ext;\n    error_log /var/log/nginx/error.log warn;   Read more on nginx error log\u0026#x26;common errors\n\n    ##\n    # Gzip Settings #brotil\n    ##\n\n    gzip on;\n    gzip_disable “msie6”;\n\n    gzip_vary on;\n    gzip_proxied any;\n    gzip_comp_level 6;\n    gzip_buffers 16 8k;\n    gzip_http_version 1.1;\n    gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript application/x-font-ttf font/opentype image/svg+xml image/x-icon;\n    ##\n    # Virtual Host Configs\n    ##\n\n    include /etc/nginx/conf.d/*.conf;\n    include /etc/nginx/sites-enabled/*;   \n}\n\nserver {             ← Domain level \n    listen 0.0.0.0:443 rcvbuf=64000 sndbuf=120000 backlog=20000 ssl http2;\n    server_name example.com www.example.com;\n    keepalive_timeout         60;\n    ssl                       on;\n    ssl_protocols             TLSv1.2 TLSv1.1 TLSv1;\n    ssl_ciphers               'ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:ECDH+3DES:DH+3DES:RSA+AESGCM:RSA+AES:RSA+3DES:!aNULL:!MD5:!DSS:!RC4';\n    ssl_prefer_server_ciphers on;\n    ssl_session_cache         shared:TLSSL:30m;\n    ssl_session_timeout       10m;\n    ssl_buffer_size           32k;\n    ssl_certificate           /etc/letsencrypt/live/example.com/fullchain.pem;\n    ssl_certificate_key       /etc/letsencrypt/live/example.com/privkey.pem;\n    ssl_dhparam           /etc/ssl/certs/dhparam.pem;\n    more_set_headers          \"X-Secure-Connection: true\";\n    add_header                Strict-Transport-Security max-age=315360000;\n    root       /var/www;\n\n    location {         ← Directory level \n        root /var/www;\n        index index.php index.html;\n    }\n\n    location ~ .php$ {  \n    fastcgi_keep_conn on;\n    fastcgi_pass   unix:/run/php5.6-fpm.sock;\n    fastcgi_index  index.php;\n    fastcgi_param  SCRIPT_FILENAME /var/www$fastcgi_script_name;\n    include fastcgi_params;\n    fastcgi_intercept_errors off;\n    fastcgi_buffer_size 32k;\n    fastcgi_buffers 32 32k;\n    fastcgi_connect_timeout 5;\n    }\n\n    location ~* ^.+.(jpg|jpeg|gif|png|svg|ico|css|less|xml|html?|swf|js|ttf)$ { \n        root /var/www;\n        expires 10y;\n    }\n\n}\n\u003c/code\u003e\u003c/pre\u003e\n\u003cul\u003e\n\u003cli\u003e/etc/nginx/conf.d/*: user defined config files\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eSee also:\n\u003ca href=\"https://github.com/trimstray/nginx-admins-handbook\"\u003ehttps://github.com/trimstray/nginx-admins-handbook\u003c/a\u003e\n\u003ca href=\"https://github.com/tldr-devops/nginx-common-configuration\"\u003ehttps://github.com/tldr-devops/nginx-common-configuration\u003c/a\u003e\u003c/p\u003e","noteIndex":{"id":"olZIVfSs2uLLr3BppFh4K","title":"Digital Garden","desc":"","updated":1674517603573,"created":1615482407722,"custom":{"nav_order":0,"permalink":"/"},"fname":"root","type":"note","vault":{"fsPath":"../main/tech","name":"tech"},"contentHash":"effb007003ca6a91d7fd0c293e1d2436","links":[{"type":"wiki","from":{"fname":"root","id":"olZIVfSs2uLLr3BppFh4K","vaultName":"tech"},"value":"testing.method.unit","alias":"unit testing","position":{"start":{"line":18,"column":121,"offset":1146},"end":{"line":18,"column":157,"offset":1182},"indent":[]},"xvault":false,"sameFile":false,"to":{"fname":"testing.method.unit"}},{"type":"wiki","from":{"fname":"root","id":"olZIVfSs2uLLr3BppFh4K","vaultName":"tech"},"value":"general.arch.microservice","alias":"microservices","position":{"start":{"line":18,"column":188,"offset":1213},"end":{"line":18,"column":231,"offset":1256},"indent":[]},"xvault":false,"sameFile":false,"to":{"fname":"general.arch.microservice"}},{"type":"wiki","from":{"fname":"root","id":"olZIVfSs2uLLr3BppFh4K","vaultName":"tech"},"value":"paradigm.oop","alias":"OOP","position":{"start":{"line":36,"column":227,"offset":2718},"end":{"line":36,"column":247,"offset":2738},"indent":[]},"xvault":false,"sameFile":false,"to":{"fname":"paradigm.oop"}}],"anchors":{"tags":{"type":"header","text":"Tags","value":"tags","line":46,"column":0,"depth":3},"resources":{"type":"header","text":"Resources","value":"resources","line":55,"column":0,"depth":2},"ue-unexamined-resources":{"type":"header","text":"UE (Unexamined) Resources","value":"ue-unexamined-resources","line":56,"column":0,"depth":3},"e-examined-resources":{"type":"header","text":"E (Examined) Resources","value":"e-examined-resources","line":59,"column":0,"depth":3},"resources-1":{"type":"header","text":"Resources","value":"resources-1","line":62,"column":0,"depth":3}},"children":["40ubf88tephzbdjte8cdsa0","zFMjbn3xihVNHjUIdZCD1","IK6NOKemuDjhfstJBovKL","ZaTr28eWk1DrXOEsc1YVb","Vi0WYVLZunVM9iR8XZJn3","ngAbg7gluvbt1bY1UIRsi","RCPPXSakm5TvKka8kOmVp","LIcuGYV0DDt1VWbvH6Sed","MPx8ykTP57I40WTZvTP7f","ZU5WmdTG1bHoE8RcmZXZG","jqWiyYJff92RjXuUQt9PQ","KihijM8OQvZ4pASkkhqzL","F9vyqvls3OBCujtukqKhy","k6jxm2b3edgkhbordpuz6v1","facc2b01-755a-409f-99f6-57bef2d1501f","bZumdyapJ2H0wWWOmJ45i","elqpgoe2r951si4xrhujppj","m5ov42Vm6mR7RQWTvl1NW","cw8cerc0cos8lh871oz8rtf","PZxxZ4iESzSlbbHJKxuAZ","UDu62Pa6BaRqlG8uGoMhy","u3zcndycwqessho5h6x0nz9","ZgCUp366YrF2Tyky2NT73","DVpVUmavSoVDA7UIlPzLX","nMCtMXVvjBsJk3iw1zoIO","ANfx9Z4a6ZA0uJuSHtbIJ","BkG557LKUYbH1DnxprEVT","1TaH8zDTM98FZ9SYaeXLM","02v7ymc144e5c4pv3edkud7","dc79799f-a55d-48ab-a8be-c48adb1b19c0","f6feef57-b8f5-451f-a09a-7b63f6a07183","4sz47Y0LKs1Si73rWtyyh","g7ulqi8no93ezeocbesc3ll","5a9fb1df-478e-4687-9be0-5cb97e61ec57","1374e9e9-1cbc-4e1f-b1ca-66b8569533dd","D8Z3rjXkSj2EOymXQXF4Z","np3c1ykvnjqv5xoombpfwqz","f529cc34-aba0-45ca-ad7e-02ddda318941","0zcauha3il2NqtxZazIo7","9bbd6f68-03b2-41f4-92e4-2ca313e8b450","5a2ab598-fa7e-4471-8bda-9f5831b679ae","uV6w4mZPoohWyZV4Xaad0","QHXEIyeZGIGMVi5Q52UWI","RgE0mZLaUjPftFPZsiAoe","mytCOts26Pidush65tdRW","fwUzxfLSPMH1eL8oBoLWx","wazdsda6h25x66edvfmeuiv","TbW7PM9bg1y5TGkiWwQ8b","xiSIDeEtIc8X0lpUQlppI","0jxgntiLNHWFuCbzqtFGF","GkdMprLUe4QQULBxmGN6V","4SYc6v5hxY5g6Ip6kjpwO","czi7ilt2i1uoqm1f2otbntj","fqVQpS9FBiXgKsZX3R3sJ","L5JUZlGAGvTxrsEBB7DY8","ttyri4pwfyn5lcx0vp9804o","TeTedoeS2LdHPR632eCpM","ulicRRwo3lSFzh3tMfWH9","p7d24vyb8m00ombzn34t50c","e65188a1-177e-4ab2-99f9-75f85d537621","fajYnbVhCRDi74xn0H30R","bArGdGwqo3iFkyKMyE7qR","4Dcp7gbEVoLLgfu7bXFai","5d700782-fb81-416e-83f9-5dd88260e350","zubgzhNFE6KlTgXcjTz6O","8lpdfWa0cbSq1XJQbcYcY","2psluywdc416t7vrql0m058","17I8ZksXvqCH1mRtZDjHp","kF916Ow84qpJJeMRkWMIo","tMLkLcrIHHBz56xVmBLkP","CSePBQ6q7qhowKESqVwt7","laZ4OfLhZNK1Kuy6GaWUr","z5IJblOknQhMzZ5QZh4ye","N36FHxfxzwJfxDY3miWyX","3bb25f58-2b50-4fa3-af55-48ea9f88a081","7x07qjgbitozdfszqzuy7ix","u93Rz4fEWGu6VBR30Zraf","9hjMHnKvYT4jLKvuDSXaV","qC5GxCZBmNb4Ip6c0kU8x","LgW7mTIALODoXc54B3p6S","UYPxfHBFWX7fb6hHU5bB6","74lYtC8NKpCzcyFOZTfR1","sEoBNAEuaTxwSmTXDonZt","dj0jr9mpvs62e2pkg3zc3yy","z8ie0xjogb6ht7gzowav5xr","qxSOd6SPN8qf9ZUojVFDX","WQoMTf6VXBaxCgksXAVsj","2Mw4XgfyCHXHNOX5yoCIY","qcdt2f7jo51muquo5r95dpo","0XJqmcdtcMZu66glBI5O8","lK8r8BXS4ThiUTe4xKIZe","93de42ca-53ea-460a-baa7-b9ec5c47cb1e","Rxs2jaGpdFzqYtP7lAJFJ","aO8W81Z0PyIb6Hs7nOHPW","lhzisalkebu4w5n01np07i0","7b5l4b6fi65n7sv9org5q1l","I01hENHnh8Tqu3Ok8sLzG","03o3n0hz9v9jtb7j889zpd4","evqsPNutOaZ8hcBCqxFQu","zhhxcjZUHdU8uRLwGb9Zh","G1aFACZB2ooWGMGwyd3ZW","YWy1C4tgoaCcw1m8JJsr7","Szj3o5iaNxPpesiCqwrbu","613syb18hb3v0u1ydvor7ru","XhvCDW3fIw6h6MhY5ticq","Q70g7SusFZBQXzkuQifv4","AzfWDH3wp7jFpL2EYxBcW","y0fwpZ9qMqirsLiFyOciU","ZF8xj8wwDUqKlrwTrCFZ1","tAJvhqhdfyZZa87QHq1TU","4hRmipi8lxpBLyzWu5JVB","iTg0C7QjvnmqBZeEigJNs","3babc3d2-79ae-470a-9c06-ab8bba2e684e","bF3UsMFya3fMeXWDspVov","ULkfbL9WpktbVYnzhl6Jw","PpNOO8JYWe6dM8wruSa7x","di40pCxDn7IiqE8lFdD46","rmW0mkerqV35I8QPji6lM","3IFIK1ByzeIxZCByryGLN","iImkYAKfkw3beAl6pLbDn","ecDe8DNWrkeQTwpTEvHje","i2it5id8qwtg27n4usg8bo1","Yqhdd9mSJGN7OJOeyoSD2","Ws5tah8tpeyn9tK8VBTg8","gWAg15uBJgkS2B0wcpMAa","l7V3v2ep1YdDCt7DOr7Ci","yM2PJBdqJnHpD63cPA6sW","qn0bre7eLbi3QMbCfWkUi","fSu0KxFL41IRouotqmbHs","0gtg24Mj1a1bQFPRGQNlO","7iQPBMltLPLbFEz2qbjPu","yoh4pwoXcfELInGKRdYf6","dCGCWXgAmiOZXbdULT1m6","jMavlje07sNa6hSEIE8WA","Xxm0JE4dKHxrQAaZfzvxD","nRb6Im4Kcmc2ZWE7K1jZ1","PAEBZCyFBZJyR7OoMZ41E","PQ6km8RgRCuyICBPOYz8f","x5tm1nfjzyawwzedy3yitgd","2bhftt8rGuxYu4pFgNqru","hjYIZpHQWuXfeEoGeJEKW","K2M9bQqVq2eQfm29eslKL","X8obW1iKwYsvNgKWGyCzy","yJwSC7hqYIezTFHf5i0Ev","c4Z7ETcOHUILRMH32Sfjw","qiR6dIu857b9M9kTqjOyK","fc2coz74cnfy5czzofx4h5x","Ku1OgHMhELajzo61Gx7ye","LUrfhDWo8wuwZu7CN9TV8","osu6JGOnvXJ5gt3tpqWZY","1a6173cd-cf13-4b34-a522-8350bf9a364f","S2sBltrPfd8a7ICuD7CuH","GLQ2pmkJUNUa93THBDVsD","md6xitz4exia2joa06i490b","oWCuBXOg6JWfZzjmKxmNl","jOmhZ8ovLYTPbpM1vqSDx","p9bov84s0isgkl1ysaw93kk","FraC6xzLy1ei91l1ICyc9","6ceBas2RE9Q4787GDngH7","734cd78d-0bc9-426b-803d-1efc84dfffe5","k4Bb09px6r0FxIRs49SXV","oaG3H1S9IUBO644nGZigu","Ka7agQJkUMRSWN0uFdkWK","si3z090WsiLasMhJBa1Az","hs6rwzt4mogiicoc4gcykbi","ljKAVERmdEiKLK9hXGKBm","zxt3lhonfdhglvijd17ua8c","dd7dopve1dudqkoibkqvti4","923tgifqf59ovv5yldtyi0a","vrjwp01goqw47fqctm4f4lo","c99gdmmppju3r1tth8cb2jx","z2pvn5qxdz84zgygqzxage8"],"parent":null,"data":{},"body":"This Dendron vault of tech knowledge is organized according to domains and their sub-domains, along with specific implementation of those domains.\n\nFor instance, Git itself is a domain. Sub-domains of Git would include things like `commit`,\n`tags`, `reflog` etc. implementations of each of those could be `cli`, `strat`\n(strategies), `inner`, and so on.\n\nThe goal of the wiki is to present data in a manner that is from the perspective\nof a querying user. Here, a user is a programmer wanting to get key information\nfrom a specific domain. For instance, if a user wants to use postgres functions\nand hasn't done them in a while, they should be able to query\n`postgres.functions` to see what information is available to them.\n\nThis wiki has been written with myself in mind. While learning each of these\ndomains, I have been sensitive to the \"aha\" moments and have noted down my\ninsights as they arose. I have refrained from capturing information that I\nconsidered obvious or otherwise non-beneficial to my own understanding.\n\nAs a result, I have allowed myself to use potentially arcane concepts to explain other ones. For example, in my note on [[unit testing|testing.method.unit]], I have made reference to the [[microservices|general.arch.microservice]] note. If these notes were made with the public in mind, this would be a very bad strategy, given that you'd have to understand microservices to be able to draw that same parallel that I've already drawn. Since these notes are written for myself, I have been fine with taking these liberties.\n\nWhat I hope to gain from this wiki is the ability to step away from any\ngiven domain for a long period of time, and be able to be passably useful for\nwhatever my goals are within a short period of time. Of course this is all\nvague sounding, and really depends on the domain along with the ends I am\ntrying to reach.\n\nTo achieve this, the system should be steadfast to:\n- be able to put information in relatively easily, without too much thought\n\trequired to its location. While location is important, Dendron makes it easy\n\tto relocate notes, if it becomes apparent that a different place makes more\n\tsense.\n- be able to extract the information that is needed, meaning there is a\n\thigh-degree in confidence in the location of the information. The idea is\n\tthat information loses a large amount of its value when it is unfindable.\n\tTherefore, a relatively strict ideology should be used when determining\n\twhere a piece of information belongs.\n\t- Some concepts might realistically belong to multiple domains. For instance, the concept of *access modifiers* can be found in both `C#` and `Typescript`. Therefore, this note should be abstracted to a common place, such as [[OOP|paradigm.oop]].\n\nThis Dendron vault is the sister component to the [General Second Brain](https://tech.kyletycholiz.com).\n\n### Tags\nThroughout the garden, I have made use of tags, which give semantic meaning to the pieces of information.\n\n- `ex.` - Denotes an *example* of the preceding piece of information\n- `spec:` - Specifies that the preceding information has some degree of *speculation* to it, and may not be 100% factual. Ideally this gets clarified over time as my understanding develops.\n- `anal:` - Denotes an *analogy* of the preceding information. Often I will attempt to link concepts to others that I have previously learned.\n- `mn:` - Denotes a *mnemonic*\n- `expl:` - Denotes an *explanation*\n\n## Resources\n### UE (Unexamined) Resources\nOften, I come across sources of information that I believe to be high-quality. They may be recommendations or found in some other way. No matter their origin, I may be in a position where I don't have the time to fully examine them (and properly extract notes), or I may not require the information at that moment in time. In cases like these, I will add reference to a section of the note called **UE Resources**. The idea is that in the future when I am ready to examine them, I have a list of resources that I can start with. This is an alternative strategy to compiling browser bookmarks, which I've found can quickly become untenable.\n\n### E (Examined) Resources\nOnce a resource has been thoroughly examined and has been mined for notes, it will be moved from *UE Resources* to *E Resources*. This is to indicate that (in my own estimation), there is nothing more to be gained from the resource that is not already in the note.\n\n### Resources\nThis heading is for inexhaustible resources. \n- A prime example would be a quality website that continually posts articles.  - Another example would be a tool, such as software that measures frequencies in a room to help acoustically treat it.\n"},"collectionChildren":null,"customHeadContent":null,"config":{"version":5,"dev":{"enablePreviewV2":true},"commands":{"lookup":{"note":{"selectionMode":"extract","confirmVaultOnCreate":false,"leaveTrace":false,"bubbleUpCreateNew":true,"fuzzThreshold":0.2,"vaultSelectionModeOnCreate":"smart"}},"insertNote":{"initialValue":"templates"},"insertNoteLink":{"aliasMode":"none","enableMultiSelect":false},"insertNoteIndex":{"enableMarker":false},"randomNote":{},"copyNoteLink":{"aliasMode":"title"},"templateHierarchy":"template"},"workspace":{"dendronVersion":"0.83.0","vaults":[{"fsPath":"../main/tech","name":"tech"}],"journal":{"dailyDomain":"daily","name":"journal","dateFormat":"y.MM.dd","addBehavior":"childOfDomain"},"scratch":{"name":"scratch","dateFormat":"y.MM.dd.HHmmss","addBehavior":"asOwnDomain"},"graph":{"zoomSpeed":1,"createStub":false},"enableAutoCreateOnDefinition":false,"enableXVaultWikiLink":false,"enableRemoteVaultInit":true,"workspaceVaultSyncMode":"noCommit","enableAutoFoldFrontmatter":true,"maxPreviewsCached":10,"maxNoteLength":204800,"task":{"name":"","dateFormat":"","addBehavior":"childOfCurrent","statusSymbols":{"":" ","wip":"w","done":"x","assigned":"a","moved":"m","blocked":"b","delegated":"l","dropped":"d","pending":"y"},"prioritySymbols":{"H":"high","M":"medium","L":"low"},"todoIntegration":false,"createTaskSelectionType":"selection2link","taskCompleteStatus":["done","x"]},"enableUserTags":true,"enableHashTags":true,"enableEditorDecorations":true,"enableFullHierarchyNoteTitle":false},"preview":{"enableFMTitle":true,"enableNoteTitleForLink":true,"enableMermaid":true,"enablePrettyRefs":true,"enableKatex":true,"automaticallyShowPreview":false,"enableFrontmatterTags":true,"enableHashesForFMTags":false},"publishing":{"enableFMTitle":true,"enableNoteTitleForLink":true,"enablePrettyRefs":true,"enableKatex":true,"copyAssets":true,"siteHierarchies":["root"],"writeStubs":false,"siteRootDir":"docs","seo":{"title":"Dendron","description":"The Tech Digital Garden of Kyle Tycholiz"},"github":{"cname":"tech.kyletycholiz.com","enableEditLink":true,"editLinkText":"Edit this page on GitHub","editBranch":"master","editViewMode":"tree"},"enableSiteLastModified":true,"enableFrontmatterTags":true,"enableHashesForFMTags":false,"enableRandomlyColoredTags":true,"enableTaskNotes":true,"enablePrettyLinks":true,"searchMode":"lookup","enableMermaid":true,"siteUrl":"https://tech.kyletycholiz.com","duplicateNoteBehavior":{"action":"useVault","payload":["tech"]},"siteFaviconPath":"favicon.ico","siteIndex":"root"}}},"__N_SSG":true},"page":"/notes/[id]","query":{"id":"kN2VXDxgpmbqNwAfumuEu"},"buildId":"fo6gubzKP_KV9RZPhaoiQ","isFallback":false,"gsp":true,"scriptLoader":[]}</script></body></html>

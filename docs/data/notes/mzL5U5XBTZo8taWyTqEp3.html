@@ -1,0 +1,39 @@
+<h1 id="directives">Directives<a aria-hidden="true" class="anchor-heading icon-link" href="#directives"></a></h1>
+<p>Using variables, Directives (<code>@</code>) let us dynamically change the structure and shape of our queries.</p>
+<ul>
+<li>This allows us to either <code>@include</code> or <code>@skip</code> over fields.</li>
+<li>ex. In Never Forget, consider the BrowseNugget screen. Our list component allows us to switch between just showing the nugget name, and showing a summary of the nugget. To determine whether or not we want the summary, we can use a variable:</li>
+</ul>
+<pre class="language-gql"><code class="language-gql">query Nugget($details: details) {
+	nugget {
+		title
+		mediaItems @include(if:  $details) {
+			title
+		}
+	}
+}
+</code></pre>
+<p>Directives shouldn’t affect the value of the results, but do affect which results come back and perhaps how they are executed.</p>
+<p>Directives are useful when we find ourselves needing to do string manipulation in order to modify (ie. add/remove fields from) our query structure.</p>
+<p>To be Graphql spec-compliant, a server must implement only the <code>@include</code> and <code>@skip</code> directives. This leaves each server implementation open to extending their own directives.</p>
+<h3 id="use-with-inline-fragments">Use with inline fragments<a aria-hidden="true" class="anchor-heading icon-link" href="#use-with-inline-fragments"></a></h3>
+<p>Directives can also be applied with inline fragments like so:</p>
+<pre class="language-gql"><code class="language-gql">query inlineFragmentNoType($expandedInfo: Boolean) {
+  user(handle: "zuck") {
+    id
+    name
+    ... @include(if: $expandedInfo) {
+      firstName
+      lastName
+      birthday
+    }
+  }
+}
+</code></pre>
+<h3 id="deprecation">Deprecation<a aria-hidden="true" class="anchor-heading icon-link" href="#deprecation"></a></h3>
+<p>Fields in an object may be marked with the <code>@deprecated</code> directive like so:</p>
+<pre class="language-gql"><code class="language-gql">type ExampleType {
+  oldField: String @deprecated
+}
+</code></pre>
+<p>These fields can still be queried (to prevent breaking changes).</p>

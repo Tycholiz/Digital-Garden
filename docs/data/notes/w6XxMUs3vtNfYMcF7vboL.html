@@ -1,0 +1,17 @@
+<h1 id="if-statements">If Statements<a aria-hidden="true" class="anchor-heading icon-link" href="#if-statements"></a></h1>
+<h3 id="testing-for-non-equality">Testing for non-equality<a aria-hidden="true" class="anchor-heading icon-link" href="#testing-for-non-equality"></a></h3>
+<p>When testing that 2 values are <em>not</em> equal to each other, we have to be careful with the logic. Note that checking for non-equality is not the opposite of checking for equality.</p>
+<p>Consider that the follow equality test is strict. It will only pass the test if they are exactly the same:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword control-flow">if</span> <span class="token punctuation">(</span>myVersion<span class="token punctuation">.</span><span class="token property-access">title</span> <span class="token operator">===</span> yourVersion<span class="token punctuation">.</span><span class="token property-access">title</span><span class="token punctuation">)</span> 
+</code></pre>
+<p>On the other hand, when we test for non-equality, there are additional values that can cause our test to pass.</p>
+<ul>
+<li>ex. if myVersion is undefined, then we would be testing <code>(undefined !== yourVersion.title)</code>, which is <code>true</code>. However, this is probably not what we meant to test for. In the case where <code>myVersion</code> does not even exist, we'd probably want to exit and handle it differently. Otherwise, the assumption is made that we should handle it as if we were checking non-equality between 2 different version titles.</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token keyword control-flow">if</span> <span class="token punctuation">(</span>myVersion<span class="token operator">?.</span>title <span class="token operator">!==</span> yourVersion<span class="token punctuation">.</span><span class="token property-access">title</span><span class="token punctuation">)</span> 
+
+<span class="token comment">// to fix this, check truthiness of `myVersion` first</span>
+<span class="token keyword control-flow">if</span> <span class="token punctuation">(</span>myVersion <span class="token operator">&#x26;&#x26;</span> myVersion<span class="token operator">?.</span>title <span class="token operator">!==</span> yourVersion<span class="token punctuation">.</span><span class="token property-access">title</span><span class="token punctuation">)</span> 
+</code></pre>
+<h1 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h1>
+<p><a href="https://lawyerdev.medium.com/i-never-write-nested-ifs-e4e91a5440ee">Getting rid of nested ifs</a></p>

@@ -1,0 +1,64 @@
+<h1 id="can">CAN<a aria-hidden="true" class="anchor-heading icon-link" href="#can"></a></h1>
+<p>This note is for CAN systems on modern vehicles.</p>
+<h2 id="can-controller-area-network">CAN (Controller Area Network)<a aria-hidden="true" class="anchor-heading icon-link" href="#can-controller-area-network"></a></h2>
+<p>The CAN Bus acts as a central networking system, allowing any ECU to communicate to the rest of the system.</p>
+<ul>
+<li>in the car, nodes (ie. electronic control units, or ECU) are connected via the CAN Bus.
+<ul>
+<li>these ECUs might be the Engine Control Unit, Airbags, Audio system etc</li>
+</ul>
+</li>
+<li>anal: the CAN Bus is analogous to the nervous system in the human body. That is, it facilitates communicates between all parts</li>
+</ul>
+<p>An OBD-II (on-board diagnostics) tool can be used to identify what is wrong with your car.</p>
+<ul>
+<li>the DTCs (diagnostic trouble codes) are retrieved by CAN loggers.</li>
+<li>OBD-II is also used for real-time vehicle telematics and post analysis</li>
+<li>OBD-II is vehicle make agnostic</li>
+</ul>
+<h3 id="can-frame-ie-can-message">CAN Frame (ie. CAN Message)<a aria-hidden="true" class="anchor-heading icon-link" href="#can-frame-ie-can-message"></a></h3>
+<p>The data in a CAN frame can be broken up into eight one-byte values, sixty-four one-bit values, one sixty-four bit value, or any combination of these</p>
+<p>Includes</p>
+<ul>
+<li>CAN-ID, which includes message priority, as well as functional address (e.g. RMP, wheel speed etc.)</li>
+<li>RTR (Remote Transmission Request), which allows ECUs to request messages from other ECUs</li>
+<li>the data itself</li>
+</ul>
+<p>Example frame:</p>
+<ul>
+<li>0CF00400 FF FF FF 68 13 FF FF FF
+<ul>
+<li>if you have a DBC that contains decoding rules for the CAN ID (here, <code>0CF00400</code>), you can extract parameters (ie. signals) from the data bytes</li>
+</ul>
+</li>
+<li>Decoded: </li>
+</ul>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"EEC1"</span><span class="token punctuation">,</span>
+  <span class="token property">"signal"</span><span class="token operator">:</span> <span class="token string">"EngineSpeed"</span><span class="token punctuation">,</span>
+  <span class="token property">"value"</span><span class="token operator">:</span> <span class="token number">621</span><span class="token punctuation">,</span>
+  <span class="token property">"unit"</span><span class="token operator">:</span> <span class="token string">"RPM"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="dbc-can-bus-databases">DBC (CAN Bus Databases)<a aria-hidden="true" class="anchor-heading icon-link" href="#dbc-can-bus-databases"></a></h2>
+<p>the type of data that communicates over a CAN bus can be read and understood using DBC files.</p>
+<ul>
+<li>DBC files can help identify the data within the CAN frame by describing it.</li>
+<li>DBC files contain information for decoding raw CAN bus to physical values (ie. human-readable form). Thus, functioning as a signal library.</li>
+</ul>
+<p>For a DBC file, the signal is not an electrical input or output, but it is a physical parameter, such as temperature, engine speed, voltages etc.</p>
+<p>a DBC file helps in understanding what data is communicating through the CAN bus</p>
+<p>The DBC file contains the following information.</p>
+<ul>
+<li>The CAN ID of the message in which this signal is present</li>
+<li>The position where the signal is present in the CAN message</li>
+<li>The byte order of the signal</li>
+<li>The conversion details of the signal</li>
+<li>Unit of the signal</li>
+</ul>
+<p>ex. you could have a DBC file that contains decoding rules for Speed and EngineSpeed. Therefore, you could extract time-based Speed and EngineSpeed information from cars/trucks, tractors etc.</p>
+<p>Using dedicated software, we can upload the data log files (ie. all of the CAN Frames, of which there are probably millions), along with the DBC file.</p>
+<ul>
+<li>the output might be as simple as a <code>.csv</code> of all the decoded CAN frames.</li>
+</ul>
+<p>Proprietary DBC files are often used by OEM manufacturers for decoding their CAN data for blackbox logging.</p>

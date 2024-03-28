@@ -1,0 +1,25 @@
+<h1 id="master-node-components">Master node Components<a aria-hidden="true" class="anchor-heading icon-link" href="#master-node-components"></a></h1>
+<p>The master node's components make global decisions about the cluster (for example, scheduling), as well as detecting and responding to cluster events (for example, starting up a new pod when a deployment's replicas field is unsatisfied).</p>
+<p>Master node components can be run on any machine in the cluster. However, for simplicity, set up scripts typically start all control plane components on the same machine.</p>
+<h3 id="etcd">etcd<a aria-hidden="true" class="anchor-heading icon-link" href="#etcd"></a></h3>
+<p>etcd is the heart of the Kubernetes cluster.</p>
+<ul>
+<li>it is a key value store used as Kubernetes' backing store for all cluster data.</li>
+<li><a href="/notes/btan6P1szAXOhnBlAKUDR">etcd</a></li>
+</ul>
+<h3 id="kube-apiserver">kube-apiserver<a aria-hidden="true" class="anchor-heading icon-link" href="#kube-apiserver"></a></h3>
+<p>exposes the Kubernetes API</p>
+<ul>
+<li>The API server is the front end for the Kubernetes control plane.
+<a href="/notes/hecaydk40a6wqiprau7l8qz">API Server</a></li>
+</ul>
+<h3 id="kube-scheduler">kube-scheduler<a aria-hidden="true" class="anchor-heading icon-link" href="#kube-scheduler"></a></h3>
+<p>A component that watches for newly created Pods with no assigned node, and selects a node for them to run on.</p>
+<h3 id="kube-controller-manager">kube-controller-manager<a aria-hidden="true" class="anchor-heading icon-link" href="#kube-controller-manager"></a></h3>
+<p>runs controller processes.</p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/hecaydk40a6wqiprau7l8qz">API Server</a></li>
+<li><a href="/notes/btan6P1szAXOhnBlAKUDR">etcd</a></li>
+</ol>

@@ -1,0 +1,9 @@
+<h1 id="ngrok">Ngrok<a aria-hidden="true" class="anchor-heading icon-link" href="#ngrok"></a></h1>
+<p>Ngrok will create a secure tunnel on the local machine from a given port (ex. <code>8000</code>) to a url hosted on the internet at their domain (ex. <code>e2210e647fe4.ngrok.io</code>)</p>
+<ul>
+<li>when a request somewhere on the internet hits an endpoint of that remote url, ngrok will forward that request on through the tunnel to the local machine.
+<ul>
+<li>ex. Stripe sends a webhook post request to <code>e2210e647fe4.ngrok.io:8000/webhooks/stripe</code>. Ngrok sees this, and passes it along to <code>localhost:8000/webhooks/stripe</code>, where the <code>/webhooks/stripe</code> endpoint defined in the application server can then handle the request</li>
+</ul>
+</li>
+</ul>

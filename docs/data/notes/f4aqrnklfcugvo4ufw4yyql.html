@@ -1,0 +1,41 @@
+<h1 id="usememo">useMemo<a aria-hidden="true" class="anchor-heading icon-link" href="#usememo"></a></h1>
+<p><code>useMemo</code> allows you to memoize (cache) a value between renders of a component.</p>
+<ul>
+<li>By default, defining a variable inside a component means that it will be redefined and recalculated every time the component renders. <code>useMemo</code> allows us to say "ok, I know that only one of the props of this component really matters to the calculation of this variable, so only recalculate it when that one changes. All other prop changes shouldn't cause it to re-render. Therefore, in the event that none of the dependencies change, just return me the cached value.</li>
+<li>the cache is local to the component position within the tree</li>
+<li>this idea of "remembering" the value is in a way conceptually similar to a ref, in that the value will exist between renders. The difference is that while refs exist between <em>all</em> renders of a component, a variable defined by <code>useMemo</code> will exist only between the renders where none of the dependencies change.</li>
+</ul>
+<p>Naturally, we should only use <code>useMemo</code> with pure functions. That makes sense, since impure functions by definition have dependencies that are different each time.</p>
+<p>React will only cache one version of a memoized value. </p>
+<ul>
+<li>ex. imagine we had a variable defined with <code>useMemo</code> that is dependent on <code>value</code>. The first render, <code>value</code> is <code>kyle</code>. Then <code>value</code> changes to <code>kyle t</code>, so the component re-renders and the variable is calculated again. Finally, <code>value</code> changes back to <code>kyle</code>, so the variable is recalculated again. Even though the value is the same as the first render, it won't be retrieved from the cache.</li>
+</ul>
+<p><code>const MyComponent = memo(() => null)</code> is an anonymous component and will appear as unnamed in React Devtools.</p>
+<h3 id="relation-to-usecallback">Relation to <code>useCallback</code><a aria-hidden="true" class="anchor-heading icon-link" href="#relation-to-usecallback"></a></h3>
+<p>Like <a href="/notes/hEG7YxFDbOJ2PM8cVy66M">useCallback</a>, the purpose of <code>useMemo</code> is to prevent unnecessary variable re-calculations and make your code more efficient.</p>
+<p>It is similar to <code>useCallback</code>, but instead of returning a function, it calls the function and gives us the return value of the function</p>
+<ul>
+<li>In other words, <code>useMemo</code> calls the passed function only when necessary and it returns a cached value on all the other renders.</li>
+<li><code>useMemo</code> "caches" the value, while <code>useCallback</code> "caches" the function itself.</li>
+</ul>
+<h3 id="checking-how-expensive-a-calculation-actually-is">Checking how expensive a calculation actually is<a aria-hidden="true" class="anchor-heading icon-link" href="#checking-how-expensive-a-calculation-actually-is"></a></h3>
+<p>If the overall logged time adds up to a significant amount (say, 1ms or more), it might make sense to memoize that calculation. </p>
+<ul>
+<li>Keep in mind that your machine is probably faster than your users’ so it’s a good idea to test the performance with an artificial slowdown. 
+<ul>
+<li>ex. Chrome offers a CPU Throttling option for this.</li>
+</ul>
+</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">time</span><span class="token punctuation">(</span><span class="token string">'filter array'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> visibleTodos <span class="token operator">=</span> <span class="token function">useMemo</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+  <span class="token keyword control-flow">return</span> <span class="token function">getFilteredTodos</span><span class="token punctuation">(</span>todos<span class="token punctuation">,</span> filter<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Skipped if todos and filter haven't changed</span>
+<span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">[</span>todos<span class="token punctuation">,</span> filter<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">timeEnd</span><span class="token punctuation">(</span><span class="token string">'filter array'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/Bqpifx2HX3vjLhX9yvhTV">Architecture</a></li>
+<li><a href="/notes/hEG7YxFDbOJ2PM8cVy66M">useCallback</a></li>
+</ul>

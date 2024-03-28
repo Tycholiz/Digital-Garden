@@ -1,0 +1,83 @@
+<h1 id="concurrency">Concurrency<a aria-hidden="true" class="anchor-heading icon-link" href="#concurrency"></a></h1>
+<h2 id="what-is-it">What is it?<a aria-hidden="true" class="anchor-heading icon-link" href="#what-is-it"></a></h2>
+<p>Concurrency is the characteristic of a program whereby different parts (or units) of the program can be executed out-of-order or at the same time without affecting the final outcome.</p>
+<ul>
+<li>this differs from Parallelism, which is the ability to run 2 things at the same time (e.g. what happens on a multi-core <a href="/notes/XkJ62K1L604NfWaUdxZi7">processor</a>).
+<ul>
+<li>concurrency is one way to achieve parallelism, though parallelism is not the only goal of concurrency. Put another way, a concurrent program is one that <em>can</em> be parallelized.</li>
+</ul>
+</li>
+</ul>
+<p>A concurrent system is one where the processes know how to wait their turn to access resources.</p>
+<h2 id="why">Why?<a aria-hidden="true" class="anchor-heading icon-link" href="#why"></a></h2>
+<p>One thing you <em>never</em> want in computing is for 2 different programs to be accessing/writing to the same memory location at the same time. This results in file corruption.</p>
+<ul>
+<li>ex. This could result if 2 different programs are trying to write the same file at the same time.</li>
+<li>for this reason, Operating systems and programming languages provide various mechanisms to coordinate access to shared memory between different programs or threads. These mechanisms include <a href="/notes/d9VcIHWuATcb5hABBes7W">locks</a>, semaphores, mutexes, and other synchronization primitives.</li>
+</ul>
+<p>With a concurrent system, we aren't going to concern ourselves with what is happening at the <a href="/notes/XkJ62K1L604NfWaUdxZi7">CPU</a> level and whether something is running on multiple cores or not. Instead, we allow the runtime (e.g. <a href="/notes/8lpdfWa0cbSq1XJQbcYcY">Go</a> runtime) and <a href="/notes/ZaTr28eWk1DrXOEsc1YVb">OS</a> to take care of it.</p>
+<p>Bugs arising from concurrency issues are hard to find by testing, because such bugs are only triggered when you get unlucky with the timing.</p>
+<p>It may seem that two operations should be called concurrent if they occur “at the same time”— but in fact, it is not important whether they literally overlap in time. Because of problems with clocks in <a href="/notes/vutujFFWxQu6TshWVuMpI">distributed systems</a>, it is actually quite difficult to tell whether two things happened at exactly the same time.</p>
+<ul>
+<li>For defining concurrency, exact time doesn’t matter: we simply call two operations concurrent if they are running independently and are both unaware of each other, regardless of the physical time at which they occurred.
+<ul>
+<li>that is, we say that two processes running on a computer system that are executing independently of each other and are not sharing any data or resources, are concurrent.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="resource-starvation">Resource Starvation<a aria-hidden="true" class="anchor-heading icon-link" href="#resource-starvation"></a></h3>
+<p>Resource starvation occurs in concurrent computing where a process is denied access to <a href="/notes/77d8d8d6-4f2a-4b0f-85f6-7f50f1175b3a#resource">resources</a> that it needs to process its work</p>
+<p>When starvation is impossible in a concurrent algorithm, the algorithm is called starvation-free</p>
+<ul>
+<li>aka <em>lockout-freed</em>, or said to have <em>finite bypass</em></li>
+</ul>
+<h3 id="liveness">Liveness<a aria-hidden="true" class="anchor-heading icon-link" href="#liveness"></a></h3>
+<p>Liveness is the quality of a concurrent algorithm where multiple processes may have to "take turns" during the critical sections in order to continue to make progress. In this way, the program does not stall, and progress can still be made.</p>
+<p>Liveness guarantees are important properties in operating systems and distributed systems</p>
+<h3 id="critical-section">Critical Section<a aria-hidden="true" class="anchor-heading icon-link" href="#critical-section"></a></h3>
+<p>The parts of a program where a shared resource is being accessed needs to be protected in a way that will prevent concurrent access from being possible. This protected section is called the critical section, and it cannot be executed by more than one process at a time.</p>
+<ul>
+<li>anal: think of the critical section as the traffic cop at the sensitive areas. It allows each process to know when it's their turn to access the data.</li>
+</ul>
+<p>Typically, the critical section accesses a shared resource, such as a data structure, a peripheral device, or a network connection, that would not operate correctly in the context of multiple concurrent accesses.</p>
+<p>A critical section is typically used when a multi-threaded program must update multiple related variables without a separate thread making conflicting changes to that data. In other words, each thread knows to wait its turn before manipulating and accessing the data.</p>
+<p>Whoever holds <em>the lock</em> is the process that is allowed to access the resource (ie. it's their turn)</p>
+<h2 id="dining-philosophers-problem">Dining Philosophers Problem<a aria-hidden="true" class="anchor-heading icon-link" href="#dining-philosophers-problem"></a></h2>
+<p>The dining philosophers is an analogy for a program where the processses must alternate between one task and another (here, eating and thinking)</p>
+<p>The problem was designed to illustrate the challenges of avoiding deadlock, a system state in which no progress is possible</p>
+<p><img src="/assets/images/2021-07-30-09-00-51.png"></p>
+<h3 id="how-it-works">How it works<a aria-hidden="true" class="anchor-heading icon-link" href="#how-it-works"></a></h3>
+<p>The philosopher is either in thinking or eating state.</p>
+<ul>
+<li>eating -> the philosopher has both forks in his hand</li>
+<li>thinking -> everything else</li>
+</ul>
+<p>The goal is to create a program that would result in no philosopher having starved. This would be the case if the program were to deadlock because the line of execution was stalled.</p>
+<ul>
+<li>if we are able to achieve this, then we will have created a <strong>concurrent algorithm</strong></li>
+</ul>
+<p>A philosopher having starved represents <strong>resource starvation</strong></p>
+<p>Once the philosopher has finished their meal, they place down both forks so that they are available to others.</p>
+<p>There are different approaches to solving the dining philosopher's problem</p>
+<ol>
+<li>Introduce a waiter who enforces that only one philosopher at a time may pick up 1 or 2 forks, meaning that the philosophers have to request and receive permission from the waiter before picking up the fork. This results in a system where only one philosopher at a time can pick up a fork.</li>
+</ol>
+<hr>
+<p>The word consistency is overloaded:</p>
+<ul>
+<li>It can refer to <em>replica consistency</em> and the issue of eventual consistency that arises in asynchronously replicated systems (ie. <em>replication lag</em>).</li>
+<li>It can refer to <em>consistent hashing</em>, which is an approach to partitioning that some systems use for rebalancing.</li>
+<li>In the CAP theorem <a href="/notes/ilOPfgNyiPSHOb9tNB6yL">CAP Theorem</a>, the word consistency is used to mean <a href="/notes/h7suvvfknwvc8hxandtdusy#linearizability">linearizability</a>.</li>
+<li>In the context of <a href="/notes/fCagNdVtAqMZw8CYsTZ7m">ACID</a>, consistency refers to an application-specific notion of the database being in a “good state".</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/vutujFFWxQu6TshWVuMpI">Distributed Computing</a></li>
+<li><a href="/notes/dmfhxjrme6rvqfru5rvbfz3">Concurrency in Go</a></li>
+<li><a href="/notes/LTtn2x9aVBeLPMsiR4H8j">Thread</a></li>
+<li><a href="/notes/OSdV9FvBG3wDbRNLllg0V">AWS Lambda</a></li>
+<li><a href="/notes/SBhnwv59C8Y0Gb9nRztZU">Isolation</a></li>
+<li><a href="/notes/q2b3asuqy4xlorkmdvinwc3">CRDT (Conflict-free Replicated Data Type)</a></li>
+</ul>
