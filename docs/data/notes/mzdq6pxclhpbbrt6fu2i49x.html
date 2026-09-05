@@ -1,0 +1,22 @@
+<h1 id="build">Build<a aria-hidden="true" class="anchor-heading icon-link" href="#build"></a></h1>
+<p>A build is an execution of a collection of tasks in a Gradle project. </p>
+<p>You run a build via the command line interface (CLI) or an IDE by specifying task selectors.</p>
+<p>The gradle runtime is only necessary to be installed if we don't already have a Wrapper.</p>
+<h3 id="gradle-wrapper">Gradle Wrapper<a aria-hidden="true" class="anchor-heading icon-link" href="#gradle-wrapper"></a></h3>
+<p>The Wrapper is a script that invokes a declared version of Gradle, downloading it beforehand if necessary.</p>
+<p>The Wrapper is the preferred way to execute a Gradle build.</p>
+<ul>
+<li>purpose is to ensure a reliable, controlled and standardized execution of the build.</li>
+</ul>
+<p>Purposes:</p>
+<ul>
+<li>Standardizes a project on a given Gradle version, leading to more reliable and robust builds.</li>
+<li>Provisioning a new Gradle version to different users and execution environment (e.g. IDEs or Continuous Integration servers) is as simple as changing the Wrapper definition.</li>
+</ul>
+<p>The generated Wrapper properties file, <code>gradle/wrapper/gradle-wrapper.properties</code>, stores the information about the Gradle distribution.</p>
+<ul>
+<li>The server hosting the Gradle distribution.</li>
+<li>The type of Gradle distribution. By default that’s the -bin distribution containing only the runtime but no sample code and documentation.</li>
+<li>The Gradle version used for executing the build. By default the wrapper task picks the exact same Gradle version that was used to generate the Wrapper files.</li>
+<li>Optionally, a timeout in ms used when downloading the gradle distribution.</li>
+</ul>

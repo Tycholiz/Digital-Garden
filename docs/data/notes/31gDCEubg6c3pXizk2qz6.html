@@ -1,0 +1,20 @@
+<h1 id="bisect">Bisect<a aria-hidden="true" class="anchor-heading icon-link" href="#bisect"></a></h1>
+<h3 id="flow">Flow<a aria-hidden="true" class="anchor-heading icon-link" href="#flow"></a></h3>
+<p>From the commit that is not working,</p>
+<ol>
+<li>run <code>git bisect start</code></li>
+<li>run <code>git bisect bad</code> to indicate the current commit is "bad"</li>
+<li>run <code>git bisect good &#x3C;SHA></code> on a commit we know works
+<ul>
+<li>git will checkout a commit in the middle of the good-bad range</li>
+</ul>
+</li>
+<li>run <code>git bisect good</code>/<code>git bisect bad</code>, depending on if this middle commit works or not
+<ul>
+<li>repeat until we find the commit that introduced the issue</li>
+</ul>
+</li>
+<li>run <code>git bisect reset</code> to clean up bisection state, returning to original HEAD</li>
+</ol>
+<hr>
+<p>you can pass git-bisect a script which programmatically tests a tree for the presence of a bug and avoid false positives</p>

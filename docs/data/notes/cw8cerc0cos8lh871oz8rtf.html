@@ -1,0 +1,15 @@
+<h1 id="babel">Babel<a aria-hidden="true" class="anchor-heading icon-link" href="#babel"></a></h1>
+<p>Two big things to be aware of in Babel are parsing and transforming:</p>
+<h3 id="parsing">Parsing<a aria-hidden="true" class="anchor-heading icon-link" href="#parsing"></a></h3>
+<p>Parsing is the process of taking source Javascript code and converting it into an <a href="/notes/QnT5sc2Yosxo9JFI0WIcs">AST</a>.</p>
+<ul>
+<li>The AST allows Babel to understand the code's structure and the relationships between different parts of the code. </li>
+</ul>
+<p>Parsing does not modify or transform the code in any way; it simply analyzes it and creates an AST.</p>
+<h3 id="transforming">Transforming<a aria-hidden="true" class="anchor-heading icon-link" href="#transforming"></a></h3>
+<p>Transforming is the process of making changes to the AST generated during parsing. In Babel, transforming involves modifying the AST to apply various changes to the code, such as transpiling modern JavaScript features into older versions of JavaScript that are compatible with a wider range of browsers and environments.</p>
+<hr>
+<h3 id="gotchas">Gotchas<a aria-hidden="true" class="anchor-heading icon-link" href="#gotchas"></a></h3>
+<ul>
+<li>Babel changes do not come into effect until we manually restart our server (e.g. if we are using nodemon or something similar). Therefore, a good rule of thumb is to <em>always</em> reset the server when we make changes to our <code>babel.config.js</code> file. This way, we don't break something without instantly knowing it.</li>
+</ul>

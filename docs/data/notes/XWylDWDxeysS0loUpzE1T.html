@@ -1,0 +1,55 @@
+<h1 id="jamstack">Jamstack<a aria-hidden="true" class="anchor-heading icon-link" href="#jamstack"></a></h1>
+<p>JAM: JavaScript, APIs, and markup</p>
+<ul>
+<li>JavaScript: any dynamic programming during the request/response cycle is handled by JS, running entirely on the client. This could be any frontend framework or library, or even vanilla JavaScript.</li>
+<li>APIs: all server-side processes or database actions are abstracted into reusable APIs, accessed over HTTPS with JavaScript. These can be custom-built or leverage third-party services.</li>
+<li>Markup: templated markup should be prebuilt at deploy time, usually using a site generator for content sites, or a build tool for web apps.</li>
+</ul>
+<p><img src="/assets/images/2021-03-20-18-45-27.png"></p>
+<h2 id="examples">Examples<a aria-hidden="true" class="anchor-heading icon-link" href="#examples"></a></h2>
+<h3 id="site-generators">Site Generators<a aria-hidden="true" class="anchor-heading icon-link" href="#site-generators"></a></h3>
+<p>Next.js, Gatsby, Jekyll</p>
+<h3 id="headless-cms">Headless CMS<a aria-hidden="true" class="anchor-heading icon-link" href="#headless-cms"></a></h3>
+<p>Netflify</p>
+<h2 id="architecture">Architecture<a aria-hidden="true" class="anchor-heading icon-link" href="#architecture"></a></h2>
+<p>Purpose is to make the web faster, more secure, and easier to scale</p>
+<ul>
+<li>core principles are pre-rendering, and decoupling
+<ul>
+<li>pre-render - to generate the markup which represents a view (front-end) in advance of when it is required. This happens during a build rather than on-demand so that web servers do not need to perform this activity for each request recieved.</li>
+</ul>
+</li>
+<li>entire front end is prebuilt into highly optimized static pages and assets during a build process. This process of pre-rendering results in sites which can be served directly from a CDN. Since the CDN only has to serve already-rendered markup, it can be delivered very quickly and securely
+<ul>
+<li>On this foundation, Jamstack sites can use JavaScript and APIs to talk to backend services, allowing experiences to be enhanced and personalized.</li>
+</ul>
+</li>
+<li>The Jamstack philosophy is to be modular and have a strong capacity to be able to hook into various 3rd party services/APIs</li>
+<li>Jamstack distinguishes between front-end and back-end and allows for efficient front-end development that is independent of any back-end APIs.</li>
+</ul>
+<h2 id="benefits">Benefits<a aria-hidden="true" class="anchor-heading icon-link" href="#benefits"></a></h2>
+<h3 id="security">Security<a aria-hidden="true" class="anchor-heading icon-link" href="#security"></a></h3>
+<ul>
+<li>Jamstack naturally results in less moving parts, meaning there are naturally less surfaces to have to protect against.</li>
+<li>Since CDNs only serve pre-generated files, meaning we can use read-only hosting, further reducing the damage that a third party can do.</li>
+</ul>
+<h3 id="scaling">Scaling<a aria-hidden="true" class="anchor-heading icon-link" href="#scaling"></a></h3>
+<p>since everything is pre-generated, the CDN can cache the whole site.</p>
+<h3 id="performance">Performance<a aria-hidden="true" class="anchor-heading icon-link" href="#performance"></a></h3>
+<p>Jamstack sites remove the need to generate page views on a server at request time by instead generating pages ahead of time during a build.</p>
+<h3 id="maintenance">Maintenance<a aria-hidden="true" class="anchor-heading icon-link" href="#maintenance"></a></h3>
+<p>Jamstack apps are easier to maintain, as they only need to be served directly from a simple host (or CDN)</p>
+<ul>
+<li>The work was done during the build, so now the generated site is stable and can be hosted without servers which might require patching, updating and maintain.</li>
+</ul>
+<h2 id="approaches">Approaches<a aria-hidden="true" class="anchor-heading icon-link" href="#approaches"></a></h2>
+<h4 id="thinking-from-cdn-perspective">Thinking from CDN perspective<a aria-hidden="true" class="anchor-heading icon-link" href="#thinking-from-cdn-perspective"></a></h4>
+<p>Because Jamstack projects don’t rely on server-side code, they can be distributed instead of living on a single server. Serving directly from a CDN unlocks speeds and performance that can’t be beat. The more of your app you can push to the edge, the better the user experience.</p>
+<h4 id="automating-builds">Automating builds<a aria-hidden="true" class="anchor-heading icon-link" href="#automating-builds"></a></h4>
+<p>Because Jamstack markup is prebuilt, content changes won’t go live until you run another build. Automating this process will save you lots of frustration. You can do this yourself with webhooks, or use a publishing platform that includes the service automatically.</p>
+<h4 id="atomic-deploys">Atomic Deploys<a aria-hidden="true" class="anchor-heading icon-link" href="#atomic-deploys"></a></h4>
+<p>As Jamstack projects grow really large, new changes might require re-deploying hundreds of files. Uploading these one at a time can cause inconsistent state while the process completes. You can avoid this with a system that lets you do “atomic deploys,” where no changes go live until all changed files have been uploaded.</p>
+<h4 id="instant-cache-invalidation">Instant Cache Invalidation<a aria-hidden="true" class="anchor-heading icon-link" href="#instant-cache-invalidation"></a></h4>
+<p>When the build-to-deploy cycle becomes a regular occurrence, you need to know that when a deploy goes live, it really goes live. Eliminate any doubt by making sure your CDN can handle instant cache purges.</p>
+<h4 id="everything-lives-in-git">Everything Lives in Git<a aria-hidden="true" class="anchor-heading icon-link" href="#everything-lives-in-git"></a></h4>
+<p>With a Jamstack project, anyone should be able to do a git clone, install any needed dependencies with a standard procedure (like npm install), and be ready to run the full project locally. No databases to clone, no complex installs. This reduces contributor friction, and also simplifies staging and testing workflows.</p>

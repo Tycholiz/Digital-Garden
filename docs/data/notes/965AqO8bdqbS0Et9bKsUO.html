@@ -1,0 +1,99 @@
+<h1 id="test-double">Test Double<a aria-hidden="true" class="anchor-heading icon-link" href="#test-double"></a></h1>
+<p>Often, in order to test a module in isolation we need other modules that help the main module perform its action. In cases such as these, we need <em>test doubles</em> to stand in for the actual modules.</p>
+<p>The reason why we mock is that we want to replace something we don't control with something that we do control.</p>
+<ul>
+<li>"don't control" can mean a third-party module, or even just a function/class that we wrote that we are using in the current unit we are testing.</li>
+</ul>
+<p>The word “mock” is often used in an informal way to refer to Test Doubles.</p>
+<ul>
+<li>Semantically speaking, a "real mock" refers to the kind described below. In colloquial parlance, it refers indiscriminately to all 5.</li>
+</ul>
+<p>There are 5 types of Test Double:</p>
+<ul>
+<li><a href="/notes/otxChSDHzNWESFUFx6U4y">Dummy</a> objects</li>
+<li><a href="/notes/KYcFflB8k11EN5OiM3Af1">Fake</a> objects</li>
+<li><a href="/notes/m0KzcQACLje5KS1v61t7v">Stubs</a></li>
+<li><a href="/notes/4gVYCsW8AJjv9DGE8TJdr">Spies</a></li>
+<li><a href="/notes/JUu4GPp6TBnRJBbzNQbFw">Mocks</a> are what we are talking about here: objects pre-programmed with expectations which form a specification of the calls they are expected to receive.</li>
+</ul>
+<p>All Test Doubles can and usually do state verification, but only mocks insist upon behavior verification.</p>
+<p>Test Doubles need to make the SUT believe it's talking with its real collaborators.</p>
+<p><a href="/notes/m0KzcQACLje5KS1v61t7v">Stubs</a> and <a href="/notes/4gVYCsW8AJjv9DGE8TJdr">Spies</a> can probably cover most use-cases for test doubles.</p>
+<p><em>"stubs and spies are very easy to write. The IDE makes it trivial. You just point at the interface and tell the IDE to implement it. Voila! It gives you a dummy. Then you just make a simple modification and turn it into a stub or a spy. So you seldom need an actual mocking tool."</em></p>
+<p>If you have to mock too much then this may indicate a high degree of coupling in your application.</p>
+<p>Mocked resources add additional coupling between the test and the source code </p>
+<ul>
+<li>this is because mocks don’t just change the state or what is returned – they assert how an object behaves toward its collaborators. Additionally, since the internals of how the class interacts with its mocked resources are exposed, tests produce encapsulation. Thus, the test would fail if the interaction between a class and the mocked resources is changed when refactoring.</li>
+</ul>
+<p>Problems arise when mocks are used to isolate classes. Don't mock internals, privates or adapters.</p>
+<h2 id="authorizer-example">Authorizer example<a aria-hidden="true" class="anchor-heading icon-link" href="#authorizer-example"></a></h2>
+<p>Imagine we had a <code>System</code> class, which accepts an <code>Authorizer</code> as a parameter. That is, when we instantiate a new <code>system</code> object, it is associated with some <code>authorizer</code>. Different Test Doubles are used depending on what we want to do in the test.</p>
+<pre class="language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AcceptingAuthorizerStub</span> <span class="token keyword">implements</span> <span class="token class-name">Authorizer</span> <span class="token punctuation">{</span>
+  <span class="token keyword">public</span> <span class="token class-name">Boolean</span> <span class="token function">login</span><span class="token punctuation">(</span><span class="token class-name">String</span> username<span class="token punctuation">,</span> <span class="token class-name">String</span> password<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">System</span> <span class="token punctuation">{</span>
+	<span class="token keyword">public</span> <span class="token class-name">System</span><span class="token punctuation">(</span><span class="token class-name">Authorizer</span> authorizer<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">this</span><span class="token punctuation">.</span>authorizer <span class="token operator">=</span> authorizer<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+
+	<span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">loginCount</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token comment">//returns number of logged in users.</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>While testing the <code>System</code> class, if we:</p>
+<ul>
+<li>don't even care about the <code>authorizer</code> object (since we are not calling any of its methods within the test), we would use a dummy.</li>
+<li>wanted to simply return <code>true</code> for the <code>authorizer.login()</code> method, we would use a stub.
+<ul>
+<li>here, we just want to know that we are logged in so we can test the parts of the <code>System</code> that require us to be logged in.</li>
+</ul>
+</li>
+<li>want to assert that the <code>login()</code> method was called by the <code>authorizer</code> object, we would use a spy.</li>
+</ul>
+<hr>
+<h3 id="mocking-vs-stubbing">Mocking vs Stubbing<a aria-hidden="true" class="anchor-heading icon-link" href="#mocking-vs-stubbing"></a></h3>
+<p>A stub is a simple fake object. It just makes sure test runs smoothly. A mock can be thought of as a smarter stub. You verify your test passes through it.</p>
+<p>Mocks are used to assert and should never return data, stubs are used to return data and should never assert.</p>
+<p>A Mock is interaction-based; Stubs are state-based.</p>
+<ul>
+<li>This means you don't expect from Mock to return some value, but to assume that specific order of method calls are made.</li>
+</ul>
+<p>Stubs test how your SUT (system under test) handles receiving messages, mocks test how your SUT sends messages.</p>
+<p>a stub returns answers to questions. A mock also returns answers to questions, but it also verifies that the question was asked</p>
+<p>there may be several stubs in one test, but generally there is only one mock.</p>
+<p>A Stub is written with predetermined behavior.</p>
+<ul>
+<li>The idea is you would have a class that implements the dependency (abstract class or interface most likely) you are faking for testing purposes and the methods would just be stubbed out with set responses. They would not do anything fancy and you would have already written the stubbed code for it outside of your test.</li>
+</ul>
+<p>Stubs don't care that correct methods have been invoked in mock.</p>
+<p>A mock is set up with the expectations.</p>
+<ul>
+<li>Mocks in a way are determined at runtime since the code that sets the expectations has to run before they do anything.</li>
+</ul>
+<p>Tests written with mocks usually follow an initialize -> set expectations -> exercise -> verify pattern to testing. While the pre-written stub would follow an initialize -> exercise -> verify.</p>
+<p>Both mocks and stubs testing give an answer for the question: What is the result?
+Testing with mocks are also interested in: How the result has been achieved?</p>
+<h1 id="e-resources">E Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#e-resources"></a></h1>
+<p><a href="https://blog.cleancoder.com/uncle-bob/2014/05/14/TheLittleMocker.html">A conversation about "Mocking"</a></p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/otxChSDHzNWESFUFx6U4y">Dummy</a></li>
+<li><a href="/notes/KYcFflB8k11EN5OiM3Af1">Fake</a></li>
+<li><a href="/notes/JUu4GPp6TBnRJBbzNQbFw">Mock</a></li>
+<li><a href="/notes/4gVYCsW8AJjv9DGE8TJdr">Spy</a></li>
+<li><a href="/notes/m0KzcQACLje5KS1v61t7v">Stub</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/LUrfhDWo8wuwZu7CN9TV8">Testing</a></li>
+<li><a href="/notes/oVfbIz9jQKACNE2FyfskO">Test-Driven Development</a></li>
+<li><a href="/notes/8gXG6fouQpxv69wSfhigo">Gateways</a></li>
+<li><a href="/notes/T6WTZOnvtZHaXmeo5MrPy">Component Testing</a></li>
+<li><a href="/notes/NfY3pvmOMzpQg8TKrUMGd">Contract Testing</a></li>
+</ul>

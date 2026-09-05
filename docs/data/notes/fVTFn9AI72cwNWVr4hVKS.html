@@ -1,0 +1,59 @@
+<h1 id="aggregation">Aggregation<a aria-hidden="true" class="anchor-heading icon-link" href="#aggregation"></a></h1>
+<p>An aggregation allows us to process data records and return computed results.</p>
+<ul>
+<li>group values from multiple documents and give the ability to perform operations on the grouped data, returning a single result</li>
+</ul>
+<p>You can use aggregation operations to:</p>
+<ul>
+<li>Group values from multiple documents together.</li>
+<li>Perform operations on the grouped data to return a single result.</li>
+<li>Analyze data changes over time.</li>
+</ul>
+<p>Can be done in 3 ways:
+<a href="https://docs.mongodb.com/manual/aggregation/#aggregation-map-reduce">more info</a></p>
+<ul>
+<li>Aggregation pipeline</li>
+<li>Map-reduce function</li>
+<li>single purpose aggregation methods</li>
+</ul>
+<h2 id="aggregation-pipeline">Aggregation Pipeline<a aria-hidden="true" class="anchor-heading icon-link" href="#aggregation-pipeline"></a></h2>
+<p>Aggregation pipelines are the preferred way to perform aggregations in Mongo.</p>
+<p>An aggregation pipeline consists of one or more stages that process documents</p>
+<ul>
+<li>Each stage performs an operation on the input documents. 
+<ul>
+<li>ex. a stage can filter documents, group documents, and calculate values.</li>
+</ul>
+</li>
+<li>The documents that are output from a stage are passed to the next stage.</li>
+<li>An aggregation pipeline can return results for groups of documents. 
+<ul>
+<li>ex. return the total, average, maximum, and minimum values.</li>
+</ul>
+</li>
+</ul>
+<h3 id="facet"><code>$facet</code><a aria-hidden="true" class="anchor-heading icon-link" href="#facet"></a></h3>
+<p>A facet processes multiple aggregation pipelines within a single stage (ie. the <code>$facet</code> stage) on the same set of input documents.</p>
+<ul>
+<li>input documents are passed to the <code>$facet</code> stage only once.</li>
+<li><code>$facet</code> enables various aggregations on the same set of input documents, without needing to retrieve the input documents multiple times.</li>
+</ul>
+<p>Similar to the <code>group by</code> function of a SQL database</p>
+<p>ex. in Amazon when you make a search, the sidebar will show relevant things to group by, such as brand, price range etc. If their database was built in Mongo, it would be accomplished with facets.</p>
+<p>The <code>$facet</code> stage has the following form:</p>
+<pre class="language-js"><code class="language-js"><span class="token punctuation">{</span> <span class="token literal-property property">$facet</span><span class="token operator">:</span>
+   <span class="token punctuation">{</span>
+      <span class="token operator">&#x3C;</span>outputField1<span class="token operator">></span><span class="token operator">:</span> <span class="token punctuation">[</span> <span class="token operator">&#x3C;</span>stage1<span class="token operator">></span><span class="token punctuation">,</span> <span class="token operator">&#x3C;</span>stage2<span class="token operator">></span><span class="token punctuation">,</span> <span class="token spread operator">...</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
+      <span class="token operator">&#x3C;</span>outputField2<span class="token operator">></span><span class="token operator">:</span> <span class="token punctuation">[</span> <span class="token operator">&#x3C;</span>stage1<span class="token operator">></span><span class="token punctuation">,</span> <span class="token operator">&#x3C;</span>stage2<span class="token operator">></span><span class="token punctuation">,</span> <span class="token spread operator">...</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
+      <span class="token spread operator">...</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<ul>
+<li><a href="https://www.mongodb.com/docs/manual/reference/operator/aggregation/facet/">docs</a></li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/dkg7btl6a4ek058qb67ojft">Change Streams</a></li>
+</ul>

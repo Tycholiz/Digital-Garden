@@ -1,0 +1,66 @@
+<h1 id="proxy">Proxy<a aria-hidden="true" class="anchor-heading icon-link" href="#proxy"></a></h1>
+<p>A proxy, in its most general form, is a class functioning as an interface to something else (the <em>subject</em>).</p>
+<ul>
+<li>That interface could be anything, including:
+<ul>
+<li>a network connection</li>
+<li>a large object in memory</li>
+<li>a file</li>
+<li>some other resource that is expensive or impossible to duplicate</li>
+</ul>
+</li>
+</ul>
+<p>When you see "proxy" think: <em>"something that stands-in for something else."</em></p>
+<p>The proxy implements the same interface as the real serving object. Therefore, from the client's perspective, using the proxy and using the real object (ie. the <em>subject</em>) itself should be the same.</p>
+<p>a proxy is a wrapper or agent object that is being called by the client to access the real serving object (ie. the <em>subject</em>) behind the scenes</p>
+<ul>
+<li>the proxy may simply forward the request, or it may provide some additional logic.
+<ul>
+<li>for example, it may cache data from the serving object, or it may perform some type of check to ensure that the the operation should be permitted (e.g. maybe some business logic must be satisfied before the serving object can be accessed in the first place)</li>
+</ul>
+</li>
+</ul>
+<p><img src="/assets/images/2022-04-08-09-04-59.png"></p>
+<p>Proxies are about providing an extra level of <a href="/notes/EZVRwWWSn1VScuwfHnVVi">indirection</a> to support distributed, controlled, or intelligent access.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">class</span> <span class="token class-name"><span class="token maybe-class-name">Driver</span></span> <span class="token punctuation">{</span>
+  <span class="token function">constructor</span> <span class="token punctuation">(</span>age<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">age</span> <span class="token operator">=</span> age
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name"><span class="token maybe-class-name">Car</span></span> <span class="token punctuation">{</span>
+  <span class="token function">drive</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span><span class="token string">'Car has been driven!'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// this proxy checks to make sure the driver is old enough, then calls the serving object (the one instantiated from Car)</span>
+<span class="token keyword">class</span> <span class="token class-name"><span class="token maybe-class-name">ProxyCar</span></span> <span class="token punctuation">{</span>
+  <span class="token function">constructor</span> <span class="token punctuation">(</span>driver<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">car</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name"><span class="token maybe-class-name">Car</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">driver</span> <span class="token operator">=</span> driver
+  <span class="token punctuation">}</span>
+
+  <span class="token function">drive</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">driver</span><span class="token punctuation">.</span><span class="token property-access">age</span> <span class="token operator">&#x3C;=</span> <span class="token number">16</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span><span class="token string">'Sorry, the driver is too young to drive.'</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span> <span class="token keyword control-flow">else</span> <span class="token punctuation">{</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">car</span><span class="token punctuation">.</span><span class="token method function property-access">drive</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// Run program</span>
+<span class="token keyword">const</span> driver <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name"><span class="token maybe-class-name">Driver</span></span><span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">)</span>
+<span class="token keyword">const</span> car <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name"><span class="token maybe-class-name">ProxyCar</span></span><span class="token punctuation">(</span>driver<span class="token punctuation">)</span>
+car<span class="token punctuation">.</span><span class="token method function property-access">drive</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token keyword">const</span> driver2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name"><span class="token maybe-class-name">Driver</span></span><span class="token punctuation">(</span><span class="token number">25</span><span class="token punctuation">)</span>
+<span class="token keyword">const</span> car2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name"><span class="token maybe-class-name">ProxyCar</span></span><span class="token punctuation">(</span>driver2<span class="token punctuation">)</span>
+car2<span class="token punctuation">.</span><span class="token method function property-access">drive</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/ONyIwyv6p6cgkNI5rgLUr">Proxy Server</a></li>
+</ul>

@@ -1,0 +1,44 @@
+<h1 id="pg-xl">Pg Xl<a aria-hidden="true" class="anchor-heading icon-link" href="#pg-xl"></a></h1>
+<p>PostgresXL is a horizontally scalable SQL database cluster</p>
+<ul>
+<li>It is equipped to handle write-intensive workloads that depend on atomic transactions which are potentially distributed
+<ul>
+<li>OLTP</li>
+</ul>
+</li>
+<li>PostgresXL allows you to either partition tables across multiple nodes, or replicate them.
+<ul>
+<li>Partitioning (or distributing) tables allows for write scalability across multiple nodes as well as massively parallel processing (MPP) for Big Data type of workloads.
+<ul>
+<li>MPP is using many computers to perform a set of coordinated computations in parallel</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="components-of-postgres-xl">Components of Postgres-XL<a aria-hidden="true" class="anchor-heading icon-link" href="#components-of-postgres-xl"></a></h2>
+<h3 id="global-transaction-monitor">Global Transaction Monitor<a aria-hidden="true" class="anchor-heading icon-link" href="#global-transaction-monitor"></a></h3>
+<ul>
+<li>ensures cluster-wide transaction consistency
+<ul>
+<li>responsible for issuing transaction ids and snapshots as part of its Multi-version Concurrency Control.</li>
+</ul>
+</li>
+</ul>
+<h3 id="coordinator">Coordinator<a aria-hidden="true" class="anchor-heading icon-link" href="#coordinator"></a></h3>
+<ul>
+<li>manages the user sessions and interacts with GTM and the data nodes
+<ul>
+<li>parses and plans queries, and sends down a serialized global plan to each of the components involved in a statement.</li>
+</ul>
+</li>
+</ul>
+<h3 id="data-node">Data node<a aria-hidden="true" class="anchor-heading icon-link" href="#data-node"></a></h3>
+<ul>
+<li>where the actual data is stored.
+<ul>
+<li>The distribution of the data can be configured by the DBA.</li>
+</ul>
+</li>
+<li>warm standbys of the data nodes can be configured to be failover-ready.</li>
+</ul>

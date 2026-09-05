@@ -1,0 +1,137 @@
+<h1 id="k8s">K8s<a aria-hidden="true" class="anchor-heading icon-link" href="#k8s"></a></h1>
+<h2 id="overview">Overview<a aria-hidden="true" class="anchor-heading icon-link" href="#overview"></a></h2>
+<h3 id="what-is-it">What is it?<a aria-hidden="true" class="anchor-heading icon-link" href="#what-is-it"></a></h3>
+<p>Kubernetes is a distributed system for scheduling programs to run in a cluster.</p>
+<ul>
+<li>ex. it can schedule...
+<ul>
+<li>long-running HTTP services, like <a href="/notes/q3ZzZUfqn8nRhWQXBW8P1">GraphQL servers</a>, REST servers etc.</li>
+<li><a href="/notes/mWodutpvAmyxmDr8L1SIe">daemon sets</a> that run on each node in the cluster</li>
+<li><a href="/notes/wKj6LxywWoZBRLFbB0Ibz">cron jobs</a> that run on a schedule.</li>
+</ul>
+</li>
+</ul>
+<p>Kubernetes is all about abstracting how, when and where containers are run. </p>
+<ul>
+<li>As such, we declaratively describe what we want, and don't care how it is carried out</li>
+</ul>
+<p>Kubernetes is a <a href="/notes/tUBvqQK65JnrN4Xc8XvqG">container orchestrator</a>. It can also be thought of as a container scheduler.</p>
+<ul>
+<li>All containers in Kubernetes are scheduled as pods
+<ul>
+<li>We don't tell Kubernetes to run a container. Rather, we tell it to create a pod that wraps a container.</li>
+</ul>
+</li>
+</ul>
+<p>Kubernetes uses a <a href="/notes/g2jDjW3rfwpjkoQXFUDaY">client-server architecture</a></p>
+<h3 id="why-use-it">Why use it?<a aria-hidden="true" class="anchor-heading icon-link" href="#why-use-it"></a></h3>
+<p>Kubernetes is designed to be resilient to errors— it has one <a href="/notes/btan6P1szAXOhnBlAKUDR">etcd cluster</a> storing all the state, an <a href="/notes/hecaydk40a6wqiprau7l8qz">API server</a> (which is simply a REST interface to that database), and a collection of stateless <a href="/notes/MsBnaMq62gg9DHWeOttQy">controllers</a> that coordinate all cluster management.</p>
+<p>It’s not enough to run containers. We need to be able to scale them, to make them fault tolerant, to provide transparent communication across a cluster</p>
+<ul>
+<li>Containers are only a low-level piece of the puzzle. The real benefits are obtained with tools that sit on top of containers. Those tools are today known as container schedulers. They are our interface. We do not manage containers, they do.</li>
+</ul>
+<p>Kubernetes follows the ethos that we should not run our containers directly, and should instead trust Kubernetes to handle container scheduling for us.</p>
+<ul>
+<li>The chief reasoning for this is that containers by themselves don't provide fault tolerance. They cannot be deployed easily to the optimum spot in a cluster, and are not operator friendly</li>
+</ul>
+<p>Today, modern infrastructure is created from immutable images. Any upgrade is performed by building new images and performing rolling updates that will replace VMs one by one. Infrastructure dependencies are never changed at runtime</p>
+<ul>
+<li>One of the inherent benefits behind immutability is a clear division between infrastructure and deployments. Until not long ago, the two meshed together into an inseparable process. With infrastructure becoming a service, deployment processes can be clearly separated, thus allowing different teams, individuals, and expertise to take control.</li>
+</ul>
+<p>Kubernetes offers us process isolation (via <a href="/notes/fwUzxfLSPMH1eL8oBoLWx">Docker</a>), and an immutable way to deploy software.</p>
+<ul>
+<li>We can use it to deploy our services, to roll out new releases without downtime, and to scale (or de-scale) those services.</li>
+<li>We can move a Kubernetes cluster from one hosting vendor to another without changing (almost) any of the deployment and management processes.</li>
+</ul>
+<p>“A Kubernetes cluster is a good example of an abstraction over compute resources: there are many hosted and self-managed implementations of it on different platforms, all of which offer a common API and common set of capabilities.”</p>
+<ul>
+<li>That is, to a large extent, it doesn't matter if you are using AWS, Azure etc. Most of the config of K8s will be identical. Thus, Kubernetes is a good abstraction over compute as a resource.</li>
+</ul>
+<p>Kubernetes is usually seen as a way to manage your production infrastructure. But it can be configured to manage our test environments on the fly. Imagine using Kubernetes to host a Preview environment. Every pull request can be run in an isolated test environment at the push of a button.</p>
+<ul>
+<li>"isolated" here truly means isolated. the app itself (with the code changes in the PR branch) with its own dedicated instances of SQL Server, Redis, Elasticsearch, and additional services pieces. All spun up from scratch within minutes and running in a handful of containers in a dedicated namespace, just for you and anyone who’s interested in your PR.  
+<ul>
+<li>the benefit of this really shines in a <a href="/notes/4JrFhUJpywlucgow6EX7j">microservice architecture</a>. In a monorepo, you just checkout someone's branch and run the code, but how do you do that if the code depends on many external services?</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="terminology">Terminology<a aria-hidden="true" class="anchor-heading icon-link" href="#terminology"></a></h2>
+<h3 id="kubernetes-resource">Kubernetes Resource<a aria-hidden="true" class="anchor-heading icon-link" href="#kubernetes-resource"></a></h3>
+<p>A resource is an endpoint in the <a href="/notes/hecaydk40a6wqiprau7l8qz">Kubernetes API</a> that stores a collection of API objects of a certain kind. </p>
+<ul>
+<li>ex. the built-in pods resource contains a collection of <a href="/notes/a9WtJDyCZ4NvEaAZ4p3bd">Pod objects</a>.</li>
+</ul>
+<hr>
+<h2 id="parts-of-kubernetes">Parts of Kubernetes<a aria-hidden="true" class="anchor-heading icon-link" href="#parts-of-kubernetes"></a></h2>
+<h3 id="cluster">Cluster<a aria-hidden="true" class="anchor-heading icon-link" href="#cluster"></a></h3>
+<p>A Kubernetes cluster is a set of node machines for running containerized applications.</p>
+<p>This is composed of:</p>
+<ul>
+<li>the <a href="/notes/7w1hne3hmzgbu69buj3hjgf">master node</a></li>
+<li>the <a href="/notes/iuja3tlxkdniv862fq9h1v4">worker node</a></li>
+</ul>
+<p>Clusters in Kubernetes are identified by their respective Certificate Authority (CA) certificates.</p>
+<hr>
+<h3 id="vanilla-kubernetes">Vanilla Kubernetes<a aria-hidden="true" class="anchor-heading icon-link" href="#vanilla-kubernetes"></a></h3>
+<p>includes the bare-bones:</p>
+<ul>
+<li>control-plane (which includes etcd, the api-server, a scheduler, and the controller-manager). </li>
+<li>worker nodes (with each node running a kubelet, kube-proxy, and a container runtime like Docker). </li>
+</ul>
+<p>This means we'll have to add ourselves:</p>
+<ul>
+<li>add an ingress-managed load balancer, </li>
+<li>autoscaling, </li>
+<li><a href="/notes/dF2CVtOaqyE04VZqR8opg">CI/CD</a></li>
+<li>and install software to handle logging, monitoring, and alerting.  </li>
+</ul>
+<h3 id="managed-kubernetes">Managed Kubernetes<a aria-hidden="true" class="anchor-heading icon-link" href="#managed-kubernetes"></a></h3>
+<p>Kubernetes is not simple to manage installations, provisions, upgrades, SLAs and scaling.</p>
+<ul>
+<li>This can be handled for us with a managed Kubernetes service.</li>
+</ul>
+<p>A managed K8s service allows for easier cluster creation, load balancing, auto scaling, auto upgrades, auto repairs, logging, monitoring, etc.</p>
+<hr>
+<h3 id="kubernetes-vs-docker-swarm-mode">Kubernetes vs Docker Swarm mode<a aria-hidden="true" class="anchor-heading icon-link" href="#kubernetes-vs-docker-swarm-mode"></a></h3>
+<p>In Kubernetes, an application can be deployed using a combination of pods, deployments, and services (or micro-services).</p>
+<p>Whereas, in Docker Swarm, applications can be deployed as services (or micro-services) in a Swarm cluster. YAML files can be used to specify multi-container. Moreover, Docker Compose can deploy the app.</p>
+<h1 id="e-resources">E Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#e-resources"></a></h1>
+<ul>
+<li><a href="https://stackoverflow.blog/2021/07/21/why-you-should-build-on-kubernetes-from-day-one/">Why to use Kubernetes from Day 1</a></li>
+<li><a href="https://chrisshort.net/kubernetes-illustrated-childrens-guide/">Kubernetes Illustrated Children's Guide</a></li>
+<li><a href="https://techbeacon.com/devops/one-year-using-kubernetes-production-lessons-learned">1 year using Kubernetes in production</a></li>
+</ul>
+<h1 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h1>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=HlAXp0-M6SY">Kubernetes for Sysadmins</a></li>
+<li><a href="https://vimeo.com/173610242">Stop reverse engineering applications and start monitoring from the inside</a></li>
+<li><a href="https://github.com/kelseyhightower/kubernetes-the-hard-way">Kubernetes the hard way</a> 
+<ul>
+<li>"optimized for learning, which means taking the long route to ensure you understand each task required to bootstrap a Kubernetes cluster."</li>
+</ul>
+</li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/CyzCsvxmIU3vs97x4VTTw">CRD (Custom Resource Definition)</a></li>
+<li><a href="/notes/zqN0BK33by5Xq7LPUontA">Components</a></li>
+<li><a href="/notes/53lq4d46qz3t27x950h0yh9">Errors</a></li>
+<li><a href="/notes/nhxmrkFjzHtZZmOBkWfhh">Kubectl</a></li>
+<li><a href="/notes/MsBnaMq62gg9DHWeOttQy">Kubernetes Controller</a></li>
+<li><a href="/notes/39hv81n4dr40bwg1mlii3zp">Kubernetes Node</a></li>
+<li><a href="/notes/697fe32a-7fd3-40cb-aa25-9914c7dde11f">Kubernetes Objects</a></li>
+<li><a href="/notes/I3qZAJVKTfctAhcCjgiZ5">Kubernetes YML</a></li>
+<li><a href="/notes/8AMDo06PMwirGL5p3eo6W">Labels</a></li>
+<li><a href="/notes/czMR1HV6QpOCF4dvyUY3X">Minikube</a></li>
+<li><a href="/notes/yXKyirBsh45VQgOiWcuC4">Probes</a></li>
+<li><a href="/notes/vjuwdxenxhtk2gwvm00ldmn">Resource Management</a></li>
+<li><a href="/notes/6fl9gzixqv76d5vepeuj33m">Tools</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/tUBvqQK65JnrN4Xc8XvqG">Docker Orchestrators</a></li>
+<li><a href="/notes/lBasXzi1eHzGwL2pEuOv8">GitOps</a></li>
+</ul>

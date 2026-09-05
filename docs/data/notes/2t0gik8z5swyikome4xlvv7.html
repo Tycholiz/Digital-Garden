@@ -1,0 +1,11 @@
+<h1 id="cook">Cook<a aria-hidden="true" class="anchor-heading icon-link" href="#cook"></a></h1>
+<h3 id="pre-commit-hook-to-check-for-existence-of-todo-in-code">pre-commit hook to check for existence of <code>TODO</code> in code<a aria-hidden="true" class="anchor-heading icon-link" href="#pre-commit-hook-to-check-for-existence-of-todo-in-code"></a></h3>
+<pre class="language-sh"><code class="language-sh">#!/bin/sh
+
+. git-sh-setup  # for die 
+if git-diff-index -p -M --cached HEAD -- \
+| grep '^+' \
+| grep TODO; then
+    die Blocking commit because string @todo detected in patch
+fi
+</code></pre>

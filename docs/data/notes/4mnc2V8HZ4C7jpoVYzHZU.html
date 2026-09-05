@@ -1,0 +1,45 @@
+<h1 id="substitution">Substitution<a aria-hidden="true" class="anchor-heading icon-link" href="#substitution"></a></h1>
+<p>Repeat last substitute</p>
+<ul>
+<li><code>:&#x26;</code>
+<ul>
+<li><code>:&#x26;&#x26;</code> command repeats the last substitution with the same flags.
+<ul>
+<li>You can supply the additional range(s) to it (and concatenate as many as you like):</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>replace multiple search terms at once</p>
+<ul>
+<li><code>:%s/Kang\|Kodos/alien/gc</code></li>
+</ul>
+<p><code>:6,10s/&#x3C;search_string>/&#x3C;replace_string>/g | 14,18&#x26;&#x26;</code></p>
+<h2 id="within-visually-selected-area">within Visually Selected Area<a aria-hidden="true" class="anchor-heading icon-link" href="#within-visually-selected-area"></a></h2>
+<ol>
+<li>visually select the area you want substitutions to take place in, then <code>&#x3C;ESC></code></li>
+<li><code>:%s/\%Vfoo/bar/g</code> to replace all <code>foo</code> with <code>bar</code></li>
+</ol>
+<p>Alternatively, the vis.vim plugin can be used</p>
+<h3 id="upperlower-case">Upper/Lower Case<a aria-hidden="true" class="anchor-heading icon-link" href="#upperlower-case"></a></h3>
+<ul>
+<li><code>guw</code>/<code>gUw</code> - make word lowercase/uppercase
+<ul>
+<li><code>guu</code>/<code>gUU</code> - make line uppercase/lowercase</li>
+</ul>
+</li>
+<li><code>g~</code> - swap case</li>
+</ul>
+<h2 id="flags">Flags<a aria-hidden="true" class="anchor-heading icon-link" href="#flags"></a></h2>
+<h3 id="c">c<a aria-hidden="true" class="anchor-heading icon-link" href="#c"></a></h3>
+<p>y/n/a/q substitute (within single file)</p>
+<ul>
+<li><code>:%s/search/replace/gc</code></li>
+</ul>
+<h4 id="values">Values<a aria-hidden="true" class="anchor-heading icon-link" href="#values"></a></h4>
+<p><code>l</code> - last (substitute this match, then quit)
+<code>a</code> - all (this, and all remaining)</p>
+<pre><code>- note: `l` and `a` are opposites, since `l` will treat the current match as the final one in our substitution process, whereas `a`
+</code></pre>
+<p><code>&#x3C;C-e></code>/<code>&#x3C;C-d></code> - scroll</p>

@@ -1,0 +1,32 @@
+<h1 id="auth-roles">Auth Roles<a aria-hidden="true" class="anchor-heading icon-link" href="#auth-roles"></a></h1>
+<h3 id="one-to-many-approach">One-to-many approach<a aria-hidden="true" class="anchor-heading icon-link" href="#one-to-many-approach"></a></h3>
+<p>Have a roles table, which has a many-to-one relationship with users:</p>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">create</span> <span class="token keyword">table</span> roles <span class="token punctuation">(</span>
+  id uuid <span class="token keyword">primary</span> <span class="token keyword">key</span><span class="token punctuation">,</span>
+  name <span class="token keyword">text</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">create</span> <span class="token keyword">table</span> permissions <span class="token punctuation">(</span>
+  id uuid <span class="token keyword">primary</span> <span class="token keyword">key</span><span class="token punctuation">,</span>
+  access <span class="token keyword">text</span><span class="token punctuation">,</span>
+  roles_id uuid <span class="token keyword">references</span> roles
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">insert</span> <span class="token keyword">into</span> roles <span class="token punctuation">(</span>name<span class="token punctuation">)</span> <span class="token keyword">values</span> <span class="token punctuation">(</span><span class="token string">'admin'</span><span class="token punctuation">)</span>
+<span class="token keyword">insert</span> <span class="token keyword">into</span> permissions <span class="token punctuation">(</span>access<span class="token punctuation">)</span> <span class="token keyword">values</span> <span class="token punctuation">(</span><span class="token string">'canDeleteUsers'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h3 id="many-to-many-approach">Many-to-many approach<a aria-hidden="true" class="anchor-heading icon-link" href="#many-to-many-approach"></a></h3>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">create</span> <span class="token keyword">table</span> roles <span class="token punctuation">(</span>
+  id uuid <span class="token keyword">primary</span> <span class="token keyword">key</span><span class="token punctuation">,</span>
+  name <span class="token keyword">text</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">create</span> <span class="token keyword">table</span> user_roles <span class="token punctuation">(</span>
+  user_id uuid <span class="token keyword">references</span> users<span class="token punctuation">,</span>
+  role_id uuid <span class="token keyword">references</span> roles<span class="token punctuation">,</span>
+  <span class="token keyword">unique</span> <span class="token punctuation">(</span>role_id<span class="token punctuation">,</span> user_id<span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">insert</span> <span class="token keyword">into</span> roles <span class="token punctuation">(</span>name<span class="token punctuation">)</span> <span class="token keyword">values</span> <span class="token punctuation">(</span><span class="token string">'admin'</span><span class="token punctuation">)</span>
+<span class="token keyword">insert</span> <span class="token keyword">into</span> user_roles <span class="token punctuation">(</span>user_id<span class="token punctuation">,</span> role_id<span class="token punctuation">)</span> <span class="token keyword">values</span> <span class="token punctuation">(</span><span class="token string">'123'</span><span class="token punctuation">,</span> <span class="token string">'abc'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>

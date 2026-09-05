@@ -1,0 +1,63 @@
+<h1 id="functional-programming">Functional Programming<a aria-hidden="true" class="anchor-heading icon-link" href="#functional-programming"></a></h1>
+<h1 id="overview">Overview<a aria-hidden="true" class="anchor-heading icon-link" href="#overview"></a></h1>
+<p>"function" is a reference to how functions work in math.</p>
+<ul>
+<li>ex. f(x) = 2x² + 5 can be plotted on a graph to make a parabola. In this sense, it can be thought of as a map. An x value of 5 maps to a return value of 55.</li>
+</ul>
+<p>Though FP rarely deals with graphs like this, think of it as input values mapping to output
+<img src="/assets/images/2021-03-09-09-35-55.png"></p>
+<p>functional languages are closer to math than the more popular imperative languages.</p>
+<p>Functions as <a href="/notes/XQ7bkzkwTyqd8vNOHslYZ">first-class citizens</a> is a key component of Functional Programming, since using higher-order components to achieve composition is a standard practice (remember, <code>map</code>, <code>filter</code> and <code>reduce</code> are all HOCs)</p>
+<p>Based on idea of Referential Transparency</p>
+<h3 id="referential-transparency">Referential transparency<a aria-hidden="true" class="anchor-heading icon-link" href="#referential-transparency"></a></h3>
+<p>The notion that a function could be replaced by its return value and it wouldn't impact the functionality of the program.
+If satisfied, this is a clear sign that a function is pure.
+as you're reading a program, once you've mentally computed what a pure function call's output is, you no longer need to think about what that exact function call is doing when you see it in code, especially if it appears multiple times.
+That result becomes kinda like a mental const declaration, which as you're reading you can transparently swap in and not spend any more mental energy working out.</p>
+<h2 id="abstracting-generalizing-functions">Abstracting (Generalizing) Functions<a aria-hidden="true" class="anchor-heading icon-link" href="#abstracting-generalizing-functions"></a></h2>
+<p>Similar to how partial application and currying (see Chapter 3) allow a progression from generalized to specialized functions, we can abstract by pulling out the generality between two or more tasks. The general part is defined once, so as to avoid repetition. To perform each task's specialization, the general part is parameterized.</p>
+<p>consider:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">saveComment</span><span class="token punctuation">(</span><span class="token parameter">txt</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span>txt <span class="token operator">!=</span> <span class="token string">""</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        comments<span class="token punctuation">[</span>comments<span class="token punctuation">.</span><span class="token property-access">length</span><span class="token punctuation">]</span> <span class="token operator">=</span> txt<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">trackEvent</span><span class="token punctuation">(</span><span class="token parameter">evt</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span>evt<span class="token punctuation">.</span><span class="token property-access">name</span> <span class="token operator">!==</span> <span class="token keyword nil">undefined</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        events<span class="token punctuation">[</span>evt<span class="token punctuation">.</span><span class="token property-access">name</span><span class="token punctuation">]</span> <span class="token operator">=</span> evt<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>the repetition (generality) between the 2 functions is: storing a value in a data source. the uniqueness (specialty) of them is that one sticks the value on the end of an array, while the other sets the value as a property on an object.</p>
+<p>abstracting:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">storeData</span><span class="token punctuation">(</span><span class="token parameter">store<span class="token punctuation">,</span><span class="token dom variable">location</span><span class="token punctuation">,</span>value</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    store<span class="token punctuation">[</span><span class="token dom variable">location</span><span class="token punctuation">]</span> <span class="token operator">=</span> value<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">saveComment</span><span class="token punctuation">(</span><span class="token parameter">txt</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span>txt <span class="token operator">!=</span> <span class="token string">""</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">storeData</span><span class="token punctuation">(</span> comments<span class="token punctuation">,</span> comments<span class="token punctuation">.</span><span class="token property-access">length</span><span class="token punctuation">,</span> txt <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">trackEvent</span><span class="token punctuation">(</span><span class="token parameter">evt</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span>evt<span class="token punctuation">.</span><span class="token property-access">name</span> <span class="token operator">!==</span> <span class="token keyword nil">undefined</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">storeData</span><span class="token punctuation">(</span> events<span class="token punctuation">,</span> evt<span class="token punctuation">.</span><span class="token property-access">name</span><span class="token punctuation">,</span> evt <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/37KnYdGqg8fi39d2ptp0i">Currying</a></li>
+<li><a href="/notes/ADXZCx46bVreuX9boGRrE">Functional Purity</a></li>
+<li><a href="/notes/6bd9dNbtYRutpTkEtnBR9">Lens</a></li>
+<li><a href="/notes/xLPAZiN2wSLfspekepdqq">Recursion</a></li>
+<li><a href="/notes/i3rz22T86t59QROorFkW6">Transducer</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/TNGo4AE63BetApHCGbQIE">This</a></li>
+</ul>

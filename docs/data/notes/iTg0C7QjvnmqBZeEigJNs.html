@@ -1,0 +1,135 @@
+<h1 id="opentracing">Opentracing<a aria-hidden="true" class="anchor-heading icon-link" href="#opentracing"></a></h1>
+<h2 id="overview">Overview<a aria-hidden="true" class="anchor-heading icon-link" href="#overview"></a></h2>
+<p>Opentracing is a vendor-agnostic API to achieve distributed tracing in a microservice architecture.</p>
+<p>Distributed tracing tracks a single request through all of its journey, from its source to its destination. This means if we have a frontend that makes a request to a server, and that server then fires off a stored procedure from a database, then returns to the server, and triggers some other events to happen, this will all appear on the trace.</p>
+<ul>
+<li>normal traces will only track a request through a single application domain.</li>
+<li>Therefore, we can say that distributed tracing is the stitching of multiple requests across multiple systems. The stitching is often done by one or more <code>correlationId</code>s, and the tracing is often a set of recorded, structured log events across all the systems, stored in a central place.</li>
+</ul>
+<p>In OpenTracing, a trace is a directed acyclic graph of Spans with References that may look like this:</p>
+<pre><code>[Span A]  ←←←(the root span)
+            |
+     +------+------+
+     |             |
+ [Span B]      [Span C] ←←←(Span C is a `ChildOf` Span A)
+     |             |
+ [Span D]      +---+-------+
+               |           |
+           [Span E]    [Span F] >>> [Span G] >>> [Span H]
+                                       ↑
+                                       ↑
+                                       ↑
+                         (Span G `FollowsFrom` Span F)
+</code></pre>
+<p>This allows us to model how our application calls out to other applications, internal functions, asynchronous jobs, etc. All of these can be modeled as Spans</p>
+<h3 id="span">Span<a aria-hidden="true" class="anchor-heading icon-link" href="#span"></a></h3>
+<p></p><p></p><div class="portal-container">
+<div class="portal-head">
+<div class="portal-backlink">
+<div class="portal-title">From <span class="portal-text-title">Span</span></div>
+<a href="/notes/9Pt1DvPxOAhKOsj4anaFC" class="portal-arrow">Go to text <span class="right-arrow">→</span></a>
+</div>
+</div>
+<div id="portal-parent-anchor" class="portal-parent" markdown="1">
+<div class="portal-parent-fader-top"></div>
+<div class="portal-parent-fader-bottom"></div><p>The “span” is the primary building block of a distributed trace, representing an individual unit of work done in a distributed system.</p>
+<ul>
+<li>Each component of the distributed system contributes a span- a named, timed operation representing a piece of the workflow.</li>
+</ul>
+<p>A Span represents a separate software system communicating over messaging or HTTP.</p>
+<p>Spans can (and generally do) contain “References” to other spans, which allows multiple Spans to be assembled into one complete Trace - a visualization of the life of a request as it moves through a distributed system.</p>
+<p>Each span encapsulates the following state according to the OpenTracing specification:</p>
+<ul>
+<li>An operation name</li>
+<li>A start timestamp and finish timestamp</li>
+<li>A set of key:value span Tags</li>
+<li>A set of key:value span Logs</li>
+<li>A SpanContext</li>
+</ul>
+<p>Spans can connect to each other via two types of relationship: ChildOf and FollowsFrom. ChildOf Spans are spans like in our previous example, where our ordering website sent child requests to both our payment system and inventory system. FollowsFrom Spans are just a chain of sequential Spans. So, a FollowsFrom Span is just saying, “I started after this other Span.”</p>
+<h2 id="parts-of-a-span">Parts of a Span<a aria-hidden="true" class="anchor-heading icon-link" href="#parts-of-a-span"></a></h2>
+<h3 id="tag">Tag<a aria-hidden="true" class="anchor-heading icon-link" href="#tag"></a></h3>
+<p></p><p></p><div class="portal-container">
+<div class="portal-head">
+<div class="portal-backlink">
+<div class="portal-title">From <span class="portal-text-title">Tag</span></div>
+<a href="/notes/b4qict7Pnqdps356FQaRI" class="portal-arrow">Go to text <span class="right-arrow">→</span></a>
+</div>
+</div>
+<div id="portal-parent-anchor" class="portal-parent" markdown="1">
+<div class="portal-parent-fader-top"></div>
+<div class="portal-parent-fader-bottom"></div><p>key:value pairs that enable user-defined annotation of spans in order to query, filter, and comprehend trace data.</p>
+<p>Examples may include tag keys like db.instance to identify a database host, http.status_code to represent the HTTP response code, or error which can be set to True if the operation represented by the Span fails.</p>
+<h4 id="example">Example<a aria-hidden="true" class="anchor-heading icon-link" href="#example"></a></h4>
+<ul>
+<li>db.instance:"customers"</li>
+<li>db.statement:"SELECT * FROM mytable WHERE foo='bar'"</li>
+<li>peer.address:"mysql://127.0.0.1:3306/customers"</li>
+</ul>
+</div></div><p></p><p></p>
+<h3 id="log">Log<a aria-hidden="true" class="anchor-heading icon-link" href="#log"></a></h3>
+<p></p><p></p><div class="portal-container">
+<div class="portal-head">
+<div class="portal-backlink">
+<div class="portal-title">From <span class="portal-text-title">Log</span></div>
+<a href="/notes/JSCi2wvN5Vua6EaBYeK8y" class="portal-arrow">Go to text <span class="right-arrow">→</span></a>
+</div>
+</div>
+<div id="portal-parent-anchor" class="portal-parent" markdown="1">
+<div class="portal-parent-fader-top"></div>
+<div class="portal-parent-fader-bottom"></div><p>key:value pairs that are useful for capturing span-specific logging messages and other debugging or informational output from the application itself.</p>
+<p>Logs may be useful for documenting a specific moment or event within the span (in contrast to tags which should apply to the span as a whole).</p>
+</div></div><p></p><p></p>
+<h3 id="spancontext">SpanContext<a aria-hidden="true" class="anchor-heading icon-link" href="#spancontext"></a></h3>
+<p>Carries data across process boundaries.</p>
+<p>It has two major components:</p>
+<ol>
+<li>An implementation-dependent state to refer to the distinct span within a trace
+<ul>
+<li>i.e., the implementing Tracer’s definition of spanID and traceID</li>
+</ul>
+</li>
+<li>Any <strong>Baggage Items</strong>
+<ul>
+<li>These are key:value pairs that cross process-boundaries.</li>
+<li>These may be useful to have some data available for access throughout the trace.</li>
+</ul>
+</li>
+</ol>
+<h4 id="example-span">Example Span:<a aria-hidden="true" class="anchor-heading icon-link" href="#example-span"></a></h4>
+<pre><code>    t=0            operation name: db_query               t=x
+
+     +-----------------------------------------------------+
+     | · · · · · · · · · ·    Span     · · · · · · · · · · |
+     +-----------------------------------------------------+
+
+Tags:
+- db.instance:"customers"
+- db.statement:"SELECT * FROM mytable WHERE foo='bar'"
+- peer.address:"mysql://127.0.0.1:3306/customers"
+
+Logs:
+- message:"Can't connect to mysql server on '127.0.0.1'(10061)"
+
+SpanContext:
+- trace_id:"abc123"
+- span_id:"xyz789"
+- Baggage Items:
+  - special_id:"vsid1738"
+</code></pre></div></div><p></p><p></p>
+<h2 id="tips-for-implementation">Tips for Implementation<a aria-hidden="true" class="anchor-heading icon-link" href="#tips-for-implementation"></a></h2>
+<ul>
+<li>Use dependency injection where possible. This will make things easily testable and configurable.</li>
+<li>Follow the idioms of your language and frameworks as much as possible. This will let your team members easily onboard into OpenTracing and tracing in general.</li>
+<li>Many frameworks provide extensibility points around units of work. For example, Spring Boot has pre- and post-request handlers for web requests. Leverage these as much as possible to save you effort when instrumenting tracing.</li>
+<li>If you don’t have a framework or can’t use its extensibility points, keep most of the tracing instrumentation as isolated from the business logic as possible. You can use patterns like Decorator and Chain of Responsibility for this, or even aspect-oriented programming. This will make your code’s intent clearer and easier to read. Exceptions to this include when you need to add tags or log an event; these are commonly specific to the business logic your code is executing.</li>
+</ul>
+<h2 id="e-resources">E Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#e-resources"></a></h2>
+<ul>
+<li><a href="https://docs.sentry.io/product/sentry-basics/tracing/distributed-tracing/">Sentry primer on tracing</a></li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/9Pt1DvPxOAhKOsj4anaFC">Span</a></li>
+</ol>

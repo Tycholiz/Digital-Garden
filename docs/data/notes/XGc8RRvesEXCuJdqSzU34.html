@@ -1,0 +1,32 @@
+<h1 id="cook">Cook<a aria-hidden="true" class="anchor-heading icon-link" href="#cook"></a></h1>
+<h3 id="base64-encode-json">Base64 encode JSON<a aria-hidden="true" class="anchor-heading icon-link" href="#base64-encode-json"></a></h3>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> valueEncoded <span class="token operator">=</span> <span class="token maybe-class-name">Buffer</span><span class="token punctuation">.</span><span class="token keyword module">from</span><span class="token punctuation">(</span><span class="token known-class-name class-name">JSON</span><span class="token punctuation">.</span><span class="token method function property-access">stringify</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'base64'</span><span class="token punctuation">)</span>
+</code></pre>
+<h3 id="creating-a-buffer-object">Creating a Buffer object<a aria-hidden="true" class="anchor-heading icon-link" href="#creating-a-buffer-object"></a></h3>
+<p>There are 2 ways to create a buffer object:</p>
+<ol>
+<li>Create a new buffer object, allocating the size during instantiation</li>
+<li>Extract a buffer from existing data</li>
+</ol>
+<h4 id="create-new-buffer">Create new buffer<a aria-hidden="true" class="anchor-heading icon-link" href="#create-new-buffer"></a></h4>
+<p>If you are going to store data in memory that you have yet to receive, you’ll want to create a new buffer with <code>Buffer.alloc(1024)</code></p>
+<p>When creating a new buffer with <code>alloc()</code>, it is filled by default with binary zeroes to serve as a placeholder.</p>
+<h4 id="extract-a-buffer">Extract a buffer<a aria-hidden="true" class="anchor-heading icon-link" href="#extract-a-buffer"></a></h4>
+<p>To create a buffer from pre-existing data, we use <code>Buffer.from()</code>
+we can create buffers from:</p>
+<ul>
+<li>array of integers (between 0 and 255)</li>
+<li>an <code>ArrayBuffer</code> object, which stored a fixed length of bytes</li>
+<li>a string</li>
+<li>another Buffer</li>
+</ul>
+<h3 id="reading-from-a-buffer-object">Reading from a Buffer object<a aria-hidden="true" class="anchor-heading icon-link" href="#reading-from-a-buffer-object"></a></h3>
+<p>We can access an individual byte in a buffer or we can extract the entire contents.</p>
+<ul>
+<li>To access one byte of a buffer, we pass the index or location of the byte we want. Buffers store data sequentially like arrays. They also index their data like arrays, starting at 0. We can use array notation on the buffer object to get an individual byte.</li>
+</ul>
+<p>The buffer object comes with the <code>toString()</code> and the <code>toJSON()</code> methods, which return the entire contents of a buffer in two different formats.</p>
+<h3 id="modify-a-buffer">Modify a Buffer<a aria-hidden="true" class="anchor-heading icon-link" href="#modify-a-buffer"></a></h3>
+<p>You can either modify buffer bytes individually using the array syntax, or write new contents to the buffer, replacing the existing data.</p>
+<h1 id="e-resources">E Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#e-resources"></a></h1>
+<p><a href="https://www.digitalocean.com/community/tutorials/using-buffers-in-node-js">https://www.digitalocean.com/community/tutorials/using-buffers-in-node-js</a></p>

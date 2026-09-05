@@ -1,0 +1,58 @@
+<h1 id="pointer">Pointer<a aria-hidden="true" class="anchor-heading icon-link" href="#pointer"></a></h1>
+<p>In Go a pointer is represented using the <code>*</code> character followed by the type of the stored value.</p>
+<p><code>*</code> is also used to "dereference" pointer variables. Dereferencing a pointer gives us access to the value the pointer points to. </p>
+<p>When we write <code>*xPtr = 0</code> we are saying "store the int 0 in the memory location that <code>xPtr</code> refers to". </p>
+<ul>
+<li>If we try <code>xPtr = 0</code> instead we will get a compiler error because <code>xPtr</code> is not an <code>int</code> it's a <code>*int</code>, which can only be given another <code>*int</code>.</li>
+</ul>
+<p>We use the <code>&#x26;</code> operator to find the address of a variable. <code>&#x26;x</code> returns a <code>*int</code> (pointer to an <code>int</code>) because <code>x</code> is an <code>int</code>. This is what allows us to modify the original variable. <code>&#x26;x</code> in main and <code>xPtr</code> in zero refer to the same memory location.</p>
+<p>When we use the <code>&#x26;</code> operator in front of a variable <code>c</code>, we are talking about the place where <code>c</code> is stored. When we use the <code>*</code> operator, we are talking about the variable <code>c</code> itself.</p>
+<p>We can get the memory address of a variable by prepending it with an <code>&#x26;</code></p>
+<pre class="language-go"><code class="language-go">i <span class="token operator">:=</span> <span class="token number">7</span>
+fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token operator">&#x26;</span>i<span class="token punctuation">)</span> <span class="token comment">// 0xc420014090</span>
+</code></pre>
+<p>As expected, the <code>inc</code> function wouldn't cause the value of <code>i</code> to change, since <code>i</code> is copied by value, so <code>x</code> in the <code>inc</code> function is just a copy, which gets incremented, but then is discarded, since the function doesn't return anything.</p>
+<pre class="language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  i <span class="token operator">:=</span> <span class="token number">7</span>
+  <span class="token function">inc</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span>
+  fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span> <span class="token comment">// 7</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">inc</span><span class="token punctuation">(</span>x <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  x<span class="token operator">++</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>If we want to modify the value of <code>i</code> here, then we can do so by passing a pointer to the variable to <code>inc</code>. In this case, the <code>inc</code> function receives a value at that memory reference and is able to modify the original version.</p>
+<pre class="language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  i <span class="token operator">:=</span> <span class="token number">7</span>
+  <span class="token comment">// pass the pointer of `i` to the `inc` function</span>
+  <span class="token function">inc</span><span class="token punctuation">(</span><span class="token operator">&#x26;</span>i<span class="token punctuation">)</span>
+  fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span> <span class="token comment">// 7</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// here, we say "the function accepts a pointer that, when dereferenced, is an integer"</span>
+<span class="token keyword">func</span> <span class="token function">inc</span><span class="token punctuation">(</span>x <span class="token operator">*</span><span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// dereference the pointer before incrementing; otherwise we'd be incrementing the memory address (ie. 0xc420014090).</span>
+  <span class="token operator">*</span>x<span class="token operator">++</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="use-cases">Use-cases<a aria-hidden="true" class="anchor-heading icon-link" href="#use-cases"></a></h3>
+<p>Pointers give us the ability to define a function that accepts a pointer as an argument so that the original variable can be modified from within the function.</p>
+<pre class="language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">zero</span><span class="token punctuation">(</span>xPtr <span class="token operator">*</span><span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token operator">*</span>xPtr <span class="token operator">=</span> <span class="token number">0</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  x <span class="token operator">:=</span> <span class="token number">5</span>
+  <span class="token function">zero</span><span class="token punctuation">(</span><span class="token operator">&#x26;</span>x<span class="token punctuation">)</span>
+  fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token comment">// x is 0</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<ul>
+<li>this also has the added benefit of not having to copy the value into a local function version on each method call.</li>
+</ul>
+<p>Pointers are extremely useful when paired with structs.</p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/ign4gpjymzjsokzxtrszhxk">Methods</a></li>
+</ul>

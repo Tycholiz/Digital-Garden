@@ -1,0 +1,21 @@
+<h1 id="packfiles">Packfiles<a aria-hidden="true" class="anchor-heading icon-link" href="#packfiles"></a></h1>
+<p>Packfiles can be thought of compressed <a href="/notes/ePOqLpbjFgrqSfyvWfPha">blobs</a>.</p>
+<p>Since different versions of the same file create multiple blobs, it would be inefficient if the only difference between these versions was a single line. What would be great is if we could store one version of the file, and just store the delta (ie. diff) of the other with the first.</p>
+<ul>
+<li>Git does exactly this using packfiles.</li>
+</ul>
+<p>The initial format in which Git saves objects on disk is called a "loose" object format. Occasionally Git packs up several of these objects into a single binary file called a <em>packfile</em> for the purpose of being more efficient.</p>
+<p>Packfiles are created under 3 circumstances:</p>
+<ol>
+<li>there are too many loose objects around (~7000)</li>
+<li><code>git gc</code> is run manually</li>
+<li>we push to a remote repo </li>
+</ol>
+<p>When we run <code>git gc</code>, we will notice that many of the objects in our object database disappear and are replaced by packfiles. The objects that remain are those blobs that aren't pointed to by any commit (in other words, the blobs were never added to any commits). Because of this, those blobs are considered dangling and as a result were never packed up into the new packfile.</p>
+<ul>
+<li>The other files are the packfile and an index. The packfile contains the contents of all the objects that were removed from the filesystem. The index can be thought of as the index of a textbook, which helps us locate specific objects quickly.
+<ul>
+<li>if we inspect this packfile index with <code>git verify-pack</code>, we can see that 2 versions of the same file will have one version referencing the other, showing that we use deltas to be efficient. </li>
+</ul>
+</li>
+</ul>

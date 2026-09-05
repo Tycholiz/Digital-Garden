@@ -1,0 +1,35 @@
+<h1 id="cloudformation">CloudFormation<a aria-hidden="true" class="anchor-heading icon-link" href="#cloudformation"></a></h1>
+<h1 id="cloudformation-1">CloudFormation<a aria-hidden="true" class="anchor-heading icon-link" href="#cloudformation-1"></a></h1>
+<p>When working in AWS, you almost always want to use some CloudFormation (or a similar tool).</p>
+<ul>
+<li>It lets you create and update the things you have in AWS without having to click around on the console or write fragile scripts.
+<ul>
+<li>for instance, gives us the ability to tear down everything cleanly and recreate your AWS set up in one click</li>
+</ul>
+</li>
+<li>spec: the alternative to using CloudFormation is doing click-ops</li>
+</ul>
+<p>rule of thumb is to let CloudFormation deal with all the AWS things that are either static or change very rarely, like load balancers, deployment pipelines, VPC configs, security groups</p>
+<h3 id="overview">Overview<a aria-hidden="true" class="anchor-heading icon-link" href="#overview"></a></h3>
+<ul>
+<li>define your AWS resources as a YAML script</li>
+<li>point CloudFormation to your AWS account, and it creates all the resources you defined idempotently.</li>
+<li>Updates can be rolled back.</li>
+</ul>
+<p>While CloudFormation is specific to AWS, we can use <a href="/notes/Ku1OgHMhELajzo61Gx7ye">Terraform</a>, which is platform agnostic.</p>
+<h4 id="stack">Stack<a aria-hidden="true" class="anchor-heading icon-link" href="#stack"></a></h4>
+<p><em>stack</em> refers to all the lamdbas that are found in the project</p>
+<ul>
+<li>for instance, if we are using serverless framework, the stack refers to all of the stuff in serverless.yml
+if we are looking for stacks, dt-fleet-event-bus stack</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/nRb6Im4Kcmc2ZWE7K1jZ1">Serverless Framework</a></li>
+<li><a href="/notes/KutlqQVGLBAdLTslz3D9A">CDK</a></li>
+<li><a href="/notes/Q533wL2e7qYwr3GbGN46x">AWS Cloud Terms</a></li>
+<li><a href="/notes/fsTgzaiHZPnbWedUYhFty">Elastic Beanstalk</a></li>
+<li><a href="/notes/OSdV9FvBG3wDbRNLllg0V">AWS Lambda</a></li>
+<li><a href="/notes/tn4qi4x8bodysdvtd5rq0f4">SAM</a></li>
+</ul>

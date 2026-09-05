@@ -1,0 +1,19 @@
+<h1 id="transactions">Transactions<a aria-hidden="true" class="anchor-heading icon-link" href="#transactions"></a></h1>
+<p>Redis transactions provide us with 2 guarantees:</p>
+<ol>
+<li>All the commands in a transaction are serialized and executed sequentially. 
+<ul>
+<li>This means that a request sent by another client will never be served in the middle of the execution of the transaction.</li>
+</ul>
+</li>
+<li>The <code>EXEC</code> command triggers the execution of all the commands in the transaction, 
+<ul>
+<li>so if a client loses the connection to the server in the context of a transaction before calling the <code>EXEC</code> command, none of the operations are performed</li>
+</ul>
+</li>
+</ol>
+<p>A Redis Transaction is entered using the <code>MULTI</code> command</p>
+<ul>
+<li>At this point the user can issue multiple commands. Instead of executing these commands, Redis will queue them. They will all be executed once <code>EXEC</code> is called.</li>
+<li>Calling <code>DISCARD</code> will flush the transaction queue and will exit the transaction.</li>
+</ul>

@@ -1,0 +1,59 @@
+<h1 id="set">Set<a aria-hidden="true" class="anchor-heading icon-link" href="#set"></a></h1>
+<p>A <code>Set</code> is similar to an array, in that it is a linear non-keyed data structure. </p>
+<ul>
+<li>Also, like an array the order of data is maintained. </li>
+<li>Unlike an array, each value in the set may only occur once, making it more like an enum in that sense.</li>
+</ul>
+<p>Its main methods are:</p>
+<ul>
+<li><code>new Set(iterable)</code> – creates the set, and if an iterable object is provided (usually an array), copies values from it into the set.</li>
+<li><code>set.add(value)</code> – adds a value, returns the set itself.</li>
+<li><code>set.delete(value)</code> – removes the value, returns true if value existed at the moment of the call, otherwise false.</li>
+<li><code>set.has(value)</code> – returns true if the value exists in the set, otherwise false.
+<ul>
+<li><code>set.has</code> is on average faster than the <code>Array.prototype.includes</code> method when an Array object has a length equal to a Set object’s size.</li>
+</ul>
+</li>
+<li><code>set.clear()</code> – removes everything from the set.</li>
+<li><code>set.size</code> – is the elements count.</li>
+</ul>
+<p>A key feature is that repeated calls of <code>set.add(value)</code> with the same value don’t do anything. That’s the reason why each value appears in a Set only once.</p>
+<p>For example, we have visitors coming, and we’d like to remember everyone. But repeated visits should not lead to duplicates. A visitor must be “counted” only once.</p>
+<p>A set can be iterated over with <code>forEach</code> or <code>for..of</code></p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> mySet <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Set</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+mySet<span class="token punctuation">.</span><span class="token method function property-access">add</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>
+mySet<span class="token punctuation">.</span><span class="token method function property-access">add</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span>
+mySet<span class="token punctuation">.</span><span class="token method function property-access">add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+
+<span class="token comment">// [2, 5, 1]</span>
+</code></pre>
+<h3 id="why-and-when-to-use-sets">Why and when to use Sets<a aria-hidden="true" class="anchor-heading icon-link" href="#why-and-when-to-use-sets"></a></h3>
+<ul>
+<li>Eliminating Duplicates: Sets are commonly used to remove duplicate values from an array or collection. By converting an array to a Set and then back to an array, you can easily eliminate any duplicate values.</li>
+<li>Filtering Unique Values: Sets can be used to filter unique values from an array or collection. By adding elements to a Set, you automatically eliminate duplicates, allowing you to obtain a collection of unique values.
+<ul>
+<li>tip: if you think in terms of <a title="Private" href="https://wiki.dendron.so/notes/hfyvYGJZQiUwQaaxQO27q.html" target="_blank" class="private">math.set-theory (Private)</a>, each element of the set would be what we add to the <code>Set</code>. In this example, we are making a <code>Set</code> of conversations that satisfy a certain condition. Imagining a venn diagram, one circle would be composed of elements that satisfy this condition, while the second circle would be composed of elements that don't satisfy this condition. In both cases, they are conversations, so the <code>conversationId</code> is what we should build the set on.</li>
+</ul>
+</li>
+</ul>
+<pre class="language-ts"><code class="language-ts"><span class="token comment">// return a Set of conversationIds that doesn't include duplicates in cases where multiple messages are associated with a single conversationId</span>
+<span class="token keyword">const</span> conversationsWhereBusinessResponded<span class="token operator">:</span> <span class="token known-class-name class-name">Set</span><span class="token operator">&#x3C;</span><span class="token builtin">number</span><span class="token operator">></span> <span class="token operator">=</span> allMessages<span class="token punctuation">.</span><span class="token method function property-access">reduce</span><span class="token punctuation">(</span><span class="token punctuation">(</span>conversations<span class="token operator">:</span> <span class="token known-class-name class-name">Set</span><span class="token operator">&#x3C;</span><span class="token builtin">number</span><span class="token operator">></span><span class="token punctuation">,</span> message<span class="token operator">:</span> <span class="token maybe-class-name">Message</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+    <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span>message<span class="token punctuation">.</span><span class="token property-access">sender</span> <span class="token operator">===</span> bizOwnerId<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        conversations<span class="token punctuation">.</span><span class="token method function property-access">add</span><span class="token punctuation">(</span>message<span class="token punctuation">.</span><span class="token property-access">conversationId</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword control-flow">return</span> conversations
+<span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name"><span class="token known-class-name class-name">Set</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre>
+<ul>
+<li>Iterating Over Unique Elements: Sets maintain the order of inserted elements, which makes them useful for iterating (e.g. with <code>forEach()</code>) over unique elements in the order of insertion.</li>
+<li>Membership Testing: Sets are efficient for checking whether a particular element exists in a collection. The has() method of a Set can quickly determine if an element is present or not, without the need for iterating through the entire collection.</li>
+<li>Operations Based on Set Theory: Sets can be used to perform set operations such as union, intersection, and difference. These operations can be useful when dealing with collections that need to be combined, compared, or filtered based on their elements.</li>
+<li>Checking Array Similarity: Sets can be used to determine the similarity or differences between two arrays. By converting both arrays to Sets, you can easily perform set operations to identify common or distinct elements.</li>
+<li>Tracking Unique Events: Sets can be employed to keep track of unique events or triggers. As events occur, you can add them to a Set, ensuring that only unique events are stored.</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/4JYrGNzRXRthALIZVzD4d">Deduping</a></li>
+<li><a href="/notes/wHT87HSjyOmffkNWsBUXY">For</a></li>
+</ul>

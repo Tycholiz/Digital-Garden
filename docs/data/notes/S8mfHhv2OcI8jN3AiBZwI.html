@@ -1,0 +1,7 @@
+<h1 id="setup-intent">Setup Intent<a aria-hidden="true" class="anchor-heading icon-link" href="#setup-intent"></a></h1>
+<ul>
+<li>A SetupIntent guides you through the process of setting up and saving a customer's payment credentials for future payments.</li>
+<li>If the SetupIntent is used with a Customer, upon success, it will automatically attach the resulting payment method to that Customer.</li>
+<li>if we wanted to save a credit card at the time of purchase, then we can add the <code>setup_future_intent</code> at the time of creating a PaymentIntent. This negates our need to use the SetupIntent. spec: Therefore, the SetupIntent is needed only when saving a payment for later, but not making a purchase at the time (like when someone click "add payment method".</li>
+<li>Creating a SetupIntent will generate a PaymentMethod to be attached to a customer, which can then be used to create a PaymentIntent when you are ready to charge them.</li>
+</ul>

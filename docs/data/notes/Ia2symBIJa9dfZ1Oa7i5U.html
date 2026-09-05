@@ -1,0 +1,24 @@
+<h1 id="formulas">Formulas<a aria-hidden="true" class="anchor-heading icon-link" href="#formulas"></a></h1>
+<p>Find and Replace a pattern in all files of a tree</p>
+<ul>
+<li>find and replace all occurrences of <code>foo</code> with <code>bar</code> within a directory tree
+<ul>
+<li><code>grep -rl 'foo' . | xargs sed -i .bk 's|foo|bar|g'</code></li>
+<li>the first part gets a list of all files that have the pattern <code>foo</code> in it, then it pipes that list into the second part, which runs the sed substitution on each file</li>
+<li>if we don't want to create a backup, then replace .bk with ''</li>
+</ul>
+</li>
+</ul>
+<p>Find and Replace a pattern in certain files</p>
+<ul>
+<li>find and replace all occurrences of <code>foo</code> with <code>bar</code> in all .js files
+<ul>
+<li><code>find . -name "*.js" -exec sed -i '' s/foo/bar/g {} +</code></li>
+</ul>
+</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/WYscZgRRtDRnrta5nOiqb">Sed</a></li>
+</ul>

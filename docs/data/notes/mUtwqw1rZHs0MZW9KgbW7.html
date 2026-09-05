@@ -1,0 +1,21 @@
+<h1 id="stages">Stages<a aria-hidden="true" class="anchor-heading icon-link" href="#stages"></a></h1>
+<p>The order that we list our stages defines the execution order for jobs:</p>
+<ul>
+<li>Jobs in the same stage run in parallel.</li>
+<li>Jobs in the next stage run after the jobs from the previous stage complete successfully.</li>
+</ul>
+<p>If stages is not defined in the .gitlab-ci.yml file, the default pipeline stages are:</p>
+<ul>
+<li><code>.pre</code></li>
+<li><code>build</code></li>
+<li><code>test</code></li>
+<li><code>deploy</code></li>
+<li><code>.post</code></li>
+</ul>
+<p>If a job does not specify a stage, the job is assigned the <code>test</code> stage.</p>
+<p>To make a job start earlier and ignore the stage order, use the <code>needs</code> keyword.</p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/SL4aNCgB1VUFCemqEumoQ">Gitlab CI-CD</a></li>
+</ul>

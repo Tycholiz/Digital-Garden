@@ -1,0 +1,20 @@
+<h1 id="runtim">Runtim<a aria-hidden="true" class="anchor-heading icon-link" href="#runtim"></a></h1>
+<h2 id="dependencies">Dependencies<a aria-hidden="true" class="anchor-heading icon-link" href="#dependencies"></a></h2>
+<p>Say we are making a simple app with an HTTP route (to provide post data). Our app consists of a controller (HTTP endpoint), a provider (logic to access the data) and main module.</p>
+<ol>
+<li>In our controller, we declare the PostsService as a dependency in the constructor</li>
+</ol>
+<ul>
+<li>PostsService is available to be injected in the first place because it has the <code>@Injectable</code> decorator.</li>
+</ul>
+<ol start="2">
+<li>In PostsModule, the class <code>PostsService</code> is associated with a token also called <code>PostsService</code> (<code>providers</code> key)</li>
+</ol>
+<ul>
+<li>the token is used by the Nestjs runtime to request an instance of a class (most often by the same name. This is configurable, and is what we are doing when we provide the long-form object with keys <code>provide</code> and <code>useFactory</code>/<code>useValue</code>, <code>useClass</code>)</li>
+</ul>
+<pre class="language-ts"><code class="language-ts"><span class="token decorator"><span class="token at operator">@</span><span class="token function">Module</span></span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  controllers<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token maybe-class-name">PostsController</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  providers<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token maybe-class-name">PostsService</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+</code></pre>

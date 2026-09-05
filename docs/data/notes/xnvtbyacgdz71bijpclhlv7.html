@@ -1,0 +1,24 @@
+<h1 id="shim">Shim<a aria-hidden="true" class="anchor-heading icon-link" href="#shim"></a></h1>
+<p>A shim is a piece of code that intercepts API calls transparently (ie. without the user knowing about it) and either:</p>
+<ul>
+<li>changes the arguments that are passed</li>
+<li>handles the operation itself</li>
+<li>redirects the operation elsewhere</li>
+</ul>
+<p>Shims are commonly used to support... </p>
+<ul>
+<li>an old API in a new environment
+<ul>
+<li>ex. a common occurrence is that shims are released following the behaviour change of a public API. In these cases, a shim can be made that bridges the gap between the old usage of the API (which clients are still using) and the new API.</li>
+</ul>
+</li>
+<li>a new API in an old environment
+<ul>
+<li>ex. a polyfill, which is just a shim for a <a href="/notes/nMCtMXVvjBsJk3iw1zoIO">Browser</a> API.
+<ul>
+<li>when we use experimental language features via a polyfill, there is a shim in the background that intercepts our usage of the feature and changes it in some way so that it can be understood by the language engine.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>

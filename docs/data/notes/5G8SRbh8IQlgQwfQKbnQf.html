@@ -1,0 +1,27 @@
+<h1 id="db-cluster">DB Cluster<a aria-hidden="true" class="anchor-heading icon-link" href="#db-cluster"></a></h1>
+<ul>
+<li>a collection of databases servers (ie. nodes, instances) that are connected to a single database file. It is made up of one master node, and 1+ slave nodes.</li>
+<li>The benefits of clustering are: data redundancy, load balancing, high availability, and monitoring and automation.</li>
+<li>a collection of databases managed by a single PostgreSQL server instance constitutes a database cluster.</li>
+<li>a cluster is created with the <code>initdb</code> command</li>
+<li>in file system terms, a database cluser is a single directory under which all data is stored.
+<ul>
+<li>normally <code>/usr/local/pgsql/data</code> or <code>/var/lib/pgsql/data</code> (determined by the package)</li>
+</ul>
+</li>
+<li>the unix user postgres should own this directory</li>
+</ul>
+<h2 id="node">Node<a aria-hidden="true" class="anchor-heading icon-link" href="#node"></a></h2>
+<ul>
+<li><strong>node</strong> - an instance of a database server</li>
+<li>the master node is typically the only one that gets written to. 
+<ul>
+<li>The master can operate without slaves, and if there is an emergency, the slave node can be promoted to master, since it has the most up to date data.</li>
+</ul>
+</li>
+<li>the slave node typically exists as a backup, or as a read replica
+<ul>
+<li>a read replica means that the read and write traffic can be split between the two</li>
+</ul>
+</li>
+</ul>

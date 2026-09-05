@@ -1,0 +1,18 @@
+<h1 id="react-query">React Query<a aria-hidden="true" class="anchor-heading icon-link" href="#react-query"></a></h1>
+<h3 id="query-key">Query key<a aria-hidden="true" class="anchor-heading icon-link" href="#query-key"></a></h3>
+<p>Query keys are used to manage caching</p>
+<ul>
+<li>therefore, the query key represents a set of data.</li>
+<li>therefore, if your query function depends on a variable, include it in your query key</li>
+</ul>
+<p>Query keys are necessary so that the library can internally cache your data correctly and refetch automatically when a dependency to your query changes.</p>
+<p>A query key is an array, and can be as simple as an array of strings, or can be a combination of strings and deeply nested objects</p>
+<ul>
+<li>as long as the query key is serializable, and unique to the query's data, you can use it.</li>
+</ul>
+<p>The order of keys in an object does not matter, meaning the following are equivalent:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token function">useQuery</span><span class="token punctuation">(</span><span class="token punctuation">{</span> queryKey<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'todos'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> status<span class="token punctuation">,</span> page <span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token spread operator">...</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token function">useQuery</span><span class="token punctuation">(</span><span class="token punctuation">{</span> queryKey<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'todos'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> page<span class="token punctuation">,</span> status <span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token spread operator">...</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token function">useQuery</span><span class="token punctuation">(</span><span class="token punctuation">{</span> queryKey<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'todos'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> page<span class="token punctuation">,</span> status<span class="token punctuation">,</span> other<span class="token operator">:</span> <span class="token keyword nil">undefined</span> <span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token spread operator">...</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+</code></pre>
+<p>However, order of array elements does in fact matter</p>

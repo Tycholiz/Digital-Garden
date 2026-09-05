@@ -1,0 +1,24 @@
+<h1 id="sanity-testing">Sanity Testing<a aria-hidden="true" class="anchor-heading icon-link" href="#sanity-testing"></a></h1>
+<p>A sanity test (or sanity check) is a basic test to quickly evaluate whether a claim (or the result of a calculation) can possibly be true.</p>
+<ul>
+<li>it offers "quick, broad, and shallow testing".</li>
+</ul>
+<p>The point of a sanity test is to rule out certain classes of obviously false results, not to catch every possible error.</p>
+<p>Sanity tests may sometimes be used interchangeably with <a href="/notes/oJKMYgXk2Z9RXThzrMh8j">smoke tests</a> insofar as both terms denote tests which determine whether it is possible and reasonable to continue testing further. However, there is a distinction:</p>
+<ul>
+<li>a sanity test determines whether the intended result of a code change works correctly</li>
+<li>a smoke test ensures that nothing else important was broken in the process.</li>
+</ul>
+<p>Sanity tests are normally followed by more rigorous forms of testing.</p>
+<h3 id="example-hello-world">Example: Hello World<a aria-hidden="true" class="anchor-heading icon-link" href="#example-hello-world"></a></h3>
+<p>A "Hello, World!" program is often used as a sanity test for a development environment in a similar fashion. Rather than a complicated script running a set of unit tests, if this simple program fails to compile or execute, it proves that the supporting environment likely has a configuration problem that will prevent any code from compiling or executing</p>
+<h3 id="example-multiplying-by-9-divisibility-rule">Example: Multiplying by 9 divisibility rule<a aria-hidden="true" class="anchor-heading icon-link" href="#example-multiplying-by-9-divisibility-rule"></a></h3>
+<p>In arithmetic, we have the following divisibility rule for the number 9:</p>
+<blockquote>
+<p>To find out if a number is divisible by 9, sum the digits. If the result is divisible by 9, then the original number is too.</p>
+</blockquote>
+<p>In practice,</p>
+<blockquote>
+<p>2880: 2 + 8 + 8 + 0 = 18</p>
+</blockquote>
+<p>Testing to make sure that this logic is fulfilled is a sanity test. It's not covering everything that could go wrong, but it's just giving us a reasonable baseline of expectation for our function.</p>

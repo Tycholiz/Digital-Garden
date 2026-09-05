@@ -1,0 +1,5 @@
+<h1 id="pipe">Pipe<a aria-hidden="true" class="anchor-heading icon-link" href="#pipe"></a></h1>
+<p>We're able to pipe the output of one command into the input of another command precisely because these commands all implement the same interface: a file descriptor.</p>
+<h3 id="tips">Tips<a aria-hidden="true" class="anchor-heading icon-link" href="#tips"></a></h3>
+<p>You can end the pipeline at any point, pipe the output into less, and look at it to see if it has the expected form. This ability to inspect is great for debugging.</p>
+<p>You can write the output of one pipeline stage to a file and use that file as input to the next stage. This allows you to restart the later stage without rerunning the entire pipeline.</p>

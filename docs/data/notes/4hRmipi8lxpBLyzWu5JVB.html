@@ -1,0 +1,90 @@
+<h1 id="open-api">Open API<a aria-hidden="true" class="anchor-heading icon-link" href="#open-api"></a></h1>
+<h2 id="what-is-it">What is it?<a aria-hidden="true" class="anchor-heading icon-link" href="#what-is-it"></a></h2>
+<p>OpenAPI is a specification for describing REST API formats. </p>
+<ul>
+<li>Tools like Swagger provide tools for implementing that specification. These tools can be used at different stages of the API lifecycle.
+<ul>
+<li>note: Swagger is the prior name of OpenAPI.</li>
+</ul>
+</li>
+</ul>
+<p>OpenAPI 3.0 uses an extended subset of <a href="/notes/74lYtC8NKpCzcyFOZTfR1">JSON Schema</a> to describe data formats.</p>
+<ul>
+<li>this means that some keywords are supported and some are not. See the <a href="https://swagger.io/docs/specification/data-models/keywords/">breakdown</a></li>
+</ul>
+<p>An OpenAPI file (json or yml) allows you to describe your entire API, including:</p>
+<ul>
+<li>Available endpoints (<code>/users</code>) and operations on each endpoint (<code>GET /users</code>, <code>POST /users</code>)</li>
+<li>Operation parameters Input and output for each operation</li>
+<li>Authentication methods</li>
+<li>Contact information, license, terms of use and other information.</li>
+</ul>
+<h2 id="why-use-it">Why use it?<a aria-hidden="true" class="anchor-heading icon-link" href="#why-use-it"></a></h2>
+<p>The value of OpenAPI is that it allows APIs to describe their own structure. This allows us to:</p>
+<ul>
+<li>Design-first users: use Swagger Codegen to generate a server stub for your API. The only thing left is to implement the server logic – and your API is ready to go live!</li>
+<li>Use Swagger Codegen to generate client libraries for your API in over 40 languages.</li>
+<li>Use Swagger UI to generate interactive API documentation that lets your users try out the API calls directly in the browser.</li>
+<li>Use the spec to connect API-related tools to your API. For example, import the spec to SoapUI to create automated tests for your API.</li>
+</ul>
+<h2 id="example">Example<a aria-hidden="true" class="anchor-heading icon-link" href="#example"></a></h2>
+<pre class="language-yml"><code class="language-yml"><span class="token key atrule">openapi</span><span class="token punctuation">:</span> 3.0.0
+<span class="token key atrule">info</span><span class="token punctuation">:</span>
+  <span class="token key atrule">title</span><span class="token punctuation">:</span> Sample API
+  <span class="token key atrule">description</span><span class="token punctuation">:</span> Optional multiline or single<span class="token punctuation">-</span>line description in <span class="token punctuation">[</span>CommonMark<span class="token punctuation">]</span>(http<span class="token punctuation">:</span>//commonmark.org/help/) or HTML.
+  <span class="token key atrule">version</span><span class="token punctuation">:</span> 0.1.9
+<span class="token key atrule">servers</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">url</span><span class="token punctuation">:</span> http<span class="token punctuation">:</span>//api.example.com/v1
+    <span class="token key atrule">description</span><span class="token punctuation">:</span> Optional server description<span class="token punctuation">,</span> e.g. Main (production) server
+  <span class="token punctuation">-</span> <span class="token key atrule">url</span><span class="token punctuation">:</span> http<span class="token punctuation">:</span>//staging<span class="token punctuation">-</span>api.example.com
+    <span class="token key atrule">description</span><span class="token punctuation">:</span> Optional server description<span class="token punctuation">,</span> e.g. Internal staging server for testing
+<span class="token key atrule">paths</span><span class="token punctuation">:</span>
+  <span class="token key atrule">/users</span><span class="token punctuation">:</span>
+    <span class="token key atrule">get</span><span class="token punctuation">:</span>
+      <span class="token key atrule">summary</span><span class="token punctuation">:</span> Returns a list of users.
+      <span class="token key atrule">description</span><span class="token punctuation">:</span> Optional extended description in CommonMark or HTML.
+      <span class="token key atrule">responses</span><span class="token punctuation">:</span>
+        <span class="token key atrule">'200'</span><span class="token punctuation">:</span>    <span class="token comment"># status code</span>
+          <span class="token key atrule">description</span><span class="token punctuation">:</span> A JSON array of user names
+          <span class="token key atrule">content</span><span class="token punctuation">:</span>
+            <span class="token key atrule">application/json</span><span class="token punctuation">:</span>
+              <span class="token key atrule">schema</span><span class="token punctuation">:</span> 
+                <span class="token key atrule">type</span><span class="token punctuation">:</span> array
+                <span class="token key atrule">items</span><span class="token punctuation">:</span> 
+                  <span class="token key atrule">type</span><span class="token punctuation">:</span> string
+</code></pre>
+<h2 id="implementation">Implementation<a aria-hidden="true" class="anchor-heading icon-link" href="#implementation"></a></h2>
+<h3 id="ref"><code>$ref</code><a aria-hidden="true" class="anchor-heading icon-link" href="#ref"></a></h3>
+<ul>
+<li><a href="https://swagger.io/docs/specification/using-ref/">main docs</a>
+<code>$ref</code> can be used to reference models from other models.</li>
+</ul>
+<p>For example, imagine we had a model for <code>invoice_items.json</code>, and we wanted to reference an <code>invoice.json</code> model found in the same <code>schema/</code> directory.</p>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token comment">// ...</span>
+  <span class="token property">"properties"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"string"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">"invoice"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">"$ref"</span><span class="token operator">:</span> <span class="token string">"invoice.json"</span> <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token comment">// ...</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p><code>$ref</code> can also be used to reference a specific value within the same JSON document (JSON pointer notation).</p>
+<ul>
+<li>ex. <code>#/components/schemas/user</code></li>
+</ul>
+<hr>
+<h1 id="tools">Tools<a aria-hidden="true" class="anchor-heading icon-link" href="#tools"></a></h1>
+<h3 id="ajv">Ajv<a aria-hidden="true" class="anchor-heading icon-link" href="#ajv"></a></h3>
+<p>We can use <code>ajv</code> to take in our json schema, and generate validation functions to make sure the data coming in adheres to the schema.</p>
+<h3 id="redoc">Redoc<a aria-hidden="true" class="anchor-heading icon-link" href="#redoc"></a></h3>
+<p>Redoc takes the OpenAPI definitions (yml file) and generates HTML that can be viewed in the browser.</p>
+<ul>
+<li><a href="https://github.com/Redocly/redoc">docs</a></li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/z8ie0xjogb6ht7gzowav5xr">K6</a></li>
+</ul>

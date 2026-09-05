@@ -1,0 +1,18 @@
+<h1 id="race-conditions">Race Conditions<a aria-hidden="true" class="anchor-heading icon-link" href="#race-conditions"></a></h1>
+<p>Depending on the level of <a href="/notes/SBhnwv59C8Y0Gb9nRztZU">isolation</a> that the database uses, some types of race conditions can be eliminated.</p>
+<ul>
+<li><em>serializable isolation</em> will protect against all.</li>
+</ul>
+<h2 id="examples-of-race-conditions">Examples of Race conditions<a aria-hidden="true" class="anchor-heading icon-link" href="#examples-of-race-conditions"></a></h2>
+<h3 id="dirty-reads">Dirty reads<a aria-hidden="true" class="anchor-heading icon-link" href="#dirty-reads"></a></h3>
+<p>One client reads another client’s writes before they have been committed. The read committed isolation level and stronger levels prevent dirty reads.</p>
+<h3 id="dirty-writes">Dirty writes<a aria-hidden="true" class="anchor-heading icon-link" href="#dirty-writes"></a></h3>
+<p>One client overwrites data that another client has written, but not yet committed.  Almost all transaction implementations prevent dirty writes.</p>
+<h3 id="read-skew-nonrepeatable-reads">Read skew (nonrepeatable reads)<a aria-hidden="true" class="anchor-heading icon-link" href="#read-skew-nonrepeatable-reads"></a></h3>
+<p>A client sees different parts of the database at different points in time. This issue is most commonly prevented with snapshot isolation, which allows a transaction to read from a consistent snapshot at one point in time. It is usually implemented with <a href="/notes/r9orvg7n574j5bmwon0nb74">Multi-version Concurrency Control (MVCC)</a></p>
+<h3 id="lost-updates">Lost updates<a aria-hidden="true" class="anchor-heading icon-link" href="#lost-updates"></a></h3>
+<p>Two clients concurrently perform a read-modify-write cycle. One overwrites the other’s write without incorporating its changes, so data is lost. Some implemen‐ tations of snapshot isolation prevent this anomaly automatically, while others require a manual lock (<code>SELECT FOR UPDATE</code>).</p>
+<h3 id="write-skew">Write skew<a aria-hidden="true" class="anchor-heading icon-link" href="#write-skew"></a></h3>
+<p>A transaction reads something, makes a decision based on the value it saw, and writes the decision to the database. However, by the time the write is made, the premise of the decision is no longer true. Only serializable isolation prevents this anomaly.</p>
+<h3 id="phantom-reads">Phantom reads<a aria-hidden="true" class="anchor-heading icon-link" href="#phantom-reads"></a></h3>
+<p>A transaction reads objects that match some search condition. Another client makes a write that affects the results of that search. Snapshot isolation prevents straightforward phantom reads, but phantoms in the context of write skew require special treatment, such as index-range locks</p>

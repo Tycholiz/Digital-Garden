@@ -1,0 +1,19 @@
+<h1 id="page">Page<a aria-hidden="true" class="anchor-heading icon-link" href="#page"></a></h1>
+<h3 id="nextpage">NextPage<a aria-hidden="true" class="anchor-heading icon-link" href="#nextpage"></a></h3>
+<p>We can type them using the <code>NextPage</code> type.</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token literal-property property">Page</span><span class="token operator">:</span> <span class="token maybe-class-name">NextPage</span><span class="token operator">&#x3C;</span><span class="token maybe-class-name">Props</span><span class="token operator">></span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter"><span class="token literal-property property">props</span><span class="token operator">:</span> <span class="token maybe-class-name">Props</span></span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">(</span>
+  <span class="token operator">&#x3C;</span>main<span class="token operator">></span><span class="token maybe-class-name">Your</span> user agent<span class="token operator">:</span> <span class="token punctuation">{</span>userAgent<span class="token punctuation">}</span><span class="token operator">&#x3C;</span><span class="token operator">/</span>main<span class="token operator">></span>
+<span class="token punctuation">)</span>
+</code></pre>
+<h2 id="api">API<a aria-hidden="true" class="anchor-heading icon-link" href="#api"></a></h2>
+<h3 id="getinitialprops"><code>getInitialProps</code><a aria-hidden="true" class="anchor-heading icon-link" href="#getinitialprops"></a></h3>
+<p>Enables SSR, allowing us to do initial data population.</p>
+<ul>
+<li>ie. sending the page with the data already populated from the server.</li>
+<li>carries SEO-related benefits</li>
+</ul>
+<p>This method can be used to asynchronously fetch some data, which then gets passed through <code>props</code></p>
+<ul>
+<li>The first time this method runs, it will be on the server, each time the user navigates to a different route (using <code>next/link</code> or <code>next/router</code> components), <code>getInitialProps</code> will be run on the client.</li>
+</ul>
+<p><code>getInitialProps</code> is being migrated away from in favor of <code>getStaticProps</code> or <code>getServerSideProps</code>.</p>

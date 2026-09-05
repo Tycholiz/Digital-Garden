@@ -1,0 +1,41 @@
+<h1 id="dictionary">Dictionary<a aria-hidden="true" class="anchor-heading icon-link" href="#dictionary"></a></h1>
+<p>Mac apps publish a dictionary of addressable objects and operations. Applescript leverages this dictionary to be able to communicate with those programs.</p>
+<ul>
+<li>These dictionaries can be viewed with the Script Editor program, and then File > Open Dictionary (<code>cmd+shift+o</code>)</li>
+<li>At its core, this scripting dictionary is a <code>.sdef</code> file that is stored in the app bundle.</li>
+</ul>
+<p>Every scriptable app implements its own scripting features and exposes its own unique terminology through a scripting dictionary</p>
+<h3 id="types-of-terminology">Types of Terminology<a aria-hidden="true" class="anchor-heading icon-link" href="#types-of-terminology"></a></h3>
+<p>Suite - A suite is a grouping of related commands and classes</p>
+<ul>
+<li>includes terminology supported by most scriptable apps, such as an <code>open</code> command, a <code>quit</code> command, and an <code>application</code> class.</li>
+</ul>
+<p>Command - A command is an instruction that can be sent to an app or object in order to initiate some action.</p>
+<ul>
+<li>ex. <code>delete</code>, <code>make</code>, <code>print</code></li>
+</ul>
+<p>Class - A class is an object within an app, or an app itself</p>
+<ul>
+<li>ex. Mail has an application class, a message class, and a signature class, among others</li>
+</ul>
+<p>Property - A property is an attribute of a class. </p>
+<ul>
+<li>ex. the message class in Mail has many properties, including <code>date received</code>, <code>read status</code>, and <code>subject</code>.</li>
+</ul>
+<h3 id="concepts">Concepts<a aria-hidden="true" class="anchor-heading icon-link" href="#concepts"></a></h3>
+<h4 id="inheritance">Inheritance<a aria-hidden="true" class="anchor-heading icon-link" href="#inheritance"></a></h4>
+<p>different classes often implement the same properties. </p>
+<ul>
+<li>ex. in Finder, the file and folder classes both have creation date, modification date, and name properties</li>
+<li>Rather than defining these same properties multiple times throughout the scripting dictionary, Finder implements a generic <code>item</code> class
+<ul>
+<li>any properties of the <code>item</code> class also apply to the <code>file</code> and <code>folder</code> classes</li>
+</ul>
+</li>
+</ul>
+<h4 id="containment">Containment<a aria-hidden="true" class="anchor-heading icon-link" href="#containment"></a></h4>
+<p>Classes of a scriptable app reside within a certain containment hierarchy. The application is at the top level, with other classes nested beneath.</p>
+<ul>
+<li>ex. Finder contains <code>disks</code>, <code>folders</code>, <code>files</code>, and other objects.</li>
+<li>ex. Mail contains <code>accounts</code>, which can contain <code>mailboxes</code>, which can contain other <code>mailboxes</code> and <code>messages</code>.</li>
+</ul>

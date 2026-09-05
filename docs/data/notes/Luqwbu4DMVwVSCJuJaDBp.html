@@ -1,0 +1,23 @@
+<h1 id="context-object">Context Object<a aria-hidden="true" class="anchor-heading icon-link" href="#context-object"></a></h1>
+<p><code>context</code> is an object that gets passed through the resolver chain that each resolver can read from and write to (basically a means for resolvers to communicate and share information).</p>
+<ul>
+<li>If we were using Apollo Server, we would set the context when initializing a new <code>ApolloServer</code>.</li>
+</ul>
+<p>holds info like... </p>
+<ul>
+<li>currently logged in user, </li>
+<li>current access to the database (which includes postgres user) etc.</li>
+<li>access token</li>
+<li>correlationId</li>
+<li><a href="/notes/kMwvXFTpffr1BEHPDFd5k">data sources</a>
+<ul>
+<li><code>dataSource</code> is part of the constructor for the <code>ApolloServer</code> class. The <code>dataSource</code> instances are used by the resolvers via the <code>context</code> object.</li>
+</ul>
+</li>
+</ul>
+<p>Therefore, we can use the context to provide access to the database</p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/GDD7xPlpQqrQnmwcDXUoa">Resolver</a></li>
+</ul>

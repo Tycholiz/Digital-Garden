@@ -1,0 +1,50 @@
+<h1 id="string">String<a aria-hidden="true" class="anchor-heading icon-link" href="#string"></a></h1>
+<p>C does not have a native string type. Instead, the language uses arrays of char terminated with a null char (<code>'\0'</code>)</p>
+<ul>
+<li>Therefore, the following are equivalent:</li>
+</ul>
+<pre class="language-c"><code class="language-c"><span class="token keyword">char</span> pattern<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"ould"</span><span class="token punctuation">;</span>
+<span class="token comment">// and</span>
+<span class="token keyword">char</span> pattern<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">{</span> ′o′<span class="token punctuation">,</span> ′u′<span class="token punctuation">,</span> ′l′<span class="token punctuation">,</span> ′d′<span class="token punctuation">,</span> ′\<span class="token number">0</span>′ <span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre>
+<ul>
+<li>Therefore, the physical storage required is one more than the number of characters
+<ul>
+<li>The <code>\0</code> gets automatically appended for us when array is initialized. Therefore if we access the last element, we get back <code>\0</code></li>
+</ul>
+</li>
+</ul>
+<p>There is a standard header <code>&#x3C;string.h></code> that gives us some string utilities</p>
+<p>In C, arrays are of fixed length at the time they are declared. For this reason, it may make sense to declare an array with a length that is far more than you need, just so you know it can handle everything that gets thrown at it. </p>
+<h3 id="single-vs-double-quotes">Single vs Double Quotes<a aria-hidden="true" class="anchor-heading icon-link" href="#single-vs-double-quotes"></a></h3>
+<p>In C, <code>'x'</code> is an integer representing the ASCII value, while <code>"x"</code> is a character array with 2 elements: <code>x</code> and <code>\0</code> </p>
+<h2 id="initialization">Initialization<a aria-hidden="true" class="anchor-heading icon-link" href="#initialization"></a></h2>
+<ul>
+<li>Character arrays can be initialized in different ways:
+<ul>
+<li><code>char name[13] = "StudyTonight";</code></li>
+<li><code>char name[] = "hello";</code> (spec:wide char array)</li>
+<li><code>char name[10] = {'L','e','s','s','o','n','s','\0'};</code></li>
+</ul>
+</li>
+<li>These character arrays can either be read-only or manipulatable
+<ul>
+<li>read-only: <code>char * str = "Hello";</code></li>
+<li>manipulatable: <code>char str[] = "Hello";</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="format-specifiers">Format specifiers<a aria-hidden="true" class="anchor-heading icon-link" href="#format-specifiers"></a></h2>
+<ul>
+<li><code>%s</code> - Take the next argument and print it as a <strong>string</strong></li>
+<li><code>%d</code> - Take the next argument and print it as an <strong>int</strong></li>
+</ul>
+<h2 id="printf-print-formatted">printf (print formatted)<a aria-hidden="true" class="anchor-heading icon-link" href="#printf-print-formatted"></a></h2>
+<p>The compliment to <code>printf</code> is <code>scanf</code>, in the sense that print is stdout and scanf is stdin. </p>
+<ul>
+<li><code>scanf</code> terminates its input on the first white space it encounters. Tip: use "edit set conversion code <code>%[..]</code> " to get around this.
+<ul>
+<li>alternatively, use <code>gets()</code>, which will terminate once hitting <code>\n</code></li>
+</ul>
+</li>
+</ul>

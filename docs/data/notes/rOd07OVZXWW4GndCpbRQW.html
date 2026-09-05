@@ -1,0 +1,24 @@
+<h1 id="operators">Operators<a aria-hidden="true" class="anchor-heading icon-link" href="#operators"></a></h1>
+<p>operators are declared in the system catalog <code>pg_operator</code></p>
+<ul>
+<li>Every entry in pg_operator includes the name of the procedure that implements the operator and the class OIDs of the input and output types.</li>
+</ul>
+<p>To view all variations of the “||” string concatenation operator, try:</p>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> oprleft<span class="token punctuation">,</span> oprright<span class="token punctuation">,</span> oprresult<span class="token punctuation">,</span> oprcode
+<span class="token keyword">FROM</span> pg_operator <span class="token keyword">WHERE</span> oprname <span class="token operator">=</span> <span class="token string">'||'</span><span class="token punctuation">;</span>
+
+oprleft<span class="token operator">|</span>oprright<span class="token operator">|</span>oprresult<span class="token operator">|</span>oprcode
+<span class="token comment">-------+--------+---------+-------</span>
+     <span class="token number">25</span><span class="token operator">|</span>      <span class="token number">25</span><span class="token operator">|</span>       <span class="token number">25</span><span class="token operator">|</span>textcat
+   <span class="token number">1042</span><span class="token operator">|</span>    <span class="token number">1042</span><span class="token operator">|</span>     <span class="token number">1042</span><span class="token operator">|</span>textcat
+   <span class="token number">1043</span><span class="token operator">|</span>    <span class="token number">1043</span><span class="token operator">|</span>     <span class="token number">1043</span><span class="token operator">|</span>textcat
+<span class="token punctuation">(</span><span class="token number">3</span> <span class="token keyword">rows</span><span class="token punctuation">)</span>
+</code></pre>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/r8DUts89joLcpQpMrSKW3">Any</a></li>
+<li><a href="/notes/8mz9YYeKgEFIjVTmXLdJt">Except</a></li>
+<li><a href="/notes/TBH4y4Ox8H51xgKwm81XL">Intersect</a></li>
+<li><a href="/notes/rtIFHxZu3QUesuUwro82H">Union</a></li>
+</ol>

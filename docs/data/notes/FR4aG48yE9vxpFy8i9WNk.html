@@ -1,0 +1,72 @@
+<h1 id="lets-encrypt">Let's Encrypt<a aria-hidden="true" class="anchor-heading icon-link" href="#lets-encrypt"></a></h1>
+<h2 id="plugins">Plugins<a aria-hidden="true" class="anchor-heading icon-link" href="#plugins"></a></h2>
+<p>Certbot supports 2 types of plugins for obtaining and installing certificates: authenticators and installers</p>
+<ul>
+<li>some plugins can do both, such as the Apache and Nginx plugins</li>
+</ul>
+<h3 id="authenticator">Authenticator<a aria-hidden="true" class="anchor-heading icon-link" href="#authenticator"></a></h3>
+<ul>
+<li>Authenticators are plugins used with the <code>certonly</code> command to obtain a certificate, validating that we own the domain we are requesting a certificate for. It then obtains the certificate for that domain, and places the certificate in the <code>/etc/letsencrypt</code> directory on your machine
+<ul>
+<li>The authenticator does not install the certificate (it does not edit any of your server’s configuration files to serve the obtained certificate)</li>
+</ul>
+</li>
+<li>If we list multiple domains to authenticate, they will all be included in a single certificate by default.</li>
+</ul>
+<h3 id="installer">Installer<a aria-hidden="true" class="anchor-heading icon-link" href="#installer"></a></h3>
+<ul>
+<li>Installers are Plugins used with the <code>install</code> command to install a certificate.</li>
+<li>These plugins modify the webserver's configuration in order to server the site over HTTPS </li>
+</ul>
+<h2 id="certificates">Certificates<a aria-hidden="true" class="anchor-heading icon-link" href="#certificates"></a></h2>
+<ul>
+<li>All generated keys and certificates can be found on the host that serves the application. 
+<ul>
+<li>found in <code>/etc/letsencrypt/live/$domain</code> if using Let's Encrypt</li>
+</ul>
+</li>
+<li>note: <code>pem</code> is a type of encoding</li>
+</ul>
+<h3 id="privkeypem">privkey.pem<a aria-hidden="true" class="anchor-heading icon-link" href="#privkeypem"></a></h3>
+<p>This is the private key for the certificate </p>
+<ul>
+<li>This is what Apache needs for <code>SSLCertificateKeyFile</code>, and Nginx for <code>ssl_certificate_key</code></li>
+</ul>
+<h3 id="fullchainpem">fullchain.pem<a aria-hidden="true" class="anchor-heading icon-link" href="#fullchainpem"></a></h3>
+<p>This is the full list of certificates, including the server certificate (a.k.a Leaf Certificate or End-Entity Certificate)</p>
+<ul>
+<li>the server certificate is the first one listed. It is followed by intermediary certificates. </li>
+<li>This is what Apache needs for <code>SSLCertificateFile</code>, and what Nginx needs for <code>ssl_certificate</code>.</li>
+</ul>
+<h2 id="concepts">Concepts<a aria-hidden="true" class="anchor-heading icon-link" href="#concepts"></a></h2>
+<h3 id="acme">ACME<a aria-hidden="true" class="anchor-heading icon-link" href="#acme"></a></h3>
+<ul>
+<li>ACME is a communications protocol for automating interactions between CAs and their users' webservers.
+<ul>
+<li>This allows automated deployment of public key infrastructure.</li>
+</ul>
+</li>
+<li>Certbot is an example of an ACME client</li>
+</ul>
+<h3 id="challenge">Challenge<a aria-hidden="true" class="anchor-heading icon-link" href="#challenge"></a></h3>
+<p>Challenges are a way for the Let's Encrypt servers to validate that you own the domain.</p>
+<p>There are 2 types: HTTP-01 Challenge, DNS-01 Challenge</p>
+<ul>
+<li>We only need one.</li>
+</ul>
+<p>HTTP-01</p>
+<ul>
+<li>The webserver proves it controls the domain by provisioning resources on its filesystem. The ACME server then challenges the webserver to provision a file at a specific path. If the webserver is able to do that, it is proof that the domain is under the webserver's control.</li>
+<li>When our webserver gets a token from Let's Encrypt, the webserver creates a file at <code>http://&#x3C;YOUR_DOMAIN>/.well-known/acme-challenge/&#x3C;TOKEN></code>
+<ul>
+<li>this file also includes a thumbprint of your account key</li>
+</ul>
+</li>
+<li>Once our webserver tells Let’s Encrypt that the file is ready, Let’s Encrypt tries retrieving it. If successful in doing so, then we are able to issue the certificate.</li>
+<li>This is the most common type of challenge.</li>
+</ul>
+<p>DNS-01</p>
+<ul>
+<li>Ownership of the domain is proven by adding a DNS record.</li>
+<li>This type of challenge is useful if we want to avoid a short period of time where our site doesn't have SSL enabled, which would happen if using HTTP-01.</li>
+</ul>

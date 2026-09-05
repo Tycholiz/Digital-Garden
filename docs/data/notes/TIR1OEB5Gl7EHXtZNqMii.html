@@ -1,0 +1,58 @@
+<h1 id="lang">Lang<a aria-hidden="true" class="anchor-heading icon-link" href="#lang"></a></h1>
+<h3 id="enumerables-vs-enumerators">Enumerables vs Enumerators<a aria-hidden="true" class="anchor-heading icon-link" href="#enumerables-vs-enumerators"></a></h3>
+<h4 id="enumerable">Enumerable<a aria-hidden="true" class="anchor-heading icon-link" href="#enumerable"></a></h4>
+<p>"Enumerable" defines an object that is meant to be iterated over, passing over each element once in order.</p>
+<ul>
+<li>arrays and objects are examples of <em>enumerables</em></li>
+<li>an Enumerable is an object like an array, list, or any other sort of collection that implements the <code>IEnumerable</code> interface</li>
+<li>Enumerables standardize looping over collections, and enables the use of useful extension methods like <code>List.Where()</code> or <code>List.Select()</code>.</li>
+</ul>
+<p><code>IEnumerable</code> is an interface that defines one method <code>GetEnumerator</code> which returns an <code>IEnumerator</code> interface, this in turn allows readonly access to a collection. A collection that implements <code>IEnumerable</code> can be used with a foreach statement.</p>
+<h4 id="enumerator">Enumerator<a aria-hidden="true" class="anchor-heading icon-link" href="#enumerator"></a></h4>
+<p>"Enumerator" is an object that can return each item in a collection. Therefore, the enumerator knows the order of items and keeps track of where it is in sequence. It then returns the current item when it is requested.</p>
+<p><code>IEnumerator</code> provides two methods, <code>MoveNext()</code> and <code>Reset()</code>. It also has a property <code>Current</code>. </p>
+<ul>
+<li><code>MoveNext</code> is the method used to step over each item, applying any kind of custom iterator logic in the process</li>
+<li><code>Current</code> is a method used to get the current item after <code>MoveNext</code> is done. You end up with an interface that defines objects that can be enumerated, and how to handle that enumeration.</li>
+</ul>
+<p><img src="/assets/images/2021-08-24-12-52-32.png">
+in the above example:</p>
+<ul>
+<li>It gets the object’s enumerator by calling its GetEnumerator method.</li>
+<li>It requests each item from the enumerator and makes it available to your code as the iteration variable, which your code can read</li>
+</ul>
+<p>every time you write a foreach loop, you’re using enumerators. You actually can’t use foreach on a collection that doesn’t implement <code>IEnumerable</code>. When it gets compiled, a foreach loop like this:</p>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token class-name">Int</span> element <span class="token keyword">in</span> list<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment">// your code</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Gets turned into a while loop, that processes until the Enumerable is out of items, calling MoveNext each time and setting the iterator variable to .Current.</p>
+<pre class="language-cs"><code class="language-cs"><span class="token class-name">IEnumerator</span> enumerator<span class="token operator">=</span> list<span class="token punctuation">.</span><span class="token function">GetEnumerator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">while</span> <span class="token punctuation">(</span>list<span class="token punctuation">.</span><span class="token function">MoveNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    element <span class="token operator">=</span> <span class="token punctuation">(</span>Int<span class="token punctuation">)</span>enumerator<span class="token punctuation">.</span>Current
+    <span class="token comment">// your code</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p><a href="https://www.csharpstar.com/difference-between-ienumerator-and-ienumerable-interface-csharp/">resource</a></p>
+<h3 id="coroutine">Coroutine<a aria-hidden="true" class="anchor-heading icon-link" href="#coroutine"></a></h3>
+<p>Coroutines are special functions that can pause execution and return back to the main thread.</p>
+<ul>
+<li>Coroutines return an enumerator
+<ul>
+<li>therefore, Coroutines can use functions that have a return type of <code>IEnumerator</code></li>
+</ul>
+</li>
+<li>They’re commonly used for executing long actions that can take some time to finish, without causing the application to hang while waiting on the routine. 
+<ul>
+<li>For example, in games where the framerate of the application matters a lot, large hitches even on the order of a few milliseconds would hurt the user experience.</li>
+</ul>
+</li>
+</ul>
+<p>to break up execution over different frames, you’ll just need to <code>yield return null</code> whenever you’d like to pause execution and run more on the main thread.</p>
+<ul>
+<li>to use this Enumerator, you’ll need to call the function and assign it to a variable, which you can call <code>MoveNext()</code> on at regular intervals.</li>
+</ul>
+<h4 id="in-unity">in Unity<a aria-hidden="true" class="anchor-heading icon-link" href="#in-unity"></a></h4>
+<p>the Coroutine controller in <a href="/notes/oWCuBXOg6JWfZzjmKxmNl">Unity</a> handles the processing of coroutines for us. All it's really doing is just calling <code>MoveNext()</code> once per frame, checking if it can process more, and handling the return value if it’s not null.</p>

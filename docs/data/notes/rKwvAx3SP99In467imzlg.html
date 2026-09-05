@@ -1,0 +1,85 @@
+<h1 id="dns-zone">DNS Zone<a aria-hidden="true" class="anchor-heading icon-link" href="#dns-zone"></a></h1>
+<p>A DNS Zone is an autonomously administered piece of the <a href="/notes/k2zer05sauofvckrz99agvh">namespace</a></p>
+<p>The zone contains pointers to the <a href="/notes/vuSZhKeQU8JmAXynHqZvf">authoritative nameservers</a> (ie. their IP addresses).</p>
+<p>A new zone is created when a TLD (e.g. <code>.com</code>) delegates responsibility of a domain to the new owner (e.g. <code>facebook.com</code>)</p>
+<ul>
+<li>a new zone may or may not be created when subdomains are made (e.g. <code>developer.facebook.com</code>), depending on if <code>facebook.com</code> administrators delegate responsibility for it to other organizations. </li>
+</ul>
+<p>Consider that there is a hierarchy in who manages each domain. The root zone is managed by ICANN. The <code>edu</code> domain is managed by EDUCAUSE, but delegates responsibility of the <code>berkley.edu</code> domain to U.C. Berkeley. </p>
+<ul>
+<li>when the authority for <code>berkley.edu</code> is delegated, a new zone is created. The new <code>berkley.edu</code> zone is now independent from <code>edu</code> and contains all domain names that end in <code>berkeley.edu</code>. Also, the <code>edu</code> zone no longer contains <code>berkley.edu</code>, since that domain now exists in a delegated zone.</li>
+<li>anal: consider that when we <a href="/notes/g7bXnAkewzxACR5h13tqs">remotely mount a filesystem</a> our own, that directory structure looks like it is hosted on our machine. If I mount a <a href="/notes/Szj3o5iaNxPpesiCqwrbu">NAS</a> to my local filesystem, the NAS is still responsible for the filesystem at <code>/Volumes/Synology-NAS</code>.
+<ul>
+<li>therefore, each zone can be thought of as a mounted volume to the higher level zone (ie. the <code>berkley.edu</code> zone is mounted on the <code>edu</code> zone, the <code>edu</code> zone is mounted on the root zone).</li>
+</ul>
+</li>
+</ul>
+<p>A zone contains all the domain names of the domain, unless it has been delegated.</p>
+<ul>
+<li>ex. the <code>ca</code> domain has subdomains <code>bc.ca</code>, <code>ab.ca</code>, <code>sk.ca</code>. The authority for each one <em>may</em> be delegated to <a href="/notes/O6qGBZUWwgsnOyTDdvSAK">nameservers</a> in each province.
+<ul>
+<li>once authority has been delegated, the <code>ca</code> domain is only left with pointers to the subdomains.</li>
+</ul>
+</li>
+</ul>
+<p>This diagram shows how it may be the case that the <code>ca</code> domain has delegated authority of <code>ab</code>, <code>on</code> and <code>qc</code> to the respective provinces, but continues to manage the <code>bc</code> and <code>sk</code> domains (perhaps because provincial authorities in those provinces aren't yet ready to manage their own subdomains.)</p>
+<ul>
+<li>this shows that the <a href="/notes/rKwvAx3SP99In467imzlg">zone</a> is what the nameserver loads; not the <a href="/notes/nu4jr5d094zri5ni0kw247w">domain</a>
+<img src="/assets/images/2022-03-12-20-49-28.png"></li>
+</ul>
+<p>Domains can be very large, so they are further organized into smaller books, called, “zones.”</p>
+<ul>
+<li>The DNS is broken up into different zones. A DNS zone is a portion of the DNS namespace that is managed by a specific organization or administrator</li>
+<li>A DNS zone is a subset, often a single domain, of the hierarchical domain name structure of the DNS
+<ul>
+<li>if DNS was a filesystem, a DNS zone would be each directory.</li>
+<li>ex. if we are talking TLD DNS zone, then examples are <code>.com</code>, <code>.net</code>. If we are talking Domain-level DNS, then examples are <code>facebook.com</code>, <code>google.com</code></li>
+</ul>
+</li>
+<li>A portion of the domain name space where administrative responsibility has been delegated to a single manager</li>
+<li>The DNS Zone is described by the Zone File (aka. DNS record), which serves as the database for each nameserver.
+<ul>
+<li>The zone file contains mappings between domain names and IP addresses, along with other resources. This file is organized around resource records (A, CNAME etc.). In other words, resource records form the basis of the database. </li>
+<li>We recognize the zone file when we go to a domain registrar, click onto one of our domains, and see all of the RRs that we have made.</li>
+</ul>
+</li>
+<li>a 'zone' is an area of control over namespace. A zone can include a single domain name, one domain and many subdomains, or many domain names. 
+<ul>
+<li>In some cases, 'zone' is essentially equivalent with 'domain,' but this is not always true.</li>
+<li>each zone has a <em>zone serial number</em>, which is a unique identifier
+<ul>
+<li>A DNS server can quickly look up a zone's records in its database via the serial number, which will bring up the SOA record.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>A common mistake is to associate a DNS zone with a domain name or a single DNS server
+<ul>
+<li>In fact, a DNS zone can contain multiple subdomains and multiple zones can exist on the same server</li>
+</ul>
+</li>
+<li>We can decide which URLs should be their own zone, and which should be combined into a single zone.
+<ul>
+<li>ex. Below, as far as Cloudflare subdomains go, we have <code>blog</code>, <code>support</code>, and <code>community</code>. Support and community are small, so we put them in the same zone as the main <code>cloudflare.com</code>. However, the <code>blog</code> subdomain is a robust independent site that needs separate administration, so we give it its own zone.</li>
+</ul>
+</li>
+</ul>
+<p>Each below is an example of a zone:
+<img src="/assets/images/2021-03-07-15-16-30.png">
+<img src="/assets/images/2021-03-07-15-16-44.png"></p>
+<h3 id="zone-apex">Zone Apex<a aria-hidden="true" class="anchor-heading icon-link" href="#zone-apex"></a></h3>
+<ul>
+<li>Where <code>SOA</code> and <code>NS</code> records live. They are records whose names are the same as the zone itself.</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/mytCOts26Pidush65tdRW">DNS</a></li>
+<li><a href="/notes/k2zer05sauofvckrz99agvh">DNS Database</a></li>
+<li><a href="/notes/nu4jr5d094zri5ni0kw247w">Domain</a></li>
+<li><a href="/notes/O6qGBZUWwgsnOyTDdvSAK">DNS Nameservers</a></li>
+<li><a href="/notes/TALpAZmsruqyoUkJzegVv">DNS Records</a></li>
+<li><a href="/notes/rKwvAx3SP99In467imzlg">DNS Zone</a></li>
+<li><a href="/notes/VfIJgKsqWBx9PXv054wx7">Root Nameserver</a></li>
+<li><a href="/notes/ao3YNN6kJWCtLwkju6kUP">NS Record</a></li>
+</ul>

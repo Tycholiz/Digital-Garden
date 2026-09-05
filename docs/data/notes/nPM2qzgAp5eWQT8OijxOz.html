@@ -1,0 +1,31 @@
+<h1 id="types">Types<a aria-hidden="true" class="anchor-heading icon-link" href="#types"></a></h1>
+<p>In the early days of C, pretty much everything was either an int or pointer (which is why int is the default type)</p>
+<h3 id="numbers">Numbers<a aria-hidden="true" class="anchor-heading icon-link" href="#numbers"></a></h3>
+<p>Prefixes</p>
+<ul>
+<li>A leading <code>0</code> on an integer constant means octal</li>
+<li>a leading <code>0x</code> means hexadecimal</li>
+</ul>
+<p>Suffixes</p>
+<ul>
+<li>spec:an int is by default short, and has no suffix:
+<code>int num = 1234;</code></li>
+<li>but to make a long constant (double by default), we need to append the number with <code>L</code>:
+<code>long num = 123456789L</code>
+<pre><code>- note: even if `long` is not specified, the compiler will know it is long and declare it as such 
+</code></pre>
+</li>
+<li>to make an unsigned const, append <code>U</code></li>
+<li>to make a float const, append <code>F</code></li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/SXTEINWsOBx40iGYREsEB">Array</a></li>
+<li><a href="/notes/YxttKHo8GreUunsEJfHPm">Char</a></li>
+<li><a href="/notes/YTrGELtcqU1DGiq3YApGI">Float</a></li>
+<li><a href="/notes/qJPuWwOwVR8GHP3UnmgJ9">Int</a></li>
+<li><a href="/notes/XAwFY0NPNq0OgXXRqu7qf">Opaque</a></li>
+<li><a href="/notes/Ij9nXu43ABituuj9e4ksL">Pointer</a></li>
+<li><a href="/notes/bdPIaLCDTxcGfLNJwZAfN">String</a></li>
+</ol>

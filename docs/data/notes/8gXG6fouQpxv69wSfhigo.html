@@ -1,0 +1,97 @@
+<h1 id="gateways">Gateways<a aria-hidden="true" class="anchor-heading icon-link" href="#gateways"></a></h1>
+<p>A gateway is an object that encapsulates access to an external system or resource. It is therefore an abstraction of the APIs that our application accesses. Thus, all the benefits that an abstraction typically provides apply here.</p>
+<ul>
+<li>A gateway is typically a simple wrapper. We look at what our code needs to do with the external system and construct an interface that supports that clearly and directly.</li>
+</ul>
+<p><img src="/assets/images/2021-12-14-14-25-34.png"></p>
+<p>The gateway acts on terms that our system uses. It allows access to data sources, which may be queried in varying ways. The gateway takes all of these odd endpoints and ties them up into a nice little bow that can provide a unified interface that is ready to be queried.</p>
+<p>Gateways should only include logic that supports this translation between domestic and foreign concepts. Any logic that builds on that should be in clients of the gateway.</p>
+<p>The notion of a gateway fits well with that of the <a href="/notes/eJh8ewMkDq2LpJPqC6fX8">Bounded Contexts</a></p>
+<ul>
+<li>use a gateway when dealing with something in a different context. The gateway handles the translation between the foreign context and your own.
+<ul>
+<li>The gateway is a way to implement an Anticorruption Layer</li>
+</ul>
+</li>
+</ul>
+<h3 id="the-problem">The problem<a aria-hidden="true" class="anchor-heading icon-link" href="#the-problem"></a></h3>
+<p>Usually we depend on third party APIs to build out our applications. These interfaces often seem awkward from the context of our software</p>
+<ul>
+<li>The API may use different types, require strange arguments, combine fields in ways that don't make sense in our context. Dealing with such an API can result in jarring mismatches whenever its used.</li>
+</ul>
+<p>Use a gateway whenever there is a need to access some external software and there is any awkwardness in that external element.</p>
+<ul>
+<li>Rather than let the awkwardness spread through the code, contain it to a single place in the gateway.</li>
+</ul>
+<p>The question we have to ask ourselves when considering whether or not to make a gateway is "do we wish to isolate ourselves from the underlying platform?"</p>
+<ul>
+<li>In many cases the platform's facilities are so pervasive that it's not worth going through the effort of wrapping it in a gateway.</li>
+</ul>
+<h3 id="pros">Pros<a aria-hidden="true" class="anchor-heading icon-link" href="#pros"></a></h3>
+<ul>
+<li>Insulates the clients from how the application is partitioned into microservices</li>
+<li>Insulates the clients from the problem of determining the locations of service instances</li>
+<li>Provides the optimal API for each client</li>
+<li>Reduces the number of requests/roundtrips. For example, the API gateway enables clients to retrieve data from multiple services with a single round-trip. Fewer requests also means less overhead and improves the user experience. An API gateway is essential for mobile applications.</li>
+<li>Simplifies the client by moving logic for calling multiple services from the client to API gateway</li>
+<li>Translates from a “standard” public web-friendly API protocol to whatever protocols are used internally</li>
+<li>The API gateway pattern has some drawbacks:</li>
+</ul>
+<h3 id="cons">Cons<a aria-hidden="true" class="anchor-heading icon-link" href="#cons"></a></h3>
+<ul>
+<li>Increased complexity - the API gateway is yet another moving part that must be developed, deployed and managed</li>
+<li>Increased response time due to the additional network hop through the API gateway - however, for most applications the cost of an extra roundtrip is insignificant.</li>
+</ul>
+<h3 id="connection-object">Connection Object<a aria-hidden="true" class="anchor-heading icon-link" href="#connection-object"></a></h3>
+<p>It's often useful to add a connection object to the basic structure of the gateway. The connection is a simple wrapper around the call to the foreign coded.</p>
+<ul>
+<li>The gateway translates its parameters into the foreign signature, and calls the connection with that signature. The connection then just calls the foreign API and returns its result. The gateway finishes by translating that result to a more digestible form.</li>
+<li>The connection can be useful in two ways.
+<ol>
+<li>Firstly it can encapsulate any awkward parts of the call to the foreign code, such as the manipulations needed for a REST API call.</li>
+<li>Secondly it acts as a good point for inserting a <a href="/notes/965AqO8bdqbS0Et9bKsUO">Test Double</a>.</li>
+</ol>
+</li>
+</ul>
+<p>The connection object is where we make the HTTP request.</p>
+<h4 id="testing">Testing<a aria-hidden="true" class="anchor-heading icon-link" href="#testing"></a></h4>
+<p>Using a gateway can make a system much easier to test by allowing the test harness to stub out the gateway's connection object.</p>
+<ul>
+<li>particularly important for gateways that access remote services, as it can remove the need for a slow remote call
+<ul>
+<li>use a gateway here, even if the external API is otherwise okay to use (in which case the gateway would only be the connection object).</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p>A gateway is usually either an end-point or allows bi-direction communication between dissimilar systems</p>
+<ul>
+<li>In contrast, sinks are just an event input point.</li>
+</ul>
+<hr>
+<h3 id="api-gateway">API Gateway<a aria-hidden="true" class="anchor-heading icon-link" href="#api-gateway"></a></h3>
+<p>API gateway handles requests in one of two ways. </p>
+<ul>
+<li>Some requests are simply proxied/routed to the appropriate service. </li>
+<li>Other requests by fanning out to multiple services.</li>
+</ul>
+<p><img src="/assets/images/2021-12-20-11-28-44.png"></p>
+<p>Rather than provide a one-size-fits-all style API, the API gateway can expose a different API for each client</p>
+<ul>
+<li>ex. the Netflix API gateway runs client-specific adapter code that provides each client with an API that’s best suited to its requirements.</li>
+</ul>
+<h4 id="backends-for-frontends">Backends for Frontends<a aria-hidden="true" class="anchor-heading icon-link" href="#backends-for-frontends"></a></h4>
+<p>This is a variation of the API Gateway approach whereby each client gets its own API gateway:
+<img src="/assets/images/2021-12-20-11-30-09.png"></p>
+<h1 id="e-resources">E Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#e-resources"></a></h1>
+<p><a href="https://martinfowler.com/articles/gateway-pattern.html">Martin Fowler article</a></p>
+<ul>
+<li>includes info on testing with gateway
+<a href="https://martinfowler.com/articles/refactoring-external-service.html">Introduce gateway into existing app</a>
+<a href="https://github.com/cer/event-sourcing-examples/tree/master/java-spring/api-gateway-service">Simple API Gateway service Java code</a></li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/iIcGu3JKOogO50Uz5OAF6">Sink</a></li>
+</ul>

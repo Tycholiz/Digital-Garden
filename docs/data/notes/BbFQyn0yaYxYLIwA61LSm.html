@@ -1,0 +1,52 @@
+<h1 id="fields">Fields<a aria-hidden="true" class="anchor-heading icon-link" href="#fields"></a></h1>
+<p>Every field on a GraphQL object type can have zero or more arguments:</p>
+<pre class="language-gql"><code class="language-gql">type Starship {
+  id: ID!
+  name: String!
+  length(unit: LengthUnit = METER): Float
+}
+</code></pre>
+<p>REST endpoints are similar to GraphQL fields, as they are entry points into the data that call functions on the server.</p>
+<ul>
+<li>sometimes you can have an entity that is both a field and a type. When I query for one nugget, I am querying on a field <code>nugget</code>, and getting back a Nugget type.
+<ul>
+<li>in this case, <code>nugget</code> is known as the root field</li>
+</ul>
+</li>
+</ul>
+<p>Each field on each type is backed by a <em>resolver</em></p>
+<ul>
+<li>When a field is executed, the corresponding resolver is called to produce the next value. If a field produces a scalar value like a string or number, then the execution completes. However if a field produces an object value then the query will contain another selection of fields which apply to that object. 
+<ul>
+<li>This continues until scalar values are reached. GraphQL queries always end at scalar values.</li>
+</ul>
+</li>
+</ul>
+<p>Fields are conceptually functions which return values, and occasionally accept arguments which alter their behavior.</p>
+<ul>
+<li>These arguments often map directly to function arguments within a GraphQL server’s implementation.</li>
+<li>you can think of each field as a function of the previous type which returns the next type
+<ul>
+<li>therefore, fields can exist at different levels. Imagine we had a <code>User</code> type, and that <code>user</code> had an <code>id</code> and <code>name</code>. We would be looking at 3 fields in total here, since <code>user</code> is just a field defined on the <code>Query</code> type. </li>
+</ul>
+</li>
+</ul>
+<p>Since fields are conceptually just functions, that means we may be able to pass arguments to them. </p>
+<ul>
+<li>Arguments can also be passed into scalar values, which would allow the server to do data transformations before sending it to the client (as opposed to the client having to handle that). All we need to do is define an enumeration type:</li>
+</ul>
+<pre class="language-gql"><code class="language-gql">type Person {
+	name: String
+	picture(size: Int): Url
+}
+
+{
+  person(id: "1000") {
+    name
+    picture(size: 600)
+  }
+}
+</code></pre>
+<h2 id="alias">Alias<a aria-hidden="true" class="anchor-heading icon-link" href="#alias"></a></h2>
+<p>By default, the response of our query is an object with a key matching the field name(s) we queried</p>
+<p>Sometimes we want to request data about 2 identical objects. (ex. querying the same field twice, but with different arguments). In cases like this, we need to use aliases, which changes the key of the object we get as our query result.</p>

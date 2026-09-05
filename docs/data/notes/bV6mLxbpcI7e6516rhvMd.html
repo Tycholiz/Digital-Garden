@@ -1,0 +1,12 @@
+<h1 id="methods">Methods<a aria-hidden="true" class="anchor-heading icon-link" href="#methods"></a></h1>
+<p>The last parameter of a method may be preceded by an asterisk(*), which is sometimes called the 'splat' operator. This indicates that more parameters may be passed to the function. Those parameters are collected up and an array is created.</p>
+<pre class="language-rb"><code class="language-rb"><span class="token keyword">def</span> <span class="token method-definition"><span class="token function">by_added</span></span><span class="token punctuation">(</span>dir<span class="token punctuation">,</span> entries<span class="token punctuation">)</span>
+  Open3<span class="token punctuation">.</span>capture2<span class="token punctuation">(</span>
+    <span class="token string-literal"><span class="token string">'mdls'</span></span><span class="token punctuation">,</span>
+    <span class="token string-literal"><span class="token string">'-name'</span></span><span class="token punctuation">,</span> <span class="token string-literal"><span class="token string">'kMDItemFSName'</span></span><span class="token punctuation">,</span>
+    <span class="token string-literal"><span class="token string">'-name'</span></span><span class="token punctuation">,</span> <span class="token string-literal"><span class="token string">'kMDItemDateAdded'</span></span><span class="token punctuation">,</span>
+    <span class="token string-literal"><span class="token string">'-raw'</span></span><span class="token punctuation">,</span>
+    <span class="token operator">*</span>entries<span class="token punctuation">.</span>map<span class="token punctuation">(</span><span class="token operator">&#x26;</span><span class="token symbol">:to_path</span><span class="token punctuation">)</span>
+  <span class="token punctuation">)</span>
+<span class="token keyword">end</span>
+</code></pre>

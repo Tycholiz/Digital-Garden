@@ -1,0 +1,16 @@
+<h1 id="client-server-architecture">Client-Server Architecture<a aria-hidden="true" class="anchor-heading icon-link" href="#client-server-architecture"></a></h1>
+<p>The frontend aims to be stateful (that is, keep track of the state between requests). If the frontend wasn’t stateful, you would have to log in every time you navigated to a new page.</p>
+<p>The backend, however, aims to be stateless. This means that the state must be provided on every new invocation. For instance, the API does not keep track of whether you are logged in or not. It determines your authentication state by reading the token in your API request.</p>
+<ul>
+<li>If you used a Redux store on your Node.js server, the state would be cleared every time the node process stops</li>
+<li>It becomes even more involved when you consider scaling. If you were to scale your application horizontally by adding more servers, you’d have multiple Node processes running concurrently, and each would have their own version of the state. This means that two identical requests to your backend at the same moment could easily get two different responses.</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/qxSOd6SPN8qf9ZUojVFDX">K8s</a></li>
+<li><a href="/notes/vutujFFWxQu6TshWVuMpI">Distributed Computing</a></li>
+<li><a href="/notes/O6qGBZUWwgsnOyTDdvSAK">DNS Nameservers</a></li>
+<li><a href="/notes/uQ1OlrkssyoguJ6mCM7hj">DNS Resolver</a></li>
+<li><a href="/notes/csPOCpGsdV9SQed4lZyWh">Enterprise Service Bus</a></li>
+</ul>

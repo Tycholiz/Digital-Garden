@@ -1,0 +1,11 @@
+<h1 id="deployment-process">Deployment Process<a aria-hidden="true" class="anchor-heading icon-link" href="#deployment-process"></a></h1>
+<h2 id="deployment-strategies">Deployment Strategies<a aria-hidden="true" class="anchor-heading icon-link" href="#deployment-strategies"></a></h2>
+<h3 id="branching-model">Branching Model<a aria-hidden="true" class="anchor-heading icon-link" href="#branching-model"></a></h3>
+<p>The idea here is to have a 1:1 mapping between branches and environments (we might have branches <code>main</code>, <code>staging</code> and <code>dev</code>).</p>
+<p>Merging code into any of these environment branches will automatically trigger the <a href="/notes/dF2CVtOaqyE04VZqR8opg">CD</a> and deploy the code to the corresponding environment</p>
+<h3 id="manual-deployment-workflow">Manual Deployment Workflow<a aria-hidden="true" class="anchor-heading icon-link" href="#manual-deployment-workflow"></a></h3>
+<p>The idea with this approach is to merge code into the <code>main</code> branch once it has been validated. From there, our CD pipeline is set up to automatically deploy to our development environment. However, we will also have additional manual jobs that will allow us to deploy to each additional environment. Typically, we manually deploy to QA first so that testing can be done, followed by staging and then finially production.</p>
+<ul>
+<li>in order to isolate each CD job into its own environment, we typically would create multiple stages of our CD (e.g. <code>dev</code>, <code>staging-us-1</code>, <code>staging-us-1</code>, <code>prod-us-1</code> etc.), and make the latter stages dependent on the earlier stages. That way, we cannot deploy to production unless we've already deployed to staging.</li>
+</ul>
+<p>In addition to the manual deploy jobs, we can also have optional <code>rollback</code> jobs for each environment stage that allow us to revert to the most recent deployment.</p>

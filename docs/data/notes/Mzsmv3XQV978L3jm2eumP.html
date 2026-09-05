@@ -1,0 +1,22 @@
+<h1 id="concurrency">Concurrency<a aria-hidden="true" class="anchor-heading icon-link" href="#concurrency"></a></h1>
+<p>Concurrency control is about the database ensuring that correct results for concurrent operations are generated, while getting those results as quickly as possible</p>
+<p>Without concurrency control, if someone is reading from a database at the same time as someone else is writing to it, it is possible that the reader will see a half-written or inconsistent piece of data.</p>
+<ul>
+<li>ex. when making a wire transfer between two bank accounts if a reader reads the balance at the bank when the money has been withdrawn from the original account and before it was deposited in the destination account, it would seem that money has disappeared from the bank.</li>
+</ul>
+<p><a href="/notes/SBhnwv59C8Y0Gb9nRztZU">Isolation</a> is the property that provides guarantees in the concurrent access to data</p>
+<ul>
+<li>implemented by means of a concurrency control protocol. </li>
+</ul>
+<p>The simplest way to achieve concurrency is to make all readers wait until the writer is done (<em>read-write lock</em>).</p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/r9orvg7n574j5bmwon0nb74">Multi-version Concurrency Control (MVCC)</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/g7ulqi8no93ezeocbesc3ll">CouchDB</a></li>
+<li><a href="/notes/SBhnwv59C8Y0Gb9nRztZU">Isolation</a></li>
+</ul>

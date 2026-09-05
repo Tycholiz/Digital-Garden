@@ -1,0 +1,33 @@
+
+
+- Mimic familiar objects and environments in abstract contexts (e.g., software interfaces) to imply the way in which new systems can be used
+- A satisfactory area alignment can be achieved by positioning an object along the axis of alignment such that an equal amount of area or visual weight hangs on either side — if the object had mass, it would be balanced on the axis.
+- quotes should be aligned based on the text edge and not on the quotation marks
+- When objects are simple and symmetrical, align based on their edges; otherwise, align based on their areas.
+- When designs involve simple and recognizable patterns, consider removing or minimizing the elements in the design that can be supplied by viewers.
+- Angularly-shaped (sharper) objects are more effective at attracting attention and engaging thought; contoured objects are more effective at making a positive emotional and aesthetic impression.
+- Whitespace should be as intentional as content
+
+## Design Principles
+- When designing an interface for users to do things, consider where you expect their eyes to naturally be. Position things in such a way that it takes advantage of where their eyes will be.
+    - Imagine a simple login page. There it a field for username and password, a link below those fields that say "forgot password?", and a button in the top right concerner saying "Log in!". The natural movement of the eyes for this layout is to look at username, look at password. with their eyes now being at password, they must jump all the way to the top right corner. "Don't make me think" states don't make them needlessly thing. A login is simple. The user should be able to do it without even using text anywhere on the page. Don't make them read the text on such an engrained activity as logging in.
+
+## Quotes
+- “Perfection is achieved, not when there is nothing more to add, but when there is nothing left to take away”
+
+## UE Resources
+- [7 Rules for creating gorgeous UI design](https://learnui.design/blog/7-rules-for-creating-gorgeous-ui-part-1.html#rule-1-light-comes-from-the-sky)
+
+## UI Inspiration
+- [reddit list](https://www.reddit.com/r/androiddev/comments/4cezsx/where_do_you_usually_go_for_app_ui_design/)
+- [collectui](https://collectui.com/)
+- [UI Design Daily](https://uidesigndaily.com/)
+- DiscordApp
+
+## Resources
+- [Background PNG generator](https://app.haikei.app/)
+    - allows you to make background with squiggly lines, blobs, circles etc.
+
+
+Questrade:
+- 4390 Raven

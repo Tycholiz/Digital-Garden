@@ -1,0 +1,122 @@
+<h1 id="couchdb">CouchDB<a aria-hidden="true" class="anchor-heading icon-link" href="#couchdb"></a></h1>
+<h2 id="what-is-it">What is it?<a aria-hidden="true" class="anchor-heading icon-link" href="#what-is-it"></a></h2>
+<p>CouchDB is a <a href="/notes/wo8h5ku40y6dzinkof9dx5x">document database</a>, with each document represented as JSON. </p>
+<p>The documents are organised via <a href="/notes/vhyhna89umrxkmonh18di4y">views</a>. </p>
+<ul>
+<li>Views are defined with aggregate functions and filters are computed in parallel, much like MapReduce.</li>
+</ul>
+<p>Each database is a collection of independent documents. Each document maintains its own data and self-contained schema. An application may access multiple databases, such as one stored on a user's mobile phone and another on a server. Document metadata contains revision information, making it possible to merge any differences that may have occurred while the databases were disconnected.</p>
+<p>Unlike other solutions, <code>databases</code> in CouchDB are cheap to make. They are more comparable to namespaces in other database systems.</p>
+<p>CouchDB was designed with sync in mind, and this is exactly what it excels at. Many of the rough edges of the API serve this larger purpose</p>
+<ul>
+<li>unlike other common <a href="/notes/gKVIPNGV7duiD0yRnld8J">replication</a> systems, CouchDB doesn't use leader-follower replication— it uses multi-master, meaning any node can be read from and written to.</li>
+<li>By default, CouchDB (and <a href="/notes/8sahxg5gjs14yzwx9b77p1k">PouchDB</a>) are designed to store all document revisions forever, just like <a href="/notes/4Dcp7gbEVoLLgfu7bXFai">Git</a></li>
+</ul>
+<h3 id="from-sql-to-couchdb">From SQL to CouchDB<a aria-hidden="true" class="anchor-heading icon-link" href="#from-sql-to-couchdb"></a></h3>
+<div class="table-responsive">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>SQL</th><th>CouchDB</th></tr></thead><tbody><tr><td>Queries</td><td>HTTP requests with JSON</td></tr><tr><td>Each table has rows</td><td>Each database has documents</td></tr><tr><td>Each table has columns</td><td>Each document has fields</td></tr></tbody></table></div>
+<p>CouchDB config files are found in <code>ini</code>, and there are multiple <a href="https://docs.couchdb.org/en/3.2.0/config/intro.html#configuration-files">options</a> for location.</p>
+<h2 id="why-use-it">Why use it?<a aria-hidden="true" class="anchor-heading icon-link" href="#why-use-it"></a></h2>
+<p>CouchDB is well suited for applications with accumulating, occasionally changing data, on which pre-defined queries are to be run and where versioning is important (e.g. CRMs, <a href="/notes/IK6NOKemuDjhfstJBovKL">CMSs</a>). </p>
+<ul>
+<li>Master-master replication is an especially interesting feature, allowing easy multi-site deployments.</li>
+</ul>
+<p>CouchDB is really good at <a href="/notes/6b96d1cy19ooewp49vo4x5d">replication</a> and <a href="/notes/HZSth7yP1s7aPaPPZRJPm">scalability</a></p>
+<ul>
+<li>Couchdb implements <a href="/notes/wbs6c9snnonnyzm8vk2t4b9#multi-leader-based-replication1">multi-master replication</a></li>
+<li>Couchdb is designed with bi-directional replication (or synchronization) and off-line operation in mind. 
+<ul>
+<li>That means multiple replicas can have their own copies of the same data, modify it, and then sync those changes at a later time.</li>
+</ul>
+</li>
+</ul>
+<p>Couchdb offers document-level ACID semantics by implementing a form of Multi-Version Concurrency Control, meaning that CouchDB can handle a high volume of concurrent readers and writers without conflict.</p>
+<p>CouchDB guarantees eventual consistency to be able to provide both availability and partition tolerance.</p>
+<h3 id="conflict-resolution">Conflict resolution<a aria-hidden="true" class="anchor-heading icon-link" href="#conflict-resolution"></a></h3>
+<p>instead of locks, Couchdb uses <a href="/notes/Mzsmv3XQV978L3jm2eumP#multiversion-concurrency-control-mvcc1">MVCC</a></p>
+<p>Conflict resolutions are automatic and deterministic (since the contents of the document are hashed with MD5 and sorted alphanumerically)</p>
+<ul>
+<li>anal: this is like a CPU-cheap version of blockchain, but instead of solving some complex mathematical formula to prove your conflict is the correct one, a simple MD5 formula is used to make that determination.</li>
+<li>Custom (and even manual) resolution can be built into the app if we don't want to do this by sorting alphanumeric MD5 sums.</li>
+<li>In either case, both revisions are preserved.
+<ul>
+<li>actually "deleting" is only soft deleting in CouchDB, with a field of <code>_deleted</code>.</li>
+</ul>
+</li>
+</ul>
+<p>Each document in CouchDB is versioned (via its <code>_rev</code> field)</p>
+<ul>
+<li>the <code>_rev</code> is prefixed with an integer that increments with each new revision.</li>
+<li>if 2 people update the same document at the same time, then we will end up with two revisions prefixed with the next incremented number:
+<ul>
+<li><code>2-1583746</code> and <code>2-2583368</code>. In this case, the first would win, because of its alphanumerical position.</li>
+</ul>
+</li>
+</ul>
+<p>Resolving a conflict generally involves first merging data into one of the documents, then deleting the stale one.</p>
+<p>Couch uses MVVC instead of locks.</p>
+<h3 id="resources">Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#resources"></a></h3>
+<p><code>http://&#x3C;host>:&#x3C;port>/&#x3C;database>/&#x3C;document>/&#x3C;attachments></code></p>
+<p>System endpoints/keys are prefixed with <code>_</code></p>
+<p>Fauxton dashboard: <code>http://localhost:5984/_utils</code></p>
+<h3 id="querying-data">Querying data<a aria-hidden="true" class="anchor-heading icon-link" href="#querying-data"></a></h3>
+<p>There are 3 ways to query data: MapReduce, Mango queries, and Full-text search (with Lucene).</p>
+<p>Mango queries are meant to resemble the MongoDB query language.</p>
+<ul>
+<li>allows us to do arbitrary searches with <code>=</code>, <code>></code>, <a href="/notes/yM2PJBdqJnHpD63cPA6sW">Regex</a> etc.</li>
+<li>if we use Mango queries, the view is created for us automatically.</li>
+</ul>
+<h3 id="security">Security<a aria-hidden="true" class="anchor-heading icon-link" href="#security"></a></h3>
+<p>CouchDB's level of security is not as sophistocated as other database solutions.</p>
+<ul>
+<li>security is per database (via the <code>_security</code> endpoint), and we can specify read-only access, read/write access, or admin access.
+<ul>
+<li>admins can update indexes, views etc.</li>
+</ul>
+</li>
+</ul>
+<p>If finer grained control is needed, we can write custom <code>update</code> functions to implement our own business logic for determining when data should be accessible or not.</p>
+<hr>
+<p>CouchDB and PouchDB do not support transactions. A document is the smallest unit of operations.</p>
+<h2 id="hosting">Hosting<a aria-hidden="true" class="anchor-heading icon-link" href="#hosting"></a></h2>
+<ul>
+<li>A2 Hosting</li>
+<li>Cloudant (IBM managed CouchDB)</li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/486i1taa3ycarnraisgup32">Authorization</a></li>
+<li><a href="/notes/57vhdkmrif0e4rdsokr4xyo">Design Document</a></li>
+<li><a href="/notes/rdd992s4fbe931kqydfg252">Document</a></li>
+<li><a href="/notes/8sahxg5gjs14yzwx9b77p1k">PouchDB</a></li>
+<li><a href="/notes/6b96d1cy19ooewp49vo4x5d">Replication</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/8sahxg5gjs14yzwx9b77p1k">PouchDB</a></li>
+<li><a href="/notes/ilOPfgNyiPSHOb9tNB6yL">CAP Theorem</a></li>
+<li><a href="/notes/wbs6c9snnonnyzm8vk2t4b9">Strategies</a></li>
+<li><a href="/notes/UE8OS2s713jEk2CmjiAet">B-tree</a></li>
+</ul>

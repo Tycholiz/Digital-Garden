@@ -1,0 +1,180 @@
+<h1 id="partitioning">Partitioning<a aria-hidden="true" class="anchor-heading icon-link" href="#partitioning"></a></h1>
+<h2 id="what-is-it">What is it?<a aria-hidden="true" class="anchor-heading icon-link" href="#what-is-it"></a></h2>
+<p>To partition is to divide data across tables or databases stored on multiple nodes.</p>
+<h2 id="why-do-it">Why do it?<a aria-hidden="true" class="anchor-heading icon-link" href="#why-do-it"></a></h2>
+<p>The justification for partitioning a database is that, after a certain scale point, it is cheaper and more feasible to scale horizontally by adding more machines than to grow it vertically by adding beefier servers.</p>
+<p>There are two challenges when we try to distribute data:</p>
+<ol>
+<li>How do we know on which node a particular piece of data will be stored?</li>
+<li>When we add or remove nodes, how do we know what data will be moved from existing nodes to the new nodes? Additionally, how can we minimize data movement when nodes join or leave?</li>
+</ol>
+<p>Partitioning is usually combined with <a href="/notes/gKVIPNGV7duiD0yRnld8J">replication</a> so that copies of each partition are stored on multiple nodes</p>
+<p>By design, every partition operates mostly independently, which is what allows a partitioned database to scale to multiple machines. </p>
+<p>The amount of partitions you have should be at least double the number of instances.</p>
+<ul>
+<li>This allows for growth; if you need to add instances then you can move one partition to another instance.</li>
+</ul>
+<h2 id="types-of-partitioning">Types of Partitioning<a aria-hidden="true" class="anchor-heading icon-link" href="#types-of-partitioning"></a></h2>
+<p>There are many different schemes one could use to decide how to break an application database into multiple smaller DBs. Three of the most popular schemes used by various large-scale applications are horizontal partitioning, vertical partitioning, and directory-based partitioning.</p>
+<h3 id="horizontal-partitioning-aka-range-based-partitioning">Horizontal Partitioning (a.k.a. Range-based partitioning)<a aria-hidden="true" class="anchor-heading icon-link" href="#horizontal-partitioning-aka-range-based-partitioning"></a></h3>
+<p>In this scheme, we put different rows into different tables. </p>
+<ul>
+<li>ex. if we store different places in a table, we can decide that locations with ZIP codes less than 10000 are stored in one table and places with ZIP codes greater than 10000 are stored in a separate table.
+<ul>
+<li>The key problem with this approach is that if the value whose range is used for Partitioning isn’t chosen carefully, then the partitioning scheme will lead to unbalanced servers. In the previous example, splitting locations based on their zip codes assume that places will be evenly distributed across the different zip codes. This assumption is not valid as there will be a lot of places in a thickly populated area like Manhattan as compared to its suburb cities.</li>
+</ul>
+</li>
+</ul>
+<p>Consider the flexibility afforded when you take a horizontal partitioning strategy. We can have a large number of logical partitions to accommodate future data growth, such that in the beginning, multiple logical partitions reside on a single physical database server. Since each database server can have multiple database instances running on it, we can have separate databases for each logical partition on any server. So whenever we feel that a particular database server has a lot of data, we can migrate some logical partitions from it to another server. We can maintain a config file (or a separate database) that can map our logical partitions to database servers; this will enable us to move partitions around easily. Whenever we want to move a partition, we only have to update the config file to announce the change.</p>
+<p>See <a href="/notes/nMxAwbzkQChlhX37Gih8a">sharding</a>, a specific type of horizontal partitioning</p>
+<h3 id="vertical-partitioning">Vertical Partitioning<a aria-hidden="true" class="anchor-heading icon-link" href="#vertical-partitioning"></a></h3>
+<p>In this scheme, we divide our data to exist on different servers based on their domain.</p>
+<ul>
+<li>ex, if we are building an Instagram-like application where we need to store data related to users, photos they upload, and people they follow, we can decide to place user profile information on one DB server, friend lists on another, and photos on a third server etc.</li>
+</ul>
+<p>Vertical Partitioning is straightforward to implement and has a low impact on the application. The main problem with this approach is that if our application experiences additional growth, then it may be necessary to further partition a domain specific DB across various servers (e.g. it would not be possible for a single server to handle all the metadata queries for 10 billion photos by 140 million users).</p>
+<h3 id="directory-based-partitioning">Directory-Based Partitioning<a aria-hidden="true" class="anchor-heading icon-link" href="#directory-based-partitioning"></a></h3>
+<p>A loosely coupled approach to work around issues mentioned in the above schemes is to create a lookup service that knows your current partitioning scheme and abstracts it away from the DB access code. So, to find out where a particular data entity resides, we query the directory server that holds the mapping between each tuple key to its DB server. This loosely coupled approach means we can perform tasks like adding servers to the DB pool or changing our partitioning scheme without having an impact on the application.</p>
+<h2 id="problems-that-arise-from-partitioning-a-database">Problems that arise from partitioning a database<a aria-hidden="true" class="anchor-heading icon-link" href="#problems-that-arise-from-partitioning-a-database"></a></h2>
+<p>Most of these constraints are due to the fact that operations across multiple tables or multiple rows in the same table will no longer run on the same server.</p>
+<ol>
+<li><em>Joins and Denormalization</em>: Performing joins on a database that is running on one server is straightforward, but once a database is partitioned and spread across multiple machines it is often not feasible to perform joins that span database partitions. Such joins will not be performance efficient since data has to be compiled from multiple servers. </li>
+</ol>
+<ul>
+<li>A common workaround for this problem is to denormalize the database so that queries that previously required joins can be performed from a single table. Of course, the service now has to deal with denormalization’s perils, such as data inconsistency.</li>
+</ul>
+<ol start="2">
+<li><em>Referential integrity</em>: just like how performing a cross-partition query on a partitioned database is not feasible, trying to enforce data integrity constraints such as foreign keys in a partitioned database can be extremely difficult.</li>
+</ol>
+<ul>
+<li>Most RDBMS do not support foreign keys constraints across databases on different database servers. This means, applications that require referential integrity on partitioned databases often have to enforce it in application code. Often in such cases, applications have to run regular SQL jobs to clean up dangling references.</li>
+</ul>
+<ol start="3">
+<li><em>Rebalancing</em>: There could be many reasons we have to change our partitioning scheme:
+<ul>
+<li>The data distribution is not uniform, e.g., there are a lot of places for a particular ZIP code that cannot fit into one database partition.</li>
+<li>There is a lot of load on a partition, e.g., there are too many requests being handled by the DB partition dedicated to user photos.</li>
+</ul>
+</li>
+</ol>
+<p>In such cases, either we have to create more DB partitions or have to rebalance existing partitions, which means the partitioning scheme changed and all existing data moved to new locations. Doing this without incurring downtime is extremely difficult. Using a scheme like directory-based Partitioning does make rebalancing a more palatable experience at the cost of increasing the complexity of the system and creating a new single point of failure (i.e. the lookup service/database).</p>
+<h2 id="partitioning-strategies">Partitioning Strategies<a aria-hidden="true" class="anchor-heading icon-link" href="#partitioning-strategies"></a></h2>
+<ul>
+<li><em>Hot spot</em> - a partition disproportionately high load.</li>
+<li><em>skew</em> - the phenomenon of some partitions having more queries made to them, or some partitions holding more data.</li>
+</ul>
+<h3 id="by-key-range">by Key Range<a aria-hidden="true" class="anchor-heading icon-link" href="#by-key-range"></a></h3>
+<p>Imagine we had a database of the English dictionary. Our partitioning strategy could be "have 2 letters per partition" (A+B in partition1, C+D in partition2, and so on). This gives us the benefit of knowing exactly which partition to search.</p>
+<ul>
+<li>naturally, this 2 letter per partition approach would lead to some partitions being much bigger than others, so the boundaries would need to adapt to the data.</li>
+</ul>
+<p>Within each partition, we can alphabetize the keys making range scans easy.</p>
+<p>The downside of Key-range partitioning is that certain access patterns can lead to hot spots.</p>
+<ul>
+<li>ex. imagine we have an IoT device that writes many logs of information, keyed by a timestamp. Therefore, our strategy is to partition by date. If we know have a month, we know exactly which partition the data is in. The downside is that we have all writes going in a single partition, while the rest sit idle. To remedy this problem, we could prepend each timestamp with the name of the sensor, in the hopes that writes get more evenly spread across all partitions.</li>
+</ul>
+<h3 id="by-hash-of-key">by Hash of Key<a aria-hidden="true" class="anchor-heading icon-link" href="#by-hash-of-key"></a></h3>
+<p>With this method, we assign a range of hashes to each partition. When writing to the database, we simply hash the key, and insert it into whichever partition would be responsible for it.</p>
+<ul>
+<li>Because a <a href="/notes/u0xXQ2GmDkPpk20TB9Y0N">hash</a> is generated from the key, we get a uniform distribution of partitions with this method.</li>
+</ul>
+<p>The downside of this strategy is that we can no longer efficiently query ranges. While before we could potentially limit our range query to a single partition, now we need to involve all partitions.</p>
+<ul>
+<li>Cassandra uses a hybrid approach, whereby a table is declared with a compound primary key consisting of several columns. Only the first part of that key is hashed, which determines which partition it will belong to. The other columns are used as a concatenated index for sorting the data in Cassandra’s SSTables. As a result, while we cannot perform a range query over the first column, the rest can be range queried.
+<ul>
+<li>ex. consider a social media site where users can make posts. In a one-to-many relationship such as this, where one user can make multiple posts, we can define the compound primary key as (<code>user_id</code>, <code>update_timestamp</code>), and make an efficient range query on the timestamp.</li>
+</ul>
+</li>
+</ul>
+<p>While this strategy heavily reduces hotspots, it does not eliminate them. </p>
+<ul>
+<li>ex. imagine user profiles of Twitter being stored across many partitions. Because some users are more popular than others, it's reasonable to expect a skew in querying for certain data. Imagine some global event occurs which causes everyone to interact with Donald Trump's user. People retweeting or commenting on Donald Trump's tweets will result in a large volume of writes to the same key (where the key is perhaps Donald's userId, or the ID of his tweet)
+<ul>
+<li>In cases such as this, if one key is known to be very hot, a simple technique is to add a random number to the beginning or end of the key. Just a two-digit decimal random number would split the writes to the key evenly across 100 different keys, allowing those keys to be distributed to different partitions.</li>
+</ul>
+</li>
+</ul>
+<h4 id="crc-32-hashing">CRC-32 Hashing<a aria-hidden="true" class="anchor-heading icon-link" href="#crc-32-hashing"></a></h4>
+<p>CRC-32 is a hashing function. Since the output is in hexadecimal, it can be represented as a decimal number, and can have calculations done on it.</p>
+<p>When we pass an id to CRC-32, we get back a hexadecimal value:</p>
+<div class="math math-display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>C</mi><mi>R</mi><mi>C</mi><mn>32</mn><mo stretchy="false">(</mo><mi mathvariant="normal">"</mi><mi>i</mi><mi>d</mi><mo>−</mo><mn>123</mn><mi mathvariant="normal">"</mi><mo stretchy="false">)</mo><mo>=</mo><mi>F</mi><mn>9</mn><mi>F</mi><mi>D</mi><mi>B</mi><mn>2</mn><mi>C</mi><mn>9</mn><mo stretchy="false">(</mo><mi>h</mi><mi>e</mi><mi>x</mi><mo stretchy="false">)</mo><mspace linebreak="newline"></mspace><mi>o</mi><mi>r</mi><mspace linebreak="newline"></mspace><mn>4194153161</mn><mo stretchy="false">(</mo><mi>d</mi><mi>e</mi><mi>c</mi><mi>i</mi><mi>m</mi><mi>a</mi><mi>l</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">CRC32("id-123") = F9FDB2C9 (hex) \\ or \\ 4194153161 (decimal)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">CRC</span><span class="mord">32</span><span class="mopen">(</span><span class="mord">"</span><span class="mord mathnormal">i</span><span class="mord mathnormal">d</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">123"</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="mord">9</span><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mord">2</span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mord">9</span><span class="mopen">(</span><span class="mord mathnormal">h</span><span class="mord mathnormal">e</span><span class="mord mathnormal">x</span><span class="mclose">)</span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">or</span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">4194153161</span><span class="mopen">(</span><span class="mord mathnormal">d</span><span class="mord mathnormal">ec</span><span class="mord mathnormal">ima</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mclose">)</span></span></span></span></span></div>
+<p>Now we can use that number to determine which of 6 partitions to live on by using modulus:</p>
+<div class="math math-display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mn>4194153161</mn><mi mathvariant="normal">%</mi><mn>6</mn><mo>=</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">4194153161 \% 6 = 5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8056em;vertical-align:-0.0556em;"></span><span class="mord">4194153161%6</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">5</span></span></span></span></span></div>
+<p><a href="/notes/zhhxcjZUHdU8uRLwGb9Zh">MongoDB</a> and Cassandra use this</p>
+<h3 id="secondary-index-partitioning">Secondary Index Partitioning<a aria-hidden="true" class="anchor-heading icon-link" href="#secondary-index-partitioning"></a></h3>
+<p>Partitioning with secondary indexes adds considerable complexity, sithey don’t map neatly to partitions. There are two main approaches to partitioning a database with secondary indexes: document-based partitioning and term-based partitioning.</p>
+<h4 id="document-based">Document-based<a aria-hidden="true" class="anchor-heading icon-link" href="#document-based"></a></h4>
+<p>Consider a website that lists cars. Each car is stored in its own document. We have fields like <code>year</code> and <code>color</code>. We want to give users the ability to query by color, so we add a secondary index to this field. Because of this index, whenever a red car is added to the database, the database partition automatically adds it to the list of document IDs for the index entry <code>color:red</code>.</p>
+<p>Because the documents are partitioned based on their primary key, we now end up in a situation where we can have red cars existing across all partitions. However, because of the secondary index, we can still query by all of these cars in each partition. In effect, each partition only worries about its own secondary indexes. Naturally, partition1 doesn't care about the red cars existing in partition2. Because of this, a document-partitioned index is also known as a <em>local index</em> (as opposed to a <em>global index</em>).</p>
+<ul>
+<li>as mentioned, not all red cars exist on a single partition, so we need to query all partitions and combine the results (known as <em>scatter/gather</em>). Even if we query all the partitions in parallel, it is prone to tail latency amplification.</li>
+<li>used by <a href="/notes/zhhxcjZUHdU8uRLwGb9Zh">Mongo</a>, Riak, Cassandra, <a href="/notes/xiSIDeEtIc8X0lpUQlppI">Elastic Search</a>.</li>
+</ul>
+<h4 id="term-based">Term-based<a aria-hidden="true" class="anchor-heading icon-link" href="#term-based"></a></h4>
+<p>Instead of each partition having its own secondary index (ie. local index), we can construct a <em>global secondary index</em> that covers all partitions.</p>
+<ul>
+<li>That global index must itself be partitioned, since it cannot live on a single node (which would defeat the purpose of partitioning)</li>
+</ul>
+<p>In our car example above, imagine we had all cars with colors starting with <em>a</em> to <em>r</em> in partition 1, and <em>s</em> to <em>z</em> in partition 2.</p>
+<p>This type of index is called <em>term-partitioned</em>, where the term would be the field:value that we are indexing (here, <code>color:red</code>)</p>
+<p>The upside of term-based over document-based is that reads are made more efficient, since we don't have to <em>scatter/gather</em> over all partitions, and only need to query the partition(s) that have the particular term we are interested in.</p>
+<ul>
+<li>the downside is that writes are more complex and slower, since a single write may affect multiple partitions of the index (every term in the document might be on a different partition).</li>
+</ul>
+<p>Updates to global secondary indexes are asynchronous.</p>
+<ul>
+<li>if you read the index shortly after a write, the change you just made may not yet be reflected in the index.</li>
+</ul>
+<h2 id="rebalancing">Rebalancing<a aria-hidden="true" class="anchor-heading icon-link" href="#rebalancing"></a></h2>
+<p>Rebalancing is the process of moving load (ie. data storage, read and write requests) from one node in the cluster to another. </p>
+<ul>
+<li>The goal is to even out load across all nodes in the cluster.</li>
+</ul>
+<p>To accomplish this smoothly, we should have many more partitions than we have nodes. If we have 10 nodes in the cluster, we may decide to have 1000 partitions, meaning each node holds 100 partitions. In the event that we add a node to the cluster, all we have to do is steal some partitions from each existing node and put them onto the new node until we reach a smooth distribution again. Removing a node is the same process in reverse.</p>
+<ul>
+<li>for this reason it's a good idea to set the number of partitions at the outset of setting up the database, and treat that number as unchanging. The idea is to choose a number that's high enough to accommodate growth (the number of partitions we have is the max amount of nodes we can have), but not so high that we are overwhelmed with the management overhead that comes with partitions.</li>
+</ul>
+<p>Rebalancing is an expensive operation, because it requires rerouting requests and moving a large amount of data from one node to another. If it is not done carefully, this process can overload the network or the nodes and harm the performance of other requests while the rebalancing is in progress.</p>
+<ul>
+<li>automating rebalancing can be dangerous in combination with automatic failure detection. 
+<ul>
+<li>ex. say one node is overloaded and is temporarily slow to respond to requests. The other nodes conclude that the overloaded node is dead, and automatically rebalance the cluster to move load away from it. This puts additional load on the overloaded node, other nodes, and the network— making the situation worse and potentially causing a cascading failure.
+<ul>
+<li>this is why it's generally not a good idea to do a fully-automatic rebalancing.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Following the rebalancing process, data may no longer exist on the same partition as before, so the clients need to update the IP address that they will request data from. This general problem is called <em>service discovery</em>. To handle, we can...</p>
+<ul>
+<li>allow clients to contact any node (via a round-robin <a href="/notes/ixUb4q9KIlc89hsmLFvb5">load balancer</a>). If that node doesn't have the partition with the data requested, then it can forward the request on to the correct node, then receive the response and forward it back on to the client (like a proxy). </li>
+<li>all requests will go first to a <em>routing tier</em> (basically a partition-aware load balancer), which determines which node the request should be sent to.</li>
+<li>require that clients know which node has the partition that holds the data it needs.</li>
+</ul>
+<p>No matter which approach we take, the question then becomes: how do we propogate this new information about which nodes hold which partitions?</p>
+<ul>
+<li>For this, we can use a separate coordination system called ZooKeeper to keep track of this cluster metadata.
+<ul>
+<li>here, each node registers itself with ZooKeeper, and ZooKeeper maintains the authoritative mapping of partitions to nodes. Now, to know which node holds which partition, we only have to consult ZooKeeper.</li>
+</ul>
+</li>
+<li>An alternative approach is to use a <em>gossip protocol</em> among the nodes to disseminate any changes in cluster state. Requests can be sent to any node,
+and that node forwards them to the appropriate node.</li>
+<li>When using a routing tier or when sending requests to a random node, clients still need to find the IP addresses to connect to. These are not as fast-changing as the assignment of partitions to nodes, so it is often sufficient to use DNS for this purpose.</li>
+</ul>
+<hr>
+<p>A partition is known as a <em>vnode</em> in Cassandra and Riak</p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/nMxAwbzkQChlhX37Gih8a">Sharding</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/vutujFFWxQu6TshWVuMpI">Distributed Computing</a></li>
+<li><a href="/notes/jiITIvU42MBAYcbXheWwI">Index</a></li>
+<li><a href="/notes/0idz4fvzgfj8npryf13eelb">Keys</a></li>
+<li><a href="/notes/nMxAwbzkQChlhX37Gih8a">Sharding</a></li>
+</ul>

@@ -1,0 +1,24 @@
+<h1 id="testing">Testing<a aria-hidden="true" class="anchor-heading icon-link" href="#testing"></a></h1>
+<p>Instead of wrapping our component with <code>&#x3C;ApolloProvider /></code> (as we normally do), we wrap it with <code>&#x3C;MockedProvider /></code>, which gives us benefits:</p>
+<ul>
+<li>mocks all network calls, allowing us to test in isolation and get consistent results with each query (<code>mocks</code> prop)</li>
+</ul>
+<h3 id="mocks"><code>mocks</code><a aria-hidden="true" class="anchor-heading icon-link" href="#mocks"></a></h3>
+<p>the <code>mocks</code> array takes objects with specific requests and their associated results. </p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">const</span> mocks <span class="token operator">=</span> <span class="token punctuation">[</span>
+  <span class="token punctuation">{</span>
+    request<span class="token operator">:</span> <span class="token punctuation">{</span>
+      query<span class="token operator">:</span> <span class="token constant">GET_DOG_QUERY</span><span class="token punctuation">,</span>
+      variables<span class="token operator">:</span> <span class="token punctuation">{</span>
+        name<span class="token operator">:</span> <span class="token string">'Buck'</span><span class="token punctuation">,</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    result<span class="token operator">:</span> <span class="token punctuation">{</span>
+      data<span class="token operator">:</span> <span class="token punctuation">{</span>
+        dog<span class="token operator">:</span> <span class="token punctuation">{</span> id<span class="token operator">:</span> <span class="token string">'1'</span><span class="token punctuation">,</span> name<span class="token operator">:</span> <span class="token string">'Buck'</span><span class="token punctuation">,</span> breed<span class="token operator">:</span> <span class="token string">'bulldog'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span><span class="token punctuation">;</span>
+</code></pre>
+<p>When the provider receives a <code>GET_DOG_QUERY</code> with matching variables, it returns the corresponding object from the result key.</p>

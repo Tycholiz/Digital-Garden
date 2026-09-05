@@ -1,0 +1,22 @@
+<h1 id="api">API<a aria-hidden="true" class="anchor-heading icon-link" href="#api"></a></h1>
+<h3 id="put"><code>put</code><a aria-hidden="true" class="anchor-heading icon-link" href="#put"></a></h3>
+<p><code>put</code> is used to create and update documents</p>
+<p>To update a document, we must provide the entire document along with its current revision marker (<code>_rev</code>).</p>
+<ul>
+<li>if we fail to do this, we will get HTTP 409</li>
+<li>therefore, to update a document we first need to fetch it so we can provide its <code>_rev</code> value to the <code>put</code> method.</li>
+</ul>
+<h3 id="alldocs"><code>allDocs</code><a aria-hidden="true" class="anchor-heading icon-link" href="#alldocs"></a></h3>
+<p><code>allDocs</code> reads many docs for us at once.</p>
+<ul>
+<li>it also allows you to reverse the order, filter by _id, slice and dice using "greater than" and "less than" operations on the _id, and much more.</li>
+<li>most of the time we should be using <code>allDocs</code>, not <code>query</code> </li>
+</ul>
+<p>For 99% of your applications, you should be able to use <code>allDocs()</code> for all the pagination/sorting/searching functionality that you need.</p>
+<h3 id="query"><code>query</code><a aria-hidden="true" class="anchor-heading icon-link" href="#query"></a></h3>
+<p>The <code>query</code> API corresponds to the <code>_view</code> API of CouchDB.</p>
+<ul>
+<li>therefore <code>query</code> uses map/reduce functions</li>
+</ul>
+<p>To use this API, we make a <a href="/notes/57vhdkmrif0e4rdsokr4xyo">design doc</a> and query it</p>
+<p>Prefer <code>allDocs</code> or <code>changes</code> APIs when possible.</p>

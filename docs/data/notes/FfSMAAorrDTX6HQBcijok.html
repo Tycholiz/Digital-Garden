@@ -1,0 +1,5 @@
+<h1 id="regex">Regex<a aria-hidden="true" class="anchor-heading icon-link" href="#regex"></a></h1>
+<p><code>=~</code> allows us to do a Regex check in Ruby:</p>
+<pre class="language-rb"><code class="language-rb"><span class="token comment"># don't throw if Order equals modified, modified_reverse, added, or added_reverse</span>
+abort <span class="token string-literal"><span class="token string">'Unrecognized order type.'</span></span> <span class="token keyword">unless</span> Order <span class="token operator">=~</span> <span class="token regex-literal"><span class="token regex">/(modified|added).*/</span></span>
+</code></pre>

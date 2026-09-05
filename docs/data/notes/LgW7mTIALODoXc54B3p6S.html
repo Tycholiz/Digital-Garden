@@ -1,0 +1,29 @@
+<h1 id="jest">Jest<a aria-hidden="true" class="anchor-heading icon-link" href="#jest"></a></h1>
+<p>Jest sets <code>NODE_ENV=test</code> by default</p>
+<p>The data entering a component via props is the data, whose stability we want to test during unit tests. For instance, if we have a <code>&#x3C;Table /></code> component, we are chiefly concerned with the data coming in and how it impacts <code>&#x3C;Table /></code>. In this case, it would be: How long is the array of data that comes in (which ultimately translates to amount of rows)? What is the 'title' prop that we are expecting (which renders the title on the Table), etc. Given that the data is what we are interested in, begin to think of ways that data can fail on us. What happens if we get no data? Well, then I guess we expect the amount of <code>&#x3C;Row /></code> components to be 0. This would mean a passing test, meaning that paticular piece of logic is guarded, and will remain robust unless the test breaks.</p>
+<p>Keep in mind we are forming our tests around: what is expected given this circumstance? In tests, an error case and happy-path are both equivalent in terms of value. They are simply scenarios that may happen, and we want to just clarify it for the record that "this is what should happen, given this circumstance."</p>
+<ul>
+<li>ex. in <code>const wrapper = shallow(&#x3C;FeedbackSummary />);</code>, imagine we are the parent, and <code>FeedbackSummary</code> is the child we are testing. In other words, <code>FeedbackSummary</code> is the input, and <code>wrapper</code> is the output. In jest, we are basically saying "hey FeedbackSummary, I'm going to give you some props and render you. The output will be called wrapper, and I will take my magnifying glass (aka enzyme library) and take a close look to ensure that the everything looks like it should"</li>
+</ul>
+<h2 id="transformation">Transformation<a aria-hidden="true" class="anchor-heading icon-link" href="#transformation"></a></h2>
+<p>Jest runs our code as plain Javscript. That means that any part of our code that isn't plain js (e.g. jsx, TypeScript types) needs to be transformed into plain js.</p>
+<ul>
+<li>A transformer is just a synchronous function that transforms source files into plain js.
+see <a href="https://jestjs.io/docs/configuration#transform-objectstring-pathtotransformer--pathtotransformer-object">transform configuration option</a></li>
+</ul>
+<h3 id="implementations">Implementations<a aria-hidden="true" class="anchor-heading icon-link" href="#implementations"></a></h3>
+<p><a href="https://kulshekhar.github.io/ts-jest/">ts-jest: a Jest transformer with source map support allowing us to use Jest to test TypeScript code</a></p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/YmwRMS2r9kXStu2YnCH04">Async Jest</a></li>
+<li><a href="/notes/runh54z2ieqdbu0vj8dxiez">Cook</a></li>
+<li><a href="/notes/JuG6tOClW3eizxTAFmiGG">Jest with TypeScript</a></li>
+<li><a href="/notes/sxmu9ecyn89qo1xq6zvb3eq">Mock</a></li>
+<li><a href="/notes/vh2wnowht0zvas7cwzwmff1">Throw</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/Jhamjiy0mDIq6zImBiDTj">Pact</a></li>
+</ul>

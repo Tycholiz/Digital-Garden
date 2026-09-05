@@ -1,0 +1,8 @@
+<h1 id="document">Document<a aria-hidden="true" class="anchor-heading icon-link" href="#document"></a></h1>
+<p>Everything in the Studio starts with the document. A document is what you create and edit in the studio—all the other types you may define live inside the documents. In the default studio configuration, the document-types are the ones that will be listed in the content-column.</p>
+<p>A reference in Sanity is a link from one document to another</p>
+<p>Standard references are “hard” meaning when a document references another document, the target document must exist, and is actually prevented from being deleted until the reference is removed.</p>
+<ul>
+<li>There are also weak-references that do not "hold on to" the target. You make them by adding a _weak-key to the reference object like this: <code>{_ref: "&#x3C;document-id>", _weak: true}</code></li>
+</ul>
+<p>an object containing a <code>_ref</code> key appearing anywhere in the document becomes a hard reference, and must be followed with the dereferencing operator <code>-></code> in order to access its values:</p>

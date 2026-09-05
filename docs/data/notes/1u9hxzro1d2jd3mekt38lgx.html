@@ -1,0 +1,26 @@
+<h1 id="consumer">Consumer<a aria-hidden="true" class="anchor-heading icon-link" href="#consumer"></a></h1>
+<p>A consumer is a client application that subscribes to (reads and processes) events</p>
+<ul>
+<li>it works by issuing "fetch" requests to the brokers leading the partitions it wants to consume.</li>
+</ul>
+<h3 id="offset">Offset<a aria-hidden="true" class="anchor-heading icon-link" href="#offset"></a></h3>
+<p>The offset is like a bookmark within a partition of a topic, representing the consumer's current position in a log of messages.</p>
+<ul>
+<li>Each message in a Kafka topic is assigned a unique offset as it is written to the partition.</li>
+<li>Each request to the brokers specifies the offset, and consumers are able to rewind it to re-consume data if desired.</li>
+<li>Offsets are persistent and maintained by the Kafka broker.</li>
+<li>Offsets are used to provide the "at-least-once" delivery guarantee in Kafka.</li>
+<li>Typically, a consumer will persist the offset so that in case of failure, they can resume processing from where they left off.</li>
+</ul>
+<h3 id="consumer-groups">Consumer Groups<a aria-hidden="true" class="anchor-heading icon-link" href="#consumer-groups"></a></h3>
+<p>In a large-scale system, it is unlikely that we would have a single instance of a Kafka Consumer app. If we were using Kubernetes, we would have multiple pods of this application. The question then becomes: "how do we ensure that there is no overlap between each pod and the <a href="/notes/1j2qlelnxiyklb52ev5vzeu">Topic</a> messages it consumes?"</p>
+<p>The purpose of consumer groups in Kafka is to enable (horizontally) scalable and parallel consumption of messages from topics.</p>
+<ul>
+<li>Also, consumer groups provides scalability, fault tolerance, and load balancing for your Kafka consumers within the Kafka Consumer app. If a pod fails or a new pod is added, Kafka will automatically handle the partition reassignment to ensure efficient consumption and fault tolerance within the consumer group.</li>
+</ul>
+<p>consumer group coordination is done based on the <code>group.id</code> configuration parameter.</p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/t30166dyj75zi946168kbol">Producer</a></li>
+</ul>

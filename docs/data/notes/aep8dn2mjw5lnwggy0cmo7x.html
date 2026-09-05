@@ -1,0 +1,28 @@
+<h1 id="federated">Federated<a aria-hidden="true" class="anchor-heading icon-link" href="#federated"></a></h1>
+<p>To be federated means to be unified in some way, while still maintaining the independence of each unit that lies underneath. The core outcome of a federated system is a group of loosely coupled components that share a common aim.</p>
+<ul>
+<li>ex. the idea of <a href="/notes/Y390f1C2wwkgZOmfBQgOJ">Apollo Federation</a> is that we have many Graphql endpoints (with their own upstream REST and database layers) tied together to provide the benefit of unity to the person who uses it.</li>
+<li>ex. <a href="/notes/yBNgydTx5k1BfiGgW3BbD">Federated identity</a> is the idea that we can link someone's identity across many platforms</li>
+<li>anal: consider that the United States is a federation. The key here is that each state maintains some degree of independence, yet is connected to the whole in some way.</li>
+</ul>
+<p>"to federate" means to establish a trusted connection or authentication between two different systems or entities. It typically involves allowing one system to access resources or perform actions on another system using the credentials or authorization provided by the first system.</p>
+<ul>
+<li>ex. "Gitlab has a JWT_TOKEN environment variable that's passed from each job which can be used to federate into your AWS account securely"
+<ul>
+<li>here, the JWT_TOKEN from GitLab is being used as a secure method to authenticate and access resources in the AWS account without needing to expose or manage AWS-specific credentials separately.</li>
+</ul>
+</li>
+</ul>
+<h3 id="federation-in-database">Federation in database<a aria-hidden="true" class="anchor-heading icon-link" href="#federation-in-database"></a></h3>
+<p>Federation (or functional partitioning) splits up databases by function. For example, instead of a single, monolithic database, you could have three databases: forums, users, and products, resulting in less read and write traffic to each database and therefore less replication lag.</p>
+<h2 id="resources">Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#resources"></a></h2>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Federated_architecture">https://en.wikipedia.org/wiki/Federated_architecture</a></li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/xISza0hg9S9FjXgmkfYgB">Data Mesh</a></li>
+<li><a href="/notes/yBNgydTx5k1BfiGgW3BbD">Federated Identity</a></li>
+<li><a href="/notes/gn1dBCYys8bu5vIwxLQUV">Identity Federation</a></li>
+</ul>

@@ -1,0 +1,37 @@
+<h1 id="commits">Commits<a aria-hidden="true" class="anchor-heading icon-link" href="#commits"></a></h1>
+<p>A commit object stores metadata about the commit, like who authored it, when it was made, what the previous commit is etc.</p>
+<ul>
+<li>
+<p>while a <a href="/notes/J9Z9E8d7dzzJA7BiOVy8W">tree</a> represents a particular directory state of a working tree, a commit represents that state in "time", and explains how to get there.</p>
+</li>
+<li>
+<p>a commit points to a single tree, marking it as what the project looked like a certain point in time</p>
+<ul>
+<li>Therefore, the commit object is what gives a project its sense of history in Git</li>
+</ul>
+</li>
+<li>
+<p>While the tree and blob objects are the content of the Git, the commit objects allow us to use the data in a user-friendly way. Technically, Git could be used without commit objects. However, we would have to remember every SHA to recall the snapshots. Also, we wouldn't have important information like who saved the snapshots, when they were saved, and who saved them. These benefits are what commit objects bring to us.</p>
+</li>
+<li>
+<p>When we run <code>git commit</code>, a commit object is created, and the parent commit is specified as the commit that the HEAD file points to (recall that a branch is just a pointer to a commit)</p>
+</li>
+</ul>
+<h3 id="boundary-commit">Boundary Commit<a aria-hidden="true" class="anchor-heading icon-link" href="#boundary-commit"></a></h3>
+<p>A boundary commit is the commit that limits a revision range but does not belong to that range. For example the revision range <code>HEAD~3..HEAD</code> consists of 3 commits (<code>HEAD~2</code>, <code>HEAD~1</code>, and <code>HEAD</code>), and the commit <code>HEAD~3</code> serves as a boundary commit for it.</p>
+<ul>
+<li>This is related to the concept of inclusive/exclusive ranges. In this comparison, the boundary commit would be an exclusive boundary.</li>
+</ul>
+<p>More formally, git processes a revision range by starting at the specified commit and getting at other commits through the parent links. It stops at commits that don't meet the selection criteria (and therefore should be excluded) - those are the boundary commits.
+<a href="https://stackoverflow.com/questions/42437590/what-is-a-git-boundary-commit">Source</a></p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/U6RX4XDsz8HfUg2NNkf9N">Merge Commit</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/Y2LcIi5XmTxzs8jc3y1WK">Git Plumbing</a></li>
+<li><a href="/notes/x48F7MRbiIRRGRu4jJ5W3">Ref</a></li>
+</ul>

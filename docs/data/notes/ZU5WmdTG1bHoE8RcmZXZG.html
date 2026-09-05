@@ -1,0 +1,29 @@
+<h1 id="apache">Apache<a aria-hidden="true" class="anchor-heading icon-link" href="#apache"></a></h1>
+<p>Apache is an HTTP server (just like NGINX)</p>
+<h1 id="how-it-works">How it works<a aria-hidden="true" class="anchor-heading icon-link" href="#how-it-works"></a></h1>
+<ul>
+<li>Apache listens to the IP addresses identified in its config file (HTTPd.conf). Whenever it receives a request, it analyzes the headers, and takes action; considering the rules specified for it in the Config file,</li>
+</ul>
+<h2 id="four-main-directories-on-apache-server">Four main directories on apache server<a aria-hidden="true" class="anchor-heading icon-link" href="#four-main-directories-on-apache-server"></a></h2>
+<ul>
+<li><code>htdocs</code> contains the files to be served to the client upon receiving HTTP requests
+<ul>
+<li>files and sub-directories under htdocs are available to the public </li>
+</ul>
+</li>
+<li><code>conf</code> contains all server configuration files 
+<ul>
+<li>similar to Dockerfile, it is a manifesto of instructions for the apache server</li>
+</ul>
+</li>
+<li><code>logs</code> contains server logs</li>
+<li><code>cgi-bin</code> contains CGI scripts</li>
+</ul>
+<h1 id="e-resources">E Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#e-resources"></a></h1>
+<p><a href="https://code.tutsplus.com/tutorials/an-introduction-to-apache--net-25786">primer on apache</a></p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/YxwqHEq2TsfL7ShAfW2Rw">Apache Hadoop</a></li>
+<li><a href="/notes/mFBH0ky97C6yTkFkAY6fb">Apache Reverse Proxy</a></li>
+</ol>

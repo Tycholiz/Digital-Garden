@@ -1,0 +1,33 @@
+<h1 id="cook">Cook<a aria-hidden="true" class="anchor-heading icon-link" href="#cook"></a></h1>
+<h2 id="modifications">Modifications<a aria-hidden="true" class="anchor-heading icon-link" href="#modifications"></a></h2>
+<ul>
+<li><code>!</code> before the flag to check opposite 
+<ul>
+<li>ex.  <code>if [ ! -f "$FILE" ]</code> checks that file does NOT exist</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="check-if-a-cli-package-is-installed">Check if a CLI package is installed<a aria-hidden="true" class="anchor-heading icon-link" href="#check-if-a-cli-package-is-installed"></a></h3>
+<pre class="language-sh"><code class="language-sh">if ! aws_bin="$(which aws)" 2>/dev/null; then
+    echo "aws cli is missing; you can get it from https://aws.amazon.com/cli/"
+    exit 1
+fi
+</code></pre>
+<h4 id="variation-install-package-if-its-not-found">Variation: install package if it's not found<a aria-hidden="true" class="anchor-heading icon-link" href="#variation-install-package-if-its-not-found"></a></h4>
+<pre class="language-sh"><code class="language-sh">[ $(which ts-node) ] || echo "ts-node not found. Installing..." &#x26;&#x26; npm i -g ts-node
+</code></pre>
+<h3 id="check-if-environment-variable-set">Check if environment variable set<a aria-hidden="true" class="anchor-heading icon-link" href="#check-if-environment-variable-set"></a></h3>
+<pre class="language-sh"><code class="language-sh">if [ -z $APP_NAME ]; then echo "Error:'APP_NAME' is not set, it is required for serverless" &#x26;&#x26; exit 1; fi
+</code></pre>
+<h3 id="check-if-x-exists">Check if X exists<a aria-hidden="true" class="anchor-heading icon-link" href="#check-if-x-exists"></a></h3>
+<ul>
+<li>file - <code>-f</code></li>
+<li>directory - <code>-d</code></li>
+</ul>
+<pre><code>if [ -d "$FILE" ]; then
+    echo "$FILE is a directory."
+fi
+</code></pre>
+<p>One liner:
+<code>[ -d /etc/docker ] &#x26;&#x26; echo "$FILE is a directory."</code></p>

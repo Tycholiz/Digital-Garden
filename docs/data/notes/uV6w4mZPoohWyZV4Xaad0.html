@@ -1,0 +1,39 @@
+<h1 id="deploy">Deploy<a aria-hidden="true" class="anchor-heading icon-link" href="#deploy"></a></h1>
+<p>A deployment is a running instance of the app.</p>
+<p>A deployment happens in 3 stages:</p>
+<ol>
+<li><em>build stage</em> - transform source code into an executable bundle known as a <strong>build</strong>.</li>
+<li><em>release stage</em> - takes the build and combines it with the deployment's current config (e.g. the Kubernetes config), producing something that is ready for immediate execution in an environment.</li>
+<li><em>run stage</em> (aka runtime) - runs the app in the execution environment by launching some of the app's processes against a selected release.
+<ul>
+<li>should be kept to as few moving parts as possible, since these moving parts will be the things that cause breakages in the middle of the night.</li>
+</ul>
+</li>
+</ol>
+<h3 id="config">Config<a aria-hidden="true" class="anchor-heading icon-link" href="#config"></a></h3>
+<p>An app’s <em>config</em> is everything that is likely to vary between deploys (staging, production, developer environments, etc), including...</p>
+<ul>
+<li>backing services, such as databases and caches</li>
+<li>credentials to 3rd party services</li>
+<li>per deploy values like hostname (URL) of where the app will be deployed</li>
+</ul>
+<p>Config varies substantially across deploys, while code does not.</p>
+<hr>
+<h3 id="blue-green-deployments">Blue-green deployments<a aria-hidden="true" class="anchor-heading icon-link" href="#blue-green-deployments"></a></h3>
+<p>A blue-green deployment is one without any downtime. In contrast to rolling updates, a blue-green deployment works by starting a cluster of replicas running the new version while all the old replicas are still serving all the live requests. Only when the new set of replicas is completely up and running is the load-balancer configuration changed to switch the load to the new version. A benefit of this approach is that there’s always only one version of the application running, reducing the complexity of handling multiple concurrent versions.</p>
+<h1 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h1>
+<p><a href="https://kentcdodds.com/blog/how-i-built-a-modern-website-in-2021">Kent C. Dodds Deployment pipeline breakdown</a></p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/dF2CVtOaqyE04VZqR8opg">CI/CD</a></li>
+<li><a href="/notes/m1o8MiLQvwtxNYg84aj4w">Deployment Artifact</a></li>
+<li><a href="/notes/gm1gdfaxur1ve8fd35w1pv4">Deployment Process</a></li>
+<li><a href="/notes/vutujFFWxQu6TshWVuMpI">Distributed Computing</a></li>
+<li><a href="/notes/UC0nyKwtmZ2LQxNdf57hg">Hosting</a></li>
+<li><a href="/notes/XWylDWDxeysS0loUpzE1T">Jamstack</a></li>
+<li><a href="/notes/j0ZVTb0cyNKaYUu1g6a2g">Performance</a></li>
+<li><a href="/notes/ybLlhLeDs5gxbMGGAKomC">Pricing</a></li>
+<li><a href="/notes/HZSth7yP1s7aPaPPZRJPm">Scaling</a></li>
+<li><a href="/notes/aOfHQ6odySXLBhQgkOtOp">Serverless</a></li>
+</ol>

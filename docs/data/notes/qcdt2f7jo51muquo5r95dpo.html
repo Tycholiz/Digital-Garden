@@ -1,0 +1,20 @@
+<h1 id="kibana">Kibana<a aria-hidden="true" class="anchor-heading icon-link" href="#kibana"></a></h1>
+<p>Kibana enables you to interactively explore, visualize, and share insights into your data and manage and monitor the stack.</p>
+<p>To use Kibana, we need to pass an enrollment token that is provided from the ElasticSearch server</p>
+<ul>
+<li>this enrollment token is output to the log the first time we run the ES server.</li>
+</ul>
+<h2 id="using-with-docker">Using with Docker<a aria-hidden="true" class="anchor-heading icon-link" href="#using-with-docker"></a></h2>
+<p><a href="https://www.elastic.co/guide/en/kibana/current/docker.html">guide</a></p>
+<ul>
+<li>You may need to mount a <a href="/notes/nxsyEYaw0askx7UQbxQg6">volume</a> on the kibana container in order to access a <code>kibana.yml</code> locally
+<ul>
+<li>give it contents:</li>
+</ul>
+</li>
+</ul>
+<pre class="language-yml"><code class="language-yml"><span class="token key atrule">server.host</span><span class="token punctuation">:</span> <span class="token string">"0.0.0.0"</span>
+</code></pre>
+<ul>
+<li>if Kibana web portal is stuck "configuring" forever, just reload the URL and enter username/password</li>
+</ul>

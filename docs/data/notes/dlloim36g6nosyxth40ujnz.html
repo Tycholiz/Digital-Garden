@@ -1,0 +1,51 @@
+<h1 id="oauth2">Oauth2<a aria-hidden="true" class="anchor-heading icon-link" href="#oauth2"></a></h1>
+<h2 id="overview">Overview<a aria-hidden="true" class="anchor-heading icon-link" href="#overview"></a></h2>
+<p>OAuth2 is an authorization framework that enables applications — such as Facebook, GitHub, and DigitalOcean — to obtain limited access to user accounts on an HTTP service</p>
+<ul>
+<li>It works by delegating user authentication to the service that hosts a user account and authorizing third-party applications to access that user account. </li>
+<li>OAuth2 provides authorization flows for web and desktop applications, as well as mobile devices.</li>
+</ul>
+<p>OAuth defines four roles:</p>
+<ol>
+<li>Resource Owner: The resource owner is the user who authorizes an application to access their account. The application’s access to the user’s account is limited to the scope of the authorization granted (e.g. read or write access)</li>
+<li>Client: The client is the application that wants to access the user’s account. Before it may do so, it must be authorized by the user, and the authorization must be validated by the API.</li>
+<li>Resource Server: The resource server hosts the protected user accounts.</li>
+<li>Authorization Server: The authorization server verifies the identity of the user then issues access tokens to the application.
+<ul>
+<li>From an application developer’s point of view, a service’s API fulfills both the resource and authorization server roles. We will refer to both of these roles combined, as the Service or API role.</li>
+</ul>
+</li>
+</ol>
+<h3 id="abstract-protocol-flow">Abstract Protocol Flow<a aria-hidden="true" class="anchor-heading icon-link" href="#abstract-protocol-flow"></a></h3>
+<p><img src="/assets/images/2024-10-22-17-29-49.png"></p>
+<p>Explanation:</p>
+<ol>
+<li>The application requests authorization to access service resources from the user</li>
+<li>If the user authorized the request, the application receives an authorization grant</li>
+<li>The application requests an access token from the authorization server (API) by presenting authentication of its own identity, and the authorization grant</li>
+<li>If the application identity is authenticated and the authorization grant is valid, the authorization server (API) issues an access token to the application. Authorization is complete.</li>
+<li>The application requests the resource from the resource server (API) and presents the access token for authentication</li>
+<li>If the access token is valid, the resource server (API) serves the resource to the application</li>
+</ol>
+<h3 id="application-registration">Application Registration<a aria-hidden="true" class="anchor-heading icon-link" href="#application-registration"></a></h3>
+<p>Before using OAuth with your application, you must register your application with the service (e.g. Facebook).</p>
+<p>Once your application is registered, the service will issue client credentials in the form of a client identifier and a client secret. </p>
+<ul>
+<li>
+<p>The Client ID is a publicly exposed string that is used by the service API to identify the application. It is also used to build authorization URLs that are presented to users. </p>
+</li>
+<li>
+<p>The Client Secret is used to authenticate the identity of the application to the service API when the application requests to access a user’s account, and must be kept private between the application and the API.</p>
+</li>
+<li>
+<p><a href="https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2#authorization-grant">current reading progress</a></p>
+<ul>
+<li><a href="https://mas.owasp.org/MASTG/0x04e-Testing-Authentication-and-Session-Management/#protocol-overview">also this, which has some of the same info</a></li>
+</ul>
+</li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/bujoajdx9036g1av1vdlt90">Oidc</a></li>
+</ol>

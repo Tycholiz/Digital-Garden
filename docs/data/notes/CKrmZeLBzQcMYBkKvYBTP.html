@@ -1,0 +1,24 @@
+<h1 id="pick">Pick<a aria-hidden="true" class="anchor-heading icon-link" href="#pick"></a></h1>
+<p><code>Pick&#x3C;Type, Keys></code></p>
+<ul>
+<li>Constructs a type by picking the set of properties <code>Keys</code> (string literal or union of string literals) from <code>Type</code>.</li>
+</ul>
+<p>In the below example, we are creating a new type <code>TypePreview</code> based on a subset of fields available on the <code>Todo</code> type.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">interface</span> <span class="token class-name"><span class="token maybe-class-name">Todo</span></span> <span class="token punctuation">{</span>
+  title<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+  description<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+  completed<span class="token operator">:</span> <span class="token builtin">boolean</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">type</span> <span class="token class-name"><span class="token maybe-class-name">TodoPreview</span></span> <span class="token operator">=</span> <span class="token maybe-class-name">Pick</span><span class="token operator">&#x3C;</span><span class="token maybe-class-name">Todo</span><span class="token punctuation">,</span> <span class="token string">"title"</span> <span class="token operator">|</span> <span class="token string">"completed"</span><span class="token operator">></span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> todo<span class="token operator">:</span> <span class="token maybe-class-name">TodoPreview</span> <span class="token operator">=</span> <span class="token punctuation">{</span>
+  title<span class="token operator">:</span> <span class="token string">"Clean room"</span><span class="token punctuation">,</span>
+  completed<span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/EmdHPK2ov87xExwuoJM07">Partial</a></li>
+</ul>

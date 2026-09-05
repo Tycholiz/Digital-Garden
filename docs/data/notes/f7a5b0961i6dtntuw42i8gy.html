@@ -1,0 +1,15 @@
+<h1 id="cook">Cook<a aria-hidden="true" class="anchor-heading icon-link" href="#cook"></a></h1>
+<h3 id="filter-on-multiple-factors">Filter on multiple factors<a aria-hidden="true" class="anchor-heading icon-link" href="#filter-on-multiple-factors"></a></h3>
+<pre class="language-js"><code class="language-js"><span class="token keyword control-flow">return</span> restaurants
+    <span class="token punctuation">.</span><span class="token method function property-access">filter</span><span class="token punctuation">(</span><span class="token parameter">resto</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+        <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span>veganFriendly <span class="token operator">&#x26;&#x26;</span> resto<span class="token punctuation">.</span><span class="token property-access">veganFriendly</span> <span class="token operator">===</span> <span class="token boolean">false</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword control-flow">return</span> <span class="token boolean">false</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span>maxPrice <span class="token operator">&#x3C;</span> resto<span class="token punctuation">.</span><span class="token property-access">price</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword control-flow">return</span> <span class="token boolean">false</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span>maxDistance <span class="token operator">&#x3C;</span> resto<span class="token punctuation">.</span><span class="token property-access">distance</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword control-flow">return</span> <span class="token boolean">false</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword control-flow">return</span> <span class="token boolean">true</span>
+</code></pre>

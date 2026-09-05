@@ -1,0 +1,25 @@
+<h1 id="partial">Partial<a aria-hidden="true" class="anchor-heading icon-link" href="#partial"></a></h1>
+<p>A Partial type is derived from an existing type. The only difference between the Partial type and the original type is that the Partial type has all properties set to optional.</p>
+<ul>
+<li>note: if you want a type that only includes some of the fields from another type, then you're looking for <a href="/notes/CKrmZeLBzQcMYBkKvYBTP">Pick</a></li>
+</ul>
+<p>Example:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">interface</span> <span class="token class-name"><span class="token maybe-class-name">Todo</span></span> <span class="token punctuation">{</span>
+	importance<span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">;</span>
+	text<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">updateTodo</span><span class="token punctuation">(</span>todo<span class="token operator">:</span> <span class="token maybe-class-name">Todo</span><span class="token punctuation">,</span> fieldsToUpdate<span class="token operator">:</span> <span class="token maybe-class-name">Partial</span><span class="token operator">&#x3C;</span><span class="token maybe-class-name">Todo</span><span class="token operator">></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword control-flow">return</span> <span class="token punctuation">{</span>
+		<span class="token spread operator">...</span>todo<span class="token punctuation">,</span>
+		<span class="token spread operator">...</span>fieldsToUpdate<span class="token punctuation">,</span>
+	<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Above, the resulting Partial type would be like this:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">interface</span> <span class="token class-name"><span class="token maybe-class-name">PartialTodo</span></span> <span class="token punctuation">{</span>
+	importance<span class="token operator">?</span><span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">,</span>
+	text<span class="token operator">?</span><span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+
+</code></pre>

@@ -1,0 +1,45 @@
+<h1 id="nodejs">Node.js<a aria-hidden="true" class="anchor-heading icon-link" href="#nodejs"></a></h1>
+<h2 id="how-node-works">How Node works<a aria-hidden="true" class="anchor-heading icon-link" href="#how-node-works"></a></h2>
+<p>Node.js is a JavaScript runtime environment that processes incoming requests in a loop, called the event loop.
+Node runs as a single process. Other languages may handle "concurrency" by having multiple threads handle tasks. However, Node achieves this by having async. When an async action happens, the javascript code will not get blocked, and will continue to execute until the response has come. This makes node a very event-based language (hence its usefulness in the web word, which is fundamentally made up of requests). </p>
+<ul>
+<li>concurrency here is used liberally, since Node does not run its code concurrently at all. Alas, this is how Node solves the problem, which may be solved using multiple threads (concurrency) at a time. </li>
+</ul>
+<p>Node is built on top of <a href="/notes/c3s5pfbmoju8ej87eqz5r5z">V8 Engine</a>, the engine that converts javascript to native machine code. These core javascript features form the basis of what Node is. Because Javascript is missing native features that server languages typically have, there comes a need of having to fulfill those tasks. Web server functions (such as I/O, networking, streams etc.) are fulfilled by having isolated modules that each have a single responsibility. Node.js is made up of many of these modules, all built on top of the base language of Javascript and its underlying v8 engine.</p>
+<ul>
+<li>ques:does this mean that all the language features of javascript are also available in node? Is there a global object? what about all of the javascript features that are considered useless, like exec? </li>
+</ul>
+<p>Node.js connects the ease of a scripting language (JavaScript) with the power of Unix network programming</p>
+<p>Node.js uses an event loop for scalability, rather than processes or threads</p>
+<h2 id="v8">V8<a aria-hidden="true" class="anchor-heading icon-link" href="#v8"></a></h2>
+<p>When it was first introduced, javascript was a simple scripting language, and processed commands in real time. This had performance implications, and made it very slow. This was the inspiration for V8, which did just in time compiling, making it a much faster and more capable language.</p>
+<p>With Node, the idea was "what if we took the V8 engine, and instead of using it in the context of the web, we allowed it to run terminal applications"</p>
+<h2 id="command-line-debugging">Command line debugging<a aria-hidden="true" class="anchor-heading icon-link" href="#command-line-debugging"></a></h2>
+<p>We can enable debug logs for a specific package/service by prefixing the start command:</p>
+<ul>
+<li>ex. <code>DEBUG=ioredis:* npm run start</code></li>
+</ul>
+<h2 id="resources">Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#resources"></a></h2>
+<h3 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h3>
+<ul>
+<li><a href="https://medium.com/@marcinbaraniecki/extending-node-js-with-native-c-modules-63294a91ce4">Tutorial: creating a native node module with C++</a></li>
+<li><a href="https://www.npmjs.com/package/stream-handbook">Tutorial: creating streams in node</a></li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/JzrVTFaVNPlOrsX4IRE6D">Modules</a></li>
+<li><a href="/notes/X2LZKYvX14JaSC1ElnQs3">Serial Port</a></li>
+<li><a href="/notes/69XdUJWoIpOY9c5kzBGOM">Types</a></li>
+<li><a href="/notes/atg3PeEVGZB4TOB4G0qnG">package.json</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/z8ie0xjogb6ht7gzowav5xr">K6</a></li>
+<li><a href="/notes/3n5GC7vQswyvg81jvIryc">Cloudflare Workers</a></li>
+<li><a href="/notes/Pwqwjb0dVneqNCKA0YkoA">Javascript Bundler</a></li>
+<li><a href="/notes/zSuIFLNNKKEtLtwhe8nez">Module</a></li>
+<li><a href="/notes/ei6fj7h4u5o03ldxxj4392h">Helm</a></li>
+<li><a href="/notes/Ag4RGxbqigmzcZAUS9FRv">Lambda Function</a></li>
+</ul>

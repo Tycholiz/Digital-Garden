@@ -1,0 +1,229 @@
+<h1 id="introspection">Introspection<a aria-hidden="true" class="anchor-heading icon-link" href="#introspection"></a></h1>
+<p>Introspection is about the links between types and scalars. Introspection tells us what queries are supported</p>
+<ul>
+<li>The Graphql server is what supports introspection over its schema.</li>
+</ul>
+<p>The type information that is exposed by introspection can be used to build client-side and server-side tooling.</p>
+<ul>
+<li>The fact that Graphiql exists (ie. that it knows all of our types, how they relate to each other etc) is enabled by introspection.</li>
+</ul>
+<p>Types and fields required by the Graphql introspection system are prefixed with <code>__</code></p>
+<ul>
+<li>these types are implicit, and naturally they won't show up when we make queries.</li>
+</ul>
+<p>Introspection means that the server (or the API) that we're building actually knows about the types that it's using.</p>
+<ul>
+<li>It also exposes them in a standard way.</li>
+</ul>
+<p>Determining which types are available</p>
+<pre class="language-gql"><code class="language-gql">{
+  __schema {
+    types {
+      name
+    }
+  }
+}
+</code></pre>
+<h2 id="introspection-types">Introspection Types<a aria-hidden="true" class="anchor-heading icon-link" href="#introspection-types"></a></h2>
+<p><code>__Type</code> is at the core of the type introspection system. It represents scalars, interfaces, object types, unions, enums in the system.</p>
+<ul>
+<li>All types in the introspection system provide a <code>description</code> field to allow type designers (ie. us, the developer) to publish documentation about a type.</li>
+</ul>
+<h3 id="__field">__Field<a aria-hidden="true" class="anchor-heading icon-link" href="#__field"></a></h3>
+<p>Represents each field in an Object or Interface type.</p>
+<h3 id="__inputvalue">__InputValue<a aria-hidden="true" class="anchor-heading icon-link" href="#__inputvalue"></a></h3>
+<p>Represents field and directive arguments as well as the inputFields of an input object.</p>
+<p>Has fields:</p>
+<ul>
+<li><code>name</code>— returns string</li>
+<li><code>description</code>— returns string or null</li>
+<li><code>type</code>— returns <code>__Type</code>, representing the type this input value expects</li>
+<li><code>defaultValue</code></li>
+</ul>
+<h2 id="introspection-queries">Introspection Queries<a aria-hidden="true" class="anchor-heading icon-link" href="#introspection-queries"></a></h2>
+<p>The schema introspection system is accessible from the meta‐fields <code>__schema</code> and <code>__type</code> which are accessible from the type of the root of a query operation.</p>
+<p>Can be of 3 types:</p>
+<pre class="language-gql"><code class="language-gql">__schema: __Schema!
+__type(name: String!): __Type
+__typename: String!
+</code></pre>
+<p>These fields are implicit and do not appear in the fields list in the root type of the query operation.</p>
+<p>The schema of the GraphQL schema introspection system:</p>
+<pre class="language-gql"><code class="language-gql">type __Schema {
+  types: [__Type!]!
+  queryType: __Type!
+  mutationType: __Type
+  subscriptionType: __Type
+  directives: [__Directive!]!
+}
+
+type __Type {
+  kind: __TypeKind!
+  name: String
+  description: String
+
+  # OBJECT and INTERFACE only
+  fields(includeDeprecated: Boolean = false): [__Field!]
+
+  # OBJECT only
+  interfaces: [__Type!]
+
+  # INTERFACE and UNION only
+  possibleTypes: [__Type!]
+
+  # ENUM only
+  enumValues(includeDeprecated: Boolean = false): [__EnumValue!]
+
+  # INPUT_OBJECT only
+  inputFields: [__InputValue!]
+
+  # NON_NULL and LIST only
+  ofType: __Type
+}
+
+type __Field {
+  name: String!
+  description: String
+  args: [__InputValue!]!
+  type: __Type!
+  isDeprecated: Boolean!
+  deprecationReason: String
+}
+
+type __InputValue {
+  name: String!
+  description: String
+  type: __Type!
+  defaultValue: String
+}
+
+type __EnumValue {
+  name: String!
+  description: String
+  isDeprecated: Boolean!
+  deprecationReason: String
+}
+
+enum __TypeKind {
+  SCALAR
+  OBJECT
+  INTERFACE
+  UNION
+  ENUM
+  INPUT_OBJECT
+  LIST
+  NON_NULL
+}
+
+type __Directive {
+  name: String!
+  description: String
+  locations: [__DirectiveLocation!]!
+  args: [__InputValue!]!
+}
+
+enum __DirectiveLocation {
+  QUERY
+  MUTATION
+  SUBSCRIPTION
+  FIELD
+  FRAGMENT_DEFINITION
+  FRAGMENT_SPREAD
+  INLINE_FRAGMENT
+  SCHEMA
+  SCALAR
+  OBJECT
+  FIELD_DEFINITION
+  ARGUMENT_DEFINITION
+  INTERFACE
+  UNION
+  ENUM
+  ENUM_VALUE
+  INPUT_OBJECT
+  INPUT_FIELD_DEFINITION
+}
+</code></pre>
+<h3 id="__schema">__schema<a aria-hidden="true" class="anchor-heading icon-link" href="#__schema"></a></h3>
+<p>The most important field (query) in graphql, as it allows us to fetch the whole schema. It is also the primary source for Graphiql. The name for this query is <code>__schema</code>, and its Schema Definition Language (SDL) is:</p>
+<pre class="language-gql"><code class="language-gql">type __Schema {
+  types: [__Type!]!
+  queryType: __Type!
+  mutationType: __Type
+  subscriptionType: __Type
+  directives: [__Directive!]!
+}
+</code></pre>
+<p>As we can see, when we query <code>__schema</code>, we get some information about the whole schema, including which operation types we have, and which types and directives we have. The result of that query might look like this:</p>
+<pre class="language-gql"><code class="language-gql">{
+  __schema {
+    directives {
+      name
+      description
+    }
+    subscriptionType {
+      name
+      description
+    }
+    types {
+      name
+      description
+    }
+    queryType {
+      name
+      description
+    }
+    mutationType {
+      name
+      description
+    }
+    queryType {
+      name
+      description
+    }
+  }
+}
+</code></pre>
+<h3 id="__type">__type<a aria-hidden="true" class="anchor-heading icon-link" href="#__type"></a></h3>
+<p>Allows us to query for information about the exact type we are interested in. All we need to do is pass in the type as an argument like so:</p>
+<pre class="language-gql"><code class="language-gql">query introspectionUserType {
+  __type(name: "User") {
+	name
+	kind
+	fields {
+		name
+		type {
+			name
+		}
+	}
+  }
+}
+</code></pre>
+<p>This might return:</p>
+<pre class="language-gql"><code class="language-gql">{
+  "__type": {
+    "name": "User",
+	"kind": "OBJECT"
+    "fields": [
+      {
+        "name": "id",
+        "type": { "name": "String" }
+      },
+      {
+        "name": "name",
+        "type": { "name": "String" }
+      },
+      {
+        "name": "birthday",
+        "type": { "name": "Date" }
+      },
+    ]
+  }
+}
+</code></pre>
+<p>When the <code>name</code> field is <code>null</code>, it is because it is a wrapper type (ID, List). If we query for the <code>ofType</code> on these fields, we can see what the "wrapped" type is</p>
+<ul>
+<li>ex. a list is a wrapper type, because each item in the list has its own type. The List is just a type that wraps them altogether. The same can be said for Non-null and ID.</li>
+</ul>
+<h3 id="__typename">__typename<a aria-hidden="true" class="anchor-heading icon-link" href="#__typename"></a></h3>
+<p>Offers type name introspection. <code>__typename</code> is a meta-field that allows us to get the type name at any point within a query. It is available through all types when querying.</p>
+<p>Apollo client makes use of <code>__typename</code> to construct the apollo cache. It uniquely identifies an item by <code>id + __typename</code></p>

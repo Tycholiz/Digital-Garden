@@ -1,0 +1,62 @@
+<h1 id="graphql-server">Graphql Server<a aria-hidden="true" class="anchor-heading icon-link" href="#graphql-server"></a></h1>
+<p>A GraphQL server essentially takes in your API and exposes your GraphQL API via an endpoint. It has two core parts:</p>
+<ul>
+<li>A Schema, which includes type definitions, and defines:
+<ul>
+<li>what queries clients are allowed to make</li>
+<li>what types of data can be fetched from the server</li>
+<li>what the relationships between these types are</li>
+</ul>
+</li>
+<li><a href="/notes/GDD7xPlpQqrQnmwcDXUoa">Resolve functions</a>, which hold all functions that define how to get the data</li>
+</ul>
+<h3 id="type-coercion">Type Coercion<a aria-hidden="true" class="anchor-heading icon-link" href="#type-coercion"></a></h3>
+<p>when preparing a field of a given scalar type, a GraphQL server must uphold the contract the scalar type describes, either by: </p>
+<ul>
+<li>coercing the value</li>
+<li>producing a field error if a value cannot be coerced or if coercion may result in data loss.</li>
+</ul>
+<p>A GraphQL server may decide to allow coercing different internal types to the expected return type. Unless the coercion is sensical (ie. no information is lost), the Graphql server will raise a field error.</p>
+<ul>
+<li>For example when coercing a field of type <code>Int</code>, a boolean <code>true</code> value may produce <code>1</code>. Alternatively, a string value "123" may be parsed as base‐10 123.</li>
+</ul>
+<p>The Graphql server will also coerce input values it receives as arguments to fields, as long as those arguments are a scalar type.</p>
+<ul>
+<li>For example, if we pass a string <code>"4"</code> or int <code>4</code> to an ID input type, the value should be coerced to an ID format (as expected by the Graphql server)</li>
+</ul>
+<h2 id="examples">Examples<a aria-hidden="true" class="anchor-heading icon-link" href="#examples"></a></h2>
+<ul>
+<li>express-graphql</li>
+<li>apollo-server</li>
+<li>graphql-yoga</li>
+</ul>
+<p>In Express, these are nothing but middleware functions that act as glue between the request and GraphQL engine provided by graphql.js (the tool that provides functionality for resolving queries)</p>
+<ul>
+<li>express-graphql has 2 responsibilities:
+<ol>
+<li>Ensure that the GraphQL query (or mutation) contained in the body of an incoming POST request can be executed by GraphQL.js.</li>
+<li>Attach the result of the execution to the response object so it can be returned to the client.</li>
+</ol>
+</li>
+<li>apollo-server is more generic than express-graphql, so it works in other frameworks, in addition to express.
+<ul>
+<li>it can also be configured to work as FaaS, like AWS Lambda</li>
+</ul>
+</li>
+<li>graphql-yoga
+<ul>
+<li>like create-react-app for GraphQL servers</li>
+</ul>
+</li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/GDD7xPlpQqrQnmwcDXUoa">Resolver</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/qxSOd6SPN8qf9ZUojVFDX">K8s</a></li>
+<li><a href="/notes/GDD7xPlpQqrQnmwcDXUoa">Resolver</a></li>
+</ul>

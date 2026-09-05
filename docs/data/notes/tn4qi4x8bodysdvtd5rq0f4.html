@@ -1,0 +1,70 @@
+<h1 id="sam">SAM<a aria-hidden="true" class="anchor-heading icon-link" href="#sam"></a></h1>
+<h2 id="overview">Overview<a aria-hidden="true" class="anchor-heading icon-link" href="#overview"></a></h2>
+<p>AWS SAM is a toolkit around improving the developer experience of building and running serverless apps.</p>
+<p>Consists of 2 primary parts:</p>
+<ol>
+<li>SAM template specification</li>
+<li>SAM CLI</li>
+</ol>
+<h3 id="sam-template-specification">SAM Template Specification<a aria-hidden="true" class="anchor-heading icon-link" href="#sam-template-specification"></a></h3>
+<p>An open-source framework for defining and managing our serverless application infrastructure code.</p>
+<p>SAM template specification is built on <a href="/notes/NbGOJJpZuEbf0hXs2UvAB">CloudFormation</a></p>
+<ul>
+<li>therefore we can use AWS CloudFormation syntax directly within our SAM template</li>
+<li>but because it is an extension of CloudFormation, SAM offers its own unique syntax to be combined with the syntax of CloudFormation.</li>
+</ul>
+<p>To provision the infrastructure specified in the template, it is deployed to CloudFormation where the SAM template syntax will be transformed into CloudFormation syntax.</p>
+<ul>
+<li>23 lines of SAM template code will produce 200+ lines of CloudFormation code.</li>
+</ul>
+<h4 id="example-simple-read-app">Example: Simple READ app<a aria-hidden="true" class="anchor-heading icon-link" href="#example-simple-read-app"></a></h4>
+<p>Imagine we want to make a simple application consisting of a lambda (exposed through API Gateway) which gets some records from DynamoDB.</p>
+<p>Our application's SAM template can be made to define:</p>
+<ul>
+<li>the lambda</li>
+<li>the API Gateway</li>
+<li>the DynamoDB</li>
+<li>the <a href="/notes/hUvXun5sLRxKOZXIZFuV1">IAM</a> permissions necessary for these services to interact with one another</li>
+</ul>
+<h3 id="sam-cli">SAM CLI<a aria-hidden="true" class="anchor-heading icon-link" href="#sam-cli"></a></h3>
+<p>SAM CLI is a command line tool to be used with SAM templates to build and run serverless applications.</p>
+<ul>
+<li>Quickly initialize a new application project.
+<ul>
+<li><code>sam init</code></li>
+</ul>
+</li>
+<li>Build your application for deployment, generating the <code>.aws-sam</code> directory (which includes all of our code and dependencies)
+<ul>
+<li><code>sam build</code></li>
+</ul>
+</li>
+<li>Perform local debugging and testing, including allowing us to simulate events, test APIs, invoke functions, etc.
+<ul>
+<li><code>sam local invoke</code></li>
+</ul>
+</li>
+<li>Deploy your application.
+<ul>
+<li><code>sam deploy --guided</code></li>
+</ul>
+</li>
+<li>Configure CI/CD deployment pipelines.</li>
+<li>Monitor and troubleshoot your application in the cloud.
+<ul>
+<li><code>sam list</code> to view deployed resources</li>
+<li><code>sam logs</code></li>
+</ul>
+</li>
+<li>Sync local changes to the cloud as you develop.
+<ul>
+<li><code>sam sync --watch</code> to automatically detect changes and deploy updates to the cloud</li>
+</ul>
+</li>
+</ul>
+<p>SAM CLI can also work with third-party products such as <a href="/notes/Ku1OgHMhELajzo61Gx7ye">Terraform</a></p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/nRb6Im4Kcmc2ZWE7K1jZ1">Serverless Framework</a></li>
+</ul>

@@ -1,0 +1,101 @@
+<h1 id="v8-engine">V8 Engine<a aria-hidden="true" class="anchor-heading icon-link" href="#v8-engine"></a></h1>
+<p>Since Javascript is an interpreted language, it needs an engine to interpret and execute code.</p>
+<ul>
+<li>The V8 engine interprets JavaScript and compiles it down to native machine code.</li>
+</ul>
+<p>V8's compiler is lazy— it won't convert a function's code until that function is called.</p>
+<h3 id="pipeline">Pipeline<a aria-hidden="true" class="anchor-heading icon-link" href="#pipeline"></a></h3>
+<p>Immediately prior to execution, Javascript gets compiled to native machine code.</p>
+<ol>
+<li>Right before execution, an <a href="/notes/QnT5sc2Yosxo9JFI0WIcs">AST</a> is generated from the Javascript with a parser.</li>
+<li>Ignition (the interpreter) generates Bytecode from this AST.
+<ul>
+<li>bytecode is an abstraction on top of machine code. As a result, it uses the same computational model as the <a href="/notes/XkJ62K1L604NfWaUdxZi7">CPU (Central Processing Unit)</a></li>
+</ul>
+</li>
+<li>TurboFan (the optimizing compiler) takes the Bytecode and generates optimized machine code.
+<ul>
+<li>known as <em>just-in-time compilation</em>, and this is where Javascript engines get their speed edge from.</li>
+</ul>
+</li>
+</ol>
+<p><img src="/assets/images/2022-04-20-14-57-08.png"></p>
+<p>The V8 engine itself it written in C++</p>
+<p>Since JavaScript is single-threaded V8 also uses a single process per JavaScript context</p>
+<ul>
+<li>therefore if you use service workers it will spawn a new V8 process per worker.</li>
+</ul>
+<h3 id="bytecode">Bytecode<a aria-hidden="true" class="anchor-heading icon-link" href="#bytecode"></a></h3>
+<p>V8 bytecodes are small building blocks that implement Javascript functionality when composed together.</p>
+<ul>
+<li>bytecode is about 25%-50% the size the average baseline machine code.</li>
+</ul>
+<p>Each bytecode specifies its inputs and outputs as <a href="/notes/OrjKwA99i0FHBfZjYVDjg">register</a> operands.</p>
+<p>Bytecode works at the level of abstraction where the code is determining how to store and retrieve values stored in memory register.</p>
+<p>Bytecode uses 2 type of register:</p>
+<ol>
+<li>accumulator register</li>
+</ol>
+<ul>
+<li>the <code>return</code> keyword of a function basically says "get me the value in the accumulator register"</li>
+</ul>
+<ol start="2">
+<li>normal register (e.g. <code>r0</code>, <code>r1</code> ...)</li>
+</ol>
+<p>We can see the bytecode generated with</p>
+<pre><code>node --print-bytecode myFile.js
+</code></pre>
+<h4 id="example-syntax">Example syntax<a aria-hidden="true" class="anchor-heading icon-link" href="#example-syntax"></a></h4>
+<ul>
+<li>Load (<code>Ld</code>) small integer (<code>Smi</code>) 42 (<code>[42]</code>) into the accumulator (<code>a</code>) register</li>
+</ul>
+<pre><code>LdaSmi [42]
+</code></pre>
+<h2 id="memory-structure-of-v8-engine">Memory structure of V8 Engine<a aria-hidden="true" class="anchor-heading icon-link" href="#memory-structure-of-v8-engine"></a></h2>
+<p><img src="/assets/images/2022-04-19-14-57-02.png"></p>
+<p>Resident Set - A running program has some allocated memory in the V8 process, called the <em>resident set</em>.</p>
+<h3 id="heap-memory">Heap memory<a aria-hidden="true" class="anchor-heading icon-link" href="#heap-memory"></a></h3>
+<p>This is where objects or dynamic data is stored</p>
+<p>Only the <em>new space</em> and <em>old space</em> is managed by garbage collection.</p>
+<p>The heap is divided into:</p>
+<ul>
+<li>New space</li>
+<li>Old space</li>
+<li>Large object space</li>
+<li>Code space</li>
+<li>Cell space, property cell space, and map space</li>
+</ul>
+<h4 id="new-space">New space<a aria-hidden="true" class="anchor-heading icon-link" href="#new-space"></a></h4>
+<ul>
+<li>New space is made of two parts, <em>to</em> and <em>from</em>.</li>
+<li>New space is where new objects live. </li>
+<li>These objects are short-lived.</li>
+<li>objects stored here are quickly garbage collected</li>
+<li>The size of this space can be controlled using the V8 flags <code>--min_semi_space_size</code> (initial) and <code>--max_semi_space_size</code> (max).</li>
+</ul>
+<h4 id="old-space">Old space<a aria-hidden="true" class="anchor-heading icon-link" href="#old-space"></a></h4>
+<ul>
+<li>objects that survived two rounds of garbage collection are moved to the old space.</li>
+<li>Old space contains 2 parts:
+<ul>
+<li>old pointer space - Contains survived objects that have pointers to other objects.</li>
+<li>old data space - Contains objects that just contain data (e.g. strings, numbers, arrays)</li>
+</ul>
+</li>
+<li>The size of this space can be controlled using the V8 flags <code>--initial_old_space_size</code> (initial) and <code>--max_old_space_size</code> (max).</li>
+</ul>
+<h3 id="stack-memory">Stack memory<a aria-hidden="true" class="anchor-heading icon-link" href="#stack-memory"></a></h3>
+<p>there is one stack per V8 process</p>
+<p>This is where static data including method/function frames, primitive values, and pointers to objects are stored.</p>
+<p>The stack memory limit can be set using the <code>--stack_size</code> V8 flag.</p>
+<p>The Stack is automatically managed and is done so by the operating system rather than V8 itself.</p>
+<h2 id="references">References<a aria-hidden="true" class="anchor-heading icon-link" href="#references"></a></h2>
+<p><a href="https://deepu.tech/memory-management-in-v8/">https://deepu.tech/memory-management-in-v8/</a></p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/z8ie0xjogb6ht7gzowav5xr">K6</a></li>
+<li><a href="/notes/5iC7cpurvsTcO6WDflzOZ">Node.js</a></li>
+<li><a href="/notes/t9vr0n7ukrslcunk69u0tei">React Native Architecture</a></li>
+<li><a href="/notes/QnT5sc2Yosxo9JFI0WIcs">AST</a></li>
+</ul>

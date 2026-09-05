@@ -1,0 +1,25 @@
+<h1 id="local">Local<a aria-hidden="true" class="anchor-heading icon-link" href="#local"></a></h1>
+<p>The easiest way to get Kafka running locally is with docker-compose.yml</p>
+<pre class="language-yml"><code class="language-yml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">'3.2'</span>
+<span class="token key atrule">services</span><span class="token punctuation">:</span>
+  <span class="token key atrule">zookeeper</span><span class="token punctuation">:</span>
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> wurstmeister/zookeeper
+    <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token string">"2181:2181"</span>
+  <span class="token key atrule">kafka</span><span class="token punctuation">:</span>
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> wurstmeister/kafka<span class="token punctuation">:</span>latest
+    <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">target</span><span class="token punctuation">:</span> <span class="token number">9094</span>
+        <span class="token key atrule">published</span><span class="token punctuation">:</span> <span class="token number">9094</span>
+        <span class="token key atrule">protocol</span><span class="token punctuation">:</span> tcp
+        <span class="token key atrule">mode</span><span class="token punctuation">:</span> host
+    <span class="token key atrule">environment</span><span class="token punctuation">:</span>
+      <span class="token key atrule">HOSTNAME_COMMAND</span><span class="token punctuation">:</span> <span class="token string">"docker info | grep ^Name: | cut -d' ' -f 2"</span>
+      <span class="token key atrule">KAFKA_ZOOKEEPER_CONNECT</span><span class="token punctuation">:</span> zookeeper<span class="token punctuation">:</span><span class="token number">2181</span>
+      <span class="token key atrule">KAFKA_LISTENER_SECURITY_PROTOCOL_MAP</span><span class="token punctuation">:</span> INSIDE<span class="token punctuation">:</span>PLAINTEXT<span class="token punctuation">,</span>OUTSIDE<span class="token punctuation">:</span>PLAINTEXT
+      <span class="token key atrule">KAFKA_ADVERTISED_LISTENERS</span><span class="token punctuation">:</span> INSIDE<span class="token punctuation">:</span>//<span class="token punctuation">:</span><span class="token number">9092</span><span class="token punctuation">,</span>OUTSIDE<span class="token punctuation">:</span>//_<span class="token punctuation">{</span>HOSTNAME_COMMAND<span class="token punctuation">}</span><span class="token punctuation">:</span><span class="token number">9094</span>
+      <span class="token key atrule">KAFKA_LISTENERS</span><span class="token punctuation">:</span> INSIDE<span class="token punctuation">:</span>//<span class="token punctuation">:</span><span class="token number">9092</span><span class="token punctuation">,</span>OUTSIDE<span class="token punctuation">:</span>//<span class="token punctuation">:</span><span class="token number">9094</span>
+      <span class="token key atrule">KAFKA_INTER_BROKER_LISTENER_NAME</span><span class="token punctuation">:</span> INSIDE
+    <span class="token key atrule">volumes</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> /var/run/docker.sock<span class="token punctuation">:</span>/var/run/docker.sock
+</code></pre>

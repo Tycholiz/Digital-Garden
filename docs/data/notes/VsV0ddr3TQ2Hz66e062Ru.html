@@ -1,0 +1,15 @@
+<h1 id="sprites">Sprites<a aria-hidden="true" class="anchor-heading icon-link" href="#sprites"></a></h1>
+<h3 id="sorting">Sorting<a aria-hidden="true" class="anchor-heading icon-link" href="#sorting"></a></h3>
+<p>spec: SortingLayer should be used in favor of z-index.</p>
+<p>the render order of Renderers through their <code>Render Queue</code>.</p>
+<p>There are 2 types of Render Queue:</p>
+<ol>
+<li>Opaque queue</li>
+<li>Transparent queue (the main one); this contains the <code>Sprite Renderer</code> , <code>Tilemap Renderer</code>, and <code>Sprite Shape Renderer</code> types.</li>
+</ol>
+<p>The Camera component sorts Renderers based on its Projection setting, of which there are 2 options:</p>
+<ol>
+<li>Perspective - the sorting distance of a Renderer = the direct distance of the Renderer from the Camera's position.</li>
+<li>Orthographic - The sorting distance of a Renderer = the distance between the position of the Renderer and the Camera along the Camera’s view direction. </li>
+</ol>
+<p>sprites that belong together can be put into a <code>Sorting Group</code>, which share the same <code>Sorting Layer</code>, <code>Order in Layer</code> and <code>Distance to Camera</code></p>

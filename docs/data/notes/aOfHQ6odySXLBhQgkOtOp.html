@@ -1,0 +1,17 @@
+<h1 id="serverless">Serverless<a aria-hidden="true" class="anchor-heading icon-link" href="#serverless"></a></h1>
+<p>Serverless is "server-less" in the same way that Javascript is "memory-less"; it's still there, but it's abstracted away from us.</p>
+<p>Serverless sometimes refers to the concept of "functions as a service", basically taking the microservices pattern and realizing "hey, because we're doing things this way, we basically can forget about the server"</p>
+<ul>
+<li>Somebody is still doing the heavy lifting (AWS, Google Cloud, etc.) but it's now an abstraction and you have limited ability to configure it, and this is fine if you're using it for the right use cases.</li>
+</ul>
+<p>In the case of AWS, you use Lambda as the compute service to run the code and API Gateway to create API endpoints to point at the Lambda functions. Under the hood, once a Lambda is invoked through the event trigger which is the API Gateway endpoint, a Docker container is spun up to run the code you deployed into the cloud.</p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/oiA1xUpTCRAmh9L1Vxsiv">Serverless Functions</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/613syb18hb3v0u1ydvor7ru">Nestjs</a></li>
+</ul>

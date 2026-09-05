@@ -1,0 +1,89 @@
+<h1 id="windows">Windows<a aria-hidden="true" class="anchor-heading icon-link" href="#windows"></a></h1>
+<p>Windows split the infinite input stream into "buckets" of finite size.</p>
+<p>a window is created as soon as the first element that should belong to this window arrives</p>
+<p>the window is completely removed when the time (event or processing time) passes its end timestamp plus the user-specified allowed lateness (see Allowed Lateness). </p>
+<ul>
+<li>ex. for an <em>event-time-based window</em> that creates non-overlapping (or tumbling) windows every 5 minutes and has an allowed lateness of 1 min, Flink will create a new window for the interval between 12:00 and 12:05 when the first element with a timestamp that falls into this interval arrives, and it will remove it when the watermark passes the 12:06 timestamp.</li>
+<li>removal only guaranteed for <em>time-based windows</em></li>
+</ul>
+<h3 id="windowassigner">WindowAssigner<a aria-hidden="true" class="anchor-heading icon-link" href="#windowassigner"></a></h3>
+<p>The window assigner is responsible for determining where each incoming element is assigned to a window.</p>
+<ul>
+<li>we specify the type of WindowAssigner to use in the call to <code>window(...)</code> (for keyed streams) or the <code>windowAll()</code> (for non-keyed streams)</li>
+</ul>
+<p>Flink has pre-defined window assigners for the most common use cases (<em>tumbling windows</em>, <em>sliding windows</em>, <em>session windows</em> and <em>global windows</em>).</p>
+<ul>
+<li>All pre-defined window assigners (except the global windows) assign elements to windows based on time (which can either be processing time or event time).</li>
+<li><a href="/notes/n8usaompbr8xl7pzw869fgy">see: explanation on window types</a></li>
+</ul>
+<pre class="language-java"><code class="language-java"><span class="token comment">// tumbling event-time windows</span>
+input
+  <span class="token punctuation">.</span><span class="token function">keyBy</span><span class="token punctuation">(</span><span class="token generics"><span class="token punctuation">&#x3C;</span>key selector<span class="token punctuation">></span></span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">window</span><span class="token punctuation">(</span><span class="token class-name">TumblingEventTimeWindows</span><span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span><span class="token class-name">Time</span><span class="token punctuation">.</span><span class="token function">seconds</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token generics"><span class="token punctuation">&#x3C;</span>windowed transformation<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token generics"><span class="token punctuation">&#x3C;</span>window function<span class="token punctuation">></span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h3 id="trigger">Trigger<a aria-hidden="true" class="anchor-heading icon-link" href="#trigger"></a></h3>
+<p>A Trigger determines when a window (as formed by the window assigner) is ready to be processed by the window function. Each <code>WindowAssigner</code> comes with a default Trigger. </p>
+<ul>
+<li>a custom trigger can also be specified if necessary using <code>trigger(...)</code>.</li>
+</ul>
+<p>The trigger interface has five methods that allow a Trigger to react to different events:</p>
+<ul>
+<li>The <code>onElement()</code> method is called for each element that is added to a window.</li>
+<li>The <code>onEventTime()</code> method is called when a registered event-time timer fires.</li>
+<li>The <code>onProcessingTime()</code> method is called when a registered processing-time timer fires.</li>
+<li>The <code>onMerge()</code> method is relevant for stateful triggers and merges the states of two triggers when their corresponding windows merge, e.g. when using session windows.</li>
+<li>Finally the <code>clear()</code> method performs any action needed upon removal of the corresponding window.</li>
+</ul>
+<h3 id="evictor">Evictor<a aria-hidden="true" class="anchor-heading icon-link" href="#evictor"></a></h3>
+<p>The evictor has the ability to remove elements from a window after the trigger fires and before and/or after the window function is applied. The two methods to do this are:</p>
+<ul>
+<li><code>void evictBefore(Iterable&#x3C;TimestampedValue&#x3C;T>> elements, int size, W window, EvictorContext evictorContext)</code></li>
+<li><code>void evictAfter(Iterable&#x3C;TimestampedValue&#x3C;T>> elements, int size, W window, EvictorContext evictorContext)</code></li>
+</ul>
+<p>Flink comes with three pre-implemented evictors. These are:</p>
+<ol>
+<li><code>CountEvictor</code>: keeps up to a user-specified number of elements from the window and discards the remaining ones from the beginning of the window buffer.</li>
+<li><code>DeltaEvictor</code>: takes a DeltaFunction and a threshold, computes the delta between the last element in the window buffer and each of the remaining ones, and removes the ones with a delta greater or equal to the threshold.</li>
+<li><code>TimeEvictor</code>: takes as argument an interval in milliseconds and for a given window, it finds the maximum timestamp max_ts among its elements and removes all the elements with timestamps smaller than max_ts - interval.</li>
+</ol>
+<h3 id="window-function">Window Function<a aria-hidden="true" class="anchor-heading icon-link" href="#window-function"></a></h3>
+<p>The <em>window function</em> is responsible for processing the elements (ie. performing some computation) of each window.</p>
+<ul>
+<li>therefore, the trigger determines when the window function gets called.</li>
+</ul>
+<p>The <em>window function</em> can be one of <code>ReduceFunction</code>, <code>AggregateFunction</code>, or <code>ProcessWindowFunction</code>. </p>
+<ul>
+<li>ReduceFunction specifies how two elements from the input are combined to produce an output element of the same type.</li>
+<li>AggregateFunction is a generalized version of a ReduceFunction that has three types: an input type (IN), accumulator type (ACC), and an output type (OUT)</li>
+</ul>
+<pre class="language-java"><code class="language-java"><span class="token comment">// ReduceFunction</span>
+input
+  <span class="token punctuation">.</span><span class="token function">keyBy</span><span class="token punctuation">(</span><span class="token generics"><span class="token punctuation">&#x3C;</span>key selector<span class="token punctuation">></span></span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">window</span><span class="token punctuation">(</span><span class="token generics"><span class="token punctuation">&#x3C;</span>window assigner<span class="token punctuation">></span></span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">reduce</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">ReduceFunction</span><span class="token generics"><span class="token punctuation">&#x3C;</span><span class="token class-name">Tuple2</span><span class="token punctuation">&#x3C;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Long</span><span class="token punctuation">></span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token class-name">Tuple2</span><span class="token generics"><span class="token punctuation">&#x3C;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Long</span><span class="token punctuation">></span></span> <span class="token function">reduce</span><span class="token punctuation">(</span><span class="token class-name">Tuple2</span><span class="token generics"><span class="token punctuation">&#x3C;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Long</span><span class="token punctuation">></span></span> v1<span class="token punctuation">,</span> <span class="token class-name">Tuple2</span><span class="token generics"><span class="token punctuation">&#x3C;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Long</span><span class="token punctuation">></span></span> v2<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Tuple2</span><span class="token generics"><span class="token punctuation">&#x3C;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span>v1<span class="token punctuation">.</span>f0<span class="token punctuation">,</span> v1<span class="token punctuation">.</span>f1 <span class="token operator">+</span> v2<span class="token punctuation">.</span>f1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h3 id="window-join">Window Join<a aria-hidden="true" class="anchor-heading icon-link" href="#window-join"></a></h3>
+<p>A <em>window join</em> joins the elements of two streams that share a common key and lie in the same window.</p>
+<ul>
+<li>these windows are defined by the <em>window assigner</em></li>
+</ul>
+<p>The elements from both streams are passed to a user-defined <code>JoinFunction</code> or <code>FlatJoinFunction</code> where the user can emit results that meet the join criteria.</p>
+<pre class="language-java"><code class="language-java">stream<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span>otherStream<span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token generics"><span class="token punctuation">&#x3C;</span><span class="token class-name">KeySelector</span><span class="token punctuation">></span></span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">equalTo</span><span class="token punctuation">(</span><span class="token generics"><span class="token punctuation">&#x3C;</span><span class="token class-name">KeySelector</span><span class="token punctuation">></span></span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">window</span><span class="token punctuation">(</span><span class="token generics"><span class="token punctuation">&#x3C;</span><span class="token class-name">WindowAssigner</span><span class="token punctuation">></span></span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span><span class="token generics"><span class="token punctuation">&#x3C;</span><span class="token class-name">JoinFunction</span><span class="token punctuation">></span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h4 id="types-of-window-joins">Types of Window Joins<a aria-hidden="true" class="anchor-heading icon-link" href="#types-of-window-joins"></a></h4>
+<ul>
+<li>Tumbling Window Join</li>
+<li>Sliding Window Join</li>
+<li>Session Window Join</li>
+<li>Interval Join</li>
+</ul>
+<p><a href="https://nightlies.apache.org/flink/flink-docs-master/docs/dev/datastream/operators/joining/">docs</a></p>

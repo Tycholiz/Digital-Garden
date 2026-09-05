@@ -1,0 +1,63 @@
+<h1 id="connection-pool">Connection Pool<a aria-hidden="true" class="anchor-heading icon-link" href="#connection-pool"></a></h1>
+<h3 id="why">Why?<a aria-hidden="true" class="anchor-heading icon-link" href="#why"></a></h3>
+<ul>
+<li>
+<p>Connecting a new client to the PostgreSQL server requires a handshake which can take 20-30 milliseconds. During this time passwords are negotiated, SSL may be established, and configuration information is shared with the client &#x26; server. Incurring this cost every time we want to execute a query would substantially slow down our application.</p>
+</li>
+<li>
+<p>The PostgreSQL server can only handle a limited number of clients at a time. Depending on the available memory of your PostgreSQL server you may even crash the server if you connect an unbounded number of clients. </p>
+</li>
+<li>
+<p>PostgreSQL can only process one query at a time on a single connected client in a first-in first-out manner. If your multi-tenant web application is using only a single connected client all queries among all simultaneous requests will be pipelined and executed serially, one after the other. No good!</p>
+</li>
+</ul>
+<p>The client <a href="/notes/siv9mfowne69vizthsp3rcw">pool</a> allows you to have a reusable pool of clients you can check out, use, and return. You generally want a limited number of these in your application and usually just 1. Creating an unbounded number of pools defeats the purpose of pooling at all.</p>
+<h3 id="implementing">Implementing<a aria-hidden="true" class="anchor-heading icon-link" href="#implementing"></a></h3>
+<p>You must always return the client to the pool if you successfully check it out, regardless of whether or not there was an error with the queries you ran on the client. If you don't check in the client your application will leak them and eventually your pool will be empty forever and all future requests to check out a client from the pool will wait forever.</p>
+<h3 id="connection-pooling">Connection Pooling<a aria-hidden="true" class="anchor-heading icon-link" href="#connection-pooling"></a></h3>
+<ul>
+<li>a pool sits between the postgres frontend (ex. postgraphile, postgres-node) and the postgres server. The pooler speaks the postgres language, so understands all incoming queries.
+<ul>
+<li>Therefore, the server sees the requests as coming from the pg pool, and the postgres frontend sees the pool as handling the requests. 
+<ul>
+<li>Therefore,
+<ul>
+<li>without a pool, if we had 20 db connections and 8 were idle, all 20 would be eating up postgres resources (memory)</li>
+<li>with a pool, those 8 idle connections remain in the pool and don't connect to the database, freeing up resources for us. From the database perspective, there are only 12 connections.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>the frontend/backend paradigm here is no different from in web developent. In postgres, we have users who interact with the database. The client generates a query, and that query gets sent off to the postgres backend, where it interprets the request, performs the actions, then returns the data to the frontend. </li>
+</ul>
+</li>
+<li>when a client is connected to the pool, we say it is a "virtual connection", and if the pooled client is connected to the database, it is a "physical connection" </li>
+<li>2 main options: <code>pgpool-II</code> and <code>pgBouncer</code>
+<ul>
+<li>pgBouncer does one job and does it well. pgpool-II is more of a swiss army knife, with load balancing included
+<ul>
+<li><code>pgpool-II</code> seems to be more out-dated</li>
+</ul>
+</li>
+<li><a href="https://scalegrid.io/blog/postgresql-connection-pooling-part-4-pgbouncer-vs-pgpool/">comparison</a></li>
+</ul>
+</li>
+</ul>
+<h4 id="pgbouncer">pgBouncer<a aria-hidden="true" class="anchor-heading icon-link" href="#pgbouncer"></a></h4>
+<ul>
+<li>When PgBouncer receives a client connection, it first performs authentication on behalf of the PostgreSQL server.
+<ul>
+<li>when a password is provided, one of 2 things happens:
+<ol>
+<li>PgBouncer first checks the userslist.txt file – this file specifies a set of (username, md5 encrypted passwords) tuples. If the username exists in this file, the password is matched against the given value. No connection to PostgreSQL server is made. </li>
+<li>If passthrough authentication is setup, and the user is not found in the userslist.txt file, PgBouncer searches for an auth_query. It connects to PostgreSQL as a predefined user (whose password must be present in the userslist.txt file) and executes the auth-query to find the user’s password and matches it to the provided value.</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>When the client executes an SQL statement:
+<pre><code>1. PgBouncer checks for a cached connection
+2. if found, it returns the connection to the client. Otherwise, it creates a new connection
+</code></pre>
+<img src="/:/bde888d39a1c41fa99e619df6db6f56b" alt="a891779b4493983dd662f11960423a72.png"></li>
+</ul>

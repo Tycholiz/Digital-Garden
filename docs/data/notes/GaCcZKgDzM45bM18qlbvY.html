@@ -1,0 +1,53 @@
+<h1 id="indexes">Indexes<a aria-hidden="true" class="anchor-heading icon-link" href="#indexes"></a></h1>
+<p>Postgres has multiple types of <a href="/notes/jiITIvU42MBAYcbXheWwI">index</a>: <a href="/notes/UE8OS2s713jEk2CmjiAet">B-tree</a>, Hash, GiST, SP-GiST and GIN</p>
+<ul>
+<li>B-tree (balanced tree) is default, and is appropriate for most use-cases</li>
+</ul>
+<p>Using the <code>CREATE INDEX</code> command, we are creating a secondary index. Primary indexes are created by default via the primary key.</p>
+<ul>
+<li>secondary joins are crucial for performing JOINs effectively.</li>
+</ul>
+<p>Whether to create a single-column index or a multicolumn index, take into consideration the column(s) that you may use very frequently in a query's WHERE clause as filter conditions.</p>
+<ul>
+<li>ie. add an index on the columns that we typically use WHERE on</li>
+</ul>
+<p>Indexing is often thought of as a data modeling activity. When using PostgreSQL, some indexes are necessary to ensure data consistency (the <a href="/notes/Ql1WxSHx11UTkDnfmYlzq">C</a> in ACID). Constraints such as UNIQUE, PRIMARY KEY or EXCLUDE USING are only possible to implement in PostgreSQL <em>with</em> a backing index. When an index is used as an implementation detail to ensure data consistency, then the indexing strategy is indeed a data modeling activity.</p>
+<ul>
+<li>In all other cases, the indexing strategy is meant to enable methods for faster access methods to data. Those methods are only going to be exercised in the context of running a SQL query</li>
+</ul>
+<p>In the case of UNIQUE, PRIMARY KEY and EXCLUDE USING, the reason why PostgreSQL needs an index is because it allows the system to implement visibility tricks with its MVCC implementation </p>
+<ul>
+<li>this fact is what prevents these 2 (concurrently ran) transactions (which should conflict on UNIQUE constraint) from being accepted:</li>
+</ul>
+<pre class="language-sql"><code class="language-sql">t1<span class="token operator">></span> <span class="token keyword">insert</span> <span class="token keyword">into</span> test<span class="token punctuation">(</span>id<span class="token punctuation">)</span> <span class="token keyword">values</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+t2<span class="token operator">></span> <span class="token keyword">insert</span> <span class="token keyword">into</span> test<span class="token punctuation">(</span>id<span class="token punctuation">)</span> <span class="token keyword">values</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h3 id="indexing-comes-at-a-cost">Indexing comes at a cost<a aria-hidden="true" class="anchor-heading icon-link" href="#indexing-comes-at-a-cost"></a></h3>
+<p>Determining <em>what not</em> to index is probably more important than determining <em>what</em> to index</p>
+<ul>
+<li>An index duplicates data in a specialized format made to optimise a certain type of searches. When we <code>COMMIT;</code>, every change that is made to the main tables of your schema must have made it to the indexes too.
+<ul>
+<li>As a consequence, each index adds write costs to your DML queries: INSERT, UPDATE and DELETE now have to maintain the indexes too, and in a transactional way.</li>
+</ul>
+</li>
+</ul>
+<p>Avoid indexes on...</p>
+<ul>
+<li>small tables.</li>
+<li>Tables that have frequent, large batch update or insert operations.</li>
+<li>columns that contain a high number of NULL values.</li>
+<li>Columns that are frequently manipulated should not be indexed.</li>
+</ul>
+<hr>
+<p><a href="/notes/jiITIvU42MBAYcbXheWwI">Index Docs</a></p>
+<h1 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h1>
+<ul>
+<li><a href="https://rcoh.me/posts/postgres-indexes-under-the-hood/">Indexes under the hood, using B-trees</a></li>
+<li><a href="https://www.cybertec-postgresql.com/en/postgresql-now-vs-nowtimestamp-vs-clock_timestamp/">provides a quick-n-dirty test at the bottom of the article, to see impact of indexes on millions of rows</a></li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/XJP8GgTjLocOl4hVcyEhP">Partial Index</a></li>
+<li><a href="/notes/dREUyTorucb2p8NOU4S4w">Strategy</a></li>
+</ol>
