@@ -1,0 +1,42 @@
+<h1 id="ref">Ref<a aria-hidden="true" class="anchor-heading icon-link" href="#ref"></a></h1>
+<p>A ref is anything pointing to a commit.</p>
+<ul>
+<li>ie. branches (local/remote) and tags, mostly.</li>
+<li>unlike objects, they are mutable and constantly change.
+<ul>
+<li>In Git, the immutable parts are the expensive ones (ex. an entire blob), while the mutable parts are just references, and therefore cheap (ex. branch, remote, HEAD)</li>
+</ul>
+</li>
+<li>Think of it like a user-friendly alias for commit SHA
+<ul>
+<li>ex. <code>my-feature-branch</code> is actually an alias for the branch. In reality, the branch name is a SHA</li>
+</ul>
+</li>
+</ul>
+<p>In a world where all we have is <a href="/notes/ePOqLpbjFgrqSfyvWfPha">blobs</a>, <a href="/notes/J9Z9E8d7dzzJA7BiOVy8W">trees</a> and <a href="/notes/uI9Iy1aoh8oynk85Mzx5z">commit objects</a>, we would have to remember the commit SHAs so we have a starting point for our history. Instead it would be easier if we had a file where we could store that SHA under a simple name, so we could use the name instead of the SHA. These simple names are called <em>refs</em>.</p>
+<ul>
+<li><code>git show-ref</code>
+<ul>
+<li>ex. if we look at <code>.git/refs/heads/master</code>, we will see a commit SHA, which is the latest commit on this branch. If this wasn't done automatically for us, we could manually create this file with the SHA, which would effectively be saying "hey Git, when we are on master branch, the latest commit will be this SHA"
+<ul>
+<li>Therein lies basically what a branch is: a simple pointer to the latest commit</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>stores pointers to commit objects that we would consider to be significant
+<ul>
+<li>ie. the ref is the location of the commit 
+<ul>
+<li>The head commit of each branch that exists (<code>refs/heads</code> directory)</li>
+<li>The head commit of each branch on the remote repos (mostly just <code>origin</code>)</li>
+<li>stash commits</li>
+<li>tags</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>if commits point to trees, and trees point to blobs, then refs conceptually point to commits</li>
+</ul>
+<h3 id="relative-refs">Relative Refs<a aria-hidden="true" class="anchor-heading icon-link" href="#relative-refs"></a></h3>
+<p>we can use relative refs to move around.</p>

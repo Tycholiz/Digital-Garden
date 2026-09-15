@@ -1,0 +1,61 @@
+<h1 id="programming-languages">Programming Languages<a aria-hidden="true" class="anchor-heading icon-link" href="#programming-languages"></a></h1>
+<h2 id="compiled-vs-interpreted-languages">Compiled vs Interpreted Languages<a aria-hidden="true" class="anchor-heading icon-link" href="#compiled-vs-interpreted-languages"></a></h2>
+<ul>
+<li>A compiler figures out everything a program will do, turns it into “machine code” (a format the computer can run really fast), then saves that to be executed later.</li>
+<li>An interpreter steps through the source code line by line, figuring out what it’s doing as it goes.</li>
+</ul>
+<p>Technically any language could be compiled or interpreted, but one or the other usually makes more sense for a specific language. </p>
+<ul>
+<li>Generally, interpreting tends to be more flexible, while compiling tends to have higher performance.</li>
+<li>a lot of language design decisions are affected by the decision to make a language interpreted or compiled 
+<ul>
+<li>for example, static typing is a big benefit to compiled languages, but not so much for interpreted ones.</li>
+</ul>
+</li>
+</ul>
+<p>Interpreted languages are generally easier design, build and learn</p>
+<h3 id="writing-your-own-language">Writing your own language<a aria-hidden="true" class="anchor-heading icon-link" href="#writing-your-own-language"></a></h3>
+<p>If you are writing an interpreted language, it makes a lot of sense to write it in a compiled one (like C, C++ or Swift) because the performance lost in the language of your interpreter and the interpreter that is interpreting your interpreter will compound.</p>
+<p>If you plan to compile, a slower language (like Python or JavaScript) is more acceptable. Compile time may be bad, but that isn’t nearly as big a deal as bad run time.</p>
+<h4 id="from-source-file-to-execution">From source file to execution<a aria-hidden="true" class="anchor-heading icon-link" href="#from-source-file-to-execution"></a></h4>
+<p>A programming language is generally structured as a pipeline. The first stage is a string containing the entire input source file. The final stage is something that can be run. This will all become clear as we go through the Pinecone pipeline step by step.</p>
+<h5 id="lexer">Lexer<a aria-hidden="true" class="anchor-heading icon-link" href="#lexer"></a></h5>
+<p>The first stage. The lexer is supposed to take in a string containing an entire files worth of source code and spit out a list containing every token (a token is a unit of the language, like a function name or an operator).</p>
+<ul>
+<li>also included in tokenization is determining how whitespace is handled, brackets, semi-colons etc. Essentially, we are focused on the atomic units of the language here.</li>
+</ul>
+<p>The lexer provides all details of the source file that are needed by future stages.</p>
+<h5 id="parser">Parser<a aria-hidden="true" class="anchor-heading icon-link" href="#parser"></a></h5>
+<p>The parser turns a list of tokens into a tree of nodes. </p>
+<ul>
+<li>A tree used for storing this type of data is known as an <a href="/notes/QnT5sc2Yosxo9JFI0WIcs">AST</a>.</li>
+</ul>
+<h2 id="terms">Terms<a aria-hidden="true" class="anchor-heading icon-link" href="#terms"></a></h2>
+<h3 id="expression">Expression<a aria-hidden="true" class="anchor-heading icon-link" href="#expression"></a></h3>
+<p>An expression is a piece of code that will be evaluated to produce a value, or a piece of code that is already at its furthest level of evaluation (string, number etc) </p>
+<ul>
+<li>ex. <code>5</code></li>
+<li>ex. <code>"hello"</code></li>
+<li>ex. <code>1 / 2</code> evaluates to <code>0.5</code></li>
+<li>ex. <code>i++</code></li>
+<li>ex. <code>'A' + 'string'</code></li>
+<li>ex. <code>a &#x26;&#x26; b</code></li>
+<li>ex. <code>a ? b : c</code></li>
+<li>ex. <code>function() {}</code></li>
+<li>ex. <code>window.resize()</code></li>
+</ul>
+<h3 id="assignment">Assignment<a aria-hidden="true" class="anchor-heading icon-link" href="#assignment"></a></h3>
+<ul>
+<li>any time there is a LHS and RHS separated by <code>=</code></li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/QnT5sc2Yosxo9JFI0WIcs">AST</a></li>
+<li><a href="/notes/fL1tSgodHIuebUTAJyj1L">Data Structures</a></li>
+<li><a href="/notes/h2EpostlatyJ8twhZe3ht">Feat</a></li>
+<li><a href="/notes/se69kdG1z5P69CijzWmC6">Generator</a></li>
+<li><a href="/notes/w6XxMUs3vtNfYMcF7vboL">If Statements</a></li>
+<li><a href="/notes/boCQcfNZeqYPVqvOL0ggv">Loops</a></li>
+<li><a href="/notes/vR3Sa8MbEhYM2V7ulup61">Types</a></li>
+</ol>

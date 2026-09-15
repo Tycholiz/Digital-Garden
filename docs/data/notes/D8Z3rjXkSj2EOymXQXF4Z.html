@@ -1,0 +1,72 @@
+<h1 id="data">Data<a aria-hidden="true" class="anchor-heading icon-link" href="#data"></a></h1>
+<h1 id="push-vs-pull-data-creation">Push vs Pull data creation<a aria-hidden="true" class="anchor-heading icon-link" href="#push-vs-pull-data-creation"></a></h1>
+<ul>
+<li>Pull and Push are two different protocols that describe how a data Producer can communicate with a data Consumer.</li>
+</ul>
+<div class="table-responsive">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>Producer</th><th>Consumer</th></tr></thead><tbody><tr><td>Pull</td><td>Passive: produces data when requested</td><td>Active: decides when data is requested</td></tr><tr><td>Push</td><td>Active: produces data at its own pace</td><td>Passive: reacts to received data</td></tr></tbody></table></div>
+<p>Note:</p>
+<ul>
+<li>A regular function is a lazily evaluated computation that synchronously returns a single value on invocation.</li>
+<li>A generator function is a lazily evaluated computation that synchronously returns zero to (potentially) infinite values on iteration.</li>
+<li>A Promise is a computation that may (or may not) eventually return a single value.</li>
+<li>An Observable is a lazily evaluated computation that can synchronously or asynchronously return zero to (potentially) infinite values from the time it's invoked onwards.</li>
+</ul>
+<p><strong>Pull</strong></p>
+<ul>
+<li>Consumer determines when it receives data from the data Producer</li>
+<li>The Producer itself is unaware of when the data will be delivered to the Consumer.</li>
+<li>ex. every javascript function is a pull system
+<ul>
+<li>The function itself is the producer, and the calling code is the consumer. The reason the calling code is called the consumer is because the calling code "pulls" out a <em>single</em> return value</li>
+</ul>
+</li>
+<li>ex. React is a pull system. When React needs to re-render, it will call the render function of every affected component. This will return a new representation of the UI, which React can reconcile with the previous one. Any changes are then propagated to the DOM.</li>
+</ul>
+<p><strong>Push</strong></p>
+<ul>
+<li>Producer determines when to send data to the consumer, and the consumer is unaware of when it will receive that data.
+<ul>
+<li>called push because now the producer of the state is responsible for handing the new value over to those that depend on it.</li>
+<li>This has a positive effect: only those entities that depend on the value that has changed will update, and it can be done without having to make comparisons or detect changes.</li>
+</ul>
+</li>
+<li>ex. Promises and Observables are a push system, since the promise (a producer) delivers a resolved value to the registered callbacks (the consumers).
+<ul>
+<li>it is the Promise which is in charge of determining precisely when that value is "pushed" to the callbacks.</li>
+<li>ex. An Observable is a Producer of multiple values, "pushing" them to Observers (Consumers).</li>
+</ul>
+</li>
+<li>ex. <a href="/notes/yoh4pwoXcfELInGKRdYf6">RxJS</a> uses a push-based approach, where you declaratively define streams and their relationships, and RxJS will propagate every change from one stream to the next one.</li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/wywXc6giwBv8xoiEMJlJW">Data Lake</a></li>
+<li><a href="/notes/xISza0hg9S9FjXgmkfYgB">Data Mesh</a></li>
+<li><a href="/notes/3NfgHUUU25MfpnbtOJfr9">Data Warehouse</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/yq2xgdq08wx1pmuy0s8vb8i">React</a></li>
+</ul>

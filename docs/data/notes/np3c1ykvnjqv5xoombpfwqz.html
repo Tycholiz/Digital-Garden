@@ -1,0 +1,21 @@
+<h1 id="datadog">Datadog<a aria-hidden="true" class="anchor-heading icon-link" href="#datadog"></a></h1>
+<h2 id="statsd">Statsd<a aria-hidden="true" class="anchor-heading icon-link" href="#statsd"></a></h2>
+<p>Statsd is a protocol for capturing metrics. We communicate with the Statsd via a client library that exists in our application code. the daemon will then generate aggregate metrics and relay them to virtually any graphing or monitoring backend.</p>
+<p>The purpopse is to instrument code.</p>
+<ul>
+<li>this can be as simple as adding a <a href="/notes/UxzKopcw8JCSnPc8HKbjX">decorator</a> to a function that we want to time, or it might be a one-liner within the function to track a value.</li>
+</ul>
+<p>The Statsd receives these calls from client libraries (<a href="/notes/dQttRQk9tVYxtKhW5ikRp">UDP</a> traffic), aggregate it over some period of time, then "flush" it to our backend (e.g. Datadog)</p>
+<h2 id="datadog-agent">Datadog Agent<a aria-hidden="true" class="anchor-heading icon-link" href="#datadog-agent"></a></h2>
+<p>The Datadog Agent is software that runs on your hosts. It collects events and metrics from hosts and sends them to Datadog</p>
+<p>The Datadog Agents has embedded its own extended version of Statsd (DogStatsD)</p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/ldy8q9oo2cqn1zj4b8i8ybq">Application Performance Monitoring (APM)</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/mWodutpvAmyxmDr8L1SIe">DaemonSet</a></li>
+</ul>

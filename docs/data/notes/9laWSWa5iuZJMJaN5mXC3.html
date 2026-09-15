@@ -1,0 +1,22 @@
+<h1 id="cook">Cook<a aria-hidden="true" class="anchor-heading icon-link" href="#cook"></a></h1>
+<h4 id="update-statement-to-change-jsonb-value">Update statement to change jsonb value<a aria-hidden="true" class="anchor-heading icon-link" href="#update-statement-to-change-jsonb-value"></a></h4>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">UPDATE</span> test
+<span class="token keyword">SET</span> <span class="token keyword">data</span> <span class="token operator">=</span> <span class="token keyword">replace</span><span class="token punctuation">(</span><span class="token keyword">data</span>::<span class="token keyword">TEXT</span><span class="token punctuation">,</span><span class="token string">': "my-name"'</span><span class="token punctuation">,</span><span class="token string">': "my-other-name"'</span><span class="token punctuation">)</span>::jsonb
+<span class="token keyword">WHERE</span> id <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+</code></pre>
+<h4 id="use-variablefunction-within-json-insertion">Use variable/function within JSON insertion<a aria-hidden="true" class="anchor-heading icon-link" href="#use-variablefunction-within-json-insertion"></a></h4>
+<p>Easiest way is to just use string concatenation (<code>||</code> or <code>concat()</code>)</p>
+<p>If value is integer:</p>
+<pre class="language-sql"><code class="language-sql"><span class="token punctuation">(</span><span class="token string">'[{"specCode": {"name": "Telephone Number", "text": "TEL_NUM"}, "specValue": {"code": null, "text":'</span> <span class="token operator">||</span> tel <span class="token operator">||</span> <span class="token string">'}}]'</span><span class="token punctuation">)</span>::json
+</code></pre>
+<p>If value is not integer (difference in quotes used):</p>
+<pre class="language-sql"><code class="language-sql"><span class="token punctuation">(</span><span class="token string">'[{"specCode": {"name": "Telephone Number", "text": "TEL_NUM"}, "specValue": {"code": null, "text":"'</span> <span class="token operator">||</span> tel <span class="token operator">||</span> <span class="token string">'"}}]'</span><span class="token punctuation">)</span>::json
+</code></pre>
+<h4 id="overwriting-json-value">Overwriting json value<a aria-hidden="true" class="anchor-heading icon-link" href="#overwriting-json-value"></a></h4>
+<p>Here, we move values from the <code>list_price</code> and <code>paid_price</code> columns into a combined jsonb column:</p>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">update</span> app_public<span class="token punctuation">.</span>invoice_items <span class="token keyword">as</span> invoice_items
+	<span class="token keyword">set</span>
+		amount <span class="token operator">=</span> concat<span class="token punctuation">(</span><span class="token string">'{"list_price":'</span><span class="token punctuation">,</span> invoice_items<span class="token punctuation">.</span>list_price<span class="token punctuation">,</span> <span class="token string">',"paid_price":'</span><span class="token punctuation">,</span> invoice_items<span class="token punctuation">.</span>paid_price<span class="token punctuation">,</span> <span class="token string">'}'</span><span class="token punctuation">)</span>::jsonb
+	<span class="token keyword">where</span> id <span class="token operator">=</span> ii_row<span class="token punctuation">.</span>id<span class="token punctuation">;</span>
+<span class="token comment">-- result {"list_price": 1465, "paid_price": 817}</span>
+</code></pre>

@@ -1,0 +1,25 @@
+<h1 id="select">Select<a aria-hidden="true" class="anchor-heading icon-link" href="#select"></a></h1>
+<h3 id="select-into">SELECT INTO<a aria-hidden="true" class="anchor-heading icon-link" href="#select-into"></a></h3>
+<ul>
+<li>SELECT INTO creates a new table and fills it with data computed by a query.</li>
+<li>The data is not returned to the client, as it is with a normal SELECT.</li>
+<li>The new table's columns have the names and data types associated with the output columns of the SELECT.</li>
+</ul>
+<h4 id="with-record-type">with <code>record</code> type<a aria-hidden="true" class="anchor-heading icon-link" href="#with-record-type"></a></h4>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">do</span>
+$$
+<span class="token keyword">declare</span>
+	rec record<span class="token punctuation">;</span>
+<span class="token keyword">begin</span>
+	<span class="token comment">-- select the film</span>
+	<span class="token keyword">select</span> film_id<span class="token punctuation">,</span> title<span class="token punctuation">,</span> length
+	<span class="token keyword">into</span> rec
+	<span class="token keyword">from</span> film
+	<span class="token keyword">where</span> film_id <span class="token operator">=</span> <span class="token number">200</span><span class="token punctuation">;</span>
+
+	raise notice <span class="token string">'% % %'</span><span class="token punctuation">,</span> rec<span class="token punctuation">.</span>film_id<span class="token punctuation">,</span> rec<span class="token punctuation">.</span>title<span class="token punctuation">,</span> rec<span class="token punctuation">.</span>length<span class="token punctuation">;</span>
+
+<span class="token keyword">end</span><span class="token punctuation">;</span>
+$$
+<span class="token keyword">language</span> plpgsql<span class="token punctuation">;</span>
+</code></pre>

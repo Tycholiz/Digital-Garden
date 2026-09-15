@@ -1,0 +1,17 @@
+<h1 id="coalesce">Coalesce<a aria-hidden="true" class="anchor-heading icon-link" href="#coalesce"></a></h1>
+<p><code>coalesce</code> accepts unlimited params, and always returns the first non-null value</p>
+<ul>
+<li>In this way, you can think of the final param as the default value.</li>
+</ul>
+<p>Embracing <code>null</code> allows us to easily inline defaults</p>
+<ul>
+<li>You can chain a bunch of inputs and it returns the first non-null value</li>
+<li>ex. imagine having a result set that shows us how much revenue was earned each year since 2010. We should define a column <code>coalesce(income, 0) as income</code> in our select statement, which will return us a 0 if there is no income for the relevant year. This is a nicer alternative than to just omitting rows without data.</li>
+<li>ex. Lets say you have an input parameter with a default, you can the just wrap the usages of that parameters like this: coalesce (_parameter, default_value) = whatever it tests against</li>
+<li>ex. Imagine we have a postgres function that accepts 2 args: a <code>start_date</code> and an <code>end_date</code>, and returns the amount of time that an employee worked at a company. If they currently work there still, the client passes <code>null</code> for the value of the <code>end_date</code>. In our function, we would have a smart failover that defaults the null value to <code>now()</code>.</li>
+<li>ex. imagine we have a column <code>discount</code> that defaults to <code>null</code>. We want to use this <code>discount</code> column when determining subtotal, so we need to use coalesce to provide us with a default value of 0:</li>
+</ul>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">SELECT</span>
+	product<span class="token punctuation">,</span>
+	<span class="token punctuation">(</span>price <span class="token operator">-</span> <span class="token keyword">COALESCE</span><span class="token punctuation">(</span>discount<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">AS</span> net_price
+</code></pre>

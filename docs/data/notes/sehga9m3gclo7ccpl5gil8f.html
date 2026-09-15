@@ -1,0 +1,14 @@
+<h1 id="slice">Slice<a aria-hidden="true" class="anchor-heading icon-link" href="#slice"></a></h1>
+<p>Slices are an abstraction over arrays to make them easier to work with, most notably because they do not have a fixed length.</p>
+<pre class="language-go"><code class="language-go"><span class="token keyword">var</span> a <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">{</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">}</span>
+</code></pre>
+<p>In particular, a slice is a reference to a segment of an array.</p>
+<p>With slices we can do things like append (which doesn't modify the original Slice, but returns a new one)</p>
+<ul>
+<li>under the hood, Go is creating a new array, copying the contents from the old one, and adding the new value.</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/ny5a4iv8f499jd2fqyzqfnp">Array</a></li>
+</ul>

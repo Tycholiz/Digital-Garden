@@ -1,0 +1,14 @@
+<h1 id="tar">Tar<a aria-hidden="true" class="anchor-heading icon-link" href="#tar"></a></h1>
+<p><code>tar</code> stands for tape archive</p>
+<h3 id="compress-a-folder-into-a-tarball">Compress a folder into a tarball<a aria-hidden="true" class="anchor-heading icon-link" href="#compress-a-folder-into-a-tarball"></a></h3>
+<p><code>tar -czvf output.tar.gz input optional_input2</code></p>
+<h3 id="uncompress-a-tarball-using-a-gzip-compressor">Uncompress a tarball using a gzip compressor<a aria-hidden="true" class="anchor-heading icon-link" href="#uncompress-a-tarball-using-a-gzip-compressor"></a></h3>
+<p><code>tar xvzf file.tar.gz</code></p>
+<h3 id="send-to-different-directory-than-current">Send to different directory than current<a aria-hidden="true" class="anchor-heading icon-link" href="#send-to-different-directory-than-current"></a></h3>
+<p><code>tar xvzf file.tar.gz -C ~/Downloads</code></p>
+<p>spec: it seems that we have to cd into the directory that we will create the tar from. If we don't, then the resulting tar will take the whole absolute directory along with it, and when we uncompress it, we will get something like <code>/Users/kyletycholiz/tarred-file</code></p>
+<ul>
+<li>The same can definitely be said for <code>zip</code> utility</li>
+</ul>
+<h3 id="copy-a-whole-directory-from-one-place-to-another">Copy a whole directory from one place to another<a aria-hidden="true" class="anchor-heading icon-link" href="#copy-a-whole-directory-from-one-place-to-another"></a></h3>
+<p><code>tar cf - . | (cd $DEST; tar xvf -) </code></p>

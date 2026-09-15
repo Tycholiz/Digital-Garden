@@ -1,0 +1,29 @@
+<h1 id="acid">ACID<a aria-hidden="true" class="anchor-heading icon-link" href="#acid"></a></h1>
+<p>in practice, one database’s implementation of ACID does not equal another’s implementation. </p>
+<ul>
+<li>when a system claims to be “ACID compliant,” it’s unclear what guarantees you can actually expect.</li>
+<li>systems that don't meet the ACID criteria are called BASE (Basically Available, Soft state, and Eventual consistency)</li>
+</ul>
+<p>"As a developer, we should think of a database as something that is ACID-compliant." —Dmitri Fontaine</p>
+<p><a href="/notes/4xb9cg487yio88c5b2j2bid">Transactions</a> are one way to achieve full ACID-compliance.</p>
+<ul>
+<li>except for <a href="/notes/CDsgl4whjOFvjrrLJXXDt">durability</a>, which is sort of its own thing.</li>
+</ul>
+<hr>
+<p>From the Postgres-XL docs, here is an implication of it being fully ACID:
+<em>When you start a transaction or query in Postgres-XL, you’ll see a consistent version of your data across the entire cluster. While you are reading your data on one connection, you could be updating the same table or even row in another connection without any locking. Both connections are working with their own versions of the rows, thanks to global transaction identifiers and snapshots.  Readers do not block writers and writers do not block readers.</em></p>
+<h2 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h2>
+<p><a href="http://ithare.com/databases-101-acid-mvcc-vs-locks-transaction-isolation-levels-and-concurrency/">http://ithare.com/databases-101-acid-mvcc-vs-locks-transaction-isolation-levels-and-concurrency/</a></p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/iVqY5tKOzlWVVRzOqOED5">Atomicity</a></li>
+<li><a href="/notes/Ql1WxSHx11UTkDnfmYlzq">Consistency</a></li>
+<li><a href="/notes/CDsgl4whjOFvjrrLJXXDt">Durability</a></li>
+<li><a href="/notes/SBhnwv59C8Y0Gb9nRztZU">Isolation</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/W5etsXYnFDHBWHEHSZKjp">Concurrency</a></li>
+</ul>

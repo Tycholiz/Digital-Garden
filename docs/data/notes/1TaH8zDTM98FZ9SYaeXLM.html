@@ -1,0 +1,29 @@
+<h1 id="caddy">Caddy<a aria-hidden="true" class="anchor-heading icon-link" href="#caddy"></a></h1>
+<p>if Caddy is running at port <code>:2019</code>, then the config file is at <code>:2019/config/</code></p>
+<p>most(?) caddy commands are just running GET/POST requests. For instance, <code>caddy stop</code> sends a POST to <code>http://localhost:2019/stop</code></p>
+<h4 id="workflow">Workflow<a aria-hidden="true" class="anchor-heading icon-link" href="#workflow"></a></h4>
+<p>To administer Caddy, we can do so in 2 ways:</p>
+<ol>
+<li>using the API
+<ul>
+<li>ex. POST to <code>https://caddyserver.mywebsite.com:443/load</code></li>
+</ul>
+</li>
+<li>using the CLI
+<ul>
+<li>ex. run <code>caddy load</code></li>
+</ul>
+</li>
+</ol>
+<p>Caddyfile+CLI combo is the more easy-going route, but is more difficult to scale. Otherwise, if looking for more control, users typically go for the JSON+API combo.</p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/lAF4unPvD3uZkxLtH3Jba">CLI</a></li>
+<li><a href="/notes/7dqpDYoOIY20kg49biKq7">Caddyfile</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/V3PYC4CioHjvRkfghpGpk">Port Forwarding</a></li>
+</ul>

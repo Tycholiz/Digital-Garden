@@ -1,0 +1,29 @@
+<h1 id="n1-problem">N+1 Problem<a aria-hidden="true" class="anchor-heading icon-link" href="#n1-problem"></a></h1>
+<p>GraphQL suffers from the N+1 problem</p>
+<ul>
+<li>The number of queries grows exponentially with the depth of the query</li>
+<li>N1 problem occurs when you have to retrieve the same information multiple times. In graphql, the resolver for that particular field would have to be hit every single time, instead of the system understanding that it's the same result, and being more efficient about it.
+<ul>
+<li>ex. We have a query shaped as below. imagine that the article has 5 <code>comments</code> and all are written by the same person. In Graphql, that would be 5 times that the resolver got called, instead of once.</li>
+</ul>
+</li>
+</ul>
+<pre class="language-gql"><code class="language-gql">query {
+  user(id: "abc") {
+    name
+    article(title: "GraphQL is great") {
+      comments {
+        text
+        writtenBy {
+          name
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<ul>
+<li>N1 problem can be solved by DataLoader library</li>
+<li><a href="https://stackoverflow.com/questions/97197/what-is-the-n1-selects-problem-in-orm-object-relational-mapping">possibly redundant info</a></li>
+<li><a href="http://www.petecorey.com/blog/2017/08/14/batching-graphql-queries-with-dataloader/?from=east5th.co">using a batchloader (like joinMonster) to solve N+1</a></li>
+</ul>

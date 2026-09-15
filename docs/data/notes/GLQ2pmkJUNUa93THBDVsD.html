@@ -1,0 +1,41 @@
+<h1 id="typegraphql">TypeGraphql<a aria-hidden="true" class="anchor-heading icon-link" href="#typegraphql"></a></h1>
+<p>The goal is to have a single source of truth in Graphql+Typescript projects</p>
+<ul>
+<li>When we work with Graphql and Typescript, there is a large amount of duplication of data needed. First, we need to define the Graphql types. Then we need to make a variation of that same data for Typescript (interfaces and types). Then we potentially need to update ORMs and Schemas. All from a single alteration of an object model.</li>
+<li>The idea of the library is to automatically create GraphQL schema definition from TypeScript's classes</li>
+</ul>
+<p>Type-graphql provides a <code>buildSchema</code> function which takes in all the resolvers we've made and spits out a Graphql schema.</p>
+<p>To avoid the need of schema definition files and interfaces describing the schema, Type-graphql use a bit of reflection magic and decorators.</p>
+<h1 id="api">API<a aria-hidden="true" class="anchor-heading icon-link" href="#api"></a></h1>
+<h2 id="types-and-fields">Types and Fields<a aria-hidden="true" class="anchor-heading icon-link" href="#types-and-fields"></a></h2>
+<h3 id="objecttype"><code>@ObjectType()</code><a aria-hidden="true" class="anchor-heading icon-link" href="#objecttype"></a></h3>
+<ul>
+<li>Mark the class that follows as the type known from GraphQL SDL</li>
+</ul>
+<pre class="language-ts"><code class="language-ts"><span class="token decorator"><span class="token at operator">@</span><span class="token function">ObjectType</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name"><span class="token maybe-class-name">Recipe</span></span> <span class="token punctuation">{</span>
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">Field</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  id<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<ul>
+<li><a href="https://typegraphql.com/docs/0.17.0/types-and-fields.html">source</a></li>
+</ul>
+<h3 id="field"><code>@Field()</code><a aria-hidden="true" class="anchor-heading icon-link" href="#field"></a></h3>
+<ul>
+<li>Map the class property that follows as a field on the Graphql type</li>
+</ul>
+<h2 id="resolvers">Resolvers<a aria-hidden="true" class="anchor-heading icon-link" href="#resolvers"></a></h2>
+<p>spec: distinct from <a href="/notes/GDD7xPlpQqrQnmwcDXUoa">Graphql Resolvers</a></p>
+<p>Resolvers enable us to perform CRUD actions (queries and mutations).</p>
+<ul>
+<li>It could be thought of as a Controller from classic REST frameworks.</li>
+</ul>
+<h3 id="resolver"><code>@Resolver()</code><a aria-hidden="true" class="anchor-heading icon-link" href="#resolver"></a></h3>
+<h3 id="query"><code>@Query()</code><a aria-hidden="true" class="anchor-heading icon-link" href="#query"></a></h3>
+<p><code>@Query(returns => [Recipe])</code> means that the query resolves to an array of <code>Recipe</code> objects</p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/bfiyo2tgz38y7mtvaichehb">Middleware</a></li>
+</ol>

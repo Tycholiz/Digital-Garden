@@ -1,0 +1,25 @@
+<h1 id="console">Console<a aria-hidden="true" class="anchor-heading icon-link" href="#console"></a></h1>
+<p><code>console.X()</code> methods return undefined</p>
+<h3 id="consoletable"><code>console.table</code><a aria-hidden="true" class="anchor-heading icon-link" href="#consoletable"></a></h3>
+<p>If we have an array of identically formatted objects, we can print out a nice table to the console, instead of getting a dump of a JSON-like structure, as we would have with a simple console.log</p>
+<h3 id="consolegroup"><code>console.group</code><a aria-hidden="true" class="anchor-heading icon-link" href="#consolegroup"></a></h3>
+<h3 id="consoledirobj"><code>console.dir(obj)</code><a aria-hidden="true" class="anchor-heading icon-link" href="#consoledirobj"></a></h3>
+<p>Displays an interactive list of the properies of the passed object</p>
+<ul>
+<li>"interactive" here means that the properties (listed as a hierarchy) can be collapsed and expanded.</li>
+</ul>
+<h3 id="consoletimeconsoletimeend"><code>console.time</code>/<code>console.timeEnd</code><a aria-hidden="true" class="anchor-heading icon-link" href="#consoletimeconsoletimeend"></a></h3>
+<p>We can use this to get the time of how long something takes to execute:</p>
+<pre class="language-js"><code class="language-js"><span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">time</span><span class="token punctuation">(</span><span class="token string">'filter array'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> visibleTodos <span class="token operator">=</span> <span class="token function">getFilteredTodos</span><span class="token punctuation">(</span>todos<span class="token punctuation">,</span> filter<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">timeEnd</span><span class="token punctuation">(</span><span class="token string">'filter array'</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// filter array: 0.15ms</span>
+</code></pre>
+<hr>
+<h3 id="consolelog-an-arrow-function">Console.log an arrow function<a aria-hidden="true" class="anchor-heading icon-link" href="#consolelog-an-arrow-function"></a></h3>
+<p>One of the pain points of implicitly returning arrow functions is that you can't easily stick a <code>console.log</code> in, without converting it to an explicit return. To get around this, we can have the function return <code>console.log(myVal) || &#x3C;rest of the code></code>. The reason this works is because console methods return <code>undefined</code>, which causes <code>&#x3C;rest of the code></code> to continue to be executed.</p>
+<pre class="language-js"><code class="language-js"><span class="token comment">// Before: </span>
+<span class="token keyword">const</span> <span class="token function-variable function">myFunc</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token function">doTheThing</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment">// After:</span>
+<span class="token keyword">const</span> <span class="token function-variable function">myFunc</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span>myVal<span class="token punctuation">)</span> <span class="token operator">||</span> <span class="token function">doTheThing</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre>

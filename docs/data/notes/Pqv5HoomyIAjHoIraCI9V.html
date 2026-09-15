@@ -1,0 +1,20 @@
+<h1 id="xargs">Xargs<a aria-hidden="true" class="anchor-heading icon-link" href="#xargs"></a></h1>
+<p><code>xargs</code> reads items from stdin, and runs a command (default <code>echo</code>) on each one</p>
+<ul>
+<li>each item may either be delimited by:
+<ol>
+<li>blanks (which can be protected with double or single quotes or a backslash))</li>
+<li>newlines</li>
+</ol>
+</li>
+</ul>
+<h4 id="handling-blanks-and-newlines">Handling blanks and newlines<a aria-hidden="true" class="anchor-heading icon-link" href="#handling-blanks-and-newlines"></a></h4>
+<p>Because Unix filenames can contain blanks and newlines, this default behaviour is often problematic; filenames containing blanks and/or newlines are incorrectly processed by <code>xargs</code>.</p>
+<ul>
+<li>in these situations pass <code>-0</code> option, which would prevent these problems, though we need to ensure that the program which produces the input for <code>xargs</code> also uses a null character as a separator</li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/DRkuK0e6qkKEiHDIGP6kP">Cook</a></li>
+</ol>
