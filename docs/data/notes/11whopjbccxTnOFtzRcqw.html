@@ -1,0 +1,22 @@
+<h1 id="glob">Glob<a aria-hidden="true" class="anchor-heading icon-link" href="#glob"></a></h1>
+<h3 id="glob-patterns">Glob Patterns<a aria-hidden="true" class="anchor-heading icon-link" href="#glob-patterns"></a></h3>
+<p><code>*</code> is not the only globbing primitive. Other globbing primitives are:</p>
+<ul>
+<li>
+<p><code>?</code> - matches any single character</p>
+</li>
+<li>
+<p><code>[abd]</code> - matches any character from a, b or d</p>
+</li>
+<li>
+<p><code>[a-d]</code> - matches any character from a, b, c or d</p>
+</li>
+<li>
+<p><code>.</code> has no meaning as a glob.</p>
+</li>
+</ul>
+<h3 id="globbing-vs-regex">Globbing vs Regex<a aria-hidden="true" class="anchor-heading icon-link" href="#globbing-vs-regex"></a></h3>
+<ul>
+<li>spec: Globbing is interpreted by the shell, while regex is interpreted by a program (like <code>rename</code>)</li>
+<li>commands surrounded by single-quotes are not interpreted by the shell.</li>
+</ul>

@@ -1,0 +1,39 @@
+<h1 id="refresh-token">Refresh Token<a aria-hidden="true" class="anchor-heading icon-link" href="#refresh-token"></a></h1>
+<p>The Refresh Token is a long-lived token that contains basically only the session ID (or simply the token) which can be used to look up in the database to see if it’s an active session or not. If it is, then it can generate a new <a title="Private" href="https://wiki.dendron.so/notes/hfyvYGJZQiUwQaaxQO27q.html" target="_blank" class="private">access token (Private)</a> and that can be sent to the user</p>
+<ul>
+<li>A refresh token is a special token that is used to generate additional jwt tokens. This allows you to have short-lived <a href="/notes/RXSECsORRrl4fC8oCEtsk">access tokens</a> (JWTs) without having to collect credentials every time one expires. The server returns this token to the client alongside the access token (JWT) as part of a user's initial authentication flow.
+<ul>
+<li>The refresh token should be saved in the database and associated with a row in the <code>users</code> table.
+<ul>
+<li>As a result, we can handle the renewing login with Postgres.</li>
+</ul>
+</li>
+<li>the refresh token can be sent from the server to the client as an <code>HTTPOnly</code> cookie</li>
+</ul>
+</li>
+<li>A refresh token is not capable of authenticating a user on its own— its only use is to look up active sessions. If it finds one, then the refresh token can be used to generate a new access token.</li>
+<li>Every time a new access token is generated, a refresh token should be generated as well</li>
+<li>a Refresh token is what allows us to login to a website, close the browser, and still be logged in upon reopening it.
+<ul>
+<li>When a new session starts (reopening the browser tab), the app is able to see that there is no JWT in memory, so it triggers a <em>silent refresh</em></li>
+</ul>
+</li>
+<li>Imagine we set a jwt to have a lifetime of 15 minutes. Without the refresh token, this means that the server would send back an http 401: unauthorized every 15 minutes (probably at which point your app will log the user out and display the login screen)</li>
+<li>A refresh token has 2 properties:
+<ol>
+<li>It can be used to make an API call (say, <code>/refresh_token</code>) to fetch a new access token before the previous one expires.</li>
+<li>It can be safely persisted across sessions on the client!</li>
+</ol>
+</li>
+</ul>
+<p>Refresh tokens (or are long-lived) and is single use only.</p>
+<p>There is no reason for developers to be able to decode the refresh token, since it contains information that is only relevant to the authentication server.</p>
+<ul>
+<li>when using 3rd party authentication providers, the payload of the refresh token is often encrypted.</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/RXSECsORRrl4fC8oCEtsk">Access Token</a></li>
+<li><a href="/notes/6s5Oh0DUcMsShcFrmDaBK">JWT</a></li>
+</ul>

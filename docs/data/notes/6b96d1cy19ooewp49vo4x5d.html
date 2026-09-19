@@ -1,0 +1,125 @@
+<h1 id="replication">Replication<a aria-hidden="true" class="anchor-heading icon-link" href="#replication"></a></h1>
+<p>Replication in CouchDB works by comparing the source and the destination database to determine which documents differ between the source and the destination database. </p>
+<ul>
+<li>it follows the <a href="https://docs.couchdb.org/en/3.2.0/api/database/changes.html#changes">Changes Feeds</a> on the source and compares the documents to the destination. Once it reaches the end of the feed, the replication process has finished.</li>
+<li>we can set a replication to be <code>continuous</code>, meaning it will wait for new changes to appear until the task is canceled.</li>
+<li>replications can also be paused with checkpoints, and continued. This is helpful is case of a fault.</li>
+</ul>
+<p>Changes are then sent in batches to the destination, where they are compared and inform CouchDB if there are conflicts.</p>
+<p>If you know Git, then you know how Couch replication works. Replicating is very similar to pushing or pulling with distributed source managers like Git.</p>
+<ul>
+<li>Like Git, Couch documents have a linked-list revision history. If a revision exists in the other's history, then it can be fast-forwarded.</li>
+<li>In Git, if 2 documents have a common ancestor, it's called a fork; in Couch, it's a conflict.
+<ul>
+<li>therefore neither Git or CouchDB have linear lists.</li>
+<li>conflicts in CouchDB do not correspond to conflicts in Git
+<ul>
+<li>a conflict in CouchDB is a divergent revision history </li>
+</ul>
+</li>
+</ul>
+</li>
+<li>When a child has multiple parents, Git allows us to merge. CouchDB can be configured to do this via the application code.
+<ul>
+<li>In Git, this is like copying and pasting the changes from branch A into branch B, then committing to branch B and deleting branch A. </li>
+</ul>
+</li>
+</ul>
+<p>When a document is updated, it is given an incremented <code>_rev</code> value</p>
+<ul>
+<li>when an item is deleted (in CouchDB, soft deleted), its <code>_rev</code> value will be updated. Since it is considered as a new revision, when a document is deleted on the source, that deletion will be replicated to the target.</li>
+</ul>
+<p>Replication tasks can be initiated by either the sending node or the receiving node.</p>
+<ul>
+<li>when the sending node initiates the replication task, it is called <em>push replication</em></li>
+<li>when the receiving node initiates the replication task, it is called <em>pull replication</em></li>
+<li>Replication tasks only transfer changes in one direction.
+<ul>
+<li>the easiest way to perform a full sync is to do a "push" followed by a "pull" (or vice versa).</li>
+</ul>
+</li>
+</ul>
+<p>There are three options for controlling which documents are replicated, and which are skipped:</p>
+<ol>
+<li>Defining documents as being local.</li>
+<li>Using <a href="https://docs.couchdb.org/en/3.2.0/replication/replicator.html#selectorobj">Selector Objects</a>.</li>
+</ol>
+<ul>
+<li>allows us to apply business logic through query expressions to determine whether or not a document should be included in the replication. The selector specifies fields in the document, and provides an expression to evaluate with the field content or other data. If the expression resolves to true, the document is replicated.</li>
+<li>selector objects exist on a replication document.</li>
+<li>note: selector objects are more performant than filter functions and should be preferred where possible (ie. when filtering on document attributes only).</li>
+</ul>
+<ol start="3">
+<li>Using <a href="https://docs.couchdb.org/en/3.2.0/ddocs/ddocs.html#filterfun">Filter Functions</a>.</li>
+</ol>
+<ul>
+<li>filter functions exist on a design document. They are special functions that are called whenever there is an entry in the Changes Feed that matches some criteria.
+<ul>
+<li>in principle they are like <a href="/notes/OSdV9FvBG3wDbRNLllg0V">lambdas</a> being triggered by some event.</li>
+</ul>
+</li>
+</ul>
+<p>Replications are created by either Writing documents to the <code>_replicator</code> database (preferred) or POSTing to the <code>_replicate</code> HTTP endpoint (legacy) </p>
+<p>The first database of CouchDB used <em>transient replication</em>. Transient means that there are no documents backing up the replication— after a restart of the CouchDB server, the replication will disappear.</p>
+<ul>
+<li>this still exists for backward compatability purposes</li>
+<li>nowadays, <em>persistent replication</em> is used.
+<ul>
+<li>Persistent means the <code>_replicator</code> database is used, which keeps documents containing your replication parameters.</li>
+</ul>
+</li>
+</ul>
+<h3 id="replication-database">Replication database<a aria-hidden="true" class="anchor-heading icon-link" href="#replication-database"></a></h3>
+<p>The <code>_replicator</code> database is like any other database in CouchDB, except for one feature: documents added to it will trigger replications</p>
+<ul>
+<li>there is a default <code>_replicator</code> database, but we can create our own.</li>
+</ul>
+<p>through the <code>_replicator</code> database, we can control the persistent replication</p>
+<ul>
+<li>each document describes one replication process</li>
+</ul>
+<p>Example document of <code>_replicator</code> database:</p>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"_id"</span><span class="token operator">:</span> <span class="token string">"rep_from_A"</span><span class="token punctuation">,</span>
+    <span class="token property">"source"</span><span class="token operator">:</span>  <span class="token string">"http://aserver.com:5984/foo"</span><span class="token punctuation">,</span>
+    <span class="token property">"target"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"http://localhost:5984/foo_a"</span><span class="token punctuation">,</span>
+        <span class="token property">"auth"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token property">"basic"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token property">"username"</span><span class="token operator">:</span> <span class="token string">"user"</span><span class="token punctuation">,</span>
+                <span class="token property">"password"</span><span class="token operator">:</span> <span class="token string">"pass"</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">"continuous"</span><span class="token operator">:</span>  <span class="token boolean">true</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p><a href="https://docs.couchdb.org/en/3.2.0/json-structure.html#replication-settings">config options</a></p>
+<h4 id="replication-scheduler">Replication scheduler<a aria-hidden="true" class="anchor-heading icon-link" href="#replication-scheduler"></a></h4>
+<p>The scheduler manages the replication jobs as soon as they are created.</p>
+<p>The scheduler is the replication component which periodically stops some jobs and starts others</p>
+<h3 id="replication-lifecycle-state-machine">Replication Lifecycle (state machine)<a aria-hidden="true" class="anchor-heading icon-link" href="#replication-lifecycle-state-machine"></a></h3>
+<p>Replication jobs during their life-cycle pass through various states. This is a diagram of all the states and transitions between them:
+<img src="/assets/images/2022-05-11-22-13-28.png"></p>
+<hr>
+<p>CouchDB replication does not have its own protocol. A replicator simply connects to two DBs as a client, then reads from one and writes to the other. Push replication is reading the local data and updating the remote DB; pull replication is vice versa.</p>
+<ul>
+<li>Fun fact 1: The replicator is actually an independent Erlang application, in its own process. It connects to both couches, then reads records from one and writes them to the other.</li>
+<li>Fun fact 2: CouchDB has no way of knowing who is a normal client and who is a replicator (let alone whether the replication is push or pull). It all looks like client connections. Some of them read records. Some of them write records.</li>
+</ul>
+<p>A record's revision ID is the checksum of its own data. Subsequent revision IDs are checksums of: the new data, plus the revision ID of the previous.</p>
+<hr>
+<h3 id="conflicts">Conflicts<a aria-hidden="true" class="anchor-heading icon-link" href="#conflicts"></a></h3>
+<p>When putting a new version of a document, the source must provide the previous <code>_rev</code> value that it has. If the target does not have the same <code>_rev</code> value, then it will throw a 409 Conflict error.</p>
+<p>When the update conflict occurs, the client who errored out must fetch again, and then either</p>
+<ol>
+<li>apply the same changes as were applied to the earlier revision, and submit a new PUT</li>
+<li>redisplay the document so the user has to edit it again</li>
+<li>just overwrite it with the document being saved before (which is not advisable, as user1’s changes will be silently lost)</li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/g7ulqi8no93ezeocbesc3ll">CouchDB</a></li>
+<li><a href="/notes/erwmezq4jeofxnp45spwymq">Replication</a></li>
+</ul>

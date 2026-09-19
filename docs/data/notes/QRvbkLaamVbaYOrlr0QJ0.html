@@ -1,0 +1,24 @@
+<h1 id="cook">Cook<a aria-hidden="true" class="anchor-heading icon-link" href="#cook"></a></h1>
+<p>Naturally, components can be controlled from scripts.</p>
+<h4 id="apply-force-to-a-gameobject">Apply force to a GameObject<a aria-hidden="true" class="anchor-heading icon-link" href="#apply-force-to-a-gameobject"></a></h4>
+<p>For instance, cause a player to jump, cause an enemy to fly backwards when hit etc.</p>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">private</span> RigidBody playerRigidBody
+<span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">Update</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>Input<span class="token punctuation">.</span><span class="token function">GetKeyDown</span><span class="token punctuation">(</span>KeyCode<span class="token punctuation">.</span>Space<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        playerRb <span class="token operator">=</span> <span class="token generic-method"><span class="token function">GetComponent</span><span class="token generic class-name"><span class="token punctuation">&#x3C;</span>Rigidbody<span class="token punctuation">></span></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        playerRb<span class="token punctuation">.</span><span class="token function">AddForce</span><span class="token punctuation">(</span>Vector3<span class="token punctuation">.</span>up <span class="token operator">*</span> <span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h4 id="detect-a-collision-with-the-gameobject">Detect a collision with the GameObject<a aria-hidden="true" class="anchor-heading icon-link" href="#detect-a-collision-with-the-gameobject"></a></h4>
+<p>Define a new method on your script's main class</p>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">private</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">OnCollisionEnter</span><span class="token punctuation">(</span><span class="token class-name">Collision</span> collision<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// do the thing when there is a collision</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>collision<span class="token punctuation">.</span>gameObject<span class="token punctuation">.</span><span class="token function">CompareTag</span><span class="token punctuation">(</span><span class="token string">"Ground"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        isOnGround <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>collision<span class="token punctuation">.</span>gameObject<span class="token punctuation">.</span><span class="token function">CompareTag</span><span class="token punctuation">(</span><span class="token string">"Obstacle"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        Debug<span class="token punctuation">.</span><span class="token function">Log</span><span class="token punctuation">(</span><span class="token string">"Game over, bro"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        gameOver <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>

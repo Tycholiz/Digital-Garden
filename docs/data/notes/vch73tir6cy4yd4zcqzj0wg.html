@@ -1,0 +1,22 @@
+<h1 id="api">API<a aria-hidden="true" class="anchor-heading icon-link" href="#api"></a></h1>
+<h2 id="operators">Operators<a aria-hidden="true" class="anchor-heading icon-link" href="#operators"></a></h2>
+<p>Operators transform one or more <code>DataStreams</code> into a new <code>DataStream</code>.</p>
+<h3 id="mapflatmap"><code>map</code>/<code>flatMap</code><a aria-hidden="true" class="anchor-heading icon-link" href="#mapflatmap"></a></h3>
+<p>suitable only when performing a one-to-one transformation: for each and every stream element coming in, <code>map()</code> will emit one transformed element</p>
+<ul>
+<li>Otherwise, you will want to use <code>flatmap()</code></li>
+</ul>
+<h3 id="keyby"><code>keyBy</code><a aria-hidden="true" class="anchor-heading icon-link" href="#keyby"></a></h3>
+<p>Logically partitions a stream.</p>
+<ul>
+<li>All records with the same key are assigned to the same partition.</li>
+</ul>
+<p>It is often very useful to be able to partition a stream around one of its attributes</p>
+<ul>
+<li>the result is that all events with the same value of that attribute are grouped together.</li>
+<li>ex. imagine we had a stream of data for taxi rides, and we wanted to find the longest taxi rides starting in each of the grid cells.
+<ul>
+<li>if this were a SQL query, this would mean doing some sort of <code>GROUP BY</code> with the startCell, while in Flink this is done with keyBy(KeySelector)</li>
+</ul>
+</li>
+</ul>

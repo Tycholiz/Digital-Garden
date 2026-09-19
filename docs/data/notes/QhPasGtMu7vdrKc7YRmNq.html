@@ -1,0 +1,19 @@
+<h1 id="migrations">Migrations<a aria-hidden="true" class="anchor-heading icon-link" href="#migrations"></a></h1>
+<p>A migration is just a script that performs a set of synchronous database interactions.</p>
+<ul>
+<li>it is predictable, and can be combined with other migrations to be run in the exact same order every time.</li>
+</ul>
+<p>An important consideration for computationally expensive migrations (ie. migrations that take a long time) is that the database will be locked for the duration, and thus unusable by other entities.</p>
+<p>Preservation of data during migrations in general is not guaranteed because schema changes such as the deletion of a database column can destroy data.</p>
+<ul>
+<li>Therefore, you should never <code>drop table</code> in a migration if there is still data in that table.</li>
+</ul>
+<p>Migrations should always be backwards compatible. This gives us the freedom to rollback the migration, and have a database that is still valid.</p>
+<ul>
+<li>The proper approach to migrations is to expand the schema to work with the old version as well as the new version, then contract it to work only with the new version</li>
+<li>Imagine 2 different users have different versions of an application. Upon signup, the older version asks for first and last name, while the newer asks for middle name as well.</li>
+</ul>
+<h2 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h2>
+<ul>
+<li><a href="https://thorben-janssen.com/update-database-schema-without-downtime/">Migrations without downtime</a></li>
+</ul>

@@ -1,0 +1,46 @@
+<h1 id="kubectl">Kubectl<a aria-hidden="true" class="anchor-heading icon-link" href="#kubectl"></a></h1>
+<p><code>kubectl</code> is used to manage a cluster and applications running inside it.</p>
+<ul>
+<li>When we send commands with <code>kubectl</code>, we are sending commands to the master node of the cluster.</li>
+<li><code>kubectl</code> is a Kubernetes client that connects with the Kubernetes API, much like how psql is a client to a postgres server</li>
+</ul>
+<p>Most often, we provide information to <code>kubectl</code> in the form of a <code>.yml</code> file.</p>
+<ul>
+<li>kubectl converts the information to JSON when making the API request.</li>
+</ul>
+<p>Kubectl also supports the management of Kubernetes <a href="/notes/697fe32a-7fd3-40cb-aa25-9914c7dde11f">objects</a> using a <a href="/notes/zirmu2JLi2lSneEH562Wp">kustomization</a> file</p>
+<h3 id="kubeconfig-files">Kubeconfig files<a aria-hidden="true" class="anchor-heading icon-link" href="#kubeconfig-files"></a></h3>
+<p><code>kubectl</code> uses kubeconfig files to find the information it needs to choose a cluster and communicate with the API server of a cluster.</p>
+<ul>
+<li>the kubeconfig file is used to configure access to clusters</li>
+<li>note: there is no single kubeconfig file; it is a generic way of referring to configuration files.</li>
+</ul>
+<p>By default, <code>kubectl</code> looks for a file named config in the <code>$HOME/.kube</code> directory</p>
+<h4 id="context">Context<a aria-hidden="true" class="anchor-heading icon-link" href="#context"></a></h4>
+<p>A context is essentially the combination of a user and a cluster configuration/certificates.</p>
+<ul>
+<li>ex. referring to using ContextA could mean using User5 with Cluster2, depending on how we configure it in <code>~/.kube/config</code></li>
+</ul>
+<p>A context provides us with a way to manage and switch between different clusters and user configurations.</p>
+<p>It consists of the following components:</p>
+<ul>
+<li>cluster</li>
+<li>user: an entity that interacts with the Kubernetes API</li>
+<li>namespace: a way to divide cluster resources between multiple users or projects.</li>
+</ul>
+<p>It’s important to understand that a Kubernetes context only applies to the client side. The Kubernetes API server itself doesn’t recognize context the way it does other objects such as pods, deployments, or namespaces.</p>
+<p>Kubernetes configuration files (typically located at <code>~/.kube/config</code> or a file specified by the <code>KUBECONFIG</code> environment variable) store context information along with other configuration details. The <code>kubectl</code> command-line tool uses this configuration file to determine which cluster, user, and namespace to interact with.</p>
+<p>Contexts are useful in scenarios where you work with multiple Kubernetes clusters, such as development, testing, and production environments. They help ensure that your kubectl commands are directed to the intended cluster and namespace with the correct user credentials.</p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/r945tx4ohc8unoj9d4u3d5w">Cook</a></li>
+<li><a href="/notes/HnABgT2HZRrecgV5YHg8X">Kubectl CLI</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/697fe32a-7fd3-40cb-aa25-9914c7dde11f">Kubernetes Objects</a></li>
+<li><a href="/notes/e8npja53q61750uotmn4hki">Dashboard</a></li>
+<li><a href="/notes/hecaydk40a6wqiprau7l8qz">API Server</a></li>
+</ul>

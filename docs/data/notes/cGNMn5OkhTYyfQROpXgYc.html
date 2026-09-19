@@ -1,0 +1,139 @@
+<h1 id="streams">Streams<a aria-hidden="true" class="anchor-heading icon-link" href="#streams"></a></h1>
+<h2 id="what-is-it">What is it?<a aria-hidden="true" class="anchor-heading icon-link" href="#what-is-it"></a></h2>
+<ul>
+<li>Streams are used to read or write input into output sequentially</li>
+<li>What makes streams unique, is that instead of a program reading a file into memory all at once like in the traditional way, streams read chunks of data piece by piece, processing its content without keeping it all in memory.
+<ul>
+<li>This makes streams really powerful when working with large amounts of data, for example, a file size can be larger than your free memory space, making it impossible to read the whole file into the memory in order to process it. That’s where streams come to the rescue!</li>
+</ul>
+</li>
+<li>Streams are a way to handle reading/writing files, network communications, or any kind of end-to-end information exchange in an efficient way</li>
+<li>streams are not only about working with media (ie. streaming movies/music) or big data. They also give us the power of ‘composability’ in our code
+<ul>
+<li>it’s possible to compose powerful pieces of code by piping data to and from other smaller pieces of code, using streams.</li>
+</ul>
+</li>
+</ul>
+<p>it is best to think of a Stream as an established connection to some input, some output, or both. A lot of things can muddy this definition of stream, but that is the fundamental idea... A connection to some input or some output or some I/O endpoint that can handle both input and output.</p>
+<ul>
+<li>ex. one might have a readable stream to a file that one wants to get the contents of. In this case the stream is an input connection to the file. The input stream doesn't hold the contents of the file, but rather holds the connection to the file. It is up to the program to then read and store the contents (assuming that is the desired operation).
+<ul>
+<li>One place a stream might store the content is in a <a href="/notes/6DN20aQUJntqI2PjUMAgZ">Buffer</a> object (if we were using Node).</li>
+</ul>
+</li>
+</ul>
+<h2 id="why-use-streams-over-other-data-handling-methods">Why use streams over other data handling methods?<a aria-hidden="true" class="anchor-heading icon-link" href="#why-use-streams-over-other-data-handling-methods"></a></h2>
+<ol>
+<li>Memory efficiency: you don’t need to load large amounts of data in memory before you are able to process it</li>
+<li>Time efficiency: it takes significantly less time to start processing data as soon as you have it, rather than having to wait with processing until the entire payload has been transmitted</li>
+</ol>
+<h2 id="standard-streams">Standard Streams<a aria-hidden="true" class="anchor-heading icon-link" href="#standard-streams"></a></h2>
+<ul>
+<li>communication channels between a program and its environment (ie. the host that executes it).</li>
+<li>stdin and stdout are inherited from the parent process, though it can be redirected.</li>
+<li>anal: The Services menu, as implemented on Mac OSX, is analogous to standard streams. On this operating systems, graphical applications can provide functionality through a systemwide menu that operates on the current selection in the GUI, no matter in what application.</li>
+<li>The correct way to think about redirection is that one redirects output to a file (<code>></code>), and one redirects a file's contents to stdout (<code>&#x3C;</code>).</li>
+</ul>
+<h3 id="file-descriptor-fd">File Descriptor (FD)<a aria-hidden="true" class="anchor-heading icon-link" href="#file-descriptor-fd"></a></h3>
+<ul>
+<li>A FD is a number that uniquely identifies an open file in a computer's operating system
+<ul>
+<li>A file can be thought of simply as a resource. In other words, something that provides data. A file as we know it fulfills this definiion, but also consider that streams do as well. Therefore, a file in this sense is more general, and simply stands for "a resource that provides data".</li>
+</ul>
+</li>
+<li>A FD gives us the means to access a file, or perhaps more interestingly, a standard stream
+<ul>
+<li>therefore an FD is a reference to the standard stream</li>
+</ul>
+</li>
+<li>ex. The file descriptor for standard input has id = 0</li>
+<li>Part of what makes Unix so well designed is that the common interface between so many commands is a simple file descriptor. If we expect the output of one program to become the input to another program, then those programs must use the same data format (to get a compatible interface). In Unix, that interface is a file descriptor, which is just a sequence of bytes.
+<ul>
+<li>ex. <code>awk</code>, <code>sort</code>, <code>uniq</code>, and <code>head</code> all treat their input file as a list of records separated by <code>\n</code></li>
+</ul>
+</li>
+<li>Because the file descriptor is such a simple interface, so many different things can be represented with that interface.
+<ul>
+<li>an actual file on the filesystem</li>
+<li>a communication channel to another process (Unix socket, stdin, stdout)</li>
+<li>a device driver (e.g. <code>/dev/audio</code>, <code>/dev/lp0</code>)</li>
+<li>a socket representing a TCP connection</li>
+</ul>
+</li>
+</ul>
+<p>A file descriptor is associated with an input/output resource, which would include regular files, network sockets, and pipes</p>
+<!-- - except for redirections with `<&`, any time we do a redirection, -->
+<h3 id="stdin">STDIN<a aria-hidden="true" class="anchor-heading icon-link" href="#stdin"></a></h3>
+<p>Standard input is a stream from which a program reads its input data.</p>
+<ul>
+<li>the program requests this data transfer by using the <em>read</em> operation</li>
+<li>ex. the keyboard is the stdin to a text editor, and also to an interactive shell.</li>
+</ul>
+<p>When we redirect with <code>&#x3C;</code>, implicitly we are running <code>1&#x3C;</code></p>
+<h3 id="stdout">STDOUT<a aria-hidden="true" class="anchor-heading icon-link" href="#stdout"></a></h3>
+<p>Standard output is a stream to which a program writes its output data.</p>
+<ul>
+<li>the program requests this data transfer by using the <em>write</em> operation</li>
+</ul>
+<h3 id="stderr">STDERR<a aria-hidden="true" class="anchor-heading icon-link" href="#stderr"></a></h3>
+<ul>
+<li>having 2 different output streams is analogous to functions that return a pair of values</li>
+<li>The terminal that executes the program is the default stderr destination.
+<ul>
+<li>sometimes stdout is redirected, so the fact that stdout and stderr are different streams allows stderr to continue outputting its streams elsewhere than stdout.
+<ul>
+<li>ex. when we pipe the output of one program into another. Imagine we were piping data between different hosts. If there was a single stream, it would get passed along the chain. Now with stderr, we are able to see stderr in the executing terminal and trace down the location of the logs to find the offending program.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="21">2>&#x26;1<a aria-hidden="true" class="anchor-heading icon-link" href="#21"></a></h4>
+<ul>
+<li>
+<p>we can append <code>2>&#x26;1</code> on any unix command to redirect stderr to the same destination as stdout</p>
+<ul>
+<li>often, we see <code>2>/dev/null</code>, which means "redirect stderr to <code>/dev/null</code>, a blackhole"</li>
+<li>ex. the <strong>find</strong> utility displays both stdout and stderr to the terminal. If we append the command with blackhole redirection, then only the stdout will be shown.</li>
+</ul>
+</li>
+<li>
+<p>placement of <code>2>&#x26;1</code> is critical to determining its meaning. Consider the following variants of the same command:</p>
+</li>
+<li>
+<p><code>|&#x26;</code> is shorthand for <code>2>&#x26;1 |</code></p>
+</li>
+<li>
+<p><code>echo hello > stuff.txt</code> === <code>echo hello 1> stuff.txt</code>.</p>
+<ul>
+<li>ie. the <code>1</code> (stdout) is implicit. we are saying "redirect the stdout of the echo command to <code>stuff.txt</code>"</li>
+</ul>
+</li>
+<li>
+<p><code>0</code> means stdin, <code>1</code> means stdout, <code>2</code> means stderr</p>
+</li>
+<li>
+<p>in the context of redirections, <code>&#x26;</code> means "the following is a file descriptor (ie. the type of standard stream) and not a filename". Without <code>&#x26;</code>, we would be writing to a file named <code>1</code></p>
+</li>
+</ul>
+<pre><code>// stderr goes to terminal, and nothing gets written to outfile
+command_does_not_exist 2>&#x26;1 > outfile
+
+// stderr goes to stdout, and gets written into outfile
+command_does_not_exist > outfile 2>&#x26;1
+</code></pre>
+<p>In the first example, when we encountered <code>2>&#x26;1</code>, we were saying "pipe all stderr into the same stream as stdout". At this point in the command, stdout was simply the terminal (spec: since that is the default stdout of a command). Since stdout was the terminal at this point, we also declared that stderr should point to the terminal. In this way, <code>2>&#x26;1</code> doesn't cause stderr to equal stdout. It merely points it the same way stdout is facing. Nothing is stopping stdout from changing direction later on, which is exactly what happens. When we write <code>> outfile</code>, we are declaring that stdout should be <code>outfile</code>.</p>
+<p>In the second example, we see that by the time we evaluate <code>2>&#x26;1</code>, stdout is <code>outfile</code>. This causes stderr to also point at <code>outfile</code>, hence is why in this example, the file is populated with <code>command not found: command_does_not_exist</code></p>
+<ul>
+<li>the <code>2>&#x26;1</code> operator points file descriptor 2 to the same target file descriptor 1 is pointing at.</li>
+</ul>
+<h2 id="special-file">Special File<a aria-hidden="true" class="anchor-heading icon-link" href="#special-file"></a></h2>
+<ul>
+<li>spec: In Unix, the most comfortable means for programs to communicate is via files. It is easy to set up standard streams with files, so it is an appropriate level of abstraction to communicate with the Unix system. For this reason, Unix has this concept of a <em>special file</em>, which is a file that represents something that is not a file at all.</li>
+<li>ex. consider a partition of a hard drive that "exists" in the FS at <code>/dev/sda3</code>. In reality, this is just how the filesystem "knows of" the partition. The <code>sda3</code> file enables the partition to communicate with the Unix system via standard streams.</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/77d8d8d6-4f2a-4b0f-85f6-7f50f1175b3a">Terms</a></li>
+</ul>

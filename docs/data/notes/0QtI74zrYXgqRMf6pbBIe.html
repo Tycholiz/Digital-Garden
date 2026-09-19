@@ -1,0 +1,23 @@
+<h1 id="mx-record">MX Record<a aria-hidden="true" class="anchor-heading icon-link" href="#mx-record"></a></h1>
+<p>Mail exchange (SMTP)</p>
+<ul>
+<li>MX Records point to the incoming smtp server for a domain</li>
+<li>the record indicates how email messages should be routed (in accordance with SMTP)
+<ul>
+<li>ex. When a user sends an email to <a href="/mailto:john.smith@gmail.com">john.smith@gmail.com</a>, the <em>Message Transfer Agent</em> (MTA) sends a DNS query to identify the mail servers for that email address. The MTA establishes an SMTP connection with those mail servers, starting with the prioritized domains</li>
+</ul>
+</li>
+<li>must point to an A record</li>
+<li><code>priority</code> - lower number indicates preference. In the result of a send failure, the next priority domain will be attempted 
+<ul>
+<li><code>mailhost1.tycholiz.com</code> might have <code>priority</code> of 10, and <code>mailhost2.tycholiz.com</code> might have <code>priority</code> of 20, which would mean <code>mailhost2</code> only gets used when the first message fails to send. </li>
+<li>if we use the same priority, then both servers will receive equal amount of mail (effectively a load balancer) </li>
+<li>priority exists to prevent mail-routing loops</li>
+</ul>
+</li>
+</ul>
+<p>MX records specify a mail exchanger for a domain name: a host that will either process or forward mail for the domain name (through a firewall, for example)</p>
+<ul>
+<li>Processing the mail means either delivering it to the individual to whom it’s addressed or gatewaying it to another mail transport, such as X.400</li>
+<li>Forwarding means sending it to its final destination or to another mail exchanger closer to the destination via <a href="/notes/LpE7frn7u1G7OIaM3oxmL">SMTP</a></li>
+</ul>

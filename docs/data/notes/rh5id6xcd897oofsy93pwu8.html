@@ -1,0 +1,25 @@
+<h1 id="logical">Logical<a aria-hidden="true" class="anchor-heading icon-link" href="#logical"></a></h1>
+<h2 id="logical-and----logical-conjunction">Logical AND (<code>&#x26;&#x26;</code>) - Logical Conjunction<a aria-hidden="true" class="anchor-heading icon-link" href="#logical-and----logical-conjunction"></a></h2>
+<p>If one of the operands is falsy, then that first falsy operand will be returned, and the rest of the operands will never be executed (therefore, it is a short-circuit operator)</p>
+<ul>
+<li>ex. <code>3 > 0 &#x26;&#x26; -2 > 0</code> &#x3C;-- returns <code>false</code></li>
+<li>ex. <code>"" &#x26;&#x26; "foo"</code> &#x3C;-- returns <code>""</code></li>
+</ul>
+<p>If all of the operands are truthy, then the last operand will be returned</p>
+<ul>
+<li>ex. <code>3 > 0 &#x26;&#x26; 6 > 0</code> &#x3C;-- returns <code>true</code></li>
+</ul>
+<p>The value that is returned can always be converted to a boolean primitive by using the double <code>NOT</code> operator (<code>!!</code>)</p>
+<ul>
+<li>ex. <code>!!"" &#x26;&#x26; "foo"</code> &#x3C;-- returns <code>false</code></li>
+</ul>
+<p>The <code>AND</code> operator has a higher precedence than the <code>OR</code> operator, meaning the &#x26;&#x26; operator is executed before the || operator</p>
+<h2 id="logical-or----logical-disjunction">Logical OR (<code>||</code>) - Logical Disjunction<a aria-hidden="true" class="anchor-heading icon-link" href="#logical-or----logical-disjunction"></a></h2>
+<p>If one or more of the operands is truthy, then that first truthy operand will be returned, and the rest of the operands will never be executed (therefore, it is a short-circuit operator)</p>
+<ul>
+<li>if all operands are falsy, then the last operand is returned</li>
+</ul>
+<p>The value that is returned can always be converted to a boolean primitive by using the double <code>NOT</code> operator (<code>!!</code>)</p>
+<ul>
+<li>ex. <code>"" || !!"foo"</code> &#x3C;-- returns <code>true</code></li>
+</ul>

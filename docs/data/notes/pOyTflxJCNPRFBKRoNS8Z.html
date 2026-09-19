@@ -1,0 +1,36 @@
+<h1 id="requires">@requires<a aria-hidden="true" class="anchor-heading icon-link" href="#requires"></a></h1>
+<p>When extending a schema, it's often because you want to expose data from Node.js that would be too difficult (or impossible) to access from PostgreSQL</p>
+<ul>
+<li>in other words, we come to a situation where we don't want to rely on Postgres to process and give us data, but instead want to rely on Node to do the job for us.</li>
+</ul>
+<h2 id="usd-to-cad-example">USD to CAD example<a aria-hidden="true" class="anchor-heading icon-link" href="#usd-to-cad-example"></a></h2>
+<ul>
+<li>Imagine in our database we store the price of a product in USD. However, we want to be able to query the <code>priceInCad</code>, directly as a field on the graphql schema:</li>
+</ul>
+<pre class="language-gql"><code class="language-gql">query Product {
+	product {
+		priceInCad
+	}
+}
+</code></pre>
+<p>We can accomplish this by making a custom Postgraphile plugin, which would extend the Graphql schema to include the <code>priceInCadCents</code> field on the <code>Product</code> type:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token maybe-class-name">MyForeignExchangePlugin</span> <span class="token operator">=</span> <span class="token function">makeExtendSchemaPlugin</span><span class="token punctuation">(</span><span class="token parameter">build</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+  <span class="token keyword control-flow">return</span> <span class="token punctuation">{</span>
+    <span class="token literal-property property">typeDefs</span><span class="token operator">:</span> gql<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token graphql language-graphql">
+			<span class="token keyword">extend</span> <span class="token keyword">type</span> <span class="token class-name">Product</span> <span class="token punctuation">{</span>
+				<span class="token attr-name">priceInCadCents</span><span class="token punctuation">:</span> <span class="token scalar">Int</span><span class="token operator">!</span> <span class="token directive function">@requires</span><span class="token punctuation">(</span><span class="token attr-name">columns</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"price_in_us_cents"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+			<span class="token punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">,</span>
+    <span class="token literal-property property">resolvers</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token literal-property property">Product</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token function-variable function">priceInCadCents</span><span class="token operator">:</span> <span class="token keyword">async</span> <span class="token parameter">product</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+          <span class="token comment">// Note that the columns are converted to fields, so the case changes</span>
+          <span class="token comment">// from `price_in_us_cents` to `priceInUsCents`</span>
+          <span class="token keyword">const</span> <span class="token punctuation">{</span> priceInUsCents <span class="token punctuation">}</span> <span class="token operator">=</span> product<span class="token punctuation">;</span>
+          <span class="token keyword control-flow">return</span> <span class="token keyword control-flow">await</span> <span class="token function">convertUsdToCad</span><span class="token punctuation">(</span>priceInUsCents<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>we include the <code>@requires</code> directive to show that in order to calculate this field, we need the postgres column <code>price_in_us_cents</code></p>

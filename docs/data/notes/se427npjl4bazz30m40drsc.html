@@ -1,0 +1,21 @@
+<h1 id="stream">Stream<a aria-hidden="true" class="anchor-heading icon-link" href="#stream"></a></h1>
+<p>Kafka Streams is a stream-processing (Java-based) API that gives us access to all of the computational primitives of stream processing (filtering, grouping, aggregating, joining etc.)</p>
+<ul>
+<li>Using Streams negates our need to write framework code on top of our consumer API to do these things</li>
+<li>Using Streams also provides direct support for the potentially large amounts of state that result from doing stream processing operations, negating our need to have to manage that state (and thereby negating our need to have to worry about fault-tolerance)
+<ul>
+<li>this is notable, since just about anything interesting we are going to be doing in a consumer is going to be stateful (e.g. grouping events by a field with many unique values, then performing an aggregation over that group every hour).</li>
+</ul>
+</li>
+</ul>
+<p>A Kafka Streams application is a consumer group, meaning it has its own scaling capabilities built in.</p>
+<p>Kafka Streams is a library rather, than an infrastructure</p>
+<ul>
+<li>that is, it's something you add to an application</li>
+</ul>
+<p>Streams persists the state to internal topics in the Kafka cluster, allowing us to restore state in the event of failure.</p>
+<ul>
+<li>this helps not only in event of failure, but also when we're adding/removing stream processing nodes to our consumer group.</li>
+</ul>
+<p>Over time, the consumer-side of a Kafka system tends to grow in complexity (though not so much producers)</p>
+<p><a href="https://kafka.apache.org/documentation/streams/">https://kafka.apache.org/documentation/streams/</a></p>

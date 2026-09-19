@@ -1,0 +1,7 @@
+<h1 id="tag">Tag<a aria-hidden="true" class="anchor-heading icon-link" href="#tag"></a></h1>
+<p>tagging your image with the fully-qualified name of your registry allows us to tell Docker where to upload the image</p>
+<pre class="language-sh"><code class="language-sh">docker tag neverforget-server:0.0.2 registry.digitalocean.com/neverforget/neverforget-server:0.0.2
+</code></pre>
+<p>After that, you can push it</p>
+<pre><code>docker push registry.digitalocean.com/neverforget/neverforget-server:0.0.2
+</code></pre>

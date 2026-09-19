@@ -1,0 +1,23 @@
+<h1 id="assertion">Assertion<a aria-hidden="true" class="anchor-heading icon-link" href="#assertion"></a></h1>
+<p>Type assertions helps you to force types when you are not in control of them. For e.g. -</p>
+<ol>
+<li>you are processing user data (with unreliable types)</li>
+<li>working with data that has changed shape over years (employee code was numeric, now it is alphanumeric :))</li>
+<li>receiving data from an external program</li>
+</ol>
+<p>Type assertions let the Typescript compiler know that a given variable should be treated as belonging to a certain type. There are no “exceptions” or data restructuring associated with assertions, except minimal validations (we refer this behaviour as “validations that are applied statically”).</p>
+<p>There are two ways to do type assertions.</p>
+<ol>
+<li>Bracket syntax. e.g. <code>let length: number = (&#x3C;string>lengthField);</code></li>
+<li>Use as. e.g. <code>let length: number = lengthField as string;</code>
+There is no difference between the two ways and the end result is always the same. Note that if you are using JSX you have to use <code>as</code> syntax.</li>
+</ol>
+<h2 id="cook">Cook<a aria-hidden="true" class="anchor-heading icon-link" href="#cook"></a></h2>
+<h3 id="assert-as-a-subtype-on-an-interfacetype">Assert as a subtype on an Interface/Type<a aria-hidden="true" class="anchor-heading icon-link" href="#assert-as-a-subtype-on-an-interfacetype"></a></h3>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">interface</span> <span class="token class-name"><span class="token maybe-class-name">Data</span></span> <span class="token punctuation">{</span>
+  events<span class="token operator">:</span> <span class="token punctuation">{</span>
+    id<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">const</span> copiedEvents <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token spread operator">...</span>data<span class="token punctuation">.</span><span class="token property-access">events</span><span class="token punctuation">]</span> <span class="token keyword module">as</span> <span class="token maybe-class-name">Data</span><span class="token punctuation">[</span><span class="token string">'events'</span><span class="token punctuation">]</span>
+</code></pre>

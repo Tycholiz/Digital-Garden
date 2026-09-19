@@ -1,0 +1,16 @@
+<h1 id="batch">Batch<a aria-hidden="true" class="anchor-heading icon-link" href="#batch"></a></h1>
+<p>In GraphQL apps, batching usually takes one of two forms. </p>
+<ol>
+<li>
+<p>take all operations and combine them into a single operation using the <code>alias</code> feature in GraphQL. </p>
+<ul>
+<li>This approach is not recommended, however, since this removes the ease of tracking metrics on a per-operation basis and adds additional complexity to the client.</li>
+</ul>
+</li>
+<li>
+<p>send an array of operations to a GraphQL server, having the server recognize the request as an array of operations instead of a single one, and handle each operation separately. </p>
+<ul>
+<li>This method still requires only a single round-trip, while retaining the ability to track single operation performance. Apollo Client handles batching like this using <code>apollo-link-batch-http</code>. It’s also worth noting that this method requires the server to be able to receive an array of operations as well as single operations. Luckily, <code>apollo-server</code> supports this out of the box.</li>
+</ul>
+</li>
+</ol>

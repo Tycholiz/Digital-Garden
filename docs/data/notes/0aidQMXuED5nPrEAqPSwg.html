@@ -1,0 +1,32 @@
+<h1 id="provider">Provider<a aria-hidden="true" class="anchor-heading icon-link" href="#provider"></a></h1>
+<h2 id="summary">Summary<a aria-hidden="true" class="anchor-heading icon-link" href="#summary"></a></h2>
+<p>A provider is a connection that allows Terraform to manage infrastructure using an interface (e.g. AWS API)</p>
+<h2 id="how-it-works">How it works<a aria-hidden="true" class="anchor-heading icon-link" href="#how-it-works"></a></h2>
+<p>The added abstraction means the provider is completely separate from the Terraform engine</p>
+<p>We can have multiple instances of the same provider in our project. To more easily distinguish between the two, we can use an <code>alias</code> property.</p>
+<ul>
+<li>ex. if we want an aws provider in <code>us-east-1</code> and another in <code>us-west-2</code></li>
+</ul>
+<p>Because of the Terraform engine, anyone can write a provider to connect to anything that has a programmable way to talk to it.</p>
+<ul>
+<li>therefore, Providers are not part of the main Terraform source code. They are separate binaries that exist in their own repos.
+<ul>
+<li>Hashicorp hosts a registry that contains the most popular providers, like AWS and Azure</li>
+</ul>
+</li>
+</ul>
+<p>Providers in your project can be found in the <code>.terraform/</code> directory.</p>
+<ul>
+<li>each provider binary is in the format <code>terraform-provider-&#x3C;NAME>_vX.Y.Z</code>
+<ul>
+<li>when you run <code>terraform init</code>, binaries of this format are automatically searched for so it can determine if it actually needs to download it or not. </li>
+</ul>
+</li>
+</ul>
+<p>Terraform uses lockfiles so that the same versions will be used across different machines (just like npm/yarn lockfiles.)</p>
+<p>All the author of a provider has to do for each resource they want Terraform to control is to define how to create, read and destroy it.</p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/Ku1OgHMhELajzo61Gx7ye">Terraform</a></li>
+</ul>

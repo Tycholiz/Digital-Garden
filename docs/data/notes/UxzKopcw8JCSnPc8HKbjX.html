@@ -1,0 +1,74 @@
+<h1 id="decorator-pattern">Decorator Pattern<a aria-hidden="true" class="anchor-heading icon-link" href="#decorator-pattern"></a></h1>
+<h2 id="what-are-they">What are they?<a aria-hidden="true" class="anchor-heading icon-link" href="#what-are-they"></a></h2>
+<p>A decorator is a function that can be used to extend (decorate) the functionality of a certain object at run-time, independently of other instances of the same class.</p>
+<ul>
+<li>This is achieved by designing a new Decorator class that wraps the original class/method.</li>
+<li>One value is that they read more like plain English, and allow us to discern at a distance what behaviour has been added to a given class/method.</li>
+</ul>
+<p>Decorators are helpful for anything you want to transparently wrap with extra functionality. </p>
+<ul>
+<li>ex. memoization, enforcing access control and authentication, instrumentation and timing functions, logging, rate-limiting etc.</li>
+</ul>
+<p>Decorators help us adhere to Single Responsibility Principle, since it allows functionality to be divided between classes with unique areas of concern.</p>
+<ul>
+<li>We might have solved this problem with <a href="/notes/zv00g97iw4ngvv7pht794rd">subclassing</a>, but decorators can be more efficient because an object's behavior can be augmented without defining an entirely new object.
+<ul>
+<li>subclassing (ie. <code>extend</code>ing) happens at compile time, meaning that this binding cannot be changed at run-time.</li>
+</ul>
+</li>
+</ul>
+<h3 id="differences-between-other-structural-patterns">Differences between other structural patterns<a aria-hidden="true" class="anchor-heading icon-link" href="#differences-between-other-structural-patterns"></a></h3>
+<p>While an <a href="/notes/9xKdcGBAmZHfv1f9UOkF5">Adapter</a> provides a different interface to its subject, and a Proxy provides the same interface, a Decorator provides an enhanced interface.</p>
+<ul>
+<li>a Decorator enhances an object's responsibilities. Decorator is thus more transparent to the client. As a consequence, Decorator supports recursive composition, which isn't possible with pure Adapters.</li>
+</ul>
+<p>An <a href="/notes/9xKdcGBAmZHfv1f9UOkF5">adapter</a> should be used when the wrapper must respect a particular interface and must support <a href="/notes/mwUoGg8N9TBfS2RuB8cf9">polymorphic</a> behavior.</p>
+<p>Decorator and Proxy have different purposes but similar structures. Both describe how to provide a level of indirection to another object, and the implementations keep a reference to the object to which they forward requests.</p>
+<h2 id="how-are-they-used">How are they used?<a aria-hidden="true" class="anchor-heading icon-link" href="#how-are-they-used"></a></h2>
+<p>Decorators can be thought of as functions.</p>
+<ul>
+<li>you can think of:
+<pre class="language-ts"><code class="language-ts"><span class="token decorator"><span class="token at operator">@</span><span class="token function">Decorator</span></span>
+<span class="token keyword">class</span> <span class="token class-name"><span class="token maybe-class-name">Foo</span></span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+</code></pre>
+as
+<pre class="language-ts"><code class="language-ts"><span class="token function"><span class="token maybe-class-name">Decorator</span></span><span class="token punctuation">(</span> <span class="token keyword">new</span> <span class="token class-name"><span class="token maybe-class-name">Foo</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">)</span>
+</code></pre>
+</li>
+</ul>
+<p>Imagine having a <code>Decorator</code> class that implements the interface of the extended (decorated) object transparently by forwarding all requests to it </p>
+<h3 id="example">Example<a aria-hidden="true" class="anchor-heading icon-link" href="#example"></a></h3>
+<p>Imagine that we had a <code>@UserValidatorDecorator</code> whose sole responsibility was to verify that a username adheres to our application's business logic:</p>
+<ul>
+<li>note: not valid code; just for illustrative purposes</li>
+</ul>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">function</span> <span class="token function"><span class="token maybe-class-name">UserValidatorDecorator</span></span><span class="token punctuation">(</span>user<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span>user<span class="token punctuation">.</span><span class="token property-access">username</span> <span class="token operator">===</span> <span class="token string">""</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword control-flow">throw</span> <span class="token keyword">new</span> <span class="token class-name"><span class="token known-class-name class-name">Error</span></span><span class="token punctuation">(</span><span class="token string">'Invalid!'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Then, we can use the decorator to ensure that each time we instantiate, the logic of the decorator is used:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token decorator"><span class="token at operator">@</span><span class="token function">UserValidatorDecorator</span></span>
+<span class="token keyword">class</span> <span class="token class-name"><span class="token maybe-class-name">User</span></span> <span class="token punctuation">{</span>
+  username<span class="token operator">:</span> <span class="token builtin">string</span> <span class="token operator">=</span> <span class="token string">""</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="decorator-factory">Decorator Factory<a aria-hidden="true" class="anchor-heading icon-link" href="#decorator-factory"></a></h3>
+<p>A Decorator Factory is simply a function that returns the expression that will be called by the decorator at runtime.</p>
+<p>Example:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">function</span> <span class="token function">color</span><span class="token punctuation">(</span>value<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// this is the decorator factory. it sets up the returned decorator function</span>
+  <span class="token keyword control-flow">return</span> <span class="token keyword">function</span> <span class="token punctuation">(</span>target<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// this is the decorator. do something with 'target' and 'value'...</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="alternatives-to-decorators">Alternatives to Decorators<a aria-hidden="true" class="anchor-heading icon-link" href="#alternatives-to-decorators"></a></h3>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/np3c1ykvnjqv5xoombpfwqz">Datadog</a></li>
+<li><a href="/notes/j8xi6ftco6n2pbjqw6sbijg">Decorator</a></li>
+<li><a href="/notes/9xKdcGBAmZHfv1f9UOkF5">Adapter Pattern</a></li>
+</ul>

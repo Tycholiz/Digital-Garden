@@ -1,0 +1,22 @@
+<h1 id="unix-man-pages">Unix Man Pages<a aria-hidden="true" class="anchor-heading icon-link" href="#unix-man-pages"></a></h1>
+<h2 id="formatting-a-command">Formatting a command<a aria-hidden="true" class="anchor-heading icon-link" href="#formatting-a-command"></a></h2>
+<ul>
+<li>anything in <code>[]</code> brackets indicates optional</li>
+<li><code>--</code> - signify end of command options. Only positional params are accepted after this point, such as which file will be targeted for the operation.
+<ul>
+<li>ex. say we want to grep for the string <code>-v</code>. If we just executed <code>grep -v file.txt</code>, the <code>-v</code> would be interpreted as an argument on grep. If we execute <code>grep -- -v file.txt</code>, <code>--</code> tells us "ok, that's it. No more arguments accepted". Since the section after the args section is the pattern section, <code>-v</code> gets interpreted as a pattern.</li>
+</ul>
+</li>
+</ul>
+<h3 id="valid-command-form">Valid command form<a aria-hidden="true" class="anchor-heading icon-link" href="#valid-command-form"></a></h3>
+<ul>
+<li>angle brackets for required parameters: <code>ping &#x3C;hostname></code></li>
+<li>square brackets for optional parameters: <code>mkdir [-p] &#x3C;dirname></code></li>
+<li>ellipses for repeated items: <code>cp &#x3C;source1> [source2…] &#x3C;dest></code></li>
+<li>vertical bars for choice of items: <code>netstat {-t|-u}</code></li>
+</ul>
+<h3 id="unix-built-ins">Unix built-ins<a aria-hidden="true" class="anchor-heading icon-link" href="#unix-built-ins"></a></h3>
+<p>use the <code>manbash</code> command to see man pages for built-ins (e.g. <code>cd</code>, <code>eval</code>)</p>
+<ul>
+<li><a href="https://unix.stackexchange.com/questions/18087/can-i-get-individual-man-pages-for-the-bash-builtin-commands">source</a></li>
+</ul>

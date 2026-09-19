@@ -1,0 +1,14 @@
+<h1 id="nslookup">Nslookup<a aria-hidden="true" class="anchor-heading icon-link" href="#nslookup"></a></h1>
+<p>we can use <em>nslookup</em> to send queries in much the same way that <a href="/notes/uQ1OlrkssyoguJ6mCM7hj">resolvers</a> do.</p>
+<ul>
+<li>we can also use it to query other nameservers as a nameserver would</li>
+</ul>
+<p>The biggest difference between <em>nslookup</em>’s behavior and the resolver’s behavior is that <em>nslookup</em> talks to only one nameserver at a time.</p>
+<ul>
+<li>in <code>/etc/resolv.conf</code>, if there are 2 nameservers listed, then the resolver will try the first, then the second. On the other hand, <code>nslookup</code> will only ever try the first.</li>
+</ul>
+<p>By default, nslookup looks up <a href="/notes/dG0EOFLhB3CJeeBwLDvbi">A records</a></p>
+<ul>
+<li>if you type in an IP address (and the nslookup query type is A or PTR), nslookup inverts the address, appends in-addr.arpa, and looks up PTR records instead</li>
+</ul>
+<p>We can also use <code>https://dnslookup.online</code></p>

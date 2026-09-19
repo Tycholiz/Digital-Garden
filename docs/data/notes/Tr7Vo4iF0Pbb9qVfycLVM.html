@@ -1,0 +1,92 @@
+<h1 id="ip-address">IP Address<a aria-hidden="true" class="anchor-heading icon-link" href="#ip-address"></a></h1>
+<p>IP (the Internet Protocol) is unreliable: it may drop, delay, duplicate, or reorder packets.</p>
+<h2 id="ip-address-1">IP Address<a aria-hidden="true" class="anchor-heading icon-link" href="#ip-address-1"></a></h2>
+<p>IP addresses consist of 32 bits, which is why the address is broken down into 4 parts of 8 bits each.</p>
+<ul>
+<li>255 represents 8 bits.</li>
+</ul>
+<p>IP addresses are hierarchical, just like <a href="/notes/nu4jr5d094zri5ni0kw247w">domain names</a>.</p>
+<ul>
+<li>subnetting is the same concept as creating multiple different subdomains. The only difference is that while domains get more specific from left to right, IP addresses get more specific from right to left.</li>
+</ul>
+<h3 id="ip-address-spaces">IP Address Spaces<a aria-hidden="true" class="anchor-heading icon-link" href="#ip-address-spaces"></a></h3>
+<ul>
+<li>there are 2 main IP Address Spaces: public and private.
+<ul>
+<li>public are routable on the internet, meaning every device on the internet needs its own pubic IP</li>
+</ul>
+</li>
+<li>the public address space is further divided into 5 classes:
+Class A	0.0.0.0 – 126.255.255.255
+Class B	128.0.0.0 – 191.255.255.255
+Class C	192.0.0.0 – 223.255.255.255
+Class D	224.0.0.0 – 239.255.255.255
+Class E	240.0.0.0 – 255.255.255.255
+<pre><code>- A,B,C - devices directly connected to internet
+	- ex. L3 switches, routers, firewalls, servers
+- D - multicast traffic
+- E - experimental
+</code></pre>
+</li>
+<li>The private address space is divided into 3 classes:
+Class A—10.0.0.0/8 network block	10.0.0.0 – 010.255.255.255
+Class B—172.16.0.0/12 network block	172.16.0.0 – 172.31.255.255
+Class C—192.168.0.0/16 network block	192.168.0.0 – 192.168.255.255</li>
+</ul>
+<h3 id="address-block">Address block<a aria-hidden="true" class="anchor-heading icon-link" href="#address-block"></a></h3>
+<p></p><p></p><div class="portal-container">
+<div class="portal-head">
+<div class="portal-backlink">
+<div class="portal-title">From <span class="portal-text-title">Router</span></div>
+<a href="/notes/jpq1HwjcA1Cfx1djcWL8z" class="portal-arrow">Go to text <span class="right-arrow">→</span></a>
+</div>
+</div>
+<div id="portal-parent-anchor" class="portal-parent" markdown="1">
+<div class="portal-parent-fader-top"></div>
+<div class="portal-parent-fader-bottom"></div><p>We can see all nodes on a local area network with:</p>
+<ul>
+<li><code>sudo nmap -sn 192.168.1.0/24</code>
+<ul>
+<li>the 24 is CIDR notation, signifying that we will scan from 192.168.1.0 to 192.168.1.255
+<ul>
+<li><a aria-hidden="true" class="block-anchor anchor-heading icon-link" id="^RUsJkF0C" href="#^RUsJkF0C"></a>the inclusion of 24 means we are scanning an <em>address block</em> </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div></div><p></p><p></p>
+<h3 id="cidr-classless-inter-domain-routing">CIDR (Classless Inter-Domain Routing)<a aria-hidden="true" class="anchor-heading icon-link" href="#cidr-classless-inter-domain-routing"></a></h3>
+<p>CIDR is a method for allocating IP addresses and for IP routing.</p>
+<ul>
+<li>it also allows for a flexible and simplified way to identify IP addresses and route network traffic.</li>
+</ul>
+<p>It is similar to how telephones use:</p>
+<ul>
+<li>An area code to specify a geographical region</li>
+<li>A number to identify a specific device</li>
+</ul>
+<p>CIDR notation consists of</p>
+<ul>
+<li>an IP address</li>
+<li>a forward slash (<code>/</code>) </li>
+<li>a number that ranges from 0 to 32
+<ul>
+<li>represent a range of IP addresses
+<ul>
+<li>Every time the number decreases by one (starting at 32), it means the number of IP addresses in that range are doubled.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>IP addresses are described as consisting of two groups of bits in the address</p>
+<ol>
+<li>the <em>network prefix</em>, which are the most significant bits are the network prefix, and which identify a whole network or subnet</li>
+<li>the *host identifier, which specifies a particular interface of a host on that network.</li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/N9mY1iHMSznlRnVANB9Ip">LAN (Local Area Network)</a></li>
+</ul>

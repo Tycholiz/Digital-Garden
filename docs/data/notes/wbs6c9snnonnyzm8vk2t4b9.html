@@ -1,0 +1,242 @@
+<h1 id="strategies">Strategies<a aria-hidden="true" class="anchor-heading icon-link" href="#strategies"></a></h1>
+<p>With multiple replicas, a question inevitably arises: how do we ensure that all the data gets copied to all the replicas? </p>
+<ul>
+<li>Naturally, every write to the database needs to be processed by every replica. Every replication strategy must ensure that the data is eventually the same in all replicas.</li>
+</ul>
+<h1 id="replication-strategies">Replication Strategies<a aria-hidden="true" class="anchor-heading icon-link" href="#replication-strategies"></a></h1>
+<p>There are three main algorithms for replicating changes between nodes: </p>
+<ul>
+<li>single-leader </li>
+<li>multi-leader</li>
+<li>leaderless</li>
+</ul>
+<h2 id="single-leader-based-replication">Single-Leader based replication<a aria-hidden="true" class="anchor-heading icon-link" href="#single-leader-based-replication"></a></h2>
+<ul>
+<li>a.k.a <em>active/passive</em> or <em>master–slave replication</em></li>
+<li>this mode of replication is widespread, and is built into <a href="/notes/ULkfbL9WpktbVYnzhl6Jw">postgres</a>, <a href="/notes/WQoMTf6VXBaxCgksXAVsj">Kafka</a>, <a href="/notes/zhhxcjZUHdU8uRLwGb9Zh">Mongo</a> etc.</li>
+</ul>
+<p>There are no conflict resolution issues to deal with in single-leader replication.</p>
+<h3 id="approach">Approach<a aria-hidden="true" class="anchor-heading icon-link" href="#approach"></a></h3>
+<ol>
+<li>A client wants to write to the database. It sends its request to the leader, which writes to its own local storage.</li>
+<li>When the leader writes to its local storage, it also sends the data change to all of its followers as part of a replication log (or change stream)</li>
+<li>Each follower applies all of the writes from the replication log</li>
+<li>Now, the leader and any of the followers can fulfill read requests.</li>
+</ol>
+<p>Since we can only write to the leader, but can read from any follower, this method works well in the web, where there are many more reads than writes.</p>
+<h3 id="adding-new-followers">Adding new followers<a aria-hidden="true" class="anchor-heading icon-link" href="#adding-new-followers"></a></h3>
+<ol>
+<li>Take a consistent snapshot of the leader’s database at some point in time.</li>
+<li>Copy the snapshot to the new follower node.</li>
+<li>The follower connects to the leader and requests all the data changes that have happened since the snapshot was taken. 
+<ul>
+<li>This requires that the snapshot is associated with an exact position in the leader’s replication log. 
+<ul>
+<li>That position is called the <em>log sequence number</em> in Postgres.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>When the follower has processed the backlog of data changes since the snapshot, we say it has caught up. It can now continue to process data changes from the leader as they happen.</li>
+</ol>
+<h3 id="failover">Failover<a aria-hidden="true" class="anchor-heading icon-link" href="#failover"></a></h3>
+<p>On its local disk, each follower keeps a log of the data changes it has received from the leader. If a follower crashes and is restarted, or if the network between the leader and the follower is temporarily interrupted, the follower can recover quite easily. It simply needs to connect to the leader and request all the data changes that occurred during the time when the follower was disconnected</p>
+<p>However, things are much trickier if the leader fails. Three things must happen (this process is called <em>failover</em>): </p>
+<ol>
+<li>one of the followers needs to be promoted to be the new leader. </li>
+<li>clients need to update who they send their write requests to. </li>
+<li>the remaining followers must be aware of who the new leader is.</li>
+</ol>
+<h4 id="failover-comes-with-some-wrinkles">Failover comes with some wrinkles:<a aria-hidden="true" class="anchor-heading icon-link" href="#failover-comes-with-some-wrinkles"></a></h4>
+<ul>
+<li>If asynchronous replication is used, the new leader may not have received all the writes from the old leader before it failed. If the former leader rejoins the cluster after a new leader has been chosen, what should happen to those writes? The new leader may have received conflicting writes in the meantime. The most common solution is for the old leader’s unreplicated writes to simply be discarded, which may violate clients’ durability expectations.</li>
+<li>what if our leader database has an incrementing strategy for assigning IDs? Now, when the leader fails, unless the follower-to-be-leader is perfectly up to date, it will start assigning IDs that have already been assigned by the original leader.</li>
+<li>we could wind up in a situation where two former followers both think they are the new leader (a situation called <em>split brain</em>)</li>
+</ul>
+<h3 id="implementing-a-replication-log">Implementing a Replication Log<a aria-hidden="true" class="anchor-heading icon-link" href="#implementing-a-replication-log"></a></h3>
+<p>a replication log is a stream of database write events, produced by the leader as it processes transactions. The followers apply that stream of writes to their own copy of the database and thus end up with an accurate copy of the same data. The events in the replication log describe the data changes that occurred.</p>
+<p>There are several different replication methods</p>
+<ul>
+<li>statement-based replication</li>
+<li>WAL shipping</li>
+</ul>
+<h4 id="statement-based-replication">Statement-based replication<a aria-hidden="true" class="anchor-heading icon-link" href="#statement-based-replication"></a></h4>
+<p>The leader logs every write request (e.g. INSERT, UPDATE, DELETE) that it executes and sends that statement log to its followers. Then each follower executes those commands as if they had come from the client directly.</p>
+<p>Drawbacks:</p>
+<ul>
+<li>what happens with non-deterministic functions like <code>now()</code> and <code>rand()</code>?</li>
+<li>if IDs are incremented, or if a statement depends on existing data, they must be executed in the exact same order on each replica</li>
+<li>statements that have side effects (e.g. <a href="/notes/nsG0iCcMBCUc5J4mxTA8T">triggers</a>, <a href="/notes/oAGY63H6XOxPhHOX6pqjP">functions</a>) may result in different side-effects on each replica, unless they are deterministic.</li>
+</ul>
+<h4 id="write-ahead-log-wal-shipping">Write-ahead log (WAL) shipping<a aria-hidden="true" class="anchor-heading icon-link" href="#write-ahead-log-wal-shipping"></a></h4>
+<p>In the normal order of business, every write is appended to a <a href="/notes/iVqY5tKOzlWVVRzOqOED5#write-ahead-logging-wal1">WAL</a>.</p>
+<ul>
+<li>instead of the leader simply writing the WAL to disk, it also sends it to all followers. This allows each follower to build a copy of the exact same data structures as found on the leader.</li>
+<li>used in <a href="/notes/ULkfbL9WpktbVYnzhl6Jw">Postgres</a></li>
+</ul>
+<p>Drawback:</p>
+<ul>
+<li>the log describes the data on a very low level: a WAL contains details of which bytes were changed in which disk blocks, meaning replication is closely coupled to the storage engine (A different strategy using a <em>logical log</em> exists to solve this issue of coupling. This is <a href="https://www.postgresql.org/docs/10/logical-replication.html">supported by Postgres</a>).
+<ul>
+<li>If the database changes its storage format from one version to another, it is typically not possible to run different versions of the database software on the leader and the followers.</li>
+<li>the only way to solve this (without downtime) is to upgrade all the followers, then perform a <em>failover</em>, resulting in one of the followers becoming the new leader. For this to work, the replication protocol must support version mismatching like this. Typically, WAL shipping doesn't allow this.</li>
+</ul>
+</li>
+</ul>
+<h2 id="multi-leader-based-replication">Multi-Leader based replication<a aria-hidden="true" class="anchor-heading icon-link" href="#multi-leader-based-replication"></a></h2>
+<p>In this setup, replication still happens in the same way as <em>single-leader replication</em>: each node that processes a write must forward that data change to all the other nodes.</p>
+<ul>
+<li>The key difference is that each leader simultaneously acts as a follower to the other leaders.</li>
+</ul>
+<p>Due to the added complexity of setup, we use this configuration mainly when we have multiple datacenters. In this case, each datacenter would have its own leader.</p>
+<ul>
+<li>each datacenter implements single-leader replication, but between datacenters, each leader replicates its changes to the leaders in other datacenters.</li>
+</ul>
+<p>With this replication strategy, each datacenter can continue operating independently of the others</p>
+<p>BDR is a Postgres tool for implementing this replication strategy.</p>
+<p>anal: consider an <a href="/notes/pFKPROeJ3nFTzivRYIL9W">offline-first</a> application like a calendar. We can have a calendar on our laptop, tablet and mobile, and each acts as a leader (ie. it accepts write requests). But we also need some way to sync data between devices (ie. an asynchronous multi-leader replication process)</p>
+<ul>
+<li>From an architectural point of view, each device is a datacenter with extremely unreliable connection between them (because of the offline-first nature)</li>
+</ul>
+<h3 id="write-conflicts">Write Conflicts<a aria-hidden="true" class="anchor-heading icon-link" href="#write-conflicts"></a></h3>
+<p>This strategy has a major downside: the same data may be concurrently modified in two different datacenters, requiring us to resolve those write conflicts.</p>
+<ul>
+<li>because of this, the multi-leader replication strategy is dangerous and should be avoided if possible.</li>
+<li>write conflicts don't occur in single-leader replication, since writes are applied sequentially.
+<ul>
+<li>either the database would lock and wait for the first data modification to be written, or the second transaction would simply fail and require the user to retry the write.</li>
+</ul>
+</li>
+</ul>
+<p>In multi-leader, if each follower simply applied writes in the order that it saw them, the database would end up in an inconsistent state. Conflicts must be solved in a convergent way, rather than sequential.</p>
+<p>conflict resolution usually applies at the level of an individual row or document, not for an entire transaction</p>
+<ul>
+<li>Thus, if you have a transaction that atomically makes several different writes, each write is still considered separately for the purposes of conflict resolution.</li>
+</ul>
+<p>Consider that conflicts don't necessarily have to be about writing different data to the same row. What if we had a meeting room booking system, and 2 different people booked the same room (which occurred because they each wrote to their own respective leaders)</p>
+<p>In the event of write conflicts, there are a few strategies to resolve them:</p>
+<ul>
+<li>out of the contenders, designate some field value to be the determination factor. This could be a <code>createdAt</code> timestamp (we simply take the latest one), or we might assign each write a unique UUID. In the case of conflict, we simply accept the one with the highest ID.
+<ul>
+<li>this approach is popular, but it is naturally prone to data loss.</li>
+</ul>
+</li>
+<li>give each replica a unique ID, and pre-designate replicas with the higher ID as the winner.
+<ul>
+<li>also implies data loss.</li>
+</ul>
+</li>
+<li>merge the values together.
+<ul>
+<li>if we're talking about an object, we might be able to do this cleanly. But if we're talking a string, we might have to concatenate them.</li>
+</ul>
+</li>
+<li>record the conflict in a separate data structure that preserves all information, and write application code that resolves the conflict at some later time (perhaps by prompting the user to handle the conflict).</li>
+<li>custom logic (most multi-leader replication tools allow us to write application code to implement custom conflict-resolution logic). This code gets executed on either read or write.
+<ul>
+<li><em>on write</em> - As soon as the database system detects a conflict in the log of replicated changes, it calls the conflict handler.</li>
+<li><em>on read</em> - When a conflict is detected, all the conflicting writes are stored. The next time the data is read, these multiple versions of the data are returned to the applica‐ tion. The application may prompt the user or automatically resolve the conflict, and write the result back to the database.
+<ul>
+<li>this is how CouchDB works.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="leaderless-replication">Leaderless Replication<a aria-hidden="true" class="anchor-heading icon-link" href="#leaderless-replication"></a></h2>
+<p>In a leaderless replication scheme, any replica can accept writes from clients directly.</p>
+<p>General replication then happens in one of two ways:</p>
+<ol>
+<li>the client directly sends its writes to several replicas</li>
+<li>a coordinator node does this on behalf of the client
+<ul>
+<li>Unlike a leader database, that coordinator does not enforce a particular ordering of writes.</li>
+</ul>
+</li>
+</ol>
+<p>Leaderless replication is also suitable for multi-datacenter operation, since it is designed to tolerate conflicting concurrent writes, network interruptions, and latency spikes.</p>
+<p>Leaderless replication could be summarized as <em>"the database will do as much as it can, and if it runs into an error, it won’t undo something it has already done"</em>— so it’s the application’s responsibility to recover from errors</p>
+<p>used by <a href="/notes/gEztUcJYazBs8J8k0gi7o">DynamoDB</a>, Cassandra, Riak, <a href="/notes/g7ulqi8no93ezeocbesc3ll">CouchDB</a></p>
+<hr>
+<h1 id="synchronous--asynchronous-replication">Synchronous / Asynchronous Replication<a aria-hidden="true" class="anchor-heading icon-link" href="#synchronous--asynchronous-replication"></a></h1>
+<p>In relational databases, this is often a configurable option; other systems are often hardcoded to be either one or the other.</p>
+<p>Whether a replication scheme is synchronous or asynchronous has a profound effect on the system behavior when there is a fault.</p>
+<h2 id="synchronous">Synchronous<a aria-hidden="true" class="anchor-heading icon-link" href="#synchronous"></a></h2>
+<p>In a synchronous flow, the leader will wait until the follower has confirmed that it received the write before reporting success to the user, and before making the write visible to other clients.</p>
+<p>The advantage of synchronous replication is that the follower is guaranteed to have an up-to-date copy of the data that is consistent with the leader. If the leader sud‐ denly fails, we can be sure that the data is still available on the follower. The disad‐ vantage is that if the synchronous follower doesn’t respond (because it has crashed, or there is a network fault, or for any other reason), the write cannot be processed. The leader must block all writes and wait until the synchronous replica is available again.</p>
+<ul>
+<li>therefore, it is impractical for all followers to be synchronous: any one node outage would cause the whole system to grind to a halt.</li>
+<li>In practice, if you enable synchronous replication on a database, it usually means that one of the followers is synchronous, and the others are asynchronous. If the synchronous follower becomes unavailable or slow, one of the asynchronous followers is made synchronous. This guarantees that you have an up-to-date copy of the data on at least two nodes: the leader and one synchronous follower.</li>
+</ul>
+<h2 id="asynchronous">Asynchronous<a aria-hidden="true" class="anchor-heading icon-link" href="#asynchronous"></a></h2>
+<p>In an asynchronous flow, the leader sends the message, but doesn’t wait for a response from the follower.</p>
+<p>Asynchronous replication can be fast when the system is running smoothly, but there are complications to consider when replication lag increases and servers fail.</p>
+<ul>
+<li>If a leader fails and you promote an asynchronously updated follower to be the new leader, recently committed data may be lost.</li>
+</ul>
+<p>Often, leader-based replication is configured to be completely asynchronous. </p>
+<ul>
+<li>In this case, if the leader fails and is not recoverable, any writes that have not yet been replicated to followers are lost. This means that a write is not guaranteed to be durable, even if it has been confirmed to the client. </li>
+<li>However, a fully asynchronous configuration has the advantage that the leader can continue processing writes, even if all of its followers have fallen behind.</li>
+</ul>
+<p>if an application reads from an asynchronous follower, it may see outdated information if the follower has fallen behind</p>
+<ul>
+<li>if you run the same query on the leader and a follower at the same time, you may get different results, because not all writes have been reflected in the follower (due to <em>replication lag</em>). This is just a temporary state, since the followers will eventually catch up. This effect is known as <em>eventual consistency</em></li>
+</ul>
+<p>The value of asynchronous replication is gets higher:</p>
+<ul>
+<li>as the number of followers increases</li>
+<li>as our followers get more geographically distributed.</li>
+</ul>
+<h3 id="consistency-models-for-dealing-with-replication-lag">Consistency models for dealing with replication lag<a aria-hidden="true" class="anchor-heading icon-link" href="#consistency-models-for-dealing-with-replication-lag"></a></h3>
+<p>When implementing an asynchronous strategy, there are some things to be aware of. Depending on our application, we might not necessarily care too much. </p>
+<ul>
+<li>ex. in Facebook's newsfeed, it doesn't really matter if all the latest posts are actually there. As long as it's eventual, it's fine.</li>
+</ul>
+<h4 id="read-after-write-consistency">read-after-write consistency<a aria-hidden="true" class="anchor-heading icon-link" href="#read-after-write-consistency"></a></h4>
+<p>What happens if a user performs some action that writes some data to the database (ie. to the leader node), but by the time the user goes to view that data in the UI, the replication of data hasn't taken place yet between the leader and the follower that is handing the GET request? We need a way of implementing read-after-write consistency.</p>
+<p>There are different strategies to implement read-after-write consistency, depending on what we're doing:</p>
+<ul>
+<li>when user is reading data that they recently modified, allow them to read directly from the leader. The issue is that we need to know if data has been modified without first querying for it. Therefore, we can make a simple rule: if the data is modifiable by the user, read from the leader; otherwise, read from a follower.
+<ul>
+<li>ex. in a social media website, you can only edit your own information. Therefore, if you are querying for your own data, always read from the leader.</li>
+</ul>
+</li>
+<li>track the time of the last update and, for one minute after the last update, make all reads from the leader. You could also monitor the replication lag on followers and pre‐ vent queries on any follower that is more than one minute behind the leader.</li>
+<li>The client can remember the timestamp of its most recent write, then the system can ensure that the replica serving any reads for that user reflects updates at least until that timestamp. If a replica is not sufficiently up to date, either the read can be handled by another replica or the query can wait until the replica has caught up.</li>
+</ul>
+<h4 id="monotonic-reads">Monotonic reads<a aria-hidden="true" class="anchor-heading icon-link" href="#monotonic-reads"></a></h4>
+<p>Imagine user1 writes a comment on a post. The leader node replicates it instantaneously to follower1, but experiences lag in replicating it to follower2. User2 then logs in and reads the data from follower1, so it sees the comment from user1. Then, User2 refreshes the page, but this time the data is read from follower2. Due to the lag, User2 no longer sees the comment from user1.</p>
+<ul>
+<li><em>Monotonic reads</em> is a guarantee that this anomaly doesn't happen.</li>
+<li>we achieve this by making sure that each user always makes their reads from the same replica</li>
+</ul>
+<h4 id="consistent-prefix-reads">Consistent Prefix Reads<a aria-hidden="true" class="anchor-heading icon-link" href="#consistent-prefix-reads"></a></h4>
+<p>Imagine user1 comments on a post saying "how is the weather in Chicago?", then user2 writes a comment in response "pretty good". Now, imagine that user3 sees this post with the comments (via the data provided from followers). The comment from user2 gets replicated with little lag, but the comment from user1 experiences a lot of lag. The result may be that user3 sees these comments out of order.</p>
+<ul>
+<li><em>Consistent prefix reads</em> is a guarantee that this anomaly doesn't happen.
+<ul>
+<li>This guarantee says that if a sequence of writes happens in a certain order, then anyone reading those writes will see them appear in the same order.</li>
+</ul>
+</li>
+</ul>
+<p>This is a particular problem in partitioned (<a href="/notes/nMxAwbzkQChlhX37Gih8a">sharded</a>) databases</p>
+<ul>
+<li>If the database always applies writes in the same order, this anomaly doesn't happen</li>
+<li>But, in many distributed databases, different partitions operate independently, so there is no global ordering of writes: when a user reads from the database, they may see some parts of the database in an older state and some in a newer state.</li>
+</ul>
+<hr>
+<h1 id="conflict-resolution-strategies">Conflict Resolution Strategies<a aria-hidden="true" class="anchor-heading icon-link" href="#conflict-resolution-strategies"></a></h1>
+<h3 id="last-write-wins-lww">Last-Write Wins (LWW)<a aria-hidden="true" class="anchor-heading icon-link" href="#last-write-wins-lww"></a></h3>
+<p>Widely used in both multi-leader replication and leaderless databases </p>
+<p>Problems with LWW:</p>
+<ul>
+<li>Because of <a href="/notes/KtprYZi78o2XwFHC5vvcX">clock</a> drift between nodes, a node with a lagging clock is unable to overwrite values previously written by a node with a fast clock until the clock skew between the nodes has elapsed. This can cause arbitrary amounts of data to be silently dropped without ever alerting the application.</li>
+<li>LWW cannot distinguish between writes that occurred sequentially in quick succession (e.g. client B’s increment definitely occurs after client A’s write) and writes that were truly concurrent (neither writer was aware of the other).</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/g7ulqi8no93ezeocbesc3ll">CouchDB</a></li>
+<li><a href="/notes/gKVIPNGV7duiD0yRnld8J">Replication</a></li>
+</ul>

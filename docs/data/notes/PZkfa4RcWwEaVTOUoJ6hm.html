@@ -1,0 +1,104 @@
+<h1 id="block">Block<a aria-hidden="true" class="anchor-heading icon-link" href="#block"></a></h1>
+<p>A block is an anonymous code block that can be passed into a method. Therefore, a block is nothing more than a snippet code that can be created now, but executed later. Blocks are passed to methods that <code>yield</code> them within with the <code>do</code> and <code>end</code> keywords.</p>
+<ul>
+<li>From within that, every time <code>yield</code> is called, that code block that was passed in will get executed</li>
+<li>ex. The block is passed to the each method of an array object.</li>
+</ul>
+<pre class="language-rb"><code class="language-rb"><span class="token keyword">def</span> <span class="token method-definition"><span class="token function">someMethod</span></span>
+  hello <span class="token operator">=</span> <span class="token string-literal"><span class="token string">'hello'</span></span>
+  <span class="token keyword">yield</span><span class="token punctuation">(</span>hello<span class="token punctuation">)</span> <span class="token keyword">if</span> block_given<span class="token operator">?</span>
+<span class="token keyword">end</span>
+
+<span class="token comment"># the block is between the curly braces</span>
+someMethod <span class="token punctuation">{</span> <span class="token operator">|</span>h<span class="token operator">|</span> h <span class="token punctuation">}</span>
+</code></pre>
+<p>Something implemented in JS with callbacks would be implemented with blocks in Ruby:</p>
+<ul>
+<li>Blocks -> Ruby</li>
+<li>Callbacks -> Javascript</li>
+</ul>
+<p>Blocks are essentially methods, since they:</p>
+<ul>
+<li>can accept arguments</li>
+<li>returns a value</li>
+</ul>
+<p>But, they:</p>
+<ul>
+<li>have no name</li>
+<li>do not belong to an object</li>
+</ul>
+<p>a block is a <a href="/notes/AUH3mMzjmfU5dFTULt9pR">closure</a>, so it can refer to variables from the scope in which it was declared.</p>
+<p>Blocks can only be created by passing them to a method when the method is called.</p>
+<p>Blocks are snippets of code that can be created to be executed later.</p>
+<p>Blocks are used extensively in Ruby for passing bits of code to functions. By using the <code>yield</code> keyword, a block can be implicitly passed without having to convert it to a proc.</p>
+<p>If we are using the <code>.each</code> method, we are using blocks. The part between <code>do</code> and <code>end</code> is the block:</p>
+<ul>
+<li>the <code>|name|</code> is the parameter of the block</li>
+</ul>
+<pre class="language-rb"><code class="language-rb"><span class="token variable">@names</span><span class="token punctuation">.</span><span class="token keyword">each</span> <span class="token keyword">do</span> <span class="token operator">|</span>name<span class="token operator">|</span>
+  puts <span class="token string-literal"><span class="token string">"Hello </span><span class="token interpolation"><span class="token delimiter punctuation">#{</span><span class="token content">name</span><span class="token delimiter punctuation">}</span></span><span class="token string">!"</span></span>
+<span class="token keyword">end</span>
+</code></pre>
+<p>Internally, the <code>each</code> method will essentially call <code>yield "Albert"</code>, then <code>yield "Brenda"</code> and then <code>yield "Charles"</code>, and so on.</p>
+<p>Conceptually, this is what's happening under the hood:</p>
+<pre class="language-rb"><code class="language-rb"><span class="token keyword">def</span> <span class="token method-definition"><span class="token function">each</span></span>
+  i <span class="token operator">=</span> <span class="token number">0</span>
+  <span class="token keyword">while</span> i <span class="token operator">&#x3C;</span> size
+    <span class="token keyword">yield</span> at<span class="token punctuation">(</span>i<span class="token punctuation">)</span>
+    i <span class="token operator">+=</span> <span class="token number">1</span>
+  <span class="token keyword">end</span>
+<span class="token keyword">end</span>
+</code></pre>
+<p>The real power of blocks is when dealing with things that are more complicated than lists. Beyond handling simple housekeeping details within the method, you can also handle setup, teardown, and errors</p>
+<h2 id="two-ways-of-calling-blocks">Two ways of calling Blocks<a aria-hidden="true" class="anchor-heading icon-link" href="#two-ways-of-calling-blocks"></a></h2>
+<p>Blocks can be called in one of 2 ways</p>
+<ol>
+<li>by using <code>yield</code> (implicit blocks)</li>
+<li>by capturing it by specifying the final argument of the method as <code>&#x26;block</code> and using <code>block.call</code> (explicit blocks)</li>
+</ol>
+<h3 id="yield-and-implicit-blocks"><code>yield</code> and Implicit Blocks<a aria-hidden="true" class="anchor-heading icon-link" href="#yield-and-implicit-blocks"></a></h3>
+<p>In Ruby, methods can take blocks implicitly and explicitly</p>
+<ul>
+<li>Implicit block passing works by calling the <code>yield</code> keyword in a method.
+<ul>
+<li><code>yield</code> finds and calls a passed block, so you don’t have to add the block to the list of arguments the method accepts.</li>
+</ul>
+</li>
+</ul>
+<p>Because Ruby allows implicit block passing, you can call all methods with a block. If it doesn’t call <code>yield</code>, the block is ignored. If the called method does <code>yield</code>, the passed block is found and called with any arguments that were passed to the <code>yield</code> keyword.</p>
+<h3 id="explicitly-accepting-blocks">Explicitly accepting blocks<a aria-hidden="true" class="anchor-heading icon-link" href="#explicitly-accepting-blocks"></a></h3>
+<p>We can explicitly accept a block in a method by adding it as an argument using an ampersand parameter (usually called <code>&#x26;block</code>). Since the block is now explicit, we can use the <code>#call</code> method directly on the resulting object instead of relying on <code>yield</code>.</p>
+<ul>
+<li>The <code>&#x26;block</code> argument is not a proper argument, so calling this method with anything else than a block will produce an <code>ArgumentError</code>.</li>
+</ul>
+<pre class="language-rb"><code class="language-rb"><span class="token keyword">def</span> <span class="token method-definition"><span class="token function">each_explicit</span></span><span class="token punctuation">(</span><span class="token operator">&#x26;</span>block<span class="token punctuation">)</span>
+  <span class="token keyword">return</span> to_enum<span class="token punctuation">(</span><span class="token symbol">:each</span><span class="token punctuation">)</span> <span class="token keyword">unless</span> block
+
+  i <span class="token operator">=</span> <span class="token number">0</span>
+  <span class="token keyword">while</span> i <span class="token operator">&#x3C;</span> size
+    block<span class="token punctuation">.</span>call at<span class="token punctuation">(</span>i<span class="token punctuation">)</span>
+    i <span class="token operator">+=</span> <span class="token number">1</span>
+  <span class="token keyword">end</span>
+<span class="token keyword">end</span>
+</code></pre>
+<p>When a block is passed like this and stored in a variable, it is automatically converted to a <em>proc</em>.</p>
+<p>It's important to understand the different uses of <code>&#x26;</code> here as a prefix to the last argument of a function:</p>
+<ul>
+<li>in a function definition, it captures any passed block into that object</li>
+<li>in a function call, it expands the given callback object into a block</li>
+</ul>
+<h3 id="blocks-allow-us-to-implement-inversion-of-control">Blocks allow us to implement <a href="/notes/bXY3W37GW2ytFJOgbJiol">Inversion of Control</a><a aria-hidden="true" class="anchor-heading icon-link" href="#blocks-allow-us-to-implement-inversion-of-control"></a></h3>
+<p>By accepting a block from you as a programmer, the method can pass control to you.</p>
+<h3 id="syntax">Syntax<a aria-hidden="true" class="anchor-heading icon-link" href="#syntax"></a></h3>
+<p>The following are identical:</p>
+<pre class="language-rb"><code class="language-rb"><span class="token number">5.</span>times <span class="token keyword">do</span> <span class="token operator">|</span>name<span class="token operator">|</span>
+  puts <span class="token string-literal"><span class="token string">"Oh, hello </span><span class="token interpolation"><span class="token delimiter punctuation">#{</span><span class="token content">name</span><span class="token delimiter punctuation">}</span></span><span class="token string">!"</span></span>
+<span class="token keyword">end</span>
+
+<span class="token number">5.</span>times <span class="token punctuation">{</span> <span class="token operator">|</span>name<span class="token operator">|</span> puts <span class="token string-literal"><span class="token string">"Oh, hello </span><span class="token interpolation"><span class="token delimiter punctuation">#{</span><span class="token content">name</span><span class="token delimiter punctuation">}</span></span><span class="token string">!"</span></span> <span class="token punctuation">}</span>
+</code></pre>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/0gtg24Mj1a1bQFPRGQNlO">Ruby</a></li>
+</ul>
