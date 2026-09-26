@@ -1,0 +1,27 @@
+<h1 id="classes">Classes<a aria-hidden="true" class="anchor-heading icon-link" href="#classes"></a></h1>
+<h2 id="constructor">Constructor<a aria-hidden="true" class="anchor-heading icon-link" href="#constructor"></a></h2>
+<p>A constructor's purpose is to allocate you an object and then return immediately.</p>
+<h2 id="class-related-keywords">Class-related Keywords<a aria-hidden="true" class="anchor-heading icon-link" href="#class-related-keywords"></a></h2>
+<h3 id="super"><code>super</code><a aria-hidden="true" class="anchor-heading icon-link" href="#super"></a></h3>
+<p>The <code>super</code> keyword is used to access and call functions on an object's parent.</p>
+<ul>
+<li>ex. If we have <code>Dog</code> extend from <code>Mammal</code>, then calling <code>super.get</code> in <code>Dog</code> will call the <code>get</code> method of the <code>Mammal</code> class.</li>
+</ul>
+<p>spec: When used in a constructor, calling <code>super</code> calls the <code>constructor</code> method of the parent.</p>
+<ul>
+<li>the <code>super</code> keyword appears alone and must be used before the <code>this</code> keyword is used.</li>
+</ul>
+<p>Note that a rectangle is more generic than a square. Therefore, we can create a <code>Square</code> class that extends a <code>Rectangle</code> class, and simplify the interface of the <code>Square</code>.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">class</span> <span class="token class-name"><span class="token maybe-class-name">Rectangle</span></span> <span class="token punctuation">{</span>
+    <span class="token function">constructor</span><span class="token punctuation">(</span>height<span class="token punctuation">,</span> width<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">height</span> <span class="token operator">=</span> height<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">width</span> <span class="token operator">=</span> width<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">class</span> <span class="token class-name"><span class="token maybe-class-name">Square</span></span> <span class="token keyword">extends</span> <span class="token class-name"><span class="token maybe-class-name">Rectangle</span></span> <span class="token punctuation">{</span>
+    <span class="token function">constructor</span><span class="token punctuation">(</span>length<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span>length<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>We can call <code>super</code> on methods that have the <code>static</code> modifier.</p>

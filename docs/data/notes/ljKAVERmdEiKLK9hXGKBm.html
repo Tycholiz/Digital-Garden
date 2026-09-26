@@ -1,0 +1,68 @@
+<h1 id="yarn">Yarn<a aria-hidden="true" class="anchor-heading icon-link" href="#yarn"></a></h1>
+<h3 id="yarnlock">yarn.lock<a aria-hidden="true" class="anchor-heading icon-link" href="#yarnlock"></a></h3>
+<ul>
+<li>The purpose of a lock file is to lock down the versions of the dependencies specified in a package.json file
+<ul>
+<li>This means that in a <code>yarn.lock</code> file, there is an identifier (ie. exact version specified) for every dependency and sub-dependency that is used for a project
+<ul>
+<li>sub-dependencies are the dependencies of a dependency</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>The equivalent of <code>yarn.lock</code> for npm is <code>package-lock.json</code>. If using both npm and yarn, we need both of them, and they need to remain in sync (use yarn's import directive to accomplish this)</li>
+<li>if we didn't have a <code>yarn.lock</code>, then if a co-worker cloned our repo and ran <code>yarn install</code>, they may get different versions of a dependency, since <code>package.json</code> can specify version ranges. 
+<ul>
+<li>Instead, since <code>yarn.lock</code> is checked into version control, when the co-worker clones the repo and runs <code>yarn install</code>, <code>yarn.lock</code> will be checked and the version specified will be installed.</li>
+</ul>
+</li>
+<li>critical to have if working on a team or if working alone with a CI server.</li>
+<li><code>yarn.lock</code> gets updated any time a dependency is added, removed or modified
+<ul>
+<li>If we want to ensure <code>yarn.lock</code> is not updated, use <code>--frozen-lockfile</code>
+<ul>
+<li>The difference between <code>--frozen-lockfile</code> and <code>--pure-lockfile</code> is that the former will fail if an update is needed </li>
+</ul>
+</li>
+</ul>
+</li>
+<li>In a perfect world, yarn.lock is unnecessary, because the point of semver is that unless the major version changes, the upgraded package will still work. In other words, if the version in package.json is listed as ^16.0.1, then <code>yarn install</code> is free to go to the latest minor version, which doesn't matter since semver defines that as fully backwards compatible.
+<ul>
+<li>however, in the real world not everyone follows semver best practices, and sometimes it is just mistakes which ruin backward compatibility </li>
+</ul>
+</li>
+</ul>
+<h4 id="upgrading-packages">Upgrading packages<a aria-hidden="true" class="anchor-heading icon-link" href="#upgrading-packages"></a></h4>
+<ul>
+<li>if we have a dependency version in <code>package.json</code> specified at <code>^3.9.1</code>, this means that any version between 3.9.1 and 4.0.0 will be acceptable. Of course, since we have a lockfile, upgrades will not automatically happen.</li>
+<li><code>yarn upgrade</code> allows us to upgrade all dependencies in <code>package.json</code>. If we use the <code>^</code> specifier, then the latest version within the range will be added. This will be reflected in <code>yarn.lock</code></li>
+<li>we can ignore the version range by passing the <code>--latest</code> flag.
+<ul>
+<li>This modifies both <code>yarn.lock</code> and <code>package.json</code></li>
+</ul>
+</li>
+<li>We can see all packages that can be upgraded with <code>yarn upgrade-interactive --latest</code></li>
+</ul>
+<h3 id="link">Link<a aria-hidden="true" class="anchor-heading icon-link" href="#link"></a></h3>
+<ul>
+<li><code>yarn link</code> allows us to create symlinks to local projects, from within the project (with package.json) we are currently in.</li>
+<li>ex. if we have a <code>rn-client</code> project and a <code>components</code> project, and we want to use <code>components</code> within <code>rn-client</code>, we can do the following:
+<ol>
+<li>go to <code>components</code> project and run <code>yarn link</code></li>
+<li>go to <code>rn-client</code> project and run <code>yarn link components</code> (name field of package.json)
+<ul>
+<li>this creates a symlink at <code>rn-client/node_modules/components</code></li>
+</ul>
+</li>
+<li>from <code>rn-client</code> project, <code>import components from 'components'</code> </li>
+</ol>
+</li>
+<li>It is meant for development-only purposes</li>
+<li>spec: think of <code>yarn link</code> as exporting the package, and <code>yarn link &#x3C;package></code> as importing it.</li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/IeentvPUtgHQJj8zmdobw">Cook</a></li>
+<li><a href="/notes/zwYPjt7U36GoTQEQd9D2r">Yarn Workspaces</a></li>
+</ol>

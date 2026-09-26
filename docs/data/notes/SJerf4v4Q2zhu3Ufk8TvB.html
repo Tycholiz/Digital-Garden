@@ -1,0 +1,30 @@
+<h1 id="diff">Diff<a aria-hidden="true" class="anchor-heading icon-link" href="#diff"></a></h1>
+<h3 id="patch-file">Patch file<a aria-hidden="true" class="anchor-heading icon-link" href="#patch-file"></a></h3>
+<p>The default output of <code>git diff</code> is a valid patch file, meaning we can pipe its output into a file, give that file to someone else, and they can apply it with the <code>patch</code> command.</p>
+<ul>
+<li>ex. <code>git diff master..experiment > experiment.patch</code>. The recipient can then run <code>patch -p1 &#x3C; ~/experiment.patch</code></li>
+</ul>
+<p>Each patch represents a full commit, complete with metadata like author and date.</p>
+<ul>
+<li>ex. If we have made 2 commits since master, then running <code>git format-patch master</code></li>
+</ul>
+<h3 id="range-diff">range-diff<a aria-hidden="true" class="anchor-heading icon-link" href="#range-diff"></a></h3>
+<p><code>git range-diff</code> allows us to inspect how two commit ranges are different</p>
+<h2 id="under-the-hood">Under the hood<a aria-hidden="true" class="anchor-heading icon-link" href="#under-the-hood"></a></h2>
+<p>to compare 2 commits, Git starts by looking at the root trees of each commit (which are almost always different). Then, Git initiates a depth-first-search on the subtrees by following pairs when paths for the current tree have different OIDs.</p>
+<hr>
+<ul>
+<li><code>git diff</code> - show changes between index and working tree</li>
+<li><code>git diff --staged</code> - show changes between index and HEAD (ie. last commit)</li>
+<li><code>git diff master..feature-branch</code> - show changes between master and feature-branch 
+<ul>
+<li><code>git diff f733ed..</code> - show changes between a commit and HEAD</li>
+</ul>
+</li>
+<li><code>git diff -- package.json</code> - show only changes in a specific file.</li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/L6n37vVGqGVmFSTjKH21L">Cook</a></li>
+</ol>

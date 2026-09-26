@@ -1,0 +1,9 @@
+<h1 id="repository">Repository<a aria-hidden="true" class="anchor-heading icon-link" href="#repository"></a></h1>
+<p>A Repository is basically a mechanism where you let Spring write the database queries for you based on (for example) the method names.</p>
+<p>If you have a <code>PersonRepository</code> defined properly, with a method defined like this:</p>
+<pre class="language-java"><code class="language-java"><span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&#x3C;</span><span class="token class-name">Person</span><span class="token punctuation">></span></span> <span class="token function">findByFirstName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Under the hood Spring will generate code for you that would turn this into a query like:</p>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> person <span class="token keyword">WHERE</span> firstName <span class="token operator">=</span> :firstName
+</code></pre>
+<p>And then also do the mapping of the query results to <code>Person</code> objects for you.</p>

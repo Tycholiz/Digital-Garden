@@ -1,0 +1,55 @@
+<h1 id="interceptor">Interceptor<a aria-hidden="true" class="anchor-heading icon-link" href="#interceptor"></a></h1>
+<p>An interceptor is a <a href="/notes/38yyqdyxub4tyjdj0jl4ulg">Provider</a> that makes it possible to</p>
+<ul>
+<li>bind extra logic before / after route handlers are called
+<ul>
+<li>this is possible because the provided <code>intercept()</code> method wraps both the request and response streams.
+<ul>
+<li>we are able to build custom logic that runs after due to the <a href="/notes/PwvObIRuk7dy0GXweZT0c">observable</a> pattern.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>transform the result returned from a function</li>
+<li>transform the exception thrown from a function</li>
+<li>extend the basic function behavior</li>
+<li>completely override a function depending on specific conditions (e.g., for caching purposes)</li>
+</ul>
+<p>These capabilities of interceptors are inspired by Aspect Oriented Programming (AOP)</p>
+<ul>
+<li>AOP itself is about adding behavior to existing code without modifying the code itself, allowing us to implement logic like <em>"log all function calls when the function's name begins with 'set'"</em>
+<ul>
+<li>effectively, what we are doing here is injecting some custom logic immediately prior to some handler being called. Thus, we are adding functionlity, but the original code remains unaltered.</li>
+</ul>
+</li>
+</ul>
+<p>an interceptor class is annotated with the <code>@Injectable()</code> decorator and implements the <code>NestInterceptor</code> interface.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token decorator"><span class="token at operator">@</span><span class="token function">Injectable</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword module">export</span> <span class="token keyword">class</span> <span class="token class-name"><span class="token maybe-class-name">LoggingInterceptor</span></span> <span class="token keyword">implements</span> <span class="token class-name"><span class="token maybe-class-name">NestInterceptor</span></span> <span class="token punctuation">{</span>
+  <span class="token comment">// Because the interceptor class implements the `NestInterceptor` class, our interceptor has access to the `intercept()` method</span>
+  <span class="token function">intercept</span><span class="token punctuation">(</span>context<span class="token operator">:</span> <span class="token maybe-class-name">ExecutionContext</span><span class="token punctuation">,</span> next<span class="token operator">:</span> <span class="token maybe-class-name">CallHandler</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token maybe-class-name">Observable</span><span class="token operator">&#x3C;</span><span class="token builtin">any</span><span class="token operator">></span> <span class="token punctuation">{</span>
+    <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span><span class="token string">'Before...'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">const</span> now <span class="token operator">=</span> <span class="token known-class-name class-name">Date</span><span class="token punctuation">.</span><span class="token method function property-access">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword control-flow">return</span> next
+      <span class="token punctuation">.</span><span class="token method function property-access">handle</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token method function property-access">pipe</span><span class="token punctuation">(</span>
+        <span class="token comment">// tap() is from RxJS and is used to perform side-effects for notifications from the source observable</span>
+        <span class="token function">tap</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">After... </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token known-class-name class-name">Date</span><span class="token punctuation">.</span><span class="token method function property-access">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> now<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">ms</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="intercept"><code>intercept()</code><a aria-hidden="true" class="anchor-heading icon-link" href="#intercept"></a></h3>
+<p>The <code>intercept</code> function returns an <a href="/notes/PwvObIRuk7dy0GXweZT0c">observable</a></p>
+<p>Args:</p>
+<ul>
+<li>The <code>ExecutionContext</code> provides methods that allow us to query for information about the current execution process.</li>
+<li><code>CallHandler</code> provides access to the response stream</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/613syb18hb3v0u1ydvor7ru">Nestjs</a></li>
+<li><a href="/notes/n9fg78mnpuk5u5xalihz2bp">Guard</a></li>
+</ul>

@@ -1,0 +1,88 @@
+<h1 id="mock">Mock<a aria-hidden="true" class="anchor-heading icon-link" href="#mock"></a></h1>
+<p>When we mock a function, its return value becomes of type <code>jest.Mock</code></p>
+<p>Mock functions provide benefits:</p>
+<ul>
+<li>allows us to test the links between different units by erasing implementation details of a function</li>
+<li>allows us to peek into the mock (via the <code>.mock</code> property), giving us valuable information on it like:
+<ul>
+<li>if it was called or not </li>
+<li>which parameters were passed to it</li>
+<li>what the return value was</li>
+</ul>
+</li>
+<li>allows us to change the implementation of the original function</li>
+<li>allows us to set return values</li>
+</ul>
+<p>We can mock functions in 2 different ways:</p>
+<ol>
+<li>creating a mock function to use in test code</li>
+</ol>
+<ul>
+<li><code>jest.fn</code> - mock a function</li>
+<li><code>jest.mock</code> - auto-mock the functions of an entire module (e.g. axios), causing them to return mocks</li>
+<li><code>jest.spyOn</code> - spy or mock a function</li>
+</ul>
+<ol start="2">
+<li>writing a <a href="https://jestjs.io/docs/manual-mocks">manual mock</a> to override a module dependency</li>
+</ol>
+<ul>
+<li>involves making a <code>__mocks__</code> directory</li>
+</ul>
+<p>Mock functions return undefined by default, but we can inject return values into it:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> myMock <span class="token operator">=</span> jest<span class="token punctuation">.</span><span class="token method function property-access">fn</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span><span class="token function">myMock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// > undefined</span>
+
+myMock<span class="token punctuation">.</span><span class="token method function property-access">mockReturnValueOnce</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token method function property-access">mockReturnValueOnce</span><span class="token punctuation">(</span><span class="token string">'x'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token method function property-access">mockReturnValue</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span><span class="token function">myMock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">myMock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">myMock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">myMock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// > 10, 'x', true, true</span>
+</code></pre>
+<p>In order to mock properly, Jest needs <code>jest.mock('moduleName')</code> to be in the same scope as the import statement (ie. top level).</p>
+<h3 id="dependency-injection">Dependency Injection<a aria-hidden="true" class="anchor-heading icon-link" href="#dependency-injection"></a></h3>
+<p>Ideally, we could just use <a href="/notes/OIBi54r4RJHlcy33iXLpD">Dependency Injection</a> to erase the implementation details of our dependencies so we can test the unit in isolation:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token function-variable function">doAdd</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">a<span class="token punctuation">,</span> b<span class="token punctuation">,</span> callback</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+  <span class="token function">callback</span><span class="token punctuation">(</span>a <span class="token operator">+</span> b<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token function">test</span><span class="token punctuation">(</span><span class="token string">"calls callback with arguments added"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> mockCallback <span class="token operator">=</span> jest<span class="token punctuation">.</span><span class="token method function property-access">fn</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">doAdd</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> mockCallback<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">expect</span><span class="token punctuation">(</span>mockCallback<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token method function property-access">toHaveBeenCalledWith</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>However, this requires us to write our source code in a manner that supports DI.</p>
+<h3 id="remaking-jestfn">Remaking <code>jest.fn</code><a aria-hidden="true" class="anchor-heading icon-link" href="#remaking-jestfn"></a></h3>
+<ul>
+<li><a href="https://www.pluralsight.com/guides/how-does-jest.fn%28%29-work">source</a></li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token comment">// 1. The mock function factory</span>
+<span class="token keyword">function</span> <span class="token function">fn</span><span class="token punctuation">(</span><span class="token parameter">implementation</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// 2. The mock function</span>
+  <span class="token keyword">const</span> <span class="token function-variable function">mockFn</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter"><span class="token spread operator">...</span>args</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 4. Store the arguments used</span>
+    mockFn<span class="token punctuation">.</span><span class="token property-access">mock</span><span class="token punctuation">.</span><span class="token property-access">calls</span><span class="token punctuation">.</span><span class="token method function property-access">push</span><span class="token punctuation">(</span>args<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword control-flow">return</span> <span class="token function">implementation</span><span class="token punctuation">(</span><span class="token spread operator">...</span>args<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// call the implementation</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+  <span class="token comment">// 3. Mock state</span>
+  mockFn<span class="token punctuation">.</span><span class="token property-access">mock</span> <span class="token operator">=</span> <span class="token punctuation">{</span>
+    <span class="token literal-property property">calls</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+  <span class="token keyword control-flow">return</span> mockFn<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="axios-example">Axios example<a aria-hidden="true" class="anchor-heading icon-link" href="#axios-example"></a></h3>
+<p>Imagine we are testing a module (<code>Users</code>) which internally calls <code>axios.get</code>: </p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">class</span> <span class="token class-name">Users</span> <span class="token punctuation">{</span>
+  <span class="token keyword">static</span> <span class="token function">all</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword control-flow">return</span> axios<span class="token punctuation">.</span><span class="token method function property-access">get</span><span class="token punctuation">(</span><span class="token string">'/users.json'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token method function property-access">then</span><span class="token punctuation">(</span><span class="token parameter">resp</span> <span class="token arrow operator">=></span> resp<span class="token punctuation">.</span><span class="token property-access">data</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Of course, we don't want our <code>Users.test.js</code> unit test to actually make a GET request. Therefore, we need to mock it with <code>jest.mock</code></p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/ydz5o0y6rnq2cmzcxjlqv3i">API</a></li>
+<li><a href="/notes/49apbxg57rk1tw6c186hnky">Cook</a></li>
+</ol>

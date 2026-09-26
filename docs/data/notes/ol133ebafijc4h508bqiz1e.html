@@ -1,0 +1,16 @@
+<h1 id="aws-regionality">AWS Regionality<a aria-hidden="true" class="anchor-heading icon-link" href="#aws-regionality"></a></h1>
+<p>AWS services are either Global, Regional or specific to the Availability Zone and cannot be accessed from outside.</p>
+<ul>
+<li>Most AWS managed services are regional based (except for <a href="/notes/hUvXun5sLRxKOZXIZFuV1">IAM</a>, <a href="/notes/cmdTAwLkVkTxP7JsFC8jN">Route53</a>, <a href="/notes/HyP5vSI4XeV8dR6shXQ7c">Cloudfront</a>, WAF etc).</li>
+</ul>
+<h3 id="availability-zone">Availability Zone<a aria-hidden="true" class="anchor-heading icon-link" href="#availability-zone"></a></h3>
+<p>An Availability Zone (AZ) is a group of logical data centers, each one isolated from others.</p>
+<p>Each Region has multiple AZs</p>
+<ul>
+<li>if a region might be <code>us-east-1</code>, the AZ might be <code>us-east-1a</code></li>
+<li>note: other cloud providers might define a region as a single data centre.</li>
+</ul>
+<p>Each AZ has independent and redundant power, cooling, and physical security and is connected via redundant, ultra-low-latency networks</p>
+<ul>
+<li>this means that a company running its resources in different AZs get the benefit of high availability and fault-tolerance, since AZs are isolated from each other. Therefore, it's a good strategy is to spread partitions across AZs</li>
+</ul>

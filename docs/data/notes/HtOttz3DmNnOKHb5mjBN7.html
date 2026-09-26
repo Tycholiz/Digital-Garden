@@ -1,0 +1,10 @@
+<h1 id="rg-resource-group">RG (Resource Group)<a aria-hidden="true" class="anchor-heading icon-link" href="#rg-resource-group"></a></h1>
+<p>A Resource group is a logical container for related resources. We would group together resources that we want to manage together as a group.</p>
+<ul>
+<li>all resources in a RG should be a part of the same lifecycle, meaning we deploy, update, and delete them together.</li>
+<li>resource groups can be stored in a different location than the resource that is comprises. This is possible because the location of the RG is merely the location of the RGs metadata about its resources.</li>
+<li>created with command <code>az group create</code></li>
+<li>ex. <code>AzureFunctionsQuickstart-rg</code></li>
+</ul>
+<h4 id="allow-ip-address-to-resource">Allow IP address to resource<a aria-hidden="true" class="anchor-heading icon-link" href="#allow-ip-address-to-resource"></a></h4>
+<p>From within resource panel (ie. database panel) of the resource group, select <code>connection security</code> and add your IP address</p>

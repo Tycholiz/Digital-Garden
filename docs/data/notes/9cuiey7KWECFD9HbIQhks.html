@@ -1,0 +1,38 @@
+<h1 id="object">Object<a aria-hidden="true" class="anchor-heading icon-link" href="#object"></a></h1>
+<p>Git is built around manipulating the structure of the 4 object types (blob, tree, commit, tag). In a way, it is like a mini-filesystem that sits upon the machine's filesystem</p>
+<ul>
+<li>Nearly all git commands manipulate either the working tree, the staging area, or the commits.</li>
+<li>objects are immutable</li>
+<li>A git repo is a collection of objects, with each having its own hash
+<ul>
+<li>A commit is a hashed object</li>
+</ul>
+</li>
+<li>Each object consists of 3 things:
+<ul>
+<li><em>type</em> - what type of object it is (blob, tree, commit, tag)</li>
+<li><em>size</em> - the size of the contents</li>
+<li><em>content</em></li>
+</ul>
+</li>
+</ul>
+<h3 id="sha-of-objects">SHA of Objects<a aria-hidden="true" class="anchor-heading icon-link" href="#sha-of-objects"></a></h3>
+<p>Inside <code>.git/objects</code>, we see many hexadecimally named directories. The names of these are actually the first 2 digits of the SHA</p>
+<ul>
+<li>ex. <code>.git/objects/77/a54737</code> is the commit with SHA <code>77a54737...</code></li>
+</ul>
+<p>The commits themselves are encrypted, but we can see the contents of the object with <code>git cat-file -p &#x3C;SHA></code></p>
+<ul>
+<li>use <code>-t</code> to see what type the object is </li>
+</ul>
+<p>The below image is a representation of our workflow. Here we have 3 commits (with the first commit on the left). It's important to note how the same blob is referred by different trees. This is because that file didn't change between commits, therefore the blob is identical </p>
+<p><img src="/assets/images/2021-03-06-16-16-37.png">
+<img src="/assets/images/2021-03-06-16-17-02.png"></p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/ePOqLpbjFgrqSfyvWfPha">Blob</a></li>
+<li><a href="/notes/uI9Iy1aoh8oynk85Mzx5z">Commits</a></li>
+<li><a href="/notes/z2O2eHtsbM9LB5s9ClqJs">Tag</a></li>
+<li><a href="/notes/J9Z9E8d7dzzJA7BiOVy8W">Tree</a></li>
+</ol>

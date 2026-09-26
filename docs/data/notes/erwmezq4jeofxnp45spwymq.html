@@ -1,0 +1,32 @@
+<h1 id="replication">Replication<a aria-hidden="true" class="anchor-heading icon-link" href="#replication"></a></h1>
+<p><a href="/notes/6b96d1cy19ooewp49vo4x5d">see also CouchDB Replication</a></p>
+<h3 id="unidirectional-replication">Unidirectional Replication<a aria-hidden="true" class="anchor-heading icon-link" href="#unidirectional-replication"></a></h3>
+<p>With unidirectional replication, one database will mirror its changes to a second one, but writes to the second database will not propagate back to the master database.</p>
+<pre class="language-js"><code class="language-js"><span class="token comment">// replicate all changes from localDB to remoteDB</span>
+localDB<span class="token punctuation">.</span><span class="token property-access">replicate</span><span class="token punctuation">.</span><span class="token method function property-access">to</span><span class="token punctuation">(</span>remoteDB<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token method function property-access">on</span><span class="token punctuation">(</span><span class="token string">'complete'</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// yay, we're done!</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token method function property-access">on</span><span class="token punctuation">(</span><span class="token string">'error'</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">err</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// boo, something went wrong!</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h3 id="bidirectional-replication">Bidirectional Replication<a aria-hidden="true" class="anchor-heading icon-link" href="#bidirectional-replication"></a></h3>
+<pre class="language-js"><code class="language-js">localDB<span class="token punctuation">.</span><span class="token property-access">replicate</span><span class="token punctuation">.</span><span class="token method function property-access">to</span><span class="token punctuation">(</span>remoteDB<span class="token punctuation">)</span><span class="token punctuation">;</span>
+localDB<span class="token punctuation">.</span><span class="token property-access">replicate</span><span class="token punctuation">.</span><span class="token keyword module">from</span><span class="token punctuation">(</span>remoteDB<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// or, equivalently:</span>
+localDB<span class="token punctuation">.</span><span class="token method function property-access">sync</span><span class="token punctuation">(</span>remoteDB<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h3 id="live-replication-aka-continuous-replication">Live Replication (a.k.a continuous replication)<a aria-hidden="true" class="anchor-heading icon-link" href="#live-replication-aka-continuous-replication"></a></h3>
+<p>With this mode, changes are propagated between the two databases as the changes occur. </p>
+<ul>
+<li>In other words, normal replication happens once, whereas live replication happens in real time.</li>
+<li>however if the user goes offline, an error will be thrown and replication will stop.</li>
+</ul>
+<pre class="language-js"><code class="language-js">localDB<span class="token punctuation">.</span><span class="token method function property-access">sync</span><span class="token punctuation">(</span>remoteDB<span class="token punctuation">,</span> <span class="token punctuation">{</span>
+  <span class="token literal-property property">live</span><span class="token operator">:</span> <span class="token boolean">true</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token method function property-access">on</span><span class="token punctuation">(</span><span class="token string">'change'</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">change</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// yo, something changed!</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token method function property-access">on</span><span class="token punctuation">(</span><span class="token string">'error'</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">err</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// yo, we got an error! (maybe the user went offline?)</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>

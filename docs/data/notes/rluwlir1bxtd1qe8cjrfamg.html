@@ -1,0 +1,70 @@
+<h1 id="microservices">Microservices<a aria-hidden="true" class="anchor-heading icon-link" href="#microservices"></a></h1>
+<p>In Nestjs, a microservice is an application that uses a transport layer that is not HTTP (such as TCP, which is the default)</p>
+<ul>
+<li>the specific transport layer implementation that is used is called a <em>transporter</em>.</li>
+<li>most transporters support both request-response and event-based message styles.</li>
+</ul>
+<p>A Nestjs application can exchange messages or publish events to a Nest microservice using the <code>ClientProxy</code> class</p>
+<ul>
+<li>this class notably provides the <code>send()</code> and <code>emit()</code> methods, allowing us to communicate with remote microservices.
+<ul>
+<li><code>send()</code> returns a cold <a href="/notes/i0cxm46r54o0242vn13g38n">Observable</a> to which we can subscribe.
+<ul>
+<li><em>cold</em> meaning we have to explicitly subscribe to it before the message will be sent</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>this class is lazy; it only initiates a connection just prior to when the first microservice call is made.</li>
+<li>this class can be instantiated by either:
+<ul>
+<li>importing <code>ClientsModule</code> and registering it into one of your <a href="/notes/y8044sa0ai1u2hyoka0lphz">Modules</a> as part of the <code>imports</code> array. This enables us to (dependency) inject an instance of <code>ClientProxy</code>:</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token function">constructor</span><span class="token punctuation">(</span>
+  @<span class="token function"><span class="token maybe-class-name">Inject</span></span><span class="token punctuation">(</span><span class="token string">'NAME_OF_SERVICE_AS_REGISTERED_IN_MODULE'</span><span class="token punctuation">)</span> <span class="token keyword">private</span> <span class="token literal-property property">client</span><span class="token operator">:</span> <span class="token maybe-class-name">ClientProxy</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+</code></pre>
+<ul>
+<li>using the <code>@Client()</code> decorator, which is the non-preferred way</li>
+</ul>
+</li>
+</ul>
+<h2 id="handlers">Handlers<a aria-hidden="true" class="anchor-heading icon-link" href="#handlers"></a></h2>
+<p>Only to exist within <code>@Controller()</code> decorated classes, since they are the entry points for your application</p>
+<h3 id="messagepattern"><code>@MessagePattern()</code><a aria-hidden="true" class="anchor-heading icon-link" href="#messagepattern"></a></h3>
+<p>Decorator to create a message handler based on the request-response paradigm</p>
+<ul>
+<li>ex. Here, the <code>accumulate()</code> message handler listens for messages that fulfill the <code>{ cmd: 'sum' }</code> message pattern. The handler takes in a single argument <code>data</code>, which is passed from the client.</li>
+</ul>
+<pre class="language-ts"><code class="language-ts"><span class="token decorator"><span class="token at operator">@</span><span class="token function">MessagePattern</span></span><span class="token punctuation">(</span><span class="token punctuation">{</span> cmd<span class="token operator">:</span> <span class="token string">'sum'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token function">accumulate</span><span class="token punctuation">(</span>data<span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">number</span> <span class="token punctuation">{</span>
+  <span class="token keyword control-flow">return</span> <span class="token punctuation">(</span>data <span class="token operator">||</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token method function property-access">reduce</span><span class="token punctuation">(</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span> <span class="token arrow operator">=></span> a <span class="token operator">+</span> b<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Message handlers support both sync and <code>async</code></p>
+<p>A message handler is able to return an <a href="/notes/i0cxm46r54o0242vn13g38n">observable</a>.</p>
+<ul>
+<li>in this case, the result values will be emitted until the stream is completed.</li>
+</ul>
+<p>There is a bit of overhead involved in this paradigm, since the Nestjs runtime creates 2 channels to handle the request and response.</p>
+<h3 id="eventpattern"><code>@EventPattern()</code><a aria-hidden="true" class="anchor-heading icon-link" href="#eventpattern"></a></h3>
+<p>Decorator to create an event handler based on the event-based paradigm (ie. when you want to publish events without waiting for a response).</p>
+<p>Ideal use-case is if you would like to simply notify another service that a certain condition has occurred in this part of the system.</p>
+<p>You can register multiple event handlers for a single event pattern (ie. the decorator arg) and all of them will be automatically triggered in parallel.</p>
+<p>If using Kafka, you may want to access the message headers. In order to accomplish that, you can use built-in decorators as follows</p>
+<ul>
+<li>note: types are obtained from <code>@nestjs/microservices</code> library</li>
+</ul>
+<pre class="language-ts"><code class="language-ts"><span class="token decorator"><span class="token at operator">@</span><span class="token function">EventPattern</span></span><span class="token punctuation">(</span>env<span class="token punctuation">.</span><span class="token constant">KAFKA_TOPIC</span><span class="token punctuation">)</span>
+<span class="token keyword">async</span> <span class="token function">stateChangeHandler</span><span class="token punctuation">(</span><span class="token decorator"><span class="token at operator">@</span><span class="token function">Payload</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span> event<span class="token operator">:</span> <span class="token maybe-class-name">Record</span><span class="token operator">&#x3C;</span><span class="token builtin">string</span><span class="token punctuation">,</span> <span class="token builtin">unknown</span><span class="token operator">></span><span class="token punctuation">,</span> <span class="token decorator"><span class="token at operator">@</span><span class="token function">Ctx</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span> context<span class="token operator">:</span> <span class="token maybe-class-name">KafkaContext</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> label <span class="token operator">=</span> <span class="token string">'AppController#stateChangeRivian'</span><span class="token punctuation">;</span>
+  <span class="token keyword control-flow">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token method function property-access">allTopics</span><span class="token punctuation">(</span>event<span class="token punctuation">,</span> context<span class="token punctuation">.</span><span class="token method function property-access">getTopic</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> label<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<ul>
+<li>note: You can also pass in a property key to the <code>@Payload()</code> decorator to extract a specific property from the incoming payload object. 
+<ul>
+<li>ex. <code>@Payload('id')</code></li>
+</ul>
+</li>
+</ul>

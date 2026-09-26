@@ -1,0 +1,22 @@
+<h1 id="curl">Curl<a aria-hidden="true" class="anchor-heading icon-link" href="#curl"></a></h1>
+<h2 id="http-requests">HTTP Requests<a aria-hidden="true" class="anchor-heading icon-link" href="#http-requests"></a></h2>
+<h3 id="post">Post<a aria-hidden="true" class="anchor-heading icon-link" href="#post"></a></h3>
+<pre><code>curl -X POST [options] [URL]
+</code></pre>
+<p>example</p>
+<pre class="language-sh"><code class="language-sh">curl -X POST -H "Content-Type: application/json" \
+    -d '{"email": "linuxize@example.com", "password": "123"}' \
+    localhost:5678/login
+</code></pre>
+<h3 id="put">Put<a aria-hidden="true" class="anchor-heading icon-link" href="#put"></a></h3>
+<pre><code>curl -X PUT -d arg=val -d arg2=val2 localhost:8080
+</code></pre>
+<h2 id="flags">Flags<a aria-hidden="true" class="anchor-heading icon-link" href="#flags"></a></h2>
+<ul>
+<li><code>-I</code> - make sure that cURL outputs the response</li>
+</ul>
+<hr>
+<h2 id="cook">Cook<a aria-hidden="true" class="anchor-heading icon-link" href="#cook"></a></h2>
+<h3 id="setting-return-value-of-curl-to-variable">Setting return value of curl to variable<a aria-hidden="true" class="anchor-heading icon-link" href="#setting-return-value-of-curl-to-variable"></a></h3>
+<pre><code>http_code=$(curl -s -o /dev/null -w "%{http_code}" https://www.google.com)
+</code></pre>

@@ -1,0 +1,36 @@
+<h1 id="step">Step<a aria-hidden="true" class="anchor-heading icon-link" href="#step"></a></h1>
+<p>A step is an individual task that can run commands in a job</p>
+<p>A step can either be:</p>
+<ul>
+<li>a shell command</li>
+<li>an action</li>
+</ul>
+<p>Each step in a job executes on the same runner, allowing the actions in that job to share data with each other.</p>
+<p>Changing directories in one step does not carry through to the next step:</p>
+<pre class="language-yml"><code class="language-yml"><span class="token comment"># workflow.actions.yml</span>
+    <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> cd into publishable
+      <span class="token key atrule">run</span><span class="token punctuation">:</span> <span class="token punctuation">|</span><span class="token scalar string">
+        cd publishable 
+        pwd</span>
+
+    <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> does the cd carry thru<span class="token punctuation">?</span>
+      <span class="token key atrule">run</span><span class="token punctuation">:</span> <span class="token punctuation">|</span><span class="token scalar string">
+        pwd</span>
+</code></pre>
+<p>log:</p>
+<pre><code>Run cd publishable
+/home/runner/work/Digital-Garden/Digital-Garden/publishable
+
+Run pwd
+/home/runner/work/Digital-Garden/Digital-Garden
+</code></pre>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/vr8w0RbSY0FEGRqq6lAxY">Cook</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/NCTzcxTOAYdeXWxx1WIgK">Github Actions</a></li>
+</ul>

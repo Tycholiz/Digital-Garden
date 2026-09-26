@@ -1,0 +1,34 @@
+<h1 id="test">Test<a aria-hidden="true" class="anchor-heading icon-link" href="#test"></a></h1>
+<p>"Test" is a conditional check in Bash</p>
+<p><code>[ -e FILE ]</code> - True if FILE exists
+<code>[ -d FILE ]</code> - True if FILE exists and is a directory.
+<code>[ -f FILE ]</code> - True if FILE exists and is a regular file (ie. not a directory).
+<code>[ -z STRING ]</code> - True if the length if "STRING" is zero.
+<code>[ -n STRING ]</code> or <code>[ STRING ]</code> - True if the length of string > 0</p>
+<ul>
+<li>use to check for existence of variable</li>
+</ul>
+<pre class="language-sh"><code class="language-sh">http_status=$(curl ___)
+if [ $http_status != "200" ]
+    then
+        echo "command failed"
+fi
+</code></pre>
+<h3 id="test-based-on-exit-status-of-previously-executed-command">Test based on exit status of previously executed command<a aria-hidden="true" class="anchor-heading icon-link" href="#test-based-on-exit-status-of-previously-executed-command"></a></h3>
+<ul>
+<li>The <code>?</code> variable holds the exit status of the previously executed command (the most recently completed foreground process).</li>
+</ul>
+<pre class="language-sh"><code class="language-sh">if [ $? -eq 0 ]
+then echo 'That was a good job!'
+fi
+</code></pre>
+<h3 id="using--and--for-conditionals">Using <code>&#x26;&#x26;</code> and <code>||</code> for conditionals<a aria-hidden="true" class="anchor-heading icon-link" href="#using--and--for-conditionals"></a></h3>
+<p>Never use <code>x &#x26;&#x26; y || z</code> when <code>y</code> can return a non-zero exit status. Use <code>if</code> statements instead</p>
+<ul>
+<li><a href="http://mywiki.wooledge.org/BashPitfalls#cmd1_.26.26_cmd2_.7C.7C_cmd3">source</a></li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/cc2R54F24I4u4lXTMwoPE">Cook</a></li>
+</ol>

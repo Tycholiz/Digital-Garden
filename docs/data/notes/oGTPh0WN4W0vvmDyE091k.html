@@ -1,0 +1,21 @@
+<h1 id="date">Date<a aria-hidden="true" class="anchor-heading icon-link" href="#date"></a></h1>
+<h4 id="current_date">current_date<a aria-hidden="true" class="anchor-heading icon-link" href="#current_date"></a></h4>
+<p>spec: when doing "math" on dates that don't have a time attached to them, then midnight is used:</p>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span>
+<span class="token keyword">from</span> app_public<span class="token punctuation">.</span>users
+<span class="token keyword">where</span> created_at <span class="token operator">></span> <span class="token keyword">current_date</span>
+<span class="token operator">and</span> created_at <span class="token operator">&#x3C;</span> <span class="token keyword">current_date</span> <span class="token operator">+</span> <span class="token keyword">interval</span> <span class="token string">'1 day'</span>
+</code></pre>
+<p>If current_date gets rounded back to midnight, then, the first <code>where</code> is saying "give me all the rows created since midnight", and the second <code>where</code> is saying "until midnight 24 hours later"</p>
+<h3 id="extract">Extract<a aria-hidden="true" class="anchor-heading icon-link" href="#extract"></a></h3>
+<p>using the <code>extract</code> function, we can get parts of a date out of a date object</p>
+<pre class="language-sql"><code class="language-sql">extract<span class="token punctuation">(</span><span class="token string">'isodow'</span> <span class="token keyword">from</span> <span class="token keyword">date</span><span class="token punctuation">)</span> <span class="token keyword">as</span> dow
+<span class="token comment">-- 4 (ISO day of week)</span>
+extract<span class="token punctuation">(</span><span class="token string">'isoyear'</span> <span class="token keyword">from</span> <span class="token keyword">date</span><span class="token punctuation">)</span> <span class="token keyword">as</span> <span class="token keyword">year</span>
+<span class="token comment">-- 2002 (ISO year)</span>
+extract<span class="token punctuation">(</span><span class="token string">'week'</span> <span class="token keyword">from</span> <span class="token keyword">date</span><span class="token punctuation">)</span> <span class="token keyword">as</span> week
+<span class="token comment">-- 52</span>
+</code></pre>
+<p>We can combine this with <code>trunc_date</code> to extract out sub-parts:</p>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">select</span> extract<span class="token punctuation">(</span><span class="token string">'year'</span> <span class="token keyword">from</span> date_trunc<span class="token punctuation">(</span><span class="token string">'decade'</span><span class="token punctuation">,</span> <span class="token keyword">date</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">as</span> decade
+</code></pre>

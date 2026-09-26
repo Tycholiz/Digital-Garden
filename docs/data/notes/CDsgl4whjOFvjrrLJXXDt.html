@@ -1,0 +1,13 @@
+<h1 id="durability">Durability<a aria-hidden="true" class="anchor-heading icon-link" href="#durability"></a></h1>
+<p>Durability is the promise that once a transaction has committed successfully, any data it has written will not be forgotten, even if there is a hardware fault or the database crashes.</p>
+<ul>
+<li>in a single-node system, durability means that the data has been written to disk, </li>
+<li>in a multi-node system, durability means that the data has been copied to some number of nodes.</li>
+<li>to provide a durability guarantee, a database must wait until these writes or replications are complete before reporting a transaction as successfully committed</li>
+</ul>
+<p>A second layer of durability is usually provided through WALs write-ahead logs, which allows recovery in the event that the data structures on disk are corrupted.</p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/fCagNdVtAqMZw8CYsTZ7m">ACID</a></li>
+</ul>

@@ -1,0 +1,25 @@
+<h1 id="clause">Clause<a aria-hidden="true" class="anchor-heading icon-link" href="#clause"></a></h1>
+<h2 id="sql-clause-execution-order">SQL Clause Execution Order<a aria-hidden="true" class="anchor-heading icon-link" href="#sql-clause-execution-order"></a></h2>
+<p><code>FROM ➡ WHERE ➡ GROUP BY ➡ HAVING ➡ SELECT ➡ DISTINCT ➡ ORDER BY ➡ LIMIT</code></p>
+<p>in other words...</p>
+<ul>
+<li>The system first executes the FROM clause i.e. it creates the data set on which the WHERE and SELECT clauses are to be run. This step includes any joins specified in the FROM clause.</li>
+<li>Then, it eliminates rows from this data set by using the filters specified in the WHERE clause.</li>
+<li>It then groups the data set by the columns specified in the GROUP BY clause, and finally runs the SELECT clause. This is why you can never use the aliases specified in the SELECT clause to filter in the WHERE clause - because the aliases haven’t been declared yet.</li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/xbx4TGR34l46miSSdp8xn">Alter</a></li>
+<li><a href="/notes/BRUbtn0BALYb7FyLiJxB0">As</a></li>
+<li><a href="/notes/fF4sO1xwvbkp60H2H5Q5C">Cascade</a></li>
+<li><a href="/notes/iWzugfGmhPr58omUx0LaS">Delete</a></li>
+<li><a href="/notes/12m6i3UdUef8aspMHjwUY">Group by</a></li>
+<li><a href="/notes/IeXVLjFiPkIUPDSxiky1r">Having</a></li>
+<li><a href="/notes/R85oo52DnTRhZcyeYcItQ">Insert</a></li>
+<li><a href="/notes/MHngPoItXbrEVdyT2B8Zb">Like</a></li>
+<li><a href="/notes/QkR4112Z1ElZAN7c0oTuO">On Conflict</a></li>
+<li><a href="/notes/FCQOZ27v8uQNiv97dsXVl">Returning</a></li>
+<li><a href="/notes/GoLU6uK33w2uBz0QkpyvM">Select</a></li>
+<li><a href="/notes/Cn5aqtggy4mrD38WFJxsQ">Where</a></li>
+</ol>

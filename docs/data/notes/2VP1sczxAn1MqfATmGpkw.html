@@ -1,0 +1,20 @@
+<h1 id="morgan">Morgan<a aria-hidden="true" class="anchor-heading icon-link" href="#morgan"></a></h1>
+<p>Morgan is a HTTP request logger middleware for Node.js.</p>
+<h3 id="token">Token<a aria-hidden="true" class="anchor-heading icon-link" href="#token"></a></h3>
+<p>When morgan logs to the console, the structure of the content that gets logged in determined by the tokens used</p>
+<p>A standard way to use morgan is to use the preset tiny:
+<code>app.use(morgan('tiny'))</code>, which is equivalent to:
+<code>morgan(':method :url :status :res[content-length] - :response-time ms');</code></p>
+<ul>
+<li>The part following <code>:</code> is the token.</li>
+</ul>
+<h4 id="custom-tokens">Custom Tokens<a aria-hidden="true" class="anchor-heading icon-link" href="#custom-tokens"></a></h4>
+<p>We can create our own tokens with <code>morgan.token(nameOfToken, callback)</code>, where the callback returns the value that will stand in for the token name.</p>
+<p>Tokens can be configured to accept custom arguments:</p>
+<pre class="language-js"><code class="language-js">app<span class="token punctuation">.</span><span class="token method function property-access">use</span><span class="token punctuation">(</span><span class="token function">morgan</span><span class="token punctuation">(</span><span class="token string">':method :host :status :param[id] :res[content-length] - :response-time ms'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+morgan<span class="token punctuation">.</span><span class="token method function property-access">token</span><span class="token punctuation">(</span><span class="token string">'param'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">req<span class="token punctuation">,</span> res<span class="token punctuation">,</span> param</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword control-flow">return</span> req<span class="token punctuation">.</span><span class="token property-access">params</span><span class="token punctuation">[</span>param<span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Morgan can be combined with Winston to great effect</p>

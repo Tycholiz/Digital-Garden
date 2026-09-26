@@ -1,0 +1,45 @@
+
+Historically speaking, the GPU's principle job is to render triangles onto the screen
+- It is more performant than the CPU, but also more specific, so cannot do the wide-range of jobs that can be performed by a CPU
+
+Their use has extended past this initial purpose, and they are now also used for ML neural networks and mining cryptocurrencies.
+- using GPU like this (ie. not triangle drawing) is known as General Purpose GPU (GPGPU)
+
+GPUs are optimized for throughput at the cost of latency
+- GPUs need to sustain 3.3GB/s just for texture samples for a shader running at 1280x720 resolution
+- this level of throughput is only possible if the memory of the GPU is very tightly integrated with the cores
+
+a GPU can be a completely separate card with its own memory chip, so you control it via a so-called command buffer (or command queue), which is a chunk of memory that contains encoded commands for the GPU to execute.
+- The command buffer is also the hook for the [[driver|os.kernel.driver]] or [[operating system|os]] to let multiple applications use the GPU without them interfering with each other. When you queue up your commands, the abstraction layers below will inject additional commands into the queue to save the previous program’s state and restore your program’s state so that it feels like no one else is using the GPU.
+
+GPUs are great at numerical operations, meaning they lend themselves well to the fields of machine learning and blockchain
+
+### GPU Cores
+GPUs have many cores (from 100's to 1000's) that allow for a high degree of parallelization.
+- however, each core is not as independent as the ones we'd find in a [[CPU|hardware.cpu]]
+
+GPU cores are grouped hierarchically
+
+### Use in Machine Learning
+Though originally GPUs were built for graphics, Nvidia provides a software platform called CUDA (Compute Unified Device Architecture) which is an API that enables software (like Pytorch) to use GPU for general purpose computing tasks.
+
+<!-- Refine this explanation -->
+GPUs are so fast because they are so efficient for matrix multiplication and convolution
+
+CPUs are latency optimized while GPUs are bandwidth optimized. You can visualize this as a CPU being a Ferrari and a GPU being a big truck. The task of both is to pick up packages from a random location A and to transport those packages to another random location B. The CPU (Ferrari) can fetch some memory (packages) in your RAM quickly while the GPU (big truck) is slower in doing that (much higher latency). However, the CPU (Ferrari) needs to go back and forth many times to do its job (location A $\rightarrow$ pick up 2 packages $\rightarrow$ location B ... repeat) while the GPU can fetch much more memory at once (location A $\rightarrow$ pick up 100 packages $\rightarrow$ location B ... repeat).
+
+So, in other words, the CPU is good at fetching small amounts of memory quickly (5 * 3 * 7) while the GPU is good at fetching large amounts of memory (Matrix multiplication: (A*B)*C). The best CPUs have about 50GB/s while the best GPUs have 750GB/s memory bandwidth. So the more memory your computational operations require, the more significant the advantage of GPUs over CPUs. But there is still the latency that may hurt performance in the case of the GPU. A big truck may be able to pick up a lot of packages with each tour, but the problem is that you are waiting a long time until the next set of packages arrives. Without solving this problem, GPUs would be very slow even for large amounts of data. So how is this solved?
+
+If you ask a big truck to make many tours to fetch packages you will always wait for a long time for the next load of packages once the truck has departed to do the next tour — the truck is just slow. However, if you now use a fleet of either Ferraris and big trucks (thread parallelism), and you have a big job with many packages (large chunks of memory such as matrices) then you will wait for the first truck a bit, but after that you will have no waiting time at all — unloading the packages takes so much time that all the trucks will queue in unloading location B so that you always have direct access to your packages (memory). This effectively hides latency so that GPUs offer high bandwidth while hiding their latency under thread parallelism — so for large chunks of memory GPUs provide the best memory bandwidth while having almost no drawback due to latency via thread parallelism. This is the second reason why GPUs are faster than CPUs for deep learning. As a side note, you will also see why more threads do not make sense for CPUs: A fleet of Ferraris has no real benefit in any scenario.
+
+But the advantages for the GPU do not end here. This is the first step where the memory is fetched from the main memory (RAM) to the local memory on the chip (L1 cache and registers). This second step is less critical for performance but still adds to the lead for GPUs. All computation that ever is executed happens in registers which are directly attached to the execution unit (a core for CPUs, a stream processor for GPUs). Usually, you have the fast L1 and register memory very close to the execution engine, and you want to keep these memories small so that access is fast. Increased distance to the execution engine dramatically reduces memory access speed, so the larger the distance to access it the slower it gets. If you make your memory larger and larger, then, in turn, it gets slower to access its memory (on average, finding what you want to buy in a small store is faster than finding what you want to buy in a huge store, even if you know where that item is). So the size is limited for register files - we are just at the limits of physics here and every nanometer counts, we want to keep them small.
+
+The advantage of the GPU is here that it can have a small pack of registers for every processing unit (stream processor, or SM), of which it has many. Thus we can have in total a lot of register memory, which is very small and thus very fast. This leads to the aggregate GPU registers size being more than 30 times larger compared to CPUs and still twice as fast which translates to up to 14MB register memory that operates at a whopping 80TB/s. As a comparison, the CPU L1 cache only operates at about 5TB/s which is quite slow and has the size of roughly 1MB; CPU registers usually have sizes of around 64-128KB and operate at 10-20TB/s. Of course, this comparison of numbers is a bit flawed because registers operate a bit differently than GPU registers (a bit like apples and oranges), but the difference in size here is more crucial than the difference in speed, and it does make a difference.
+
+As a side note, full register utilization in GPUs seems to be difficult to achieve at first because it is the smallest unit of computation which needs to be fine-tuned by hand for good performance. However, NVIDIA has developed helpful compiler tools which indicate when you are using too much or too few registers per stream processor. It is easy to tweak your GPU code to make use of the right amount of registers and L1 cache for fast performance. This gives GPUs an advantage over other architectures like Xeon Phis where this utilization is complicated to achieve and painful to debug which in the end makes it difficult to maximize performance on a Xeon Phi.
+
+What this means, in the end, is that you can store a lot of data in your L1 caches and register files on GPUs to reuse convolutional and matrix multiplication tiles. For example the best matrix multiplication algorithms use 2 tiles of 64x32 to 96x64 numbers for 2 matrices in L1 cache, and a 16x16 to 32x32 number register tile for the outputs sums per thread block (1 thread block = up to 1024 threads; you have 8 thread blocks per stream processor, there are 60 stream processors in total for the entire GPU). If you have a 100MB matrix, you can split it up in smaller matrices that fit into your cache and registers, and then do matrix multiplication with three matrix tiles at speeds of 10-80TB/s — that is fast! This is the third reason why GPUs are so much faster than CPUs, and why they are so well suited for deep learning.
+
+Keep in mind that the slower memory always dominates performance bottlenecks. If 95% of your memory movements take place in registers (80TB/s), and 5% in your main memory (0.75TB/s), then you still spend most of the time on memory access of main memory (about six times as much).
+
+Thus in order of importance: (1) High bandwidth main memory, (2) hiding memory access latency under thread parallelism, and (3) large and fast register and L1 memory which is easily programmable are the components which make GPUs so well suited for deep learning.

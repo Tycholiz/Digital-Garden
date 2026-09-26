@@ -1,0 +1,50 @@
+<h1 id="methods">Methods<a aria-hidden="true" class="anchor-heading icon-link" href="#methods"></a></h1>
+<p>Here, we declare the <code>isAdult</code> method on the <code>*Person</code> type.</p>
+<pre class="language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token punctuation">(</span>p <span class="token operator">*</span>Person<span class="token punctuation">)</span> isAdult <span class="token builtin">bool</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> p<span class="token punctuation">.</span>Age <span class="token operator">></span> <span class="token number">18</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>In Go, Methods are functions that have a special <em>receiver argument</em>:</p>
+<pre class="language-go"><code class="language-go"><span class="token comment">// The Abs() method a receiver argument of type Vertex named v.</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>v Vertex<span class="token punctuation">)</span> <span class="token function">Abs</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">float64</span> <span class="token punctuation">{</span>
+	<span class="token keyword">return</span> math<span class="token punctuation">.</span><span class="token function">Sqrt</span><span class="token punctuation">(</span>v<span class="token punctuation">.</span>X<span class="token operator">*</span>v<span class="token punctuation">.</span>X <span class="token operator">+</span> v<span class="token punctuation">.</span>Y<span class="token operator">*</span>v<span class="token punctuation">.</span>Y<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>The receiver argument can be either a <em>value receiver</em> or a <em>pointer receiver</em></p>
+<ul>
+<li><em>value receiver</em> - makes a copy of the type and passes it to the function so that it has its own local version.
+<ul>
+<li>Therefore, the original object will remain unchanged.</li>
+<li>ex. <code>(v Vertex)</code> </li>
+</ul>
+</li>
+<li><em>pointer receiver</em> - passes the address of a type to the function. The function stack has a reference to the original object. 
+<ul>
+<li>Therefore, any modifications on the passed object will modify the original object.</li>
+<li>ex. <code>(v *Vertex)</code></li>
+</ul>
+</li>
+</ul>
+<p>Since methods often need to modify their receiver, pointer receivers (ie. <code>*x</code>) are more common than value receivers.</p>
+<h3 id="pointer-receiver">Pointer Receiver<a aria-hidden="true" class="anchor-heading icon-link" href="#pointer-receiver"></a></h3>
+<p>In this case the receiver argument is a <a href="/notes/g3imh89bn22g1cddsry0a90">pointer</a>, as denoted by <code>*T</code>:</p>
+<pre class="language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token punctuation">(</span>v <span class="token operator">*</span>Vertex<span class="token punctuation">)</span> <span class="token function">Scale</span><span class="token punctuation">(</span>f <span class="token builtin">float64</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	v<span class="token punctuation">.</span>X <span class="token operator">=</span> v<span class="token punctuation">.</span>X <span class="token operator">*</span> f
+	v<span class="token punctuation">.</span>Y <span class="token operator">=</span> v<span class="token punctuation">.</span>Y <span class="token operator">*</span> f
+<span class="token punctuation">}</span>
+</code></pre>
+<ul>
+<li>in this case, the <code>Scale</code> method has as a receiver argument <code>*Vertex</code>.</li>
+<li>now, we can modify the value to which the receiver points</li>
+</ul>
+<p>methods with pointer receivers take either a value or a pointer as the receiver when they are called</p>
+<ul>
+<li>this means that you can pass either the value or the pointer to the value (ie. either <code>v</code> or <code>&#x26;v</code>)</li>
+<li>this is a convenience offered by the Go engine. Under the hood, Go interprets the statement <code>v.Scale(5)</code> as <code>(&#x26;v).Scale(5)</code> since the Scale method has a pointer receiver.</li>
+</ul>
+<pre class="language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token punctuation">(</span>v <span class="token operator">*</span>Vertex<span class="token punctuation">)</span> <span class="token function">Scale</span><span class="token punctuation">(</span>f <span class="token builtin">float64</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	v<span class="token punctuation">.</span>X <span class="token operator">=</span> v<span class="token punctuation">.</span>X <span class="token operator">*</span> f
+	v<span class="token punctuation">.</span>Y <span class="token operator">=</span> v<span class="token punctuation">.</span>Y <span class="token operator">*</span> f
+<span class="token punctuation">}</span>
+</code></pre>
+<p>In general, all methods on a given type should have either value or pointer receivers, but not a mixture of both.</p>

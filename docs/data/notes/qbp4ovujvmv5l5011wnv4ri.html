@@ -1,0 +1,38 @@
+<h1 id="cluster">Cluster<a aria-hidden="true" class="anchor-heading icon-link" href="#cluster"></a></h1>
+<p>Redis Clusters enable us to scale <a href="/notes/HZSth7yP1s7aPaPPZRJPm#horizontal-scaling-aka-scaling-out1">horizontally</a></p>
+<p>When we run Redis in a cluster, data is automatically sharded across multiple Redis nodes.</p>
+<p>As an added benefit, running as a cluster also gives a degree of availability during partitions, giving it the ability to continue in the event that there is a fault in one or more of the nodes.</p>
+<p>Redis Cluster uses a master-replica model where every hash slot has from 1 (the master itself) to N replicas (N-1 additional replica nodes).</p>
+<p>Redis Cluster does not guarantee strong consistency, due to the fact that it uses asynchronous replication.</p>
+<ul>
+<li>In practical terms this means that under certain conditions it is possible that Redis Cluster will lose writes that were acknowledged by the system to the client.</li>
+<li>ex.
+<ol>
+<li>Your client writes to the master B.</li>
+<li>The master B replies OK to your client.</li>
+<li>The master B propagates the write to its replicas B1 and B2, but crashes before it is able to replicate to B3, resulting in B3 being behind, yet the client thinking everything has been properly replicated.</li>
+</ol>
+</li>
+</ul>
+<h3 id="connections">Connections<a aria-hidden="true" class="anchor-heading icon-link" href="#connections"></a></h3>
+<p>Each cluster requires 2 open <a href="/notes/d2e2hSjyVoKd0AmH4P1Yj">TCP</a> connections:</p>
+<ol>
+<li>a Redis TCP port used to serve clients, e.g., 6379, </li>
+<li>a second port known as the cluster bus port</li>
+</ol>
+<ul>
+<li>By default, the cluster bus port is set by adding 10000 to the data port (e.g., 16379);</li>
+</ul>
+<p>The cluster bus port is for node-to-node communication and is used for failure detection, configuration update, failover authorization, and so forth.</p>
+<p>Both ports need to be open to the firewall, otherwise Redis cluster nodes will be unable to communicate.</p>
+<h3 id="sharding">Sharding<a aria-hidden="true" class="anchor-heading icon-link" href="#sharding"></a></h3>
+<p>Each key (ie. each value to be stored in Redis) is sharded and grouped according to the <em>hash slot</em> they belong to.</p>
+<ul>
+<li>there are 16384 individual hash slots in Redis Cluster.</li>
+<li>each cluster node is responsible for a subset of the hash slots.</li>
+</ul>
+<p>Identical values within <code>{}</code> are guaranteed to be in the same hash slot because they share the same hash tag</p>
+<ul>
+<li>ex. the keys <code>user:{123}:profile</code> and <code>user:{123}:account</code> will live in the same hash slot, since they are from the same user.</li>
+<li>as a result of this, we can operate on these 2 keys in the same multi-key operation.</li>
+</ul>

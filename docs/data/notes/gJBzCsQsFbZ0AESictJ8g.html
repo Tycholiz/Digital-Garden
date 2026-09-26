@@ -1,0 +1,94 @@
+<h1 id="cloudwatch">Cloudwatch<a aria-hidden="true" class="anchor-heading icon-link" href="#cloudwatch"></a></h1>
+<p>CloudWatch is a monitoring and observability service.</p>
+<p>CloudWatch collects monitoring and operational data in the form of logs, metrics, and events.</p>
+<p>Purpose is to get a unified view of operational health and gain complete visibility of your AWS resources, applications, and services running on AWS and on-premises</p>
+<p>CloudWatch can be set up to...</p>
+<ul>
+<li>detect anomalous behavior in your environments</li>
+<li>set alarms</li>
+<li>visualize logs and metrics side by side</li>
+<li>take automated actions</li>
+<li>troubleshoot issue</li>
+<li>discover insights</li>
+</ul>
+<h2 id="cloudwatch-logs">Cloudwatch Logs<a aria-hidden="true" class="anchor-heading icon-link" href="#cloudwatch-logs"></a></h2>
+<p>CloudWatch Logs enables you to centralize the logs from all of your systems, applications, and <a href="/notes/QukN1H4jrogOyBjotZd7U">AWS Services</a>
+monitor, store, and access your log files from</p>
+<h3 id="log-event">Log Event<a aria-hidden="true" class="anchor-heading icon-link" href="#log-event"></a></h3>
+<p>A log event is a record of some activity recorded by the application or resource being monitored.</p>
+<p>Contains two properties: the timestamp of when the event occurred, and the raw event message.</p>
+<h3 id="log-stream">Log Stream<a aria-hidden="true" class="anchor-heading icon-link" href="#log-stream"></a></h3>
+<p>A log stream is a sequence of log events that share the same source. Each separate source of logs in CloudWatch Logs makes up a separate log stream.</p>
+<p>a log stream is generally intended to represent the sequence of events coming from the application instance or resource being monitored</p>
+<h3 id="log-group">Log Group<a aria-hidden="true" class="anchor-heading icon-link" href="#log-group"></a></h3>
+<p>A log group is a group of log streams that share the same retention, monitoring, and access control settings.</p>
+<ul>
+<li>You can define log groups and specify which streams to put into each group.</li>
+</ul>
+<h2 id="concepts">Concepts<a aria-hidden="true" class="anchor-heading icon-link" href="#concepts"></a></h2>
+<h3 id="namespaces">Namespaces<a aria-hidden="true" class="anchor-heading icon-link" href="#namespaces"></a></h3>
+<p>A namespace is a container for CloudWatch metrics</p>
+<ul>
+<li>Metrics in different namespaces are isolated from each other, so that metrics from different applications are not mistakenly aggregated into the same statistics.</li>
+</ul>
+<p>There is no default namespace. You must specify a namespace for each data point you publish to CloudWatch.</p>
+<ul>
+<li>namespaces typically use the following naming convention: AWS/service. For example, Amazon EC2 uses the AWS/EC2 namespace</li>
+</ul>
+<h3 id="metrics">Metrics<a aria-hidden="true" class="anchor-heading icon-link" href="#metrics"></a></h3>
+<p>A metric represents a time-ordered set of data points that are published to CloudWatch.</p>
+<ul>
+<li>Think of a metric as a variable to monitor, and the data points as representing the values of that variable over time.</li>
+<li>ex. the CPU usage of a particular EC2 instance is one metric provided by Amazon EC2. The data points themselves can come from any application or business activity from which you collect data.</li>
+</ul>
+<p>Metrics are uniquely defined by a name, a namespace, and zero or more dimensions.</p>
+<h4 id="resolution">Resolution<a aria-hidden="true" class="anchor-heading icon-link" href="#resolution"></a></h4>
+<p>Each metric is one of the following:</p>
+<ul>
+<li>Standard resolution, with data having a one-minute granularity</li>
+<li>High resolution, with data at a granularity of one second</li>
+</ul>
+<p>Metrics produced by AWS services are standard resolution by default.</p>
+<p>When you publish a high-resolution metric, CloudWatch stores it with a resolution of 1 second, and you can read and retrieve it with a period of 1 second, 5 seconds, 10 seconds, 30 seconds, or any multiple of 60 seconds.</p>
+<p>High-resolution metrics can give you more immediate insight into your application's sub-minute activity.</p>
+<h3 id="dimension">Dimension<a aria-hidden="true" class="anchor-heading icon-link" href="#dimension"></a></h3>
+<p>A dimension is a name/value pair that is part of the identity of a metric. You can assign up to 10 dimensions to a metric.</p>
+<p>Every metric has specific characteristics that describe it, and you can think of dimensions as categories for those characteristics. Dimensions help you design a structure for your statistics plan. Because dimensions are part of the unique identifier for a metric, whenever you add a unique name/value pair to one of your metrics, you are creating a new variation of that metric.</p>
+<p>AWS services that send data to CloudWatch attach dimensions to each metric.</p>
+<ul>
+<li>You can use dimensions to filter the results that CloudWatch returns.
+<ul>
+<li>ex. you can get statistics for a specific EC2 instance by specifying the InstanceId dimension when you search for metrics.</li>
+</ul>
+</li>
+</ul>
+<p>CloudWatch treats each unique combination of dimensions as a separate metric, even if the metrics have the same metric name.</p>
+<p>suppose that you publish four distinct metrics named ServerStats in the DataCenterMetric namespace with the following properties:</p>
+<pre><code>Dimensions: Server=Prod, Domain=Frankfurt, Unit: Count, Timestamp: 2016-10-31T12:30:00Z, Value: 105
+Dimensions: Server=Beta, Domain=Frankfurt, Unit: Count, Timestamp: 2016-10-31T12:31:00Z, Value: 115
+Dimensions: Server=Prod, Domain=Rio,       Unit: Count, Timestamp: 2016-10-31T12:32:00Z, Value: 95
+Dimensions: Server=Beta, Domain=Rio,       Unit: Count, Timestamp: 2016-10-31T12:33:00Z, Value: 97
+</code></pre>
+<p>If you publish only those four metrics, you can retrieve statistics for these combinations of dimensions:</p>
+<ul>
+<li><code>Server=Prod,Domain=Frankfurt</code></li>
+<li><code>Server=Prod,Domain=Rio</code></li>
+<li><code>Server=Beta,Domain=Frankfurt</code></li>
+<li><code>Server=Beta,Domain=Rio</code></li>
+</ul>
+<p>You can't retrieve statistics for the following dimensions or if you specify no dimensions.</p>
+<ul>
+<li><code>Server=Prod</code></li>
+<li><code>Server=Beta</code></li>
+<li><code>Domain=Frankfurt</code></li>
+<li><code>Domain=Rio</code></li>
+</ul>
+<h3 id="alarms">Alarms<a aria-hidden="true" class="anchor-heading icon-link" href="#alarms"></a></h3>
+<p>You can use an alarm to automatically initiate actions on your behalf. An alarm watches a single metric over a specified time period, and performs one or more specified actions, based on the value of the metric relative to a threshold over time.</p>
+<p>You can create alarms that watch metrics and send notifications or automatically make changes to the resources you are monitoring when a threshold is breached. For example, you can monitor the CPU usage and disk reads and writes of your Amazon EC2 instances and then use this data to determine whether you should launch additional instances to handle increased load. You can also use this data to stop under-used instances to save money.</p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/7n3tUhrwbvz8nNu0bTlWz">EventBridge</a></li>
+<li><a href="/notes/OSdV9FvBG3wDbRNLllg0V">AWS Lambda</a></li>
+</ul>

@@ -1,0 +1,44 @@
+<h1 id="pagination">Pagination<a aria-hidden="true" class="anchor-heading icon-link" href="#pagination"></a></h1>
+<p>At a high level, cursor-based pagination works like this:</p>
+<ol>
+<li>User requests some data (either through initial page load, or clicking some UI pagination button).</li>
+<li>Along with the list of data that to display, we also want to get pagination information <code>pageInfo</code> that is defined on the connection</li>
+</ol>
+<pre class="language-gql"><code class="language-gql">query OrganizationForLearningReact {
+  organization(login: "the-road-to-learn-react") {
+    name
+    url
+    repository(name: "the-road-to-learn-react") {
+      issues(first: 10, after: "Y3Vyc29yOnYyOpHODAESqg==") {
+        pageInfo {
+          endCursor
+        }
+        edges {
+          node {
+            author {
+              login
+            }
+          }
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<ol start="3">
+<li>Get the <code>id</code> of the last item in the most previously-fetched data list (known as the <code>cursor</code>) </li>
+</ol>
+<ul>
+<li>stored in <code>endCursor</code> variable</li>
+</ul>
+<ol start="4">
+<li>Store the cursor in local state (e.g. React, Apollo Client)</li>
+<li>pass as variable on subsequent fetches of data (ex. when user clicks "Load more", or scrolls more on infinite page)</li>
+<li>use that variable as input to the <code>after</code> parameter defined on the Connection (ex. in looking through a list of Github issues, the cursor is defined on the <code>IssuesConnection</code>)</li>
+</ol>
+<p><a href="/notes/k7SgRuqQCO7PQZayrIdi8">Edges</a> enable us to perform cursor-based pagination. Since the cursor is (usually) just an <code>id</code>, we can use the <code>after</code> argument on a list, passing that <code>id</code>. This allows us to specify the starting point that data should be retrieved from</p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/a8YdQlOb43oaI4Ype7OeT">Connection</a></li>
+</ul>

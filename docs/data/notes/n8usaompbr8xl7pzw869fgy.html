@@ -1,0 +1,41 @@
+<h1 id="window">Window<a aria-hidden="true" class="anchor-heading icon-link" href="#window"></a></h1>
+<p>A window is a way to chunk data so that it can be processed in a more effective way.</p>
+<h2 id="window-processing-patterns">Window processing patterns<a aria-hidden="true" class="anchor-heading icon-link" href="#window-processing-patterns"></a></h2>
+<h3 id="tumbling-windows">Tumbling Windows<a aria-hidden="true" class="anchor-heading icon-link" href="#tumbling-windows"></a></h3>
+<p>Elements are assigned to a window based on their timestamp.</p>
+<ul>
+<li>each window has a specified size </li>
+<li>windows do not overlap with each other.</li>
+</ul>
+<p><img src="/assets/images/2023-01-10-13-10-03.png"></p>
+<h3 id="sliding-windows">Sliding Windows<a aria-hidden="true" class="anchor-heading icon-link" href="#sliding-windows"></a></h3>
+<ul>
+<li>see: <a href="/notes/5BW7Om5FSaxsOGLZw9CsR">algorithm implementation</a></li>
+</ul>
+<p>Like tumbling windows, each window has a specified size.</p>
+<p>Sliding windows allow you to configure how frequently a window is started.</p>
+<ul>
+<li>therefore, sliding windows can be overlapping if the slide is smaller than the window size, causing elements to be assigned to multiple windows.</li>
+<li>ex. you could have windows of size 10 minutes that slides by 5 minutes. With this you get every 5 minutes a window that contains the events that arrived during the last 10 minutes as depicted by the following figure.</li>
+</ul>
+<p><img src="/assets/images/2023-01-10-13-21-31.png"></p>
+<h3 id="session-window">Session Window<a aria-hidden="true" class="anchor-heading icon-link" href="#session-window"></a></h3>
+<p>assigner groups elements by sessions of activity.</p>
+<ul>
+<li>do not overlap</li>
+<li>do not have a fixed start and end time</li>
+<li>Instead, a session window closes when it does not receive elements for a specified period of time (ie. when a gap of inactivity occurred).
+<ul>
+<li>When this period expires, the current session closes and subsequent elements are assigned to a new session window.</li>
+</ul>
+</li>
+</ul>
+<p><img src="/assets/images/2023-01-10-13-28-01.png"></p>
+<h3 id="global-window">Global Window<a aria-hidden="true" class="anchor-heading icon-link" href="#global-window"></a></h3>
+<p>With a global window scheme, all elements with the same key will be assigned to the same single global window</p>
+<p><img src="/assets/images/2023-01-10-13-29-40.png"></p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/304roftd433vui9rg94by5s">Windows</a></li>
+</ul>

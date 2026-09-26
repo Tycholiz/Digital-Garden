@@ -1,0 +1,35 @@
+<h1 id="encapsulation">Encapsulation<a aria-hidden="true" class="anchor-heading icon-link" href="#encapsulation"></a></h1>
+<p>Encapsulation is essentially about protecting the private data of an object such that they can only be accessed or mutated via the interface (ie. public API) that is exposed by that object.</p>
+<ul>
+<li>in the following example, we can only manipulate <code>count</code> by calling <code>increment</code>; we cannot directly modify it.</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token keyword">class</span> <span class="token class-name">Counter</span> <span class="token punctuation">{</span>
+  <span class="token keyword">private</span> count <span class="token operator">=</span> <span class="token number">0</span>
+
+  <span class="token keyword">public</span> <span class="token function">increment</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    count<span class="token operator">++</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Getter and Setter methods should exist for all instance variables that we want to change.</p>
+<ul>
+<li>By forcing other code to go through setter methods, the setter method can validate the parameter and decide if it’s do-able
+<ul>
+<li>ex. "are negative numbers for this variable allowed?"</li>
+</ul>
+</li>
+<li>Setters and Getters also unify the interface so that consumer code isn't broken
+<ul>
+<li>ex. if a consumer accessed an instance variable directly, and then the class was modified so it became <code>private</code> with an accompanied Getter (because, for example we wanted to add some logic checks), it would break everyone's code.</li>
+</ul>
+</li>
+</ul>
+<p>Encapsulation refers to the bundling of data with the methods that operate on that data, all the while restricting of direct access to some of an object's components</p>
+<p>Encapsulation is used to hide the values or state of a structured data object inside a class, preventing direct access to them by clients in a way that could expose hidden implementation details or violate state invariance maintained by the methods.</p>
+<p>Traditionally, JavaScript developers used <code>_</code> to prefix the properties or methods that they intended to be private.</p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/YkeDcbKsKFPYr4K4AaxyL">Closures</a></li>
+<li><a href="/notes/zv00g97iw4ngvv7pht794rd">Inheritance</a></li>
+</ul>

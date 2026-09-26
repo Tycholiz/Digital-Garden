@@ -1,0 +1,20 @@
+<h1 id="queries">Queries<a aria-hidden="true" class="anchor-heading icon-link" href="#queries"></a></h1>
+<p>Every GraphQL service has a query type and may or may not have a mutation type</p>
+<h3 id="understanding-how-a-query-works">Understanding how a query works<a aria-hidden="true" class="anchor-heading icon-link" href="#understanding-how-a-query-works"></a></h3>
+<pre class="language-gql"><code class="language-gql">query {
+  hero {
+    name
+    appearsIn
+  }
+}
+</code></pre>
+<ol>
+<li>We query the special root Query type, and get back an object</li>
+<li>We select the hero field on that object</li>
+<li>For the object returned by hero, we select the name and appearsIn fields</li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/YrV9FViC2kjwO2LhRHFzT">Graphql Documents</a></li>
+</ul>
