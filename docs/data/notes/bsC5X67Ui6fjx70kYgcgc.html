@@ -1,0 +1,66 @@
+<h1 id="linked-list">Linked List<a aria-hidden="true" class="anchor-heading icon-link" href="#linked-list"></a></h1>
+<p>instead of using indexes or positions, Linked lists use a referencing system: elements are stored in nodes that contain a pointer to the next node, repeating until all nodes are linked.</p>
+<ul>
+<li>Therefore, each node in a linked list contains a reference to the next node in the chain, in addition to its own data.</li>
+</ul>
+<p>This system allows efficient insertion and removal of items without the need for reorganization.</p>
+<p>Best used when data must be added and removed in quick succession from unknown locations</p>
+<p>Linked lists do not use physical placement of data in memory, unlike arrays.</p>
+<p>even if you have millions of elements inside a list, the operation of adding a new element in the head or in the tail of the list is performed in constant time.</p>
+<p>The <code>head</code> is a reference to the first node in the linked list. The last node on the list points to <code>null</code>.</p>
+<ul>
+<li>Therefore, if the linked list is empty, the <code>head</code> points to <code>null</code>.</li>
+</ul>
+<h3 id="vs-arrays">vs Arrays<a aria-hidden="true" class="anchor-heading icon-link" href="#vs-arrays"></a></h3>
+<p>Simplistically, "Use an Array for storing and accessing data, and LinkedList to manipulate data."</p>
+<p>Nodes can easily be removed or added from a linked list without reorganizing the entire data structure. This is not the case with arrays, and adding/removing an element to any position of the array that is not the head or tail is non-trivial, and the whole array needs to be destroyed and created again. In circumstances such as this, linked lists add a lot of value.</p>
+<p>However, accessing nodes by position from a linked list is less efficient than with an array. If we consider that an array is just a contiguous row of memory blocks, then if we want to access <code>Array[5]</code>, then we just need to count up from the first block allocated to the array. With a linked list however, we need to manually traverse the chain until we reach the 5th node.</p>
+<p>Also, search operations are slow in linked lists. Unlike arrays, random access of data elements is not allowed. Nodes are accessed sequentially starting from the first node.</p>
+<h4 id="deleting-nodes">Deleting nodes<a aria-hidden="true" class="anchor-heading icon-link" href="#deleting-nodes"></a></h4>
+<p>If we want to remove a non head/tail node from a linked list, the node <em>behind</em> the deleted node must update its pointer value to point to the node that the deleted node was previously pointing to:</p>
+<p>first -> second -> third
+first -> <s>second</s> -> third
+first -> third</p>
+<p>To delete <code>second</code>, we must update <code>first</code> to now point to <code>third</code>.</p>
+<h3 id="code">Code<a aria-hidden="true" class="anchor-heading icon-link" href="#code"></a></h3>
+<p>This is what the head node (ie. first node) of a 3-element linked list looks like:</p>
+<pre class="language-js"><code class="language-js"><span class="token maybe-class-name">ListNode</span> <span class="token punctuation">{</span>
+  <span class="token literal-property property">data</span><span class="token operator">:</span> <span class="token string">'First data'</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">next</span><span class="token operator">:</span> <span class="token maybe-class-name">ListNode</span> <span class="token punctuation">{</span>
+    <span class="token literal-property property">data</span><span class="token operator">:</span> <span class="token string">'Second data'</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">next</span><span class="token operator">:</span> <span class="token maybe-class-name">ListNode</span> <span class="token punctuation">{</span> <span class="token literal-property property">data</span><span class="token operator">:</span> <span class="token string">'Third data'</span><span class="token punctuation">,</span> <span class="token literal-property property">next</span><span class="token operator">:</span> <span class="token keyword null nil">null</span> <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>If a linked node were a class, it would look like this:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">class</span> <span class="token class-name">ListNode</span> <span class="token punctuation">{</span>
+    <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token parameter">data</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">data</span> <span class="token operator">=</span> data
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">next</span> <span class="token operator">=</span> <span class="token keyword null nil">null</span>                
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>And the LinkedList itself would look like:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">class</span> <span class="token class-name">LinkedList</span> <span class="token punctuation">{</span>
+    <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token parameter">head <span class="token operator">=</span> <span class="token keyword null nil">null</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">head</span> <span class="token operator">=</span> head
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Implementing it would look like this:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> node1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ListNode</span><span class="token punctuation">(</span><span class="token string">'First data'</span><span class="token punctuation">)</span>
+<span class="token keyword">const</span> node2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ListNode</span><span class="token punctuation">(</span><span class="token string">'Second data'</span><span class="token punctuation">)</span>
+<span class="token keyword">const</span> node3 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ListNode</span><span class="token punctuation">(</span><span class="token string">'Third data'</span><span class="token punctuation">)</span>
+node1<span class="token punctuation">.</span><span class="token property-access">next</span> <span class="token operator">=</span> node2
+node2<span class="token punctuation">.</span><span class="token property-access">next</span> <span class="token operator">=</span> node3
+
+<span class="token keyword">const</span> list <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">LinkedList</span><span class="token punctuation">(</span>node1<span class="token punctuation">)</span>
+<span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span>list<span class="token punctuation">.</span><span class="token property-access">head</span><span class="token punctuation">.</span><span class="token property-access">next</span><span class="token punctuation">.</span><span class="token property-access">next</span><span class="token punctuation">.</span><span class="token property-access">data</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 'Third data'</span>
+<span class="token comment">// notice how we repeat `next` to get to the subsequent node. If we only had it</span>
+<span class="token comment">// once, it would have returned the second node.</span>
+</code></pre>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/4lEin54l6IUwYZFNsijVg">Tree Structure</a></li>
+</ul>

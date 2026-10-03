@@ -1,0 +1,25 @@
+<h1 id="setup">Setup<a aria-hidden="true" class="anchor-heading icon-link" href="#setup"></a></h1>
+<h2 id="android">Android<a aria-hidden="true" class="anchor-heading icon-link" href="#android"></a></h2>
+<ol>
+<li>need an Android SDK (download in SDK Manager of Android Studio)</li>
+<li>need a JDK installation</li>
+</ol>
+<pre><code>brew tap AdoptOpenJDK/openjdk
+brew cask install adoptopenjdk8
+</code></pre>
+<ul>
+<li>check installation success <code>java -version</code></li>
+</ul>
+<ol start="3">
+<li>set environment variables (verify Android SDK location)</li>
+</ol>
+<pre class="language-sh"><code class="language-sh">export ANDROID_HOME=$HOME/Library/Android/sdk
+export PATH=$PATH:$ANDROID_HOME/emulator
+export PATH=$PATH:$ANDROID_HOME/tools
+export PATH=$PATH:$ANDROID_HOME/tools/bin
+export PATH=$PATH:$ANDROID_HOME/platform-tools
+</code></pre>
+<ol start="4">
+<li>Ensure SDK Manager (Android Studio) is pointing to correct path</li>
+<li>run <code>adb</code> and verify the ANDROID_HOME directory is pointed to.</li>
+</ol>

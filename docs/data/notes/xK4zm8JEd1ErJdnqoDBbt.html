@@ -1,0 +1,21 @@
+<h1 id="cook">Cook<a aria-hidden="true" class="anchor-heading icon-link" href="#cook"></a></h1>
+<h3 id="see-the-command-attached-to-a-bash-alias">See the command attached to a bash alias<a aria-hidden="true" class="anchor-heading icon-link" href="#see-the-command-attached-to-a-bash-alias"></a></h3>
+<p>run <code>type &#x3C;command></code></p>
+<h3 id="check-to-see-if-alias-exists-in-shell">check to see if alias exists in shell<a aria-hidden="true" class="anchor-heading icon-link" href="#check-to-see-if-alias-exists-in-shell"></a></h3>
+<p>run <code>which g</code></p>
+<h3 id="run-multiple-commands-in-sequence">Run multiple commands in sequence<a aria-hidden="true" class="anchor-heading icon-link" href="#run-multiple-commands-in-sequence"></a></h3>
+<pre class="language-sh"><code class="language-sh">$ command1; command2
+</code></pre>
+<p>This is distinct from <code>&#x26;&#x26;</code>, since commands will be run regardless of exit status</p>
+<h3 id="run-previous-command-with-sudo-in-front">Run previous command with <code>sudo</code> in front<a aria-hidden="true" class="anchor-heading icon-link" href="#run-previous-command-with-sudo-in-front"></a></h3>
+<pre class="language-sh"><code class="language-sh">╰─➤ $ rm -rf /var/www
+rm: /var/www: Permission denied
+╰─➤ $ sudo !!
+╰─➤ $ sudo rm -rf /var/www
+</code></pre>
+<h3 id="set-a-timer-to-report-how-long-an-operation-took">Set a timer to report how long an operation took<a aria-hidden="true" class="anchor-heading icon-link" href="#set-a-timer-to-report-how-long-an-operation-took"></a></h3>
+<pre class="language-sh"><code class="language-sh">start=$SECONDS
+# do some operations
+duration=$(( SECONDS - start ))
+echo "build and bundle completed in ${duration}s"
+</code></pre>

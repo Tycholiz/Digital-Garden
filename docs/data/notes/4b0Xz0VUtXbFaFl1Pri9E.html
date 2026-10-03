@@ -1,0 +1,121 @@
+<h1 id="kubernetes-ingress">Kubernetes Ingress<a aria-hidden="true" class="anchor-heading icon-link" href="#kubernetes-ingress"></a></h1>
+<h3 id="what-is-it">What is it?<a aria-hidden="true" class="anchor-heading icon-link" href="#what-is-it"></a></h3>
+<p>Ingress objects manage external access (e.g. web traffic via http routes) to the applications running inside a Kubernetes cluster. They are essentially a collection of rules that allow inbound connections to reach the services within a K8s cluster.</p>
+<ul>
+<li>an ingress can be seen as an abstraction layer on top of routing.</li>
+</ul>
+<p>You can think of an Ingress as something that sits in front of several services, and based on some rules that you define, it will decide which <a href="/notes/ryBzcGWSKyybRXnyKxteV">service</a> a given request should be sent to.</p>
+<p>Ingresses act as traffic cop, routing traffic from outside the cluster into destination points within the cluster.</p>
+<ul>
+<li>One single external ingress point can accept traffic destined to many different internal services.</li>
+</ul>
+<p>Don't confuse Ingress objects with Ingress controllers</p>
+<ul>
+<li>Ingresses (a.k.a. Ingress objects) are the objects that use the controller to define an http load balancer to facilitate web traffic in and out of the cluster.
+<ul>
+<li>therefore an ingress controller is a dependency of an ingress</li>
+</ul>
+</li>
+<li>An Ingress controller is responsible for fulfilling the Ingress, usually with a loadbalancer.
+<ul>
+<li>e.g. <code>ingress-nginx</code>, <code>kubernetes-ingress</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="why-do-we-need-it">Why do we need it?<a aria-hidden="true" class="anchor-heading icon-link" href="#why-do-we-need-it"></a></h3>
+<p>it may seem that the use-case of allowing external traffic to the cluster is already solved by <a href="/notes/ryBzcGWSKyybRXnyKxteV">services</a>, but services don't make applications truly accessible, because we still need forwarding rules based on paths and domains, SSL termination and a number of other features.</p>
+<ul>
+<li>in a more traditional setup, we’d probably use an external proxy and a load balancer. Ingress provides an API that allows us to accomplish these things, in addition to a few other features we expect from a dynamic cluster.</li>
+<li>You can configure an ingress to serve as the sole entry point to your Kubernetes cluster.
+<ul>
+<li>doing this would involve changing the service type of your services in the cluster to be of type <a href="/notes/9YspU1V7eJ9rz91kiTrUN#clusterip-default1">ClusterIP</a></li>
+</ul>
+</li>
+</ul>
+<p>We can combine an ingress with an external tool like <a href="https://github.com/kubernetes-sigs/external-dns">ExternalDNS</a>, which abstracts some of the DNS duties away from us.</p>
+<ul>
+<li>in a broad sense, ExternalDNS allows us to control DNS records dynamically via K8S resources. It does this while being agnostic to the specific DNS provider (ie. server) that you are using (like <a href="/notes/cmdTAwLkVkTxP7JsFC8jN">Route53</a> or Google Cloud DNS). 
+<ul>
+<li>Therefore, it is not a DNS server itself.</li>
+<li>e.g. ExternalDNS can make Kubernetes resources discoverable via public DNS servers</li>
+</ul>
+</li>
+</ul>
+<h3 id="how-does-it-work">How does it work?<a aria-hidden="true" class="anchor-heading icon-link" href="#how-does-it-work"></a></h3>
+<p>In order for an Ingress resource to work we need to have an Ingress Controller running in our cluster. </p>
+<ul>
+<li>This controller is what will decide what happens when you create a new Ingress
+<ul>
+<li>ex. <a href="https://www.nginx.com/products/nginx-ingress-controller">Nginx Ingress Controller</a></li>
+</ul>
+</li>
+</ul>
+<p>The Ingress controller must specify a provider. Out of the box, Kubernetes supports Nginx, AWS, GCE, but we can also get more controllers, like Apache.</p>
+<p>With Ingress, we can configure an external load balancer directly from Kubernetes</p>
+<h3 id="example">Example<a aria-hidden="true" class="anchor-heading icon-link" href="#example"></a></h3>
+<p><code>ingress.yml</code></p>
+<pre class="language-yml"><code class="language-yml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> networking.k8s.io/v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> Ingress
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> hello<span class="token punctuation">-</span>ingress
+  <span class="token key atrule">annotations</span><span class="token punctuation">:</span>
+    <span class="token comment"># We are defining this annotation to prevent nginx</span>
+    <span class="token comment"># from redirecting requests to `https` for now</span>
+    <span class="token key atrule">nginx.ingress.kubernetes.io/ssl-redirect</span><span class="token punctuation">:</span> <span class="token string">"false"</span>
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">rules</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> <span class="token key atrule">host</span><span class="token punctuation">:</span> nginx.local.com
+      <span class="token key atrule">http</span><span class="token punctuation">:</span>
+        <span class="token key atrule">paths</span><span class="token punctuation">:</span>
+          <span class="token punctuation">-</span> <span class="token key atrule">path</span><span class="token punctuation">:</span> /
+            <span class="token key atrule">pathType</span><span class="token punctuation">:</span> Prefix
+            <span class="token key atrule">backend</span><span class="token punctuation">:</span>
+              <span class="token key atrule">service</span><span class="token punctuation">:</span>
+                <span class="token key atrule">name</span><span class="token punctuation">:</span> nginx<span class="token punctuation">-</span>svc
+                <span class="token key atrule">port</span><span class="token punctuation">:</span>
+                  <span class="token key atrule">number</span><span class="token punctuation">:</span> <span class="token number">1234</span>
+          <span class="token punctuation">-</span> <span class="token key atrule">path</span><span class="token punctuation">:</span> /hello
+            <span class="token key atrule">pathType</span><span class="token punctuation">:</span> Prefix
+            <span class="token key atrule">backend</span><span class="token punctuation">:</span>
+              <span class="token key atrule">service</span><span class="token punctuation">:</span>
+                <span class="token key atrule">name</span><span class="token punctuation">:</span> hellok8s<span class="token punctuation">-</span>svc
+                <span class="token key atrule">port</span><span class="token punctuation">:</span>
+                  <span class="token key atrule">number</span><span class="token punctuation">:</span> <span class="token number">2345</span>
+    <span class="token punctuation">-</span> <span class="token key atrule">host</span><span class="token punctuation">:</span> hello.local.com
+      <span class="token key atrule">http</span><span class="token punctuation">:</span>
+        <span class="token key atrule">paths</span><span class="token punctuation">:</span>
+          <span class="token punctuation">-</span> <span class="token key atrule">path</span><span class="token punctuation">:</span> /
+            <span class="token key atrule">pathType</span><span class="token punctuation">:</span> Prefix
+            <span class="token key atrule">backend</span><span class="token punctuation">:</span>
+              <span class="token key atrule">service</span><span class="token punctuation">:</span>
+                <span class="token key atrule">name</span><span class="token punctuation">:</span> hellok8s<span class="token punctuation">-</span>svc
+                <span class="token key atrule">port</span><span class="token punctuation">:</span>
+                  <span class="token key atrule">number</span><span class="token punctuation">:</span> <span class="token number">3456</span>
+</code></pre>
+<p>This gets applied with the following command</p>
+<pre class="language-sh"><code class="language-sh">kubectl apply -f ingress.yml
+</code></pre>
+<p>We now have an ingress listening on <code>localhost:80</code></p>
+<ul>
+<li>
+<p>here, we are defining a single rule that says that requests sent to the path "/" will be sent to our nginx-svc service, using the port 1234.</p>
+</li>
+<li>
+<p>accessing the above URL, we should see the default nginx page.
+<img src="/assets/images/2022-02-28-22-33-06.png"></p>
+</li>
+<li>
+<p>naturally we can add multiple paths, otherwise it wouldn't be much different from the <a href="/notes/9YspU1V7eJ9rz91kiTrUN#loadbalancer1">LoadBalancer service type</a>.</p>
+<ul>
+<li>now, depending on the path the ingress receives, it sends the request to different services.</li>
+</ul>
+</li>
+<li>
+<p>also, we were able to define subdomains.</p>
+</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/vzzt0up3y0gDbtFYUR8bO">Ingress</a></li>
+</ul>

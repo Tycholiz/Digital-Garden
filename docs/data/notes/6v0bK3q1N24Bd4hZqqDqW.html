@@ -1,0 +1,25 @@
+<h1 id="cook">Cook<a aria-hidden="true" class="anchor-heading icon-link" href="#cook"></a></h1>
+<h4 id="add-sound-effects-to-a-playerunit">Add sound effects to a Player/Unit<a aria-hidden="true" class="anchor-heading icon-link" href="#add-sound-effects-to-a-playerunit"></a></h4>
+<ol>
+<li>add a variable of type <code>AudioClip</code> in a script attached to the GameObject to emit sounds (like <code>PlayerController</code>)</li>
+<li>attach the asset to the script (ie. pass it in as parameter in the Inspector)</li>
+<li>add an <code>Audio Source</code> component to the Player/Unit</li>
+<li>in the script file, get ahold of the component and run <code>audio.PlayOneShot</code> during the event.</li>
+</ol>
+<pre class="language-cs"><code class="language-cs"><span class="token comment">// ...</span>
+    <span class="token keyword">private</span> <span class="token class-name">AudioSource</span> playerAudio<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token class-name">AudioClip</span> jumpSound<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token class-name">AudioClip</span> crashSound<span class="token punctuation">;</span>
+
+    <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        playerAudio <span class="token operator">=</span> <span class="token generic-method"><span class="token function">GetComponent</span><span class="token generic class-name"><span class="token punctuation">&#x3C;</span>AudioSource<span class="token punctuation">></span></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">Update</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// Jump</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>Input<span class="token punctuation">.</span><span class="token function">GetKeyDown</span><span class="token punctuation">(</span>KeyCode<span class="token punctuation">.</span>Space<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment">// ...</span>
+            playerAudio<span class="token punctuation">.</span><span class="token function">PlayOneShot</span><span class="token punctuation">(</span>jumpSound<span class="token punctuation">,</span> <span class="token number">1.0f</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+</code></pre>

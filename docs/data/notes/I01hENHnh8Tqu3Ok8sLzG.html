@@ -1,0 +1,38 @@
+<h1 id="memory">Memory<a aria-hidden="true" class="anchor-heading icon-link" href="#memory"></a></h1>
+<p>When a software program uses memory there are two regions of memory they use, (apart from the space used to load the bytecode), <a href="/notes/YF8NReglnt0n2wSbDsva5">Stack</a> and <a href="/notes/KikdXGdXlefzUkPLsH6U3">Heap</a> memory.</p>
+<hr>
+<h3 id="memory-hierarchy">Memory Hierarchy<a aria-hidden="true" class="anchor-heading icon-link" href="#memory-hierarchy"></a></h3>
+<p>Memory hierarchy is the pyramid formed when we stratify different implementations of memory <a href="/notes/K2M9bQqVq2eQfm29eslKL">storage</a> and categorize them according to the level of <a href="/notes/1j3g1u7kbq5zk7lj1dt1fzk">abstraction</a> they exist at.</p>
+<ul>
+<li>ex. implementations are anything from circuit-level processor <a href="/notes/oQGFZOyvxHcSXjQ0ZwX9Y">resistors</a> and <a href="/notes/OrjKwA99i0FHBfZjYVDjg">registers</a> to hard drives and USB sticks.
+<img src="/assets/images/2022-03-10-10-59-56.png"></li>
+</ul>
+<p>The main idea of memory hierarchy is that the storage at one level serves as a cache for storage at the next lower level</p>
+<p>Because of physical laws, larger storage devices are slower than smaller storage devices.</p>
+<ul>
+<li>ex. a disk drive on a typical system might be 100 times larger than the main memory, but might take 10,000,000x longer to read a word from disk than from memory. Similarly a typical register file (CPU) stores only a few hundred bytes of information, as opposed to millions of bytes in main memory. However, the processor can read data from the register file almost 100x faster than from memory.</li>
+</ul>
+<h3 id="memory-leak">Memory Leak<a aria-hidden="true" class="anchor-heading icon-link" href="#memory-leak"></a></h3>
+<p>in languages without garbage collection, memory leaks occur when we fail to free up memory (deallocate) after a <a href="/notes/CfjwFnDeV1xXTeyvYSriM">pointer</a> no-longer serves its purpose (such as when we never reference that variable again until end of execution)</p>
+<h3 id="memory-cell">Memory Cell<a aria-hidden="true" class="anchor-heading icon-link" href="#memory-cell"></a></h3>
+<p>The memory cell is the fundamental building block of memory.
+The memory cell itself is an electronic circuit that stores a single bit of binary information (ie. 0 or 1)</p>
+<ul>
+<li>This is achieved by sending either a high voltage signal (1) or low signal (0)</li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/6DN20aQUJntqI2PjUMAgZ">Buffer</a></li>
+<li><a href="/notes/KikdXGdXlefzUkPLsH6U3">Heap</a></li>
+<li><a href="/notes/bl5f1ja9cur6wpsnvsc09rk">Leak</a></li>
+<li><a href="/notes/CfjwFnDeV1xXTeyvYSriM">Pointer</a></li>
+<li><a href="/notes/YF8NReglnt0n2wSbDsva5">Stack</a></li>
+<li><a href="/notes/pkzexc7idaumzqrad29kp3n">Virtual Memory</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/pkzexc7idaumzqrad29kp3n">Virtual Memory</a></li>
+<li><a href="/notes/8swgk5qh3sy2b9kkfuwx3uu">Cache</a></li>
+</ul>

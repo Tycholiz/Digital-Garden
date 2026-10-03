@@ -1,0 +1,38 @@
+<h1 id="fetch">Fetch<a aria-hidden="true" class="anchor-heading icon-link" href="#fetch"></a></h1>
+<p>The input to the <code>fetch</code> function is a request, which consists of...</p>
+<ul>
+<li>a <a href="/notes/mn5VHtlB66IBGAFXPXgvq">method</a></li>
+<li>a <a href="/notes/heSj1bhzFSsJIrZeKAfFJ">URL</a></li>
+<li>a list of headers</li>
+<li>a body</li>
+<li>...and many <a href="https://fetch.spec.whatwg.org/#requests">others</a>, which are mostly implicitly set.</li>
+</ul>
+<p>The response of the <code>fetch</code> function is a response, which consists of...</p>
+<ul>
+<li>a list of headers</li>
+<li>a body</li>
+<li>status</li>
+<li>...and many <a href="https://fetch.spec.whatwg.org/#responses">others</a>, which are mostly implicitly set.</li>
+</ul>
+<p>A response evolves over time. That is, not all its fields are available straight away.</p>
+<h3 id="requestresponse-body">Request/Response Body<a aria-hidden="true" class="anchor-heading icon-link" href="#requestresponse-body"></a></h3>
+<p>A body consists of:</p>
+<ul>
+<li>A <a href="/notes/jwi79w2rbvd8pped6yf3im0">stream</a> (a <code>ReadableStream</code> object).</li>
+<li>A source (null, a byte sequence, a <code>Blob</code> object, or a <code>FormData</code> object), initially null.</li>
+<li>A length (null or an integer), initially null.</li>
+</ul>
+<h3 id="credentials">Credentials<a aria-hidden="true" class="anchor-heading icon-link" href="#credentials"></a></h3>
+<p>For cross-origin requests, <code>credentials</code> allows us (as the client) to specify whether or not credentials should be sent along for the ride in HTTP requests.</p>
+<ul>
+<li>Therefore this gets set on the client.</li>
+</ul>
+<p>Credentials allow the server to maintain state about a particular user across multiple requests. </p>
+<ul>
+<li>ex. it's how Twitter shows you your feed, it's how your bank shows you your accounts.</li>
+</ul>
+<p>Credentials are <a href="/notes/gmHyIstUcxJ1M04jtEZa6">cookies</a>, authorization headers, or TLS client certificates (not to be confused with server certificates). </p>
+<ul>
+<li>Basically, like the email/password credentials we are most familiar with, credentials verify identity and are a way to establish trust.</li>
+</ul>
+<p>Both the client and the server must indicate that they’re opting into including credentials.</p>

@@ -1,0 +1,61 @@
+<h1 id="replication">Replication<a aria-hidden="true" class="anchor-heading icon-link" href="#replication"></a></h1>
+<h2 id="what-is-it">What is it?<a aria-hidden="true" class="anchor-heading icon-link" href="#what-is-it"></a></h2>
+<p>Replication means keeping a copy of the same data on multiple machines that are connected via a network.</p>
+<p>Each node that stores a copy of the database is called a replica. </p>
+<p>If you look at two database nodes at the same moment in time, you’re likely to see different data on the two nodes, because write requests arrive on different nodes at different times (replication lag).</p>
+<ul>
+<li>These inconsistencies occur no matter what <a href="/notes/wbs6c9snnonnyzm8vk2t4b9">replication strategy</a> the database uses (single-leader, multi-leader, or leaderless replication).</li>
+<li>Most replicated databases provide at least eventual consistency
+<ul>
+<li>in other words, this means that the inconsistency among replicas is temporary and eventually resolves itself.</li>
+</ul>
+</li>
+</ul>
+<h2 id="why-do-we-do-it">Why do we do it?<a aria-hidden="true" class="anchor-heading icon-link" href="#why-do-we-do-it"></a></h2>
+<ul>
+<li>Latency: To keep data geographically close to your users (and thus reduce latency)</li>
+<li>Availabrlity: to allow the system to continue working even if some nodes have failed</li>
+<li>Scalability: to <a href="/notes/HZSth7yP1s7aPaPPZRJPm#horizontal-scaling-aka-scaling-out">scale out</a> the number of machines that can serve read queries (and thus increase read throughput)</li>
+<li>Network fault-tolerance: to keep the application working when there is a network interruption</li>
+</ul>
+<p>In a world where our data didn't change over time, replication would be simple: we would just copy the data to each node and be done.</p>
+<ul>
+<li>what makes replication hard is figuring out how to handle changes to replicated data.</li>
+</ul>
+<p>Normally, replication is quite fast: most database systems apply changes to followers in less than a second.</p>
+<ul>
+<li>However, there are circumstances when followers might fall behind the leader by several minutes or more; for example:
+<ul>
+<li>if a follower is recovering from a failure</li>
+<li>if the system is operating near maximum capacity</li>
+<li>if there are network problems between the nodes</li>
+</ul>
+</li>
+</ul>
+<p>There are tradeoffs to consider when implementing replication (both are often configuration options in databases):</p>
+<ul>
+<li>synchronous or asynchronous replication</li>
+<li>how to handle failed replicas</li>
+</ul>
+<h2 id="replication-strategies">Replication strategies<a aria-hidden="true" class="anchor-heading icon-link" href="#replication-strategies"></a></h2>
+<p><a href="/notes/wbs6c9snnonnyzm8vk2t4b9">Strategies</a></p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/wbs6c9snnonnyzm8vk2t4b9">Strategies</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/g7ulqi8no93ezeocbesc3ll">CouchDB</a></li>
+<li><a href="/notes/mytCOts26Pidush65tdRW">DNS</a></li>
+<li><a href="/notes/vutujFFWxQu6TshWVuMpI">Distributed Computing</a></li>
+<li><a href="/notes/FvIw1Okwy0YOOrU52a8nd">Scaling</a></li>
+<li><a href="/notes/FuHcb7zDdczt8IDTtOH0b">Partitioning</a></li>
+<li><a href="/notes/ilOPfgNyiPSHOb9tNB6yL">CAP Theorem</a></li>
+<li><a href="/notes/lmuquv97wk9dx4wornn70w1">Causal Consistency</a></li>
+<li><a href="/notes/nMxAwbzkQChlhX37Gih8a">Sharding</a></li>
+<li><a href="/notes/q2b3asuqy4xlorkmdvinwc3">CRDT (Conflict-free Replicated Data Type)</a></li>
+<li><a href="/notes/mH9p012Girn7AC2S2mhAp">Log</a></li>
+<li><a href="/notes/vaDhC8WlLYfKrpBgU4D9g">Command-Query-Responsibility-Segregation</a></li>
+</ul>

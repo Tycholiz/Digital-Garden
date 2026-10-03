@@ -1,0 +1,17 @@
+<h1 id="css-rendering">CSS Rendering<a aria-hidden="true" class="anchor-heading icon-link" href="#css-rendering"></a></h1>
+<h2 id="block-formatting-context-bfc">Block Formatting Context (BFC)<a aria-hidden="true" class="anchor-heading icon-link" href="#block-formatting-context-bfc"></a></h2>
+<p>A BFC is a part of a visual CSS rendering of a web page. It's the region in which the layout of block boxes occurs</p>
+<p>A BFC is basically a mini-layout within the main layout.</p>
+<ul>
+<li>This means, for instance, that floated elements will be contained within (achieved with <code>overflow: auto</code> on container).</li>
+</ul>
+<p>BFCs prevent margin collapsing</p>
+<p>Created by (non-exhaustive):</p>
+<ul>
+<li><code>&#x3C;html></code> tag</li>
+<li>elements with <code>position</code> equal to <code>absolute</code>/<code>fixed</code></li>
+<li>elements with <code>display</code> equal to <code>inline-block</code></li>
+<li>Block elements where <code>overflow</code> has a value other than <code>visible</code> and <code>clip</code>.</li>
+<li>Flex items, provided they are not flex/grid containers themselves</li>
+<li>Grid items, provided they are not flex/grid containers themselves</li>
+</ul>

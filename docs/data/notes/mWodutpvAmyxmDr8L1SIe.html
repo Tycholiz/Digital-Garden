@@ -1,0 +1,44 @@
+<h1 id="daemonset">DaemonSet<a aria-hidden="true" class="anchor-heading icon-link" href="#daemonset"></a></h1>
+<p>A DaemonSet is a type of controller that ensures that a copy of a specific Pod is running on each node in the cluster. </p>
+<ul>
+<li>As a cluster grows and shrinks, the DaemonSet spreads these specially labeled Pods across all of the nodes.</li>
+</ul>
+<p>The primary purpose of a DaemonSet is to deploy and manage background services, daemons, or other system-level processes that should run on every node in the cluster.</p>
+<p>DaemonSets have many uses</p>
+<ul>
+<li>One common pattern is to use a DaemonSet to install/configure software on each host node in the cluster.
+<ul>
+<li>ex. we can use a DaemonSet to install a <a href="/notes/np3c1ykvnjqv5xoombpfwqz#datadog-agent1">Datadog Agent</a> in our cluster</li>
+</ul>
+</li>
+</ul>
+<p>Common use cases for DaemonSets include:</p>
+<ul>
+<li>Monitoring Agents: Deploying monitoring agents on every node to collect metrics and logs.</li>
+<li>Storage Daemons: Running storage-related daemons (e.g., distributed storage daemons) on each node.</li>
+<li>Network Daemons: Deploying network-related services (e.g., proxies or VPN agents) on every node.</li>
+</ul>
+<h3 id="example">Example<a aria-hidden="true" class="anchor-heading icon-link" href="#example"></a></h3>
+<p>In this example, the DaemonSet ensures that one Pod with the specified template runs on each node in the cluster, labeled with app: example. The DaemonSet automatically adjusts as nodes are added or removed from the cluster.</p>
+<pre class="language-yml"><code class="language-yml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> apps/v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> DaemonSet
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> example<span class="token punctuation">-</span>daemonset
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">selector</span><span class="token punctuation">:</span>
+    <span class="token key atrule">matchLabels</span><span class="token punctuation">:</span>
+      <span class="token key atrule">app</span><span class="token punctuation">:</span> example
+  <span class="token key atrule">template</span><span class="token punctuation">:</span>
+    <span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+      <span class="token key atrule">labels</span><span class="token punctuation">:</span>
+        <span class="token key atrule">app</span><span class="token punctuation">:</span> example
+    <span class="token key atrule">spec</span><span class="token punctuation">:</span>
+      <span class="token key atrule">containers</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> example<span class="token punctuation">-</span>container
+        <span class="token key atrule">image</span><span class="token punctuation">:</span> example<span class="token punctuation">-</span>image<span class="token punctuation">:</span>latest
+</code></pre>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/qxSOd6SPN8qf9ZUojVFDX">K8s</a></li>
+</ul>

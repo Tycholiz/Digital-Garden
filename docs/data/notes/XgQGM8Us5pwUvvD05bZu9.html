@@ -1,0 +1,44 @@
+<h1 id="gitlab-ci-variables">Gitlab CI Variables<a aria-hidden="true" class="anchor-heading icon-link" href="#gitlab-ci-variables"></a></h1>
+<h2 id="types-of-variables">Types of Variables<a aria-hidden="true" class="anchor-heading icon-link" href="#types-of-variables"></a></h2>
+<p>There are 4 types of environment variables we can define, differentiated by <em>where</em> they are defined:</p>
+<ul>
+<li>in the <code>gitlab-ci.yml</code> file</li>
+<li>project (repo)-level CI/CD variables. Done in the project settings of the UI.</li>
+<li><a href="/notes/zubgzhNFE6KlTgXcjTz6O#groups">group</a>-level CI/CD variables. Done in the project settings of the UI.</li>
+<li>instance (ie. self-hosted) CI/CD variables</li>
+</ul>
+<hr>
+<h3 id="predefined-variables">Predefined Variables<a aria-hidden="true" class="anchor-heading icon-link" href="#predefined-variables"></a></h3>
+<p>Gitlab provides predefined environment variables <a href="https://docs.gitlab.com/ee/ci/variables/predefined_variables.html">(docs)</a></p>
+<p>Example variables</p>
+<ul>
+<li>current stage, current job, if and how the pipeline was triggered, commit details (message, author, branch name, SHA)</li>
+<li>AWS variables like AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_DEFAULT_REGION</li>
+</ul>
+<p>note: some variables are available in some pipeline types but not others (ie. some may be available for branch pipelines, but not merge request pipelines)</p>
+<ul>
+<li>merge request pipelines get their own set of variables.</li>
+</ul>
+<h3 id="using-variables">Using variables<a aria-hidden="true" class="anchor-heading icon-link" href="#using-variables"></a></h3>
+<p>There are two places defined variables can be used. On the:</p>
+<ul>
+<li>GitLab side, in .gitlab-ci.yml.</li>
+<li>The GitLab Runner side, in config.toml.</li>
+</ul>
+<p><a href="https://docs.gitlab.com/ee/ci/variables/where_variables_can_be_used.html">docs</a></p>
+<h4 id="expansion-mechanisms">Expansion mechanisms<a aria-hidden="true" class="anchor-heading icon-link" href="#expansion-mechanisms"></a></h4>
+<p>Variables can be expanded (ie. resolved) via 3 different methods</p>
+<ul>
+<li>GitLab</li>
+<li>GitLab Runner</li>
+<li>Execution shell environment</li>
+</ul>
+<p>Variables used in <code>.gitlab-ci.yml</code> can be expanded with <code>$variable</code>, or <code>${variable}</code> or <code>%variable%</code></p>
+<ul>
+<li>Each form is handled in the same way, no matter which OS/shell handles the job, because the expansion is done in GitLab before any runner gets the job.</li>
+</ul>
+<p>GitLab expands job variable values recursively before sending them to the runner. This means the following works:</p>
+<pre class="language-yml"><code class="language-yml"><span class="token punctuation">-</span> <span class="token key atrule">BUILD_ROOT_DIR</span><span class="token punctuation">:</span> <span class="token string">'${CI_BUILDS_DIR}'</span>
+<span class="token punctuation">-</span> <span class="token key atrule">OUT_PATH</span><span class="token punctuation">:</span> <span class="token string">'${BUILD_ROOT_DIR}/out'</span>
+<span class="token punctuation">-</span> <span class="token key atrule">PACKAGE_PATH</span><span class="token punctuation">:</span> <span class="token string">'${OUT_PATH}/pkg'</span>
+</code></pre>

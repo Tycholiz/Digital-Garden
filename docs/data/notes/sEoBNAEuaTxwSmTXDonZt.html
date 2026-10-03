@@ -1,0 +1,37 @@
+<h1 id="json">JSON<a aria-hidden="true" class="anchor-heading icon-link" href="#json"></a></h1>
+<p>JSON is an injection-safe data format, since it does not allow referencing external entities.</p>
+<ul>
+<li>contrast this with XML, which does allow referencing external entities.</li>
+</ul>
+<p>In order for a Javascript object to be serializable as JSON, it must be sanitized of the following values:</p>
+<ul>
+<li><code>undefined</code></li>
+<li>nested objects</li>
+<li>non-UTF-8 values</li>
+</ul>
+<h3 id="json-pointer">JSON Pointer<a aria-hidden="true" class="anchor-heading icon-link" href="#json-pointer"></a></h3>
+<p>A JSON Pointer describes a slash-separated path to traverse the keys in the objects in the document. Therefore, <code>/properties/street_address</code> means:</p>
+<ol>
+<li>find the value of the key <code>properties</code></li>
+<li>within that object, find the value of the key <code>street_address</code></li>
+</ol>
+<p>The URI <code>https://example.com/schemas/address#/properties/street_address</code> identifies the highlighted subschema in the following schema.</p>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"$id"</span><span class="token operator">:</span> <span class="token string">"https://example.com/schemas/address"</span><span class="token punctuation">,</span>
+  <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"object"</span><span class="token punctuation">,</span>
+  <span class="token property">"properties"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"street_address"</span><span class="token operator">:</span>
+      <span class="token punctuation">{</span> <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"string"</span> <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/wgfov5g4fh7cnji0a1ho70c">JSON Patch</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/74lYtC8NKpCzcyFOZTfR1">JSON Schema</a></li>
+</ul>

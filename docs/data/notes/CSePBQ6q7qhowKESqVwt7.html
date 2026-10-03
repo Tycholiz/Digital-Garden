@@ -1,0 +1,82 @@
+<h1 id="graphql">Graphql<a aria-hidden="true" class="anchor-heading icon-link" href="#graphql"></a></h1>
+<h2 id="overview">Overview<a aria-hidden="true" class="anchor-heading icon-link" href="#overview"></a></h2>
+<p>Graphql is a protocol that gets implemented on a server, which gets communicated with from a client. The Graphql protocol defines a language for the client to use. The Graphql server is an expert at locating data. Through its resolvers, it knows exactly where every piece of data resides, and it knows how to get it through the most effective means. But in order to be able to know exactly which data you want, you have to speak to it in the graphql language.</p>
+<p>GraphQL is useful when data is relational. Related data can be modeled as a graph and can thus power a GraphQL API. - This is precisely what the GraphQL Engine does.</p>
+<p>Since Graphql is just a spec, we need to have an implementation to use it (similar to how SQL is a spec for Postgres, MySQL etc). The 2 components of a GraphQL implementation are: the GraphQL server and the GraphQL client.</p>
+<p>Graphql has resolvers, each understanding where a certain resource of data is and how to get it. We might have data in a mongo database or a Postgres database, and as long as the resolver knows how to get it, Graphql doesn't really care. All it cares is that the data is retrievable.</p>
+<p>To teach our Graphql server to be able to retrieve the data, we need to define a type system for it.</p>
+<p>Graphql uses <code>POST</code> requests for queries and mutations under the hood, and websockets for subscriptions</p>
+<!-- TODO: broken image -->
+<!-- ![2bc1e31d73c0da1e8598d766424dd751.png](:/a10e5211520a457fb318c12aec62d1ea) -->
+<h3 id="phases">Phases<a aria-hidden="true" class="anchor-heading icon-link" href="#phases"></a></h3>
+<p>In GraphQL we have 3 phases:</p>
+<ol>
+<li><em>Parsing</em> - A <a href="/notes/YrV9FViC2kjwO2LhRHFzT">document</a> is received by the Graphql engine and is parsed into an <a href="/notes/yy5ylwnBHCQR8ef9dxldx">AST (Abstract Syntax Tree)</a>, catching any syntax errors and stopping execution.</li>
+<li><em>Validation</em> - The Graphql server validates against the schema that we're only querying fields that are allowed, that fragments are applied on the right fields, etc.
+<ul>
+<li>note that this is handled for us, whereas if this was REST, it would be up to us.</li>
+</ul>
+</li>
+<li><em>Execution</em> </li>
+</ol>
+<h2 id="between-the-client-and-app-server">Between the client and app server<a aria-hidden="true" class="anchor-heading icon-link" href="#between-the-client-and-app-server"></a></h2>
+<p>A key thing to understand about GraphQL is that it’s actually agnostic to the way that data is transferred over the network</p>
+<ul>
+<li>ie. it can work on protocols other than HTTP, like websockets</li>
+</ul>
+<hr>
+<h2 id="selection-sets">Selection Sets<a aria-hidden="true" class="anchor-heading icon-link" href="#selection-sets"></a></h2>
+<p>A selection set in Graphql is similar to a result set in SQL, except the selection set is where we specify what we'd like to get back, while a result set in SQL is what we <em>actually</em> got back. </p>
+<p>As the name suggests, a selection set is a list of Selections (type Selection)</p>
+<ul>
+<li>a Selection has the following signature:</li>
+</ul>
+<pre class="language-gql"><code class="language-gql">type Selection {
+	Field
+	FragmentSpread
+	InlineFragment
+}
+</code></pre>
+<p>A selection set might look like:</p>
+<pre class="language-gql"><code class="language-gql">{
+	id
+	firstName
+	lastName
+}
+</code></pre>
+<p>Some fields may describe more complex data or relationships to other data. To allow us to explore this data, a field itself may contain a selection set.</p>
+<ul>
+<li>To remain unambiguous, the most nested fields must be scalars</li>
+</ul>
+<h3 id="distributed-graphql">Distributed graphql<a aria-hidden="true" class="anchor-heading icon-link" href="#distributed-graphql"></a></h3>
+<p>anal: We can have a Postgres database, Mongo database, Redis cache etc, and each is represented by a seed. The orange strand represents the means to access the data from that database. A distributed graphql solution essentially bundles the seeds together, and wraps the orange meat together, giving us a single means to access data from all the databases.
+<img src="/assets/images/2021-12-02-10-49-11.png"></p>
+<p>Distributed graphql can be achieved through schema stitching, <a href="/notes/Y390f1C2wwkgZOmfBQgOJ">Apollo Federation</a></p>
+<p><a href="https://netflixtechblog.com/how-netflix-scales-its-api-with-graphql-federation-part-1-ae3557c187e2">more info</a></p>
+<h3 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h3>
+<p><a href="https://www.apollographql.com/blog/the-concepts-of-graphql-bc68bd819be3/#.hfczgtdsj">Graphql concepts visualized</a>
+<a href="https://www.apollographql.com/blog/securing-your-graphql-api-from-malicious-queries-16130a324a6b/">security (preventing DDOS)</a></p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/yy5ylwnBHCQR8ef9dxldx">AST (Abstract Syntax Tree)</a></li>
+<li><a href="/notes/pLjPOq1zALpEjYmeoRcI4">Authorization</a></li>
+<li><a href="/notes/BbFQyn0yaYxYLIwA61LSm">Fields</a></li>
+<li><a href="/notes/3HS5EsWWVemFJzEgHmi3j">Graphql Client</a></li>
+<li><a href="/notes/YrV9FViC2kjwO2LhRHFzT">Graphql Documents</a></li>
+<li><a href="/notes/FMQ44lIBsK1ugnuh54RKE">Graphql Schema</a></li>
+<li><a href="/notes/q3ZzZUfqn8nRhWQXBW8P1">Graphql Server</a></li>
+<li><a href="/notes/u2t1TIqBz2MPrlAfzbApK">Introspection</a></li>
+<li><a href="/notes/uvNhRB7dp5lugyo3sUezc">N+1 Problem</a></li>
+<li><a href="/notes/LvwyDhSirG3TuxN3EX6T6">Pagination</a></li>
+<li><a href="/notes/e8c0cb48-6247-4280-8717-5c389ee66659">Structures</a></li>
+<li><a href="/notes/1K0gApOQ1HbLV2GYrQRLU">Testing</a></li>
+<li><a href="/notes/yUM3CM4TlWpQdBOQ9WBof">Tools</a></li>
+<li><a href="/notes/cerrwR0xwq4a7OLikDo2k">Types</a></li>
+<li><a href="/notes/VwLlDck5sKxp2KDOOWZCb">Variables</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/MXSnfG3Cey0BozII19IQY">GROQ</a></li>
+</ul>

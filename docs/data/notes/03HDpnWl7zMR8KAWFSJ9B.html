@@ -1,0 +1,24 @@
+<h1 id="fargate">Fargate<a aria-hidden="true" class="anchor-heading icon-link" href="#fargate"></a></h1>
+<h1 id="fargate-1">Fargate<a aria-hidden="true" class="anchor-heading icon-link" href="#fargate-1"></a></h1>
+<ul>
+<li>serverless compute engine for containers</li>
+<li>adds about 20% in price, but removes a lot of the admin overhead</li>
+<li>removes the need to provision and manage servers
+<ul>
+<li>don't have to worry about scaling, patching, securing, and managing servers</li>
+</ul>
+</li>
+<li>Fargate automates how much computing power you need and will scale up/down automatically</li>
+<li>with Fargate, you only interact with your containers
+<img src="/assets/images/2021-03-08-21-25-27.png"></li>
+</ul>
+<p>Fargate isn't typically used for long running stuff, as it can get quite expensive quite fast.</p>
+<h3 id="differences-with-ecs">Differences with ECS<a aria-hidden="true" class="anchor-heading icon-link" href="#differences-with-ecs"></a></h3>
+<p>With a virtual machine, someone still has to manage the hardware, but with EC2 that someone is AWS and you never even see the hardware.</p>
+<p>With ECS on EC2, someone still has to manage the instances, but with ECS on Fargate that someone is AWS and you never even see the EC2 instances.</p>
+<p>ECS has a “launch type” of either EC2 (if you want to manage the instances yourself) or Fargate (if you want AWS to manage the instances).</p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/7n3tUhrwbvz8nNu0bTlWz">EventBridge</a></li>
+</ul>

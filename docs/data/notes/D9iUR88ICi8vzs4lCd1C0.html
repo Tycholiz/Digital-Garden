@@ -1,0 +1,9 @@
+<h1 id="pipeline">Pipeline<a aria-hidden="true" class="anchor-heading icon-link" href="#pipeline"></a></h1>
+<ul>
+<li>a pipe takes stdout from one process and passes it as stdin to another
+<ul>
+<li>if the first program fails, then a non-zero status code will be returned.</li>
+</ul>
+</li>
+<li>Each command in a pipeline is executed in its own subshell, which is a separate process</li>
+</ul>

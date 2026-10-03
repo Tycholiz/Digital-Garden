@@ -1,0 +1,38 @@
+<h1 id="pool">Pool<a aria-hidden="true" class="anchor-heading icon-link" href="#pool"></a></h1>
+<p>A pool is a collection of resources that are kept, in memory, ready to use, rather than the memory acquired on use and the memory released afterwards.</p>
+<ul>
+<li>In this context, resources can refer to system resources such as file handles, which are external to a process, or internal resources such as objects.</li>
+<li>A pool client requests a resource from the pool and performs desired operations on the returned resource. When the client finishes its use of the resource, it is returned to the pool rather than released and lost.</li>
+</ul>
+<p>The pooling of resources can offer a significant response-time boost in situations that have high cost associated with resource acquiring, high rate of the requests for resources, and a low overall count of simultaneously used resources.</p>
+<p>Pooling is also useful when the latency is a concern, because a pool offers predictable times required to obtain resources since they have already been acquired. </p>
+<p>Pooling is also useful for expensive-to-compute data, notably large graphic objects like fonts or bitmaps, acting essentially as a data cache or a memoization technique.</p>
+<p>Special cases of pools are <a href="/notes/vyE7KGcgYlfSmN78Fpkqm">connection pools</a>, thread pools, and memory pools.</p>
+<h2 id="object-pool">Object Pool<a aria-hidden="true" class="anchor-heading icon-link" href="#object-pool"></a></h2>
+<p>A pool (a.k.a <em>object pool</em>) is used to manage object caching. </p>
+<ul>
+<li>A client can access the pool which will hold objects that have already been instantiated, thus negating the client's need to instantiate a new object itself.</li>
+<li>The pool is often self-managing, and will instantiate new objects as they are needed, and limit the creation of more to adhere to a pre-defined limit.</li>
+<li>When a client is done with the object, it is returned to the pool to be used by another client.</li>
+</ul>
+<p>The pool itself is designed to be a singleton (ie. there is only a single instance of it)</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">class</span> <span class="token class-name"><span class="token maybe-class-name">ObjectPool</span><span class="token operator">&#x3C;</span><span class="token constant">T</span><span class="token operator">></span></span> <span class="token punctuation">{</span>
+  <span class="token keyword">private</span> objects<span class="token operator">:</span> <span class="token constant">T</span><span class="token punctuation">[</span><span class="token punctuation">]</span>
+  <span class="token keyword">public</span> <span class="token function">acquire</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// take an object from the pool and give it to the client</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">public</span> <span class="token function">release</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// return an object from the client back to the pool</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h2>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Pool_(computer_science)">https://en.wikipedia.org/wiki/Pool_(computer_science)</a></li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/vyE7KGcgYlfSmN78Fpkqm">Connection Pools</a></li>
+<li><a href="/notes/A9G9CB5OMFBaZgbsHw1Fy">Connection Pool</a></li>
+</ul>

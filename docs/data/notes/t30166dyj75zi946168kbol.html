@@ -1,0 +1,21 @@
+<h1 id="producer">Producer<a aria-hidden="true" class="anchor-heading icon-link" href="#producer"></a></h1>
+<p>The Kafka producer is conceptually much simpler than the <a href="/notes/1u9hxzro1d2jd3mekt38lgx">Consumer</a>, since it doesn't have to worry about <a href="/notes/1u9hxzro1d2jd3mekt38lgx#consumer-groups">group coordination</a>.</p>
+<p>Once the target partition is determined (via the <strong>partitioner</strong>), the producer sends a produce request to the leader of that partition.</p>
+<ul>
+<li>therefore, all writes to the partition must go through the partition leader.</li>
+</ul>
+<h3 id="partitioner">Partitioner<a aria-hidden="true" class="anchor-heading icon-link" href="#partitioner"></a></h3>
+<p>When a producer sends a message to a Kafka topic, the partitioner is invoked to determine the target partition based on certain criteria.</p>
+<ul>
+<li>therefore, the partitioner is responsible for determining which partition a message will be written to.</li>
+</ul>
+<p>The purpose of a partitioner is to provide an even distribution of messages across the available partitions of a topic.</p>
+<p>The out-of-the-box Kafka partitioners guarantee that all messages with the same key will be sent to the same partition.</p>
+<ul>
+<li>of course, if the key is <code>null</code>, there is no longer a guarantee</li>
+</ul>
+<p>The default partitioner (<code>DefaultPartitioner</code>) uses a round-robin strategy to distribute messages across partitions</p>
+<p>A custom partitioner can be made in order to achieve specific business rules or other requirements</p>
+<ul>
+<li>ex. it can consider the message key, specific message attributes, or external factors such as load balancing, with the goal being to ensure that related messages are written to the same partition, or to achieve a specific partitioning strategy that aligns with your application's needs.</li>
+</ul>

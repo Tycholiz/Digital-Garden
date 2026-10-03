@@ -1,0 +1,30 @@
+<h1 id="probes">Probes<a aria-hidden="true" class="anchor-heading icon-link" href="#probes"></a></h1>
+<p>Probes allow us to do health checks on containers.</p>
+<p>Kubernetes is designed to start up containers automatically when the original fails, but what happens if the container didn't fail, but is serving content 3x slower because of a memory leak? We need to be able to check the statuses of containers, and we can do that with Probes.</p>
+<h2 id="probe-types">Probe Types<a aria-hidden="true" class="anchor-heading icon-link" href="#probe-types"></a></h2>
+<h3 id="livenessprobe"><code>livenessProbe</code><a aria-hidden="true" class="anchor-heading icon-link" href="#livenessprobe"></a></h3>
+<p>Can be used to confirm whether an app running in a container is in a healthy state.</p>
+<ul>
+<li>If the probe fails, Kubernetes will kill the container and apply restart policy which defaults to Always.</li>
+</ul>
+<p>The below probe will make a get request, and will kill the container if it fails.</p>
+<pre class="language-yaml"><code class="language-yaml"><span class="token comment"># podfile</span>
+<span class="token punctuation">...</span>
+<span class="token key atrule">livenessProbe</span><span class="token punctuation">:</span>
+	<span class="token key atrule">httpGet</span><span class="token punctuation">:</span>
+		<span class="token key atrule">path</span><span class="token punctuation">:</span> /this/path/does/not/exist
+		<span class="token key atrule">port</span><span class="token punctuation">:</span> <span class="token number">8080</span>
+	<span class="token key atrule">initialDelaySeconds</span><span class="token punctuation">:</span> <span class="token number">5</span>
+	<span class="token key atrule">timeoutSeconds</span><span class="token punctuation">:</span> <span class="token number">2</span> <span class="token comment"># Defaults to 1</span>
+	<span class="token key atrule">periodSeconds</span><span class="token punctuation">:</span> <span class="token number">5</span> <span class="token comment"># Defaults to 10</span>
+	<span class="token key atrule">failureThreshold</span><span class="token punctuation">:</span> <span class="token number">1</span> <span class="token comment"># Defaults to 3</span>
+</code></pre>
+<h3 id="readinessprobe"><code>readinessProbe</code><a aria-hidden="true" class="anchor-heading icon-link" href="#readinessprobe"></a></h3>
+<p>The readinessProbe should be used as an indication that the service is ready to serve requests.</p>
+<ul>
+<li>e.g. our app depends on Redis, so the success of the readinessProbe should therefore depend on Redis having been initialized properly.</li>
+</ul>
+<p>When combined with <a href="/notes/ryBzcGWSKyybRXnyKxteV">Services</a> construct, only containers with the readinessProbe state set to Success will receive requests.</p>
+<p>The lack of the retry mechanism in Kubernetes is mitigated with readinessProbe, which we added to the ReplicaSet.
+The readinessProbe has the same fields as the livenessProbe</p>
+<p>the readinessProbe is used by the iptables</p>

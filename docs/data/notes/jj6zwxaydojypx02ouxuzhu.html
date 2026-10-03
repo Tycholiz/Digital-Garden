@@ -1,0 +1,44 @@
+<h1 id="jenv">Jenv<a aria-hidden="true" class="anchor-heading icon-link" href="#jenv"></a></h1>
+<p>Java Environment (ie. Java Version Manager)</p>
+<p>You can configure the JDK at 3 different levels, switching the JDK version that is used when running a <code>java</code> command:</p>
+<ul>
+<li>Global – Switch the JDK version globally</li>
+<li>Local - Switch the JDK version in the current directory only</li>
+<li>Shell - Switch the JDK version in the current shell instance only</li>
+</ul>
+<h2 id="steps">Steps<a aria-hidden="true" class="anchor-heading icon-link" href="#steps"></a></h2>
+<ol>
+<li>install the particular of Java you want</li>
+</ol>
+<pre class="language-sh"><code class="language-sh">$ brew install openjdk@17
+</code></pre>
+<ol start="2">
+<li>Add that version to jenv</li>
+</ol>
+<pre class="language-sh"><code class="language-sh">$ jenv add /opt/homebrew/opt/openjdk@17
+</code></pre>
+<ol start="3">
+<li>Get versions of Java registered with jenv</li>
+</ol>
+<pre class="language-sh"><code class="language-sh">$ jenv versions 
+* system
+  17.0
+  17.0.7
+  openjdk64-17.0.7
+</code></pre>
+<ol start="4">
+<li>Set version of Java</li>
+</ol>
+<pre class="language-sh"><code class="language-sh">$ jenv local 17.0
+</code></pre>
+<h2 id="use-with-gradlemaven">Use with Gradle/Maven<a aria-hidden="true" class="anchor-heading icon-link" href="#use-with-gradlemaven"></a></h2>
+<p>Maven and <a href="/notes/2psluywdc416t7vrql0m058">Gradle</a> both use the system JDK to run. Therefore, we have to enable their respective plugins:</p>
+<pre class="language-sh"><code class="language-sh">jenv enable-plugin gradle
+# or
+jenv enable-plugin maven
+</code></pre>
+<p>this plugin will ensure that the <code>JAVA_HOME</code> variable is set correctly.</p>
+<h2 id="resources">Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#resources"></a></h2>
+<ul>
+<li><a href="https://www.baeldung.com/jenv-multiple-jdk">https://www.baeldung.com/jenv-multiple-jdk</a></li>
+</ul>

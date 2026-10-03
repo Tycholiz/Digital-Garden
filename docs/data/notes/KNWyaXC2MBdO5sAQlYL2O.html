@@ -1,0 +1,18 @@
+<h1 id="react-typescript">React Typescript<a aria-hidden="true" class="anchor-heading icon-link" href="#react-typescript"></a></h1>
+<h3 id="usestate-types"><code>useState</code> types<a aria-hidden="true" class="anchor-heading icon-link" href="#usestate-types"></a></h3>
+<pre class="language-tsx"><code class="language-tsx"><span class="token keyword">type</span> <span class="token class-name"><span class="token maybe-class-name">Props</span></span> <span class="token operator">=</span> <span class="token punctuation">{</span>
+  setFormSubmitted<span class="token operator">:</span> <span class="token maybe-class-name">React</span><span class="token punctuation">.</span><span class="token property-access"><span class="token maybe-class-name">Dispatch</span></span><span class="token operator">&#x3C;</span><span class="token maybe-class-name">React</span><span class="token punctuation">.</span><span class="token property-access"><span class="token maybe-class-name">SetStateAction</span></span><span class="token operator">&#x3C;</span><span class="token builtin">boolean</span><span class="token operator">>></span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="constrain-component-props">Constrain component props<a aria-hidden="true" class="anchor-heading icon-link" href="#constrain-component-props"></a></h3>
+<pre class="language-tsx"><code class="language-tsx"><span class="token comment">// helper</span>
+<span class="token keyword module">export</span> <span class="token keyword">const</span> propertyOf <span class="token operator">=</span> <span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span><span class="token class-name">TObj</span></span><span class="token punctuation">></span></span><span class="token plain-text">(name: keyof TObj) => name;
+
+</span><span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span><span class="token class-name">Component</span></span>
+    <span class="token attr-name">id</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span><span class="token generic-function"><span class="token function">propertyOf</span><span class="token generic class-name"><span class="token operator">&#x3C;</span><span class="token maybe-class-name">OperationalDetailsValues</span><span class="token operator">></span></span></span><span class="token punctuation">(</span><span class="token string">'providerCount'</span><span class="token punctuation">)</span><span class="token punctuation">}</span></span>
+<span class="token punctuation">/></span></span><span class="token plain-text">
+</span></code></pre>
+<h1 id="resources">Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#resources"></a></h1>
+<ul>
+<li><a href="https://github.com/typescript-cheatsheets/react">React+Typescript Cheatsheet</a></li>
+</ul>

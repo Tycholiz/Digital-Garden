@@ -1,0 +1,51 @@
+<h1 id="packagejson">package.json<a aria-hidden="true" class="anchor-heading icon-link" href="#packagejson"></a></h1>
+<h2 id="scripts">Scripts<a aria-hidden="true" class="anchor-heading icon-link" href="#scripts"></a></h2>
+<p>Every script we define has <code>pre</code> and <code>post</code> version to it</p>
+<ul>
+<li>ex. if we define a <code>install</code> script, then there is a <code>preinstall</code> that is implicitly defined</li>
+</ul>
+<h2 id="dependencies">Dependencies<a aria-hidden="true" class="anchor-heading icon-link" href="#dependencies"></a></h2>
+<ul>
+<li><code>^2.2.3</code> means <code>>=2.2.3</code> AND <code>&#x3C;3.X</code></li>
+</ul>
+<h3 id="peer-dependencies">Peer Dependencies<a aria-hidden="true" class="anchor-heading icon-link" href="#peer-dependencies"></a></h3>
+<p>peer dependencies are not automatically installed like dependencies and devDependencies are.</p>
+<ul>
+<li>Instead, when we list a package as a peerDependency, we expect it to be provided from the host (the host would be our application)</li>
+</ul>
+<p>peer dependencies are most likely to be used only when creating npm packages.</p>
+<ul>
+<li>ex. <code>react-dom</code> lists <code>react</code> as a peerDependency, since <code>react-dom</code> is useless unless we have <code>react</code> installed.
+<ul>
+<li>if <code>react-dom</code> had listed <code>react</code> as a dependency, then effectively we would have 2 different versions of react in our project.</li>
+<li>by listing <code>react</code> as a peerDependency, <code>react-dom</code> is basically saying "hey npm, I don't have react as a dependency, but I do need react to work. If someone tries to install me, but they don't have react installed, spit a warning at them, cause I ain't gonna work properly"</li>
+</ul>
+</li>
+</ul>
+<p><a href="https://flaviocopes.com/npm-peer-dependencies/">more info</a></p>
+<h3 id="alias-package-names">Alias package names<a aria-hidden="true" class="anchor-heading icon-link" href="#alias-package-names"></a></h3>
+<p>We can alias our package names however we want to control how we import them in our code:</p>
+<pre class="language-json"><code class="language-json"><span class="token property">"pouchdb-core-react-native"</span><span class="token operator">:</span> <span class="token string">"npm:@craftzdog/pouchdb-core-react-native@7.2.2"</span><span class="token punctuation">,</span>
+</code></pre>
+<p>Here, we are using the npm protocol to specify which package we'd like to install, and we set it to <code>pouchdb-core-react-native</code>.</p>
+<ul>
+<li>this can be helpful if we are trying to get DefinitelyTyped <a href="/notes/YunCqy27IUUekZDL3QJny">declaration files</a> to work with a package where the name differs from the DefinitelyTyped version (which would occur, for example, if we were using a fork of the library, which we are in the above example)</li>
+</ul>
+<h2 id="resolutions">Resolutions<a aria-hidden="true" class="anchor-heading icon-link" href="#resolutions"></a></h2>
+<p><code>resolutions</code> is simply a map of package names and the exact versions of those packages that should be kept in the dependency tree</p>
+<ul>
+<li>ex. this configuration will remove all versions of webpack that are not 5.6.0. As long you install <a href="/mailto:webpack@5.6.0">webpack@5.6.0</a> version as a dependency of the project you are working with, this will guarantee that all packages load the same version of webpack.</li>
+</ul>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+	<span class="token property">"resolutions"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+		<span class="token property">"webpack"</span><span class="token operator">:</span> <span class="token string">"5.6.0"</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<hr>
+<p>The scripts section of package.json has access to the commands provided by node_modules. for instance, we can make a script that calls <code>jest</code>. We can't do this in our shell because it doesn't have access to the package by default. we'd have to manually go into node_modules to do that. But the commands are loaded into the shell that is openeed when we run scripts in package.json</p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/UkLhcujsRG1aNy2DcLcor">Javascript Imports</a></li>
+</ul>

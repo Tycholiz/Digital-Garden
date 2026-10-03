@@ -1,0 +1,32 @@
+<h1 id="complex-event-processing">Complex Event Processing<a aria-hidden="true" class="anchor-heading icon-link" href="#complex-event-processing"></a></h1>
+<p><em>Event processing</em> involves tracking and processing streams of data about things that happen (ie. events) and deriving a conclusion from them.</p>
+<p><em>Complex Event Processing</em> involves gleaning useful information from the event streams as they arrive.</p>
+<ul>
+<li>the idea is to identify meaningful events
+<ul>
+<li>here, "meaningful" means as it relates to the business logic of an application</li>
+</ul>
+</li>
+<li>these events may be originating from various layers of an organization, such as sales leads, orders or customer service calls. Or, they may be news items, text messages, social media posts, stock market feeds, traffic reports, weather reports etc.</li>
+</ul>
+<p>CEP relies on a number of techniques, including:</p>
+<ul>
+<li>Pattern recognition of the events</li>
+<li>Event abstraction</li>
+<li>Event filtering</li>
+<li>Event aggregation and transformation</li>
+<li>Modeling event hierarchies</li>
+<li>Detecting relationships (such as causality, membership or timing) between events</li>
+<li>Abstracting event-driven processes</li>
+</ul>
+<h3 id="example-church-monitor">Example: Church Monitor<a aria-hidden="true" class="anchor-heading icon-link" href="#example-church-monitor"></a></h3>
+<p>Imagine we have a monitoring system in a church. One day, the system receives the following 3 events at around the same time:</p>
+<ol>
+<li>church bells ringing.</li>
+<li>the appearance of a man in a tuxedo with a woman in a flowing white gown.</li>
+<li>rice flying through the air.</li>
+</ol>
+<p>CEP as a technique helps discover complex events by analyzing and correlating other events</p>
+<ul>
+<li>From these events the monitoring system may infer a complex event: a wedding</li>
+</ul>

@@ -1,0 +1,18 @@
+<h1 id="development-process">Development Process<a aria-hidden="true" class="anchor-heading icon-link" href="#development-process"></a></h1>
+<ul>
+<li><a href="https://trunkbaseddevelopment.com/">Trunk-based development</a>
+<ul>
+<li>ie. using short-lived branches, merging often into main and feature toggles</li>
+</ul>
+</li>
+</ul>
+<h3 id="the-problem-with-long-lived-feature-branches">The problem with long-lived feature branches<a aria-hidden="true" class="anchor-heading icon-link" href="#the-problem-with-long-lived-feature-branches"></a></h3>
+<p>We need to merge main into the feature branch often. The problem with that is that you can have multiple long-lived feature branches that are pulling in main, but they're not syncing with each other.</p>
+<ul>
+<li>ex. if featureA is doing some refactoring of a module, and featureB is editing that same module, then it doesn't matter how frequently they pull in main, there's still going to be massive conflicts when one of the branches (whichever isn't first) tries to merge.</li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/E6TwSZDLqYhuWPORFoX5F">Agile</a></li>
+</ol>

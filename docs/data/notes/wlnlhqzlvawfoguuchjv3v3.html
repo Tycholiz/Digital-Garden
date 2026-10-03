@@ -1,0 +1,57 @@
+<h1 id="broadcast">Broadcast<a aria-hidden="true" class="anchor-heading icon-link" href="#broadcast"></a></h1>
+<h2 id="atomic-broadcast">Atomic Broadcast<a aria-hidden="true" class="anchor-heading icon-link" href="#atomic-broadcast"></a></h2>
+<p>An atomic broadcast is a broadcast sent out to all nodes of a distributed system.</p>
+<p>The purpose of an atomic broadcast is to address the challenges of distributed consensus, <a href="/notes/mh3gii3m3gs5etkb2alcifl">fault tolerance</a>, and maintaining data consistency in a distributed system. The goal is to achieve consensus among distributed nodes and maintain strong consistency across the system.</p>
+<ul>
+<li>It does this by ensuring that a set of messages or events are delivered to all participants (nodes) in a distributed system in the same order and in an atomic manner, allowing for coordinated and consistent actions across the entire system</li>
+</ul>
+<p>There are 2 properties of an atomic broadcast:</p>
+<ol>
+<li>All nodes in the system receive the messages in the exact same order. This guarantees that the events are processed in the same sequence, ensuring consistency across the distributed system.</li>
+<li>The broadcast operation is atomic, meaning either all nodes receive all messages in the agreed-upon order, or none of them do. There is no partial or inconsistent delivery.</li>
+</ol>
+<p>When implemented correctly, an atomic broadcast will have the following properties:</p>
+<ul>
+<li>Validity: if a correct participant broadcasts a message, then all correct participants will eventually receive it.</li>
+<li>Uniform Agreement: if one correct participant receives a message, then all correct participants will eventually receive that message.</li>
+<li>Uniform Integrity: a message is received by each participant at most once, and only if it was previously broadcast.</li>
+<li>Uniform Total Order: the messages are totally ordered in the mathematical sense; that is, if any correct participant receives message 1 first and message 2 second, then every other correct participant must receive message 1 before message 2.</li>
+</ul>
+<p><a href="/notes/zxt3lhonfdhglvijd17ua8c">Zookeeper</a> uses an atomic broadcast as its basic building block</p>
+<h3 id="use-cases">Use cases<a aria-hidden="true" class="anchor-heading icon-link" href="#use-cases"></a></h3>
+<ul>
+<li>Fault Tolerance and Replication: Atomic broadcast helps maintain fault tolerance in the event of node failures. Even if some nodes crash and recover, the atomic broadcast ensures that they receive the missed messages in the same order as other nodes, preventing inconsistencies.</li>
+<li>Data Replication: In distributed databases or storage systems, atomic broadcast is used to replicate data changes across multiple replicas to maintain strong consistency.
+<ul>
+<li>ex. in a distributed database, atomic broadcasts may occur every time there is a write operation to maintain data consistency across all replicas.</li>
+<li>ex. in a Slack application, the atomic broadcast should achieve the following:
+<ul>
+<li>validity: all users will eventually receive the message published by a user in a Slack channel</li>
+<li>integrity: a published chat message is received by each user not more than once</li>
+<li>total order: all users receive the chat messages in the identical order</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Distributed Consensus: Paxos (a consensus protocol) uses Atomic Broadcasts to ensure that all nodes agree on a single shared state or decision. 
+<ul>
+<li>here, the atomic broadcast ensures that all nodes have the same view of the system's state.</li>
+</ul>
+</li>
+<li>Replicated State Machines: In replicated state machine systems, where multiple nodes maintain identical copies of a state machine, atomic broadcast is used to ensure that all state machines receive the same sequence of commands in the same order.</li>
+</ul>
+<h3 id="example-slack">Example: Slack<a aria-hidden="true" class="anchor-heading icon-link" href="#example-slack"></a></h3>
+<p>When a user sends a message in a Slack channel, how can we make guarantees about the integrity of the received messages? How can we be sure that each client received all messages and in the proper order?</p>
+<ol>
+<li>User A sends a message in the Slack channel.</li>
+<li>The Slack backend server receives the message from User A and needs to ensure that this message is delivered to all other members of the channel.</li>
+<li>To achieve atomic broadcast, Slack can utilize a consensus algorithm, such as Paxos or Raft, to ensure that the message is consistently delivered and processed in the same order by all replicas of the channel across multiple servers.</li>
+<li>The consensus algorithm allows the servers hosting the channel to agree on the order of the messages to be delivered to the users. It ensures that all servers have the same set of messages in the same order, avoiding any discrepancies.</li>
+<li>Once consensus is reached, the message is replicated and delivered to all other members of the channel. This ensures that all users see the same message in the same sequence, maintaining consistency across the system.</li>
+<li>Slack can implement a mechanism to acknowledge message delivery to the sender and other members of the channel. This way, all users are aware that the message has been successfully broadcasted and received.</li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/mh3gii3m3gs5etkb2alcifl">Fault Tolerance</a></li>
+</ul>

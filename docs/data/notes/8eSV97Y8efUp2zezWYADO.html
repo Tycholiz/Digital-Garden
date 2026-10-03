@@ -1,0 +1,42 @@
+<h1 id="css-best-practices">CSS Best Practices<a aria-hidden="true" class="anchor-heading icon-link" href="#css-best-practices"></a></h1>
+<h2 id="general-readability-principles">General Readability Principles<a aria-hidden="true" class="anchor-heading icon-link" href="#general-readability-principles"></a></h2>
+<h3 id="line-height">Line-height<a aria-hidden="true" class="anchor-heading icon-link" href="#line-height"></a></h3>
+<p>pick a minimum line-height: 1.4 for body copy. Headings should be tighter.</p>
+<h3 id="line-width">Line-width<a aria-hidden="true" class="anchor-heading icon-link" href="#line-width"></a></h3>
+<p>Keep it to 60-80 characters wide</p>
+<h2 id="size">Size<a aria-hidden="true" class="anchor-heading icon-link" href="#size"></a></h2>
+<ul>
+<li>use <code>rem</code> for <code>font-size</code></li>
+<li>use <code>px</code> for <code>border-width</code></li>
+<li>use <code>em</code> for everything else</li>
+</ul>
+<p>Different font sizes on a webpage should be related by a common ratio (<a href="https://www.type-scale.com">source</a>)</p>
+<ul>
+<li>ex. if we choose that ratio to be 1.25, then our ems will be: 0.64, 0.8, 1, 1.25, 1.563, etc.</li>
+</ul>
+<p>We can set the base-size font on a container using <code>rem</code>, and then we set size of the children content using <code>em</code>. This allows the children using <code>em</code> to leverage the <code>font-size</code> set on the parent (the <code>rem</code> value). Now, when we adjust the <code>rem</code> value, all the <code>em</code> values depending on it will adjust as well, while keeping their proportions.
+<img src="/assets/images/2021-11-02-16-11-32.png"></p>
+<ul>
+<li>This method works well for images as well</li>
+</ul>
+<p>This method can be synergized with:</p>
+<ul>
+<li><code>@media</code> queries</li>
+<li><code>vw</code> unit with <code>font-size</code>. This will cause the font-size to grow/shrink smoothly with no abrupt breakpoints. We need to do some math to define min size (0.5em):
+<ul>
+<li><code>font-size: calc(0.5em + 1vw)</code></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="magic-numbers">Magic numbers<a aria-hidden="true" class="anchor-heading icon-link" href="#magic-numbers"></a></h3>
+<p>When using magic numbers, add a comment to explain how it was derived:</p>
+<pre class="language-css"><code class="language-css"><span class="token selector"><span class="token class">.gallery__item</span></span> <span class="token punctuation">{</span>
+    <span class="token atrule"><span class="token rule">@media</span> <span class="token punctuation">(</span><span class="token property">min-width</span><span class="token punctuation">:</span> <span class="token number">800</span><span class="token unit">px</span><span class="token punctuation">)</span> <span class="token keyword">and</span> <span class="token punctuation">(</span><span class="token property">max-width</span><span class="token punctuation">:</span> <span class="token number">1200</span><span class="token unit">px</span><span class="token punctuation">)</span></span> <span class="token punctuation">{</span>
+        <span class="token property">width</span><span class="token punctuation">:</span> <span class="token number">21.25</span><span class="token unit">%</span><span class="token punctuation">;</span> <span class="token comment">/* (100% - 15%) / 4 */</span>
+        <span class="token selector">&#x26;<span class="token pseudo-class">:nth-child</span> <span class="token punctuation">(</span><span class="token n-th"><span class="token number">4n</span></span><span class="token punctuation">)</span></span> <span class="token punctuation">{</span>
+            <span class="token property">margin-right</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>

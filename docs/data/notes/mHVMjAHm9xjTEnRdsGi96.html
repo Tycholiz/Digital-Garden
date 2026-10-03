@@ -1,0 +1,32 @@
+<h1 id="lambda-layer">Lambda Layer<a aria-hidden="true" class="anchor-heading icon-link" href="#lambda-layer"></a></h1>
+<h2 id="what-is-it">What is it?<a aria-hidden="true" class="anchor-heading icon-link" href="#what-is-it"></a></h2>
+<p>A layer is a <code>.zip</code> file archive that can contain additional code or data.</p>
+<ul>
+<li>it may contain libraries (e.g. node modules), a custom runtime, data, or configuration files.</li>
+<li>think of it in much same way as how a <a href="/notes/SQwuv6ixxiQtYGEQnoSZo">docker image</a> is built using layers, or how <a href="/notes/zirmu2JLi2lSneEH562Wp">Kustomize</a> is used to reduce redunant code between configurations. The rationale is the same.</li>
+</ul>
+<h2 id="why-use-it">Why use it?<a aria-hidden="true" class="anchor-heading icon-link" href="#why-use-it"></a></h2>
+<p>A key benefit of Lambda layers is that the layers stay warm (ie. initialized, eliminating the need for a cold start)</p>
+<ul>
+<li>the potential for this as a performance enhancement is huge, because if our Lambda uses many third-party dependencies, they can be aggregated into a layer (or many layers) and they won't have to be downloaded on cold starts.</li>
+</ul>
+<p>Lambda layers provide a convenient way to package libraries and other dependencies that you can use with your Lambda functions.</p>
+<p>Using layers reduces the size of uploaded deployment archives, making it faster to deploy the code.</p>
+<p>Layers also promote code sharing and separation of responsibilities</p>
+<h2 id="how-does-it-work">How does it work?<a aria-hidden="true" class="anchor-heading icon-link" href="#how-does-it-work"></a></h2>
+<ul>
+<li>When you add a layer to a function, Lambda extracts the layer contents into the /opt directory in your function’s execution environment</li>
+</ul>
+<h3 id="versioning">Versioning<a aria-hidden="true" class="anchor-heading icon-link" href="#versioning"></a></h3>
+<p>When you create a new layer, Lambda creates a new layer version with a version number of 1. Each time you publish an update to the layer, Lambda increments the version number and creates a new layer version.</p>
+<ul>
+<li>Every layer version is identified by a unique ARN. Therefore, when adding a layer to the function, you must specify the exact layer version you want to use.</li>
+</ul>
+<h3 id="using-layers">Using Layers<a aria-hidden="true" class="anchor-heading icon-link" href="#using-layers"></a></h3>
+<p>the general process of creating and using layers involves these three steps:</p>
+<ol>
+<li>Package your layer content into a <code>.zip</code> file</li>
+<li>Create the layer in Lambda AWS console (or via Lambda API).</li>
+<li>Add the layer to your function(s).</li>
+</ol>
+<p>When you create a layer, you must bundle all its content into a .zip file archive. You upload the .zip file archive to your layer from Amazon Simple Storage Service (Amazon S3) or your local machine. Lambda extracts the layer contents into the /opt directory when setting up the execution environment for the function.</p>

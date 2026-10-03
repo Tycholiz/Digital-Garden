@@ -1,0 +1,51 @@
+<h1 id="modules">Modules<a aria-hidden="true" class="anchor-heading icon-link" href="#modules"></a></h1>
+<p>in <code>node_modules</code>, we have a folder <code>.bin/</code>. This is whe</p>
+<ul>
+<li>normally these binaries are symlinks to the binaries that are stored within each package's directory in <code>node_modules</code></li>
+<li>when are within a project and run a command that is not globally installed, it looks in the <code>.bin/</code> directory for that executable
+<ul>
+<li>ex. running <code>jest test</code> in the project will look for an executable called <code>jest</code> within <code>node_modules/.bin</code> and execute it.</li>
+</ul>
+</li>
+</ul>
+<h3 id="how-node-resolves-modules">How Node resolves modules<a aria-hidden="true" class="anchor-heading icon-link" href="#how-node-resolves-modules"></a></h3>
+<p>When we <code>import myFunction from 'moduleB'</code>, the <code>moduleB</code> module will be searched for in a <code>node_modules</code> directory at the current level. It will search:</p>
+<ol>
+<li><code>./node_modules/moduleB.js</code></li>
+<li><code>./node_modules/moduleB/package.json</code> (if it specifies a "main" property)</li>
+<li><code>./node_modules/moduleB/index.js</code></li>
+</ol>
+<p>if it doesn't find the module here, it will go up one level and continue the search in the same pattern</p>
+<ol>
+<li><code>../node_modules/moduleB.js</code></li>
+<li><code>../node_modules/moduleB/package.json</code> (if it specifies a "main" property)</li>
+<li><code>../node_modules/moduleB/index.js</code></li>
+</ol>
+<p>And so on, until the module is either found or there are no more levels to search.</p>
+<p>the <a href="https://nodejs.org/api/modules.html#modules_loading_from_node_modules_folders">node module resolution algorithm</a> is recursive, meaning when looking for package A, it looks in local <code>node_modules/A</code>, then <code>../node_modules/A</code>, then <code>../../node_modules/A</code>, and so on.</p>
+<ul>
+<li>unless we use strict versioning (ie. omitting <code>^</code> in package.json.dependencies) the version listed in package.json is not the version our package uses. Rather, it defines a range that is allowed to be installed. To see the actual version, check yarn.lock</li>
+</ul>
+<h3 id="packagejson">Package.json<a aria-hidden="true" class="anchor-heading icon-link" href="#packagejson"></a></h3>
+<ul>
+<li><a href="https://stackoverflow.com/questions/14221579/how-do-i-add-comments-to-package-json-for-npm-install">Adding comments to package.json (of course, a workaround; not actual comments)</a></li>
+</ul>
+<h2 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h2>
+<ul>
+<li><a href="https://medium.com/visual-development/how-to-fix-nasty-circular-dependency-issues-once-and-for-all-in-javascript-typescript-a04c987cf0de">Understanding circular dependency issues</a></li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/tOl6Bdo4HQEXgqoSqnoby">Child Process</a></li>
+<li><a href="/notes/2VP1sczxAn1MqfATmGpkw">Morgan</a></li>
+<li><a href="/notes/losDBBS9vTJdz9vmSRCxp">Path</a></li>
+<li><a href="/notes/sFj9pbOupkJKntCq2D4OX">Staging</a></li>
+<li><a href="/notes/TW69H1KGd0viXoQcMoCU4">Stream</a></li>
+<li><a href="/notes/vIhip4HXSgo6YVanh9lzG">Winston</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/uyqd0fy9e03pnq1503m7cgb">Modules</a></li>
+</ul>

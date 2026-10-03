@@ -1,0 +1,20 @@
+<h1 id="cursors">Cursors<a aria-hidden="true" class="anchor-heading icon-link" href="#cursors"></a></h1>
+<p>A cursor is a piece of data (likely just an ID) that points to a location in a paginated list (ie. a single page).</p>
+<ul>
+<li>the cursor is the thing that allows a user to traverse over records in a database</li>
+</ul>
+<p>A cursor conceptually has a <code>next()</code> method (which gets the next page of the larger dataset) and <code>forEach()</code> (which allows some code to be exectuted for each page of the whole dataset).</p>
+<ul>
+<li>cursors may also implement helper methods like <code>toArray()</code>, which will allow us extract the data in an array format. </li>
+</ul>
+<p>A cursor can be viewed as a pointer to one (or many) row(s) within a larger dataset.</p>
+<p>Cursors also facilitate retrieval of the records, as well as creating and removing records</p>
+<p>A cursor is conceptually and behaviourally very similar to an <a href="/notes/uyc7zM5lyRzHIsmnsSkFT">Iterator</a></p>
+<p>Cursors are used to process individual rows returned by database system queries</p>
+<p>a cursor makes it possible to define a result set and perform complex logic on it, on a row by row basis</p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/QluMb2rW1BPTgsbEkQPgc">Pagination</a></li>
+<li><a href="/notes/dkg7btl6a4ek058qb67ojft">Change Streams</a></li>
+</ul>

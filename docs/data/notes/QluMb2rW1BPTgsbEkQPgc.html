@@ -1,0 +1,44 @@
+<h1 id="pagination">Pagination<a aria-hidden="true" class="anchor-heading icon-link" href="#pagination"></a></h1>
+<p><em>page window</em> is the amount of items returned per page (ie. per request)</p>
+<h2 id="limitoffset-pagination">Limit/Offset Pagination<a aria-hidden="true" class="anchor-heading icon-link" href="#limitoffset-pagination"></a></h2>
+<ul>
+<li><code>offset</code> -> with this request, what is our starting point?</li>
+<li><code>limit</code> -> how many records will we be retrieving per request?</li>
+</ul>
+<p>A naive approach to pagination is to think like this: "We want page 3, with a page size of 10, so we should load 10 items, starting after item 20". This might look like this:</p>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> posts <span class="token keyword">ORDER</span> <span class="token keyword">BY</span> created_at <span class="token keyword">LIMIT</span> <span class="token number">10</span> <span class="token keyword">OFFSET</span> <span class="token number">20</span><span class="token punctuation">;</span>
+</code></pre>
+<p>This approach is naive because it has some major downfalls</p>
+<ul>
+<li>If an item was added to the list while the user is switching pages, we will inevitably be skipping over items
+<ul>
+<li>this issue can be mitigated with proper ordering. For instance, if we order by <code>created_at</code>, then new items will always appear at the end.</li>
+</ul>
+</li>
+<li>If an item was added at the top of the list while switching pages, then we might see the same item twice.</li>
+<li>The rows skipped by an <code>OFFSET</code> clause still have to be computed inside the server; therefore a large <code>OFFSET</code> might be inefficient.</li>
+</ul>
+<p>These previous examples shows the limitation of the analogy of pagination as pages in a book, since the data set is not static. This goes to show that for certain apps, the very concepts of page1 and page2 don't really make any sense, because the set of data and the boundaries between loaded sections is constantly changing.</p>
+<h2 id="cursor-based-pagination">Cursor-Based Pagination<a aria-hidden="true" class="anchor-heading icon-link" href="#cursor-based-pagination"></a></h2>
+<blockquote>
+<p>"Cursor-based pagination is the most efficient method of paging and should always be used where possible."</p>
+</blockquote>
+<ul>
+<li>see <a href="/notes/zlEdxEGVFpeN3FoYf3Npz">Cursors</a></li>
+</ul>
+<p>What if we could just specify the place in the list we want to begin, and then specify how many items we want to fetch? Then it doesn’t matter how many items were added to the top of the list in the meanwhile, since we have a constant pointer (cursor) to the specific spot where we left off.</p>
+<p>An API request that implements cursor-based pagination needs 2 things to fetch more data: </p>
+<ol>
+<li>the current cursor position (the cursor parameter), obtained from the previous API response</li>
+<li>the number of items to fetch</li>
+</ol>
+<p>benefits of cursor-based pagination:</p>
+<ul>
+<li>scalable for large datasets because the <a href="/notes/jiITIvU42MBAYcbXheWwI">database index</a> is leveraged to prevent a full table scan</li>
+<li>pagination window is not affected when high-frequency writes to the database occur as the next cursor remains the same</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/jqWiyYJff92RjXuUQt9PQ">API</a></li>
+</ul>

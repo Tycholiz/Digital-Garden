@@ -1,0 +1,75 @@
+<h1 id="saga">Saga<a aria-hidden="true" class="anchor-heading icon-link" href="#saga"></a></h1>
+<h2 id="what-is-it">What is it?<a aria-hidden="true" class="anchor-heading icon-link" href="#what-is-it"></a></h2>
+<ul>
+<li>a saga is a daemon that lets us define long-running processes that take <a href="/notes/LMyx1qNJWpspLqmuy2WP0">actions</a> as they come, and transform or perform requests before outputting actions. </li>
+<li>This moves the logic from action creators into sagas</li>
+</ul>
+<p>A saga is a separate thread in the app that's just for side-effects</p>
+<ul>
+<li>while thunks utilize callbacks, a saga thread can be started, paused (<code>yield</code>) and cancelled by dispatching actions within <a href="/notes/GwpfAU7h2KfT3Ld9v8c2B">generator functions</a></li>
+</ul>
+<p>In synchronous Redux, a dispatched action is assigned to a <a href="/notes/otfjvO86og6rV7jr9y9HU">reducer</a>. In Async redux, a dispatched action is assigned to a saga. </p>
+<ul>
+<li>The saga does its side effect (e.g. <code>resourceListReadRequest</code>), and takes the returned data, and dispatches another action (e.g. <code>resourceListReadSuccess</code>) which is then picked up by the reducer.</li>
+</ul>
+<h3 id="reconciling-generator-functions-and-saga">Reconciling generator functions and Saga<a aria-hidden="true" class="anchor-heading icon-link" href="#reconciling-generator-functions-and-saga"></a></h3>
+<ul>
+<li>Imagine a saga as a thread that constantly calls <code>next()</code> and tries to execute the <code>yield</code> lines as soon as it can</li>
+<li>spec: like a promise, it will wait on that value to "return" before it calls <code>next()</code> and goes to the next <code>yield</code></li>
+<li>In Sagas, we are "yielding" to the redux-saga middleware
+<ul>
+<li>The MW suspends the saga until the yielded side effect resolves. At this point, the MW calls <code>next()</code></li>
+</ul>
+</li>
+<li>When we say <code>yield call(___)</code>, we are only describing what we want to happen. We aren't describing the actual outcome. In this sense, it is declarative.</li>
+</ul>
+<h2 id="types-of-saga">Types of Saga<a aria-hidden="true" class="anchor-heading icon-link" href="#types-of-saga"></a></h2>
+<h3 id="worker-saga">Worker Saga<a aria-hidden="true" class="anchor-heading icon-link" href="#worker-saga"></a></h3>
+<p>A worker saga is a saga that performs side effects and dispatches other actions asynchronously.</p>
+<h3 id="watcher-saga">Watcher Saga<a aria-hidden="true" class="anchor-heading icon-link" href="#watcher-saga"></a></h3>
+<p>A watcher saga is a saga that listens for dispatched actions and calls worker sagas in response.</p>
+<h3 id="root-saga">Root Saga<a aria-hidden="true" class="anchor-heading icon-link" href="#root-saga"></a></h3>
+<p>A root saga is a saga that runs all watcher sagas in parallel</p>
+<h2 id="example-process">Example process<a aria-hidden="true" class="anchor-heading icon-link" href="#example-process"></a></h2>
+<ol>
+<li>An action <code>resourceListReadRequest</code> is dispatched somewhere in the code</li>
+<li>A <em>Watcher Saga</em> that is designed to listen for <code>resourceListReadRequest</code> picks up on the fact that it was dispatched, and notifys the <em>Worker Saga</em></li>
+</ol>
+<h2 id="api-reference">API Reference<a aria-hidden="true" class="anchor-heading icon-link" href="#api-reference"></a></h2>
+<h3 id="effects">Effects<a aria-hidden="true" class="anchor-heading icon-link" href="#effects"></a></h3>
+<p><em>def</em> - an object containing instructions to be fulfilled by middleware. When the MW retrieves an effect yielded by a saga (ie. when a saga executes put, call, take etc), the saga pauses until the effect is done.</p>
+<ul>
+<li><code>call</code> - call the fn (1st arg) with args (rest args)</li>
+<li><code>put</code> - dispatch action</li>
+<li><code>take</code> - block execution of the saga until the provided action is dispatched
+<ul>
+<li>therefore, this is used in a watcher saga</li>
+</ul>
+</li>
+<li><code>fork</code> - useful when a saga needs to start a non-blocking task
+<ul>
+<li>Non-blocking means: the caller starts the task and continues executing without waiting for it to complete</li>
+<li>Situations:
+<ol>
+<li>grouping sagas by logical domain</li>
+<li>keeping a reference to a task in order to be able to cancel/join it</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><code>takeEvery</code> - each time a particular action is dispatched, spawn a saga
+<ul>
+<li><code>takeEvery</code> uses <code>take</code> and <code>fork</code> under the hood</li>
+</ul>
+</li>
+<li><code>takeLatest</code> - spawn a saga only for the latest dispatched action of a given type
+<ul>
+<li>ex.  imagine a user is mashing the login button. with Thunk, an API call would be made with each button press. with redux-saga, we get to just take the latest one and ignore the rest</li>
+</ul>
+</li>
+</ul>
+<h1 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h1>
+<p><a href="https://flaviocopes.com/redux-saga/">redux-saga primer</a></p>
+<ul>
+<li><a href="https://medium.com/appsflyer/dont-call-me-i-ll-call-you-side-effects-management-with-redux-saga-part-2-cd16f6bcdbcd">also</a></li>
+</ul>

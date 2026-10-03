@@ -1,0 +1,165 @@
+<h1 id="kubernetes-pod">Kubernetes Pod<a aria-hidden="true" class="anchor-heading icon-link" href="#kubernetes-pod"></a></h1>
+<p>A Pod is a way to represent a running process in a cluster.</p>
+<ul>
+<li>Pod refers to a pod of whales or pea pod</li>
+</ul>
+<p>Pods live within <a href="/notes/iuja3tlxkdniv862fq9h1v4">worker nodes</a></p>
+<p>Pods are the smallest and simplest unit of replication in K8s </p>
+<ul>
+<li>Pods are the building blocks of Kubernetes, just as containers are the building block of Docker.
+<ul>
+<li>In Docker, we think in terms of processes. In Kubernetes, we think in terms of multiple processes (co-existing to perform one task)</li>
+</ul>
+</li>
+</ul>
+<p>A pod is a collection of containers that share resources</p>
+<ul>
+<li>Though realistically, we tend to only have a single container in a Pod. We might see more than 1, but it normally isn't more than 2 or 3.</li>
+<li>In cases where we have more than one container in a pod, it's probably because the containers all support the primary application
+<ul>
+<li>ex. Imagine we have a primary <a href="/notes/AzfWDH3wp7jFpL2EYxBcW">Nginx</a> container, and alongside we have a container whose job is to regularly pull a github repo and update the website that the nginx container is serving. These 2 containers working together can be thought of a single atomic unit.
+<img src="/assets/images/2022-02-25-16-34-02.png"></li>
+</ul>
+</li>
+</ul>
+<p>A pod is designed to run multiple cooperative processes that could be seen as a single cohesive piece of work. This is the level of abstraction that we live at in Kubernetes.</p>
+<p>All the containers in a pod run on the same machine.</p>
+<ul>
+<li>That is, a pod cannot be split across multiple nodes</li>
+</ul>
+<p>A pod provides a way to set <code>.env</code> variables, mount storage, and feed other information into a container</p>
+<p>A pod encapsulates one or more containers deployed together on one host, thereby sharing the same resources (of the host)</p>
+<ul>
+<li>ex. if we have 5 containers of a mongodb service deployed, and 3 of them were on the same host (ex. same machine), those 3 together would be called a Pod</li>
+</ul>
+<p>Pods are not long-lived services. Even though Kubernetes is doing its best to ensure that the containers in a Pod are (almost) always up-and-running, the same cannot be said for Pods. In Kubernetes, containers are fault-tolerant, but pods are not.</p>
+<ul>
+<li>If a Pod fails, gets destroyed, or gets evicted from a Node, it will not be rescheduled.</li>
+<li>Similarly, if a whole node is destroyed, all the Pods on it will cease to exist.</li>
+</ul>
+<p>Each pod gets its own IP address, though it is unreliable, since pods are designed to be short-lived; so the creation of a new pod would result in a new IP</p>
+<p>When the container inside a pod exits, the pod dies too.</p>
+<p>When a container inside a pod fails, Kubernetes will create a new container based off the same image:</p>
+<pre class="language-sh"><code class="language-sh">$ kubectl exec -it db pkill mongod
+$ kubectl get pods
+</code></pre>
+<p>produces (note how RESTARTS is 1):</p>
+<pre><code>NAME READY STATUS  RESTARTS AGE
+db   1/1   Running 1        13m
+</code></pre>
+<p>Everything in a pod is tightly coupled.</p>
+<p>The containers in a pod are not necessarily Docker containers, though it is the most common implementation.</p>
+<p>Normally pods are not created by hand. Instead, we depend on higher level constructs like Controllers to do that for us.</p>
+<p>Pods...</p>
+<ul>
+<li>are mortal. They are born and cannot be resurrected once they die.</li>
+<li>are not intended to run multiple instances of the same application,</li>
+</ul>
+<p>Containers within a pod...</p>
+<ul>
+<li>share an IP address and port space, and can find each other via localhost.</li>
+<li>share storage space</li>
+</ul>
+<p>In a pre-container world, being executed on the same physical or virtual machine would mean being executed on the same logical host.</p>
+<ul>
+<li>logical host would contain relatively tightly coupled code</li>
+</ul>
+<h3 id="how-many-containers-in-a-pod">How many containers in a pod?<a aria-hidden="true" class="anchor-heading icon-link" href="#how-many-containers-in-a-pod"></a></h3>
+<p>Even though a Pod can contain any number of containers, the most common use case is to use the <strong>single-container-in-a-Pod</strong> model</p>
+<ul>
+<li>Imagine we had your express api server image and a postgres image. If we put both of these in a single pod, we would no longer be able to have different numbers of containers. For instance, we could not have 2 api containers and 1 postgres container.</li>
+</ul>
+<p>There are scenarios when having multiple containers in a Pod is a good idea. However, they are very specific and, in most cases, are based on one container that acts as the main service and the rest serving as side-cars.</p>
+<p>A frequent use case is multi-container Pods used for:</p>
+<ul>
+<li>Continuous integration (CI)</li>
+<li>Continious Delivery (CD)</li>
+<li>Continuous Deployment processes (CDP)</li>
+</ul>
+<h3 id="podtemplate">PodTemplate<a aria-hidden="true" class="anchor-heading icon-link" href="#podtemplate"></a></h3>
+<p>When we create a pod, a hash of the PodTemplate is taken and it appended to the Pod name. This means that 2 pods created from identical PodTemplates on different machines will produce the same hash.</p>
+<ul>
+<li>This is also how Git SHAs work.</li>
+</ul>
+<p>spec: PodTemplate is in the ReplicaSet</p>
+<h2 id="pod-scheduling">Pod Scheduling<a aria-hidden="true" class="anchor-heading icon-link" href="#pod-scheduling"></a></h2>
+<h3 id="major-components">Major components<a aria-hidden="true" class="anchor-heading icon-link" href="#major-components"></a></h3>
+<p>There are 3 major components: API Server, Scheduler, Kubelet</p>
+<h4 id="api-server">API Server<a aria-hidden="true" class="anchor-heading icon-link" href="#api-server"></a></h4>
+<p>Central component of the K8s cluster</p>
+<ul>
+<li>runs on the master node
+<ul>
+<li>with Minikube, both master and worker nodes are baked into the same VM. Realistically, the K8s cluster should have the two separated on different hosts.</li>
+</ul>
+</li>
+</ul>
+<p>Most of the coordination in Kubernetes consists of a component writing to the API Server resource that another component is watching. The second component will then react to changes almost immediately.</p>
+<h4 id="scheduler">Scheduler<a aria-hidden="true" class="anchor-heading icon-link" href="#scheduler"></a></h4>
+<p>The scheduler is also running on the master node.</p>
+<ul>
+<li>Its job is to watch for unassigned pods and assign them to a node which has available resources (CPU and memory) matching Pod requirements.</li>
+</ul>
+<h4 id="kubelet">Kubelet<a aria-hidden="true" class="anchor-heading icon-link" href="#kubelet"></a></h4>
+<p><a href="/notes/bRPGb7XOb1TDfZqpnf201">reference</a></p>
+<h3 id="process-of-creating-a-pod">Process of creating a pod<a aria-hidden="true" class="anchor-heading icon-link" href="#process-of-creating-a-pod"></a></h3>
+<p>ie. when running <code>kubectl create -f pod/db.yml</code></p>
+<ol>
+<li>kubectl (the K8s client) sends a request to the API Server, requesting the creation of a pod</li>
+<li>Since the scheduler is watching the API server for new events, it detected that there is an unassigned Pod.</li>
+<li>The scheduler decided which node to assign the Pod to and sent that information to the API server.</li>
+<li>Kubelet is also watching the API server. It detected that the Pod was assigned to the node it is running on.</li>
+<li>Kubelet sent a request to Docker requesting the creation of the containers that form the Pod. In our case, the Pod defines a single container based on the mongo image.</li>
+<li>Finally, Kubelet sent a request to the API server notifying it that the Pod was created successfully.</li>
+</ol>
+<p><img src="/assets/images/2021-05-28-11-22-21.png" alt="Pod Scheduling Sequence"></p>
+<h3 id="pod-cpu-resources">Pod CPU resources<a aria-hidden="true" class="anchor-heading icon-link" href="#pod-cpu-resources"></a></h3>
+<p>Pods have two resource types for CPU in K8S: requests and limits. </p>
+<ul>
+<li>The request is a guaranteed allocation that we expect the pod to utilize. </li>
+<li>The limit is the cap that we don't want our pod to EVER exceed, as your thread will receive WAIT responses and can skew time sensitive apps. 
+<ul>
+<li>Therefore, hitting your limit should be considered a bug in right sizing calculations.</li>
+</ul>
+</li>
+</ul>
+<p>CPU in k8s are measured in millicores (1000m = 1 [core, or AWS EC2 vCPU])</p>
+<ul>
+<li><a href="https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#meaning-of-cpu">https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#meaning-of-cpu</a></li>
+</ul>
+<p>Sidebar: Memory is also included in requests, except when you hit the limit, the pod is terminated. This is easly identified because the exist signal will exceed 128. </p>
+<ul>
+<li>You can find the original signal code simply by subtracting 128. Example: Exit Code 137: Indicates failure as container received SIGKILL. 137-128=9, ie <code>kill -9 &#x3C;PID></code></li>
+</ul>
+<hr>
+<h2 id="pod-definition-file">Pod Definition File<a aria-hidden="true" class="anchor-heading icon-link" href="#pod-definition-file"></a></h2>
+<pre class="language-yml"><code class="language-yml"><span class="token comment"># using v1 of the K8s Pods API</span>
+<span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> Pod
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> db
+  <span class="token key atrule">labels</span><span class="token punctuation">:</span>
+    <span class="token key atrule">type</span><span class="token punctuation">:</span> db
+    <span class="token key atrule">vendor</span><span class="token punctuation">:</span> MongoLabs
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">containers</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> db
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> mongo<span class="token punctuation">:</span><span class="token number">3.3</span>
+    <span class="token key atrule">command</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"mongod"</span><span class="token punctuation">]</span> <span class="token comment"># the command that should be executed when the container starts</span>
+    <span class="token key atrule">args</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"--rest"</span><span class="token punctuation">,</span> <span class="token string">"--httpinterface"</span><span class="token punctuation">]</span>
+
+</code></pre>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/bpkHS7t7KGHv2Ty9BfWtp">Pod CLI</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/qxSOd6SPN8qf9ZUojVFDX">K8s</a></li>
+<li><a href="/notes/r3tsEEYDIeLs1mWyVL6Kz">Node controller</a></li>
+<li><a href="/notes/iuja3tlxkdniv862fq9h1v4">Worker Node</a></li>
+<li><a href="/notes/ZK0P0va9kOJGsM9X7X2Td">Deployment</a></li>
+<li><a href="/notes/ryBzcGWSKyybRXnyKxteV">Kubernetes Service</a></li>
+</ul>

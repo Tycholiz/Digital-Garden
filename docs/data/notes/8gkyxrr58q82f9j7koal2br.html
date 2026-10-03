@@ -1,0 +1,22 @@
+<h1 id="git-lfs-large-file-storage">Git LFS (Large File Storage)<a aria-hidden="true" class="anchor-heading icon-link" href="#git-lfs-large-file-storage"></a></h1>
+<p>There are multiple criteria to determine whether to store a file using Git LFS.</p>
+<ul>
+<li>The size of the file. IMO if a file is more than 10 MB, you should consider storing it in Git LFS</li>
+<li>How often the file is modified. A large file (based on the users intuition of a large file) that changes very often should be stored using Git LFS</li>
+<li>The type of the file. A non-text file that cannot be merged is elligible for Git LFS storage</li>
+</ul>
+<p>Depending on how often the file changes, any size of file from say 1MB to 50MB and above can benefit. Consider the case where you do 100 commits editing the file every time. For a 20MB file that can be compressed say to 15 MB, the repository size would increase by approximately 1.5GB if the file is not stored using Git LFS.</p>
+<p>Why not store all files in LFS? Because files in LFS cannot easily be diffed, basically breaking an important part of the version control system.</p>
+<ul>
+<li>hence, why Git LFS is ideal for binary files</li>
+</ul>
+<h2 id="setting-up">Setting up<a aria-hidden="true" class="anchor-heading icon-link" href="#setting-up"></a></h2>
+<ol>
+<li>Once it has been installed, in your repo run <code>git lfs track "*.jpg"</code> to start tracking a certain filetype with git lfs
+<ul>
+<li>see all tracked files in <code>.gitattributes</code> file</li>
+</ul>
+</li>
+<li>Add <code>.gitattributes</code> file to version control.</li>
+<li>Operate as you normally would.</li>
+</ol>

@@ -1,0 +1,123 @@
+<h1 id="domain-driven-design">Domain-Driven Design<a aria-hidden="true" class="anchor-heading icon-link" href="#domain-driven-design"></a></h1>
+<p>Domain Driven Design is the concept that we should design our application code with heavy consideration into the business logic.</p>
+<ul>
+<li>ex. we don't know if it will always be the case that you must be a user to purchase a book. Therefore, we shouldn't design the system in a way where we can't accomplish that easily.</li>
+</ul>
+<p>DDD is about thinking about your software in terms of business application, instead of looking at it in terms of technology.</p>
+<ul>
+<li>ie. we are writing for the needs of the business</li>
+<li>we achieve this by defining models for our domain, and then writing software that conforms to it.</li>
+</ul>
+<p>DDD has nothing to do with writing code in a certain way. Rather, it's about understanding the underlying logic behind the problems you need to solve. It's the thinking about domains that drives the design of the code. In a way, DDD is the opposite of jumping right in with code and trying to solve something without thinking about it beforehand.</p>
+<ul>
+<li>"The novice jumps in right away with code. The veteran ponders the problem they are solving, and thinks (in code) about the logic of that problem"</li>
+</ul>
+<p>DDD is all about unifying all of the code in a way that is highly comprehensible to those uninvolved with the code's creation. That is, focus is placed on the high level business logic and domain delineations.</p>
+<ul>
+<li>At a trivial level, it’s all about the names you use for things.  </li>
+<li>at the level above that, it’s about the way that you combine and activate things to produce business value.  </li>
+<li>at the level above that, it’s the causal and relationship (semantic) model that keeps everything cohesive, coherent, and aligned with the business.  </li>
+<li>this alignment can’t come from an implementation-focused model. you must use a domain model.</li>
+</ul>
+<p>Why is this important?</p>
+<ul>
+<li>Centralizes (business) domain logic into the software to account for changes in understanding and business needs and to improve longevity </li>
+<li>Helps us understand where we should be investing (strategic) and how to build it (tactical) - investing in the parts of the business that are core </li>
+<li>Understanding the problem helps align everyone to produce better solutions and more effective communication</li>
+</ul>
+<p>Key ideas:</p>
+<ol>
+<li>Collaboratively model the domain so that your software reads like the problem it solves.</li>
+<li>Isolate your software and establish context in each part of it. There should be enough previously handled assertions that you have a good idea of what's going to happen while looking at any random line of code. (Not sure how to word this one)</li>
+<li>You don't have to model the domain <em>exactly</em>.
+(Use abstraction to get rid of unnecessary details, and sometimes it makes sense to model things as they are used rather than what they actually are)</li>
+</ol>
+<p>DDD is not about writing code in a certain way. Rather, it's about understanding the underlying logic behind the problems you need to solve. It's the thinking about domains that drives the design of the code. In a way, DDD is the opposite of jumping right in with code and trying to solve something without thinking about it beforehand.</p>
+<ul>
+<li>"The novice jumps in right away with code. The veteran ponders the problem they are solving, and thinks (in code) about the logic of that problem"</li>
+</ul>
+<p>DDD is all about unifying all of the code in a way that is highly comprehensible to those uninvolved with the code's creation.</p>
+<h3 id="domain-primitives">Domain Primitives<a aria-hidden="true" class="anchor-heading icon-link" href="#domain-primitives"></a></h3>
+<p>The building blocks of DDD are <a href="/notes/X9TyB7Fn9NNAUyakav5Pz">value objects</a>.</p>
+<ul>
+<li>They can also be thought of as <em>domain primitives</em>.</li>
+</ul>
+<pre class="language-ts"><code class="language-ts"><span class="token comment">// without domain primitives</span>
+<span class="token keyword">class</span> <span class="token class-name"><span class="token maybe-class-name">User</span></span> <span class="token punctuation">{</span>
+    name<span class="token operator">:</span> <span class="token builtin">string</span>
+    email<span class="token operator">:</span> <span class="token builtin">string</span>
+    mobile<span class="token operator">:</span> <span class="token builtin">string</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// with domain primitives</span>
+<span class="token keyword">class</span> <span class="token class-name"><span class="token maybe-class-name">User</span></span> <span class="token punctuation">{</span>
+    name<span class="token operator">:</span> <span class="token maybe-class-name">Name</span>
+    email<span class="token operator">:</span> <span class="token maybe-class-name">Email</span>
+    mobile<span class="token operator">:</span> <span class="token maybe-class-name">PhoneNumber</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+<h3 id="domain-model">Domain Model<a aria-hidden="true" class="anchor-heading icon-link" href="#domain-model"></a></h3>
+<p>a domain model is an abstraction of the subdomain. Not every aspect of the domain can be part of the model. It's the aspects chosen for implementation that constitute the model.</p>
+<ul>
+<li>this means that we don't just think in terms of what the object can do; we think of it in terms of what we <em>want</em> it to do.</li>
+</ul>
+<h3 id="farmyard-domain-analogy">Farmyard Domain analogy<a aria-hidden="true" class="anchor-heading icon-link" href="#farmyard-domain-analogy"></a></h3>
+<p>Imagine we wanted to build a house. We would first need to determine what type of house we are building. Detached? Condo? Duplex? Farmhouse?</p>
+<p>After determining this, we would talk to the domain expert, which would probably be a farmer. </p>
+<ul>
+<li>
+<p>Notably, it's not the architect, since they wouldn't have the in-depth domain knowledge required to design everything.
+<img src="/assets/images/2022-01-10-09-34-42.png"></p>
+</li>
+<li>
+<p>Domain: Farmyard</p>
+</li>
+<li>
+<p>Sub-domains: Barn, Stables, Farmhouse, Garden gate, etc.</p>
+</li>
+<li>
+<p>Domain model: The layout/plans for each sub-domain (e.g. the layout of the farmhouse)</p>
+<ul>
+<li>analogous relationship:
+<ul>
+<li>classes -> objects</li>
+<li>domain model -> bounded contexts</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Ubiquitous language: in the layout, we have rooms like Family room, Bedroom, Bathroom. This is the ubiquitous language of the domain.</p>
+</li>
+<li>
+<p><a href="/notes/eJh8ewMkDq2LpJPqC6fX8">Bounded context</a>: The parts circled in blue.</p>
+<ul>
+<li>language used in each bounded context is specific. For example, "caretaker" of the stables and "caretaker" of the farmhouse are two different things.</li>
+</ul>
+</li>
+</ul>
+<h2 id="tactical-design-tools">Tactical design tools<a aria-hidden="true" class="anchor-heading icon-link" href="#tactical-design-tools"></a></h2>
+<p>Tactical design tools are concerned with implementation details of the components inside a bounded context
+tactical design is expected to change over the process of development</p>
+<h1 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h1>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=b6D_NTgzmhs">Event Storming: Brainstorming to arrive at DDD conclusions</a></li>
+<li><a href="https://github.com/Softwarepark/exercises/blob/master/transport-tycoon.md">Roller Coaster Tycoon Examples</a></li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/wScGMNwmgoh1iNp4PYFCN">Aggregate</a></li>
+<li><a href="/notes/eJh8ewMkDq2LpJPqC6fX8">Bounded-Context</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/xISza0hg9S9FjXgmkfYgB">Data Mesh</a></li>
+<li><a href="/notes/bedq5ao5iq3yt6fdq7kf97g">Environment</a></li>
+<li><a href="/notes/y8044sa0ai1u2hyoka0lphz">Modules</a></li>
+<li><a href="/notes/Io6ynzCU93aEuqY3g8opd">BDD (Behaviour-Driven Development)</a></li>
+<li><a href="/notes/X9TyB7Fn9NNAUyakav5Pz">Value Object</a></li>
+<li><a href="/notes/zv00g97iw4ngvv7pht794rd">Inheritance</a></li>
+</ul>

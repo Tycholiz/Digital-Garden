@@ -1,0 +1,57 @@
+
+### What is it?
+GitOps is an evolution of IaC that leverages Git as the single source of truth, and control mechanism for creating, updating, and deleting system architecture.
+- we do this by using Git pull requests to verify and automatically deploy system infrastructure modifications.
+- teams that adopt GitOps use configuration files stored as code ([[IaC|devops.IaC]])
+- GitOps adds some magic to the pull request workflow that syncs the state of the live system to that of the static configuration repository.
+
+GitOps is implemented by using the Git distributed version control system (DVCS) as a single source of truth for declarative infrastructure and applications. Every developer within a team can issue pull requests against a Git repository, and when merged, a "diff and sync" tool detects a difference between the intended and actual state of the system. Tooling can then be triggered to update and synchronise the infrastructure to the intended state.
+
+Over and above simply implementing [[IaC|devops.IaC]], GitOps provides a way to plan, review and approve moves, adds and changes to the infrastructure.
+- It also requires well documented procedures, or runbooks, to be successful.
+
+### Why do it?
+Done right, GitOps will let engineers constantly apply updates to infrastructure meet all the needs of the applications in a continuous delivery format.
+
+GitOps ensures that a system’s cloud infrastructure is immediately reproducible based on the state of a Git repository.
+- Once approved and merged, the pull requests will automatically reconfigure and sync the live infrastructure to the state of the repository. This live syncing pull request workflow is the core essence of GitOps.
+- Git becomes the single source of truth for what is running in production (or staging, or development).
+
+While IaC itself does use Git for version control, the declarative configuration of that infrastructure (ie. the YAML files) still feels disconnected from the live system, since the live system needs to be manually updated to match the state of the static repo. This is the exact problem GitOps solves.
+
+Practicing GitOps allows a team to track all modifications to the configuration of a system. This gives a “source of truth” and valuable audit trail to review if something breaks or behaves unexpectedly. Teams can review the GitOps history and see when a regression was introduced.
+
+GitOps principles can be applied to all types of infrastructure automation including VMs and containers, and can be very effective for teams looking to manage Kubernetes-based infrastructure.
+
+While many tools and methodologies promise faster deployment and seamless management between code and infrastructure, GitOps differs by focusing on a developer-centric experience.
+
+### Implementing GitOps
+GitOps requires three core components:
+- [[IaC|devops.IaC]]
+    - To implement GitOps, we need the ability to create a declarative cloud infrastructure, using something such as Terraform and Kubernetes, with the help of Helm or Flux.
+- Pull Requests 
+    - The change mechanism of our infra config.
+- [[CI/CD|deploy.CI-CD]] 
+    - When new code is merged, the CI/CD pipeline enacts the change in the environment. Any configuration drift, such as manual changes or errors, is overwritten by GitOps automation so the environment converges on the desired state defined in Git
+
+
+GitOps procedures are performed by an underlying orchestration system, most likely [[Kubernetes|k8s]].
+- Some alternative GitOps tool sets are coming to market that support direct [[Terraform|terraform]] manipulation. 
+
+a pipeline platform is required, such as CircleCI, Jenkins, Gitlab CI, Github Actions
+- Pipelines automate and bridge the gap between Git pull requests and the orchestration system. Once pipeline hooks are established and triggered from pull requests, commands are executed to the orchestration piece. 
+
+A new pattern or component that is specifically introduced with GitOps is the GitOps “operator,” which is a mechanism that sits between the pipeline and the orchestration system. A pull request starts the pipeline that then triggers the operator. The operator examines the state of the repository and the start of the orchestration and syncs them. The operator is the magic component of GitOps.
+- ex. we have a non-optimal config for our load balancer, so we make a pull request that adjusts the values. Merging in the code kicks off a GitOps pipeline, which triggers the GitOps operator. The operator sees the load balancer configuration was changed. It confirms with the systems orchestration tool that this does not match what is live on the teams cluster. The operator signals the orchestration system to update the load balancer configuration. The orchestrator handles the rest and automatically deploys the newly configured load balancer. The team then monitors the newly updated live system to see it return to a healthy state.
+    - if we then realize that we made a mistake, reverting back to the last config is as simple as reverting the commit.
+
+### Considerations
+GitOps allows for greater collaboration, but that is not necessarily something that comes naturally for some individuals or organizations. A GitOps approval process means that developers make changes to the code, create a merge request, an approver merges these changes, and the change is deployed. This sequence introduces a “change by committee” element to infrastructure, which can seem tedious and time-consuming to engineers used to making quick, manual changes.
+
+It is important for everyone on the team to record what’s going on in merge requests and issues.
+
+### Benefits 
+Full oversight, architectural review, project management and all the other pieces of the process are brought together in GitOps in an effort to end ops versus everyone else and get all the stakeholders involved in the process. The basics don’t change–an ops engineer will still create an infrastructure–but that will just be one part of a much larger process that everyone can contribute to and collaborate on. No more worrying about an engineer creating a cloud infrastructure that can’t be replicated; with GitOps everything is tracked making repeatability easy. Suddenly it will also be simple to answer the “what changed?” question because no one will have to hunt for an answer. The bottom line is a successful GitOps program will benefit the actual bottom line because operational processes will be dramatically streamlined.
+
+## UE Resources
+https://www.weave.works/blog/gitops-operations-by-pull-request

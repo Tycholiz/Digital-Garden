@@ -1,0 +1,65 @@
+<h1 id="value-object">Value Object<a aria-hidden="true" class="anchor-heading icon-link" href="#value-object"></a></h1>
+<p>A value object is a small object that represents a simple <a href="/notes/JfKglO4raDLiC4AYPwL1X">Entity</a></p>
+<p>Two value objects are considered equal when they have the same value. That is, they don't necessarily have to be the same object, since 2 different objects can have the same value.</p>
+<ul>
+<li>another way of saying this is "equality is not based on identity".</li>
+</ul>
+<p>Consider that in <a href="/notes/BkG557LKUYbH1DnxprEVT">C</a>, there is no concept of a string; only a <a href="/notes/SXTEINWsOBx40iGYREsEB">character array</a>. Therefore, strings are abstractions on top of character arrays that serve 2 purposes:</p>
+<ol>
+<li>they reduce complexity</li>
+<li>they enforce ubiquitous language</li>
+</ol>
+<p>This is precicely what Value Objects do for us. </p>
+<p>Value Objects are simply values that exist in our system, and they generally come from the ubiquitous language.</p>
+<ul>
+<li>generally, applications will use primitives like float for money, string for email... but in DDD, we shouldn't do this. Instead, we should be using value objects.</li>
+<li>Some say that primitives should not exist in our objects at all.</li>
+</ul>
+<p>spec: value objects are made from primitives.</p>
+<p>Value objects are among the building blocks of <a href="/notes/GDJoTJocO8OKbTtSjn2CW">DDD</a>.</p>
+<h3 id="examples-of-value-objects">Examples of Value Objects<a aria-hidden="true" class="anchor-heading icon-link" href="#examples-of-value-objects"></a></h3>
+<p>objects representing...</p>
+<ul>
+<li>money</li>
+<li>date range</li>
+</ul>
+<h3 id="features-of-value-objects">Features of Value Objects<a aria-hidden="true" class="anchor-heading icon-link" href="#features-of-value-objects"></a></h3>
+<ul>
+<li>They are fungible
+<ul>
+<li>ex. $100 in a system can be replaced with any other $100 without consequence</li>
+</ul>
+</li>
+<li>They are immutable.
+<ul>
+<li>ex. $100 in a system shouldn't be able to be changed to $50</li>
+<li>this is required for the implicit contract that two value objects created equal, should remain equal.</li>
+<li>It is also useful for value objects to be immutable, as client code cannot put the value object in an invalid state or introduce buggy behaviour after instantiation</li>
+</ul>
+</li>
+<li>Rich in domain logic</li>
+<li>Auto-validating
+<ul>
+<li>the business logic is baked in. For instance, if we have our own <code>money</code> type, that is implemented in floats, the value object itself should implement the logic that only 2 decimal places can exist, negative values don't exist etc.</li>
+</ul>
+</li>
+</ul>
+<h3 id="implementation">Implementation<a aria-hidden="true" class="anchor-heading icon-link" href="#implementation"></a></h3>
+<pre class="language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">StreetAddress</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token class-name">StreetAddress</span><span class="token punctuation">(</span>string street<span class="token punctuation">,</span> string city<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token class-name">Street</span> <span class="token operator">=</span> street<span class="token punctuation">;</span>
+        <span class="token class-name">City</span> <span class="token operator">=</span> city<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">final</span> string <span class="token class-name">Street</span> <span class="token punctuation">{</span> get<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">final</span> string <span class="token class-name">City</span> <span class="token punctuation">{</span> get<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/GDJoTJocO8OKbTtSjn2CW">Domain-Driven Design</a></li>
+<li><a href="/notes/JfKglO4raDLiC4AYPwL1X">Entity</a></li>
+</ul>

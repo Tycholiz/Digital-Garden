@@ -1,0 +1,8 @@
+
+Deduping (or, de-duplicating) is the idea that many data files or records may contain duplicate information that would be inefficient to store multiple times. Instead, you store the duplicated data sequence just once and then for every file or record that contains that same data sequence, you just insert a short reference that points to the data sequence (i.e. basically saying 'insert data sequence X here' rather than storing the whole X data sequence multiple times).
+
+Sometimes you also have cases where you have multiple copies of the exact same file (as opposed to just chunks or sequences of data within files that are sometimes duplicated). In this case, where files are duplicated exactly, you can perform a hash function against files and compare the resulting values to test whether their data contents are identical. If so, the file only needs to be stored once, and every other duplicate file record can just reference the original file by its hash.
+
+In a [[log|general.lang.data-structs.log]], we want each transaction to appear exactly once. If we failed at this, it could result in the master and its slave replications becoming inconsistent.
+
+[[Set|js.lang.type.set]] is a great way to deduplicate an array, since each entry in a `Set` must be unique.

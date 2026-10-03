@@ -1,0 +1,25 @@
+<h1 id="code-maintainability">Code Maintainability<a aria-hidden="true" class="anchor-heading icon-link" href="#code-maintainability"></a></h1>
+<h3 id="splitting-out-a-data-structure-into-2-forms-one-for-maintainability-and-one-for-functionality">Splitting out a data structure into 2 forms: one for maintainability, and one for functionality<a aria-hidden="true" class="anchor-heading icon-link" href="#splitting-out-a-data-structure-into-2-forms-one-for-maintainability-and-one-for-functionality"></a></h3>
+<ul>
+<li><a href="https://eloquentjavascript.net/07_robot.html">source: Robot Delivery game <code>buildGraph</code> function.</a>
+In this project, it makes sense to have an object of key-value pairs </li>
+<li>where the key is the name of a node, and the value is an array of adjacent nodes that can be travelled directly to (ie. without having to go through another node to get there):</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> graph <span class="token operator">=</span> <span class="token punctuation">{</span>
+    <span class="token string-property property">'Alice-House'</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'Bob-House'</span><span class="token punctuation">,</span> <span class="token string">'Post-office'</span><span class="token punctuation">,</span> <span class="token string">'Cabin'</span><span class="token punctuation">]</span>
+    <span class="token comment">// ...</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>We could do this by hand, but then we are looking at a maintainability nightmare. Consider that if we add a new node that connects to 3 other existing nodes, then we need to modify the existing object in 4 places: modify 3 values (ie. the arrays), and add a new key. </p>
+<ul>
+<li>When building out this code, we can take a strong focus to future-proofing it. Always consider likely maintenance needs, and find a way to make it simpler.</li>
+</ul>
+<p>The way the project goes about future proofing this is by using a more primary way of representing the nodes, which is done through using an array where each element is an edge (ie. the link between 2 nodes):</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> roads <span class="token operator">=</span> <span class="token punctuation">[</span>
+  <span class="token string">"Alice's House-Bob's House"</span><span class="token punctuation">,</span>   <span class="token string">"Alice's House-Cabin"</span><span class="token punctuation">,</span>
+  <span class="token comment">// ...</span>
+<span class="token punctuation">]</span>
+</code></pre>
+<p>a <code>buildGraph</code> function is then made, which takes in the array and outputs the <code>graph</code> object. Now, whenever a new node is added to the town, only a single element needs to be added to the <code>roads</code> array.</p>
+<h3 id="immutability-in-data-structures">Immutability in data structures<a aria-hidden="true" class="anchor-heading icon-link" href="#immutability-in-data-structures"></a></h3>
+<p>Immutable data structures help you to understand your programs, making it a solution to the problem of complexity management. When objects in a system are known to be fixed, stable things, we can consider operations in isolation (in the Robot game above, this might be moving from one location to another; going from location A to location B always produces the same new state). A simpler program lets us build it more ambitiously.</p>

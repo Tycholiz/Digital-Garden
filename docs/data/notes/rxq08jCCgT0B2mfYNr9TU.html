@@ -1,0 +1,105 @@
+<h1 id="usereducer">useReducer<a aria-hidden="true" class="anchor-heading icon-link" href="#usereducer"></a></h1>
+<p>Prefer <code>useReducer</code> over <code>useState</code> when either:</p>
+<ol>
+<li>The state is more complex than a scalar or simple object.</li>
+<li>the next state depends on the previous state</li>
+<li>you are storing an array in state and the user can edit each item in the array.</li>
+<li>you have components with many state updates spread across many event handlers</li>
+</ol>
+<ul>
+<li>this gets simplified because we can consolidate all the state update logic outside your component in a single function, called "reducer". The event handlers become concise because they only specify the user "actions"</li>
+</ul>
+<p><code>useReducer</code> also lets you optimize performance for components that trigger deep updates because you can pass dispatch down instead of callbacks.</p>
+<h3 id="throw-and-error-on-default">Throw and error on <code>default</code><a aria-hidden="true" class="anchor-heading icon-link" href="#throw-and-error-on-default"></a></h3>
+<p>There is little point in the default to a switch statement to simply return <code>state</code>:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword module">default</span><span class="token operator">:</span>
+  <span class="token keyword control-flow">return</span> state<span class="token punctuation">;</span>
+</code></pre>
+<p>This is like allowing a silent error to pass through, as actions should be explicit. We want to be notified of any non-existent actions and typos immediately, so we throw an error.</p>
+<h3 id="example-useundo">Example: useUndo<a aria-hidden="true" class="anchor-heading icon-link" href="#example-useundo"></a></h3>
+<pre class="language-js"><code class="language-js"><span class="token keyword module">import</span> <span class="token imports"><span class="token operator">*</span> <span class="token keyword module">as</span> <span class="token maybe-class-name">React</span></span> <span class="token keyword module">from</span> <span class="token string">'react'</span>
+
+<span class="token keyword">const</span> <span class="token constant">UNDO</span> <span class="token operator">=</span> <span class="token string">'UNDO'</span>
+<span class="token keyword">const</span> <span class="token constant">REDO</span> <span class="token operator">=</span> <span class="token string">'REDO'</span>
+<span class="token keyword">const</span> <span class="token constant">SET</span> <span class="token operator">=</span> <span class="token string">'SET'</span>
+<span class="token keyword">const</span> <span class="token constant">RESET</span> <span class="token operator">=</span> <span class="token string">'RESET'</span>
+
+<span class="token keyword">function</span> <span class="token function">undoReducer</span><span class="token punctuation">(</span><span class="token parameter">state<span class="token punctuation">,</span> action</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> <span class="token punctuation">{</span>past<span class="token punctuation">,</span> present<span class="token punctuation">,</span> future<span class="token punctuation">}</span> <span class="token operator">=</span> state
+  <span class="token keyword">const</span> <span class="token punctuation">{</span>type<span class="token punctuation">,</span> newPresent<span class="token punctuation">}</span> <span class="token operator">=</span> action
+
+  <span class="token keyword control-flow">switch</span> <span class="token punctuation">(</span>action<span class="token punctuation">.</span><span class="token property-access">type</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">case</span> <span class="token constant">UNDO</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span>past<span class="token punctuation">.</span><span class="token property-access">length</span> <span class="token operator">===</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token keyword control-flow">return</span> state
+
+      <span class="token keyword">const</span> previous <span class="token operator">=</span> past<span class="token punctuation">[</span>past<span class="token punctuation">.</span><span class="token property-access">length</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span>
+      <span class="token keyword">const</span> newPast <span class="token operator">=</span> past<span class="token punctuation">.</span><span class="token method function property-access">slice</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> past<span class="token punctuation">.</span><span class="token property-access">length</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span>
+
+      <span class="token keyword control-flow">return</span> <span class="token punctuation">{</span>
+        <span class="token literal-property property">past</span><span class="token operator">:</span> newPast<span class="token punctuation">,</span>
+        <span class="token literal-property property">present</span><span class="token operator">:</span> previous<span class="token punctuation">,</span>
+        <span class="token literal-property property">future</span><span class="token operator">:</span> <span class="token punctuation">[</span>present<span class="token punctuation">,</span> <span class="token spread operator">...</span>future<span class="token punctuation">]</span><span class="token punctuation">,</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">case</span> <span class="token constant">REDO</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span>future<span class="token punctuation">.</span><span class="token property-access">length</span> <span class="token operator">===</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token keyword control-flow">return</span> state
+
+      <span class="token keyword">const</span> next <span class="token operator">=</span> future<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+      <span class="token keyword">const</span> newFuture <span class="token operator">=</span> future<span class="token punctuation">.</span><span class="token method function property-access">slice</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+
+      <span class="token keyword control-flow">return</span> <span class="token punctuation">{</span>
+        <span class="token literal-property property">past</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token spread operator">...</span>past<span class="token punctuation">,</span> present<span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">present</span><span class="token operator">:</span> next<span class="token punctuation">,</span>
+        <span class="token literal-property property">future</span><span class="token operator">:</span> newFuture<span class="token punctuation">,</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">case</span> <span class="token constant">SET</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span>newPresent <span class="token operator">===</span> present<span class="token punctuation">)</span> <span class="token keyword control-flow">return</span> state
+
+      <span class="token keyword control-flow">return</span> <span class="token punctuation">{</span>
+        <span class="token literal-property property">past</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token spread operator">...</span>past<span class="token punctuation">,</span> present<span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">present</span><span class="token operator">:</span> newPresent<span class="token punctuation">,</span>
+        <span class="token literal-property property">future</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">case</span> <span class="token constant">RESET</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token keyword control-flow">return</span> <span class="token punctuation">{</span>
+        <span class="token literal-property property">past</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">present</span><span class="token operator">:</span> newPresent<span class="token punctuation">,</span>
+        <span class="token literal-property property">future</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword module">default</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token keyword control-flow">throw</span> <span class="token keyword">new</span> <span class="token class-name">Error</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Unhandled action type: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>type<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">useUndo</span><span class="token punctuation">(</span><span class="token parameter">initialPresent</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> <span class="token punctuation">[</span>state<span class="token punctuation">,</span> dispatch<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token maybe-class-name">React</span><span class="token punctuation">.</span><span class="token method function property-access">useReducer</span><span class="token punctuation">(</span>undoReducer<span class="token punctuation">,</span> <span class="token punctuation">{</span>
+    <span class="token literal-property property">past</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">present</span><span class="token operator">:</span> initialPresent<span class="token punctuation">,</span>
+    <span class="token literal-property property">future</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+  <span class="token keyword">const</span> canUndo <span class="token operator">=</span> state<span class="token punctuation">.</span><span class="token property-access">past</span><span class="token punctuation">.</span><span class="token property-access">length</span> <span class="token operator">!==</span> <span class="token number">0</span>
+  <span class="token keyword">const</span> canRedo <span class="token operator">=</span> state<span class="token punctuation">.</span><span class="token property-access">future</span><span class="token punctuation">.</span><span class="token property-access">length</span> <span class="token operator">!==</span> <span class="token number">0</span>
+  <span class="token keyword">const</span> undo <span class="token operator">=</span> <span class="token maybe-class-name">React</span><span class="token punctuation">.</span><span class="token method function property-access">useCallback</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token function">dispatch</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token literal-property property">type</span><span class="token operator">:</span> <span class="token constant">UNDO</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+  <span class="token keyword">const</span> redo <span class="token operator">=</span> <span class="token maybe-class-name">React</span><span class="token punctuation">.</span><span class="token method function property-access">useCallback</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token function">dispatch</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token literal-property property">type</span><span class="token operator">:</span> <span class="token constant">REDO</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+  <span class="token keyword">const</span> set <span class="token operator">=</span> <span class="token maybe-class-name">React</span><span class="token punctuation">.</span><span class="token method function property-access">useCallback</span><span class="token punctuation">(</span>
+    <span class="token parameter">newPresent</span> <span class="token arrow operator">=></span> <span class="token function">dispatch</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token literal-property property">type</span><span class="token operator">:</span> <span class="token constant">SET</span><span class="token punctuation">,</span> newPresent<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token punctuation">)</span>
+  <span class="token keyword">const</span> reset <span class="token operator">=</span> <span class="token maybe-class-name">React</span><span class="token punctuation">.</span><span class="token method function property-access">useCallback</span><span class="token punctuation">(</span>
+    <span class="token parameter">newPresent</span> <span class="token arrow operator">=></span> <span class="token function">dispatch</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token literal-property property">type</span><span class="token operator">:</span> <span class="token constant">RESET</span><span class="token punctuation">,</span> newPresent<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token punctuation">)</span>
+
+  <span class="token keyword control-flow">return</span> <span class="token punctuation">{</span><span class="token spread operator">...</span>state<span class="token punctuation">,</span> set<span class="token punctuation">,</span> reset<span class="token punctuation">,</span> undo<span class="token punctuation">,</span> redo<span class="token punctuation">,</span> canUndo<span class="token punctuation">,</span> canRedo<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword module">export</span> <span class="token keyword module">default</span> useUndo
+</code></pre>

@@ -1,0 +1,37 @@
+<h1 id="metro-bundler">Metro Bundler<a aria-hidden="true" class="anchor-heading icon-link" href="#metro-bundler"></a></h1>
+<p>When we run <code>react-native start</code> both a node.js server and metro bundler are started.</p>
+<ul>
+<li>Metro can be thought of as similar to "webpack for react native"</li>
+</ul>
+<p>Metro is a JavaScript <a href="/notes/Pwqwjb0dVneqNCKA0YkoA">bundler</a>; It takes in an entry file and various options, and gives you back a single JavaScript file that includes all your code and its dependencies.</p>
+<ol>
+<li>Metro builds a dependency graph of all modules required from the entry point (ie, our whole react-native app)</li>
+<li>Metro transforms modules into a format that React-Native can understand</li>
+<li>Metro serializes the transformed modules to form a bundle
+<ul>
+<li>A bundle is just a bunch of modules combined into a single js file.</li>
+</ul>
+</li>
+<li>The bundlefile gets installed on the device, where its code is then executed.
+<ul>
+<li>Remember that when you are writing code for a React Native application, your code is not "translated" to Java/Swift/whatever. The Native Modules will send events to a Javascript thread, and the JS thread will execute your bundled React Native code.</li>
+</ul>
+</li>
+</ol>
+<p>I/O of Metro</p>
+<ul>
+<li>Input - entryfile along with any options</li>
+<li>Output - the bundle</li>
+</ul>
+<p>Metro bundler is not used for production</p>
+<ul>
+<li>ex. running <code>react-native run-ios --configuration Release</code></li>
+</ul>
+<h3 id="the-bundle">The Bundle<a aria-hidden="true" class="anchor-heading icon-link" href="#the-bundle"></a></h3>
+<p>The bundlefile can be found at <code>localhost:8081/index.bundle?platform=ios&#x26;dev=true&#x26;minify=false</code>. </p>
+<ul>
+<li>This is the API through which the device will access the bundle</li>
+<li>this is served from memory, therefore does get written into our project directory</li>
+<li>The bundle may be stored in different formats, such as binary or .bundle file.</li>
+<li>Metro bundler also translates JSX to standard javascript</li>
+</ul>

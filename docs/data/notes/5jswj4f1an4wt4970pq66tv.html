@@ -1,0 +1,17 @@
+<h1 id="random-number-generator">Random Number Generator<a aria-hidden="true" class="anchor-heading icon-link" href="#random-number-generator"></a></h1>
+<p>In actuality, RNGs implemented using computers are Pseudo Random Number Generators, since they are deterministic (ie. the output is known ahead of time)</p>
+<ul>
+<li>this sequence is completely determined by an initial value (the <strong>seed</strong>)
+<ul>
+<li>Given the same seed, the algorithm will produce the same sequence of numbers every time.</li>
+<li>If the same random seed is deliberately shared, it becomes a secret key, so two or more systems using matching pseudorandom number algorithms and matching seeds can generate matching sequences of non-repeating numbers which can be used to synchronize remote systems, such as GPS satellites and receivers.</li>
+</ul>
+</li>
+</ul>
+<h3 id="analogy-pi">Analogy: Pi<a aria-hidden="true" class="anchor-heading icon-link" href="#analogy-pi"></a></h3>
+<p>Imagine we created a simple PRNG algorithm that just took each decimal digit of Pi (3.14159...). So the first time, we got 1, then 4, and so on. In this example, we used a seed of <code>1</code>, meaning we start at the first decimal place. To introduce some element of randomness, we might then use a seed of <code>2</code> on a subsequent execution of the PRNG, giving us a sequence of <code>4, 1, 5, 9...</code></p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/i2it5id8qwtg27n4usg8bo1">Pytorch</a></li>
+</ul>
