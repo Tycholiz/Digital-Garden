@@ -1,0 +1,23 @@
+<h1 id="strategies">Strategies<a aria-hidden="true" class="anchor-heading icon-link" href="#strategies"></a></h1>
+<h2 id="approaches">Approaches<a aria-hidden="true" class="anchor-heading icon-link" href="#approaches"></a></h2>
+<h3 id="compaction">Compaction<a aria-hidden="true" class="anchor-heading icon-link" href="#compaction"></a></h3>
+<p>Compaction means throwing away duplicate keys in the log, and keeping only the most recent update for each key.</p>
+<ul>
+<li>This is where we'd keep an append-only log of our database, and remove every key-value pair that is not the latest one (that is, removing the history of each key), thereby reducing the size of the dataset.</li>
+</ul>
+<p><img src="/assets/images/2022-03-07-20-36-56.png"></p>
+<h3 id="segment-merging">Segment merging<a aria-hidden="true" class="anchor-heading icon-link" href="#segment-merging"></a></h3>
+<p><img src="/assets/images/2022-03-07-20-44-25.png"></p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/D50p2tBFqygs78WLZWfzz">Backward Compatability</a></li>
+<li><a href="/notes/uEYeHBLJclKhcKMwi2Bzv">Cleaning</a></li>
+<li><a href="/notes/Mzsmv3XQV978L3jm2eumP">Concurrency</a></li>
+<li><a href="/notes/vyE7KGcgYlfSmN78Fpkqm">Connection Pools</a></li>
+<li><a href="/notes/zlEdxEGVFpeN3FoYf3Npz">Cursors</a></li>
+<li><a href="/notes/i2wJebVFZ4oLX54iz19Hg">ETL Pipeline</a></li>
+<li><a href="/notes/jiITIvU42MBAYcbXheWwI">Index</a></li>
+<li><a href="/notes/QhPasGtMu7vdrKc7YRmNq">Migrations</a></li>
+<li><a href="/notes/4xb9cg487yio88c5b2j2bid">Transaction</a></li>
+</ol>

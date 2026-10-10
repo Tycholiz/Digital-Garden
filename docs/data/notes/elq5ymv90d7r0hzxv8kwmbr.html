@@ -1,0 +1,20 @@
+<h1 id="ap">Ap<a aria-hidden="true" class="anchor-heading icon-link" href="#ap"></a></h1>
+<ul>
+<li><code>torch.nn.Module</code> - The base class for all neural network modules. Our neural network should subclass this module</li>
+<li><code>torch.nn.Parameter</code> - Stores tensors that can be used with <code>nn.Module</code>. These are the parameters that our model should try and learn.
+<ul>
+<li>often, a layer from <code>torch.nn</code> will set these for us.</li>
+<li>If <code>requires_grad=True</code>, gradients (used for updating model parameters via gradient descent) are calculated automatically, this is often referred to as "autograd".</li>
+</ul>
+</li>
+<li><code>def forward()</code> - this defines the computation that will take place on the data passed to the particular <code>nn.Module</code>
+<ul>
+<li>all <code>nn.Module</code> subclasses require us to override this method</li>
+</ul>
+</li>
+<li><code>torch.optim</code> - Contains various optimization algorithms (these tell the model parameters stored in <code>nn.Parameter</code> how to best change to improve gradient descent and in turn reduce the loss).</li>
+</ul>
+<h2 id="neural-network-instance-methods">Neural Network instance methods<a aria-hidden="true" class="anchor-heading icon-link" href="#neural-network-instance-methods"></a></h2>
+<ul>
+<li><code>model.state_dict()</code> - gives us the state of the model's parameters</li>
+</ul>

@@ -1,0 +1,25 @@
+<h1 id="mcp-server">MCP Server<a aria-hidden="true" class="anchor-heading icon-link" href="#mcp-server"></a></h1>
+<p>MCP is an open standard that enables developers to build secure, two-way connections between their data sources and AI-powered tools</p>
+<ul>
+<li>ex. if you ask your AI assistant to analyze sales data from a local database, the assistant sends a request to the MCP server, which gets the data and sends it back to the assistant. It’s like ordering takeout — the AI assistant places the order, the MCP server delivers the data, and the database is the restaurant.</li>
+</ul>
+<h2 id="open-source-mcp-servers">Open Source MCP Servers<a aria-hidden="true" class="anchor-heading icon-link" href="#open-source-mcp-servers"></a></h2>
+<h3 id="sequential-thinking">Sequential Thinking<a aria-hidden="true" class="anchor-heading icon-link" href="#sequential-thinking"></a></h3>
+<p>Sequential Thinking provides a tool for dynamic and reflective problem-solving through a structured thinking process. Instead of trying to tackle large, overwhelming problems all at once, it guides you through breaking them into logical, sequential steps</p>
+<p>Instead of diving headfirst into implementation, MCP Sequential Thinking emphasizes:</p>
+<ol>
+<li>Precise Problem Definition: Clearly articulating the problem you're trying to solve, leaving no room for ambiguity.</li>
+<li>Atomic Sub-Task Decomposition: Breaking down the problem into smaller, manageable, and independent sub-tasks.</li>
+<li>Dependency Sequencing: Identifying and organizing the dependencies between these sub-tasks to ensure a logical execution flow.</li>
+<li>Optimized Execution Flow: Streamlining the execution of these sub-tasks for maximum efficiency and effectiveness.</li>
+</ol>
+<p>With Sequential Thinking, the LLM is basically writing notes to itself, step by step. The MCP server just collects those notes and feeds them back, so each time the LLM writes a new thought, it sees its whole chain of thinking so far.</p>
+<ul>
+<li>It’s like the LLM is creating its own prompts instead of waiting for the user - it reads its own past thoughts and decides the next step. Same way you’d prepend or append a bunch of messages before sending a prompt to an LLM, except here the model builds that chain itself as it thinks.</li>
+</ul>
+<p>OpenRouter is good to pair with Sequential Thinking, since it gives us access to many different LLM models via a single interface, allowing us to leverage the unique strengths of different models for each step of the sequence.</p>
+<h3 id="context7">Context7<a aria-hidden="true" class="anchor-heading icon-link" href="#context7"></a></h3>
+<p>Context7 MCP pulls up-to-date, version-specific documentation and code examples straight from the source — and places them directly into your prompt</p>
+<p>Context7 tackles the problem of stale information, acting as a dynamic bridge between your coding prompt and software documentation found on the internet. This ensures the chatbot response is using up to date version code, instead of potentially outdated training data.</p>
+<h3 id="firecrawl">Firecrawl<a aria-hidden="true" class="anchor-heading icon-link" href="#firecrawl"></a></h3>
+<p>An MCP that takes a URL, crawls it, and converts it into clean markdown or structured data. </p>

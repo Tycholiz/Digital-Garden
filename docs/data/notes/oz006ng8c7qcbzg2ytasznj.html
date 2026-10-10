@@ -1,0 +1,53 @@
+<h1 id="pipe">Pipe<a aria-hidden="true" class="anchor-heading icon-link" href="#pipe"></a></h1>
+<p>A pipe is a <a href="/notes/38yyqdyxub4tyjdj0jl4ulg">provider</a> that operates on the arguments passed to a <a href="/notes/nqv4bkm2rp1nljndftgqxdx">controller</a> route handler.</p>
+<ul>
+<li>just before the handler is invoked, Nest will interpose a pipe and it will receive the arguments destined for the handler, allowing it to operate on them.</li>
+<li>when the pipe has finished its operation, it returns control to the handler, which takes in those (potentially) transformed arguments.</li>
+</ul>
+<p>Pipes have two typical use cases:</p>
+<ol>
+<li>transformation: transform input data to the desired form (e.g., from string to integer)</li>
+<li>validation: evaluate input data and if valid, simply pass it through unchanged; otherwise, throw an exception when the data is incorrect</li>
+</ol>
+<p>Nestjs comes with built-in pipes, for use-cases such as:</p>
+<ul>
+<li>parsing a UUID</li>
+<li>parsing an array</li>
+</ul>
+<h3 id="usage">Usage<a aria-hidden="true" class="anchor-heading icon-link" href="#usage"></a></h3>
+<p>A pipe is created by making a class that extends the <code>PipeTransform&#x3C;T, R></code> interface and is annotated with the <code>@Injectable()</code> decorator.</p>
+<ul>
+<li><code>T</code> - type of the input value</li>
+<li><code>R</code> - return type of the <code>transform()</code> method</li>
+</ul>
+<p>Every pipe must implement the <code>transform()</code> method to fulfill the <code>PipeTransform</code> interface contract.</p>
+<ul>
+<li><code>transform(value, metadata)</code></li>
+</ul>
+<p>To use a pipe, we need to bind an instance of the pipe class to the appropriate context.</p>
+<ul>
+<li>ex. we might want to bind a <code>ParseIntPipe</code> with a particular route handler to make sure it runs before the handler method is called.</li>
+</ul>
+<pre class="language-ts"><code class="language-ts"><span class="token decorator"><span class="token at operator">@</span><span class="token function">Get</span></span><span class="token punctuation">(</span><span class="token string">':id'</span><span class="token punctuation">)</span>
+<span class="token keyword">async</span> <span class="token function">findOne</span><span class="token punctuation">(</span><span class="token decorator"><span class="token at operator">@</span><span class="token function">Param</span></span><span class="token punctuation">(</span><span class="token string">'id'</span><span class="token punctuation">,</span> <span class="token maybe-class-name">ParseIntPipe</span><span class="token punctuation">)</span> id<span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword control-flow">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">catsService</span><span class="token punctuation">.</span><span class="token method function property-access">findOne</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>This code ensures that only one of two things will happen:</p>
+<ol>
+<li>either the parameter we receive in the <code>findOne()</code> method is a <code>number</code> (as expected in our call to <code>this.catsService.findOne()</code>), </li>
+<li>or an exception is thrown before the route handler is called. </li>
+</ol>
+<p>As with other providers in Nestjs, we pass the class rather than an instantiation of the class, leaving the responsibility of instantiation up to the framework. This is to enable <a href="/notes/OIBi54r4RJHlcy33iXLpD">dependency injection</a>.</p>
+<ul>
+<li>alternatively, we can pass an in-place instance (<code>new ParseIntPipe(options)</code>) if we wish to pass options to customize the built-in pipe's behaviour.</li>
+</ul>
+<p>Nestjs supports both sync and async pipes.</p>
+<ul>
+<li>therefore the <code>transform()</code> method may use <code>async/await</code></li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/n9fg78mnpuk5u5xalihz2bp">Guard</a></li>
+</ul>

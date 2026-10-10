@@ -1,0 +1,26 @@
+<h1 id="data-warehouse">Data Warehouse<a aria-hidden="true" class="anchor-heading icon-link" href="#data-warehouse"></a></h1>
+<p>A data warehouse is a database optimized to analyze relational data coming from transactional systems and line of business applications.</p>
+<p>Data is transferred into the warehouse via an <a href="/notes/i2wJebVFZ4oLX54iz19Hg">ETL pipeline</a> using either a periodic data dump (ie. a <a href="/notes/5Naeav9tFGcBYc0DPj9Sb">batch</a>) or a continuous stream of updates.</p>
+<p>The data model of a data warehouse is most commonly relational, because SQL is generally a good fit for analytic queries.</p>
+<p>The data structure, and schema are defined in advance to optimize for fast SQL queries, where the results are typically used for operational reporting and analysis.</p>
+<ul>
+<li>Data is cleaned, enriched, and transformed so it can act as the “single source of truth” that users can trust.</li>
+</ul>
+<p>It differs from a <a href="/notes/wywXc6giwBv8xoiEMJlJW">Lake</a> because it stores the data in a single format, whereas a data lake stores the data as-is (Postgres, Mongo etc.)</p>
+<h3 id="star-schema">Star schema<a aria-hidden="true" class="anchor-heading icon-link" href="#star-schema"></a></h3>
+<p>When it comes to data analytics, there is much less diversity of data models. Many data warehouses are used in a fairly formulaic style, known as a <em>star schema</em> (a.k.a <em>dimensional modeling</em>)</p>
+<p>Usually, facts are captured as individual events, because this allows maximum flexi‐ bility of analysis later.</p>
+<ul>
+<li>as a result, fact tables are massive. A company like Walmart would have tens of petabytes of data in a fact table.</li>
+</ul>
+<p>Other tables that "feed into" the fact table are known as dimension tables.</p>
+<ul>
+<li>If each row in the fact table represents an event, the dimensions represent the who, what, where, when, how, and why of the event.</li>
+</ul>
+<p><img src="/assets/images/2022-03-08-20-48-41.png"></p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/xISza0hg9S9FjXgmkfYgB">Data Mesh</a></li>
+<li><a href="/notes/plfkq18cl5fwq46id8bfgpd">OLAP/OLTP</a></li>
+</ul>

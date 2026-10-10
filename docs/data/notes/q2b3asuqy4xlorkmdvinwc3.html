@@ -1,0 +1,50 @@
+<h1 id="crdt-conflict-free-replicated-data-type">CRDT (Conflict-free Replicated Data Type)<a aria-hidden="true" class="anchor-heading icon-link" href="#crdt-conflict-free-replicated-data-type"></a></h1>
+<p>CRDTs are general-purpose data structures, like <a href="/notes/ZUd363O9M6pAs1hRNA94o">hash maps</a> and <a title="Private" href="https://wiki.dendron.so/notes/hfyvYGJZQiUwQaaxQO27q.html" target="_blank" class="private">arrays (Private)</a>, but the special thing about them is that they are multi-user from the ground up.</p>
+<p>CRDTs are built with the complexities arising from multiple users on multiple devices in mind. </p>
+<ul>
+<li>They are also fundamentally local and private.</li>
+</ul>
+<p>The only type of change that a CRDT cannot automatically resolve is when multiple users concurrently update the same property of the same object; </p>
+<ul>
+<li>in this case, the CRDT keeps track of the conflicting values and leaves the responsibility of resolution up to the application code.</li>
+<li>Thus, CRDTs have some similarity to version control systems like Git, except that they operate on richer data types than text files.</li>
+</ul>
+<p>Every application needs some data structures to store its document state. For example, if your application is a text editor, the core data structure is the array of characters that make up the document. If your application is a spreadsheet, the data structure is a matrix of cells containing text, numbers, or formulas referencing other cells. If it is a vector graphics application, the data structure is a tree of graphical objects such as text objects, rectangles, lines, and other shapes.</p>
+<ul>
+<li>If you are building a single-user application, you would maintain those data structures in memory using model objects, hash maps, lists, records/structs and the like. If you are building a collaborative multi-user application, you can swap out those data structures for CRDTs.</li>
+</ul>
+<p><a href="/notes/W5etsXYnFDHBWHEHSZKjp">Concurrent</a> updates to multiple <a href="/notes/gKVIPNGV7duiD0yRnld8J">replicas</a> of the same piece of data often results in conflicts.</p>
+<ul>
+<li>as a result, the strategy is often to prevent concurrent updates to replicated data.</li>
+<li>another approach is optimistic replication (a.k.a lazy replication), where replicas are allowed to diverge.</li>
+</ul>
+<p>The pessimistic approach guarantees that all replicas are identical to each other. The optimistic approach is of eventual consistency, meaning that we only expect replicas to converge on an identical state when the system has been quiesced for a period of time (ie. paused until all replicas can catch up).</p>
+<ul>
+<li>as a result, there is no need for all replicas to be synchronized before making udpates.
+<ul>
+<li>this helps concurrency and parallelism.</li>
+</ul>
+</li>
+</ul>
+<p>The downside to this approach is that each replica may require explicit reconciliation later on, which may be difficult.</p>
+<p>The idea of this approach is that we will re-establish consistency between replicas eventually (ie. achieve eventual consistency) by merging different replicas.</p>
+<p>Optimistic replication does not work in many cases, but it works with CRDTs.</p>
+<ul>
+<li>in fact, it is mathematically always possible to merge or resolve concurrent updates on different replicas of the data structure without conflicts </li>
+</ul>
+<h3 id="example-boolean-flag">Example: boolean flag<a aria-hidden="true" class="anchor-heading icon-link" href="#example-boolean-flag"></a></h3>
+<p>Imagine we had a flag in the database that represented whether or not someone has ever done something. For example, whether someone has ever drank alcohol before. With this particular business logic, once <code>has_drank_booze</code> goes to <code>true</code>, it can never return to <code>false</code>. Therefore, we know that if one replica has a <code>true</code> value, then that is the source of truth.</p>
+<ul>
+<li>here the resolution method is "true wins"</li>
+</ul>
+<h2 id="resources">Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#resources"></a></h2>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type">https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type</a></li>
+<li><a href="https://www.inkandswitch.com/local-first/#crdts-as-a-foundational-technology">https://www.inkandswitch.com/local-first/#crdts-as-a-foundational-technology</a></li>
+<li><a href="https://www.youtube.com/watch?v=iEFcmfmdh2w&#x26;t=607s">https://www.youtube.com/watch?v=iEFcmfmdh2w&#x26;t=607s</a></li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/pFKPROeJ3nFTzivRYIL9W">Offline First</a></li>
+</ul>

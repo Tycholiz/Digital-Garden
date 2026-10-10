@@ -1,0 +1,11 @@
+<h1 id="performance">Performance<a aria-hidden="true" class="anchor-heading icon-link" href="#performance"></a></h1>
+<p>Adding <code>shouldComponentUpdate</code> will drastically help with optimization.  Consider this as you are building the app rather than considering it afterwards.</p>
+<ul>
+<li>Alternatively, if you're concerned about a component re-rendering too many times, try using React.PureComponent</li>
+<li><a href="https://github.com/maicki/why-did-you-update">library to check how many times a component re-rendered needlessly</a>
+<ul>
+<li>the library is archived, but apparently works perfectly. alternatively: <a href="https://github.com/welldone-software/why-did-you-render">why-did-you-render</a></li>
+</ul>
+</li>
+<li><a href="https://callstack.com/blog/react-native-how-to-check-what-passes-through-your-bridge/?ref=hackernoon.com">Spying the queue (focusing on the data passing over the bridge)</a></li>
+</ul>

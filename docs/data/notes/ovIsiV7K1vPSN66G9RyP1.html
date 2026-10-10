@@ -1,0 +1,50 @@
+<h1 id="derived-tables">Derived Tables<a aria-hidden="true" class="anchor-heading icon-link" href="#derived-tables"></a></h1>
+<p>Imagine we were in a position where we needed to make complex queries that involved some aggregation functions. What we could do to fulfill this, is create a temporary table, fill it with data (using INSERT), and use a <em>cursor</em> to loop through the temporary data, making updates as we go. Finally, we could execute a query against the temporary table, allowing us to obtain the final results. </p>
+<ul>
+<li>An alternative approach for some data problems is to use <em>derived tables</em> (also known as inline views)</li>
+</ul>
+<p>A derived table is a virtual table that is created within the scope of a query</p>
+<ul>
+<li>The table is created with a SELECT statement of its own and is given an alias using the AS clause</li>
+<li>the contents of this table can then be used within the query.</li>
+<li>the result is similar to the above naive solution, and doesn't carry the overhead of having to actually CREATE/DELETE tables and run INSERTs on them
+<ul>
+<li>Therefore, derived tables eliminate the requirement to use cursors and temporary tables</li>
+</ul>
+</li>
+</ul>
+<p>you can think of a derived table as a temporary variable that points to a table that we just defined </p>
+<h2 id="using-derived-tables">Using Derived Tables<a aria-hidden="true" class="anchor-heading icon-link" href="#using-derived-tables"></a></h2>
+<ul>
+<li>Because derived tables are used in place of an actual table, the query to build the derived table goes in the same spot as we normally have our FROM clause. All we need to do is replace the table name with parentheses, and define an alias with AS afterward</li>
+<li>In the below example, all our derived table is really doing is making a new table that we can query against, where instead of having 3 columns: <code>first_name</code>, <code>last_name</code> and <code>value</code>, we have 2 columns: <code>salesperson</code> and <code>value</code>. This is a contrived example to show that a derived table allows us to transform how the original table appears, which we can then take advantage of to support our more complex queries of the data. </li>
+</ul>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span>
+<span class="token punctuation">(</span>
+	<span class="token keyword">SELECT</span> first_name <span class="token operator">||</span> <span class="token string">' '</span> <span class="token operator">||</span> last_name <span class="token keyword">AS</span> salesperson<span class="token punctuation">,</span> value_of_sales <span class="token keyword">FROM</span> sales_table
+<span class="token punctuation">)</span> <span class="token keyword">as</span> derived_sales_table
+<span class="token keyword">WHERE</span> value_of_sales <span class="token operator">></span> <span class="token number">100</span> 
+</code></pre>
+<ul>
+<li>The data from this inner query can be used in the column list, in joins, and any other area where table data would be acceptable.</li>
+</ul>
+<p>In Postgres, we can use the WITH clause to clean up the logic of derived tables:</p>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> first_name<span class="token punctuation">,</span> last_name<span class="token punctuation">,</span> age
+<span class="token keyword">FROM</span> <span class="token punctuation">(</span>
+  <span class="token keyword">SELECT</span> first_name<span class="token punctuation">,</span> last_name<span class="token punctuation">,</span> <span class="token keyword">current_date</span> <span class="token operator">-</span> date_of_birth age
+  <span class="token keyword">FROM</span> author
+<span class="token punctuation">)</span>
+</code></pre>
+<p>becomes</p>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">WITH</span> a <span class="token keyword">AS</span> <span class="token punctuation">(</span>
+  <span class="token keyword">SELECT</span> first_name<span class="token punctuation">,</span> last_name<span class="token punctuation">,</span> <span class="token keyword">current_date</span> <span class="token operator">-</span> date_of_birth age
+  <span class="token keyword">FROM</span> author
+<span class="token punctuation">)</span>
+<span class="token keyword">SELECT</span> <span class="token operator">*</span>
+<span class="token keyword">FROM</span> a
+<span class="token keyword">WHERE</span> age <span class="token operator">></span> <span class="token number">10000</span>
+</code></pre>
+<ul>
+<li>with the above example, if we were anticipating the need to query the data set resulting from that subquery, we could just make it into a view so we wouldn't have to repeat that logic with each query we make</li>
+</ul>
+<p><a href="http://www.blackwasp.co.uk/SQLDerivedTables.aspx">tutorial</a></p>

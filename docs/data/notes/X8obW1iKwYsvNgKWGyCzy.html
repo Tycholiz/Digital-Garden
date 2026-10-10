@@ -1,0 +1,19 @@
+<h1 id="stripe">Stripe<a aria-hidden="true" class="anchor-heading icon-link" href="#stripe"></a></h1>
+<h2 id="misc">Misc<a aria-hidden="true" class="anchor-heading icon-link" href="#misc"></a></h2>
+<p>with (spec) stripe elements, we can use the <code>stripe_code</code> on the client as a way to get the credit card information (presaved) into the UI.</p>
+<p>By default, anyone can POST data to our webhook. This is why we have the webhook secret to protect us, and only react to the POST request once we have verified that it is coming from Stripe</p>
+<ul>
+<li>each webhook secret is associated with a single webhook endpoint</li>
+</ul>
+<h3 id="credit-cards-internationally">Credit Cards Internationally<a aria-hidden="true" class="anchor-heading icon-link" href="#credit-cards-internationally"></a></h3>
+<p>Regions like Europe and India require our application to handle requests from banks to authenticate a purchase (3DS or OTP)</p>
+<ul>
+<li>If we are using webhooks, then the authentication is already handled and we don't have to worry about this.</li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/F5vphynEm2FYQu5LEDJAB">API Keys</a></li>
+<li><a href="/notes/zYHpqDKlYvcYBms625Sq3">CLI</a></li>
+<li><a href="/notes/pplxmmyDeaqRBgZxEo9rN">Integrating Stripe</a></li>
+</ol>

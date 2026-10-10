@@ -1,0 +1,42 @@
+<h1 id="ag">Ag<a aria-hidden="true" class="anchor-heading icon-link" href="#ag"></a></h1>
+<h2 id="patterns">Patterns<a aria-hidden="true" class="anchor-heading icon-link" href="#patterns"></a></h2>
+<ul>
+<li><code>ack &#x3C;search-string> ../src</code></li>
+</ul>
+<h2 id="flags">Flags<a aria-hidden="true" class="anchor-heading icon-link" href="#flags"></a></h2>
+<ul>
+<li><code>-i</code> - ignore case</li>
+<li><code>-w</code> - only match whole words</li>
+<li><code>-1</code> - stop searching after 1 match found</li>
+<li><code>-Q</code> - treat all characters as literal
+<ul>
+<li>so if we use <code>/w</code> in the pattern, it is taken literally and will not mean "match word only"</li>
+</ul>
+</li>
+</ul>
+<h2 id="types">Types<a aria-hidden="true" class="anchor-heading icon-link" href="#types"></a></h2>
+<ul>
+<li><code>ack --react &#x3C;PATTERN></code> - search all files with type react (js, jsx)</li>
+<li><code>--help-types</code> - see all types defined</li>
+<li><code>ack 'my pattern' ./src</code> - search for <em>my pattern</em> in <em>src</em> directory</li>
+</ul>
+<h2 id="regex-ag">Regex (Ag)<a aria-hidden="true" class="anchor-heading icon-link" href="#regex-ag"></a></h2>
+<ul>
+<li>Ag is magic by default, meaning if we want to match literal characters, we need to escape them. all letters will be literal, and will need to be escaped to get their special meaning (ex. <code>\d</code>, <code>/s</code>)
+<ul>
+<li>ex. ag '.*\ddog' - will match <code>sdfhj5dog</code>
+<ul>
+<li>anything any number of time, followed by a number, followed by 'dog'</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>see <code>man pcre2pattern</code> for regex flavors</li>
+</ul>
+<p>All devDependencies should be at the root
+everything we need to build the project is at the root</p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/nOfQRjVXcBVPCuC01YPU9">Cook</a></li>
+</ol>

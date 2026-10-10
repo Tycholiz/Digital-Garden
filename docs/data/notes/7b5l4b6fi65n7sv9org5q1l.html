@@ -1,0 +1,26 @@
+<h1 id="maven">Maven<a aria-hidden="true" class="anchor-heading icon-link" href="#maven"></a></h1>
+<p>Maven is a build tool like <a href="/notes/2psluywdc416t7vrql0m058">Gradle</a></p>
+<p>Helps:</p>
+<ul>
+<li>download 3rd party packages</li>
+<li>give the project structure through a set of conventions</li>
+</ul>
+<p>Maven projects have a <code>pom.xml</code> file </p>
+<h2 id="pomxml"><code>pom.xml</code><a aria-hidden="true" class="anchor-heading icon-link" href="#pomxml"></a></h2>
+<h3 id="properties">Properties<a aria-hidden="true" class="anchor-heading icon-link" href="#properties"></a></h3>
+<ul>
+<li><code>&#x3C;source>11&#x3C;/source></code> means "project should be built <em>in</em> Java 11</li>
+<li><code>&#x3C;target>11&#x3C;/target></code> means "project should be built <em>for</em> Java 11</li>
+</ul>
+<h3 id="build">Build<a aria-hidden="true" class="anchor-heading icon-link" href="#build"></a></h3>
+<p>Allows you to specify plugins, which are extensions to Maven which help it build our artifact.</p>
+<ul>
+<li>ex. <code>maven-jar-plugin</code>, which is used to make a jar out of your compiled classes and resources</li>
+</ul>
+<h3 id="dependencies">Dependencies<a aria-hidden="true" class="anchor-heading icon-link" href="#dependencies"></a></h3>
+<p>A dependency is just a Jar file which will be added to the classpath while executing the tasks.</p>
+<p>A depdendency can include a <code>&#x3C;scope></code> field, which specifies when a dependency should be installed</p>
+<ul>
+<li>ex. <code>&#x3C;scoope>test&#x3C;/scope></code>, meaning the dependency will only be installed during tests.</li>
+<li>ex. <code>&#x3C;scope>compile&#x3C;/scope></code></li>
+</ul>

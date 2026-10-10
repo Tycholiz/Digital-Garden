@@ -1,0 +1,109 @@
+
+# Introducing things the user hasn't seen before
+When prompting a user with a decision that is potentially impactful, it is a good idea to provide them with an option that says "decide later", then show them where to find that information when they need it
+- this example is from Apple when hooking up an external hardrive, when it asks if you'd like to set up Time Machine to sync with this HD
+
+### Introducing new features
+1. have a tooltip that pops up saying "new feature coming soon: unlock phone with face". then there is a button saying "im interested". now you have a reason to contact them again with the features. release
+2. when showing a user of a feature that they have not yet explored, it is better to direct them to the normal place where they will enable that feature, rather than just allowing them to turn it on or off right then and there
+	- ex. in the Quora app, on the front page there was a link that said "dark mode is here!". when you click on it, instead of turning dark mode on, it opens the sidebar, and then at the bottom of the sidebar, there is an arrow pointing to the dark mode switch. this has the benefit of teaching users where to find that option so that in the future they already have this knowledge
+
+# UX Process
+- the UX process can be distilled down as follows. It is iterative and cyclical:
+Observation → Idea Generation → Prototyping → Testing
+
+we need to understand the user's goals and motivations, then design experiences that deliver these high-level goals.
+- ex. With Never Forget, it's better to make the navigation items focused around "actions", since that maps to a goal of the user. They want to...
+    1. create a nugget
+    2. browse their nuggets
+    3. explore nuggets
+    4. learn their nuggets
+
+- Ensure every page or screen has a clear call-to-action
+    - Ask yourself, “What is the user trying to achieve?” and design with that in mind
+
+- on making a search box, ask yourself "is it obvious that the user knows what they are searching for? even on first visit?
+- if searching is something they wouldn't understand on first visit and there is nothing to search anyway, consider hiding the search bar and give some information about what they'd search for instead
+    - ex. once you add some nuggets of knowledge, you can start to search through them here!
+
+## Pillars of design
+### Visual grammar
+- everything in a design can be broken down into points, lines and planes (plane - anything with a surface)
+- Every component should serve its purpose. Take away as much as you can while still serving the goal of the application.
+- When building UI components try and focus on re-using elements and minimizing visual complexity.
+    - With a core set of simplified and elegant components built, focus on combining these to create easily understandable interfaces that ease user interactions.
+### Language & Typography
+#### Language
+- Ask yourself: What’s the message? Then find the right words to communicate that message.
+- Use clear and concise language
+    - The words should be unambiguous (given it's context in the project) and should be as close as possible to describing what the user should expect to happen when engaging with (ex. clicking on) that content.
+- words can help set a tone and voice, as well as establish and reinforce the personality of a brand
+- **Macrocopy** - the words that relate to the heart of the brand. They are closer to the "why", and can be considered closely related to the content that marketing would use.
+    - One way of defining macrocopy is to develop a ‘brand dictionary’: a palette of words that defines the brand you’re working on
+    - ex. Consider two different car brands: smart and Mercedes. smart’s brand dictionary might include: agile, expressive, dynamic, fun and friendly. Mercedes’ brand dictionary might include: precision, luxury, stylish, engineered and efficient
+- **Microcopy** - the functional copy. These are the words we use to help guide users through the application.
+    - Microcopy should reflect your brand’s values but is more likely to be consistent from one project to another
+    - ex. Everyone understands what ‘Add to basket’ means, so don’t confuse your users by inventing your own terminology.
+
+### Narrative Design
+- consider rhythm when designing the user flow. Think of it as a narrative. We are taking the user through a journey, and we want to control the intensity of the information that is presented to them.
+    - Consider a James Bond movie. It starts off in full-action, but then it slows down, allows the coals to slow burn in the heat, building up pressure, as it gradually gets back into full-action.
+    - Too much too fast, and the user will be overwhelmed. Too slow, and the user will get bored and will be confused as to the value that is being added to them. Trick is to find the balance.
+
+* * *
+
+### Flexibility-Usability tradeoff
+- As a system gets more functionality and becomes more flexible to the user's desires, there is a natural tradeoff of ease of use of the product (in other words, it becomes more complex to navigate)
+- The ability of an audience to anticipate future uses of a product is a key indicator of how they will value flexibility versus usability in design. When an audience can clearly anticipate its needs, more specialized designs that target those needs will be favored. When an audience cannot clearly define its needs, more flexible designs that enable people to address future contingencies will be favored.
+
+# Concepts
+### Optimistic UI
+- ex. when you send a message in Whatsapp, there is a period of loading between the time you hit "send" and the time that message appears in the chat. A non optimistic UI will not show anything in the chat area until the request has completed, while an optimistic one will show the message instantly in the chat, but will show a loader next to it, to indicate the request is still in motion.
+
+# User-Centric design
+### Communicating chronology from a user's perspective
+joplin forums have beautifully user-centric way of showing chronology of comments. Most sites will have a date associated with a comment. However, Joplin augments this by also inlcuding a tag that says "13 days later". This effectively gives you the element of chronology that is often ignored when a computer centric, more abstract thing like the date is only given. Showing a date gives no sense of chronology.
+
+### Result-focused (declarative) menu buttons
+[this site](https://vincit.github.io/objection.js/guide/models.html#examples) has done an interesting thing. At the top, there is a link with a star on it, so that people can "Star" the repo. However, it simply links to the repo on github. There is an interesting distinction here, in that the maker of the site is defining an action, even though the user cannot actually execute that action on the website. In other words, they need to be shot off to another site in order to take that action, or "star" that github repo. This is an example of being more "declarative" in your thinking when designing user interfaces. Make things to be more "action" focused, rather than what it is you are doing. In the linked website, imagine that the button had just read "Github". Fewer people would have clicked "star". By giving the user an action to do, they took it.
+- It is generally a better idea to focus buttons on the result, rather than the action. This becomes more true as the idea gets more abstract.
+
+# Allowing user to discover new things in the app
+### Steam Browse set
+Steam has an interesting feature on their app. you get the concept of a browse set, which is a list of 10 new games, shown to you based on your interests. After you've seen all ten, if you want to see more, you can get another set of ten
+
+This is interesting because it gives a sense of completion to the app. Think of it in terms of WoW daily quests. It gives you a reason to log in to complete your task for the day.
+
+This is a good idea to get people in NF to add nuggets to their repo. This also blends nicely with the fact that If our pricing model is based around a threshold, then this will encourage users to get to that limit quicker
+
+### Helping users understand why they may not be able to find something
+- User's tend to look for things to do in an application. Because of the way your business logic is set up, the user may not be able to do a particular action. This is the moment where we need to show the user what they *would have* seen, had that business logic been satisfied
+	- ex. on Freelancer.com, you can't review a freelancer until the payment has been released from the project. Because this is not an entirely obvious thing (in fact other sites do let you do this), freelancer.com should have a highlighted-out section of the freelancer's profile. Otherwise, the user spends a lot of time looking around the site for the ability to rate, and will never find a trace of it. This is a bad UX, and one that could be drastically improved.
+- The idea here is that users want to figure something out. It is easy to focus on only one half of this sentence. Most of the time when you hear "help users accomplish goals", we often forget that this desire is being fulfilled if we put up markers along the way that help users navigate their way.
+
+* * *
+
+what really counts is not the number of clicks it takes me to get to what I want (although there are limits), but rather how hard each click is—the amount of time that elapses between each click
+- ex. if there are only 2 buttons to click, but I really have to think about what to choose, that is still a bad experience
+
+100ms is the roof for an imperceivable delay.
+- up to 300ms is still considered "fast", but the delay can be noticed
+
+# Notable UX Designs
+- [Big Apple Hotdogs](http://www.bigapplehotdogs.com/)
+- [Jira](https://www.atlassian.com/software/jira/mac)
+- iOS "Shortcuts" app
+- Mongo Cloud (Atlas) SaaS
+- Blinkist
+- Raspberry Pi
+- Dropbox
+- DigitalOcean
+	- Specifically the wizards to create droplets, clustered dbs etc.
+
+# UE Resources
+- [wow moment 1](https://www.forentrepreneurs.com/time-to-wow/)
+- [wow moment 2](https://www.appcues.com/blog/finding-your-products-first-wow-moment)
+- [laws of ux](https://lawsofux.com/)
+- [activity centered design](http://bokardo.com/archives/activity-centered-design/)
+- [ux design series (current progress)](https://www.smashingmagazine.com/2018/01/comprehensive-guide-ux-research/)
+- [guide to microcopy](https://www.wheelhousedmg.com/blog/a-brief-guide-to-ux-writing-microcopy-and-content-design/)

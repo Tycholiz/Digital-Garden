@@ -1,0 +1,31 @@
+<h1 id="blob">Blob<a aria-hidden="true" class="anchor-heading icon-link" href="#blob"></a></h1>
+<p>A blob is the content encapsulated within a single file.</p>
+<ul>
+<li>note: this does not include the file itself. Therefore, a blob has no notion of filename nor permissions (handled by the <a href="/notes/J9Z9E8d7dzzJA7BiOVy8W">tree</a> object).</li>
+</ul>
+<p>The blob is stored internally by the hash of its content</p>
+<ul>
+<li>the "hash of its content" part of this last point means that as long as 2 different pieces of content are identical (ie. file contents are identical), the resulting hash will also be identical. This also illustrates the fact that blobs are decoupled from a (file)name, as it has no bearing on the produced hash.</li>
+</ul>
+<p>To get the id of a blob, git will take the content of the blob and add a prefix, then pass it into a SHA1 algorithm to compute the hash.</p>
+<ul>
+<li>the prefix is of the format `<type> <length>\0 <content>"
+<ul>
+<li>ex. <code>blob 11\0my content</code></li>
+<li>git does this prefixing for us automatically when we call <code>git hash-object</code></li>
+</ul>
+</content></length></type></li>
+<li>This demonstrates how each object is identified with its hash, and the type of the object is baked into that hash</li>
+</ul>
+<p>If we write 2 different files with the same content to the object database, only one SHA will get recorded, since the same content hashed will always produce the same result.</p>
+<ul>
+<li>the same can be said for a tree object, but not for a commit object, since the author and time of commit makes their content always unique.</li>
+</ul>
+<p>The object is created as soon as it is known to git (ie. when added to index)</p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/owWPCp3V354FNEUlRVg1P">Packfiles</a></li>
+<li><a href="/notes/Y2LcIi5XmTxzs8jc3y1WK">Git Plumbing</a></li>
+<li><a href="/notes/x48F7MRbiIRRGRu4jJ5W3">Ref</a></li>
+</ul>

@@ -1,0 +1,26 @@
+
+Programs usually work with data in (at least) two different representations:
+1. In memory, data is kept in objects, structs, lists, arrays, hash tables, trees, and so on. These data structures are optimized for efficient access and manipulation by the CPU (typically using pointers).
+2. When you want to send some data to another process with which you don't share memory (e.g. write data to a file or send it over the network), you have to encode it as some kind of self-contained sequence of bytes (for example, a JSON document). Since a pointer wouldn't make sense to any other process, this sequence-of-bytes representation looks quite different from the data structures that are normally used in memory.
+
+We need some kind of translation between the two representations. 
+- The translation from the in-memory representation to a byte sequence is called encoding (also known as serialization or marshalling)
+- the reverse is called decoding (parsing, deserialization, unmarshalling).
+
+We use encoding to ensure that data can transport through protocols and mechanisms designed for ASCII without needing casual modification and without having to worry about things like newlines, brackets, etc.
+
+Some languages come with built-in support for encoding in-memory objects into byte sequences.
+- ex. Pickle in Python, [[Buffer|js.node.types.buffer]] in Node.
+- these libraries allow in-memory objects to be saved and restored with minimal additional code
+
+However, these libraries bring drawbacks:
+- The encoding is often tied to a particular programming language, and reading the data in another language is very difficult. If you store or transmit data in such an encoding, you are committing yourself to your current programming language for potentially a very long time
+- In order to restore data in the same object types, the decoding process needs to be able to instantiate arbitrary classes. This is frequently a source of security problems
+
+For these reasons it's generally a bad idea to use your language's built-in encoding for anything other than very transient purposes.
+- Instead, we should use standardized encodings that can be written and read by many programming languages, like JSON and XML.
+
+* * *
+
+UTF-8 is a superset of ASCII
+- ASCII can encode bytes with uppercase and lowercase English letters, the numbers 0-9, and a few other symbols like the exclamation mark (!) or the ampersand sign (&).

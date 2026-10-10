@@ -1,0 +1,34 @@
+<h1 id="poddisruptionbudget">PodDisruptionBudget<a aria-hidden="true" class="anchor-heading icon-link" href="#poddisruptionbudget"></a></h1>
+<p>PodDisruptionBudget is a configuration that lets us limit the number of concurrent disruptions that our application experiences.</p>
+<ul>
+<li>the purpose is to increase availability.</li>
+<li>in other words it lets us decide "how many instances can be down at the same time for a short period due to a voluntary disruption?"
+<ul>
+<li>ex. if you have 3 pods and <code>minAvailable: 2</code>, then Kubernetes can only kill 1 pod</li>
+</ul>
+</li>
+</ul>
+<p>Most likely, we use PDB because we want to protect an application specified by a Kubernetes controller:</p>
+<ul>
+<li>Deployment</li>
+<li>ReplicationController</li>
+<li>ReplicaSet</li>
+<li>StatefulSet</li>
+</ul>
+<h3 id="minavailable-and-maxunavailable"><code>minAvailable</code> and <code>maxUnavailable</code><a aria-hidden="true" class="anchor-heading icon-link" href="#minavailable-and-maxunavailable"></a></h3>
+<p><code>minAvailable</code></p>
+<ul>
+<li>a description of the number of pods from that set that must still be available after the eviction, even in the absence of the evicted pod
+<ul>
+<li>ex. if you set <code>minAvailable</code> to 10, then 10 Pods must always be available, even during a disruption. This means that evictions are allowed as long as they leave behind 10 or more healthy pods selected by the PodDisruptionBudget's <code>selector</code></li>
+</ul>
+</li>
+</ul>
+<p><code>maxUnavailable</code></p>
+<ul>
+<li>a description of the number of pods from that set that can be unavailable after the eviction.
+<ul>
+<li>ex. With a <code>maxUnavailable</code> of 5, evictions are allowed as long as there are at most 5 unhealthy replicas among the total number of desired replicas.</li>
+</ul>
+</li>
+</ul>

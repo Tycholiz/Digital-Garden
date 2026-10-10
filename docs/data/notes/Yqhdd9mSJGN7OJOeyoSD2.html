@@ -1,0 +1,342 @@
+<h1 id="ramda">Ramda<a aria-hidden="true" class="anchor-heading icon-link" href="#ramda"></a></h1>
+<p>There are two main guiding principles of Ramda:</p>
+<ul>
+<li>Data comes last</li>
+<li>Everything gets curried</li>
+</ul>
+<p>These two principles lead to a style that functional programmers call <em>point-free</em> (a.k.a <em>tacit programming</em>)</p>
+<ul>
+<li>Think of point-free code as “Data? What data? There’s no data here.”</li>
+</ul>
+<p>We can make <em>point-free</em> transformations by converting functions that take in data to new functions that accept that data and after having already decided what to do with it:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token function-variable function">forever21</span> <span class="token operator">=</span> <span class="token parameter">age</span> <span class="token arrow operator">=></span> <span class="token function">ifElse</span><span class="token punctuation">(</span><span class="token function">gte</span><span class="token punctuation">(</span>__<span class="token punctuation">,</span> <span class="token number">21</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">always</span><span class="token punctuation">(</span><span class="token number">21</span><span class="token punctuation">)</span><span class="token punctuation">,</span> inc<span class="token punctuation">)</span><span class="token punctuation">(</span>age<span class="token punctuation">)</span>
+<span class="token comment">// becomes:</span>
+<span class="token keyword">const</span> forever21 <span class="token operator">=</span> <span class="token function">ifElse</span><span class="token punctuation">(</span><span class="token function">gte</span><span class="token punctuation">(</span>__<span class="token punctuation">,</span> <span class="token number">21</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">always</span><span class="token punctuation">(</span><span class="token number">21</span><span class="token punctuation">)</span><span class="token punctuation">,</span> inc<span class="token punctuation">)</span>
+</code></pre>
+<p>now, the function <code>forever21</code> can be used without having to worry about data until the last minute.</p>
+<ul>
+<li>Note: there is no behavioral difference in these two versions. We’re still returning a function that takes an age, but now we’re not explicitly specifying the age parameter.</li>
+</ul>
+<p>Ramda <code>map</code> and <code>filter</code> (maybe more?) automatically convert different datatypes into functors</p>
+<ul>
+<li>This allows us to take a function that was made for an array, and apply it to an object, or even a string</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token comment">// An array</span>
+<span class="token function">transform</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'Optimus Prime'</span><span class="token punctuation">,</span><span class="token string">'Bumblebee'</span><span class="token punctuation">,</span><span class="token string">'Ironhide'</span><span class="token punctuation">,</span><span class="token string">'Sunstreaker'</span><span class="token punctuation">,</span><span class="token string">'Ratchet'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token comment">//=> [ 'EMIRP SUMITPO', 'EDIHNORI', 'REKAERTSNUS', 'TEHCTAR' ]</span>
+ 
+<span class="token comment">// A string</span>
+<span class="token function">transform</span><span class="token punctuation">(</span><span class="token string">'Optimus Prime'</span><span class="token punctuation">)</span>
+<span class="token comment">// => [ 'R' ]</span>
+ 
+<span class="token comment">// Even an object</span>
+<span class="token function">transform</span><span class="token punctuation">(</span><span class="token punctuation">{</span> <span class="token literal-property property">leader</span><span class="token operator">:</span> <span class="token string">'Optimus Prime'</span><span class="token punctuation">,</span> <span class="token literal-property property">bodyguard</span><span class="token operator">:</span> <span class="token string">'Ironhide'</span><span class="token punctuation">,</span> <span class="token literal-property property">medic</span><span class="token operator">:</span> <span class="token string">'Ratchet'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token comment">// => { leader: 'EMIRP SUMITPO', bodyguard: 'EDIHNORI', medic: 'TEHCTAR' </span>
+</code></pre>
+<h2 id="math-functions">Math functions<a aria-hidden="true" class="anchor-heading icon-link" href="#math-functions"></a></h2>
+<p>these functions take their arguments in what seems like normal order (is the first argument greater than the second?) That makes sense when used in isolation, but can be confusing when combining functions. These functions seem to violate Ramda’s “data-last” principle, so we’ll have to be careful when we use them in pipelines and similar situations. That’s when <code>R.flip</code> and the placeholder <code>R.__</code> will come in handy.</p>
+<h2 id="symbol-replacements">Symbol replacements<a aria-hidden="true" class="anchor-heading icon-link" href="#symbol-replacements"></a></h2>
+<h3 id="function-methods">Function methods<a aria-hidden="true" class="anchor-heading icon-link" href="#function-methods"></a></h3>
+<ul>
+<li>The following methods are best suited for functions
+<ul>
+<li>ex. <code>either(wasBornInCountry, wasNaturalized)</code></li>
+</ul>
+</li>
+</ul>
+<p><code>&#x26;&#x26;</code> -> <code>R.both</code></p>
+<p><code>||</code> -> <code>R.either</code></p>
+<p><code>!</code> -> <code>R.complement</code></p>
+<h3 id="value-methods">Value methods<a aria-hidden="true" class="anchor-heading icon-link" href="#value-methods"></a></h3>
+<ul>
+<li>The following methods are best used with values</li>
+</ul>
+<p><code>&#x26;&#x26;</code> -> <code>R.and</code></p>
+<p><code>||</code> -> <code>R.or</code></p>
+<p><code>!</code> -> <code>R.not</code></p>
+<h3 id="inequality">Inequality<a aria-hidden="true" class="anchor-heading icon-link" href="#inequality"></a></h3>
+<p><code>gt</code>, <code>lt</code>, <code>gte</code>, <code>lte</code>
+if we are passing data in, then we most likely want to provide a placeholder for the first arg
+ex. using conditionals (<code>R.ifElse</code>), <code>R.pipe</code>/<code>R.compose</code></p>
+<pre><code>const forever21 = age => ifElse(gte(__, 21), always(21), inc)(age)
+</code></pre>
+<h2 id="debugging-ramda">Debugging Ramda<a aria-hidden="true" class="anchor-heading icon-link" href="#debugging-ramda"></a></h2>
+<p><a href="https://blog.carbonfive.com/2017/12/20/easy-pipeline-debugging-with-curried-console-log/">more info</a></p>
+<p>Ramda provides us with a function <code>R.tap</code> which we can use to create side effects without interrupting the flow of an existing composition</p>
+<ul>
+<li><code>tap</code> accepts a function, and returns a function (ex. <code>console.log</code>) that may take in the passed in arg</li>
+</ul>
+<pre><code>R.compose(
+    R.tap(x => console.log('REVERSE:',x)),
+    R.map(R.reverse),
+)
+</code></pre>
+<p>this allows us figure out what happened after <code>reverse</code> was called on the data</p>
+<p>Control flow (<code>if</code>/<code>else</code>) is less necessary in functional programming, but still occasionally useful.</p>
+<h3 id="data-flow">Data flow<a aria-hidden="true" class="anchor-heading icon-link" href="#data-flow"></a></h3>
+<p>Remember that Ramda is flexible with how you combine functions, as long as the expected types are received</p>
+<pre><code>const alwaysDrivingAge = age => ifElse(lt(__, 16), always(16), a => a)(age)
+</code></pre>
+<p>Here, an age variable goes through the ifElse, and if fails the condition, will proceed to the third arg (else), where age is the first argument of the function</p>
+<h4 id="arg-order-on-pipecompose-when-function-arg-passed-in-through-the-data-flow">Arg order on <code>pipe</code>/<code>compose</code> when function arg passed in through the data flow<a aria-hidden="true" class="anchor-heading icon-link" href="#arg-order-on-pipecompose-when-function-arg-passed-in-through-the-data-flow"></a></h4>
+<pre><code>const publishedInYear = year => 
+    book => 
+        book.year === year
+const titlesForYear = year => 
+	R.pipe(
+		//pIY returns a function that takes a book as its arg
+		R.filter(publishedInYear(year)), 
+		R.map(book => book.title)
+	)
+
+console.log(titlesForYear(1934)(books))
+</code></pre>
+<h4 id="rwhenrunless"><code>R.when</code>/<code>R.unless</code><a aria-hidden="true" class="anchor-heading icon-link" href="#rwhenrunless"></a></h4>
+<p>similar to <code>ifElse</code>, but with only one conclusion. Implicitly, <code>R.identity</code> is the second conclusion (ie., it is <em>else</em>)</p>
+<pre><code>const alwaysDrivingAge = age => when(lt(__, 16), always(16))(age)
+</code></pre>
+<h2 id="working-with-functions-that-you-didnt-write">Working with functions that you didn't write<a aria-hidden="true" class="anchor-heading icon-link" href="#working-with-functions-that-you-didnt-write"></a></h2>
+<h3 id="rapply"><code>R.apply</code><a aria-hidden="true" class="anchor-heading icon-link" href="#rapply"></a></h3>
+<p>spread out a single array into individual arguments. Think of it as <code>spreadArgs()</code>
+This is useful for creating a fixed-arity function from a variadic (variable arity) function</p>
+<pre><code>function spreadArgs(fn) {
+    return function spreadFn(argsArr){
+        return fn( ...argsArr );
+    };
+}
+</code></pre>
+<p>This is related to usingSpread syntax with functions</p>
+<pre><code>const arr = [1, 2, 3]
+const fn = (a, b, c)
+fn(...arr) === fn(arr[0], arr[1], arr[2])
+</code></pre>
+<h3 id="runapply"><code>R.unapply</code><a aria-hidden="true" class="anchor-heading icon-link" href="#runapply"></a></h3>
+<p>gather individual args into a single array</p>
+<h3 id="runary"><code>R.unary</code><a aria-hidden="true" class="anchor-heading icon-link" href="#runary"></a></h3>
+<p>Can be used to cut off all arguments past the first. The benefit of this is that if we call a function and pass in too many arguments, the extra ones will just drop off.
+ex. map takes a function, and the first argument of map (the iterated value) gets passed to parseInt. Then the second arg (index) gets passed to parseInt, which corresponds to its radix. Since we don't want index to be interpreted this way, we make it a unary function, and the index argument safely falls off</p>
+<pre><code>["1", "2", "3"].map(R.unary(parseInt)
+</code></pre>
+<h3 id="rflip"><code>R.flip</code><a aria-hidden="true" class="anchor-heading icon-link" href="#rflip"></a></h3>
+<p>swap the first and second argument of a function</p>
+<h3 id="r__"><code>R.__</code><a aria-hidden="true" class="anchor-heading icon-link" href="#r__"></a></h3>
+<p>use a placeholder argument to go in place of a parameter
+When we pass data through some sort of chain (<code>pipe</code>, <code>compose</code>, <code>ifElse</code>), that data will be passed through the methods as the argument in the first available spot.</p>
+<ul>
+<li>ex. if a fn in <code>pipe</code> has no args provided, then the data will be the first arg. If it has one arg, then the data will be applied in the second place (and so on). If we use a placeholder <code>R.__</code> as the first arg, then the data will be applied to that space, since it is the first available argument.</li>
+<li><code>const forever21 = age => ifElse(gte(__, 21), always(21), inc)(age)</code></li>
+</ul>
+<h2 id="object-manipulation">Object manipulation<a aria-hidden="true" class="anchor-heading icon-link" href="#object-manipulation"></a></h2>
+<h3 id="rassoc"><code>R.assoc</code><a aria-hidden="true" class="anchor-heading icon-link" href="#rassoc"></a></h3>
+<p>update (or create) a property of an object</p>
+<pre><code>const myObj = {
+	name: 'kyle'
+}
+
+const newObj = R.assoc('number', '7788713377')
+
+console.log(newObj(myObj))
+// { name: 'kyle', number: '77887133' }
+</code></pre>
+<h3 id="rprop"><code>R.prop</code><a aria-hidden="true" class="anchor-heading icon-link" href="#rprop"></a></h3>
+<p>read a single property from an object and return the value</p>
+<h3 id="rpick"><code>R.pick</code><a aria-hidden="true" class="anchor-heading icon-link" href="#rpick"></a></h3>
+<p>pick multiple properties of an object and return a new object with just those properties</p>
+<ul>
+<li>complement of <code>R.omit</code></li>
+</ul>
+<h3 id="rhas"><code>R.has</code><a aria-hidden="true" class="anchor-heading icon-link" href="#rhas"></a></h3>
+<p>return boolean indicating whether or not a property exists on the object</p>
+<h3 id="rpath"><code>R.path</code><a aria-hidden="true" class="anchor-heading icon-link" href="#rpath"></a></h3>
+<p>dive into nested objects returning the value at the given path</p>
+<h3 id="rproporrpathor"><code>R.propOr</code>/<code>R.pathOr</code><a aria-hidden="true" class="anchor-heading icon-link" href="#rproporrpathor"></a></h3>
+<p>search for the property on an object, allowing you to provide a default value in case the property/path cannot be found on the obj.</p>
+<h3 id="revolve"><code>R.evolve</code><a aria-hidden="true" class="anchor-heading icon-link" href="#revolve"></a></h3>
+<p>declaratively provides transformations to happen on each property of an object:</p>
+<ul>
+<li>note: cannot add new properties with this</li>
+</ul>
+<pre><code>var tomato  = {firstName: '  Tomato ', data: {elapsed: 100, remaining: 1400}, id:123};
+var transformations = {
+  firstName: R.trim,
+  lastName: R.trim, // Will not get invoked.
+  data: {elapsed: R.add(1), remaining: R.add(-1)}
+};
+R.evolve(transformations, tomato); //=> {firstName: 'Tomato', data: {elapsed: 101, remaining: 1399}, id:123}
+</code></pre>
+<p>also</p>
+<pre><code>//before
+const nextAge = compose(inc, prop('age'))
+const celebrateBirthday = person => assoc('age', nextAge(person), person)
+
+// after
+const celebrateBirthday = evolve({ age: inc })
+</code></pre>
+<h2 id="array-manipulation">Array manipulation<a aria-hidden="true" class="anchor-heading icon-link" href="#array-manipulation"></a></h2>
+<p><code>R.nth</code>
+access an array at the given index
+equivalent of object's <code>R.prop</code></p>
+<p><code>R.slice</code>
+equivalent of object's <code>R.pick</code></p>
+<p><code>R.contains</code>
+check if array contains given value
+equivalent of object's <code>R.has</code></p>
+<p><code>R.head</code>
+access first element of array</p>
+<p><code>R.last</code>
+access last element of array</p>
+<p><code>R.append</code>/<code>R.prepend</code>
+FP versions of <code>.push</code> and <code>.unshift</code></p>
+<p><code>R.drop</code>/<code>R.dropLast</code>
+FP versions of <code>.shift</code> and <code>.pop</code></p>
+<p><code>R.insert</code>
+insert an element at given index of an array</p>
+<p><code>R.update</code>
+replace an element at the given index of an array</p>
+<p><code>R.adjust</code>
+equivalent of object's <code>R.evolve</code>, except only works for one element. We would use this function over <code>R.update</code> when using a function to update the array element</p>
+<pre><code>const numbers = [10, 20, 30, 40, 50, 60]
+ 
+adjust(multiply(10), 2, numbers) // [10, 20, 300, 40, 50, 60]
+</code></pre>
+<p><code>R.remove</code>
+remove element by index</p>
+<p><code>R.without</code>
+remove element by value</p>
+<h3 id="rreject"><code>R.reject()</code><a aria-hidden="true" class="anchor-heading icon-link" href="#rreject"></a></h3>
+<p>complement of <code>R.filter()</code>. If <code>filter()</code> is <em>filter in</em>, then <code>reject()</code> is <em>filter out</em></p>
+<h3 id="reduce"><code>.reduce()</code><a aria-hidden="true" class="anchor-heading icon-link" href="#reduce"></a></h3>
+<p>with <code>initialValue</code>
+<img src="/assets/images/2021-03-07-22-18-20.png"></p>
+<p>without <code>initialValue</code>. The first value of the list will act in place of the initialValue and the combining will start with the second value in the list
+<img src="/assets/images/2021-03-07-22-18-41.png"></p>
+<p>If the array passed to <code>.reduce()</code> is empty, then there must be an <code>initialValue</code> specified, otherwise there will be an error</p>
+<h3 id="map"><code>.map()</code><a aria-hidden="true" class="anchor-heading icon-link" href="#map"></a></h3>
+<h4 id="use-cases">use cases<a aria-hidden="true" class="anchor-heading icon-link" href="#use-cases"></a></h4>
+<ul>
+<li>transform a list of functions into their return values:</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token keyword">var</span> <span class="token function-variable function">one</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> <span class="token function-variable function">two</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token number">2</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> <span class="token function-variable function">three</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token number">3</span><span class="token punctuation">;</span>
+
+<span class="token punctuation">[</span>one<span class="token punctuation">,</span>two<span class="token punctuation">,</span>three<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token method function property-access">map</span><span class="token punctuation">(</span> <span class="token parameter">fn</span> <span class="token arrow operator">=></span> <span class="token function">fn</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// [1,2,3]</span>
+</code></pre>
+<ul>
+<li>transform a list of functions by composing each of them with another function, and then execute them:</li>
+</ul>
+<pre><code>var increment = v => ++v;
+var decrement = v => --v;
+var square = v => v * v;
+
+var double = v => v * 2;
+
+[increment,decrement,square]
+.map( fn => compose( fn, double ) )
+.map( fn => fn( 3 ) );
+// [7,5,36]
+</code></pre>
+<h3 id="rchain-aka-flatmap"><code>R.chain</code> (a.k.a. flatMap)<a aria-hidden="true" class="anchor-heading icon-link" href="#rchain-aka-flatmap"></a></h3>
+<p>iterate over values of a list, performing the provided function on each element, then concatenating all of the results together</p>
+<ul>
+<li>what results is if we were to perform a function of each element, then flatten that resulting array</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token keyword">var</span> firstNames <span class="token operator">=</span> <span class="token punctuation">[</span>
+	<span class="token punctuation">{</span> <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">"Jonathan"</span><span class="token punctuation">,</span> <span class="token literal-property property">variations</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"John"</span><span class="token punctuation">,</span> <span class="token string">"Jon"</span><span class="token punctuation">,</span> <span class="token string">"Jonny"</span><span class="token punctuation">]</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+	<span class="token punctuation">{</span> <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">"Stephanie"</span><span class="token punctuation">,</span> <span class="token literal-property property">variations</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"Steph"</span><span class="token punctuation">,</span> <span class="token string">"Stephy"</span><span class="token punctuation">]</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+	<span class="token punctuation">{</span> <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">"Frederick"</span><span class="token punctuation">,</span> <span class="token literal-property property">variations</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"Fred"</span><span class="token punctuation">,</span> <span class="token string">"Freddy"</span><span class="token punctuation">]</span> <span class="token punctuation">}</span>
+<span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+<span class="token constant">R</span><span class="token punctuation">.</span><span class="token method function property-access">chain</span><span class="token punctuation">(</span><span class="token parameter">entry</span> <span class="token arrow operator">=></span> <span class="token punctuation">[</span>entry<span class="token punctuation">.</span><span class="token property-access">name</span><span class="token punctuation">,</span> <span class="token spread operator">...</span>entry<span class="token punctuation">.</span><span class="token property-access">variations</span><span class="token punctuation">]</span><span class="token punctuation">,</span> firstNames<span class="token punctuation">)</span>
+<span class="token comment">// ["Jonathan","John","Jon","Jonny","Stephanie","Steph","Stephy",</span>
+<span class="token comment">//  "Frederick","Fred","Freddy"]</span>
+</code></pre>
+<h3 id="rzip"><code>R.zip</code><a aria-hidden="true" class="anchor-heading icon-link" href="#rzip"></a></h3>
+<p>Alternate through 2 arrays and take each value that appears at the same index and put them into their own array. The shorter of the 2 lists is considered the list length</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> arr1 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
+<span class="token keyword">const</span> arr2 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'a'</span><span class="token punctuation">,</span> <span class="token string">'b'</span><span class="token punctuation">,</span> <span class="token string">'c'</span><span class="token punctuation">]</span>
+
+<span class="token constant">R</span><span class="token punctuation">.</span><span class="token method function property-access">zip</span><span class="token punctuation">(</span>arr1<span class="token punctuation">,</span> arr2<span class="token punctuation">)</span>
+<span class="token comment">// [[1, a], [2, b], [3, c] ]</span>
+</code></pre>
+<h3 id="rinvoker-aka-unboundmethod"><code>R.invoker()</code> a.k.a. <code>unboundMethod()</code><a aria-hidden="true" class="anchor-heading icon-link" href="#rinvoker-aka-unboundmethod"></a></h3>
+<h2 id="number-manipulation">Number manipulation<a aria-hidden="true" class="anchor-heading icon-link" href="#number-manipulation"></a></h2>
+<p><code>R.clamp</code>
+restrict a number to be within a certain range</p>
+<pre class="language-js"><code class="language-js"><span class="token constant">R</span><span class="token punctuation">.</span><span class="token method function property-access">clamp</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">5</span><span class="token punctuation">)</span> <span class="token comment">// => 1</span>
+<span class="token constant">R</span><span class="token punctuation">.</span><span class="token method function property-access">clamp</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">15</span><span class="token punctuation">)</span> <span class="token comment">// => 10</span>
+<span class="token constant">R</span><span class="token punctuation">.</span><span class="token method function property-access">clamp</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span>  <span class="token comment">// => 4</span>
+</code></pre>
+<h3 id="rcomplement"><code>R.complement()</code><a aria-hidden="true" class="anchor-heading icon-link" href="#rcomplement"></a></h3>
+<p> implements the same idea for functions as the ! (not) operator does for values.
+nothig good ever comes out of this
+my daring susan
+why cant we jst love each other aagain???</p>
+<h2 id="fusion-with-map">Fusion (with <code>.map()</code>)<a aria-hidden="true" class="anchor-heading icon-link" href="#fusion-with-map"></a></h2>
+<p>Imagine we have multiple functions that each take 1 argument, and each function's return can be passed directly into the next as input:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">truncate</span><span class="token punctuation">(</span><span class="token parameter">word</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword control-flow">if</span> <span class="token punctuation">(</span>word<span class="token punctuation">.</span><span class="token property-access">length</span> <span class="token operator">></span> <span class="token number">10</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword control-flow">return</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>word<span class="token punctuation">.</span><span class="token method function property-access">substring</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">...</span><span class="token template-punctuation string">`</span></span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword control-flow">return</span> word
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">upper</span><span class="token punctuation">(</span><span class="token parameter">word</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword control-flow">return</span> word<span class="token punctuation">.</span><span class="token method function property-access">toUpperCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+
+<span class="token keyword">function</span> <span class="token function">append1</span><span class="token punctuation">(</span><span class="token parameter">word</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword control-flow">return</span> word <span class="token operator">+</span> <span class="token string">'1'</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Naively, we could do this:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> generateList <span class="token operator">=</span> arr
+    <span class="token punctuation">.</span><span class="token method function property-access">map</span><span class="token punctuation">(</span>append1<span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token method function property-access">map</span><span class="token punctuation">(</span>upper<span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token method function property-access">map</span><span class="token punctuation">(</span>truncate<span class="token punctuation">)</span>
+</code></pre>
+<p>when we pass a function to map, like <code>.map(fn)</code>, the element of the list gets passed as the first argument to that function. Here, when we pass <code>R.pipe</code>, the element gets passed as first argument to <code>pipe</code> (since pipe is ltr)</p>
+<pre><code>const generateList = arr.map(R.pipe(append1, upper, truncate))
+</code></pre>
+<h1 id="lenses">Lenses<a aria-hidden="true" class="anchor-heading icon-link" href="#lenses"></a></h1>
+<p>With the following more specific ways of creating lenses, <code>R.lens()</code> is not often needed</p>
+<h4 id="rlensprop"><code>R.lensProp</code><a aria-hidden="true" class="anchor-heading icon-link" href="#rlensprop"></a></h4>
+<p>lets us create a lens that focuses on a <em>non-nested</em> property of an object</p>
+<h4 id="rlenspath"><code>R.lensPath</code><a aria-hidden="true" class="anchor-heading icon-link" href="#rlenspath"></a></h4>
+<p>lets us create a lens that focuses on a <em>nested</em> property of an object</p>
+<h4 id="rlensindex"><code>R.lensIndex</code><a aria-hidden="true" class="anchor-heading icon-link" href="#rlensindex"></a></h4>
+<p>lets us create a lens that focuses on an element of an array</p>
+<ul>
+<li>these are for the times where we know in advance the index that we are interested in, but don't yet have the data (<em>ex. capitalize first letter</em>)</li>
+</ul>
+<pre><code>const toTitle = R.compose(
+	R.join(''),
+	R.over(R.lensIndex(0), R.toUpper)
+)
+</code></pre>
+<h3 id="three-functions-for-working-with-lenses">Three functions for working with lenses<a aria-hidden="true" class="anchor-heading icon-link" href="#three-functions-for-working-with-lenses"></a></h3>
+<h4 id="rview"><code>R.view()</code><a aria-hidden="true" class="anchor-heading icon-link" href="#rview"></a></h4>
+<p>read value of the lens</p>
+<h4 id="rset"><code>R.set()</code><a aria-hidden="true" class="anchor-heading icon-link" href="#rset"></a></h4>
+<p>set the value of the lens</p>
+<ul>
+<li>note: this does not mutate the original object supplied. In other words, <code>R.view()</code> will give us the exact same result before and after #### <code>R.set()</code></li>
+</ul>
+<h4 id="rover"><code>R.over()</code><a aria-hidden="true" class="anchor-heading icon-link" href="#rover"></a></h4>
+<p>apply a transformation function to the lens</p>
+<pre class="language-js"><code class="language-js"><span class="token function">over</span><span class="token punctuation">(</span>nameLens<span class="token punctuation">,</span> toUpper<span class="token punctuation">,</span> person<span class="token punctuation">)</span>
+<span class="token comment">// => {</span>
+<span class="token comment">//   name: 'RANDY',</span>
+<span class="token comment">//   socialMedia: {</span>
+<span class="token comment">//     github: 'randycoulman',</span>
+<span class="token comment">//     twitter: '@randycoulman'</span>
+<span class="token comment">//   }</span>
+<span class="token comment">// }</span>
+</code></pre>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/25e0eab0-64a4-48a1-ba21-f1c98fd45df9">CLI</a></li>
+</ol>

@@ -1,0 +1,22 @@
+<h1 id="api">API<a aria-hidden="true" class="anchor-heading icon-link" href="#api"></a></h1>
+<p>The main way to query data from CouchDB is through the REST API.</p>
+<h3 id="uri">URI<a aria-hidden="true" class="anchor-heading icon-link" href="#uri"></a></h3>
+<p>The URI to query to get a view’s result is <code>/&#x3C;database>/_design/&#x3C;designdocname>/_view/viewname</code></p>
+<h3 id="query-params">Query Params<a aria-hidden="true" class="anchor-heading icon-link" href="#query-params"></a></h3>
+<p>we can add query params to narrrow the result, which is how we'd achieve similar things to using the <a href="/notes/Cn5aqtggy4mrD38WFJxsQ">WHERE</a> clause in SQL:</p>
+<ul>
+<li><code>?key="2009/01/30 18:04:11"</code></li>
+<li><code>?startkey="2010/01/01 00:00:00"&#x26;endkey="2010/02/00 00:00:00"</code> (inclusive range)</li>
+</ul>
+<p>We can sort the results by multiple fields by using an array as a key, since results are always sorted by key.</p>
+<ul>
+<li><code>?startkey=["myslug"]&#x26;endkey=["myslug", 2]</code></li>
+</ul>
+<p>We can sort by descending order</p>
+<ul>
+<li><code>?descending=true</code></li>
+</ul>
+<p>We can include the full body of each document in the results</p>
+<ul>
+<li><code>?include_docs=true</code></li>
+</ul>

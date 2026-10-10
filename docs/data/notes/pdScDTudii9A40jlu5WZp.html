@@ -1,0 +1,45 @@
+<h1 id="reflog">Reflog<a aria-hidden="true" class="anchor-heading icon-link" href="#reflog"></a></h1>
+<p>The Reflog gives a chronological account of how HEAD has moved. Each time it moves, there is a new entry in the Reflog.</p>
+<p>The reflog is a list of chronological hashes, which represent where you have been during commits, all without regard to branches.</p>
+<ul>
+<li>Since branches don't matter, we are able to recover dangling commits.</li>
+<li>Each time a branch is updated to point to a new reference (ie. HEAD changes), an entry is written in the reflog to say where you were.</li>
+<li>Since the branch is updated whenever you commit, the git reflog has a nice effect of storing your local developer's history.</li>
+</ul>
+<p>It serves as Git's safety net, recording every change made in the repo (regardless of whether it was committed or not)</p>
+<ul>
+<li>The listed commit hash represents the HEAD after that action.</li>
+</ul>
+<p>Alongside the caret (<code>^</code>) and tilde (<code>~</code>) operators, git provides the <code>@</code> for referencing reflog entries in a relative way.</p>
+<ul>
+<li><code>git show HEAD@{5}</code> gets us the value of HEAD 5 movements ago.</li>
+<li>we can also see where the HEAD was by day:
+<ul>
+<li><code>git show HEAD@{yesterday}</code></li>
+<li><code>git show HEAD@{1.day.ago}</code></li>
+</ul>
+</li>
+</ul>
+<p>While <code>git log</code> shows a history of the commits, we can think of <code>git reflog</code> as showing us a history of everything (what branch we checked out, what commands we ran etc.)</p>
+<p>Becuase it keeps a full history, even if we were to <code>git reset</code>, we can still access the commit SHA</p>
+<ul>
+<li>ex. we made some commits, then reset. If we decide that we want to <em>undo</em> the reset, all we need to do is checkout the commit we want with <code>git checkout HEAD@{1}</code></li>
+</ul>
+<pre><code>ad8621a HEAD@{0}: reset: moving to HEAD~3
+298eb9f HEAD@{1}: commit: Some other commit message
+bbe9012 HEAD@{2}: commit: Continue the feature
+9cb79fa HEAD@{3}: commit: Start a new feature
+</code></pre>
+<ul>
+<li>This puts us in detached head state. All we need to do is create a new branch, and continue working on our feature.</li>
+</ul>
+<h4 id="data-recovery">Data Recovery<a aria-hidden="true" class="anchor-heading icon-link" href="#data-recovery"></a></h4>
+<ul>
+<li>Most of the time, the reflog is our friend in the circumstance where we want to recover data that has been "lost"
+<ul>
+<li>we can either run <code>git reflog</code>, or use <code>git log -g</code> which gives us normal log output for the reflog</li>
+</ul>
+</li>
+<li>Imagine we hard reset a number of commits, effectively "erasing" them from the git log. All we need to do is find that commit with <code>git log -g</code>, create a new branch with its SHA (<code>git branch recover-branch &#x3C;SHA></code>)</li>
+<li>If the data we are looking for is not in the reflog, we can try using <code>git fsck --full</code>, which will list all objects that aren't pointed to by another object.</li>
+</ul>

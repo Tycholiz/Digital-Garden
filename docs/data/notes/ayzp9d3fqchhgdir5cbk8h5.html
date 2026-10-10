@@ -1,0 +1,48 @@
+<h1 id="dockerfile">Dockerfile<a aria-hidden="true" class="anchor-heading icon-link" href="#dockerfile"></a></h1>
+<p>Think of Dockerfile commands as a step-by-step recipe on how to build up our image.</p>
+<ul>
+<li>it is the first step to containerizing an application</li>
+</ul>
+<p>Dockerfiles describe how to assemble a private filesystem for a container, and can also contain some metadata describing how to run a container based on this image</p>
+<ul>
+<li>A Dockerfile specifies the operating system that will underlie the container, along with the languages, environment variables, file locations, network ports, and other components it needs— and, of course, what the container will actually be doing once we run it.</li>
+</ul>
+<p>Example Dockerfile:</p>
+<pre class="language-dockerfile"><code class="language-dockerfile"><span class="token instruction"><span class="token keyword">FROM</span> node:6.11.5</span>
+<span class="token instruction"><span class="token keyword">WORKDIR</span> /usr/src/app</span>
+<span class="token instruction"><span class="token keyword">COPY</span> package.json .</span>
+<span class="token instruction"><span class="token keyword">RUN</span> npm install</span>
+<span class="token instruction"><span class="token keyword">COPY</span> . .</span>
+<span class="token instruction"><span class="token keyword">CMD</span> [ <span class="token string">"npm"</span>, <span class="token string">"start"</span> ]</span>
+</code></pre>
+<p>Building up our images takes the following steps:</p>
+<ol>
+<li>Start FROM the pre-existing <code>node:6.11.5</code> image. This is an official image, built by the node.js vendors and validated by Docker to be a high-quality image containing the <code>node 6.11.5</code> interpreter and basic dependencies.</li>
+<li>Use WORKDIR to specify that all subsequent actions (e.g. COPY, RUN) should be taken from the directory /usr/src/app in your image filesystem (in other words, not the FS on your machine).</li>
+<li>COPY the file package.json from your host to the working directory in your image (so in this case, to /usr/src/app/package.json)</li>
+</ol>
+<ul>
+<li>The fact that we run <code>npm install</code> before copying over "everything else" is significant here. If we had copied everything and then run <code>npm install</code>, each file change would cause Docker to run <code>npm install</code>. Instead, by copying only <code>package.json</code>+<code>package-lock.json</code>, <code>npm install</code> will only get run when there are changes in those 2 files.</li>
+</ul>
+<ol start="4">
+<li>RUN the command npm install inside your image filesystem (which will read package.json to determine your app’s node dependencies, and install them)</li>
+<li>COPY in the rest of your app’s source code from your host to your image filesystem.</li>
+</ol>
+<p>These above commands effectively set up the filesystem of our image</p>
+<p><code>CMD</code> specifies how to run a container based off <em>this</em> particular image</p>
+<ul>
+<li>In this case, it’s saying that the containerized process that this image is meant to support is npm start.</li>
+<li>i.e. it is a metadata specification</li>
+<li>there can only be one <code>CMD</code> instruction per Dockerfile</li>
+</ul>
+<p><code>ENTRYPOINT</code> allows us to configure the container to run as an executable</p>
+<ul>
+<li>the commands specified in <code>ENTRYPOINT</code> will always be run.</li>
+<li>we also have <code>CMD</code>, whose commands will only run if we are spinning up a container and not explicitly setting any CLI arguments
+<ul>
+<li>if we specify arguments when spinning up a container, <code>CMD</code> is ignored, but <code>ENTRYPOINT</code> commands will still be executed</li>
+<li>ex. <code>docker run -it &#x3C;image> &#x3C;arg1></code></li>
+<li><code>CMD</code> therefore are default arguments</li>
+</ul>
+</li>
+</ul>

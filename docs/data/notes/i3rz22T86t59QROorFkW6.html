@@ -1,0 +1,47 @@
+<h1 id="transducer">Transducer<a aria-hidden="true" class="anchor-heading icon-link" href="#transducer"></a></h1>
+<p>A transducer is a function which takes in a reducer, and returns another reducer</p>
+<ul>
+<li>A transducer takes an object or array, iterating through each value, transforming each element with a composition of transformer functions</li>
+</ul>
+<p>The transduce function is really just a reduce function with an additional argument upfront:</p>
+<pre class="language-js"><code class="language-js"><span class="token comment">// With reduce</span>
+<span class="token constant">R</span><span class="token punctuation">.</span><span class="token method function property-access">reduce</span><span class="token punctuation">(</span><span class="token constant">R</span><span class="token punctuation">.</span><span class="token method function property-access">flip</span><span class="token punctuation">(</span><span class="token constant">R</span><span class="token punctuation">.</span><span class="token property-access">append</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> autobots<span class="token punctuation">)</span>
+
+<span class="token comment">// With transduce</span>
+<span class="token constant">R</span><span class="token punctuation">.</span><span class="token method function property-access">transduce</span><span class="token punctuation">(</span>transform<span class="token punctuation">,</span> <span class="token constant">R</span><span class="token punctuation">.</span><span class="token method function property-access">flip</span><span class="token punctuation">(</span><span class="token constant">R</span><span class="token punctuation">.</span><span class="token property-access">append</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> autobots<span class="token punctuation">)</span>
+</code></pre>
+<p>the above reduce function iterates the elements of our <code>autobots</code> array and appends them to the accumulator</p>
+<p>When we use <code>transduce()</code>, we are passing each item from our list into our transformation function before passing it to our reducing function. So basically, transduce is just a way for us to transform items while reducing them. We are, in fact, <em>transducing</em></p>
+<p>transducers are a generic and composable way to operate on a collection of values, producing a new value or new collection of new values</p>
+<p>In this example, we can see the power of <code>transduce</code>. The first way, we need to iterate over <code>autobots</code> a total of 3 times. However, when we use <code>transduce</code> as in the second way, we only need to iterate over it once.</p>
+<ul>
+<li>The traditional way, is that we perform <code>map</code> on each element of the array, then <code>map</code> on each element again, then <code>filter</code> on each element. With transduce, we perform <code>map</code> on the first element, then <code>map</code> again on the first element, then <code>filter</code> on the first element. The resulting value is then mapped to the output array, then the second element is performed on.</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token keyword">let</span> autobots <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'Optimus Prime'</span><span class="token punctuation">,</span><span class="token string">'Bumblebee'</span><span class="token punctuation">,</span><span class="token string">'Ironhide'</span><span class="token punctuation">,</span><span class="token string">'Sunstreaker'</span><span class="token punctuation">,</span><span class="token string">'Ratchet'</span><span class="token punctuation">]</span>
+ 
+<span class="token comment">// Filter for autobots that contain 'r', uppercase, then reverse</span>
+<span class="token keyword">let</span> transform <span class="token operator">=</span> <span class="token constant">R</span><span class="token punctuation">.</span><span class="token method function property-access">compose</span><span class="token punctuation">(</span>
+  <span class="token constant">R</span><span class="token punctuation">.</span><span class="token method function property-access">filter</span><span class="token punctuation">(</span><span class="token parameter">x</span> <span class="token arrow operator">=></span> <span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">r</span><span class="token regex-delimiter">/</span><span class="token regex-flags">i</span></span><span class="token punctuation">.</span><span class="token method function property-access">test</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token constant">R</span><span class="token punctuation">.</span><span class="token method function property-access">map</span><span class="token punctuation">(</span><span class="token constant">R</span><span class="token punctuation">.</span><span class="token property-access">toUpper</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token constant">R</span><span class="token punctuation">.</span><span class="token method function property-access">map</span><span class="token punctuation">(</span><span class="token constant">R</span><span class="token punctuation">.</span><span class="token property-access">reverse</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+ 
+<span class="token comment">// BEFORE</span>
+<span class="token function">transform</span><span class="token punctuation">(</span>autobots<span class="token punctuation">)</span>
+<span class="token comment">// => [ 'EMIRP SUMITPO', 'EDIHNORI', 'REKAERTSNUS', 'TEHCTAR' ]</span>
+
+<span class="token comment">// AFTER</span>
+<span class="token constant">R</span><span class="token punctuation">.</span><span class="token method function property-access">transduce</span><span class="token punctuation">(</span>transform<span class="token punctuation">,</span> <span class="token constant">R</span><span class="token punctuation">.</span><span class="token method function property-access">flip</span><span class="token punctuation">(</span><span class="token constant">R</span><span class="token punctuation">.</span><span class="token property-access">append</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> autobots<span class="token punctuation">)</span>
+<span class="token comment">// => [ 'EMIRP SUMITPO', 'EDIHNORI', 'REKAERTSNUS', 'TEHCTAR' ]</span>
+</code></pre>
+<p>The word ‘transducer’ itself can be split into two parts that reflect this definition: </p>
+<ul>
+<li><code>transform</code> — to produce some value from another (ex. <code>reduce</code>/<code>map</code>).</li>
+<li><code>reducer</code> — to combine the values of a data structure to produce a new one.</li>
+<li>this is a really cool concept, because it allows us to abstract away any implementation detais that we</li>
+</ul>
+<p><code>.map</code> and <code>.filter</code> can be implemented with <code>.reduce</code>. Therefore, we see that <code>.reduce</code> is a more general function, and <code>.map</code> and <code>.filter</code> are more specific implementations of <code>.reduce</code>. Transduce allows us to treat a reduce-like construct as a <em>higher order function</em>, meaning we can pass in the <em>reducing function</em> (which is the function found in a reducer)</p>
+<ul>
+<li>This means we could create <code>.map</code>/<code>.filter</code> with a transducer
+<a href="https://www.jeremydaly.com/transducers-supercharge-functional-javascript/">more info</a></li>
+</ul>

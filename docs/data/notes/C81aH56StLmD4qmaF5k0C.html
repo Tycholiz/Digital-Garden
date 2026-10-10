@@ -1,0 +1,51 @@
+<h1 id="map">Map<a aria-hidden="true" class="anchor-heading icon-link" href="#map"></a></h1>
+<p>A <code>Map</code> is a collection of keyed data items, just like an Object. But the main difference is that Map allows keys of any type (including objects, functions, strings, and symbols), whereas object only allows strings and numbers.</p>
+<ul>
+<li>ex. with a Map, <code>true</code>/<code>false</code> can be boolean keys. Even an object can be used as a key
+<ul>
+<li>Using objects as keys is one of the most notable and important Map features.</li>
+</ul>
+</li>
+</ul>
+<p>Maps perform better than plain Objects in scenarios involving frequent additions and removals of key-value pairs.</p>
+<p>Methods and properties are:</p>
+<ul>
+<li><code>new Map()</code> – creates the map.</li>
+<li><code>map.set(key, value)</code> – stores the value by the key.</li>
+<li><code>map.get(key)</code> – returns the value by the key, undefined if key doesn’t exist in map.</li>
+<li><code>map.has(key)</code> – returns true if the key exists, false otherwise.</li>
+<li><code>map.delete(key)</code> – removes the value by the key.</li>
+<li><code>map.clear()</code> – removes everything from the map.</li>
+<li><code>map.size</code> – returns the current element count.</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> myMap <span class="token operator">=</span> <span class="token function">newMap</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+myMap<span class="token punctuation">.</span><span class="token method function property-access">set</span><span class="token punctuation">(</span><span class="token string">'a'</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+myMap<span class="token punctuation">.</span><span class="token method function property-access">set</span><span class="token punctuation">(</span><span class="token string">'b'</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span>
+myMap<span class="token punctuation">.</span><span class="token method function property-access">get</span><span class="token punctuation">(</span><span class="token string">'a'</span><span class="token punctuation">)</span> <span class="token comment">// 1</span>
+
+<span class="token comment">/*
+{
+    a: 1,
+    b: 2
+}
+*/</span>
+</code></pre>
+<h3 id="why-and-when-to-use-maps">Why and when to use Maps<a aria-hidden="true" class="anchor-heading icon-link" href="#why-and-when-to-use-maps"></a></h3>
+<ul>
+<li>Key Type Flexibility: Maps allow keys of any type, including objects, functions, strings, and symbols. This flexibility can be beneficial when you need to associate values with complex or non-primitive keys that may not be easily represented as strings.</li>
+<li>Preserving Key Order: Maps maintain the order of key-value pairs based on the insertion order. This is particularly useful when you need to iterate over the entries in the same order as they were added. Regular objects do not guarantee a specific order for their properties.</li>
+<li>Handling Large Key Sets: Maps are more efficient when dealing with a large number of key-value pairs. The performance of Map operations, such as retrieval and deletion, remains consistent regardless of the size of the map. In contrast, objects may experience performance degradation when the number of properties becomes very large.</li>
+<li>Iterating Over Key-Value Pairs: Maps provide built-in methods such as <code>forEach()</code> and <code>for...of</code> loops to iterate over the key-value pairs directly. This simplifies operations that require iteration, transformation, or computation based on each entry in the map.</li>
+<li>Easy Removal of Entries: Maps offer a straightforward way to remove entries from the collection using the delete() method. With regular objects, removing properties requires more explicit checks and assignments.</li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/b479ho2io35e9z6m7gsbkyb">Cook</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/wHT87HSjyOmffkNWsBUXY">For</a></li>
+</ul>

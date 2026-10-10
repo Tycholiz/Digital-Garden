@@ -1,0 +1,83 @@
+<h1 id="oop">Oop<a aria-hidden="true" class="anchor-heading icon-link" href="#oop"></a></h1>
+<h2 id="what-is-oop">What is OOP?<a aria-hidden="true" class="anchor-heading icon-link" href="#what-is-oop"></a></h2>
+<p>Think of pure OOP as "objects talking to other objects"</p>
+<h2 id="why-use-oop">Why use OOP?<a aria-hidden="true" class="anchor-heading icon-link" href="#why-use-oop"></a></h2>
+<p>OOP chiefly offers flexibility and extensibility</p>
+<ul>
+<li>Once code is tested and delivered, it rarely has to be changed. There is little fear of new classes breaking old ones.
+<ul>
+<li>contrast this with <a href="/notes/5R4Crolq5edXsvG9ZY6k9">procedural programming</a>, which might involve adding new conditional checks for new features, which would require tests to be written, and carry a high degree of risk that original parts of the program will break.</li>
+</ul>
+</li>
+</ul>
+<p>OOP is for the next programmer, not for yourself or for performance. Secondly, when you need to start dynamically customising behaviour (changing class methods on the fly), it becomes more like writing little programs in their own right that interact. OOP even epitomises the unix philosophy (albeit without forcing interactions to be via text on the command line)</p>
+<p>When OOP is used well it really clarifies the code, and is a solid way to break down complex algorithms into simpler pieces. A good set of classes is like a well run kitchen where everyone knows their own job, the communication is simple, and no one is stepping on anyone's toes.</p>
+<ul>
+<li>A poor choice of classes ranges from confusing to a real mess depending on how liberally inheritance was used.</li>
+</ul>
+<h2 id="deciding-when-it-should-be-a-class">Deciding when it should be a class<a aria-hidden="true" class="anchor-heading icon-link" href="#deciding-when-it-should-be-a-class"></a></h2>
+<p>The fact that something sounds like an object does not automatically mean that it should be an object in your program. Reflexively writing classes for every concept in your application tends to leave you with a collection of interconnected objects that each have their own internal, changing state. Such programs are often hard to understand and thus easy to break.</p>
+<ul>
+<li>This is in reference to a program that simulates a village with roads between houses, and a robot that delivers parcels to each house. The program has to track the state of the parcel delivery status, as well as the robot's location in the town. Consider that if our instinct was to have classes for the robot, one for a parcel, maybe one for places, we would have to hold state in objects of different classes. The robot's current location would probably be held in the <code>Robot</code> class, while the delivery status of a parcel would probably be held in the <code>Parcel</code> class. Furthermore, a location would probably hold the state of all the parcels that are currently delivered to it. Having this state spread out everywhere makes the program hard to understand (and know which of these objects will need to have their state updated).
+<ul>
+<li><a href="https://eloquentjavascript.net/07_robot.html#p_XP2aQths2D">source</a></li>
+</ul>
+</li>
+</ul>
+<p>When considering how granular we should make our classes, it makes sense to think high-level. Ask the question, "how can I represent the state of this program in a central and simple way, where I can update the state in a single place in the event of a business-level action (such as moving location, dropping off a letter etc)". If we had a postman program, which mails a stack of letters to different householders, a natural inclination might be for us to create classes for postman, village etc. Instead, we should consider what the minimal scope of state is. In this example, we only really need to keep track of how many letters there are, and where the current location is. Realistically, all we need is a <code>VillageState</code> class.</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">class</span> <span class="token class-name">VillageState</span> <span class="token punctuation">{</span>
+  <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token parameter">place<span class="token punctuation">,</span> parcels</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">place</span> <span class="token operator">=</span> place<span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">parcels</span> <span class="token operator">=</span> parcels<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token function">move</span><span class="token punctuation">(</span><span class="token parameter">destination</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>roadGraph<span class="token punctuation">[</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">place</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token method function property-access">includes</span><span class="token punctuation">(</span>destination<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword control-flow">return</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword control-flow">else</span> <span class="token punctuation">{</span>
+      <span class="token keyword">let</span> parcels <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">parcels</span>
+        <span class="token punctuation">.</span><span class="token method function property-access">map</span><span class="token punctuation">(</span><span class="token parameter">p</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+          <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span>p<span class="token punctuation">.</span><span class="token property-access">place</span> <span class="token operator">!=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">place</span><span class="token punctuation">)</span> <span class="token keyword control-flow">return</span> p<span class="token punctuation">;</span>
+          <span class="token keyword control-flow">return</span> <span class="token punctuation">{</span><span class="token literal-property property">place</span><span class="token operator">:</span> destination<span class="token punctuation">,</span> <span class="token literal-property property">address</span><span class="token operator">:</span> p<span class="token punctuation">.</span><span class="token property-access">address</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token method function property-access">filter</span><span class="token punctuation">(</span><span class="token parameter">p</span> <span class="token arrow operator">=></span> p<span class="token punctuation">.</span><span class="token property-access">place</span> <span class="token operator">!=</span> p<span class="token punctuation">.</span><span class="token property-access">address</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword control-flow">return</span> <span class="token keyword">new</span> <span class="token class-name">VillageState</span><span class="token punctuation">(</span>destination<span class="token punctuation">,</span> parcels<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Let's apply the above lesson to TicTacToe. If we were to blindly make every item into it's own object, we would have classes for <code>Game</code>, <code>Board</code>, <code>Player</code>, <code>Square</code>. Resisting that temptation, think about how we might go about centralizing the state and the methods that change them. For instance, we don't really need a <code>Square</code> class. The duty of a <code>Square</code> class presumably is to keep track of the square's current state (empty, X, 0). But this could just as easily be managed by the same class that represents the <code>Board</code>. If we used a <code>Square</code> class, then we would have to reach into it every time we want to make a calculation about the state of the game.</p>
+<ul>
+<li>spec: when deciding on what classes to make, think in terms of what state you need to store, and at what level would be appropriate?
+<ul>
+<li>ex. in TicTacToe, it might make sense to model a <code>Player</code> class, if you are going to use it to determine each player's currently occupied squares (ex. <code>[0, 4, 7]</code>). Alternatively, you may decide that that data can be safely stored in the <code>Game</code> object as 2 properties, <code>player1Choices</code> and <code>player2Choices</code>.</li>
+</ul>
+</li>
+</ul>
+<p>In OOP, dependencies are things that you need to provide to the constructor of the class to create an instance of it.</p>
+<hr>
+<h2 id="example-implementing-tictactoe">Example: Implementing TicTacToe<a aria-hidden="true" class="anchor-heading icon-link" href="#example-implementing-tictactoe"></a></h2>
+<p>Create a player, game, and board class. The player class will choose moves, the board class will hold the state of the moves, and the game class will run the game and declare the winner.</p>
+<p>If you want to make this project more challenging then make sure the game class can accept either human or computer players (and the code is exactly the same from the game class's perspective). This will allow you to practice class inheritance and also you can learn to build a simple ai. For the ai you can start with a simple computer that picks randomly. Once you get that done you can basically build a tree structure which builds all the possible future outcomes and make sure the computer selects the most favorable one.</p>
+<h1 id="e-resources">E Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#e-resources"></a></h1>
+<p><a href="https://github.com/Anna-Myzukina/Tic-Tac-Toe-OOP">TicTacToe Repo in OOP: a great breakdown to understand OOP, without clutter of anything not related to TicTacToe</a></p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/giy9h69u75hkxmfwdqwfst6">Composition</a></li>
+<li><a href="/notes/mkYg8t5iG0SCNIgj8cFnr">Encapsulation</a></li>
+<li><a href="/notes/zv00g97iw4ngvv7pht794rd">Inheritance</a></li>
+<li><a href="/notes/3r2ExokoPsu28Rg1TWd9d">Keywords</a></li>
+<li><a href="/notes/iya12FlmhcCisqNu7Uiet">Overloading</a></li>
+<li><a href="/notes/3HZVPhBnB3NbIMXnHuFIp">Overriding</a></li>
+<li><a href="/notes/mwUoGg8N9TBfS2RuB8cf9">Polymorphism</a></li>
+<li><a href="/notes/yllg4xdqnte0adsatwyw9ji">Substitutability</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/">Digital Garden</a></li>
+<li><a href="/notes/oVfbIz9jQKACNE2FyfskO">Test-Driven Development</a></li>
+<li><a href="/notes/n7szfacr82fc91ikfrrow9e">Key Value Store</a></li>
+<li><a href="/notes/Io6ynzCU93aEuqY3g8opd">BDD (Behaviour-Driven Development)</a></li>
+</ul>

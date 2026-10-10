@@ -1,0 +1,16 @@
+<h1 id="native-module">Native Module<a aria-hidden="true" class="anchor-heading icon-link" href="#native-module"></a></h1>
+<p>note: Native Modules are set to become deprecated, and will be replaced by Turbo Native Module and Fabric Native Components.</p>
+<ul>
+<li>see <a href="/notes/t9vr0n7ukrslcunk69u0tei">React Native Architecture</a> for more details.</li>
+</ul>
+<p>React Native Modules allow mobile apps written in React Native to access native platform APIs</p>
+<ul>
+<li>in other words, it allows JavaScript and platform-native code to communicate over the React Native "bridge"
+<ul>
+<li>this bridge handles cross-platform serialization via JSON.</li>
+</ul>
+</li>
+<li>this bridge is carried out by the NativeModule system exposing instances of Java/Objective-C/C++ classes as Javascript objects. What we get in Javascript is an object that has the methods/properties that existed on the native code classes.</li>
+<li>ex. If you wanted to use a Couchbase Lite iOS/Android API, you would implement a React Native plugin that exports the Couchbase Lite Android and iOS APIs to Javascript.</li>
+<li>ex. If you wanted to use the phone's native APIs (e.g. Calendar API), we would first write native code that communicates with those native APIs, then we would make that native code invokable through Javascript via the bridge.</li>
+</ul>

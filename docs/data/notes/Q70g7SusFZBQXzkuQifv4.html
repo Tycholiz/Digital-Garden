@@ -1,0 +1,51 @@
+<h1 id="nextjs">Nextjs<a aria-hidden="true" class="anchor-heading icon-link" href="#nextjs"></a></h1>
+<h2 id="overview">Overview<a aria-hidden="true" class="anchor-heading icon-link" href="#overview"></a></h2>
+<p>In a nutshell Next.js is a combination of 3 components: </p>
+<ul>
+<li>A server that renders React apps, </li>
+<li>a compiler that bundles your FE and BE code </li>
+<li>a CLI tool to manage all these tasks for you</li>
+</ul>
+<p>create pre-rendered react websites, offered from SSR</p>
+<p>JSX is rendered already into HTML on the server, and is sent to the client to be displayed</p>
+<ul>
+<li>vanilla-react will do everything at runtime.</li>
+</ul>
+<p>Next takes care of routing for us</p>
+<ul>
+<li>we define new pages in the <code>pages/</code> directory, and next picks up on them automatically, giving us the url out of the box.
+<ul>
+<li>next defines a component <code>&#x3C;Link /></code> we can use to handle routes</li>
+</ul>
+</li>
+</ul>
+<p>Next is smart and will not re-render the same content, if it has rendered it already</p>
+<p>If we had a function in a Next.js component that referred to the <code>window</code> object, we would get errors. This is because that code is being run on the server, which of course has no concept of the browser's global variables. However, if we were to use <code>window</code> in the <code>useEffect</code> call, we would indeed get access to the <code>window</code> object. This shows that <code>useEffect</code> is still done client side, even though functions are understood server-side</p>
+<h3 id="how-does-it-work">How does it work?<a aria-hidden="true" class="anchor-heading icon-link" href="#how-does-it-work"></a></h3>
+<p>When a client hits a URL, the Next.js server sends back an <code>index.html</code> file, which contains the initial static render of the React components from the associated <code>index.jsx</code> file of your source code.</p>
+<ul>
+<li>the initial static render is what the page looks like, considering the initial state/props that are used to build the components.</li>
+<li>the received <code>index.html</code> file also contains references to multiple JavaScript files, which load up React and your root <code>App</code> component, and attach that <code>App</code> to the html root tag (this is known as <a href="/notes/w1sfmngh66x1p4hd9e9qxye">hydration</a>).</li>
+<li>From there the app behaves like any other React app.</li>
+</ul>
+<h2 id="resources">Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#resources"></a></h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=PN1HgvAOmi8">Advanced rendering patterns</a></li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/D1mw86FYbz1LlDUZKYPDW">Cook</a></li>
+<li><a href="/notes/qhgqCVDefplGuxkiNiaiM">Methods</a></li>
+<li><a href="/notes/95IRPMCDLmCSjZwOQRyDH">Page</a></li>
+<li><a href="/notes/O5qwHXOcqhlWnJyKG23s8">Prerendering</a></li>
+<li><a href="/notes/hI0nKFaSZOQYTMGombx9P">Rehydration</a></li>
+<li><a href="/notes/9Vt9Mc6TMI4j4q3SQhyxw">Styled Components in Nextjs</a></li>
+<li><a href="/notes/3qvcys7vxj1tjjilrtiph32">TS</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/qC5GxCZBmNb4Ip6c0kU8x">Jekyll</a></li>
+<li><a href="/notes/Bqpifx2HX3vjLhX9yvhTV">Architecture</a></li>
+</ul>

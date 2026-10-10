@@ -1,0 +1,40 @@
+<h1 id="transaction">Transaction<a aria-hidden="true" class="anchor-heading icon-link" href="#transaction"></a></h1>
+<p>Transactions are an abstraction layer that allows an application to pretend that certain concurrency problems and certain kinds of hardware and software faults don’t exist.</p>
+<ul>
+<li>A large class of errors is reduced down to a simple transaction abort, and the application just needs to try again.</li>
+</ul>
+<p>An application with very simple access patterns, such as reading and writing only a single record, can probably manage without transactions.</p>
+<p>Transactions have a status to them. They might be in a "running" state, or they might be in a "failed" state.</p>
+<p>Almost all relational databases (and some nonrelational) support transactions.</p>
+<p>Transactions come with a computational load. For example, if we are populating a database for the first time, we should disable AUTOCOMMIT, and instead only commit all inserts one time. This has the added benefit of being able to rollback the inserts if there is some sort of error.</p>
+<p>Not every application needs transactions, and sometimes there are advantages to weakening transactional guarantees or abandoning them entirely </p>
+<ul>
+<li>ex. without transactions, we achieve higher performance or higher availability. </li>
+<li>Some safety properties can be achieved without transactions.</li>
+</ul>
+<h3 id="transactions-to-ensure-writeread-from-same-replica">Transactions to ensure write+read from same replica<a aria-hidden="true" class="anchor-heading icon-link" href="#transactions-to-ensure-writeread-from-same-replica"></a></h3>
+<p>Transactions can be used to ensure that multiple operations are performed on the same replica.</p>
+<ul>
+<li>ex. if we have a bulk write operation and a read operation where we read those documents we just created, we can wrap the write and the read in a transaction, which ensures that the read happens on the same replica that we wrote to, and doesn't read from a replica which may not yet have received those updates.</li>
+</ul>
+<h3 id="the-distinction-between-single-object-and-multi-object-transactions">The distinction between single-object and multi-object transactions<a aria-hidden="true" class="anchor-heading icon-link" href="#the-distinction-between-single-object-and-multi-object-transactions"></a></h3>
+<p>Used properly, transactions refer to multi-object transactions. That is, we can update objects across different tables in a single transaction, and we get an all-or-nothing result. However, there is also the concept of single-object transactions, which is the guarantee for instance that a JSON value being updated will either update the whole thing or nothing at all; we won't end up in a state where only half of the JSON has been updated by the system. This single-object transaction guarantee is implemented by almost every database.</p>
+<ul>
+<li>this idea of single-object transaction covers the whole document when updating in a <a href="/notes/wo8h5ku40y6dzinkof9dx5x">document database</a>.</li>
+</ul>
+<p>When a transaction is started, it is given a unique, always-increasing transaction ID (txid). Whenever a transaction writes anything to the database, the data it writes is tagged with the transaction ID of the writer.</p>
+<h3 id="transactions-in-distributed-databases">Transactions in Distributed Databases<a aria-hidden="true" class="anchor-heading icon-link" href="#transactions-in-distributed-databases"></a></h3>
+<p>Transactions (multi-object) have mostly been abandoned by distrubuted databases, since they are difficult to implement across partitions. They also get in the way of high-availability and performance, which is normally a staple of <a href="/notes/ZF8xj8wwDUqKlrwTrCFZ1">Nosql</a> databases.</p>
+<p>There is nothing that fundamentally prevents transactions in a distributed database. However, the costs outweigh the benefits, and the thought is that we can achieve all the transactional integrity we need with single-object operations.</p>
+<p>Even if we need to keep different objects in sync, we can still achieve this without transactions. However, error handling becomes much more complicated without <a href="/notes/iVqY5tKOzlWVVRzOqOED5">atomicity</a>, and the lack of <a href="/notes/SBhnwv59C8Y0Gb9nRztZU">isolation</a> can cause concurrency problems.</p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/fCagNdVtAqMZw8CYsTZ7m">ACID</a></li>
+<li><a href="/notes/ilPCBSmFZErTUPpllPOtp">Best Practices</a></li>
+<li><a href="/notes/Ql1WxSHx11UTkDnfmYlzq">Consistency</a></li>
+<li><a href="/notes/SBhnwv59C8Y0Gb9nRztZU">Isolation</a></li>
+<li><a href="/notes/YlJ8Tb5w6sN56kk1nM6W6">Transactions</a></li>
+<li><a href="/notes/r9orvg7n574j5bmwon0nb74">Multi-version Concurrency Control (MVCC)</a></li>
+<li><a href="/notes/dnld8js1c9r1ec3sap7c00p">Repository Design Pattern</a></li>
+</ul>

@@ -1,0 +1,58 @@
+<h1 id="smtp">SMTP<a aria-hidden="true" class="anchor-heading icon-link" href="#smtp"></a></h1>
+<h2 id="the-process">The Process<a aria-hidden="true" class="anchor-heading icon-link" href="#the-process"></a></h2>
+<p>The MTA receives the email from the MSA, which it receives from the MUA</p>
+<ul>
+<li>Once the MTA gets the email, relaying comes into play— with the MTAs acting as the relays (SMTP relay)
+<ul>
+<li>In relaying, the email is forwarded to other MTAs if the recipient of the email is not hosted locally on the same system as the sender.</li>
+</ul>
+</li>
+<li>Once the relaying process has finished, the email is sent to the Mail Delivery Agent (MDA)— which is the last stop before being delivered to a client's mailbox</li>
+<li>The whole process uses SMTP, except for the final stage, which is between MDA and and MUA, which uses POP3 or IMAP
+<ul>
+<li>In other words, the process of getting mail from the "mail server" onto the email client uses POP3/IMAP.</li>
+</ul>
+</li>
+</ul>
+<p><img src="/assets/images/2021-04-07-10-12-35.png"></p>
+<ul>
+<li>MUA - Mail User Agent (email client)</li>
+<li>MSA - Mail Submission Agent</li>
+<li>MDA - Mail Delivery Agent</li>
+<li>MTA - Mail Transfer Agent</li>
+</ul>
+<h3 id="mail-transport-agent-mta">Mail Transport Agent (MTA)<a aria-hidden="true" class="anchor-heading icon-link" href="#mail-transport-agent-mta"></a></h3>
+<p>A mail server can have many names: mail relay, mail router, Internet mailer. But the most common alias is an mail transport agent (MTA)</p>
+<ul>
+<li>an MTA is responsible for transferring email among users on the internet</li>
+<li>MTAs query the MX records and select a mail server to transfer emails</li>
+<li>Usually, MTAs use a store-and-forward model of mail handling. This means that outgoing mail is put into a queue and waits for the recipient’s server response. An MTA will recurrently try to send emails. If the mail fails to be delivered during the established term, it will be returned to the mail client.</li>
+</ul>
+<h4 id="mta-impact-on-email-deliverability">MTA impact on email deliverability<a aria-hidden="true" class="anchor-heading icon-link" href="#mta-impact-on-email-deliverability"></a></h4>
+<p>There are three major factors that email deliverability is based on:</p>
+<ul>
+<li>sender’s reputation</li>
+<li>infrastructure &#x26; authentication</li>
+<li>content</li>
+</ul>
+<p>The reputation of the domain and IP address the email is sent from is the most important thing.</p>
+<ul>
+<li>MTAs can protect and strengthen the reputation of the sender.</li>
+</ul>
+<h5 id="brand-new-ips">Brand new IPs<a aria-hidden="true" class="anchor-heading icon-link" href="#brand-new-ips"></a></h5>
+<p>If you’re building your reputation from scratch, you should not use your virgin IP address at full load. It has no email sending history and thus needs some warming up. An MTA will let you do this and later slowly increase sending capacity</p>
+<hr>
+<h2 id="breakdown-of-smtp">Breakdown of SMTP<a aria-hidden="true" class="anchor-heading icon-link" href="#breakdown-of-smtp"></a></h2>
+<ol>
+<li>Alice sends an email to Bob. </li>
+<li>In reality, it goes directly to her mail server, where it is placed in a message queue.</li>
+<li>The client-side of SMTP (running on Alice's mail server) sees the message sitting in the queue.</li>
+<li>In response, it opes up a TCP connection to an SMTP server running on Bob's machine</li>
+<li>After the handshaking process is complete, the SMTP client sends Alice's message into the TCP connection.</li>
+<li>The message is received by Bob's mail server. The server then places the message in Bob's mailbox.</li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/0QtI74zrYXgqRMf6pbBIe">MX Record</a></li>
+</ul>

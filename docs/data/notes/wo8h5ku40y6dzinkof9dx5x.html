@@ -1,0 +1,23 @@
+<h1 id="document-database">Document Database<a aria-hidden="true" class="anchor-heading icon-link" href="#document-database"></a></h1>
+<p>Document-oriented databases are inherently a subclass of the key-value store</p>
+<ul>
+<li>The difference lies in the way the data is processed: 
+<ul>
+<li>in a key-value store, the data is considered to be inherently opaque to the database, 
+<ul>
+<li>this means that while a value <em>can</em> be a complex data type (like an object), we cannot do intelligent querying based on its fields. The database only sees the object as a string and it doesn’t really care about the structure of the content it represents. </li>
+</ul>
+</li>
+<li>a document-oriented system relies on internal structure in the document in order to extract metadata that the database engine uses for further optimization.</li>
+</ul>
+</li>
+</ul>
+<p>Document databases store all information for a given object in a single instance in the database, and every stored object can be different from every other. This eliminates the need for object-relational mapping while loading data into the database.</p>
+<p>Document databases typically provide for additional metadata to be associated with and stored along with the document content. That metadata may be related to facilities the datastore provides for organizing documents, providing security, or other implementation specific features.</p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/g7ulqi8no93ezeocbesc3ll">CouchDB</a></li>
+<li><a href="/notes/4xb9cg487yio88c5b2j2bid">Transaction</a></li>
+<li><a href="/notes/n93edqgcghs8u46g3j63aas">Graph Database</a></li>
+</ul>

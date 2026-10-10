@@ -1,0 +1,23 @@
+<h1 id="overloading">Overloading<a aria-hidden="true" class="anchor-heading icon-link" href="#overloading"></a></h1>
+<p>Typescript supports <a href="/notes/iya12FlmhcCisqNu7Uiet">overloading</a></p>
+<p>In TS, we can overload a function by having multiple call signatures, though it is still the same physical function at runtime (of course, since TS doesn't exist at runtime)</p>
+<ul>
+<li>From the point of view of the caller, this is virtually the same as languages that properly have overloading.</li>
+</ul>
+<p>The point of overload signatures is that it allows you to express certain function contracts that can't be safely implemented in TS.</p>
+<ul>
+<li>So almost any overloaded function is going to have some casting, or <code>any</code>, or some such 'type unsafeness', otherwise you wouldn't need the overloads</li>
+</ul>
+<p>When implementing overloads, you're making things stricter for the caller at the expense of some safety inside the function</p>
+<p>In the presence of overloads, the implementation signature is invisible to callers</p>
+<p>Example:
+Stripe has 2 different versions of <code>stripe.paymentIntents.list</code>. The first version looks like this:</p>
+<pre><code>(params?: PaymentIntentListParams, options?: RequestOptions): ApiListPromise&#x3C;PaymentIntent>
+</code></pre>
+<p>The second looks like this:</p>
+<pre><code>(options?: RequestOptions): ApiListPromise&#x3C;PaymentIntent>
+</code></pre>
+<p>The benefit to doing this is that we can call the same function, even if we don't want to pass in a <code>params</code> object. When we call <code>stripe.paymentIntents.list</code>, the TS compiler will figure out which version of the function it should call, based on the arguments that are passed to the function call. This process is what is known as Method overloading.</p>
+<ul>
+<li>If we call <code>stripe.paymentIntents.list</code> and our arguments don't line up with the first function signature (ex. because one of the args we pass doesn't line up with <code>PaymentIntentListParams</code> interface), then TS will attempt to use the second version of the function. This will result in Intellisense spitting both errors at us, even though only the first one is what we should pay attention to</li>
+</ul>

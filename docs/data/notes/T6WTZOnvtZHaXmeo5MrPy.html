@@ -1,0 +1,11 @@
+<h1 id="component-testing">Component Testing<a aria-hidden="true" class="anchor-heading icon-link" href="#component-testing"></a></h1>
+<p>Could have been called a "microservice test", since it involves testing the microservice as a whole.</p>
+<p>Unit testing is a way to test behaviour within a specific module, integration testing is a way to test multiple modules as a group, and Component testing is a way to verify that the (micro)service works as a whole to satisfy the business requirements. </p>
+<ul>
+<li>therefore it is about testing all of the modules that work together toward some business requirement.</li>
+<li>naturally, there may be some modules of a service that don't get tested during a component test, if they do not directly contribute to the service's business requirement.</li>
+</ul>
+<p>you can think of component testing as end-to-end testing an entire service that is isolated from external dependencies and any collaborating microservices with <a href="/notes/965AqO8bdqbS0Et9bKsUO">test doubles</a>.</p>
+<ul>
+<li>By writing tests at this granularity, the contract of the API is driven through tests from the perspective of a consumer. Isolation of the service is achieved by replacing external collaborators with test doubles and by using internal API endpoints to probe or configure the service. </li>
+</ul>

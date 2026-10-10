@@ -1,0 +1,45 @@
+<h1 id="networks">Networks<a aria-hidden="true" class="anchor-heading icon-link" href="#networks"></a></h1>
+<p>Networks enable containers to be able to communicate with each other and with non-Docker processes (such as a host) </p>
+<ul>
+<li>Networks are natural ways to isolate containers from other containers or other networks. As such, they provide complete isolation for containers</li>
+<li>Docker’s networking subsystem is pluggable, made possible by having drivers
+<ul>
+<li>depending on which driver you are using, you will have different core networking functionality </li>
+</ul>
+</li>
+<li><code>docker network ls</code> - show all networks</li>
+<li>all containers within a network can communicate with each other. This can be shown by the fact that you can ping the IP address of one container from another (within the same network) 
+<ul>
+<li>you can also simply <code>ping &#x3C;container-name></code></li>
+</ul>
+</li>
+<li>Docker networking allows you to attach a container to as many networks as you like.</li>
+<li>to see if 2 containers are properly on the same network, try pinging one container's IP from another.</li>
+</ul>
+<p>There are 2 main types of network: bridge and overlay</p>
+<h2 id="bridge">Bridge<a aria-hidden="true" class="anchor-heading icon-link" href="#bridge"></a></h2>
+<ul>
+<li>this is the default
+<ul>
+<li>Docker creates a bridge named <code>docker0</code>, and both the docker host and the docker containers have an IP address on that bridge.</li>
+</ul>
+</li>
+<li>Bridge networks are usually used when your applications run in standalone containers that need to communicate over the same docker host (ex. a pod?)</li>
+<li>Limited to a single host running Docker Engine.</li>
+<li>default type</li>
+<li>if our <code>docker-compose.yml</code> does not explicitly specify a network to use, a special network called <em>bridge</em> will be the network that our containers are launched in 
+<ul>
+<li>visible with <code>docker network ls</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="overlay">Overlay<a aria-hidden="true" class="anchor-heading icon-link" href="#overlay"></a></h2>
+<ul>
+<li>Overlay networks connect multiple Docker daemons together and enable swarm services to communicate with each other.</li>
+<li>can include multiple hosts and is a more advanced configuration</li>
+</ul>
+<h2 id="host-network">Host network<a aria-hidden="true" class="anchor-heading icon-link" href="#host-network"></a></h2>
+<ul>
+<li>if we have a standalone container, network isolation between the container and the Docker host will be removed, and the container will use the host's network directly</li>
+<li>host is only available for swarm services</li>
+</ul>

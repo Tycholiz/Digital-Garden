@@ -1,0 +1,43 @@
+<h1 id="middleware">Middleware<a aria-hidden="true" class="anchor-heading icon-link" href="#middleware"></a></h1>
+<p>Middleware is a stack of functions that gets called in a chain. However, the next function in that chain does not need to get called necessarily. The middleware that is currently handling the request decides if the request will complete right then and there, continue on to the next middleware in the stack with <code>next()</code>, or die instantly.</p>
+<ul>
+<li>middlewares are the key to flexibility and modularity in Express</li>
+<li>A middleware is a function that occurs in the lifecycle of a http request before the request hits the server, or before the response gets to the client</li>
+<li>These functions have access to the request and response objects, and can modify/read however they want</li>
+<li>When we add middleware to express with <code>app.use()</code>, we are appending items to <code>Server.prototype.stack</code> in Connect. When the server receives a request, it iterates over the stack, calling the <code>(req, res, next)</code> method.</li>
+<li>Recall that each middleware item will either modify the request object, modify the response object, or call <code>next()</code> so the next middleware in the stack is called (?)</li>
+<li>If a middleware does <em>not</em> modify the body or the header of the response, it should call <code>next()</code>. If it does, it should not call <code>next()</code></li>
+<li>If the current mw function does not end the request-response cycle, it must call <code>next()</code> so the next mw in the stack can take over.</li>
+</ul>
+<p>Technically, Express itself is just middleware that occurs before the node.js server</p>
+<p>middleware by its nature is dumb. It doesn't know which handler will be executed after calling the <code>next()</code> function.</p>
+<p>Middleware functions can perform the following tasks:</p>
+<ul>
+<li>execute any code.</li>
+<li>make changes to the request and the response objects.</li>
+<li>end the request-response cycle.</li>
+<li>call the next middleware function in the stack.</li>
+<li>if the current middleware function does not end the request-response cycle, it must call next() to pass control to the next middleware function. Otherwise, the request will be left hanging.</li>
+</ul>
+<h2 id="types-of-middleware">Types of middleware<a aria-hidden="true" class="anchor-heading icon-link" href="#types-of-middleware"></a></h2>
+<h3 id="application-level">Application level<a aria-hidden="true" class="anchor-heading icon-link" href="#application-level"></a></h3>
+<p>using <code>app.use()</code>, we can bind a piece of application-level middleware to the app object</p>
+<ul>
+<li><code>app.use</code> will be called each time a request is sent to the server</li>
+</ul>
+<h3 id="router-level">Router level<a aria-hidden="true" class="anchor-heading icon-link" href="#router-level"></a></h3>
+<p>works the same as application-level, except the middleware is bound to an instance of <code>express.Router()</code> instead of <code>express()</code></p>
+<h3 id="error-handling">Error handling<a aria-hidden="true" class="anchor-heading icon-link" href="#error-handling"></a></h3>
+<h3 id="built-in">Built-in<a aria-hidden="true" class="anchor-heading icon-link" href="#built-in"></a></h3>
+<p>ex. <code>express.static</code>, <code>express.json</code></p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/hjqqAFkZAtJJ6gnnA25b5">Body Parser</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/9oglq5pogy5inbt24yjk3hp">Middleware</a></li>
+<li><a href="/notes/bfiyo2tgz38y7mtvaichehb">Middleware</a></li>
+</ul>

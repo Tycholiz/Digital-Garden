@@ -1,0 +1,141 @@
+<h1 id="neural-network">Neural Network<a aria-hidden="true" class="anchor-heading icon-link" href="#neural-network"></a></h1>
+<h2 id="overview">Overview<a aria-hidden="true" class="anchor-heading icon-link" href="#overview"></a></h2>
+<p>Neural networks are preferred when you have unstructured data (ie. data that is not neatly formatted in tables)</p>
+<ul>
+<li>that's not to say that they can't work well with structured data. It's more the case that traditional machine learning algorithms like decision trees or SVMs often handle structured data well.</li>
+</ul>
+<p>At a basic level, a neural network is comprised of four main components: </p>
+<ul>
+<li>inputs
+<ul>
+<li>ex. your inputs may have a binary value of 0 or 1</li>
+</ul>
+</li>
+<li>weights - Larger weights make a single input’s contribution to the output more significant</li>
+<li>a bias or threshold - the output value of any node must be above the threshold for data to be sent to the next layer of the network
+<ul>
+<li>a threshold value of 5 would translate to a bias value of –5.</li>
+</ul>
+</li>
+<li>an output (<code>y-hat</code>)</li>
+</ul>
+<h3 id="node-aka-neuron">Node (a.k.a Neuron)<a aria-hidden="true" class="anchor-heading icon-link" href="#node-aka-neuron"></a></h3>
+<p>Each node corresponds to a neuron in a biological neural network</p>
+<p>Think of each node as its own <a title="Private" href="https://wiki.dendron.so/notes/hfyvYGJZQiUwQaaxQO27q.html" target="_blank" class="private">linear regression (Private)</a> model.</p>
+<ul>
+<li>since linear regression can be used to predict future events</li>
+</ul>
+<p>Think of a neuron as a function that takes in the outputs of all nodes from the previous layer and returns a number between 0 and 1.</p>
+<ul>
+<li>this number is called the <em>activation</em>, and it is the output of the <em>activation function</em></li>
+<li>the activations in one layer determine the activations in the subsequent layer.</li>
+<li>note: While many activation functions produce values between 0 and 1 (like the sigmoid function), not all do. For instance, the ReLU (Rectified Linear Unit) function produces values between 0 and infinity, and the tanh function outputs values between -1 and 1.</li>
+</ul>
+<h3 id="weight">Weight<a aria-hidden="true" class="anchor-heading icon-link" href="#weight"></a></h3>
+<p>Each connection between 2 nodes is assigned a weight, which indicates the strength of that connection, and how much influence the input has on the node.</p>
+<p>Each node (the current node) receives input from <em>every</em> node of the previous layer. To each of these inputs we apply a weight that affects how much of a contribution that particular node of the previous layer has on the current node</p>
+<p>Weight is a fundamental concept to neural networks because inputs naturally have a different magnitude of effort on the outcome</p>
+<ul>
+<li>ex. in a model that predicts housing prices, the recency of a paint job and the number of bedrooms are both inputs to the model that affect the price, but the latter has a much bigger impact on the ultimate price of the house.</li>
+</ul>
+<p>Weights are the primary mechanism by which neural networks learn. During training, the network gets feedback on its predictions in the form of a loss or error. To minimize this error, the model uses optimization techniques (like gradient descent) to adjust the weights. Over time, the model gradually makes more and more accurate predictions.</p>
+<p>The main difference between <a title="Private" href="https://wiki.dendron.so/notes/hfyvYGJZQiUwQaaxQO27q.html" target="_blank" class="private">regression (Private)</a> and a neural network is the impact of change on a single weight. </p>
+<ul>
+<li>In regression, you can change a weight without affecting the other inputs in a function. this isn’t the case with neural networks. Since the output of one layer is passed into the next layer of the network, a single change can have a cascading effect on the other neurons in the network.</li>
+</ul>
+<p>The neural network figures out the weights on its own</p>
+<p>a.k.a representation, patterns, numbers, features</p>
+<h3 id="bias">Bias<a aria-hidden="true" class="anchor-heading icon-link" href="#bias"></a></h3>
+<p>The bias is a value that is applied to the weighted sum of all neurons from the previous layer, adjusting the importance of that neuron. </p>
+<ul>
+<li>In other words, the bias gives us some indication of whether or not that neuron tends to be active or inactive.</li>
+<li>More specifically, bias shifts the activation function along the input axis, essentially determining the threshold at which the neuron begins to activate.</li>
+</ul>
+<p><img src="/assets/images/2023-08-10-21-26-46.png" style="max-width:200px;"></p>
+<h3 id="layers">Layers<a aria-hidden="true" class="anchor-heading icon-link" href="#layers"></a></h3>
+<p>Neural networks are composed of layers. Generally they are:</p>
+<ul>
+<li>input layer</li>
+<li>hidden layers</li>
+<li>output layer</li>
+</ul>
+<p><img src="/assets/images/2023-07-02-20-17-39.png"></p>
+<p>Each layer is usually a combination of linear functions (ie. straight lines) and non-linear functions (ie. non-straight lines)</p>
+<h3 id="how-a-neural-network-learns-simplified">How a neural network learns (simplified)<a aria-hidden="true" class="anchor-heading icon-link" href="#how-a-neural-network-learns-simplified"></a></h3>
+<p>A neural network learns by:</p>
+<ol>
+<li>starting with random numbers</li>
+<li>perform tensor operations</li>
+<li>update random numbers to try and make them better representations of the data</li>
+<li>repeat</li>
+</ol>
+<h2 id="types-of-neural-network">Types of Neural Network<a aria-hidden="true" class="anchor-heading icon-link" href="#types-of-neural-network"></a></h2>
+<p></p><p></p><div class="portal-container">
+<div class="portal-head">
+<div class="portal-backlink">
+<div class="portal-title">From <span class="portal-text-title">Types</span></div>
+<a href="/notes/hgm9om14ascftd0kof1fbzb" class="portal-arrow">Go to text <span class="right-arrow">→</span></a>
+</div>
+</div>
+<div id="portal-parent-anchor" class="portal-parent" markdown="1">
+<div class="portal-parent-fader-top"></div>
+<div class="portal-parent-fader-bottom"></div><p>Data is passed from one layer to the next in what's called a <strong>Feedforward neural network (FNN)</strong> </p>
+<ul>
+<li>so-called because connections between the nodes do not form a cycle.</li>
+</ul>
+<p>Other types of Neural Network:</p>
+<ul>
+<li><strong>Convolutional Neural Networks (CNNs)</strong> are commonly used as the model architecture in image classification tasks</li>
+<li><strong>Recurrent Neural Networks (RNNs)</strong> are commonly used in natural language processing tasks</li>
+<li><strong>Transformer</strong> are commonly used in natural language and speech</li>
+<li><strong>Fully Connected Neural Networks (FCNN)</strong></li>
+</ul>
+</div></div><p></p><p></p>
+<hr>
+<h3 id="example-number-recognition">Example: number recognition<a aria-hidden="true" class="anchor-heading icon-link" href="#example-number-recognition"></a></h3>
+<p>Imagine we have a model that takes an image (28x28 pixels) of a handwritten number and tells us what number it is. </p>
+<ul>
+<li><em>First layer</em> - Our neural network will start with 784 neurons (<span class="math math-inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>28</mn><mi>x</mi><mn>28</mn></mrow><annotation encoding="application/x-tex">28x28</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">28</span><span class="mord mathnormal">x</span><span class="mord">28</span></span></span></span></span>), and each value between 0 and 1 will represent its grayscale level (from black to white). These 784 neurons make up the first layer of our neural network.</li>
+<li><em>Last layer</em> - Our last layer will be composed of 10 neurons, each representing a digit from 0-9. </li>
+<li><em>Hidden layers</em> - Though hidden layers are a black box, it helps to think of them in terms of how they <em>might</em> behave. Generally when solving problems with computers, it's helpful to break problems down into smaller problems, then use the smaller building block solutions to amount to a bigger solution. In this case, it's difficult to recognize the number <span class="math math-inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>9</mn></mrow><annotation encoding="application/x-tex">9</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">9</span></span></span></span></span>. However, it's easier to recognize a shape with a loop and a tail (the top and bottom part of the number, respectively). There are however, different numbers that have loops (<span class="math math-inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>6</mn></mrow><annotation encoding="application/x-tex">6</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">6</span></span></span></span></span>, <span class="math math-inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>8</mn></mrow><annotation encoding="application/x-tex">8</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">8</span></span></span></span></span>, <span class="math math-inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn></mrow><annotation encoding="application/x-tex">0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span></span>) and different numbers that have tails (<span class="math math-inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>7</mn></mrow><annotation encoding="application/x-tex">7</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">7</span></span></span></span></span>, <span class="math math-inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span></span>). So we might think, "What if each node in our second last layer represented a different component shape? Then the activation functions of the <em>loop node</em> and the <em>tail node</em> would output a number close to 1, which would be enough information to tell us that we have the number <span class="math math-inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>9</mn></mrow><annotation encoding="application/x-tex">9</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">9</span></span></span></span></span>".
+<ul>
+<li>of course, then the question becomes "how do we recognize shapes like loops and tails?". We can continue to break down these shapes to reveal straight-ish edges. That is, we can think of the upper loop of the number <span class="math math-inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>9</mn></mrow><annotation encoding="application/x-tex">9</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">9</span></span></span></span></span> as being made up of ~5 straight-ish edges. When our neural network receives the handwritten <span class="math math-inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>9</mn></mrow><annotation encoding="application/x-tex">9</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">9</span></span></span></span></span>, it can break it down first into edges, then determine which shapes those edges make, and then finally determine which number it is based on which shapes it has found.</li>
+<li><a href="https://youtu.be/aircAruvnKk?t=443">video demonstration</a></li>
+</ul>
+</li>
+</ul>
+<p>The activation of these neurons (often simply a number between 0-1) represents how much the model thinks that the input image is that particular number</p>
+<ul>
+<li>ex. if our input drawing was of a 9, then the final neuron in the last layer will have the highest activation value</li>
+</ul>
+<p>In this example, the <em>weights</em> of each node activation tell us the pixel pattern that that node is picking up on, while the <em>bias</em> tells us how high the weighted sum needs to be before we consider the neuron to be meaningfully active</p>
+<h2 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h2>
+<ul>
+<li><a href="http://neuralnetworksanddeeplearning.com/">Neural Networks and Deep Learning Book</a>
+<ul>
+<li>has a lot of code examples and gives a good fundamental overview. Recommended by 3Blue1Brown</li>
+</ul>
+</li>
+</ul>
+<h2 id="e-resources">E Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#e-resources"></a></h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=aircAruvnKk&#x26;t=707s">But what is a neural network?</a>
+<ul>
+<li>explains the fundamentals of a neural network, including layers, neurons, biases, weights etc.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/v3rh8rqc5aorupfno1w4otw">Functions</a></li>
+<li><a href="/notes/hgm9om14ascftd0kof1fbzb">Types</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/i2it5id8qwtg27n4usg8bo1">Pytorch</a></li>
+<li><a href="/notes/r0w4lqir8cq5ez9inlimel8">Deep Learning</a></li>
+<li><a href="/notes/r9fy49qm440b41yo8sqfwz5">Terminology</a></li>
+<li><a href="/notes/v3rh8rqc5aorupfno1w4otw">Functions</a></li>
+</ul>

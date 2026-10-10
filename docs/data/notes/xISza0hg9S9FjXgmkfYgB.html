@@ -1,0 +1,171 @@
+<h1 id="data-mesh">Data Mesh<a aria-hidden="true" class="anchor-heading icon-link" href="#data-mesh"></a></h1>
+<h1 id="overview">Overview<a aria-hidden="true" class="anchor-heading icon-link" href="#overview"></a></h1>
+<p>Data mesh at core is founded in decentralization and distribution of responsibility to people who are closest to the data in order to support continuous change and scalability.</p>
+<p>With a data mesh, the number of places and teams who provide data increases.</p>
+<p>Data meshes invert the model of responsibility of past models (<a href="/notes/wywXc6giwBv8xoiEMJlJW">data lakes</a>, <a href="/notes/3NfgHUUU25MfpnbtOJfr9">data warehouses</a>), with the accountability of data quality shifting upstream as close to the source of the data as possible.</p>
+<p>Data mesh lets you scale your data architecture in 2 ways:</p>
+<ul>
+<li>horizontal scalability</li>
+<li>across an organization as the business evolves and changes</li>
+</ul>
+<p>Data mesh solves the problem of data pipelines, which often become brittle over time, due to things like having to rely on availability of services, incompatible changes to APIs etc.</p>
+<p>Data mesh reduces the likelihood of there being inconsistencies between the same sets of data in different parts of the organization.</p>
+<p>Data mesh can be thought of as a network to exchange data (between nodes) about the business throughout the organization.</p>
+<ul>
+<li>the nodes are the <em>data products</em></li>
+</ul>
+<p>Data mesh takes us from the ad hoc way of building microservices (many apps, dbs and SaaS's that have various pipelines to each other), into something that is conceptually a little more centralized (with something like Kafka in the middle connecting everything)</p>
+<ul>
+<li>the idea is to centralize an immutable stream of facts, but decentralize the freedom to act, adapt and change.</li>
+</ul>
+<p>While <a href="/notes/GDJoTJocO8OKbTtSjn2CW">DDD</a> has been implemented widely to application code, it has not been applied to domain concepts in a data platform.</p>
+<ul>
+<li>Data mesh takes plenty of concepts from DDD.</li>
+<li>data meshes are to data and analytics what microservices are to application architecture.</li>
+</ul>
+<p>A technology like <a href="/notes/WQoMTf6VXBaxCgksXAVsj">Kafka</a> is a good fit for Data Mesh</p>
+<p>Data mesh aims to alleviate the issue of management and access to analytical data at scale.</p>
+<h1 id="principles">Principles<a aria-hidden="true" class="anchor-heading icon-link" href="#principles"></a></h1>
+<p>The objective of a Data Mesh is to create a foundation for getting value from analytical data and historical facts at scale.</p>
+<ul>
+<li>To achieve this, there are 4 underpinning principles that a data mesh implementation provides:
+<ol>
+<li>domain-oriented data ownership and architecture</li>
+<li>data as a product</li>
+<li>self-serve data infrastructure as a platform</li>
+<li><a href="/notes/aep8dn2mjw5lnwggy0cmo7x">federated</a> computational governance</li>
+</ol>
+</li>
+</ul>
+<p>These 4 principles are all necessary.</p>
+<h2 id="domain-ownership">Domain ownership<a aria-hidden="true" class="anchor-heading icon-link" href="#domain-ownership"></a></h2>
+<p>A domain usually follows the same lines as the <a href="/notes/eJh8ewMkDq2LpJPqC6fX8">bounded context</a>.</p>
+<ul>
+<li>ex. If we had a music streaming application, the podcast domain would need to be in charge of both APIs to create a podcast episode, but also an analytical data endpoint for retrieving all podcast episode's data over the last 12 months.
+<ul>
+<li>This implies that the architecture must remove any friction or coupling to let domains serve their analytical data and release the code that computes the data, independently of other domains. </li>
+</ul>
+</li>
+</ul>
+<p>As a result, there is no data team or data analytics team.</p>
+<p>Naturally, each domain can have dependencies to other domains' operational and analytical data endpoints.</p>
+<h2 id="data-as-a-product">Data as a product<a aria-hidden="true" class="anchor-heading icon-link" href="#data-as-a-product"></a></h2>
+<p>The Data as a Product principle is designed to address the data quality and age-old data silos problem, which is that data is collected from all areas of the business, but is never used to its potential.</p>
+<ul>
+<li>Analytical data provided by the domains must be treated as a product, and the consumers of that data should be treated as customers </li>
+</ul>
+<p>For a domain data to be considered a product, a data mesh implementation should support discoverability, security, explorability, understandability and trustworthines</p>
+<p><em>Data Product</em> is the architectural quantum (ie. an independently deployable component) of a data mesh.</p>
+<p>Data product is the node on the mesh that encapsulates three structural components required for its function, providing access to domain's analytical data as a product:</p>
+<ul>
+<li>Code for...
+<ul>
+<li>consuming, transforming and serving upstream data </li>
+<li>APIs that provide access to data, semantic and syntax schema, observability metrics and other metadata</li>
+<li>enforcing traits such as access control policies, compliance, provenance, etc.</li>
+</ul>
+</li>
+<li>Data &#x26; Metadata. Data can be served as events, batch files, relational tables, graphs, etc.</li>
+<li>Infrastructure, which enables building, deploying and running the data product's code, as well as storage and access to big data and metadata.</li>
+</ul>
+<p>In a data mesh, pipelines (code) are managed as independent components from the data they produce</p>
+<ul>
+<li>Data product is a composition of all components - code, data and infrastructure - at the granularity of a domain's bounded context.</li>
+</ul>
+<h2 id="availability-and-self-serve-nature-of-data">Availability and self-serve nature of data<a aria-hidden="true" class="anchor-heading icon-link" href="#availability-and-self-serve-nature-of-data"></a></h2>
+<p>Data is available everywhere and it is self-serve from anywhere in the organization.</p>
+<p>If you wanted to be able to source data from multiple domains to aggregate in some kind of reporting system, data mesh should allow you to do that very quickly.</p>
+<p>This principle is necessary, due to the extra infrastructure that needs to be provisioned and run, as well as the skills needed to replicate it everwhere.</p>
+<ul>
+<li>the only practical way that each team could realistically own their data products would be to have access to a high-level abstraction of infrastructure, so that they don't have to manually manage the lifecycle of data products.</li>
+</ul>
+<h3 id="planes">Planes<a aria-hidden="true" class="anchor-heading icon-link" href="#planes"></a></h3>
+<p>The self-serve platform is composed of multiple planes, each serving a different profile of users.</p>
+<ul>
+<li>A plane is representative of a level of existence - integrated yet separate.
+<ul>
+<li>this is a similar concept to <em>control plane</em> in networking— which is the part of a network that controls how data packets are forwarded from one place to another.</li>
+</ul>
+</li>
+<li>a hierarchy of planes is desirable</li>
+</ul>
+<h4 id="example-planes">Example planes<a aria-hidden="true" class="anchor-heading icon-link" href="#example-planes"></a></h4>
+<ul>
+<li><em>Data infrastructure provisioning plane</em>, which supports provisioning of the underlying infrastructure which is required to run the components of a data product and mesh of products. This would include the provisioning of distributed file storage, storage accounts, access control management system, the orchestration to run data products internal code, provisioning of a distributed query engine on a graph of data products, etc. This type of plane would likely only be used by higher-level planes, since it is such a low-level data infrastructure lifecycle management plane.</li>
+<li><em>Data product developer experience plane</em>, which is the interface that a data product developer is more likely to use. The purpose of the plane is to use simple declarative interfaces to manage the lifecycle of a data product.</li>
+<li><em>Data mesh supervision plane</em>, which operates at the mesh level, enabling it to work with a graph of connected data products. For instance, this would grant the ability to discover data products for a particular use case.</li>
+</ul>
+<h2 id="data-is-governed-where-it-is">Data is governed where it is<a aria-hidden="true" class="anchor-heading icon-link" href="#data-is-governed-where-it-is"></a></h2>
+<p>Data is governed where it is created and stored.</p>
+<p>Because the scope of data is always changing, this principle allows us to more quickly navigate data in the mesh and have confidence in that data.</p>
+<p>To get value in forms of higher order datasets, insights, or machine intelligence, there is a need for these independent data products to interoperate. </p>
+<ul>
+<li>We need to be able to correlate them, create unions, find intersections, or perform other graphs or set operations on them at scale.</li>
+<li>To achieve this, a data mesh implementation requires a governance model that embraces decentralization and domain self-sovereignty, interoperability through global standardization, a dynamic topology and most importantly automated execution of decisions by the platform.</li>
+</ul>
+<p>This raises an important point, which is "what should be standardized globally across the organization, and what should be left up to each domain?"</p>
+<ul>
+<li>ex. in the case of an audio streaming app, the <em>podcast audienceship</em> data model should be left up to the Podcast domain team, whereas the decision of how to identify a <em>podcast listener</em> should be a global concern, since a podcast listener is a member of the more organization-wide concept of a <em>user</em>, which is an upstream <a href="/notes/eJh8ewMkDq2LpJPqC6fX8">bounded context</a>, and thus present in other domains. Because we'd realistically want to correlate a single user across multiple domains (e.g. a user who is both a podcast listener and a music listener), this is a global concern.</li>
+</ul>
+<hr>
+<h2 id="data-lakewarehouse-vs-data-mesh">Data Lake/Warehouse vs Data Mesh<a aria-hidden="true" class="anchor-heading icon-link" href="#data-lakewarehouse-vs-data-mesh"></a></h2>
+<div class="table-responsive">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Pre-data mesh governance aspect (data lake/warehouse)</th><th>Data mesh governance aspect</th></tr></thead><tbody><tr><td>Centralized team</td><td><a href="/notes/aep8dn2mjw5lnwggy0cmo7x">Federated</a> team</td></tr><tr><td>Responsible for data quality</td><td>Responsible for defining how to model what constitutes quality</td></tr><tr><td>Responsible for data security</td><td>Responsible for defining aspects of data security i.e. data sensitivity levels for the platform to build in and monitor automatically</td></tr><tr><td>Responsible for complying with regulation</td><td>Responsible for defining the regulation requirements for the platform to build in and monitor automatically</td></tr><tr><td>Centralized custodianship of data</td><td>Federated custodianship of data by domains</td></tr><tr><td>Responsible for global canonical data modeling</td><td>Responsible for modeling polysemes - data elements that cross the boundaries of multiple domains</td></tr><tr><td>Team is independent from domains</td><td>Team is made of domains representatives</td></tr><tr><td>Aiming for a well defined static structure of data</td><td>Aiming for enabling effective mesh operation embracing a continuously changing and a dynamic topology of the mesh</td></tr><tr><td>Centralized technology used by monolithic lake/warehouse</td><td>Self-serve platform technologies used by each domain</td></tr><tr><td>Measure success based on number or volume of governed data (tables)</td><td>Measure success based on the network effect - the connections representing the consumption of data on the mesh</td></tr><tr><td>Manual process with human intervention</td><td>Automated processes implemented by the platform</td></tr><tr><td>Prevent error</td><td>Detect error and recover through platform’s automated processing</td></tr></tbody></table></div>
+<h1 id="resources">Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#resources"></a></h1>
+<p><a href="https://martinfowler.com/articles/data-mesh-principles.html">Original article</a></p>

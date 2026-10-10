@@ -1,0 +1,44 @@
+<h1 id="horizontalpodautoscaler">HorizontalPodAutoscaler<a aria-hidden="true" class="anchor-heading icon-link" href="#horizontalpodautoscaler"></a></h1>
+<p>A HPA controls the scale of a <a href="/notes/ZK0P0va9kOJGsM9X7X2Td">Deployment</a> and its <a href="/notes/DoF6o4TQOhpbUAx16L24H">ReplicaSet</a></p>
+<ul>
+<li>The HPA will also instruct the workload resource to scale back down when load decreases.</li>
+</ul>
+<p>A HPA automatically updates a workload resource (such as a <a href="/notes/ZK0P0va9kOJGsM9X7X2Td">Deployment</a> or StatefulSet), with the aim of automatically scaling the workload to match demand.</p>
+<p><a href="/notes/HZSth7yP1s7aPaPPZRJPm">Horizontal scaling</a> here means that the strategy is to deploy more pods (scale out), rather than adding more computational resources like CPU and memory to existing pods.</p>
+<h3 id="how-it-works">How it works<a aria-hidden="true" class="anchor-heading icon-link" href="#how-it-works"></a></h3>
+<p>The HPA runs within the <a href="/notes/7w1hne3hmzgbu69buj3hjgf">Control Plane (master node)</a></p>
+<p>HPA is implemented as a control loop that runs intermittently (ie. it's not a continuous process).</p>
+<ul>
+<li>default is every 15s</li>
+</ul>
+<p>Once each period, the controller manager queries for information about how resources are being utilized, and compares it against the metric specified in the HPA spec definition.</p>
+<ul>
+<li>the target resource is found by <code>scaleTargetRef</code>.</li>
+<li>it then selects the pods based on the target's resources <code>.spec.selector</code> labels and obtains the metrics.</li>
+</ul>
+<p>Example:</p>
+<pre class="language-yml"><code class="language-yml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> autoscaling/v2beta2
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> HorizontalPodAutoscaler
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> $APP_NAME
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">scaleTargetRef</span><span class="token punctuation">:</span>
+    <span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> apps/v1beta1
+    <span class="token key atrule">kind</span><span class="token punctuation">:</span> Deployment
+    <span class="token key atrule">name</span><span class="token punctuation">:</span> $APP_NAME
+  <span class="token key atrule">minReplicas</span><span class="token punctuation">:</span> <span class="token number">2</span>
+  <span class="token key atrule">maxReplicas</span><span class="token punctuation">:</span> <span class="token number">4</span>
+  <span class="token key atrule">metrics</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> <span class="token key atrule">type</span><span class="token punctuation">:</span> Resource
+      <span class="token key atrule">resource</span><span class="token punctuation">:</span>
+        <span class="token key atrule">name</span><span class="token punctuation">:</span> cpu
+        <span class="token key atrule">target</span><span class="token punctuation">:</span>
+          <span class="token key atrule">type</span><span class="token punctuation">:</span> Utilization
+          <span class="token key atrule">averageUtilization</span><span class="token punctuation">:</span> <span class="token number">80</span>
+    <span class="token punctuation">-</span> <span class="token key atrule">type</span><span class="token punctuation">:</span> Resource
+      <span class="token key atrule">resource</span><span class="token punctuation">:</span>
+        <span class="token key atrule">name</span><span class="token punctuation">:</span> memory
+        <span class="token key atrule">target</span><span class="token punctuation">:</span>
+          <span class="token key atrule">type</span><span class="token punctuation">:</span> Utilization
+          <span class="token key atrule">averageUtilization</span><span class="token punctuation">:</span> <span class="token number">100</span>
+</code></pre>

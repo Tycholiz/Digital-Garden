@@ -1,0 +1,20 @@
+<h1 id="elastic-load-balancing-elb">Elastic Load Balancing (ELB)<a aria-hidden="true" class="anchor-heading icon-link" href="#elastic-load-balancing-elb"></a></h1>
+<p>Comes in 3 variants:</p>
+<ul>
+<li>Classic
+<ul>
+<li>Legacy software.</li>
+</ul>
+</li>
+<li>Application (ALB)
+<ul>
+<li>a proper reverse proxy that sits between the internet and your application</li>
+<li>Every request to your application gets handled by the load balancer first. The load balancer then makes another request to your application and finally forwards the response from your application to the caller.</li>
+</ul>
+</li>
+<li>Network (NLB)
+<ul>
+<li>behave like load balancers, but they work by routing network packets rather than by proxying HTTP requests</li>
+</ul>
+</li>
+</ul>

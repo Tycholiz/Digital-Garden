@@ -1,0 +1,30 @@
+<h1 id="json-patch">JSON Patch<a aria-hidden="true" class="anchor-heading icon-link" href="#json-patch"></a></h1>
+<p>JSON Patch is a format for describing changes to a JSON file</p>
+<ul>
+<li>think of it like a patchfile in Git: instead of sending over the entire repo with a single change, we send a diff that describes the changes that we've made.</li>
+</ul>
+<p>JSON Patch can be used in combination with <a href="/notes/mn5VHtlB66IBGAFXPXgvq#patch1">HTTP Patch</a> methods to perform partial updates</p>
+<p>A JSON Patch document is just a JSON file containing an array of patch operations. </p>
+<ul>
+<li>The patch operations supported by JSON Patch are <code>add</code>, <code>remove</code>, <code>replace</code>, <code>move</code>, <code>copy</code> and <code>test</code>. </li>
+<li>The operations are applied in order: if any of them fail then the whole patch operation should abort.</li>
+</ul>
+<p>The original document</p>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"baz"</span><span class="token operator">:</span> <span class="token string">"qux"</span><span class="token punctuation">,</span>
+  <span class="token property">"foo"</span><span class="token operator">:</span> <span class="token string">"bar"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>The patch</p>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">[</span>
+  <span class="token punctuation">{</span> <span class="token property">"op"</span><span class="token operator">:</span> <span class="token string">"replace"</span><span class="token punctuation">,</span> <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"/baz"</span><span class="token punctuation">,</span> <span class="token property">"value"</span><span class="token operator">:</span> <span class="token string">"boo"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> <span class="token property">"op"</span><span class="token operator">:</span> <span class="token string">"add"</span><span class="token punctuation">,</span> <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"/hello"</span><span class="token punctuation">,</span> <span class="token property">"value"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"world"</span><span class="token punctuation">]</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> <span class="token property">"op"</span><span class="token operator">:</span> <span class="token string">"remove"</span><span class="token punctuation">,</span> <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"/foo"</span> <span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
+</code></pre>
+<p>The result</p>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"baz"</span><span class="token operator">:</span> <span class="token string">"boo"</span><span class="token punctuation">,</span>
+  <span class="token property">"hello"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"world"</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre>

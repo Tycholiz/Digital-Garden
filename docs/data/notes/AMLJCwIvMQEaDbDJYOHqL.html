@@ -1,0 +1,41 @@
+<h1 id="email-dns-records">Email DNS Records<a aria-hidden="true" class="anchor-heading icon-link" href="#email-dns-records"></a></h1>
+<h3 id="spf-records">SPF Records<a aria-hidden="true" class="anchor-heading icon-link" href="#spf-records"></a></h3>
+<p></p><p></p><div class="portal-container">
+<div class="portal-head">
+<div class="portal-backlink">
+<div class="portal-title">From <span class="portal-text-title">SPF</span></div>
+<a href="/notes/6rOA1qY7HiRAaSdpBxGwt" class="portal-arrow">Go to text <span class="right-arrow">→</span></a>
+</div>
+</div>
+<div id="portal-parent-anchor" class="portal-parent" markdown="1">
+<div class="portal-parent-fader-top"></div>
+<div class="portal-parent-fader-bottom"></div><p>SPF defines which IPs are allowed to send email for your domain.</p>
+<ul>
+<li>This allows you to instruct recipient servers on how to treat email that claims to be from your domain, but wasn’t sent by a server you approved 
+<ul>
+<li>If someone is spoofing your domain and sending mail that claims to be from you but isn’t, this is how you define the methods used to handle that.</li>
+</ul>
+</li>
+</ul>
+<p>It also improves your inbox delivery, since by including it, you are signalling that security is important.</p>
+<p>An SPF record may or may not be required by a mail server</p>
+<p>An SPF record is a TXT DNS record</p>
+<ul>
+<li>there is an SPF record, but it is deprecated.</li>
+</ul>
+<p>The SPF record starts with <code>v=spf1</code></p>
+<p>The end of the record allows us to decide what you want to request of recipient servers if they receive email from your domain that doesn’t come from one of the places you specified in your SPF record.</p>
+<ul>
+<li>We have 3 options:
+<ul>
+<li><code>?</code> - “I don’t care what you do if you get an email from a server that I haven’t approved to send from my domain. Do what you want.”</li>
+<li><code>~</code> - “If you get an email from a server I didn’t approve, it probably wasn’t me. You should do what you think is best.”</li>
+<li><code>-</code> - “If you get an email from a server that I didn’t approve, please reject it. It wasn’t from me.”
+<ul>
+<li>we should be confident in our SPF record to pick this one.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div></div><p></p><p></p>

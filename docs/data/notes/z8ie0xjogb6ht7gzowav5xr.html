@@ -1,0 +1,43 @@
+<h1 id="k6">K6<a aria-hidden="true" class="anchor-heading icon-link" href="#k6"></a></h1>
+<p>K6 is an open-source framework for implementing <a href="/notes/6rd2UlBxaM4Uc41t6VY63">load testing</a></p>
+<p>K6 tests work well when run within a <a href="/notes/dF2CVtOaqyE04VZqR8opg">CI-CD</a> pipeline or on a schedule.</p>
+<p>K6 does not use the <a href="/notes/c3s5pfbmoju8ej87eqz5r5z">V8 Engine</a> engine and is not <a href="/notes/5iC7cpurvsTcO6WDflzOZ">nodejs</a> based.</p>
+<ul>
+<li>therefore we can't import node modules into our K6 script</li>
+</ul>
+<h2 id="k6-script">K6 Script<a aria-hidden="true" class="anchor-heading icon-link" href="#k6-script"></a></h2>
+<h3 id="making-scripts">Making scripts<a aria-hidden="true" class="anchor-heading icon-link" href="#making-scripts"></a></h3>
+<p>K6 scripts can be made in several ways:</p>
+<ul>
+<li><em>K6 test builder</em> - In the K6 UI, create the test with an endpoint</li>
+<li><em>K6 recorder</em> - with a browser extension, simply record the actions by clicking through your application's UI.</li>
+<li><em>converter</em> - generate K6 scripts from HAR files, Postman collections, <a href="/notes/4hRmipi8lxpBLyzWu5JVB">OpenAPI</a> specifications</li>
+<li><em>manual</em> - write the script (with Javascript) by hand
+<ul>
+<li>tip: use VSCode extension</li>
+</ul>
+</li>
+</ul>
+<h3 id="components">Components<a aria-hidden="true" class="anchor-heading icon-link" href="#components"></a></h3>
+<ul>
+<li>The default export of the script is the entrypoint for the virtual users (VUs), similar to <code>main()</code> of other programming languages.
+<ul>
+<li>code inside this function runs over and over as long as the load test is running, while the other functions are <em>init</em> functions that only run once per VU.</li>
+</ul>
+</li>
+</ul>
+<h2 id="gotchas">Gotchas<a aria-hidden="true" class="anchor-heading icon-link" href="#gotchas"></a></h2>
+<ul>
+<li>all variables must be prefixed with <code>K6_</code> (can be added in the CI-CD tool UI, like Gitlab)</li>
+<li><code>.js</code> files work best</li>
+</ul>
+<h2 id="resources">Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#resources"></a></h2>
+<ul>
+<li><a href="https://k6.io/docs/using-k6/test-life-cycle/">K6 test lifecycle</a></li>
+<li><a href="https://k6.io/docs/javascript-api/">K6 API (including built-in modules)</a></li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/6rd2UlBxaM4Uc41t6VY63">Load Testing</a></li>
+</ul>

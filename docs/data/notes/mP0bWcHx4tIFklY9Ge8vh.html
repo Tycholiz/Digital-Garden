@@ -1,0 +1,21 @@
+<h1 id="kinesis">Kinesis<a aria-hidden="true" class="anchor-heading icon-link" href="#kinesis"></a></h1>
+<p>A highly-durable linked list in the cloud</p>
+<p>Use-cases are similar to SQS— you would typically use either Kinesis or SQS when you want to enqueue records for asynchronous processing.</p>
+<ul>
+<li>use-cases are also similar to <a href="/notes/WQoMTf6VXBaxCgksXAVsj">Kafka</a></li>
+</ul>
+<p>Difference with SQS:</p>
+<ul>
+<li>SQS can only have one consumer, while Kinesis can have many.</li>
+<li>Once an SQS message gets consumed, it gets deleted from the queue. But Kinesis records get added to a list in a stable order, and any number of consumers can read a copy of the stream by keeping a cursor over this never-ending list.</li>
+<li>Multiple consumers don’t affect each other, and if one falls behind, it doesn’t slow down the other consumers.</li>
+<li>Whenever consumers read data out of Kinesis, they will always get their records in the same order.</li>
+<li>Often cheaper than SQS</li>
+<li>Kinesis can carry a significant operational burden with the need to provision capacity (shards).</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/ulicRRwo3lSFzh3tMfWH9">Apache Flink</a></li>
+<li><a href="/notes/OSdV9FvBG3wDbRNLllg0V">AWS Lambda</a></li>
+</ul>

@@ -1,0 +1,22 @@
+<h1 id="kubernetes-controller">Kubernetes Controller<a aria-hidden="true" class="anchor-heading icon-link" href="#kubernetes-controller"></a></h1>
+<p>A controller is a <a href="https://kubernetes.io/docs/concepts/architecture/controller/">control loop</a> that watches the (shared) state of the cluster through the <a href="/notes/hecaydk40a6wqiprau7l8qz">API server</a>, and makes changes so that the actual state matches the desired state.</p>
+<p>A controller watches the API server for new events. When it detects that there is a new object (eg. a new ReplicaSet), it acts in accordance with the type of controller it is.</p>
+<ul>
+<li>ex. In the case of a ReplicaSet, the controller would create pods equal to the number found in the replica-set yaml file</li>
+</ul>
+<p>Controllers themselves are stateless.</p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/mWodutpvAmyxmDr8L1SIe">DaemonSet</a></li>
+<li><a href="/notes/jfPWYYm0N62ErYEgNJnLh">Endpoint Controller</a></li>
+<li><a href="/notes/r3tsEEYDIeLs1mWyVL6Kz">Node controller</a></li>
+<li><a href="/notes/DoF6o4TQOhpbUAx16L24H">ReplicaSet</a></li>
+<li><a href="/notes/nFuw9FcNx3N4bhsSI5GVh">Replication Controller</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/qxSOd6SPN8qf9ZUojVFDX">K8s</a></li>
+<li><a href="/notes/7w1hne3hmzgbu69buj3hjgf">Master Node</a></li>
+</ul>

@@ -1,0 +1,24 @@
+<h1 id="file">File<a aria-hidden="true" class="anchor-heading icon-link" href="#file"></a></h1>
+<h4 id="create-new-file">Create new file<a aria-hidden="true" class="anchor-heading icon-link" href="#create-new-file"></a></h4>
+<pre class="language-rb"><code class="language-rb"><span class="token class-name">File</span><span class="token punctuation">.</span><span class="token keyword">new</span><span class="token punctuation">(</span><span class="token string-literal"><span class="token string">"out.txt"</span></span><span class="token punctuation">,</span> <span class="token string-literal"><span class="token string">"r"</span></span><span class="token punctuation">)</span>
+</code></pre>
+<p>r - Read only. The file must exist.
+w - Create an empty file for writing.
+a - Append to a file.The file is created if it does not exist.
+r+ - Open a file for update both reading and writing. The file must exist.
+w+ - Create an empty file for both reading and writing.
+a+ - Open a file for reading and appending. The file is created if it does not exist.</p>
+<h4 id="open--read-file">Open + Read file<a aria-hidden="true" class="anchor-heading icon-link" href="#open--read-file"></a></h4>
+<pre class="language-rb"><code class="language-rb">file <span class="token operator">=</span> <span class="token builtin">File</span><span class="token punctuation">.</span>open<span class="token punctuation">(</span><span class="token string-literal"><span class="token string">"users.txt"</span></span><span class="token punctuation">)</span>
+</code></pre>
+<p>Read whole file:</p>
+<pre class="language-rb"><code class="language-rb">file_data <span class="token operator">=</span> file<span class="token punctuation">.</span>read
+<span class="token comment"># "user1\nuser2\nuser3\n"</span>
+</code></pre>
+<p>Iterate over each line</p>
+<ul>
+<li><code>chomp</code> will remove newline (<code>\n</code>) characters</li>
+</ul>
+<pre class="language-rb"><code class="language-rb">file_data <span class="token operator">=</span> file<span class="token punctuation">.</span>readlines<span class="token punctuation">.</span>map<span class="token punctuation">(</span><span class="token operator">&#x26;</span><span class="token symbol">:chomp</span><span class="token punctuation">)</span>
+<span class="token comment"># ["user1", "user2", "user3"]</span>
+</code></pre>

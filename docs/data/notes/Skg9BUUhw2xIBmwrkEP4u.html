@@ -1,0 +1,88 @@
+<h1 id="messaging-pattern">Messaging Pattern<a aria-hidden="true" class="anchor-heading icon-link" href="#messaging-pattern"></a></h1>
+<p>A messaging pattern describes how two different parts of an application (or different systems) connect and communicate with each other.</p>
+<ul>
+<li>In actuality, protocols like REST are indeed messaging protocols, but we don't think of them as such. Typically when we talk about messaging patterns, we are referring to situations where we have this third entity between the provider/consumer of the data.</li>
+</ul>
+<p>message-passing communication is usually one-way: a sender normally doesn't expect to receive a reply to its messages. It is possible for a process to send a response, but this would usually be done on a separate channel.</p>
+<p>a message is just a sequence of bytes with some metadata, so you can use any encoding format</p>
+<p>Two types of messaging patterns are available − </p>
+<ol>
+<li>point to point 
+<ul>
+<li>a particular message can be consumed by a maximum of one consumer only, and it disappears from the queue once a consumer reads it</li>
+<li>The typical example of this system is an Order Processing System, where each order will be processed by one Order Processor, but Multiple Order Processors can work as well at the same time.</li>
+</ul>
+</li>
+<li><a href="/notes/NpY4iv9TwpGJODbVesQYe">Pub-Sub</a> 
+<ul>
+<li>Most of the messaging patterns follow pub-sub.</li>
+</ul>
+</li>
+</ol>
+<h1 id="overview">Overview<a aria-hidden="true" class="anchor-heading icon-link" href="#overview"></a></h1>
+<p>Imagine we have 2 services: OrderService and InvoiceService. In order to pass data from OrderService downstream to InvoiceService, we set up a message queue in the OrderService. Then, InvoiceService would read from it.</p>
+<p>If we need to add more downstream services, then we need to modify the upstream service (ie. OrderService) to instruct it to write a message queue. This creates more complex high-level service relationships that are hard to maintain, since future downstream services now become reliant on that upstream service to update its message queues.</p>
+<ul>
+<li>This burden is what causes people to go for more of a <a href="/notes/csPOCpGsdV9SQed4lZyWh">bus</a>-based solution</li>
+</ul>
+<p>In a typical message-queueing implementation, a developer installs and configures message-queueing software (a queue manager or broker), and defines a named message queue. Or they register with a message queuing service.</p>
+<ul>
+<li>An application then registers a software routine that "listens" for messages placed onto the queue.</li>
+<li>Second and subsequent applications may connect to the queue and transfer a message onto it.</li>
+<li>The queue-manager software stores the messages until a receiving application connects and then calls the registered software routine. The receiving application then processes the message in an appropriate manner.</li>
+</ul>
+<p>Some patterns for implementing messages are:</p>
+<ul>
+<li>Message Queues
+<ul>
+<li>ex. <a href="/notes/Ha1umcNRHS8mEarVSMy5v">SQS</a></li>
+</ul>
+</li>
+<li><a href="/notes/NpY4iv9TwpGJODbVesQYe">Pub/Sub</a>
+<ul>
+<li>ex. <a href="/notes/3E2oC3PsnDWowLW9hK0eZ">SNS</a></li>
+</ul>
+</li>
+<li>Event buses
+<ul>
+<li>ex. <a href="/notes/7n3tUhrwbvz8nNu0bTlWz">EventBridge</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="fan-out">Fan out<a aria-hidden="true" class="anchor-heading icon-link" href="#fan-out"></a></h2>
+<p>Fan-out is a messaging pattern where messages are broadcast in parallel in a one-to-many arrangement.</p>
+<ul>
+<li>this pattern can be seen in the <a href="/notes/NpY4iv9TwpGJODbVesQYe">pub/sub</a> messaging system, since a single sender can send messages to many receivers.</li>
+</ul>
+<p><img src="/assets/images/2022-04-07-21-41-28.png"></p>
+<h2 id="message-queue">Message Queue<a aria-hidden="true" class="anchor-heading icon-link" href="#message-queue"></a></h2>
+<p>Message queues provide some guarantee of reliability, in that the number of incoming messages equals the number of outgoing messages</p>
+<h2 id="message-broker">Message Broker<a aria-hidden="true" class="anchor-heading icon-link" href="#message-broker"></a></h2>
+<p>A message broker is an intermediary computer program module that translates a message from the formal messaging protocol of the sender to the formal messaging protocol of the receiver.</p>
+<p>Message brokers are used as follows: one process sends a message to a named queue or topic, and the broker ensures that the message is delivered to one or more consumers of or subscribers to that queue or topic. </p>
+<ul>
+<li>There can be many producers and many consumers on the same topic.</li>
+</ul>
+<h3 id="examples">Examples<a aria-hidden="true" class="anchor-heading icon-link" href="#examples"></a></h3>
+<ul>
+<li><a href="/notes/WQoMTf6VXBaxCgksXAVsj">Kafka</a>, though more of an event-streaming platform</li>
+<li>RabbitMQ</li>
+<li>AWS Kinesis</li>
+<li>Google Cloud Pub/Sub</li>
+<li>Redis (not a message broker per se, but rather has messaging brokering as one of its capabilities)</li>
+<li>NATS</li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/3fd9knqbt4wyg2267sxe3up">Broker</a></li>
+<li><a href="/notes/0pUoWXrTC07Z9B1ijwosK">Dead Letter Queue</a></li>
+<li><a href="/notes/NpY4iv9TwpGJODbVesQYe">PubSub Pattern</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/vutujFFWxQu6TshWVuMpI">Distributed Computing</a></li>
+<li><a href="/notes/h4AAeyVt574EVXO3sy2X1">Process</a></li>
+<li><a href="/notes/csPOCpGsdV9SQed4lZyWh">Enterprise Service Bus</a></li>
+</ul>

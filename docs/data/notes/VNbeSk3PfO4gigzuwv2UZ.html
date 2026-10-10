@@ -1,0 +1,105 @@
+<h1 id="cdn">CDN<a aria-hidden="true" class="anchor-heading icon-link" href="#cdn"></a></h1>
+<p>CDNs are a kind of <a href="/notes/kW6jznu1QgEOogMoby4E9">cache</a> that comes into play for sites serving large amounts of static media. In a typical CDN setup, a request will first ask the CDN for a piece of static media; the CDN will serve that content if it has it locally available. If it isn’t available, the CDN will query the back-end servers for the file, cache it locally, and serve it to the requesting user.</p>
+<ul>
+<li>
+<p>If the system you are building is not large enough to have its own CDN, you can ease a future transition by serving the static media off a separate subdomain (e.g., <code>static.yourservice.com</code>) using a lightweight HTTP server like Nginx, and cut-over the DNS from your servers to a CDN later.</p>
+</li>
+<li>
+<p>A website server normally has a caching server along with it, which will cache the webpage. All requests to the URL will retrieve the content from the cache, until the expiry time is hit. At that point, the user will make a fetch, which will see that the cached content is expired, and will then hit the server, which will retrieve the content, pass it to the caching server, which passes it to the user. All subsequent calls (from other users) will be intercepted by the caching server until it is expired (warm caching)
+<img src="/assets/images/2021-03-11-15-50-18.png"></p>
+</li>
+<li>
+<p>A CDN provider will place servers in many locations, but some of the most important are the connection points at the edge between different networks</p>
+</li>
+<li>
+<p>Without a CDN, transit may take a slower and/or more convoluted route between source and destination</p>
+</li>
+<li>
+<p>Originally, a CDN was like a cache for static assets that don't change, like images, logos, stylesheets. Nowadays, that benefit only make up ~10% of everything a CDN can do. </p>
+</li>
+<li>
+<p>while CDNs perform caching, not everything that performs caching is a CDN</p>
+</li>
+<li>
+<p>CDNs reduce the importance of where your web server is located, since this would theoretically only impact the timecost of the first fetch of data of each expiry cycle.</p>
+<ul>
+<li>In practice, this is only true for data that doesn't change often. If we are talking about a Facebook news feed that updates frequently, then you are still going to be interfacing a lot with the server, making the location of your server ultimately still important. </li>
+</ul>
+</li>
+<li>
+<p>The DNS plays a central role in the CDN </p>
+</li>
+<li>
+<p>a CDN is known as a distributed internet service</p>
+</li>
+</ul>
+<p><img src="/assets/images/2021-03-11-15-50-32.png"></p>
+<p>If any of the following is true for your website, you should definitely opt for a CDN:</p>
+<ul>
+<li>Large amounts of traffic</li>
+<li>A scattered, international user-base</li>
+<li>Expected growth</li>
+<li>Lots of media content, such as images and videos</li>
+</ul>
+<p>If the answer to all 4 is no, you won’t notice a difference in speed, but you will still get the benefit of <a href="/notes/y874juy5wB8PjaLE8fBpD">DDoS</a> protection.</p>
+<h3 id="what-type-of-static-assets-can-be-served-by-a-cdn">What type of static assets can be served by a CDN?<a aria-hidden="true" class="anchor-heading icon-link" href="#what-type-of-static-assets-can-be-served-by-a-cdn"></a></h3>
+<ul>
+<li>Images
+<ul>
+<li>Logos, user profile pics, backgrounds, illustrations, icons, etc.</li>
+<li>Optimized versions (e.g., WebP) served globally.</li>
+</ul>
+</li>
+<li>Videos
+<ul>
+<li>Marketing videos, tutorials, animations.</li>
+<li>Especially important for large media files.</li>
+</ul>
+</li>
+<li>Audio Files
+<ul>
+<li>Music snippets, sound effects, voiceovers.</li>
+</ul>
+</li>
+<li>Fonts
+<ul>
+<li>Custom web fonts like those from Google Fonts or Adobe Fonts.</li>
+<li>Helps prevent “flash of unstyled text” and speeds up first render.</li>
+</ul>
+</li>
+<li>JavaScript Bundles (for web apps)
+<ul>
+<li>Especially when the bundle is relatively stable between deployments.</li>
+<li>You can use hashed filenames for cache-busting.</li>
+</ul>
+</li>
+<li>CSS Stylesheets
+<ul>
+<li>Same idea — if you’re serving static stylesheets, it helps reduce initial page load time.</li>
+</ul>
+</li>
+<li>PDFs or Documents
+<ul>
+<li>Whitepapers, user manuals, downloadable guides.</li>
+</ul>
+</li>
+<li>Static JSON or Configuration Files
+<ul>
+<li>Public configuration files or structured data needed for UI.</li>
+</ul>
+</li>
+</ul>
+<h3 id="what-wouldnt-be-served-by-a-cdn">What wouldn't be served by a CDN<a aria-hidden="true" class="anchor-heading icon-link" href="#what-wouldnt-be-served-by-a-cdn"></a></h3>
+<ul>
+<li>User-generated dynamic content (e.g., private data, personalized dashboards).</li>
+<li>Sensitive files that shouldn't be publicly cached or globally distributed.</li>
+<li>Data that changes very frequently unless you have strong cache invalidation control.</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/mytCOts26Pidush65tdRW">DNS</a></li>
+<li><a href="/notes/HZSth7yP1s7aPaPPZRJPm">Scaling</a></li>
+<li><a href="/notes/HyP5vSI4XeV8dR6shXQ7c">Cloudfront</a></li>
+<li><a href="/notes/5Naeav9tFGcBYc0DPj9Sb">Batching</a></li>
+</ul>
