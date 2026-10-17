@@ -1,0 +1,30 @@
+<h1 id="sdk">SDK<a aria-hidden="true" class="anchor-heading icon-link" href="#sdk"></a></h1>
+<p>SDK is for interacting with AWS services for the most part.</p>
+<p>The AWS SDK comes with a lot of low level code that is done already to interact with AWS services, so that you can include it in your app and do what you want without having to worry about what goes on underneath.</p>
+<ul>
+<li>So if you have an application written in JavaScript and it needs to process messages in an SQS queue, you would use the JavaScript SDK.</li>
+<li>It can also create/delete/manage infrastructure.</li>
+</ul>
+<p>When used with AWS, Terraform is implemented using the AWS Go SDK.</p>
+<h3 id="lib-packages"><code>lib</code> packages<a aria-hidden="true" class="anchor-heading icon-link" href="#lib-packages"></a></h3>
+<p>When using AWS SDK, we may come across <code>lib</code> packages (e.g. <code>@aws-sdk/lib-dynamodb</code> instead of <code>@aws-sdk/client-dynamodb</code>). These packages are higher level.</p>
+<ul>
+<li>ex. in the <code>lib</code> version of DynamoDB package, Marshalling is handled for us.</li>
+</ul>
+<h3 id="eventbridge-example">EventBridge Example<a aria-hidden="true" class="anchor-heading icon-link" href="#eventbridge-example"></a></h3>
+<p>We could use the <a href="https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-eventbridge/index.html#aws-sdkclient-eventbridge">@aws-sdk/client-eventbridge</a> package to communicate with our <a href="/notes/7n3tUhrwbvz8nNu0bTlWz">EventBridge</a>.</p>
+<ul>
+<li>For instance, you can create rules that match selected events in the stream and route them to targets to take action.</li>
+</ul>
+<p>Imagine you wanted to create a system where vehicle fleet managers can determine which types of event they are interested in (low tire pressure, enter/exit geofence etc). When the fleet manager indicates they want to be notified of low tire pressure, the act of them selecting that event would add a rule to the rules engine, effectively subscribing them to the <code>LowTirePressure</code> event. This is accomplished via code at runtime, rather than during compile/deploy time. Effectively, the rules engine can be modified on the fly, rather than having to do it ahead of time.</p>
+<h1 id="docs">Docs<a aria-hidden="true" class="anchor-heading icon-link" href="#docs"></a></h1>
+<h3 id="dynamodb">DynamoDB<a aria-hidden="true" class="anchor-heading icon-link" href="#dynamodb"></a></h3>
+<p><a href="https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-dynamodb/index.html">@aws-sdk/client-dynamodb</a>
+<a href="https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/modules/_aws_sdk_lib_dynamodb.html">@aws-sdk/lib-dynamodb</a></p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/jMavlje07sNa6hSEIE8WA">SDK</a></li>
+<li><a href="/notes/KutlqQVGLBAdLTslz3D9A">CDK</a></li>
+<li><a href="/notes/zkuzes20sukgvhncv0ptjpt">Facade</a></li>
+</ul>

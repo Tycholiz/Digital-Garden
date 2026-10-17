@@ -1,0 +1,66 @@
+<h1 id="file-permissions">File Permissions<a aria-hidden="true" class="anchor-heading icon-link" href="#file-permissions"></a></h1>
+<p>There are 3 permission groups: Owner, Group, Other</p>
+<ul>
+<li>each permission group has 3 permissions, called a permission set
+<ul>
+<li>ex. <code>rw-</code> is a single set</li>
+</ul>
+</li>
+<li>each file/directory has 3 permission sets— one for each permission group.</li>
+<li>rwx mean different things if we are referring to a directory or a file
+<ul>
+<li><code>r</code> 
+<ul>
+<li>on file means we can read the contents </li>
+<li>on directory means we can run <code>ls</code></li>
+</ul>
+</li>
+<li><code>w</code> 
+<ul>
+<li>on file means we can modify file contents</li>
+<li>on directory means we can add/delte files </li>
+</ul>
+</li>
+<li><code>x</code>
+<ul>
+<li>on a file means we can run it</li>
+<li>on a directory means we can <code>cd</code> into it </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="file-ownership">File ownership<a aria-hidden="true" class="anchor-heading icon-link" href="#file-ownership"></a></h3>
+<ul>
+<li>every file is owned by a specific user (<code>UID</code>) and a specific group (<code>GID</code>)
+<ul>
+<li><code>chown</code> is used to change both
+<ul>
+<li>ex. <code>chown &#x3C;user>:&#x3C;group> test.txt</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>each member can belong to many groups (<code>/etc/group</code>), though a user can only have one primary group (<code>/etc/passwd</code>).
+<ul>
+<li>run <code>$ id</code> to see the groups the current user belongs to</li>
+<li>When a user creates a file, the file will be owned by the primary group</li>
+</ul>
+</li>
+<li>similar to how we need to source the <code>.zshrc</code> before changes are live, we need to log out and log back in before group membership is "activated"</li>
+</ul>
+<h3 id="settings-permissions">Settings Permissions<a aria-hidden="true" class="anchor-heading icon-link" href="#settings-permissions"></a></h3>
+<p>The numerical method is quite easy. For example, we can just replace each <code>rwx</code> set by it's binary positional value (from RTL: 1, 2, 4, 8, 16, 32...) and add the the numbers in each set.</p>
+<pre><code>-(rw-)(rw-)(r--)
+-(42-)(42-)(4--)
+664
+</code></pre>
+<ul>
+<li>By this, we can define a <code>7</code> as <code>rwx</code>, a <code>5</code> as <code>r-x</code>, and so on</li>
+</ul>
+<hr>
+<p>Set new files/directories in a subdirectory to follow the group ownership of the specified directory</p>
+<ul>
+<li><code>chmod g+s /var/www/my-project</code></li>
+</ul>
+<p><a href="https://support.plex.tv/articles/200288596-linux-permissions-guide/">Unix permissions guide</a></p>

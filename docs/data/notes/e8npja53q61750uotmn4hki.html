@@ -1,0 +1,7 @@
+<h1 id="dashboard">Dashboard<a aria-hidden="true" class="anchor-heading icon-link" href="#dashboard"></a></h1>
+<p><a href="https://github.com/kubernetes/dashboard">Kubernetes dashboard</a> gives us a GUI where we can perform many of the same actions that <a href="/notes/nhxmrkFjzHtZZmOBkWfhh">Kubectl</a> lets us.</p>
+<p>To run it, use the manifest file:
+<code>kubectl create -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.2.0/aio/deploy/recommended.yaml</code></p>
+<ul>
+<li>It’s a single manifest file that will create a deployment, service, and the necessary permissions for the dashboard to run. All these resources will be created in the kubernetes-dashboard namespace.</li>
+</ul>

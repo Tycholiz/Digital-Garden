@@ -1,0 +1,74 @@
+<h1 id="pouchdb">PouchDB<a aria-hidden="true" class="anchor-heading icon-link" href="#pouchdb"></a></h1>
+<p>PouchDB is a Javascript implementation of CouchDB which is API compatible with it. </p>
+<ul>
+<li>So you can use <a href="/notes/g7ulqi8no93ezeocbesc3ll">CouchDB</a> on the server side and Pouch in the application itself and once the application comes online you can sync both.</li>
+<li>the replication algorithm in PouchDB is identical to the one in CouchDB.</li>
+</ul>
+<p>Since Couchbase and Cloudant (both descendents of Couchdb) share the same sync protocol, they can be used with PouchDB.</p>
+<h3 id="the-nature-of-pouchdb">The nature of PouchDB<a aria-hidden="true" class="anchor-heading icon-link" href="#the-nature-of-pouchdb"></a></h3>
+<p>PouchDB itself is not a database</p>
+<p>PouchDB databases can be either remote or local</p>
+<ul>
+<li>When creating a local database, whatever datastore that is available is used:
+<ul>
+<li>IndexedDB for most browsers</li>
+<li>LevelDB for Node.js</li>
+</ul>
+</li>
+<li>When creating a remote PouchDB database, it communicates directly with the remote database (CouchDB, Couchbase, Cloudant)</li>
+</ul>
+<p>The goal of PouchDB is that we can communicate with either the local or remote database and we shouldn't notice a difference in how we interact with each one.</p>
+<p>PouchDB has two types of data: documents and attachments.</p>
+<ul>
+<li>attachments are the most efficient way to story binary data (e.g. mp3, jpg)</li>
+</ul>
+<h3 id="plugins">Plugins<a aria-hidden="true" class="anchor-heading icon-link" href="#plugins"></a></h3>
+<p>PouchDB is built in a modular way. We can pick and choose which modules we need from PouchDB, and in turn reduce the bundle size.</p>
+<ul>
+<li>PouchDB packages come in three flavors: presets, plugins, and utilities.
+<ul>
+<li>Presets are a collection of plugins, which expose a PouchDB object that is ready to be used.
+<ul>
+<li>ex. pouchdb-browser exists to provide a certain combination of modules that can be expected for use of PouchDB in the browser. Specifically, this means it ships with the IndexedDB adapter as its default adapter, and also contains the replication, HTTP, and map/reduce plugins.</li>
+</ul>
+</li>
+<li>Plugins are features that can be added to a PouchDB instance using the PouchDB.plugin() API.</li>
+<li>Utilities are grab-bags of helper functions, and are only recommended for advanced use cases.</li>
+</ul>
+</li>
+</ul>
+<h3 id="adapters">Adapters<a aria-hidden="true" class="anchor-heading icon-link" href="#adapters"></a></h3>
+<p>Since PouchDB is just an abstraction layer that implements the same interface as CouchDB, we need an underlying "sourcing layer" (e.g. database, REST resource via HTTP) to handle retrieval for us. To connect the PouchDB interface to the underlying data layer of our choice, we must use an <a href="/notes/9xKdcGBAmZHfv1f9UOkF5">adapter</a></p>
+<ul>
+<li>by default, PouchDB ships with the IndexedDB adapter for the browser and LevelDB for Node.js, but we can use different underlying data layers such as SQLite</li>
+<li>we can even use an HTTP adapter if we want to use a remote CouchDB instance as our data layer. This would effectively be like saying "I want to just use the PouchDB abstraction layer instead of me having to interact with my CouchDB instance directly".</li>
+</ul>
+<hr>
+<p><code>seq</code> can be thought of as a version number for the entire database. Basically it answers the question of "How many total changes have been made to all documents in this database?" This sets it apart from the revision hash <code>_rev</code>, which marks the changes made to a single document.</p>
+<ul>
+<li>the <code>seq</code> between two databases is not guaranteed to be kept in sync. CouchDB and PouchDB have slightly different ways of increasing their <code>seq</code> values, so really <code>seq</code> is only meaningful within a single database.</li>
+</ul>
+<h2 id="plugins-1">Plugins<a aria-hidden="true" class="anchor-heading icon-link" href="#plugins-1"></a></h2>
+<ul>
+<li><a href="https://github.com/pouchdb-community/relational-pouch">Relational Pouch</a>
+<ul>
+<li>allows you to interact with PouchDB/CouchDB like a relational data store, with types and relations.</li>
+<li>includes an API for many-to-many relationships</li>
+</ul>
+</li>
+</ul>
+<h2 id="e-resources">E Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#e-resources"></a></h2>
+<ul>
+<li><a href="https://medium.com/@glynn_bird/replicating-from-a-query-with-couchdb-dd3ffc5c4b31#:~:text=The%20one%20database%20per%20user,mobile%20clients%20replicate%20to%2Ffrom.">Roving engineer problem</a></li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/uqt3os6g23wtrptms9xcyul">API</a></li>
+<li><a href="/notes/erwmezq4jeofxnp45spwymq">Replication</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/g7ulqi8no93ezeocbesc3ll">CouchDB</a></li>
+</ul>

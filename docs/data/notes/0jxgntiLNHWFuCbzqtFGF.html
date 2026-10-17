@@ -1,0 +1,33 @@
+<h1 id="email">Email<a aria-hidden="true" class="anchor-heading icon-link" href="#email"></a></h1>
+<p>Never send to generic emails, like <code>info@[businessname].com</code>. This hurts your sender reputation score</p>
+<p>The inbox of a recipient needs to authenticate the source of the email (usually with SPF or DKIM)</p>
+<p>SPF &#x26; DKIM are authentication systems that tell Internet Service Providers (ISPs), like Gmail and Yahoo, that incoming mail has been sent from an authorized system, and that it is not spam or email spoofing.</p>
+<p>SPF &#x26; DKIM authentication cannot be done for free webmail accounts like Google, Yahoo, and Hotmail.</p>
+<p>There is only one SPF record per domain. (If you have more than one SPF DNS record, ISPs will not know which one to use which may cause authentication issues.)</p>
+<ul>
+<li>multiple DKIM records is fine</li>
+</ul>
+<p>With SMTP you are sending, relaying, or forwarding messages from a mail client (like Microsoft Outlook) to a receiving email server. A sender will use an SMTP server to carry out the process of transmitting an email message.</p>
+<h3 id="imap-internet-access-message-protocol">IMAP (Internet Access Message Protocol)<a aria-hidden="true" class="anchor-heading icon-link" href="#imap-internet-access-message-protocol"></a></h3>
+<p>IMAP is an email protocol that deals with managing and retrieving email messages from the receiving server.</p>
+<ol>
+<li>After creating an email and pressing ‘send’, your email client (e.g. Gmail, Thunderbird, Outlook, etc.) will use SMTP to send your message from your email client to an email server.</li>
+<li>Next, the email server will use SMTP to transmit the message to the recipient’s receiving email server.</li>
+<li>Upon a successful receipt of the SMTP transmission (indicated by a 250 OK response code), the recipient’s email client will fetch the message using IMAP and place it in the inbox for the recipient to access.</li>
+</ol>
+<h3 id="pop3">Pop3<a aria-hidden="true" class="anchor-heading icon-link" href="#pop3"></a></h3>
+<p>POP3 downloads the email from a server to a single computer, then deletes the email from the server.</p>
+<p>On the other hand, IMAP stores the message on a server and synchronizes the message across multiple devices.</p>
+<h1 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h1>
+<p><a href="https://www.sparkpost.com/resources/email-explained/email-sender-reputation/">Email Sender Reputation</a></p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/VTW1VU4VScsrlJ7GbtpjG">DKIM</a></li>
+<li><a href="/notes/AMLJCwIvMQEaDbDJYOHqL">Email DNS Records</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/mytCOts26Pidush65tdRW">DNS</a></li>
+</ul>

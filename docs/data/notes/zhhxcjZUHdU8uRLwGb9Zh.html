@@ -1,0 +1,152 @@
+<h1 id="mongo">Mongo<a aria-hidden="true" class="anchor-heading icon-link" href="#mongo"></a></h1>
+<p><code>mongod</code> is the main daemon process. Think of it as the API of the Mongo Engine. It handles data requests, manages data access, and performs background management operations.</p>
+<ul>
+<li>A replica set is a group of <code>mongod</code> processes that maintain the same data set.
+<ul>
+<li>anal: spinning up multiple pods of the same REST API server. The reason for both is the same: to provide redundancy and high availability.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="normalizing-data">Normalizing data<a aria-hidden="true" class="anchor-heading icon-link" href="#normalizing-data"></a></h2>
+<ul>
+<li><code>normalized</code> - when data is normalized, it means that instead of having documents called <code>Folders</code> that has a field called <code>files</code> (an array of actual objects— not just the references to the objects), we have documents that are completely separated from one another, and they just make reference to one another.
+<ul>
+<li>a.k.a Referencing and Embedding</li>
+</ul>
+</li>
+<li>denormalized:</li>
+</ul>
+<pre class="language-js"><code class="language-js">folder <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">"tagA"</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">files</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+		<span class="token punctuation">{</span>
+			<span class="token literal-property property">title</span><span class="token operator">:</span> <span class="token string">"Tut #1"</span><span class="token punctuation">,</span>
+			<span class="token literal-property property">author</span><span class="token operator">:</span> <span class="token string">"bezkoder"</span>
+		<span class="token punctuation">}</span><span class="token punctuation">,</span>
+		<span class="token punctuation">{</span>
+			<span class="token literal-property property">title</span><span class="token operator">:</span> <span class="token string">"Tut #2"</span><span class="token punctuation">,</span>
+			<span class="token literal-property property">author</span><span class="token operator">:</span> <span class="token string">"zkoder"</span>
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<ul>
+<li>normalized:</li>
+</ul>
+<pre class="language-js"><code class="language-js">folder <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">"tagA"</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">tutorials</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"238fnnc3"</span><span class="token punctuation">,</span> <span class="token string">"edn38bsn39"</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="when-to-normalizedenormalize">When to Normalize/Denormalize<a aria-hidden="true" class="anchor-heading icon-link" href="#when-to-normalizedenormalize"></a></h3>
+<p>if we were to break "one to many" relationships down, we could have:</p>
+<pre><code>- *1:few* - ex. 1 movie has a few awards
+- *1:many* - ex. 1 movie has potentially 1000s of reviews
+- *1:tonnes* - ex. 1 chat app has millions of messages
+</code></pre>
+<ul>
+<li>We need to distinguish between these relationships when we need to determine whether to normalize or denormalize
+<ul>
+<li>note: This granularity isn’t necessary in relational databases.</li>
+</ul>
+</li>
+</ul>
+<h4 id="deciding-based-on-relationship-type">Deciding based on relationship type<a aria-hidden="true" class="anchor-heading icon-link" href="#deciding-based-on-relationship-type"></a></h4>
+<ul>
+<li>For <em>1:few</em>, we always use denormalized (embedded) data</li>
+<li>For <em>few:few</em> we can just embed
+<ul>
+<li>what about <em>few:many</em>?</li>
+</ul>
+</li>
+<li>For <em>1:tonnes</em> and <em>many:many</em>, almost always use normalized (referenced) data</li>
+<li><em>1:many</em> could go either way</li>
+</ul>
+<h4 id="deciding-based-on-how-data-will-be-interacted-with">Deciding based on how data will be interacted with<a aria-hidden="true" class="anchor-heading icon-link" href="#deciding-based-on-how-data-will-be-interacted-with"></a></h4>
+<ul>
+<li>
+<p>If the data is mostly read and does not change quickly, we should probably embed</p>
+<ul>
+<li>ex. photo gallery related to a movie: once we gather the photos, we probably won’t be updating them too frequently.</li>
+</ul>
+</li>
+<li>
+<p>If the data is updated frequently, we should probably reference</p>
+<ul>
+<li>ex. user generated reviews and ratings of movies. Those vote counts are going to be changing all the time, and we don’t want to query the whole movie document every time a vote is cast. for this reason, it makes sense for reviews to be its own collection with its own documents that reference its parent</li>
+</ul>
+</li>
+<li>
+<p>Imagine Instahop, where each tour guide is also a user. If we were to embed the tourguide directly into the <code>tour</code> document, changing any fields in the guide's document would be a pain, since we'd have to update it both in the <code>tour</code> document and the <code>user</code> document</p>
+<ul>
+<li>Child referencing would be best used here</li>
+</ul>
+</li>
+<li>
+<p>in Mongoose, <code>populate()</code> is how to denormalize the data as we are sending it to the client</p>
+</li>
+</ul>
+<h2 id="referencing-other-collections">Referencing other collections<a aria-hidden="true" class="anchor-heading icon-link" href="#referencing-other-collections"></a></h2>
+<h3 id="types-of-referencing">Types of referencing<a aria-hidden="true" class="anchor-heading icon-link" href="#types-of-referencing"></a></h3>
+<h4 id="child-referencing-child-ignoranceparent-holds-the-child-reference">Child referencing (child ignorance/parent holds the child reference)<a aria-hidden="true" class="anchor-heading icon-link" href="#child-referencing-child-ignoranceparent-holds-the-child-reference"></a></h4>
+<ul>
+<li>best for <em>1:Few</em> relationships</li>
+</ul>
+<h4 id="parent-referencing-parent-ignorancechild-holds-the-parent-reference">Parent referencing (parent ignorance/child holds the parent reference)<a aria-hidden="true" class="anchor-heading icon-link" href="#parent-referencing-parent-ignorancechild-holds-the-parent-reference"></a></h4>
+<ul>
+<li>best for <em>1:Many</em>/<em>1:Tonnes</em> relationships</li>
+</ul>
+<h4 id="two-way-referencing">Two-way referencing<a aria-hidden="true" class="anchor-heading icon-link" href="#two-way-referencing"></a></h4>
+<ul>
+<li>
+<p>best for <em>Many:Many</em> relationsips</p>
+</li>
+<li>
+<p>If we have a Nuggets collection and a Buckets collection, we have a many-to-many relationship between the two. We could Have a field in the Buckets model called <code>nuggets</code>, which would be an array of nugget ids. This would be sufficient for some cases, but what if we wanted to get a list of the buckets that a particular nugget belongs to, while we are looking at a nugget? To make this easier, we should have a field in the Nuggets model called <code>buckets</code>. This makes things easier in a way, but means that if we want to put the nugget in another bucket, we need to update both the document in the Buckets collection and the document in the Nuggets collection. In other words, using this schema design means we can no longer change the bucket field from the Nugget collection in a single atomic update.</p>
+</li>
+</ul>
+<h2 id="sharded-cluster">Sharded Cluster<a aria-hidden="true" class="anchor-heading icon-link" href="#sharded-cluster"></a></h2>
+<ul>
+<li>spec: instead of Mongo deploying a single instance of your database (on a single computer), your database is deployed on different machines (the cluster), and are sharded
+<ul>
+<li>sharded means that not all of the data related to the application will be stored in a single database. Multiple will be used, each one storing different data</li>
+</ul>
+</li>
+<li>the <code>mongos</code> provides the interface between the client and the sharded cluster
+<ul>
+<li>From the perspective of the application, a mongos instance behaves identically to any other MongoDB instance</li>
+</ul>
+</li>
+<li>MongoDB shards data at the collection level, distributing the collection data across the shards in the cluster.
+<ul>
+<li>In other words, the data of a collection is partitioned and stored in different clusters</li>
+</ul>
+</li>
+<li>MongoDB uses a <em>Shard Key</em> to determine where the data should be split for storage across the different shards.
+<ul>
+<li>Therefore, the shard key consists of a field or multiple fields in the documents.</li>
+</ul>
+</li>
+</ul>
+<h2 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h2>
+<ul>
+<li><a href="https://docs.mongodb.com/manual/reference/operator/projection/positional/">$ variable</a></li>
+<li><a href="http://thetechnick.blogspot.com/2016/06/mongodb-design-patterns.html">design patterns</a></li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/fVTFn9AI72cwNWVr4hVKS">Aggregation</a></li>
+<li><a href="/notes/DSNX1ajfKOsoXGZu4OaDz">Atlas</a></li>
+<li><a href="/notes/dkg7btl6a4ek058qb67ojft">Change Streams</a></li>
+<li><a href="/notes/rh9534VLmogFf12rozr3D">Mongo CLI</a></li>
+<li><a href="/notes/9uyaSD4Vyq3tmgUEXaV32">Realm</a></li>
+<li><a href="/notes/8cdj39j4hncl50a2axtihpi">Replica Set</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/FuHcb7zDdczt8IDTtOH0b">Partitioning</a></li>
+<li><a href="/notes/wbs6c9snnonnyzm8vk2t4b9">Strategies</a></li>
+</ul>

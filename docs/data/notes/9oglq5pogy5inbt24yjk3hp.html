@@ -1,0 +1,27 @@
+<h1 id="middleware">Middleware<a aria-hidden="true" class="anchor-heading icon-link" href="#middleware"></a></h1>
+<p>Nestjs middleware is equivalent to <a href="/notes/inMGAxYKmDgpSWcHN6tXN">Express middleware</a></p>
+<p>Custom middleware is implemented either in either a function, or in a class with an <code>@Injectable()</code> decorator.</p>
+<ul>
+<li>The class should implement the <code>NestMiddleware</code> interface, while the function does not have any special requirements.</li>
+</ul>
+<p>Middleware fully supports dependency injection.</p>
+<p>We set up middleware using the <code>configure()</code> method of the module class. </p>
+<ul>
+<li>Modules that include middleware have to implement the <code>NestModule</code> interface.</li>
+</ul>
+<pre class="language-ts"><code class="language-ts"><span class="token decorator"><span class="token at operator">@</span><span class="token function">Module</span></span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  imports<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token maybe-class-name">CatsModule</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword module">export</span> <span class="token keyword">class</span> <span class="token class-name"><span class="token maybe-class-name">AppModule</span></span> <span class="token keyword">implements</span> <span class="token class-name"><span class="token maybe-class-name">NestModule</span></span> <span class="token punctuation">{</span>
+  <span class="token function">configure</span><span class="token punctuation">(</span>consumer<span class="token operator">:</span> <span class="token maybe-class-name">MiddlewareConsumer</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    consumer
+      <span class="token punctuation">.</span><span class="token method function property-access">apply</span><span class="token punctuation">(</span><span class="token maybe-class-name">LoggerMiddleware</span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token method function property-access">forRoutes</span><span class="token punctuation">(</span><span class="token string">'cats'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/613syb18hb3v0u1ydvor7ru">Nestjs</a></li>
+</ul>

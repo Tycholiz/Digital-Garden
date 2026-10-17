@@ -1,0 +1,55 @@
+<h1 id="pact-api">Pact API<a aria-hidden="true" class="anchor-heading icon-link" href="#pact-api"></a></h1>
+<h2 id="matching">Matching<a aria-hidden="true" class="anchor-heading icon-link" href="#matching"></a></h2>
+<p>tldr; be strict with what we request but relaxed with what we expect.</p>
+<ul>
+<li>see <a href="/notes/5vdsNZiyqUoIDkLzedrMm#robustness-principle-postels-law1">Postel's Law</a></li>
+<li>But Pact breaks Postel's law when it comes to request headers</li>
+</ul>
+<h3 id="request-matching">Request Matching<a aria-hidden="true" class="anchor-heading icon-link" href="#request-matching"></a></h3>
+<p>As a rule of thumb, you generally want to use exact matching when you're setting up the expectations for a request (<code>upon_receiving(...).with(...)</code>) because you're under control of the data at this stage</p>
+<ul>
+<li>Note that the request matching does not allow "unexpected" values to be present in JSON request bodies or query strings. (It does however allow extra headers, because it was found that writing expectations that included the headers added by the various frameworks that might be used resulted in tests that were very fiddly to maintain.)</li>
+</ul>
+<h3 id="response-matching">Response Matching<a aria-hidden="true" class="anchor-heading icon-link" href="#response-matching"></a></h3>
+<p>You want to be as loose as possible with the matching for the response</p>
+<ul>
+<li>This stops the tests being brittle on the provider side. </li>
+<li>Generally speaking, it doesn't matter what value the provider actually returns during verification, as long as the types match. 
+<ul>
+<li>When you need certain formats in the values (eg. URLS), you can use <code>terms</code></li>
+</ul>
+</li>
+</ul>
+<p>Be selective with adding matchers in the response.</p>
+<ul>
+<li>ex. the provider might be currently returning a GUID, but would anything in your consumer really break if they returned a different format of string ID? (If it did, that's a nasty code smell!)</li>
+</ul>
+<h3 id="pactterm"><code>Pact.term</code><a aria-hidden="true" class="anchor-heading icon-link" href="#pactterm"></a></h3>
+<ul>
+<li><code>matcher</code> will verify that the value matches the given pattern.
+<ul>
+<li>Sometimes we want to hit an endpoint that uses an id. Since we can't explicitly put an id in the interaction, we can use a <em>Matcher</em>, which may take the form of a <a href="/notes/yM2PJBdqJnHpD63cPA6sW">Regex</a>.</li>
+</ul>
+</li>
+<li><code>generate</code> allows us to specify a value that will be replayed against the provider as an example of what the real value would look like.
+<ul>
+<li>this means provider states can still use known values to set up their data, but your Consumer tests can generate data on the fly. </li>
+</ul>
+</li>
+</ul>
+<p><code>Pact.term</code> can be used for request and response header values, the request query, and inside request and response bodies.</p>
+<h3 id="pactlike"><code>Pact.like</code><a aria-hidden="true" class="anchor-heading icon-link" href="#pactlike"></a></h3>
+<p>This is for when we don't care what the exact value is at a particular path, you just care that a value is present and that it is of the expected type.</p>
+<ul>
+<li>can wrap a whole object, or a single value:</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token literal-property property">body</span><span class="token operator">:</span> <span class="token maybe-class-name">Pact</span><span class="token punctuation">.</span><span class="token method function property-access">like</span><span class="token punctuation">(</span>
+      <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">"Mary"</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">age</span><span class="token operator">:</span> <span class="token number">73</span>
+<span class="token punctuation">)</span>
+<span class="token comment">// or</span>
+<span class="token literal-property property">body</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">"Mary"</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">age</span><span class="token operator">:</span> <span class="token maybe-class-name">Pact</span><span class="token punctuation">.</span><span class="token method function property-access">like</span><span class="token punctuation">(</span><span class="token number">73</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>

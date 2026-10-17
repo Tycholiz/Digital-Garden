@@ -1,0 +1,39 @@
+<h1 id="socket">Socket<a aria-hidden="true" class="anchor-heading icon-link" href="#socket"></a></h1>
+<p>A socket is the interface between the application layer and the transport layer, and can be thought of as the API between the application and the network</p>
+<p>As application developers, we can think of the socket as the dividing point between what we have control over and what we <em>don't</em> have control over.</p>
+<ul>
+<li>realistically, the developer does have control over 2 things on the transport layer
+<ol>
+<li>The choice of transport protocol</li>
+<li>transport-layer parameter, allowing control over things like maximum buffer size, maximum segment sizes etc.</li>
+</ol>
+</li>
+</ul>
+<p>It is not accurate to say that programs communicate with each other (eg. that an Express server program communicates with a Postgres server program). Realistically, the programs are running as processes on their respective hosts, and it is these processes that communicate with each other, via sockets.</p>
+<ul>
+<li>anal: If the processes were houses, then the sockets would be the doors that enable access to the processes</li>
+</ul>
+<p>the socket's uniqueness is determined by five factors:</p>
+<ul>
+<li>the local IP address</li>
+<li>the local port number</li>
+<li>the remote IP address</li>
+<li>the remote port number</li>
+<li>the transfer protocol (TCP/UDP)</li>
+</ul>
+<hr>
+<h3 id="how-can-more-than-65535-clients-connect-to-a-server">How can more than 65,535 clients connect to a server?<a aria-hidden="true" class="anchor-heading icon-link" href="#how-can-more-than-65535-clients-connect-to-a-server"></a></h3>
+<p>While it's true that a machine can only open 65,535 ports, this does <em>NOT</em> mean that only 65,535 clients can connect to a server at a time. A server listens only on one port and can have large numbers of open sockets from clients connecting to that one port.</p>
+<ul>
+<li>On the TCP level the tuple (source ip, source port, destination ip, destination port) must be unique for each simultaneous connection. These 4 factors determine the socket's uniqueness.
+<ul>
+<li>That means a single client cannot open more than 65535 simultaneous connections to a single server. But a server can (theoretically) serve 65535 simultaneous connections per client.</li>
+</ul>
+</li>
+</ul>
+<p>In practice the server is only limited by how much CPU power, memory etc. it has to serve requests, not by the number of TCP connections to the server.</p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/d2e2hSjyVoKd0AmH4P1Yj">TCP</a></li>
+</ul>

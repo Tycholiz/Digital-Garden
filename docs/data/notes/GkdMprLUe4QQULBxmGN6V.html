@@ -1,0 +1,260 @@
+<h1 id="ember">Ember<a aria-hidden="true" class="anchor-heading icon-link" href="#ember"></a></h1>
+<h1 id="overview">Overview<a aria-hidden="true" class="anchor-heading icon-link" href="#overview"></a></h1>
+<ul>
+<li>provides MVC in the client-side</li>
+<li>opinionated— follows convention over configuration</li>
+<li>modules import other modules implicitly because they know exactly where to look. Therefore, following the conventional structure is paramount (like Ruby on Rails) 
+<ul>
+<li>ex. data that's fetched in the <code>/routes/index.js</code> will be available in <code>/templates/index.hbs</code> as <code>@model</code></li>
+</ul>
+</li>
+</ul>
+<p><img src="/assets/images/2021-03-10-22-39-10.png"></p>
+<h1 id="decorators">Decorators<a aria-hidden="true" class="anchor-heading icon-link" href="#decorators"></a></h1>
+<ul>
+<li>they are special functions that make modifications to the following line</li>
+<li>they can be thought of as wrapper functions in a sense, if they are before a function.</li>
+<li>ex. this decorator will cause the following getter to cache the result on the first time.</li>
+</ul>
+<h2 id="types">Types<a aria-hidden="true" class="anchor-heading icon-link" href="#types"></a></h2>
+<ul>
+<li><code>@tracked</code> - in a class component, This annotation on a variable tells Ember to monitor this variable for updates. Whenever this variable's value changes, Ember will automatically re-render any templates that depend on its value.</li>
+<li><code>@action</code> - in a class component, define a function that is available to the component layout (handlebars html)</li>
+</ul>
+<pre class="language-js"><code class="language-js">@cache
+<span class="token keyword">get</span> <span class="token function">count</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword control-flow">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">_count</span><span class="token operator">++</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<ul>
+<li>can receive arguments: <code>@alias('fullName') name</code></li>
+</ul>
+<h1 id="anatomy-of-ember-app">Anatomy of Ember app<a aria-hidden="true" class="anchor-heading icon-link" href="#anatomy-of-ember-app"></a></h1>
+<p><img src="/assets/images/2021-03-10-22-39-28.png"></p>
+<ul>
+<li>url determines the current state of the app
+<ul>
+<li>ex. are they looking at a list? a post? are they editing the post?</li>
+</ul>
+</li>
+<li>When the url is entered in the address bar, it...
+<ul>
+<li>connects to a route handler which loads a particular model.</li>
+<li>It renders a template, which has access to the model.</li>
+</ul>
+</li>
+</ul>
+<h2 id="models">Models<a aria-hidden="true" class="anchor-heading icon-link" href="#models"></a></h2>
+<ul>
+<li>Models represent persistent state. 
+<ul>
+<li>ex. in an airbnb app, the details of a rental (price, description, photos etc) would be stored in the <code>rental</code> model. we'd also have a <code>user</code> model to store the state of the currently logged in user</li>
+</ul>
+</li>
+<li>models persist information, whether it's to a web server or as local state</li>
+<li>model layers can be swapped in, so we could use Redux or Apollo</li>
+</ul>
+<h2 id="templates">Templates<a aria-hidden="true" class="anchor-heading icon-link" href="#templates"></a></h2>
+<ul>
+<li>similar to <code>ejs</code></li>
+<li>the route handler makes the data of the model available to the template</li>
+</ul>
+<h3 id="applicationhbs">application.hbs<a aria-hidden="true" class="anchor-heading icon-link" href="#applicationhbs"></a></h3>
+<ul>
+<li>a wrapper around the whole application. This is where we can specify a footer and header, since they will appear on all pages.</li>
+<li>use <code>{{outlet}}</code> to specify the whole application (think of it as <code>children</code>, which contains the rest of the app)</li>
+</ul>
+<h2 id="components">Components<a aria-hidden="true" class="anchor-heading icon-link" href="#components"></a></h2>
+<ul>
+<li>essentially just a template that goes in another template</li>
+<li>they can take args (just like passing props in React)
+<img src="/assets/images/2021-03-10-22-39-41.png"></li>
+<li>You can think of components as Ember's way for letting you create your own HTML tags.</li>
+<li>use the <code>{{yield}}</code> keyword to pass "the rest of the data" (similar to <code>children</code> in React)</li>
+</ul>
+<h3 id="namespaced-components">Namespaced components<a aria-hidden="true" class="anchor-heading icon-link" href="#namespaced-components"></a></h3>
+<ul>
+<li>you can have a component that exists within another component by:
+a. creating a folder within <code>/components</code> with <code>ember generate component &#x3C;parentDir>/&#x3C;subComponent></code></li>
+<li>invoked in templates like this <code>&#x3C;Parent::Child></code></li>
+<li>We can pass down HTML attributes just like props in react:</li>
+</ul>
+<pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>image<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span>img</span> <span class="token attr-name">...attributes</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;/</span>div</span><span class="token punctuation">></span></span>
+</code></pre>
+<h3 id="class-components">Class components<a aria-hidden="true" class="anchor-heading icon-link" href="#class-components"></a></h3>
+<ul>
+<li>enable us to add behavior to components (by using states)</li>
+<li>run `ember generate component-class <nameofcomponent></nameofcomponent></li>
+<li>class components extend <code>Glimmer</code> components, giving it functionality similar to classes in React, such as state and lifecycle methods.</li>
+<li>whenever a component is invoked, an instance of its related class component will be instantiated, allowing us to store state in it and call any relevant lifecycle methods.</li>
+<li>initial state is stored in the constructor (in Ember, writing out constructor seems to be optional)</li>
+<li>in the template part of the component (ie. the html) we get access to the instance variables (the component state) defined in the class component</li>
+<li>Glimmer components have access to <code>this.args</code>, which is just like <code>this.props</code>
+<ul>
+<li>All arguments that can be accessed from this.args are implicitly marked as <a title="Private" href="https://wiki.dendron.so/notes/hfyvYGJZQiUwQaaxQO27q.html" target="_blank" class="private">@tracked (Private)</a></li>
+</ul>
+</li>
+</ul>
+<h4 id="block-parameters">Block parameters<a aria-hidden="true" class="anchor-heading icon-link" href="#block-parameters"></a></h4>
+<ul>
+<li>a block is any code that is between the opening and closing tags of a component (in react it would be called <code>children</code>)</li>
+<li>What if there is a variable that we want to pass to the block content?
+<ul>
+<li>In this case we can the <code>as |results|</code> syntax, which would make <code>results</code> available to everything inside the block</li>
+<li>this is similar to when we do a <code>items.map(item)</code>, and we have the current iteration available to us as <code>map</code></li>
+</ul>
+</li>
+</ul>
+<pre class="language-html"><code class="language-html">  <span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span>ul</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>results<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span><span class="token namespace">Rentals:</span>:Filter</span> <span class="token attr-name">@rentals</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span>{{@rentals}}</span> <span class="token attr-name">@query</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span>{{this.query}}</span> <span class="token attr-name">as</span> <span class="token attr-name">|results|</span><span class="token punctuation">></span></span>
+      {{#each @rentals as |rental|}}
+		<span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span>li</span><span class="token punctuation">></span></span>
+		  <span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span>Rental</span> <span class="token attr-name">@rental</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span>{{rental}}</span> <span class="token punctuation">/></span></span>
+		<span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;/</span>li</span><span class="token punctuation">></span></span>
+      {{/each}}
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;/</span><span class="token namespace">Rentals:</span>:Filter</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;/</span>ul</span><span class="token punctuation">></span></span>
+</code></pre>
+<ul>
+<li>this also allows us to pass down the resultings data in the corresponding module that pertains to <code>rentals/filter.hbs</code> with <code>{{yield this.results}}</code> (see next section)</li>
+</ul>
+<h4 id="provider-component">Provider component<a aria-hidden="true" class="anchor-heading icon-link" href="#provider-component"></a></h4>
+<ul>
+<li>A pattern we use when we want to set up a piece of state for a component, but don't have any html to render for it. Instead, the html is just passed on down to the next level by using <code>{{yield this.results}}</code></li>
+<li>The child component then passes data up to it's parent
+<ul>
+<li>look at <code>rentals.hbs</code> and <code>rentals/filter.js</code>. 
+<ul>
+<li><code>@query={{this.query}} as |results|</code> passes the <code>query</code> variable down to the child, giving it access to it. The child (a class component) uses that variable to make computations, then returns a result, which gets put in the variable <code>results</code> (due to the <code>|results|</code> line above)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="routes">Routes<a aria-hidden="true" class="anchor-heading icon-link" href="#routes"></a></h2>
+<h3 id="model-hook">Model hook<a aria-hidden="true" class="anchor-heading icon-link" href="#model-hook"></a></h3>
+<ul>
+<li>The model hook is responsible for fetching and preparing any data that you need for your route. Ember will automatically call this hook when entering a route, so that you can have an opportunity to run your own code to get the data you need. The object returned from this hook is known as the model for the route.
+<ul>
+<li>Usually, this is where we'd fetch data from a server. Since fetching data is usually an asynchronous operation, the model hook is marked as async</li>
+</ul>
+</li>
+</ul>
+<h2 id="services">Services<a aria-hidden="true" class="anchor-heading icon-link" href="#services"></a></h2>
+<ul>
+<li>Services are just singleton objects (ie. they get instantiated only once) to hold long-lived data such as user sessions.</li>
+<li>serve a similar role to global variables, in that they can be easily accessed by any part of your app</li>
+<li>For example, we can inject any available service into components, as opposed to having them passed in as an argument. This allows deeply nested components to "skip through" the layers and access things that are logically global to the entire app, such as routing, authentication, user sessions, user preferences, etc.</li>
+<li>A major difference between services and global variables is that services are scoped to your app, instead of all the JavaScript code that is running on the same page. This allows you to have multiple scripts running on the same page without interfering with each other.</li>
+</ul>
+<h3 id="store-service">Store service<a aria-hidden="true" class="anchor-heading icon-link" href="#store-service"></a></h3>
+<ul>
+<li>can be injected into a route with <code>@service store</code>, making the Ember Data store available to use as <code>this.store</code>, and giving us <code>find</code> and <code>findAll</code> methods.</li>
+</ul>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword module">import</span> <span class="token imports"><span class="token punctuation">{</span> inject <span class="token keyword module">as</span> service <span class="token punctuation">}</span></span> <span class="token keyword module">from</span> <span class="token string">'@ember/service'</span><span class="token punctuation">;</span>
+
+<span class="token keyword module">export</span> <span class="token keyword module">default</span> <span class="token keyword">class</span> <span class="token class-name"><span class="token maybe-class-name">IndexRoute</span></span> <span class="token keyword">extends</span> <span class="token class-name"><span class="token maybe-class-name">Route</span></span> <span class="token punctuation">{</span>
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">service</span></span> store<span class="token punctuation">;</span>
+  <span class="token keyword">async</span> <span class="token function">model</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword control-flow">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">store</span><span class="token punctuation">.</span><span class="token method function property-access">findAll</span><span class="token punctuation">(</span><span class="token string">'rental'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<ul>
+<li>store service might be compared to Redux in its role to fetch from the database and cache it</li>
+</ul>
+<h2 id="controller">Controller<a aria-hidden="true" class="anchor-heading icon-link" href="#controller"></a></h2>
+<ul>
+<li>def - an object that receives the return value of the <code>model()</code> method (which is found in the associated route).</li>
+<li>def - an object that receives one property when its associated route is hit: <code>model</code> (the return value of the Route's model method)</li>
+<li>controller is only needed if we want to customize the properties or provide actions to the Route
+<ul>
+<li>in other words, they are an extension of the model loaded from the Route</li>
+</ul>
+</li>
+<li>if we don't make a <code>controller</code> file, one is generated for us by default (we just don't see it)</li>
+<li>the controller name must match the route that renders it</li>
+<li>controller is a singleton (ie. they get instantiated only once) 
+<ul>
+<li>this means we shouldn't keep state in the controller 
+<ul>
+<li>(unless it comes from either the Model or the Query params; since these would persist in between activations such as when a user leaves the Route and then re-enters it)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Controllers can also contain actions, Query Parameters, Tracked Properties, and more</li>
+<li>Basically, use controllers when: 
+<ol>
+<li>we want to pass down actions or variables to the components found in a route. </li>
+<li>we want to support query params</li>
+<li>we want to compute a value (that we will ultimately pass down to the route's components) that depends on the model hook 
+<ul>
+<li>in other words, the controller takes in the result of <code>model()</code> as its sole argument. What if we want to pass a variable down to the components that depend on the return value of <code>model()</code>?</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<h1 id="libraries">Libraries<a aria-hidden="true" class="anchor-heading icon-link" href="#libraries"></a></h1>
+<h2 id="ember-data">Ember Data<a aria-hidden="true" class="anchor-heading icon-link" href="#ember-data"></a></h2>
+<ul>
+<li>a library that helps manage data and application state in Ember applications.</li>
+<li>built around the idea of organizing your app's data into model objects (in <code>/models</code> directory).
+<ul>
+<li>These objects represent units of information that our application presents to the user</li>
+</ul>
+</li>
+<li>The model represents the shape of the data</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token keyword module">import</span> <span class="token imports"><span class="token maybe-class-name">Model</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> attr <span class="token punctuation">}</span></span> <span class="token keyword module">from</span> <span class="token string">'@ember-data/model'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> <span class="token constant">COMMUNITY_CATEGORIES</span> <span class="token operator">=</span> <span class="token punctuation">[</span>
+  <span class="token string">'Condo'</span><span class="token punctuation">,</span>
+  <span class="token string">'Townhouse'</span><span class="token punctuation">,</span>
+  <span class="token string">'Apartment'</span>
+<span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+<span class="token keyword module">export</span> <span class="token keyword module">default</span> <span class="token keyword">class</span> <span class="token class-name">RentalModel</span> <span class="token keyword">extends</span> <span class="token class-name">Model</span> <span class="token punctuation">{</span>
+  @attr title<span class="token punctuation">;</span>
+  @attr owner<span class="token punctuation">;</span>
+  @attr city<span class="token punctuation">;</span>
+  @attr <span class="token dom variable">location</span><span class="token punctuation">;</span>
+  @attr category<span class="token punctuation">;</span>
+  @attr image<span class="token punctuation">;</span>
+  @attr bedrooms<span class="token punctuation">;</span>
+  @attr description<span class="token punctuation">;</span>
+
+  <span class="token keyword">get</span> <span class="token function">type</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span><span class="token constant">COMMUNITY_CATEGORIES</span><span class="token punctuation">.</span><span class="token method function property-access">includes</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">category</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword control-flow">return</span> <span class="token string">'Community'</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword control-flow">else</span> <span class="token punctuation">{</span>
+      <span class="token keyword control-flow">return</span> <span class="token string">'Standalone'</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<ul>
+<li>Ember Data uses Adapters and Serializers. The idea is that, provided that your backend exposes a consistent protocol and interchange format to access its data, we can write a single adapter-serializer pair to handle all data fetches for the entire application.
+<ul>
+<li>Adapters deal with how and where Ember Data should fetch data from your servers, such as whether to use HTTP, HTTPS, WebSockets or local storage, as well as the URLs, headers and parameters to use for these requests. </li>
+<li>Serializers are in charge of converting the data returned by the server into a format Ember Data can understand.</li>
+</ul>
+</li>
+</ul>
+<h1 id="structure">Structure<a aria-hidden="true" class="anchor-heading icon-link" href="#structure"></a></h1>
+<ul>
+<li>the root of the ember application is <code>templates/application.hbs</code></li>
+</ul>
+<h1 id="tests">Tests<a aria-hidden="true" class="anchor-heading icon-link" href="#tests"></a></h1>
+<ul>
+<li>integration tests - components that exist in isolation. They don't have to interact with the context in which they are placed. They can exist as a unit. Essentualy these are our unit tests.</li>
+<li>acceptance tests - components that need to interact with other areas of the app (ex. navbar link functionality)</li>
+</ul>
+<h1 id="mirage">Mirage<a aria-hidden="true" class="anchor-heading icon-link" href="#mirage"></a></h1>
+<h2 id="factories">Factories<a aria-hidden="true" class="anchor-heading icon-link" href="#factories"></a></h2>
+<ul>
+<li>allow you to create blueprints for your data. In other words, seed your development database</li>
+</ul>

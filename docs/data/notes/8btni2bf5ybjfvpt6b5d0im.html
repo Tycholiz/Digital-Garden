@@ -1,0 +1,25 @@
+<h1 id="circuit-breaker">Circuit Breaker<a aria-hidden="true" class="anchor-heading icon-link" href="#circuit-breaker"></a></h1>
+<p>If an application server connects to a database 100 times per second and the database fails, the same error will be thrown to the application server over and over. Furthermore, the application server will have to wait for the TCP connection to timeout before receiving that error.</p>
+<p>By implementing the circuit breaker pattern, the application server can check the availability of that database. After implementing this pattern, the circuit breaker will detect failures and will prevent the application from trying to perform an action that is doomed to fail.</p>
+<p>The circuit breaker works by recording the state of the external service on a set interval</p>
+<h2 id="why-use-it">Why use it?<a aria-hidden="true" class="anchor-heading icon-link" href="#why-use-it"></a></h2>
+<ul>
+<li><em>Fault Isolation</em>: The Circuit Breaker isolates the impact of a failing service, preventing the failure from propagating to other parts of the system and causing a cascading effect.</li>
+<li><em>Fast Failure Detection</em>: The Circuit Breaker quickly detects and responds to failures, reducing the response time and preventing the system from wasting resources on calls to a failing service.</li>
+<li><em>Graceful Degradation</em>: By providing fallback behavior, the Circuit Breaker enables the system to gracefully degrade in the face of failures, ensuring that some level of functionality is available to clients even when the primary service is unavailable.</li>
+<li><em>Automatic Recovery</em>: The Circuit Breaker provides an automatic recovery mechanism. After the service has stabilized, it automatically allows requests to pass through again, restoring normal operation.</li>
+</ul>
+<h2 id="states">States<a aria-hidden="true" class="anchor-heading icon-link" href="#states"></a></h2>
+<p>The circuit breaker implements a <a href="/notes/FPzYyOund7l8onCiGxSn3">State Machine</a> that can exist in 3 different states: closed, open or half-open</p>
+<h3 id="closed">Closed<a aria-hidden="true" class="anchor-heading icon-link" href="#closed"></a></h3>
+<p>This is the happy path state, and all requests to the service will pass through without incident</p>
+<h3 id="open">Open<a aria-hidden="true" class="anchor-heading icon-link" href="#open"></a></h3>
+<p>This state is enabled once the number of failures increases beyond the configured threshold</p>
+<p>In this state circuit breaker returns an error immediately without even invoking the services</p>
+<h3 id="half-open">Half-open<a aria-hidden="true" class="anchor-heading icon-link" href="#half-open"></a></h3>
+<p>This state is enabled after a set period of time elapses of being in the Open state</p>
+<p>In this state, the circuit breaker allows a limited number of requests from the Microservice to passthrough and invoke the operation.</p>
+<ul>
+<li>If the requests are successful, then the circuit breaker will go to the closed state. </li>
+<li>If the requests continue to fail, then it goes back to Open state.</li>
+</ul>

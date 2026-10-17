@@ -1,0 +1,14 @@
+<h1 id="zip">Zip<a aria-hidden="true" class="anchor-heading icon-link" href="#zip"></a></h1>
+<h3 id="file-compression">File Compression<a aria-hidden="true" class="anchor-heading icon-link" href="#file-compression"></a></h3>
+<ul>
+<li>The core idea of file compression is: the content within a file has redundancies. Why not list data once, then simply back to it when it occurs again?
+<ul>
+<li>ex. the JFK quote: <em>"Ask not what your country can do for you -- ask what you can do for your country."</em> has 17 words, made up of 61 letters, 16 spaces, 1 <code>-</code> and 1 <code>.</code>. If each character was 1 unit of memory, that would be 79 units. If instead of storing each instance of a word in memory, we just refered the repeated words back to the first occurrence, we would cut the phrase in half.</li>
+</ul>
+</li>
+<li>In reality, the compression program doesn't look for words, but looks for patterns. Therefore, the larger the file we are compression, the more compression there will be.
+<ul>
+<li>This is why binary files like mp3 don't compress well — there is hardly any repetition of patterns.</li>
+</ul>
+</li>
+</ul>

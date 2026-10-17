@@ -1,0 +1,41 @@
+<h1 id="offline-first">Offline First<a aria-hidden="true" class="anchor-heading icon-link" href="#offline-first"></a></h1>
+<p>To make an app truly offline first, we primarily need to do two things:</p>
+<ol>
+<li>Any code and assets used should be available offline</li>
+<li>Any data changes should be made locally first and then <a href="/notes/mhnlv6r87uex7vxwqnjj857">synced</a> to the cloud.</li>
+</ol>
+<p>There are 2 categories of offline-first app that has different implications for the app's architecture: single-user and multi-user.</p>
+<ul>
+<li>single-user is an application like Everdo, where there is only ever one user editing a document at a time</li>
+<li>multi-user is an application like Trello or GoogleDocs, where multiple users can edit the same document at once
+<ul>
+<li>multi-user applications may benefit more from a data structure like <a href="/notes/q2b3asuqy4xlorkmdvinwc3">CRDTs</a></li>
+</ul>
+</li>
+</ul>
+<p>When the backend isn't very smart it's not too hard, you can just encapsulate any state-changing action into an event, when offline process the events locally + cache the chain of events, when online send the chain to the backend and have the backend apply the events one by one. Periodically sync new events from the backend and apply them locally to stay in sync. This is what classic Todo apps like OmniFocus do.</p>
+<ul>
+<li>The problems start when the backend is smarter and also applies business logic that generates new events (for example enriching new entities with data from external systems, or adding new tasks to a timeline etc). Naturally, the new server-generated events are only available later when the client comes back online.</li>
+</ul>
+<h3 id="offline-vs-cloud-apps">Offline vs Cloud apps<a aria-hidden="true" class="anchor-heading icon-link" href="#offline-vs-cloud-apps"></a></h3>
+<p>In cloud apps, the data on the server is treated as the primary, authoritative copy of the data; if a client has a copy of the data, it is merely a cache that is subordinate to the server. Any data modification must be sent to the server, otherwise it “didn't happen.” </p>
+<p>In offline-first applications we swap these roles: we treat the copy of the data on your local device — your laptop, tablet, or phone — as the primary copy. Servers still exist, but they hold secondary copies of your data in order to assist with access from multiple devices. </p>
+<p>Offline-first apps can use end-to-end encryption so that any servers that store a copy of your files only hold encrypted data that they cannot read.</p>
+<h2 id="tools">Tools<a aria-hidden="true" class="anchor-heading icon-link" href="#tools"></a></h2>
+<ul>
+<li><a href="https://github.com/Nozbe/WatermelonDB">WatermelonDB</a></li>
+<li><a href="https://rxdb.info/">RxDB</a></li>
+<li><a href="https://medium.com/offline-camp/couchdb-pouchdb-and-hoodie-as-a-stack-for-progressive-web-apps-a6078a985f18">CouchDB+PouchDB</a></li>
+<li><a href="https://github.com/dexie/Dexie.js">Dexie</a></li>
+</ul>
+<h2 id="e-resources">E Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#e-resources"></a></h2>
+<ul>
+<li><a href="https://riffle.systems/essays/prelude/">myTunes: using SQLite to create a reactive app</a></li>
+<li><a href="https://www.inkandswitch.com/local-first/">local-first apps</a></li>
+<li><a href="https://rxdb.info/downsides-of-offline-first.html">Downsides of offline-first</a></li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/wbs6c9snnonnyzm8vk2t4b9">Strategies</a></li>
+</ul>

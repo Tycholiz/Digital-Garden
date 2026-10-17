@@ -1,0 +1,50 @@
+<h1 id="functions">Functions<a aria-hidden="true" class="anchor-heading icon-link" href="#functions"></a></h1>
+<pre class="language-go"><code class="language-go"><span class="token comment">// a function that takes in 2 ints and returns an int</span>
+<span class="token keyword">func</span> <span class="token function">sum</span><span class="token punctuation">(</span>x <span class="token builtin">int</span><span class="token punctuation">,</span> y <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> x <span class="token operator">+</span> y
+<span class="token punctuation">}</span>
+</code></pre>
+<p>In Go, functions can have multiple return values. If we choose to write our functions with 2 return vlaues, then we must be sure to <em>always</em> return all of them.</p>
+<ul>
+<li>notice below that in the error case, we are still returning <code>0</code> as our first return value.</li>
+</ul>
+<pre class="language-go"><code class="language-go"><span class="token keyword">import</span> <span class="token string">"errors"</span><span class="token punctuation">,</span> <span class="token string">"math"</span>
+
+<span class="token keyword">func</span> <span class="token function">sqrt</span><span class="token punctuation">(</span>x <span class="token builtin">float64</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token builtin">float64</span><span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// logic: square root of a negative number throws an error</span>
+  <span class="token keyword">if</span> x <span class="token operator">&#x3C;</span> <span class="token number">0</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">,</span> errors<span class="token punctuation">.</span><span class="token function">New</span><span class="token punctuation">(</span><span class="token string">"Cannot get square root of negative number"</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">return</span> math<span class="token punctuation">.</span><span class="token function">Sqrt</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token boolean">nil</span>
+<span class="token punctuation">}</span>
+
+sqrtOf16<span class="token punctuation">,</span> err <span class="token operator">:=</span> <span class="token function">sqrt</span><span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">)</span>
+<span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+  fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span>
+<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+  fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>sqrtOf16<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>In Go function, if we specify the result parameters (ie. return value(s)), then we can just specify <code>return</code> without any value/expression list following it.</p>
+<ul>
+<li>the result parameters act as ordinary local variables. They can be modified, and we can <code>return</code> (again, with nothing after) and our function will return those same result parameters:</li>
+</ul>
+<pre class="language-go"><code class="language-go"><span class="token comment">// short-form</span>
+<span class="token keyword">func</span> <span class="token function">a</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">(</span>x <span class="token builtin">float64</span><span class="token punctuation">,</span> err <span class="token builtin">error</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    x <span class="token operator">=</span> <span class="token number">7.0</span>
+    <span class="token comment">// `return` here will return bother a and b, </span>
+    <span class="token comment">// since that is what is specified above in the result parameters</span>
+    <span class="token keyword">return</span>
+<span class="token punctuation">}</span>
+<span class="token comment">// long-form</span>
+<span class="token keyword">func</span> <span class="token function">a</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token builtin">float64</span><span class="token punctuation">,</span><span class="token builtin">error</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+  x <span class="token operator">:=</span> <span class="token number">7.0</span>
+  <span class="token keyword">var</span> err <span class="token builtin">error</span>
+  <span class="token keyword">return</span> x<span class="token punctuation">,</span>err
+<span class="token punctuation">}</span>
+</code></pre>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/ign4gpjymzjsokzxtrszhxk">Methods</a></li>
+</ol>

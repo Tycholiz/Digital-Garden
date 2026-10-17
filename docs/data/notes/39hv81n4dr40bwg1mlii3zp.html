@@ -1,0 +1,21 @@
+<h1 id="kubernetes-node">Kubernetes Node<a aria-hidden="true" class="anchor-heading icon-link" href="#kubernetes-node"></a></h1>
+<p>A node is a worker machine in Kubernetes, responsible for running containers and other workloads. Nodes are part of a cluster and communicate with the master to receive instructions on deploying and managing containers.</p>
+<p>There are 2 types of Node in Kubernetes:</p>
+<ul>
+<li>A single <a href="/notes/7w1hne3hmzgbu69buj3hjgf">Master Node</a> (a.k.a Control Plane)</li>
+<li>One or more <a href="/notes/iuja3tlxkdniv862fq9h1v4">Worker Node</a> (a.k.a. compute machines)</li>
+</ul>
+<p>Cumulatively these nodes make up a <em>Kubernetes Cluster</em>.</p>
+<ul>
+<li>At a minimum, a cluster contains a control plane and one or more compute machines (nodes).</li>
+</ul>
+<h3 id="node-pool">Node Pool<a aria-hidden="true" class="anchor-heading icon-link" href="#node-pool"></a></h3>
+<p>A node pool is a subset of nodes within a cluster that share the same configuration settings. </p>
+<p>These settings include the machine type, disk type and size, and network settings. </p>
+<p>Node pools provide a way to group nodes based on specific requirements.</p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/7w1hne3hmzgbu69buj3hjgf">Master Node</a></li>
+<li><a href="/notes/iuja3tlxkdniv862fq9h1v4">Worker Node</a></li>
+</ol>

@@ -1,0 +1,134 @@
+<h1 id="fragments">Fragments<a aria-hidden="true" class="anchor-heading icon-link" href="#fragments"></a></h1>
+<p>Fragments are the primary unit of composition in Graphql. They...</p>
+<ul>
+<li>must specify the type they apply to</li>
+<li>cannot be specified on any input value (scalar, enumeration, or input object).</li>
+<li>can be specified on object types, interfaces, and unions.</li>
+</ul>
+<p>Below, the part after <code>on</code> is the type we are selecting from</p>
+<ul>
+<li>so <code>people</code> is of type <code>Person</code>, and we want the <code>firstName</code> and <code>lastName</code> fields from <code>people(id: "7")</code></li>
+</ul>
+<pre class="language-gql"><code class="language-gql">fragment NameParts on Person {
+  firstName
+  lastName
+}
+
+query GetPerson {
+  people(id: "7") {
+    ...NameParts
+    avatar(size: LARGE)
+  }
+}
+</code></pre>
+<h2 id="conditional-fragments">Conditional Fragments<a aria-hidden="true" class="anchor-heading icon-link" href="#conditional-fragments"></a></h2>
+<h3 id="type-conditions">Type Conditions<a aria-hidden="true" class="anchor-heading icon-link" href="#type-conditions"></a></h3>
+<ul>
+<li>allow us to conditionally include fields based on their runtime type.</li>
+</ul>
+<p>On Facebook, imagine we have 2 different fields that both specify a <code>count</code>: User Friends, and Page Likes. We have set up our schema in such a way that we define a <code>Profile</code> type, which can be either a <code>User</code> or <code>Page</code>. </p>
+<p>Now imagine that we want to write a query that gets back both the friends count of Kyle Tycholiz, and it gets back the like count of the Never Forget page. If we want to write this in a single query, we are presented with a problem: while both have a field <code>count</code>, the parent field is different, namely <code>friends</code> and <code>likes</code>. To solve this problem, we must use fragments, which will be applied <em>depending on</em> the type of profile that is returned in the query.</p>
+<p>When we query for this, the <code>profiles</code> root field returns a list where each element could be a <code>Page</code> or a <code>User</code>.</p>
+<pre class="language-gql"><code class="language-gql">{
+	profiles(name: ["kyletycholiz", "neverforget"]) {
+		name
+		...userFragment
+		...pageFragment
+	}
+	
+fragment userFragment on User {
+	friends {
+		count
+	}
+}
+
+fragment pageFragment on Page {
+	likers {
+		count
+	}
+}
+}
+</code></pre>
+<h3 id="inline-fragments">Inline Fragments<a aria-hidden="true" class="anchor-heading icon-link" href="#inline-fragments"></a></h3>
+<p>if querying a field that returns an interface or union type, we need to use inline fragments to access data on the underlying concrete type</p>
+<ul>
+<li>These can be used to compose fields in a type-dependent way
+</li>
+</ul>
+<p>The above Facebook example can be accomplished using inline fragments. </p>
+<p>The Graphql server will determine whether to return <code>homeAddress</code> or <code>address</code> at runtime, depending on whether the requested object is a <code>User</code> or <code>Business</code></p>
+<pre class="language-gql"><code class="language-gql">query Foo {
+  profile(id: $id) {
+    url
+    ... on User {
+      homeAddress
+    }
+    ... on Business {
+      address
+    }
+  }
+}
+</code></pre>
+<h4 id="practical-usage">Practical usage<a aria-hidden="true" class="anchor-heading icon-link" href="#practical-usage"></a></h4>
+<ul>
+<li>Imagine we had an interface <code>Character</code> that represents a character from Star Wars:</li>
+</ul>
+<pre class="language-gql"><code class="language-gql">interface Character {
+  id: ID!
+  name: String!
+  friends: [Character]
+  appearsIn: [Episode]!
+}
+</code></pre>
+<ul>
+<li>Imagine now we create two types that <em>implement</em> this interface:</li>
+</ul>
+<pre class="language-gql"><code class="language-gql">type Human implements Character {
+  id: ID!
+  name: String!
+  friends: [Character]
+  appearsIn: [Episode]!
+  starships: [Starship]
+  totalCredits: Int
+}
+
+type Droid implements Character {
+  id: ID!
+  name: String!
+  friends: [Character]
+  appearsIn: [Episode]!
+  primaryFunction: String
+}
+</code></pre>
+<ul>
+<li>As we can see, <strong>Droid</strong> has the field <code>primaryFunction</code>, while <strong>Human</strong> does not
+<ul>
+<li>This means that if we were to make a query that wanted that field back, we would get an error:</li>
+</ul>
+</li>
+</ul>
+<pre class="language-gql"><code class="language-gql">query HeroForEpisode($ep: Episode!) {
+  hero(episode: $ep) {
+    name
+    primaryFunction
+  }
+}
+// PRODUCES ERROR: cannot query field 'primaryFunction' on type Character
+</code></pre>
+<ul>
+<li>To get around this, we need to use an inline fragment:</li>
+</ul>
+<pre class="language-gql"><code class="language-gql">query HeroForEpisode($ep: Episode!) {
+  hero(episode: $ep) {
+    name
+    ... on Droid {
+      primaryFunction
+    }
+  }
+}
+</code></pre>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/YrV9FViC2kjwO2LhRHFzT">Graphql Documents</a></li>
+</ul>

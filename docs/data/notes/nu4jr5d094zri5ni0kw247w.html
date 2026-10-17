@@ -1,0 +1,66 @@
+<h1 id="domain">Domain<a aria-hidden="true" class="anchor-heading icon-link" href="#domain"></a></h1>
+<p>A <em>domain</em> is simply a subtree of the domain namespace.</p>
+<p>A domain can be spread across multiple <a href="/notes/rKwvAx3SP99In467imzlg">zones</a></p>
+<ul>
+<li>consider that those who manage the <code>com</code> domain don't manage the <code>facebook.com</code> domain; it has delegated responsibility to facebook.
+<ul>
+<li><code>facebook.com</code> is within the <code>com</code> domain (and <code>facebook.com</code> domain), but is only in the <code>facebook.com</code> zone. It is not part of the <code>com</code> zone.</li>
+</ul>
+</li>
+</ul>
+<p>In the absense of subdomains (and thus delegation), the zone and the domain contain the same information</p>
+<h3 id="subdomain">Subdomain<a aria-hidden="true" class="anchor-heading icon-link" href="#subdomain"></a></h3>
+<p>The term <em>subdomain</em> is relative. The <code>facebook</code> domain is a subdomain of the <code>com</code> domain, and the <code>com</code> domain is a subdomain of the root domain.</p>
+<p>The most common subdomain is <code>www</code></p>
+<ul>
+<li>The www subdomain is so widely used that most domain registrars include it with domain name purchases.</li>
+</ul>
+<p>The concept of subdomain can be achieved in 2 different ways:</p>
+<ol>
+<li>The DNS zone file pertaining to the parent domain can be edited
+<ul>
+<li>in other words, subdomains are contained within parent domains (this is not the case for the second)</li>
+</ul>
+</li>
+<li>a record can be made to map a name to the <a href="/notes/dG0EOFLhB3CJeeBwLDvbi">A record</a>.
+<ul>
+<li>network operations teams consider the second to not really be a subdomain, and instead restrict the definition to only including those subdomains which are provided by the zone NS records, and any server-destination other than that.</li>
+</ul>
+</li>
+</ol>
+<h3 id="domain-names">Domain names<a aria-hidden="true" class="anchor-heading icon-link" href="#domain-names"></a></h3>
+<p>a domain name can be in many domains</p>
+<ul>
+<li>ex. <code>pa.ca.us</code> is part of the <code>ca.us</code> domain, but also part of the <code>us</code> domain.</li>
+</ul>
+<p><img src="/assets/images/2022-03-12-19-59-47.png"></p>
+<p>Domain names are used as <a href="/notes/jiITIvU42MBAYcbXheWwI">indexes</a> into the <a href="/notes/k2zer05sauofvckrz99agvh">DNS database</a>.</p>
+<p>Interior domain names (ie. not leaf nodes) can name a host and point to informa- tion about the domain; it doesn't have to be one or the other.</p>
+<ul>
+<li>ex. <code>hp.com</code> is both to Hewlett Packard's domain, as well as a domain name that refers to the host that runs HPs main webserver.</li>
+</ul>
+<p>When you use a domain name, the information that is retrieved depends on the protocol we used to access that information</p>
+<ul>
+<li>ex. if we are using HTTP or <a href="/notes/squwLesfbBb0bxWjzGf2O">SSH</a>, then we get the IP address. If we are using mail protocols, then we get mail-routing information.</li>
+</ul>
+<h3 id="apex-domain">Apex domain<a aria-hidden="true" class="anchor-heading icon-link" href="#apex-domain"></a></h3>
+<p>The apex domain is the root domain, without any <code>www</code> subdomain.</p>
+<h3 id="fully-qualified-domain-name-fqdn">Fully Qualified Domain Name (FQDN)<a aria-hidden="true" class="anchor-heading icon-link" href="#fully-qualified-domain-name-fqdn"></a></h3>
+<ul>
+<li>The full domain name, rather than its parts separated. The FQDM is notable because it is fully unambiguous. It therefore points to a very specific place, and cannot be interpreted in any other way.</li>
+<li>It always ends in the TLD (therefore, paths don't count)</li>
+<li>FQDN in DNS records should always be appended with a <code>.</code>
+<ul>
+<li>This is to differentiate them from relative paths. Therefore, the trailing <code>.</code> serves the same purpose as the leading <code>/</code> when we're talking about a path.</li>
+<li>Names without trailing dots are sometimes interpreted as relative to some domain name other than the root.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/TALpAZmsruqyoUkJzegVv">DNS Records</a></li>
+<li><a href="/notes/rKwvAx3SP99In467imzlg">DNS Zone</a></li>
+<li><a href="/notes/vuSZhKeQU8JmAXynHqZvf">Authoritative Nameserver</a></li>
+<li><a href="/notes/Tr7Vo4iF0Pbb9qVfycLVM">IP Address</a></li>
+</ul>

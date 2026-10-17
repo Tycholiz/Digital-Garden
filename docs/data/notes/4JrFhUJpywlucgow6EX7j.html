@@ -1,0 +1,119 @@
+<h1 id="microservice">Microservice<a aria-hidden="true" class="anchor-heading icon-link" href="#microservice"></a></h1>
+<p>A microservice architecture is variant of the <a href="/notes/BX7Yh5IwYZCsV2BSxvunp">SOA (Service-oriented Architecture)</a> structural style</p>
+<ul>
+<li>arranges an application as a collection of loosely-coupled services.</li>
+<li>services are fine-grained and the protocols are lightweight.</li>
+</ul>
+<p>goal is that teams can bring their services life independent of others, but it comes at a cost to maintain the decoupling.</p>
+<ul>
+<li>Interfaces need to be designed carefully and treated as a public API.
+<ul>
+<li>These difficulties are usually solved by either having versioned APIs, or multiple interfaces on the same service (ie. multiple commands that effectively export a document— just done in different ways)</li>
+</ul>
+</li>
+</ul>
+<p>A microservice is a self-contained piece of business functionality with clear interfaces</p>
+<ul>
+<li>through its own internal components, it may implement a layered architecture</li>
+</ul>
+<p>The architecture essentially follows the Unix philosophy of "Do one thing and do it well"</p>
+<p>It lends itself to a continuous delivery software development process.</p>
+<ul>
+<li>A change to a small part of the application only requires rebuilding and redeploying only one or a small number of services</li>
+</ul>
+<p>Adheres to principles such as fine-grained interfaces (to independently deployable services), business-driven development (e.g. domain-driven design).</p>
+<p>Microservice architectures are commonly adopted for cloud-native applications, serverless computing, and applications using lightweight container deployment.</p>
+<p>When implementing a microservice-based architecture, the most important technology choices are the way microservices communicate with each other (synchronous, asynchronous, UI integration) and the protocols used for the communication (RESTful HTTP, messaging, GraphQL ...). Things like language and infrastructure don't introduce the coupling between services as you'd find in a monolithic app.</p>
+<ul>
+<li>In a traditional architecture, the choice of language impacts the whole system. This isn't the case in microservices,</li>
+</ul>
+<h2 id="considerations-when-to-make-a-service">Considerations when to make a service<a aria-hidden="true" class="anchor-heading icon-link" href="#considerations-when-to-make-a-service"></a></h2>
+<p>How many people will be working in the service and how frequently will there be changes?</p>
+<ul>
+<li>more people working in one codebase results in more merge conflicts and competition for the same resources.</li>
+</ul>
+<p>Services should be determined along product offering boundaries defined by nouns (e.g. Customer, Sales) or verbs (Search, Add to Cart)</p>
+<ul>
+<li>If ServiceB depends on ServiceA to do its work, then it's a sign that they should live in the same service. Otherwise, a failing service will cause its dependent services to fail. Finding the offending service becomes like finding the burnt out bulb in a christmas tree.</li>
+<li>if we need to achieve the separation of team ownership, or if a service is simply getting too large, we may consider writing a simple library.</li>
+</ul>
+<h2 id="pros--cons">Pros &#x26; Cons<a aria-hidden="true" class="anchor-heading icon-link" href="#pros--cons"></a></h2>
+<h3 id="pros">Pros<a aria-hidden="true" class="anchor-heading icon-link" href="#pros"></a></h3>
+<p>Modularity</p>
+<ul>
+<li>This makes the application easier to understand, develop, test, and become more resilient to architecture erosion. This benefit is often argued in comparison to the complexity of monolithic architectures.</li>
+<li>developers also gain freedom of implementation and technology choices, negating the need to subject services to the lowest common denominator implementation</li>
+</ul>
+<p>Scalability</p>
+<ul>
+<li>Since microservices are implemented and deployed independently of each other, i.e. they run within independent processes, they can be monitored and scaled independently.</li>
+</ul>
+<p>Integration of heterogeneous and legacy systems</p>
+<ul>
+<li>microservices is considered as a viable means for modernizing existing monolithic software application. There are experience reports of several companies who have successfully replaced (parts of) their existing software by microservices, or are in the process of doing so. The process for Software modernization of legacy applications is done using an incremental approach.</li>
+</ul>
+<p>Distributed development</p>
+<ul>
+<li>it parallelizes development by enabling small autonomous teams to develop, deploy and scale their respective services independently. It also allows the architecture of an individual service to emerge through continuous refactoring. Microservice-based architectures facilitate continuous integration, continuous delivery and deployment.
+<ul>
+<li>teams working on monoliths need to synchronize to deploy together.</li>
+</ul>
+</li>
+</ul>
+<p>Increased fault isolation (only when deployed properly)</p>
+<h3 id="cons">Cons<a aria-hidden="true" class="anchor-heading icon-link" href="#cons"></a></h3>
+<ul>
+<li>Services form information barriers.</li>
+<li>Inter-service calls over a network have a higher cost in terms of network latency</li>
+<li>Testing and deployment are more complicated</li>
+<li>Moving responsibilities between services is more difficult. It may involve communication between different engineering teams, depending on how messages are passed between each microservice.</li>
+<li>following this paradigm results in a tendency to see the microservice as the atomic unit. This can lead to too many services when the alternative of internal modularization of a more monolithic approach may lead to a simpler design.
+<ul>
+<li>To make this judgement requires understanding the overall architecture of the applications and interdependencies between components.</li>
+</ul>
+</li>
+<li>The architecture introduces additional complexity and new problems to deal with, such as network latency, message format design, Backup/Availability/Consistency (BAC), load balancing and fault tolerance
+mat design, Backup/Availability/Consistency (BAC), load balancing and fault tolerance</li>
+</ul>
+<p>Also, unless implemented properly, you face the risk of...</p>
+<ul>
+<li>Lower overall availability, especially when those services are deployed in one of a handful of microservice anti-patterns</li>
+<li>Longer response times for end users.</li>
+<li>Complicated fault isolation and troubleshooting that increases average recovery time for failures.</li>
+<li>Service bloat: Too many services to comprehend</li>
+</ul>
+<h2 id="examples">Examples<a aria-hidden="true" class="anchor-heading icon-link" href="#examples"></a></h2>
+<h3 id="amazon-product-page">Amazon Product Page<a aria-hidden="true" class="anchor-heading icon-link" href="#amazon-product-page"></a></h3>
+<p>Consider that a product page on Amazon gets data from multiple distinct domains:</p>
+<ul>
+<li>Product Info Service - basic metadata about the product such as title, author, page count etc.</li>
+<li>Pricing Service - product price</li>
+<li>Order service - purchase history for product</li>
+<li>Inventory service - product availability</li>
+<li>Review service - customer reviews </li>
+</ul>
+<p>The question becomes, how do the clients access each individual service? This is more complex than what we'd have in a monorepo architecture. As such, problems are:</p>
+<ul>
+<li>each client (web, mobile) might not necessarily get the same sets of data (ex. mobile probably shows less information)</li>
+</ul>
+<h1 id="resources">Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#resources"></a></h1>
+<ul>
+<li><a href="https://microservices.io/patterns/index.html">List of Microservice Patterns</a></li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/dXN7waVmwHQopWEjPpd0j">Micro Frontend</a></li>
+<li><a href="/notes/5lMqhn3fOgwP8k1v6yODU">Testing</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/zubgzhNFE6KlTgXcjTz6O">GitLab</a></li>
+<li><a href="/notes/qxSOd6SPN8qf9ZUojVFDX">K8s</a></li>
+<li><a href="/notes/ULkfbL9WpktbVYnzhl6Jw">Postgres</a></li>
+<li><a href="/">Digital Garden</a></li>
+<li><a href="/notes/8qojup535mzwcxl0c09cfhm">API Gateway</a></li>
+<li><a href="/notes/xyqhj8bvi93yhoycfp3twpz">Hexagonal</a></li>
+<li><a href="/notes/NfY3pvmOMzpQg8TKrUMGd">Contract Testing</a></li>
+</ul>

@@ -1,0 +1,145 @@
+<h1 id="coding">coding<a aria-hidden="true" class="anchor-heading icon-link" href="#coding"></a></h1>
+<h2 id="projects-at-a-high-level">Projects at a high level<a aria-hidden="true" class="anchor-heading icon-link" href="#projects-at-a-high-level"></a></h2>
+<ol>
+<li>Create a detailed PRD, with help from AI</li>
+<li>Get the AI to break down the PRD into high level implementation goals</li>
+<li>Get the AI to craft a detailed spec prompt for each goal
+<ul>
+<li>Prompt should include, well a prompt (one sentence), context (needed files, documentation, dependencies,…), tasks (CREATE / UPDATE files and functions, other key actions), cross-cutting concerns (to make sure the prompts are well wired together and don’t leave any gaps), and finally the prompt must include expected output (files/function created/updated, any other important output expected from submitting the prompt).</li>
+</ul>
+</li>
+</ol>
+<h1 id="actionable-tips-for-coding-with-ai">Actionable Tips for Coding with AI<a aria-hidden="true" class="anchor-heading icon-link" href="#actionable-tips-for-coding-with-ai"></a></h1>
+<h2 id="core-mindset-shifts">Core Mindset Shifts<a aria-hidden="true" class="anchor-heading icon-link" href="#core-mindset-shifts"></a></h2>
+<h3 id="1-assume-ai-is-wrong-until-proven-right">1. Assume AI is Wrong Until Proven Right<a aria-hidden="true" class="anchor-heading icon-link" href="#1-assume-ai-is-wrong-until-proven-right"></a></h3>
+<ul>
+<li><strong>Expect 70% of AI output to need correction</strong> - this is normal and productive</li>
+<li><strong>Read generated code as it's being written</strong> - don't just accept and run</li>
+<li><strong>Use AI as a conversation partner</strong>, not an infallible code generator</li>
+</ul>
+<h3 id="2-master-the-reset-and-refine-approach">2. Master the "Reset and Refine" Approach<a aria-hidden="true" class="anchor-heading icon-link" href="#2-master-the-reset-and-refine-approach"></a></h3>
+<p>Josh Nelands shared a particularly effective technique for implementing this reset and refine approach: Let the AI work on the problem for 10 to 20 minutes, nudging it along as needed. Then, ask it to reflect on the entire conversation, analysing what went wrong, why it struggled, and what information it wished it had known at the start to avoid these problems. With this reflection in hand, revert the conversation and start fresh armed with those insights. He reports that this meta-learning approach often leads to dramatically better results than continuing to iterate on a struggling conversation.</p>
+<ul>
+<li>When AI output isn't quite right, get it to generate some lessons about the context and what we're struggling with, then <strong>start fresh with a more specific prompt and provide the lessons</strong></li>
+<li>Avoid continuous iteration that creates complex, meandering context</li>
+<li>Let AI work for 10-20 minutes, then ask it to reflect on what went wrong and restart with those insights. After these conversations yield insights, ask the AI to document what we have learned. This serves as both documentation for humans and AI.</li>
+</ul>
+<h2 id="setup-and-configuration">Setup and Configuration<a aria-hidden="true" class="anchor-heading icon-link" href="#setup-and-configuration"></a></h2>
+<h3 id="3-create-repository-specific-ai-rules">3. Create Repository-Specific AI Rules<a aria-hidden="true" class="anchor-heading icon-link" href="#3-create-repository-specific-ai-rules"></a></h3>
+<ul>
+<li>Set up <strong>Cursor Rules</strong> tailored to each project's patterns and constraints</li>
+<li>Only add rules when you notice <strong>repeated AI mistakes</strong></li>
+<li>Include specific architectural decisions (e.g., "don't run database migrations directly")</li>
+<li>Document your preferred coding styles, frameworks, and patterns</li>
+</ul>
+<h3 id="4-strengthen-your-quality-guardrails">4. Strengthen Your Quality Guardrails<a aria-hidden="true" class="anchor-heading icon-link" href="#4-strengthen-your-quality-guardrails"></a></h3>
+<ul>
+<li><strong>Don't trust AI-written tests blindly</strong> - write test names yourself, let AI handle implementation</li>
+<li>Use <strong>strict typing and linting</strong> to guide AI toward better code generation</li>
+<li>Implement <strong>type hints even in dynamic languages</strong> to give AI better context</li>
+<li>Maintain rigorous code review processes for AI-generated code</li>
+</ul>
+<h2 id="workflow-optimization">Workflow Optimization<a aria-hidden="true" class="anchor-heading icon-link" href="#workflow-optimization"></a></h2>
+<h3 id="5-keep-changes-extremely-small">5. Keep Changes Extremely Small<a aria-hidden="true" class="anchor-heading icon-link" href="#5-keep-changes-extremely-small"></a></h3>
+<ul>
+<li><strong>Ship to production multiple times daily</strong> with tiny, focused changes</li>
+<li>Break complex tasks into small pieces - ask AI how to break them down</li>
+<li><strong>Read full diffs</strong> of every change before merging</li>
+<li>Small incremental changes compound quickly and maintain confidence</li>
+</ul>
+<h3 id="6-use-documentation-as-an-ai-enhancement-tool">6. Use Documentation as an AI Enhancement Tool<a aria-hidden="true" class="anchor-heading icon-link" href="#6-use-documentation-as-an-ai-enhancement-tool"></a></h3>
+<ul>
+<li>Keep <strong>all documentation in the repository</strong> alongside code</li>
+<li>Document <strong>architectural decisions and project-specific patterns</strong> upfront</li>
+<li>Ask AI to document complex decisions after technical discussions</li>
+<li>Use <strong>clear READMEs</strong> as the cornerstone of your documentation strategy</li>
+</ul>
+<h3 id="7-be-explicit-about-state-management-and-data-models">7. Be Explicit About State Management and Data Models<a aria-hidden="true" class="anchor-heading icon-link" href="#7-be-explicit-about-state-management-and-data-models"></a></h3>
+<ul>
+<li><strong>Document state management patterns</strong> and data flow expectations</li>
+<li>Maintain <strong>clear schemas in the repository</strong> and reference them explicitly</li>
+<li>Establish <strong>clear boundaries</strong> around which components can mutate state</li>
+<li>Use database constraints and type hints to provide AI guardrails</li>
+</ul>
+<h2 id="advanced-techniques">Advanced Techniques<a aria-hidden="true" class="anchor-heading icon-link" href="#advanced-techniques"></a></h2>
+<h3 id="8-manage-context-strategically">8. Manage Context Strategically<a aria-hidden="true" class="anchor-heading icon-link" href="#8-manage-context-strategically"></a></h3>
+<ul>
+<li><strong>Less context is often more effective</strong> than overwhelming the AI</li>
+<li>Provide <strong>precise, curated context</strong> upfront rather than accumulated context</li>
+<li>Recognize when to <strong>reset the conversation</strong> vs. continue iterating</li>
+<li>Avoid letting context become noise rather than signal</li>
+</ul>
+<h3 id="9-use-voice-to-text-for-better-ai-communication">9. Use Voice-to-Text for Better AI Communication<a aria-hidden="true" class="anchor-heading icon-link" href="#9-use-voice-to-text-for-better-ai-communication"></a></h3>
+<ul>
+<li>Try tools like <strong>Wispr Flow</strong> for dictating thoughts and instructions</li>
+<li><strong>Brain dump ideas verbally</strong> then let AI structure them coherently</li>
+<li>Preserve insights that might be lost due to typing overhead</li>
+<li>Leverage external processing tendencies for clearer AI instructions</li>
+</ul>
+<h3 id="10-combine-ai-with-traditional-development-practices">10. Combine AI with Traditional Development Practices<a aria-hidden="true" class="anchor-heading icon-link" href="#10-combine-ai-with-traditional-development-practices"></a></h3>
+<ul>
+<li><strong>Write using AI</strong>: Brain dump → AI structures → Human refines → AI polishes</li>
+<li>Use <strong>Test-Driven Development</strong> patterns to maintain cognitive rhythm</li>
+<li>Create <strong>deliberate breaks</strong> in AI coding sessions to manage cognitive load</li>
+<li>Apply <strong>all good coding practices more rigorously</strong> when working with AI</li>
+</ul>
+<h2 id="safety-and-control">Safety and Control<a aria-hidden="true" class="anchor-heading icon-link" href="#safety-and-control"></a></h2>
+<h3 id="11-maintain-manual-control-over-actions">11. Maintain Manual Control Over Actions<a aria-hidden="true" class="anchor-heading icon-link" href="#11-maintain-manual-control-over-actions"></a></h3>
+<ul>
+<li><strong>Avoid "YOLO mode"</strong> that automatically runs terminal commands</li>
+<li><strong>Understand every command</strong> before execution, especially if less experienced</li>
+<li>Watch AI actions "like a hawk" when automation is enabled</li>
+<li>Maintain explicit permission for environment-changing actions</li>
+</ul>
+<h3 id="12-focus-on-human-unique-skills">12. Focus on Human-Unique Skills<a aria-hidden="true" class="anchor-heading icon-link" href="#12-focus-on-human-unique-skills"></a></h3>
+<ul>
+<li>Develop <strong>complexity recognition</strong> and architectural intuition</li>
+<li>Practice <strong>empathy for users</strong> and understanding business constraints</li>
+<li>Cultivate <strong>creative problem-solving</strong> abilities that AI struggles with</li>
+<li>Build <strong>deep product knowledge</strong> that transcends code implementation</li>
+</ul>
+<h2 id="knowledge-management">Knowledge Management<a aria-hidden="true" class="anchor-heading icon-link" href="#knowledge-management"></a></h2>
+<h3 id="13-create-living-documentation-systems">13. Create Living Documentation Systems<a aria-hidden="true" class="anchor-heading icon-link" href="#13-create-living-documentation-systems"></a></h3>
+<ul>
+<li>Use AI to <strong>connect ideas across your entire knowledge base</strong></li>
+<li>Maintain <strong>markdown repositories</strong> that AI can read and understand</li>
+<li>Let AI <strong>spot forgotten commitments</strong> and surface missed connections</li>
+<li>Build <strong>semantic maps</strong> of your thinking with AI assistance</li>
+</ul>
+<h3 id="14-prepare-for-rapid-ai-evolution">14. Prepare for Rapid AI Evolution<a aria-hidden="true" class="anchor-heading icon-link" href="#14-prepare-for-rapid-ai-evolution"></a></h3>
+<ul>
+<li><strong>Monitor AI capability improvements</strong> - the 50% task completion horizon doubles every 7 months</li>
+<li><strong>Practice higher-order thinking skills</strong> that remain valuable as AI improves</li>
+<li><strong>Focus on computational thinking</strong> rather than implementation details</li>
+<li><strong>Prepare for AI that can maintain focus for increasingly extended periods</strong></li>
+</ul>
+<h2 id="team-and-learning-considerations">Team and Learning Considerations<a aria-hidden="true" class="anchor-heading icon-link" href="#team-and-learning-considerations"></a></h2>
+<h3 id="15-rethink-junior-developer-training">15. Rethink Junior Developer Training<a aria-hidden="true" class="anchor-heading icon-link" href="#15-rethink-junior-developer-training"></a></h3>
+<ul>
+<li><strong>Pair with juniors</strong> to show them how to use AI safely</li>
+<li>Focus on <strong>architectural patterns and complexity recognition</strong> over syntax</li>
+<li>Emphasize <strong>production concerns</strong>: testing, deployment, security, data modeling</li>
+<li>Create <strong>new forms of deliberate practice</strong> for higher-order skills</li>
+</ul>
+<h3 id="16-maintain-critical-engagement">16. Maintain Critical Engagement<a aria-hidden="true" class="anchor-heading icon-link" href="#16-maintain-critical-engagement"></a></h3>
+<ul>
+<li><strong>Never stop critically evaluating AI output</strong> regardless of AI improvement</li>
+<li><strong>Exercise System 2 thinking</strong> - slow, deliberate analysis of AI suggestions</li>
+<li><strong>Articulate why something feels wrong</strong> when AI suggestions seem plausible but off</li>
+<li><strong>Prepare for AI slop</strong> as tools become more capable and tempting to trust blindly</li>
+</ul>
+<h2 id="productivity-hacks">Productivity Hacks<a aria-hidden="true" class="anchor-heading icon-link" href="#productivity-hacks"></a></h2>
+<h3 id="17-optimize-your-ai-workflow">17. Optimize Your AI Workflow<a aria-hidden="true" class="anchor-heading icon-link" href="#17-optimize-your-ai-workflow"></a></h3>
+<ul>
+<li><strong>Keep conversations focused and bounded</strong> to prevent AI confusion</li>
+<li><strong>Use structured prompts</strong> rather than vague requirements</li>
+<li><strong>Leverage AI for writing and knowledge work</strong> beyond just coding</li>
+<li><strong>Create style guides</strong> that AI can follow for consistent output</li>
+</ul>
+<h3 id="18-balance-speed-with-understanding">18. Balance Speed with Understanding<a aria-hidden="true" class="anchor-heading icon-link" href="#18-balance-speed-with-understanding"></a></h3>
+<ul>
+<li><strong>Get really good at reading code fast</strong> to keep up with AI generation</li>
+<li><strong>Understand what code actually does</strong> rather than just accepting it works</li>
+<li><strong>Make intentional architectural decisions</strong> - don't let AI drive architecture</li>
+<li><strong>Maintain expertise in fundamentals</strong> even as mechanics become automated</li>
+</ul>

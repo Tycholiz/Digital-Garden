@@ -1,0 +1,74 @@
+<h1 id="keys">Keys<a aria-hidden="true" class="anchor-heading icon-link" href="#keys"></a></h1>
+<h3 id="primary-key">Primary key<a aria-hidden="true" class="anchor-heading icon-link" href="#primary-key"></a></h3>
+<p>DynamoDB stores and retrieves each item based on the primary key value</p>
+<p>Can be either:</p>
+<ul>
+<li>Simple primary key, composed solely of the <em>partition key</em></li>
+<li>Composite primary key, composed of the <em>partition key</em> and the <em>sort key</em> (a.k.a. hash attribute and range attribute)</li>
+</ul>
+<p><img src="/assets/images/2023-01-25-13-43-58.png"></p>
+<h3 id="global-secondary-index-gsi">Global Secondary Index (GSI)<a aria-hidden="true" class="anchor-heading icon-link" href="#global-secondary-index-gsi"></a></h3>
+<p><a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GSI.html">Overview</a></p>
+<p>The idea is that we create GSIs and then we issue Query requests against them. </p>
+<ul>
+<li>without GSIs, we'd only be able to query against the primary key, which is highly limiting our potential to query against business logic.</li>
+<li>GSIs are what makes JOINs unnecessary in DynamoDB.
+expl: a RDBMS does a lot of the work in figuring out how to perform the query you give it. A NoSQL db like Dynamo would instead have us define how we'd like to access our data beforehand, then add GSIs that define specifically how to access that data. From there, the user just needs to query the GSI and it will get all of the data it needs</li>
+<li>ex. if we had a table that stored books and authors, we could have a GSI whose business logic would encapsulate the idea of "all books belonging to one author".</li>
+</ul>
+<p>A GSI contains a selection of attributes from the base table, but they are organized by a primary key that is different from that of the table.</p>
+<p>We can have multiple GSIs, with each corresponding essentially to a particular unit of business logic.</p>
+<ul>
+<li>ex. <code>BooksByAuthor-Index</code> and <code>AuthorsByBook-Index</code> would be two different GSIs, effectively allowing us to query all books by a single author, and all authors of a single book.</li>
+</ul>
+<p><a href="/notes/FuHcb7zDdczt8IDTtOH0b#term-based1">see also</a></p>
+<h4 id="partition-key">Partition Key<a aria-hidden="true" class="anchor-heading icon-link" href="#partition-key"></a></h4>
+<ul>
+<li>a.k.a <em>hash key</em>, <em>hash attribute</em>
+<ul>
+<li>The term <em>hash attribute</em> derives from the use of an internal hash function in DynamoDB that evenly distributes data items across partitions, based on their partition key values.</li>
+</ul>
+</li>
+</ul>
+<p>Most often the partition key is the <code>id</code> attribute of an item</p>
+<p>Dynamo uses the partition key as input to the hashing function which determines which partition the data will live on.</p>
+<ul>
+<li>All items with the same partition key value are stored together, in sorted order by sort key value.</li>
+<li>ex. in booksByAuthors example, <code>hash_key = book</code></li>
+</ul>
+<h4 id="sort-key">Sort key<a aria-hidden="true" class="anchor-heading icon-link" href="#sort-key"></a></h4>
+<ul>
+<li>a.k.a <em>range key</em>, <em>range attribute</em>
+<ul>
+<li>The term <em>range attribute</em> derives from the way DynamoDB stores items with the same partition key physically close together, in sorted order by the sort key value.</li>
+</ul>
+</li>
+</ul>
+<p>Determines the attribute that the results (ie. projection) will be grouped by.</p>
+<ul>
+<li>ex. in booksByAuthors example, <code>range_key = author</code></li>
+</ul>
+<p>Providing a sort key (along with a partition key) creates a composite primary key, which gives you additional flexibility when querying data</p>
+<ul>
+<li>ex. if you provide only the value for <code>Artist</code>, DynamoDB retrieves all of the songs by that artist. To retrieve only a subset of songs by a particular artist, you can provide a value for <code>Artist</code> along with a range of values for <code>SongTitle</code>.
+<code>range_key = SongTitle</code></li>
+</ul>
+<p>Well-designed sort keys have 2 major benefits:</p>
+<ol>
+<li>related information is gathered together in one place where it can be queried efficiently. 
+<ul>
+<li>This lets us retrieve commonly needed groups of related items using range queries with operators such as begins_with, between, >, &#x3C;, and so on.</li>
+</ul>
+</li>
+<li>Composite sort keys let you define hierarchical (one-to-many) relationships in your data that you can query at any level of the hierarchy.
+<ul>
+<li>ex. in a table listing geographical locations, you might structure the sort key: <code>[country]#[region]#[state]#[county]#[city]#[neighborhood]</code>. This would let you make efficient range queries for a list of locations at any one of these levels of aggregation, from country, to a neighborhood, and everything in between.</li>
+</ul>
+</li>
+</ol>
+<h4 id="projection_type"><code>projection_type</code><a aria-hidden="true" class="anchor-heading icon-link" href="#projection_type"></a></h4>
+<p>Specifies which attributes we want returned from the query. </p>
+<p>Can be <code>INCLUDE</code> or <code>ALL</code>. </p>
+<ul>
+<li>If <code>INCLUDE</code>, then we must specify a list of attributes we want (<code>non_key_attributes</code>)</li>
+</ul>

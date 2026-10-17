@@ -1,0 +1,17 @@
+<h1 id="dto">DTO<a aria-hidden="true" class="anchor-heading icon-link" href="#dto"></a></h1>
+<p>A DTO is an object that defines how the data will be sent over the network. </p>
+<ul>
+<li>Its purpose is to carry data between processes in order to reduce the number of method calls.</li>
+</ul>
+<p>The DTO is used to encapsulate data we send from one endpoint to another. Use DTO to define interfaces for input and output for endpoints in your system</p>
+<p>When we are working inter-process, each call is expensive. As a result, we want to pack more data in each call.</p>
+<ul>
+<li>we could accomplish this by adding many parameters, but this gets unwieldly fast.</li>
+<li>instead, we can create a DTO to hold all of the data for the call.</li>
+</ul>
+<p>Usually an assembler is used on the server side to transfer data between the DTO and any domain objects.</p>
+<p>DTOs are normally implemented as POJOs, and are flat data structures that contain no business logic. </p>
+<h2 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h2>
+<ul>
+<li><a href="https://www.baeldung.com/java-dto-pattern">https://www.baeldung.com/java-dto-pattern</a></li>
+</ul>

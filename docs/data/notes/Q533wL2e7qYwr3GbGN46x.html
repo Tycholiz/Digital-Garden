@@ -1,0 +1,39 @@
+<h1 id="aws-cloud-terms">AWS Cloud Terms<a aria-hidden="true" class="anchor-heading icon-link" href="#aws-cloud-terms"></a></h1>
+<h3 id="resource">Resource<a aria-hidden="true" class="anchor-heading icon-link" href="#resource"></a></h3>
+<p>a resource is an entity that you can work with. Put another way, it is an instance of an AWS object.</p>
+<ul>
+<li>ex. <a href="/notes/T3myEQpNJczlAwIZCMpQB">EC2</a> instance, a <a href="/notes/NbGOJJpZuEbf0hXs2UvAB">CloudFormation</a> stack, or an <a href="/notes/2Rtof8yGX9K2Tq6tLljBb">S3</a> bucket.</li>
+</ul>
+<h3 id="resource-group">Resource Group<a aria-hidden="true" class="anchor-heading icon-link" href="#resource-group"></a></h3>
+<p>Allow us to manage multiple resources together as a group, so we don't have to move from one AWS service to another for each task.</p>
+<ul>
+<li>If you manage large numbers of related resources, such as EC2 instances that make up an application layer, you likely need to perform bulk actions on these resources at one time
+<ul>
+<li>ex. applying updates/patches, upgrading applications, opening/closing ports to network traffic, collecting logs from machine etc.</li>
+</ul>
+</li>
+</ul>
+<p>All resources in a resource group are in the same AWS Region.</p>
+<h3 id="arn-amazon-resource-name">ARN (Amazon Resource Name)<a aria-hidden="true" class="anchor-heading icon-link" href="#arn-amazon-resource-name"></a></h3>
+<p>Uniquely identify an AWS resource. Therefore, it is identifiable across all of AWS.</p>
+<ul>
+<li>shows region and account number.</li>
+</ul>
+<p>Format:</p>
+<pre><code>arn:partition:service:region:account-id:resource-type:resource-id
+</code></pre>
+<p>Example:</p>
+<pre><code>arn:aws:s3:::my_corporate_bucket/Development/*
+arn:aws:ec2:us-east-1:4575734578134:instance/i-054dsfg34gdsfg38
+</code></pre>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/hUvXun5sLRxKOZXIZFuV1">IAM (Identity and Access Management)</a></li>
+<li><a href="/notes/gn1dBCYys8bu5vIwxLQUV">Identity Federation</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/mO2rzcwfMls7YDt3r3iGX">Data Source</a></li>
+</ul>

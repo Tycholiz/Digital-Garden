@@ -1,0 +1,87 @@
+<h1 id="environment">Environment<a aria-hidden="true" class="anchor-heading icon-link" href="#environment"></a></h1>
+<h2 id="initializing-project">Initializing project<a aria-hidden="true" class="anchor-heading icon-link" href="#initializing-project"></a></h2>
+<ol>
+<li>In your new project directory, run <code>go mod init &#x3C;URL of remote repo></code></li>
+<li>Add packages with <code>go get &#x3C;package URL></code></li>
+</ol>
+<hr>
+<h3 id="module">Module<a aria-hidden="true" class="anchor-heading icon-link" href="#module"></a></h3>
+<p>A module is Go’s new dependency management system.</p>
+<p>In a module, you collect one or more related packages for a discrete and useful set of functions. </p>
+<ul>
+<li>Go code is grouped into packages, and packages are grouped into modules.</li>
+<li>a module has a <code>go.mod</code> file at its root
+<ul>
+<li>this file specifies dependency requirements and the module path.</li>
+</ul>
+</li>
+<li>ex. you might create a module with packages that have functions for doing financial analysis so that others writing financial applications can use your work.</li>
+</ul>
+<p>Your module specifies dependencies needed to run your code, including the Go version and the set of other modules it requires.</p>
+<h4 id="gopath"><code>GOPATH</code><a aria-hidden="true" class="anchor-heading icon-link" href="#gopath"></a></h4>
+<p><code>GOPATH</code> is the deprecated way of managing Go projects.</p>
+<p>Before modules, every Go project had to be created in the <code>GOPATH</code></p>
+<ul>
+<li>
+<p>run <code>go env GOPATH</code> to see</p>
+</li>
+<li>
+<p><a href="https://golangr.com/what-is-gopath/">More about GOPATH</a></p>
+</li>
+</ul>
+<h4 id="module-path-name">Module Path (Name)<a aria-hidden="true" class="anchor-heading icon-link" href="#module-path-name"></a></h4>
+<p>When you create a module, you specify a path from which your module can be downloaded by Go tools.</p>
+<ul>
+<li>most often this is our Gitlab/Github URL to our repo.</li>
+<li>The module path becomes the import path prefix for packages in the module, so be sure to specify a module path that won’t conflict with the module path of other modules.</li>
+</ul>
+<p>The module path is typically of the form: <code>&#x3C;prefix>/&#x3C;descriptive-text></code></p>
+<ul>
+<li><code>prefix</code> might be your repo name. You would do this if you intended for others to use this module.
+<ul>
+<li>if the module isn't going to be used by others, then you can just call it by your project name, as long as you are certain it won't be used by others.</li>
+</ul>
+</li>
+</ul>
+<h3 id="packages">Packages<a aria-hidden="true" class="anchor-heading icon-link" href="#packages"></a></h3>
+<p>A Go project can be broken out into packages that get compiled together.</p>
+<ul>
+<li>Functions, types, variables, and constants defined in one source file are visible to all other source files within the same package.</li>
+<li>spec: packages fall along the same lines drawn by <a href="/notes/GDJoTJocO8OKbTtSjn2CW">DDD</a>, and each package would correspond to each of our domains
+<ul>
+<li>ex. when making a blog app, packages might be <code>users</code>, <code>articles</code></li>
+</ul>
+</li>
+</ul>
+<p>In the most basic terms, a package is nothing but a directory inside your Go workspace containing one or more Go source files, or other Go packages.</p>
+<ul>
+<li>therefore, every Go source file belongs to a package, and we specify a source file as being part of a package by declaring <code>package &#x3C;packagename></code> at the top.</li>
+</ul>
+<p>Other packages can import and reuse the functions or types that are exported from your package.</p>
+<p>Go programs start running in the <code>main</code> package.</p>
+<p>By convention, Executable programs (the ones with the main package) are called <em>Commands</em>. Others are called simply <em>Packages</em>.</p>
+<p>Go’s convention is that - the package name is the same as the last element of the import path. </p>
+<ul>
+<li>ex. the name of the package imported as <code>import math/rand</code> is <code>rand</code>. It is imported with path <code>math/rand</code> because it is nested inside the <code>math</code> package as a subdirectory.</li>
+</ul>
+<pre><code>.
+├── main.go
+├── strings/
+│   ├── reverse_name.go
+│   └── greeting/
+|       └── texts.go (`package greeting`)
+</code></pre>
+<ul>
+<li>above, within <code>main.go</code>, we would import <code>texts.go</code> with <code>"github.com/tycholiz/my-project/strings/greeting"</code></li>
+</ul>
+<p>Anything (variable, type, or function) that starts with a capital letter is exported, and visible outside the package.</p>
+<ul>
+<li>
+<p>therefore, when you import a package, you can only access its exported names.</p>
+</li>
+<li>
+<p><a href="https://www.callicoder.com/golang-packages/">source</a></p>
+</li>
+</ul>
+<hr>
+<h3 id="golang-runtime">Golang Runtime<a aria-hidden="true" class="anchor-heading icon-link" href="#golang-runtime"></a></h3>

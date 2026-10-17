@@ -1,0 +1,10 @@
+<h1 id="headers">headers<a aria-hidden="true" class="anchor-heading icon-link" href="#headers"></a></h1>
+<p>Since CORS is administered by the server handling the requests, these are response headers. They allow the server to fine-tune its policy toward handling cross-origin requests.</p>
+<h3 id="access-control-allow-origin"><code>Access-Control-Allow-Origin</code><a aria-hidden="true" class="anchor-heading icon-link" href="#access-control-allow-origin"></a></h3>
+<p>This header gives the server the power to determine if the browser should share the response with requesting code from the given origin</p>
+<ul>
+<li>ex. <code>*</code> (wildcard) can be specified for requests without credentials. The value tells browsers to allow any Javascript from any origin to access the resource</li>
+</ul>
+<p>Because setting this value to <code>*</code> basically tells the server to handle requests from any client, it's usually not a good idea and specific origins should be set.</p>
+<h3 id="access-control-allow-credentials"><code>Access-Control-Allow-Credentials</code><a aria-hidden="true" class="anchor-heading icon-link" href="#access-control-allow-credentials"></a></h3>
+<p>This header gives the server the power to determine if the browser should expose the response to the front-end Javascript code when the request's <a title="Private" href="https://wiki.dendron.so/notes/hfyvYGJZQiUwQaaxQO27q.html" target="_blank" class="private">credentials (Private)</a> mode is <code>include</code>.</p>

@@ -1,0 +1,22 @@
+<h1 id="marshalling">Marshalling<a aria-hidden="true" class="anchor-heading icon-link" href="#marshalling"></a></h1>
+<h3 id="unmarshaling">Unmarshaling<a aria-hidden="true" class="anchor-heading icon-link" href="#unmarshaling"></a></h3>
+<p>To read data from JSON received from over the internet, we need to Unmarshall it first</p>
+<pre class="language-go"><code class="language-go">json<span class="token punctuation">.</span><span class="token function">Unmarshal</span><span class="token punctuation">(</span>reqBody<span class="token punctuation">,</span> <span class="token operator">&#x26;</span>article<span class="token punctuation">)</span>
+</code></pre>
+<p>Before we unmarshall the JSON, it is represented as an array of bytes.</p>
+<h3 id="marshal">Marshal<a aria-hidden="true" class="anchor-heading icon-link" href="#marshal"></a></h3>
+<p><code>json.NewEncoder</code> and <code>json.Marshal</code> both marshal objects into JSON encoded strings.</p>
+<ul>
+<li>
+<p>The difference being that the Encoder first marshals the object to a JSON encoded string, then writes that data to a buffer stream. The Encoder therefore, uses more code and memory overhead than the simpler <code>json.Marshal</code>.</p>
+</li>
+<li>
+<p>Encoding/decoding JSON refers to the process of actually reading/writing the character data to a string or binary form.</p>
+</li>
+<li>
+<p>Marshaling/Unmarshaling refers to the process of mapping JSON types from and to Go data types and primitives.</p>
+</li>
+<li>
+<p>In Go, struct data is converted into JSON using <code>Marshal()</code> and JSON data to string using <code>Unmarshal()</code> method.</p>
+</li>
+</ul>
