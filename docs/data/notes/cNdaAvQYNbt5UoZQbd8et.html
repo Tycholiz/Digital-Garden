@@ -1,0 +1,10 @@
+<h1 id="cook">Cook<a aria-hidden="true" class="anchor-heading icon-link" href="#cook"></a></h1>
+<h3 id="get-elapsed-time">Get elapsed time<a aria-hidden="true" class="anchor-heading icon-link" href="#get-elapsed-time"></a></h3>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> start <span class="token operator">=</span> <span class="token known-class-name class-name">Date</span><span class="token punctuation">.</span><span class="token method function property-access">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token function">doSomeExpensiveOperation</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">const</span> end <span class="token operator">=</span> <span class="token known-class-name class-name">Date</span><span class="token punctuation">.</span><span class="token method function property-access">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">const</span> timeElapsed <span class="token operator">=</span> end <span class="token operator">-</span> start
+</code></pre>
+<h3 id="get-date-only-eg-2023-03-02">Get Date-only (e.g. <code>2023-03-02</code>)<a aria-hidden="true" class="anchor-heading icon-link" href="#get-date-only-eg-2023-03-02"></a></h3>
+<pre class="language-js"><code class="language-js"><span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token method function property-access">toLocaleDateString</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre>

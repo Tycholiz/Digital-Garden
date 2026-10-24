@@ -1,0 +1,47 @@
+<h1 id="select">Select<a aria-hidden="true" class="anchor-heading icon-link" href="#select"></a></h1>
+<p>SELECT is known as a "projection" in relational algebra.</p>
+<ul>
+<li>
+<p>Once you’ve generated your table reference, filtered it, transformed it, you can step to projecting it to another form</p>
+</li>
+<li>
+<p>Within the SELECT clause, you can finally operate on columns, creating complex column expressions as parts of the row.</p>
+</li>
+<li>
+<p>SELECT accepts expressions, allowing us to say <code>select (temp_lo + temp_hi)/2 as temp_avg...</code></p>
+</li>
+<li>
+<p>The SELECT clause may be one of the most complex clauses in SQL, even if it appears so simple. All other clauses just “pipe” table references from one to another</p>
+</li>
+<li>
+<p>In order to understand SQL, it is important to understand everything else first, before trying to tackle SELECT</p>
+</li>
+</ul>
+<h3 id="select-distinct">SELECT DISTINCT<a aria-hidden="true" class="anchor-heading icon-link" href="#select-distinct"></a></h3>
+<p>remove duplicate rows <em>after</em> the SELECT has been applied (in other words, after the projection)</p>
+<h3 id="select-inside-a-with">SELECT (inside a WITH)<a aria-hidden="true" class="anchor-heading icon-link" href="#select-inside-a-with"></a></h3>
+<ul>
+<li>purpose is to break down complicated queries into simpler parts</li>
+</ul>
+<h1 id="combining-result-set-of-2-select-statements">Combining result set of 2+ SELECT statements<a aria-hidden="true" class="anchor-heading icon-link" href="#combining-result-set-of-2-select-statements"></a></h1>
+<p>The queries that involve UNION, INTERSECT, or EXCEPT need to follow these rules:</p>
+<ol>
+<li>The number of columns and their orders must be the same in the two queries.</li>
+<li>The data types of the respective columns must be compatible.</li>
+</ol>
+<hr>
+<h3 id="dont-use-select-">Don't use SELECT *<a aria-hidden="true" class="anchor-heading icon-link" href="#dont-use-select-"></a></h3>
+<ul>
+<li>By manually listing out each column we want to project, we show the intention of the code. Listing out each column allows for declaring our thinking as developers</li>
+<li>When we implicitly select all columns, if the columns on a table change (eg. we remove a column), then the implementations where we call <code>SELECT *</code> may not be happy with the new dataset returned.
+<ul>
+<li>Maybe the column we just removed was a dependency of that module. If we had manually listed out each column, then the error would have been more clear.</li>
+</ul>
+</li>
+<li>It isn't efficient to retrieve all bytes of data, when we don't even need them all.</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/ulicRRwo3lSFzh3tMfWH9">Apache Flink</a></li>
+</ul>

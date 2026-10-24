@@ -1,0 +1,118 @@
+<h1 id="event-loop">Event Loop<a aria-hidden="true" class="anchor-heading icon-link" href="#event-loop"></a></h1>
+<p>The concurrency model in Javascript is based on the Event Loop, and it works on a single thread.</p>
+<ul>
+<li>Recall: JavaScript is a synchronous programming language.</li>
+</ul>
+<p>The Event Loop is a watchdog that ensures that the Call Stack and Callback Queue are in constant communication. </p>
+<ul>
+<li>It is responsible for executing the code, collecting and processing events, and executing queued sub-tasks.</li>
+<li>It first determines whether the call stack is free, and then informs the user of the callback queue.</li>
+<li>The callback function is then passed to the Call stack, which executes it. </li>
+<li>The call stack is out and the global execution context is free once all of the callback functions have been performed.</li>
+</ul>
+<p>The runtime model of JavaScript is based on an event loop, which executes the code, collects and processes events, and executes queued sub-tasks.</p>
+<p>Javascript performs task execution by dividing them into “microtasks” and “macrotasks.”</p>
+<p>Within the Event Loop, there are 2 type of queues: </p>
+<ol>
+<li>the (macro)task queue (or just called the task queue)</li>
+<li>the microtask queue.</li>
+</ol>
+<h3 id="microtask">Microtask<a aria-hidden="true" class="anchor-heading icon-link" href="#microtask"></a></h3>
+<p>If the Javascript execution stack is empty by the time a program exits, a microtask is executed.</p>
+<ul>
+<li>a microtask is just a short function</li>
+</ul>
+<p>Before any other event handling, rendering, or “macrotask” occurs, all microtasks are performed. </p>
+<ul>
+<li>This is significant because it ensures that the application environment remains essentially the same (no changes in mouse coordinates, no new network data, etc.) between microtasks.</li>
+</ul>
+<p>We can use <code>window.queueMicrotask</code> to plan a function to run asynchronously but before updates are rendered or new events are handled.</p>
+<p>When a Promise resolves and calls its <code>then()</code>, <code>catch()</code> or <code>finally()</code>, method, the callback within the method gets added to the microtask queue</p>
+<h3 id="macrotask">Macrotask<a aria-hidden="true" class="anchor-heading icon-link" href="#macrotask"></a></h3>
+<p>Once the Javascript Execution Stack and Microtask queue are empty, a short function (a macrotask) is executed.</p>
+<ul>
+<li>a macrotask is also just a short function</li>
+<li>ex. setTimeout, setInterval, setImmediate</li>
+</ul>
+<p>In a single macrotask execution cycle, all logged microtasks are processed in one fell swoop. The macrotask queue, on the other hand, has a lower priority. Parsing HTML, producing DOM, executing main thread JavaScript code, and other events like page loading, input, network events, timer events, and so on are all macrotasks.</p>
+<h3 id="how-it-works">How it works<a aria-hidden="true" class="anchor-heading icon-link" href="#how-it-works"></a></h3>
+<p>When we invoke a function, it gets added to the call stack. When the function returns a value, it gets popped off the stack</p>
+<ul>
+<li>remember, async functions (ie. functions that return promises) return immediately after exection.</li>
+</ul>
+<p>When we call <code>setTimeout</code>, here's what happens:</p>
+<ol>
+<li>A function is put onto the call stack immediately and returns immediately, thereby getting popped off the call stack.</li>
+<li>The callback function that is passed to <code>setTimeout</code> gets sent to the Web API</li>
+<li>In the Web API (or Node API if we're on a server), a timer runs for as long as the second argument we passed to it.</li>
+<li>Then, after the specified time, it gets added to the callback queue.</li>
+</ol>
+<p>When we call <code>fetch</code>, here's what happens:</p>
+<ol>
+<li>A function is put onto the call stack immediately and returns immediately, thereby getting popped off the call stack.</li>
+<li>An http request is initiated and handled by the Web API</li>
+<li>Once the HTTP request completes (either successfully or with an error), the associated callback (e.g., then or catch handlers) is moved to the callback queue.</li>
+<li>The event loop checks the call stack and finds it empty, then moves the callback from the callback queue to the call stack for execution.</li>
+</ol>
+<p>The Event Loop's only job is to move items from the callback queue to the call stack</p>
+<ul>
+<li>If the call stack is empty, (ie. if all previously invoked functions have returned their values and have been popped off the stack), the first item in the callback queue gets added to the call stack
+<ul>
+<li>in this circumstance, no other functions had been invoked, meaning that the call stack was empty by the time the callback function was the first item in the callback queue.</li>
+</ul>
+</li>
+</ul>
+<p>As mentioned, when a Promise resolves and calls its <code>then()</code>, <code>catch()</code> or <code>finally()</code>, method, the callback within the method gets added to the microtask queue</p>
+<ul>
+<li>The implication here is that the callback within the <code>then()</code>, <code>catch()</code> or <code>finally()</code> method isn’t executed immediately, essentially adding async behavior to our code. This is where the event loop comes in.</li>
+</ul>
+<p>The reason the callback isn't called right away is because the event loop gives a different priority to different tasks</p>
+<ul>
+<li>All functions currently in the call stack get executed. When they return a value, they are popped off the stack.</li>
+<li>When the call stack is empty, all queued up microtasks are popped onto the callstack one by one, and are executed</li>
+<li>If both the call stack and microtask queue are empty, the event loop checks if there are tasks left on the macrotask queue. The tasks get popped onto the callstack, executed, and popped off</li>
+</ul>
+<h3 id="demonstration">Demonstration<a aria-hidden="true" class="anchor-heading icon-link" href="#demonstration"></a></h3>
+<pre class="language-ts"><code class="language-ts"><span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span><span class="token string">'Start'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+  <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span><span class="token string">'Timeout callback'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token function">fetch</span><span class="token punctuation">(</span><span class="token string">'https://api.example.com/data'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token method function property-access">then</span><span class="token punctuation">(</span>response <span class="token arrow operator">=></span> response<span class="token punctuation">.</span><span class="token method function property-access">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token method function property-access">then</span><span class="token punctuation">(</span>data <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+    <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span><span class="token string">'Fetch data:'</span><span class="token punctuation">,</span> data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token keyword control-flow">catch</span><span class="token punctuation">(</span>error <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+    <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">error</span><span class="token punctuation">(</span><span class="token string">'Fetch error:'</span><span class="token punctuation">,</span> error<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span><span class="token string">'End'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h4 id="execution-flow">Execution Flow:<a aria-hidden="true" class="anchor-heading icon-link" href="#execution-flow"></a></h4>
+<ul>
+<li>console.log('Start') is pushed to the call stack and executed.</li>
+<li>setTimeout is called, its timer is set in the Web API, and it immediately returns.</li>
+<li>fetch is called, the HTTP request is initiated in the Web API, and it immediately returns a Promise.</li>
+<li>console.log('End') is pushed to the call stack and executed.</li>
+</ul>
+<p>The main thread is now free to handle other tasks.</p>
+<p>After 1 second, the timer set by setTimeout expires, and the callback is moved to the callback queue. Meanwhile, when the HTTP request initiated by fetch completes, its associated callback is also moved to the callback queue.</p>
+<p>The event loop moves these callbacks to the call stack (when it’s empty) to execute them. The exact order of their execution depends on when each asynchronous operation completes.</p>
+<hr>
+<p>When you create a new click handler on an HTML element, that click handler is being registered with the event loop, meaning that the event loop is now listening for that handler to be called. Every time it witnesses the event to happen, it causes a certain snippet of code to be executed.</p>
+<p>An event loop must exist because of the fact Javascript is an asynchronous language. What happens is that we put what we need to do in the queue (eg. fetch data), and tell it "when you're finished, do this". The result is non-blocking code.</p>
+<p>The event loop is a <a href="/notes/LTtn2x9aVBeLPMsiR4H8j">thread</a>. Javascript only has a single thread which listens for events and executes user specified functions when the event occurs.</p>
+<ul>
+<li>although the application appears to run on a single thread from the programmer's perspective, the runtime internally uses multiple threads to handle tasks. The main difference is that the programmer does not have to deal with these internal threads and the challenges of coordination between them. All the programmer has to do is specify callback functions to be executed on the main thread when those background tasks have completed.</li>
+</ul>
+<h1 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h1>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=8aGhZQkoFbQ">High quality recommended resource for understanding Event Loop</a></li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/8AyRVnb9vPBVuFpEHnZ2n">Event Bubbling</a></li>
+</ol>

@@ -1,0 +1,31 @@
+<h1 id="auth-tokens">Auth Tokens<a aria-hidden="true" class="anchor-heading icon-link" href="#auth-tokens"></a></h1>
+<h3 id="opaque-token-vs-structured-token">Opaque token vs Structured token<a aria-hidden="true" class="anchor-heading icon-link" href="#opaque-token-vs-structured-token"></a></h3>
+<p>an unencrypted structured token (like a <a href="/notes/6s5Oh0DUcMsShcFrmDaBK">JWT</a>) can be interpreted by anybody that holds the token, whereas opaque tokens cannot.</p>
+<p>The opaque token is a random unique string of characters issued by the authorization server.</p>
+<ul>
+<li>it is issued in a format that is known only to the auth server (unlike JWTs, which use a highly predictable format)</li>
+<li>it contains an identifier to information stored on the authorization server.
+<ul>
+<li>therefore, if the resource server wants to get identity information from the token, it needs to send a request to the introspection endpoint of the auth server.</li>
+<li>on the other hand, a structured token (like a JWT) contains enough information for the resource server to make its authorization decision.</li>
+</ul>
+</li>
+<li>To validate the token and retrieve the information on the token and the user, the resource server calls the authorization server and requests the token introspection.</li>
+</ul>
+<p>Opaque tokens should be the default choice <em>unless</em> we want our client to be able to parse the token (which turns out is a common requirement with webapps)</p>
+<ul>
+<li>ex. a service framework in which you only pass the token to the service as a blind claim; you have no idea what it says, but you know it works and identifies you. It is only up to the service to confirm it's you via the secret key or cipher.</li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/RXSECsORRrl4fC8oCEtsk">Access Token</a></li>
+<li><a href="/notes/6s5Oh0DUcMsShcFrmDaBK">JWT</a></li>
+<li><a href="/notes/Pp08kttb1g4TIC3R5Lt06">Refresh Token</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/0NyqVKRyLLG6J1NDvFX5k">Session</a></li>
+<li><a href="/notes/yBNgydTx5k1BfiGgW3BbD">Federated Identity</a></li>
+</ul>

@@ -1,0 +1,15 @@
+<h1 id="cook">Cook<a aria-hidden="true" class="anchor-heading icon-link" href="#cook"></a></h1>
+<h3 id="copy-from-csv-into-postgres-table">Copy from CSV into Postgres table<a aria-hidden="true" class="anchor-heading icon-link" href="#copy-from-csv-into-postgres-table"></a></h3>
+<ol>
+<li>In psql, create a new table that matches the format of the csv headers</li>
+<li>In psql, run the COPY command:</li>
+</ol>
+<pre class="language-sql"><code class="language-sql">COPY cars
+<span class="token keyword">FROM</span> <span class="token string">'/Users/kyletycholiz/Downloads/cars.csv'</span> 
+<span class="token keyword">DELIMITER</span> <span class="token string">','</span> 
+CSV HEADER<span class="token punctuation">;</span>
+</code></pre>
+<p>note: if we don't want to have the table columns match the csv headers, we can specify like so:</p>
+<pre class="language-sql"><code class="language-sql">COPY cars<span class="token punctuation">(</span>id<span class="token punctuation">,</span> name<span class="token punctuation">)</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+</code></pre>

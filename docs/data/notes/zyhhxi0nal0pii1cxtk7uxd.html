@@ -1,0 +1,61 @@
+<h1 id="streaming">Streaming<a aria-hidden="true" class="anchor-heading icon-link" href="#streaming"></a></h1>
+<p>Streaming data refers to data that is continuously generated, usually in high volumes and at high velocity</p>
+<p>In general, a "stream" refers to data that is incrementally made available over time. </p>
+<ul>
+<li>The concept appears in many places, such as... 
+<ul>
+<li>in the stdin and stdout of Unix</li>
+<li>programming languages (lazy lists)</li>
+<li>filesystem APIs (such as Java’s FileInputStream)</li>
+<li>TCP connections</li>
+<li>delivering audio and video over the internet</li>
+</ul>
+</li>
+</ul>
+<p>A streaming data source would typically consist of a stream of logs that record events as they happen – such as a user clicking on a link in a web page, or a sensor reporting the current temperature.</p>
+<p>ex. IoT sensors, Server and security logs, Real-time advertising, Click-stream data from apps and websites</p>
+<p>In all of these cases we have end devices that are continuously generating thousands or millions of records, forming a data stream – unstructured or semi-structured form, most commonly JSON or XML key-value pairs.</p>
+<h3 id="bounded-vs-unbounded-streams">Bounded vs Unbounded Streams<a aria-hidden="true" class="anchor-heading icon-link" href="#bounded-vs-unbounded-streams"></a></h3>
+<p>You can either organize your data processing around bounded or unbounded streams, and which of these paradigms you choose has profound consequences.</p>
+<h4 id="unbounded-streams">Unbounded streams<a aria-hidden="true" class="anchor-heading icon-link" href="#unbounded-streams"></a></h4>
+<p>With unbounded streams, we are using the <em>stream processing</em> paradigm.</p>
+<ul>
+<li>have a start but no defined end. </li>
+<li>do not terminate and provide data as it is generated. </li>
+<li>Unbounded streams must be continuously processed, 
+<ul>
+<li>i.e., events must be promptly handled after they have been ingested. It is not possible to wait for all input data to arrive because the input is unbounded and will not be complete at any point in time. </li>
+</ul>
+</li>
+<li>Processing unbounded data often requires that events are ingested in a specific order, such as the order in which events occurred, to be able to reason about result completeness.</li>
+</ul>
+<h4 id="bounded-streams">Bounded streams<a aria-hidden="true" class="anchor-heading icon-link" href="#bounded-streams"></a></h4>
+<p>In this mode of operation you can choose to ingest the entire dataset before producing any results</p>
+<ul>
+<li>this means we can do things like sort the data, compute global statistics, or produce a final report that summarizes all of the input.</li>
+</ul>
+<p>When you process a bounded data stream, we are using the <em>batch processing</em> paradigm.</p>
+<ul>
+<li>have a defined start and end. </li>
+<li>can be processed by ingesting all data before performing any computations. </li>
+<li>Ordered ingestion is not required to process bounded streams 
+<ul>
+<li>this is because a bounded data set can always be sorted. </li>
+</ul>
+</li>
+<li>Processing of bounded streams is also known as batch processing.</li>
+</ul>
+<h3 id="buffer">Buffer<a aria-hidden="true" class="anchor-heading icon-link" href="#buffer"></a></h3>
+<p>anal: Imagine adding various amounts of liquid to a big funnel. If we add liquid slowly, or fast, it doesn't change the rate at which the liquid exits the funnel. This is in essence what a buffer does for us. It is an intermediary data object that sits between the server and the client, and receives data at the rate that it is sent by the server.</p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/n8usaompbr8xl7pzw869fgy">Window</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/vtLtsv3Vsdt6pTTASCq4u">Streaming Architecture</a></li>
+<li><a href="/notes/1j3g1u7kbq5zk7lj1dt1fzk">Abstraction</a></li>
+<li><a href="/notes/i0cxm46r54o0242vn13g38n">Observable</a></li>
+</ul>

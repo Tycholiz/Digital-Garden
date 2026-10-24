@@ -1,0 +1,23 @@
+<h1 id="cook">Cook<a aria-hidden="true" class="anchor-heading icon-link" href="#cook"></a></h1>
+<h4 id="object-where-keys-are-integers-as-string">Object where keys are integers as string<a aria-hidden="true" class="anchor-heading icon-link" href="#object-where-keys-are-integers-as-string"></a></h4>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">interface</span> <span class="token class-name"><span class="token maybe-class-name">IDictionary</span><span class="token operator">&#x3C;</span><span class="token maybe-class-name">TValue</span><span class="token operator">></span></span> <span class="token punctuation">{</span>
+    <span class="token punctuation">[</span>id<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">]</span><span class="token operator">:</span> <span class="token maybe-class-name">TValue</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// later</span>
+<span class="token keyword">const</span> myObject<span class="token operator">:</span> <span class="token maybe-class-name">IDictionary</span><span class="token operator">&#x3C;</span><span class="token builtin">string</span><span class="token operator">></span> <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token string-property property">"0"</span><span class="token operator">:</span> <span class="token string">"teleport"</span> <span class="token punctuation">}</span>
+</code></pre>
+<h3 id="object-where-keys-are-not-known-ahead-of-time">Object where keys are not known ahead of time<a aria-hidden="true" class="anchor-heading icon-link" href="#object-where-keys-are-not-known-ahead-of-time"></a></h3>
+<p><a href="https://stackoverflow.com/questions/12710905/how-do-i-dynamically-assign-properties-to-an-object-in-typescript#answer-44441178">source</a></p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">const</span> constants<span class="token operator">:</span> <span class="token maybe-class-name">Record</span><span class="token operator">&#x3C;</span><span class="token builtin">string</span><span class="token punctuation">,</span> <span class="token builtin">any</span><span class="token operator">></span> <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+constants<span class="token punctuation">.</span><span class="token property-access">dendronTechUrl</span> <span class="token operator">=</span> <span class="token string">'https://tycholiz.github.io/Digital-Garden/'</span>
+
+<span class="token keyword module">export</span> <span class="token keyword module">default</span> constants
+</code></pre>
+<h4 id="create-a-type-that-can-evaluate-to-a-certain-interface-or-a-function-that-returns-that-same-interface">Create a type that can evaluate to a certain interface, or a function that returns that same interface<a aria-hidden="true" class="anchor-heading icon-link" href="#create-a-type-that-can-evaluate-to-a-certain-interface-or-a-function-that-returns-that-same-interface"></a></h4>
+<p>Here, <code>initValueType</code> will accept as <code>T</code> either a type or function that returns that type</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">type</span> <span class="token class-name">initValueType<span class="token operator">&#x3C;</span><span class="token constant">T</span><span class="token operator">></span></span> <span class="token operator">=</span> <span class="token constant">T</span> <span class="token operator">|</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token constant">T</span><span class="token punctuation">)</span>
+<span class="token comment">// and use like:</span>
+initValueType<span class="token operator">&#x3C;</span><span class="token maybe-class-name">Response</span><span class="token operator">></span>
+</code></pre>

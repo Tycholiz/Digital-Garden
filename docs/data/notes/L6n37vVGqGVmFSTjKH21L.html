@@ -1,0 +1,8 @@
+<h1 id="cook">Cook<a aria-hidden="true" class="anchor-heading icon-link" href="#cook"></a></h1>
+<h4 id="match-a-pattern-only-in-unstaged-hunks">Match a pattern only in UNSTAGED hunks<a aria-hidden="true" class="anchor-heading icon-link" href="#match-a-pattern-only-in-unstaged-hunks"></a></h4>
+<p><code>git diff -U1 | grepdiff 'TODO' --output-matching=hunk</code></p>
+<h4 id="match-a-pattern-only-in-staged-hunks">Match a pattern only in STAGED hunks<a aria-hidden="true" class="anchor-heading icon-link" href="#match-a-pattern-only-in-staged-hunks"></a></h4>
+<p><code>git diff -U1 --staged | grepdiff 'TODO' --output-matching=hunk</code></p>
+<h4 id="list-the-files-that-match-a-pattern-in-a-given-git-range">List the files that match a pattern in a given git range<a aria-hidden="true" class="anchor-heading icon-link" href="#list-the-files-that-match-a-pattern-in-a-given-git-range"></a></h4>
+<p>Here, look for the pattern <code>TODO</code> in all commits from <code>main..HEAD</code>
+<code>git grep TODO -- $(git diff --name-only main..HEAD)</code></p>

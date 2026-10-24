@@ -1,0 +1,56 @@
+<h1 id="cook">Cook<a aria-hidden="true" class="anchor-heading icon-link" href="#cook"></a></h1>
+<h5 id="see-the-patch-of-the-current-commit">See the patch of the current commit<a aria-hidden="true" class="anchor-heading icon-link" href="#see-the-patch-of-the-current-commit"></a></h5>
+<p><code>git rebase --show-current-patch</code></p>
+<h5 id="status-of-rebase">Status of rebase<a aria-hidden="true" class="anchor-heading icon-link" href="#status-of-rebase"></a></h5>
+<p>Number of commits in this rebase
+<code>cat .git/rebase-apply/last</code></p>
+<p>Out of the number of commits in this rebase, which are we on?
+<code>cat .git/rebase-apply/next</code></p>
+<p>Which commit is currently being applied?
+<code>cat .git/rebase-apply/original-commit</code></p>
+<h4 id="cherry-pit-remove-a-specific-commit">Cherry-Pit: Remove a specific commit<a aria-hidden="true" class="anchor-heading icon-link" href="#cherry-pit-remove-a-specific-commit"></a></h4>
+<p><code>git rebase -p --onto SHA^ SHA</code></p>
+<h5 id="alias-cherry-pit">alias cherry-pit<a aria-hidden="true" class="anchor-heading icon-link" href="#alias-cherry-pit"></a></h5>
+<p>usage: <code>git cherry-pit &#x3C;SHA-to-remove></code></p>
+<h4 id="include-some-changes-as-part-of-a-previous-commit">Include some changes as part of a previous commit<a aria-hidden="true" class="anchor-heading icon-link" href="#include-some-changes-as-part-of-a-previous-commit"></a></h4>
+<p>Imagine we realized that we should have included a change (perhaps deleting some old comments) as part of a previous "cleaning commit"
+Of course, we will have to change history to do so, with <code>rebase</code>:</p>
+<h5 id="stash-method">Stash method<a aria-hidden="true" class="anchor-heading icon-link" href="#stash-method"></a></h5>
+<p>Strategy: stash the desired changes, reset back to a commit, pop those changes and amend commit, then complete rebase</p>
+<ol>
+<li>Use <code>git stash</code> to store the changes you want to add.</li>
+<li>Use <code>git rebase -i HEAD~10</code> (or however many commits back you want to see).</li>
+<li>Mark the commit in question (a0865...) for edit by changing the word pick at the start of the line into edit. Don't delete the other lines as that would delete the commits.</li>
+<li>Save the rebase file, and git will drop back to the shell and wait for you to fix that commit.</li>
+<li>Pop the stash by using <code>git stash pop</code></li>
+<li>Add your file with <code>git add &#x3C;file></code>.</li>
+<li>Amend the commit with <code>git commit --amend --no-edit</code>.</li>
+<li>Do a <code>git rebase --continue</code> which will rewrite the rest of your commits against the new one.</li>
+<li>Repeat from step 2 onwards if you have marked more than one commit for edit.</li>
+</ol>
+<h5 id="autosquash-method">Autosquash method<a aria-hidden="true" class="anchor-heading icon-link" href="#autosquash-method"></a></h5>
+<ol>
+<li>Stage the changes that we want to include in a previous commit</li>
+<li>Create a new commit with an identical message of the original commit with the following command
+<code>git commit -c &#x3C;ORIGINAL-COMMIT-SHA></code>
+<pre><code>- pro-tip: use `HEAD~2` syntax for relative
+</code></pre>
+</li>
+<li>With the editor open, prepend the name of the new commit with <code>fixup! </code> (or <code>squash! </code> if we want to edit the commit message)
+<code>fixup! refactor: clean up payment methods</code></li>
+<li>run <code>git rebase -i --autosquash &#x3C;SHA></code>, where <code>&#x3C;SHA></code> is the commit immediately before the original commit we want to amend.</li>
+<li>Git will detect the <code>fixup! </code> directive, and will look for the commit with the same message. With this information, Git will perform the squash directive (combining the commits), and then continue to rebase the rest of the commits</li>
+</ol>
+<h5 id="fixup-manual">fixup (manual)<a aria-hidden="true" class="anchor-heading icon-link" href="#fixup-manual"></a></h5>
+<ol>
+<li>make the commit <code>git commit -m fixup</code></li>
+<li>run <code>git rebase -i</code></li>
+<li>move the commit, and squash it into an earlier one</li>
+</ol>
+<h5 id="git-fixup-alias">git fixup alias<a aria-hidden="true" class="anchor-heading icon-link" href="#git-fixup-alias"></a></h5>
+<pre><code>fixup = "!fn() { git commit --fixup ${1} &#x26;&#x26; GIT_EDITOR=true git rebase --autosquash -i ${1}^; }; fn"
+
+// then add staged changes to commit 3 before HEAD:
+git fixup HEAD~3
+
+</code></pre>

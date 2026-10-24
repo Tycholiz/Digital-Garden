@@ -1,0 +1,55 @@
+<h1 id="lerna">Lerna<a aria-hidden="true" class="anchor-heading icon-link" href="#lerna"></a></h1>
+<p>Lerna allows us to have multiple packages within our project. Complete with each package will be a <code>package.json</code> and a corresponding <code>node_modules</code> directory</p>
+<p>We can list one of our packages as a dependency of another one by including the package in the <code>dependencies</code> section of the dependent's <code>package.json</code> </p>
+<p>The root of a project with Lerna will have a <code>lerna.json</code>, as well as a <code>packages/</code> directory</p>
+<ul>
+<li>
+<p>Each sub-package of our project must be within the <code>packages/</code> directory </p>
+</li>
+<li>
+<p>To run <code>lerna bootstrap</code> is to install all dependencies in sub-modules</p>
+</li>
+<li>
+<p>When we run <code>bootstrap</code>, lerna will call <code>yarn</code> in each module, then create symlinks between the packages that refer to each other in the dependent's <code>node_modules</code></p>
+<ul>
+<li>ex. If we have 3 modules: Addition, Subtraction, and Calc (which performs the add/subtract operations), then Calc's <code>node_modules</code> will contain symlinks to the Addition and Subtraction modules. </li>
+</ul>
+</li>
+<li>
+<p>if we use hoisting, then symlinks don't play a part. Instead, if we have <code>react</code> in 2 different submodules, then hoisting will allow us to remove <code>react</code> from those submodules, install it at the root level, then allow the node recursive resolver to handle resolution for us. In other words, from within the submodule, when we require <code>react</code>, it will look for the package in its nearest <code>node_modules</code>, not find it, then continue upwards until it does, which will be at the root.</p>
+<ul>
+<li>The reason why hoisting works is due to the resolve algorithm of node require</li>
+</ul>
+</li>
+</ul>
+<h3 id="duplication">Duplication<a aria-hidden="true" class="anchor-heading icon-link" href="#duplication"></a></h3>
+<ul>
+<li>naturally, having multiple sub-packages in a project will result in duplicate package listings. Lerna offers hoisting, which allows us to effectively list the same package in multiple places, but have the packages install at the root level
+<ul>
+<li>therefore, the duplicated package (ex. React) will be in the root directory's <code>node_modules</code>, even though it is listed in the sub-package's <code>package.json</code> </li>
+</ul>
+</li>
+<li>If we have a project with 2 sub-modules: A and B, and both have React as a dependency, we can run <code>lerna bootstrap --hoist</code> at the root, which will remove React (and all of its dependencies) from <code>A/node_modules</code> and <code>B/node_modules</code>, and move them to the root level <code>node_modules</code>. Because of the recursive nature of how <code>node_modules</code> are resolved, this will cause the sub-module's package.json to look upwards in the directory hierarchy until the react binary is found. 
+<ul>
+<li>Lerna will warn us when running this command if we have version mismatches</li>
+</ul>
+</li>
+</ul>
+<h3 id="commands">Commands<a aria-hidden="true" class="anchor-heading icon-link" href="#commands"></a></h3>
+<ul>
+<li><code>bootstrap</code> - generate <code>node_modules</code> for packages.</li>
+<li><code>clean</code> - remove all <code>node_modules</code> that are not in root directory</li>
+<li><code>create</code> - add a new sub-package to your project</li>
+<li><code>run</code> - run the script that is listed in each sub-<code>package.json</code>
+<ul>
+<li>Therefore, it will run only npm or yarn commands (with the script that is listed in package.json)</li>
+</ul>
+</li>
+<li><code>exec</code> - run a command inside each package
+<ul>
+<li>similar to <code>run</code>, but is not restricted to running scripts in <code>package.json</code> </li>
+</ul>
+</li>
+</ul>
+<h3 id="misc">Misc<a aria-hidden="true" class="anchor-heading icon-link" href="#misc"></a></h3>
+<p>You don't actually need to run lerna bootstrap if you're using yarn workspaces.</p>

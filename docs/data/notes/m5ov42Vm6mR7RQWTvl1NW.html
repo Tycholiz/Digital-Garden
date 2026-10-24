@@ -1,0 +1,85 @@
+<h1 id="azure">Azure<a aria-hidden="true" class="anchor-heading icon-link" href="#azure"></a></h1>
+<p>Azure gives you many different ways to interact with its resources, such as Azure Portal, Azure SDKs, az (command-line tool) etc.</p>
+<h2 id="deployment">Deployment<a aria-hidden="true" class="anchor-heading icon-link" href="#deployment"></a></h2>
+<ul>
+<li>To deploy Functions to the cloud, we need to create 3 different resources: Resource group, storage account, and function app</li>
+</ul>
+<h3 id="storage-account">Storage Account<a aria-hidden="true" class="anchor-heading icon-link" href="#storage-account"></a></h3>
+<ul>
+<li>maintains state and other information about your projects</li>
+<li>created with command <code>az storage account create</code></li>
+</ul>
+<h3 id="function-app">Function app<a aria-hidden="true" class="anchor-heading icon-link" href="#function-app"></a></h3>
+<ul>
+<li>provides the environment for executing your function code</li>
+<li>A function app maps to your local function project and lets you group functions as a logical unit for easier management, deployment, and sharing of resources</li>
+<li>created with command <code>az functionapp create</code>
+<ul>
+<li>When running this command, we also determine the <code>&#x3C;APP_NAME></code>. This will serve as the default DNS domain for the function app (ie. we invoke the function with an HTTP request to <code>&#x3C;APP_NAME>.azurewebsites.net</code>)</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="artifacts">Artifacts<a aria-hidden="true" class="anchor-heading icon-link" href="#artifacts"></a></h2>
+<ul>
+<li>Artifacts allows us to create/share/manage dependencies (ex. npm packages) in our project (client-read, client-publisher)
+<ul>
+<li>usually we explicitly define each feed that we pull our package from. Artifacts allows us to use a single point of entry for multiple existing feeds.</li>
+</ul>
+</li>
+<li>Github Package Manager is analogous to Artifacts</li>
+</ul>
+<p>Artifact Feed</p>
+<ul>
+<li>"feed" is an Azure-specific term</li>
+<li>a feed is a construct that allows us to store, manage and group packages (like npm), and control who we share it with.</li>
+<li>a feed is like an npm registry, similar to an endpoint that specifies where these packages can be found.</li>
+<li>a feed gives us access to a collection of packages.</li>
+<li>a feed is made up of artifacts</li>
+</ul>
+<p>Build Artifacts</p>
+<ul>
+<li>build artifact is the output of running the azure-pipeline.yml CI file.</li>
+<li>Build Artifacts are different than Artifacts</li>
+<li>ex. build artifact is the result of taking some input data, processing it in some way, then stamping it with a commit SHA as well as a build #, letting us track it.</li>
+</ul>
+<p>Azure has 2 types of pipelines: build pipeline and release pipeline.</p>
+<ul>
+<li>the build pipeline is CI (build, test and create artifacts), while release pipeline is CD</li>
+</ul>
+<hr>
+<h3 id="resource-manager">Resource Manager<a aria-hidden="true" class="anchor-heading icon-link" href="#resource-manager"></a></h3>
+<p>When a user sends a request from any of the Azure tools, APIs, or SDKs, Resource Manager receives the request. Then it:</p>
+<ol>
+<li>authenticates and authorizes the request</li>
+<li>sends the request to the Azure service</li>
+</ol>
+<ul>
+<li>since it is a central API that all requests pass through, we can see logs and everything related to these services and the requests they receive.</li>
+<li>the Resource Manager allows us to declaratively manage resources (as opposed to having to use scripts)</li>
+</ul>
+<h4 id="scope">Scope<a aria-hidden="true" class="anchor-heading icon-link" href="#scope"></a></h4>
+<p>Azure provides four levels of scope: management groups, subscriptions, resource groups, and resources.
+<img src="/assets/images/2021-03-08-21-28-23.png"></p>
+<ul>
+<li>management settings can be applied to any of these levels of scope, and the level we choose will determine how widely the setting is applied (lower levels inherit from higher).</li>
+</ul>
+<h2 id="terminology">Terminology<a aria-hidden="true" class="anchor-heading icon-link" href="#terminology"></a></h2>
+<p><strong>Resource</strong></p>
+<ul>
+<li>Any manageable item that is available through Azure.</li>
+<li>ex. VMs, storage accounts, web apps, databases, blob storage, virtual networks, resource groups, management groups etc.</li>
+</ul>
+<h2 id="questions">Questions<a aria-hidden="true" class="anchor-heading icon-link" href="#questions"></a></h2>
+<ul>
+<li>What would the connection string be a connection to?
+<ul>
+<li>would it be the host of the function?</li>
+</ul>
+</li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/HtOttz3DmNnOKHb5mjBN7">RG (Resource Group)</a></li>
+</ol>

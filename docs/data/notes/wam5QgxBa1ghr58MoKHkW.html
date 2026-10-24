@@ -1,0 +1,10 @@
+<h1 id="record">Record<a aria-hidden="true" class="anchor-heading icon-link" href="#record"></a></h1>
+<p>A type that holds a single row from a result-set (therefore, not just tables)</p>
+<p><code>record</code> type is similar to <code>row-type</code>, but <code>record</code> doesn't have a predefined structure. The structure only gets established when the <code>select</code> or <code>for</code> statements assin an actual row to it.</p>
+<p>To access a field in the record, you use the dot notation (.) syntax like this:</p>
+<pre class="language-sql"><code class="language-sql">record_variable<span class="token punctuation">.</span>field_name<span class="token punctuation">;</span>
+</code></pre>
+<p>a record is not a true data type. It is just a placeholder.</p>
+<ul>
+<li>Also, a record variable can change its structure when you reassign it</li>
+</ul>

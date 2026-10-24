@@ -1,0 +1,47 @@
+<h1 id="topic">Topic<a aria-hidden="true" class="anchor-heading icon-link" href="#topic"></a></h1>
+<p>A topic is an ordered collection of events (ie. messages, records) stored in a durable way.</p>
+<ul>
+<li>A topic represents a single type of event</li>
+<li>Durable - written to disk, and replicated</li>
+</ul>
+<p>A topic can be thought of as a feed name.</p>
+<p>Messages in a topic must be first serialized so that it can be efficiently transmitted and stored in a Kafka topic.</p>
+<ul>
+<li>when you communicate with Kafka using a native client, that native client contains serializers that know how to serialize the data (in the case of producers) and deserialize the data (in the case of consumers)</li>
+</ul>
+<p>A topic has a Log which is the topic’s storage on disk.</p>
+<ul>
+<li>a log is broken up into partitions and segments</li>
+</ul>
+<p>Can be thought of as a <em>real-time stream</em></p>
+<ul>
+<li>Topics can be thought of as a database table
+<ul>
+<li>ex. if we were doing this in Postgres, we could have tables <code>geofence_entry_events</code>, <code>low_tire_pressure_warning_events</code></li>
+</ul>
+</li>
+</ul>
+<p>Kafka Services can be used as a sort of glue between microservices of an application. A microservice can consume a message from the Kafka Topic, and produce an output which gets registered to another Topic.</p>
+<ul>
+<li>Since it can act as glue between many services, we can produce an output from these Topics that can be consumed by a new service to perform real-time analysis of that data
+<ul>
+<li>This is contrast to the old-school method of running a batch-process overnight</li>
+</ul>
+</li>
+</ul>
+<p>Events in a topic are guaranteed to be in order (spec: by id)</p>
+<h3 id="partitioned-nature-of-topics">Partitioned nature of Topics<a aria-hidden="true" class="anchor-heading icon-link" href="#partitioned-nature-of-topics"></a></h3>
+<p>Topics are partitioned, meaning a topic is spread over a number of "buckets" located on different Kafka brokers.</p>
+<ul>
+<li>When a new event is published to a topic, it is actually appended to one of the topic's partitions</li>
+<li>Each partition in the Kafka cluster has a leader and a set of replicas among the brokers.</li>
+</ul>
+<p>Kafka guarantees that any consumer of a given topic-partition will always read that partition's events in exactly the same order as they were written.</p>
+<p>Events with the same event key (e.g., a customerId or vehicleId) are written to the same partition</p>
+<p>Partition strategy: related events should be on the same partition</p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/WQoMTf6VXBaxCgksXAVsj">Kafka</a></li>
+<li><a href="/notes/1u9hxzro1d2jd3mekt38lgx">Consumer</a></li>
+</ul>

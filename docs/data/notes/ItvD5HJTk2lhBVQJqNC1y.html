@@ -1,0 +1,25 @@
+<h1 id="eval">Eval<a aria-hidden="true" class="anchor-heading icon-link" href="#eval"></a></h1>
+<p><code>eval</code> will run the arguments as a command in the current shell</p>
+<ul>
+<li>variables will be expanded before executing, so we can execute commands saved in shell variables</li>
+</ul>
+<p>Sometimes we have bash commands that output shell commands (ex. ssh-eval)
+We could run these outputted shell commands in 2 steps:</p>
+<ol>
+<li>run the command</li>
+<li>take the output of that command, and run it in the shell</li>
+</ol>
+<p>Alternatively, we can just wrap the command in <code>eval</code></p>
+<ul>
+<li>ex. <code>eval $(ssh-agent)</code></li>
+</ul>
+<h3 id="say-hello-example">Say Hello example<a aria-hidden="true" class="anchor-heading icon-link" href="#say-hello-example"></a></h3>
+<p>say-hello.sh</p>
+<pre class="language-sh"><code class="language-sh">echo "echo hello"
+</code></pre>
+<pre class="language-sh"><code class="language-sh">$ ./say-hello.sh
+> echo hello
+
+$ eval $(./say-hello.sh)
+> hello
+</code></pre>

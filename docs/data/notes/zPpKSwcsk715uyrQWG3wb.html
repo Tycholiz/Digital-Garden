@@ -1,0 +1,35 @@
+<h1 id="text-object">Text Object<a aria-hidden="true" class="anchor-heading icon-link" href="#text-object"></a></h1>
+<p>One of the keys to using Vim effectively is trying to edit by text object</p>
+<p>A text object is a defined region of text that is defined by the motions, and modifier of that motion (eg. <code>vaw</code>, or <code>v2aw</code>)</p>
+<pre><code>- The definition of the text's scope depends on what vim commands we are using
+    - ex. When we say `vi"` we are defining a text object, whose definition is "everything inside `""`". Text objects define regions of text by some sort of structure.
+</code></pre>
+<ul>
+<li>text objects are good because we don't have to worry about where in the word the cursor is located. as a result, they work well with <code>.</code> </li>
+</ul>
+<h2 id="types">Types<a aria-hidden="true" class="anchor-heading icon-link" href="#types"></a></h2>
+<ul>
+<li>Word (<code>w</code>)</li>
+<li>Sentence (<code>s</code>)</li>
+</ul>
+<h2 id="extended-text-objects-plugins">Extended Text Objects (Plugins)<a aria-hidden="true" class="anchor-heading icon-link" href="#extended-text-objects-plugins"></a></h2>
+<h3 id="camelcasemotion">CamelCaseMotion<a aria-hidden="true" class="anchor-heading icon-link" href="#camelcasemotion"></a></h3>
+<p>Defines a text object that is a single word in a larger camel-case word</p>
+<ul>
+<li>Delete inside the camel-case word
+<ul>
+<li><code>di,w</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="vimtextobject">VimTextObject<a aria-hidden="true" class="anchor-heading icon-link" href="#vimtextobject"></a></h3>
+<p>Defines a text object that is a function argument/parameter</p>
+<ul>
+<li>Delete inside the argument
+<ul>
+<li><code>dia</code></li>
+</ul>
+</li>
+</ul>
+<h1 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h1>
+<p><a href="https://blog.carbonfive.com/2011/10/17/vim-text-objects-the-definitive-guide/">info</a></p>

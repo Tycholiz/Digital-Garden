@@ -1,0 +1,27 @@
+<h1 id="subscription">Subscription<a aria-hidden="true" class="anchor-heading icon-link" href="#subscription"></a></h1>
+<p><strong><em>subscription</em></strong> - an object that represents the execution of an <em>observable</em></p>
+<p>Much like a promise, we need to unwrap our observable to access the values it contains. The observable unwrapping method is called subscribe. The function passed into subscribe is called every time the observable emits a value (in this case, a message is logged to the console anytime the button is clicked).</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">let</span> myObs$ <span class="token operator">=</span> <span class="token function">clicksOnButton</span><span class="token punctuation">(</span>myButton<span class="token punctuation">)</span><span class="token punctuation">;</span>
+myObs$
+<span class="token punctuation">.</span><span class="token method function property-access">subscribe</span><span class="token punctuation">(</span><span class="token parameter">clickEvent</span> <span class="token arrow operator">=></span> <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span><span class="token string">'The button was clicked!'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>One thing to note here is that observables under RxJS are lazy. This means that if there’s no subscribe call on <code>myObs$</code>, no click event handler is created. Observables only run when they know someone’s listening to the data they’re emitting.</p>
+<p>The function passed into subscribe is called every time the click event happens(the observable emits a value)</p>
+<ul>
+<li><code>.create</code> accepts a subscribe function
+<ul>
+<li><code>subscribe</code> accepts an <em>observer argument</em></li>
+</ul>
+</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token comment">// This first part is the observable, which emits things</span>
+<span class="token keyword">const</span> myObservable <span class="token operator">=</span> <span class="token maybe-class-name">Observable</span><span class="token punctuation">.</span><span class="token method function property-access">create</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token parameter">observer</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    observer<span class="token punctuation">.</span><span class="token method function property-access">next</span><span class="token punctuation">(</span><span class="token string">'hey!'</span><span class="token punctuation">)</span> <span class="token comment">//this is emitting a value</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+<span class="token comment">// To grab the value, we define an observer</span>
+<span class="token comment">// (x is the observer)</span>
+<span class="token keyword">const</span> observer <span class="token operator">=</span> myObservable<span class="token punctuation">.</span><span class="token method function property-access">subscribe</span><span class="token punctuation">(</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token comment">// hey!</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+</code></pre>

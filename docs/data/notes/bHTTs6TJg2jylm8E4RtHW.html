@@ -1,0 +1,38 @@
+<h1 id="reduce">Reduce<a aria-hidden="true" class="anchor-heading icon-link" href="#reduce"></a></h1>
+<p>When calling reduce you specify a function that describes how the current array element will alter the accumulator. </p>
+<ul>
+<li>It's like a functional version of a forEach loop with an additional variable that you change in the loop and return at the end.</li>
+</ul>
+<p>The <code>reduce()</code> method executes a user-supplied “reducer” callback function on each element of the array, </p>
+<ul>
+<li>the return value of the calculation on the previous element (the "accumulator") gets passed as input. </li>
+</ul>
+<p><code>reduce</code> could just as easily have been named <code>transform</code>, for its ability to transform one data structure into another.</p>
+<p>Anytime you need to do filter and map on same array, use reduce</p>
+<p>Anytime you need to use <code>reduce</code> to get uniqueness out of an array of objects, use <code>Set</code></p>
+<p>Anytime you need to skip over an iteration of the reducer function, simply return the accumulator</p>
+<p>The final result of running the reducer across all elements of the array is a single value (whether that single value is an array, object, integer etc.).</p>
+<p>The accumulator (ie. reducer function) is the hero of <code>.reduce()</code>. It is a story about how the accumulator changes at each step of the way (ie. at each array element). The way that the accumulator changes is described by the reducer function. The value returned from that reducer function describes what that accumulator looks like at that particular iteration.</p>
+<ul>
+<li>ex. Take for instance a reducer function that adds up all elements in the array. The accumulator starts out as the array's first element (assuming no <code>defaultValue</code> passed). As we iterate through the array, the Accumulator is modified in a way that is described by the return value of the reducer function. Whatever value this function returns becomes the value of the Accumulator for that iteration.</li>
+</ul>
+<p>A reducer function takes the <code>accumulator</code> and <code>currentValue</code> arguments.</p>
+<ul>
+<li><em>accumulator</em> - the value resulting from the previous call to the callback.</li>
+<li><em>currentValue</em> - the value of the current element</li>
+</ul>
+<h3 id="initialvalue"><code>initialValue</code><a aria-hidden="true" class="anchor-heading icon-link" href="#initialvalue"></a></h3>
+<p>If initialValue is specified, that also causes <code>currentValue</code> to be initialized to the first value in the array.
+If initialValue is not specified, <code>previousValue</code> is initialized to the first value in the array, and currentValue is initialized to the second value in the array.</p>
+<h3 id="signature">Signature<a aria-hidden="true" class="anchor-heading icon-link" href="#signature"></a></h3>
+<p>Signature</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">function</span> <span class="token generic-function"><span class="token function">reduce</span><span class="token generic class-name"><span class="token operator">&#x3C;</span><span class="token maybe-class-name">Element</span><span class="token punctuation">,</span> <span class="token maybe-class-name">ReturnType</span><span class="token operator">></span></span></span><span class="token punctuation">(</span>arr<span class="token operator">:</span> <span class="token maybe-class-name">Element</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> initialValue<span class="token operator">?</span><span class="token operator">:</span> <span class="token maybe-class-name">ReturnType</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token punctuation">(</span>acc<span class="token operator">:</span> <span class="token maybe-class-name">ReturnType</span><span class="token punctuation">,</span> val<span class="token operator">:</span> <span class="token maybe-class-name">Element</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token maybe-class-name">ReturnType</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/aedPp8PCPkyoKpuYjeLAj">Cook</a></li>
+</ol>

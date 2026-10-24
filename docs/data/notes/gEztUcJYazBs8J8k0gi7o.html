@@ -1,0 +1,106 @@
+<h1 id="dynamodb">DynamoDB<a aria-hidden="true" class="anchor-heading icon-link" href="#dynamodb"></a></h1>
+<p>Dynamo is a fully-managed, highly available schemaless NoSQL database.</p>
+<ul>
+<li>The DB engine can manage structured or semi-structured data, including JSON documents.</li>
+<li>supports key–value and document data structures</li>
+</ul>
+<p>Uses tables, though this concept is loosely related to how tables are used in SQL.</p>
+<ul>
+<li>essentially, we would include all domain primitives of a single domain in a Dynamo table, and use <a href="/notes/gEztUcJYazBs8J8k0gi7o#global-secondary-index-gsi1">GSIs</a> as our means of "JOINing" the domain primitives together.
+<ul>
+<li>each GSI should represent an access pattern (ie. how that data is accessed, such as "get all people by gender", "get all last names by country")</li>
+</ul>
+</li>
+<li>One of the biggest mistakes people make with dynamo is thinking that it's just a relational database with no relations. It's not.</li>
+</ul>
+<p>To get the full benefits of Dynamo, and it requires you often to design your data layer very well up-front. Dynamo is not recommended for a system that hasn't mostly stabilized in design.</p>
+<h3 id="when-to-use-dynamo">When to use Dynamo<a aria-hidden="true" class="anchor-heading icon-link" href="#when-to-use-dynamo"></a></h3>
+<p>Dynamo is really good for high read:write ratio (at least 4:1), meaning Dynamo is a good candidate for high-read applications.</p>
+<ul>
+<li>By default each DynamoDB table is allocated 40,000 read units and 40,000 write units of capacity per second. </li>
+</ul>
+<p>Dynamo may support large, complex schemas but it gets more difficult to maintain and understand. Dynamo is a better candidate for applications with simpler schemas.</p>
+<p>Dynamo offers effortless cross-region replication. Therefore, it is a good candidate for apps that distributed geographically.</p>
+<h2 id="data-is-stored-as-partitions">Data is stored as partitions<a aria-hidden="true" class="anchor-heading icon-link" href="#data-is-stored-as-partitions"></a></h2>
+<p>Data is stored as a partitioned <a href="/notes/UE8OS2s713jEk2CmjiAet">B-tree</a>.</p>
+<ul>
+<li>Items are distributed across 10-GB storage units, called partitions (physical storage internal to DynamoDB)</li>
+<li>Each table has one or more partitions</li>
+<li>DynamoDB uses the partition key’s value as an input to an internal hash function. The output from the hash function determines the partition in which the item is stored. Each item’s location is determined by the hash value of its partition key.</li>
+</ul>
+<p>Unlike <a href="/notes/gWAg15uBJgkS2B0wcpMAa">Redis</a>, in that it is immediately consistent and highly-durable, centered around that single data structure.</p>
+<ul>
+<li>If you put something into DynamoDB, you’ll be able to read it back immediately and, for all practical purposes, you can assume that what you have put will never get lost.</li>
+</ul>
+<h2 id="terms">Terms<a aria-hidden="true" class="anchor-heading icon-link" href="#terms"></a></h2>
+<h3 id="items">Items<a aria-hidden="true" class="anchor-heading icon-link" href="#items"></a></h3>
+<p>Analogous with row of a SQL table</p>
+<h3 id="attribute">Attribute<a aria-hidden="true" class="anchor-heading icon-link" href="#attribute"></a></h3>
+<p>Analogous with column name of a SQL table</p>
+<h3 id="marshalling">Marshalling<a aria-hidden="true" class="anchor-heading icon-link" href="#marshalling"></a></h3>
+<p>Before we can Create/Update a record in DynamoDB, a plain JS Object needs to be converted into a DynamoDB Record.</p>
+<ul>
+<li>Marshalling refers to our ability to convert a Javascript object into a DynamoDB Record.</li>
+</ul>
+<h4 id="example">Example<a aria-hidden="true" class="anchor-heading icon-link" href="#example"></a></h4>
+<pre class="language-js"><code class="language-js"><span class="token constant">AWS</span><span class="token punctuation">.</span><span class="token property-access"><span class="token maybe-class-name">DynamoDB</span></span><span class="token punctuation">.</span><span class="token property-access"><span class="token maybe-class-name">Converter</span></span><span class="token punctuation">.</span><span class="token method function property-access">unmarshall</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token string-property property">"updated_at"</span><span class="token operator">:</span><span class="token punctuation">{</span><span class="token string-property property">"N"</span><span class="token operator">:</span><span class="token string">"146548182"</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token string-property property">"uuid"</span><span class="token operator">:</span><span class="token punctuation">{</span><span class="token string-property property">"S"</span><span class="token operator">:</span><span class="token string">"foo"</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token string-property property">"status"</span><span class="token operator">:</span><span class="token punctuation">{</span><span class="token string-property property">"S"</span><span class="token operator">:</span><span class="token string">"new"</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+<span class="token comment">// { updated_at: 146548182, uuid: 'foo', status: 'new' }</span>
+</code></pre>
+<hr>
+<p>Dynamo provides seamless integration with services such as Redshift (large scale data analysis), Cognito (identity pools), Elastic Map Reduce (EMR), Data Pipeline, Kinesis, and S3. Also, has tight integration with AWS lambda via Streams and aligns with the server-less philosophy; automatic scaling according to your application load, pay-per-what-you-use pricing, easy to get started with, and no servers to manage.</p>
+<hr>
+<h2 id="expression">Expression<a aria-hidden="true" class="anchor-heading icon-link" href="#expression"></a></h2>
+<p><a href="/notes/ju2bxxwj4ma3dr4wbtesq21">Expression</a></p>
+<hr>
+<h2 id="dynamodb-in-practice">DynamoDB in practice<a aria-hidden="true" class="anchor-heading icon-link" href="#dynamodb-in-practice"></a></h2>
+<p>The general rule of thumb is to choose Dynamo for low throughput apps as writes are expensive and consistent reads are twice the cost of eventually consistent reads</p>
+<p>When to use DynamoDB?</p>
+<ul>
+<li>In case you are looking for a database that can handle simple key-value queries but those queries are very large in number</li>
+<li>In case you are working with OLTP workload like online ticket booking or banking where the data needs to be highly consistent</li>
+</ul>
+<p>When not use DynamoDB?</p>
+<ul>
+<li>In cases where you have to do computations on the data.
+<ul>
+<li>Relational databases run their queries close to the data, so if you’re trying to calculate the sum total value of orders per customer, then that rollup gets done while reading the data, and only the final summary (one row per customer) gets sent over the network. However, if you were to do this with DynamoDB, you’d have to get all the customer orders (one row per order), which involves a lot more data over the network, and then you have to do the rollup in your application, which is far away from the data.</li>
+</ul>
+</li>
+<li>If worried about high vendor lock-in.</li>
+</ul>
+<p>Pricing
+$256/TB/month</p>
+<p>By default, you should start with DynamoDB’s on-demand pricing and only consider the provisioned capacity as cost optimization. On-demand costs $1.25 per million writes, and $0.25 per million reads.</p>
+<ul>
+<li>Then, if your usage grows significantly, you will almost always want to consider moving to provisioned capacity (significant cost savings).</li>
+<li>if you believe that on-demand pricing is too expensive, then DynamoDB will very likely be too expensive, even with provisioned capacity. In that case, you might want to consider a relational database.</li>
+</ul>
+<h2 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h2>
+<ul>
+<li><a href="https://docs.aws.amazon.com/prescriptive-guidance/latest/dynamodb-data-modeling/steps.html">Determining your data model in Dynamo</a></li>
+<li><a href="https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf">Dynamo whitepaper</a></li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/hC9DXmocwzmceqrXwVm3a">Dynamo CLI</a></li>
+<li><a href="/notes/5uuohllUAxCmbMFJb8Pj9">Dynamo Streams</a></li>
+<li><a href="/notes/ju2bxxwj4ma3dr4wbtesq21">Expression</a></li>
+<li><a href="/notes/0idz4fvzgfj8npryf13eelb">Keys</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/ulicRRwo3lSFzh3tMfWH9">Apache Flink</a></li>
+<li><a href="/notes/ZF8xj8wwDUqKlrwTrCFZ1">Nosql</a></li>
+<li><a href="/notes/KutlqQVGLBAdLTslz3D9A">CDK</a></li>
+<li><a href="/notes/gEztUcJYazBs8J8k0gi7o">DynamoDB</a></li>
+<li><a href="/notes/OSdV9FvBG3wDbRNLllg0V">AWS Lambda</a></li>
+<li><a href="/notes/ilOPfgNyiPSHOb9tNB6yL">CAP Theorem</a></li>
+<li><a href="/notes/wbs6c9snnonnyzm8vk2t4b9">Strategies</a></li>
+</ul>

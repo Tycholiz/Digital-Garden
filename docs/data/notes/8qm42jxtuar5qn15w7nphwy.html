@@ -1,0 +1,193 @@
+<h1 id="tensors">Tensors<a aria-hidden="true" class="anchor-heading icon-link" href="#tensors"></a></h1>
+<p>Tensors are the primary data structure used for representing and manipulating data in deep learning models.</p>
+<ul>
+<li>they are the numerical representation of data as it is used as an input to the model, and it is also the numerical representation that is output by the model (ie. representation outputs)
+<ul>
+<li>therefore, the inputs and outputs of a neural network are tensors</li>
+</ul>
+</li>
+<li>ex. Imagine we have a machine learning model that predicts if an image is of a shirt or not. In this case, the tensors would typically hold the image data in the form of numerical values. The image data is represented as pixel intensities, which can be transformed into tensors.
+<ul>
+<li>if we consider what an image is, it's simply an assortment of pixels, where each pixel is some combination of RGB. If we had a pixel art of Mario which was 16x12, then we could create a tensor of shape <code>(16, 12, 3)</code>, where the first dimension represents the height, the second represents the width, and the third represents the color channel (ie. each pixel's degree of RGB). With this tensor, we could recreate the image.</li>
+</ul>
+</li>
+</ul>
+<p>Tensors are often created internally by Pytorch (e.g., the weights of a neural network), but we as developers sometimes create tensors manually, especially when importing data or during preprocessing.</p>
+<p>Many neural networks perform their learning by starting off with tensors full of random numbers, and then adjusting those numbers to better represent the data (by taking the source data, such as an image, and encoding its data and replacing the random numbers within the tensor).</p>
+<ul>
+<li>this is done to help break the symmetry and prevent the model from getting stuck in a suboptimal solution.</li>
+<li>it also helps with reinforcement learning algorithms in order to introduce exploration during the learning process. By adding random noise to the actions taken by an agent, it can explore different states and actions, enabling it to discover new and potentially better strategies.</li>
+</ul>
+<p><img src="/assets/images/2023-07-09-10-19-06.png"></p>
+<p>Tensors are similar to an <code>ndarray</code> (N-dimensional array), due to certain characteristics:</p>
+<ul>
+<li>it is multidimensional
+<ul>
+<li>Tensors can have different dimensions, including 0-dimensional (scalar), 1-dimensional (vector), 2-dimensional (matrix), and higher-dimensional arrays.</li>
+</ul>
+</li>
+<li>each element is of the same type</li>
+<li>each sub-array is of the same (fixed) length</li>
+</ul>
+<p>The main difference between a tensor and an ndarray is that a tensor can run on GPUs and TPUs, in addition to CPUs</p>
+<p>The variable for tensors that are 0 or 1 dimension (ie. scalars or vectors) is lowercase, while the variable for tensors that are more than 2 (ie. matrices and tensors) is UPPERCASE.</p>
+<h2 id="tensor-attributes">Tensor attributes<a aria-hidden="true" class="anchor-heading icon-link" href="#tensor-attributes"></a></h2>
+<p>A tensor on PyTorch has attributes:</p>
+<h3 id="shape">Shape<a aria-hidden="true" class="anchor-heading icon-link" href="#shape"></a></h3>
+<p>the size of the tensor; ie. the size of each layer of nested <code>[]</code> </p>
+<ul>
+<li>ex. a tensor of shape <code>[2, 3, 4]</code> would have 2 elements in its outermost brackets, each of which would have 3 elements (ie. 3 arrays), and each element of that array would have 4 elements:</li>
+</ul>
+<pre class="language-py"><code class="language-py"><span class="token punctuation">[</span>
+    <span class="token punctuation">[</span>
+        <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token punctuation">[</span><span class="token number">9</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">]</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span>
+        <span class="token punctuation">[</span><span class="token number">9</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span>
+    <span class="token punctuation">]</span>
+<span class="token punctuation">]</span>
+</code></pre>
+<ul>
+<li><code>TENSOR.shape</code> (or alias <code>TENSOR.size()</code>)</li>
+</ul>
+<h3 id="data-type">Data Type<a aria-hidden="true" class="anchor-heading icon-link" href="#data-type"></a></h3>
+<p>the type of data stored in the tensor</p>
+<ul>
+<li><code>TENSOR.dtype</code></li>
+<li>default is <code>float32</code></li>
+<li>convert type: <code>TENSOR.type(torch.float32)</code> OR  <code>TENSOR.to(torch.float32)</code></li>
+</ul>
+<h3 id="device">Device<a aria-hidden="true" class="anchor-heading icon-link" href="#device"></a></h3>
+<p>the device in which the tensor is stored</p>
+<ul>
+<li><code>TENSOR.device</code></li>
+<li>default is <code>cpu</code></li>
+<li>moving tensor from CPU to GPU: <code>TENSOR.to('cuda:0')</code></li>
+</ul>
+<h3 id="gradient-requirement">Gradient Requirement<a aria-hidden="true" class="anchor-heading icon-link" href="#gradient-requirement"></a></h3>
+<p>the state of whether or not gradients need to be computed for the tensor</p>
+<pre><code>- `TENSOR.requires_grad`
+</code></pre>
+<ul>
+<li>spec: gradient is the same as slope if we are considering a straight line in a graph</li>
+</ul>
+<hr>
+<p>Tensors on the CPU and NumPy arrays can share their underlying memory locations, and changing one will change the other.</p>
+<pre class="language-py"><code class="language-py">data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
+x_data <span class="token operator">=</span> torch<span class="token punctuation">.</span>tensor<span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+</code></pre>
+<h2 id="tensor-manipulation">Tensor Manipulation<a aria-hidden="true" class="anchor-heading icon-link" href="#tensor-manipulation"></a></h2>
+<h3 id="tensor-operations">Tensor Operations<a aria-hidden="true" class="anchor-heading icon-link" href="#tensor-operations"></a></h3>
+<p>The neural network will combine these tensor operations in some way in order to find patterns in numbers of a dataset</p>
+<p>All operations (except matrix multiplication) are element-wise, meaning the operator (×, ÷ etc.) is applied to each element in place</p>
+<p>Operations include:</p>
+<ul>
+<li>addition</li>
+<li>subtraction</li>
+<li>multiplication
+<ul>
+<li><code>torch.mul(TENSOR, 10)</code></li>
+</ul>
+</li>
+<li>division</li>
+<li>matrix multiplication
+<ul>
+<li><code>torch.matmul(TENSOR1, TENSOR2)</code> or <code>torch.mm()</code> or <code>TENSOR1 @ TENSOR2</code></li>
+<li>matrix multiplication is the most common type of operation found in neural networks</li>
+<li>see <a title="Private" href="https://wiki.dendron.so/notes/hfyvYGJZQiUwQaaxQO27q.html" target="_blank" class="private">Matrix multiplication (Private)</a> Dendron node</li>
+</ul>
+</li>
+</ul>
+<h4 id="transpose">Transpose<a aria-hidden="true" class="anchor-heading icon-link" href="#transpose"></a></h4>
+<p>Transposing a matrix is simply swapping the row contents with its column contents.</p>
+<pre class="language-py"><code class="language-py">tensor_A
+<span class="token comment"># tensor([[ 7,  8,  9],</span>
+<span class="token comment">#        [10, 11, 12]])</span>
+tensor_A<span class="token punctuation">.</span>T
+<span class="token comment"># tensor([[ 7, 10],</span>
+<span class="token comment">#        [ 8, 11],</span>
+<span class="token comment">#        [ 9, 12]])</span>
+</code></pre>
+<p>We do this since we cannot multiply two matrices unless # rows of MatrixA = # columns of MatrixB, and # columns of MatrixA = # rows of MatrixB (see <a title="Private" href="https://wiki.dendron.so/notes/hfyvYGJZQiUwQaaxQO27q.html" target="_blank" class="private">rules of matrix multiplication (Private)</a>), we need to transpose one of our matrices if the shapes don't line up properly.</p>
+<h3 id="tensor-aggregation-tensor-methods">Tensor Aggregation (tensor methods)<a aria-hidden="true" class="anchor-heading icon-link" href="#tensor-aggregation-tensor-methods"></a></h3>
+<p>Finding the <code>.min()</code>, <code>.max()</code>, <code>.mean()</code>, <code>.sum()</code> etc. of certain tensor values.</p>
+<h3 id="reshaping-stacking-squeezing-and-unsqueezing-tensors">Reshaping, Stacking, Squeezing and Unsqueezing Tensors<a aria-hidden="true" class="anchor-heading icon-link" href="#reshaping-stacking-squeezing-and-unsqueezing-tensors"></a></h3>
+<p>Each of these methods allows us to manipulate our tensors in order to change their shape/dimension.</p>
+<ul>
+<li>
+<p>we often use these to solve issues that might arise due to tensors with mismatched shapes. </p>
+</li>
+<li>
+<p><strong>Reshaping</strong> - reshapes an input tensor to a defined shape</p>
+<ul>
+<li>we do this because in order for multiple tensors to work together, we need their shape to correspond to one another   </li>
+<li>the new shape of the reshaped tensor must be compatible with the original tensor
+<ul>
+<li>ex. if we have a tensor <code>[1, 2, 3, 4, 5, 6]</code>, we cannot reshape it into a 2x2 tensor. We could however put it into a 2x3.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>View</strong> - return a view of an input tensor of certain shape, but keep the same memory as the original tensor</p>
+<ul>
+<li>therefore if we assign a new variable <code>Z</code> to the view of an existing tensor and then change <code>Z</code>, it will also change the original tensor</li>
+</ul>
+</li>
+<li>
+<p><strong>Stacking</strong> - combine multiple tensors, either on top of each other (vstack) or side-by-side (hstack)</p>
+</li>
+<li>
+<p><strong>Squeeze</strong> - removes all <code>1</code> dimensions from a tensor</p>
+<ul>
+<li><code>1</code> dimension is a dimension (ie. an array) has a single element in it</li>
+<li>ex. if we have a tensor of shape <code>[2, 1, 2, 1, 2]</code> and squeeze it, it will become <code>[2, 2, 2]</code></li>
+</ul>
+</li>
+<li>
+<p><strong>Unsqueeze</strong> - add a <code>1</code> dimension to a target tensor</p>
+<ul>
+<li>we must specify the <code>dim</code> argument, which specified which index to add </li>
+</ul>
+</li>
+<li>
+<p><strong>Permute</strong> - returns a view that rearranges (ie. swaps) the dimensions of a tensor in a specified way</p>
+<ul>
+<li>ex. if we have a tensor (<code>x</code>) of shape <code>(2, 3, 5)</code> and permute it as <code>(2, 0, 1)</code>, the new tensor will have shape <code>(5, 2, 3)</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="indexing">Indexing<a aria-hidden="true" class="anchor-heading icon-link" href="#indexing"></a></h3>
+<p>Sometimes you'll want to select specific data from tensors </p>
+<ul>
+<li>ex. only the first column or second row.</li>
+</ul>
+<p>Aside from how indexing normally works (e.g. using <code>[0][0]</code> to access first element of the first element), we can also use <code>:</code> to specify "all values in this dimension"</p>
+<pre class="language-py"><code class="language-py">x <span class="token operator">=</span> tensor<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+            <span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+            <span class="token punctuation">[</span><span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">9</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Get all values of 0th dimension and the 0 index of 1st dimension</span>
+x<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">]</span> <span class="token comment"># tensor([[1, 2, 3]])</span>
+
+<span class="token comment"># Get all values of 0th &#x26; 1st dimensions but only index 1 of 2nd dimension</span>
+x<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token comment"># tensor([[2, 5, 8]])</span>
+
+<span class="token comment"># Get all values of the 0 dimension but only the 1 index value of the 1st and 2nd dimension</span>
+x<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token comment"># tensor([5])</span>
+
+<span class="token comment"># Get index 0 of 0th and 1st dimension and all values of 2nd dimension (same as x[0][0])</span>
+x<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token punctuation">:</span><span class="token punctuation">]</span> <span class="token comment"># tensor([1, 2, 3])</span>
+
+<span class="token comment"># Get the first 10 values of the 0 dimension</span>
+x<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">10</span><span class="token punctuation">]</span>
+
+<span class="token comment"># Get all values after the 10th index</span>
+x<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">10</span><span class="token punctuation">]</span>
+</code></pre>
+<h2 id="resources">Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#resources"></a></h2>
+<p><a title="Private" href="https://wiki.dendron.so/notes/hfyvYGJZQiUwQaaxQO27q.html" target="_blank" class="private">see tensors Dendron node for mathematical definition (Private)</a></p>
