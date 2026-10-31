@@ -1,0 +1,55 @@
+<h1 id="kubernetes-objects">Kubernetes Objects<a aria-hidden="true" class="anchor-heading icon-link" href="#kubernetes-objects"></a></h1>
+<p>An object is a persistent entity in the Kubernetes system. Each object represents a part of the state of our cluster, and all of them together represent the whole desired state.</p>
+<p>Objects can describe:</p>
+<ul>
+<li>What containerized applications are running (and on which <a href="/notes/iuja3tlxkdniv862fq9h1v4">nodes</a>)</li>
+<li>The resources available to those applications</li>
+<li>The policies around how those applications behave (e.g. restart policies, upgrades, <a href="/notes/mh3gii3m3gs5etkb2alcifl">fault tolerance</a> etc.)</li>
+</ul>
+<p>An object is a "record of intent"— it is our way of declaring the cluster's desired state.</p>
+<ul>
+<li>once you create the object, the Kubernetes system will constantly work to ensure that object exists.</li>
+</ul>
+<p>To create, read or modify an object, we interact with the <a href="/notes/hecaydk40a6wqiprau7l8qz">Kubernetes API</a>.</p>
+<ul>
+<li>If we are using <a href="/notes/nhxmrkFjzHtZZmOBkWfhh">Kubectl</a>, calls to the API will be made for us.</li>
+</ul>
+<p>Almost every object should take this shape:</p>
+<pre class="language-js"><code class="language-js"><span class="token punctuation">{</span>
+  <span class="token literal-property property">spec</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token comment">// desired state</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">status</span><span class="token operator">:</span> <span class="token comment">// current state of the object, managed by the control plane</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Even though we can create services by running <code>kubectl expose</code>, we should typically follow a documented approach by using YAML files.</p>
+<h2 id="fields">Fields<a aria-hidden="true" class="anchor-heading icon-link" href="#fields"></a></h2>
+<h3 id="selector"><code>selector</code><a aria-hidden="true" class="anchor-heading icon-link" href="#selector"></a></h3>
+<pre class="language-yml"><code class="language-yml"><span class="token key atrule">selector</span><span class="token punctuation">:</span>
+  <span class="token key atrule">matchLabels</span><span class="token punctuation">:</span>
+    <span class="token key atrule">app</span><span class="token punctuation">:</span> hellok8s
+</code></pre>
+<p>What we are doing in this field is telling Kubernetes that this object is managing all the pods that have a label called <code>app</code> with the value <code>hellok8s</code>. This is what links our object to pods.</p>
+<ul>
+<li>Labels are simply key-value pairs that you define for your pods, and that’s what is used to find all the pods that a Deployment needs to look after.</li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/q1zb6dpa8v7var4rxbrctwn">Configmap</a></li>
+<li><a href="/notes/ZK0P0va9kOJGsM9X7X2Td">Deployment</a></li>
+<li><a href="/notes/cnkzosrbq8pdbru80p9c7h0">HorizontalPodAutoscaler</a></li>
+<li><a href="/notes/4b0Xz0VUtXbFaFl1Pri9E">Kubernetes Ingress</a></li>
+<li><a href="/notes/a9WtJDyCZ4NvEaAZ4p3bd">Kubernetes Pod</a></li>
+<li><a href="/notes/ryBzcGWSKyybRXnyKxteV">Kubernetes Service</a></li>
+<li><a href="/notes/lmBa9fwj8huQ5pCXAyQNq">Namespace</a></li>
+<li><a href="/notes/w9bmyk2szy9zwwxz1ccttxt">PodDisruptionBudget</a></li>
+<li><a href="/notes/dujlr4c5st1zdhogi2h7pos">Service Accou</a></li>
+<li><a href="/notes/Yo1A54kOWjZXTtNcEIuP5">Volume</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/nhxmrkFjzHtZZmOBkWfhh">Kubectl</a></li>
+<li><a href="/notes/hecaydk40a6wqiprau7l8qz">API Server</a></li>
+</ul>

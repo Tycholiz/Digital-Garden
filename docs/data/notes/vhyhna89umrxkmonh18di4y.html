@@ -1,0 +1,228 @@
+<h1 id="view">View<a aria-hidden="true" class="anchor-heading icon-link" href="#view"></a></h1>
+<p>Views are the primary tool used for querying and reporting on CouchDB databases.</p>
+<ul>
+<li>we write some Javascript functions which combine to create a view. This code implements the business logic for retrieving the documents. </li>
+<li>The view gets created as an object in the database, which is exposed as a resource at an HTTP endpoint.</li>
+</ul>
+<p>Views also allow us to build <a href="/notes/jiITIvU42MBAYcbXheWwI">indexes</a> on any document value or structure.</p>
+<p>views are basically highly efficient on-disk dictionaries that map keys to values</p>
+<ul>
+<li>the key is automatically indexed and can be used to filter and/or sort the results you get back from your views. 
+<ul>
+<li>in fact the results are always sorted by the key. This fact should be leveraged to get the most out of queries. </li>
+<li>This should be the approach taken whenever we would use <code>SORT BY</code> in SQL. It can be achieved relatively easily by using an array as a key, </li>
+</ul>
+</li>
+<li>When you "invoke" a view, you can say that you’re only interested in a subset of the view rows by specifying a <code>?key=foo</code> query string parameter.</li>
+</ul>
+<p>Stored data is structured using views. In CouchDB, each view is constructed by a JavaScript function that acts as the Map half of a map/reduce operation. The function takes a document and transforms it into a single value that it returns. CouchDB can index views and keep those indexes updated as documents are added, removed, or updated.</p>
+<p>Views are generally stored in the database and their indexes updated continuously.</p>
+<ul>
+<li>external servers can also be used to store views. Implementations exist in JavaScript, Python, Ruby etc</li>
+</ul>
+<p>Each view you create corresponds to one <a href="/notes/UE8OS2s713jEk2CmjiAet">B-tree</a></p>
+<ul>
+<li>The B-trees used are an <em>append-only</em>/<em>copy-on-write</em> variant that does not overwrite pages of the tree when they are updated, but instead creates a new copy of each modified page.</li>
+</ul>
+<p>All views in a single design document will live in the same set of index files on disk</p>
+<p>A view is just like any other document with a key difference: the <code>_id</code> is prefixed with <code>_design/</code></p>
+<p>The most practical consideration for separating views into separate documents is how often you change those views. </p>
+<ul>
+<li>Views that change often, and are in the same design document as other views, will invalidate those other views’ indexes when the design document is written, forcing them all to rebuild from scratch. Naturally we want to avoid this in production.</li>
+</ul>
+<p>When you have multiple views with the same map function in the same design document, CouchDB will optimize and only calculate that map function once.</p>
+<ul>
+<li>This lets you have two views with different reduce functions (say, one with _sum and one with _stats) but build only a single copy of the mapped index.</li>
+</ul>
+<p>Generating a view is an <code>0(N)</code> operation (where <code>N</code> is the total number of rows in the view).</p>
+<h2 id="view-functions">View functions<a aria-hidden="true" class="anchor-heading icon-link" href="#view-functions"></a></h2>
+<p>View functions specify a key and a value to be returned for each row.</p>
+<p>Basically, the idea with map/reduce functions is that you divide your query into a map function and a reduce function, each of which may be executed in parallel in a multi-node cluster.</p>
+<ul>
+<li>this allows us to perform efficient query operations in parallel</li>
+</ul>
+<h3 id="map-function">Map function<a aria-hidden="true" class="anchor-heading icon-link" href="#map-function"></a></h3>
+<p>Take in a single document and <code>emit()</code> key-value pairs that are stored in a View.</p>
+<p>A map function is free from side-effects.</p>
+<p>The following <code>map</code> function will take in a single <code>nugget</code> and will emit a key-value pair for each item in the <code>buckets</code> array.</p>
+<ul>
+<li><code>emit()</code> may be called many times for a single document, so the same document may be available by several different keys.</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">doc</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span>doc<span class="token punctuation">.</span><span class="token property-access">type</span> <span class="token operator">===</span> <span class="token string">'nugget'</span> <span class="token operator">&#x26;&#x26;</span> doc<span class="token punctuation">.</span><span class="token property-access">buckets</span> <span class="token operator">&#x26;&#x26;</span> <span class="token known-class-name class-name">Array</span><span class="token punctuation">.</span><span class="token method function property-access">isArray</span><span class="token punctuation">(</span>doc<span class="token punctuation">.</span><span class="token property-access">buckets</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    doc<span class="token punctuation">.</span><span class="token property-access">buckets</span><span class="token punctuation">.</span><span class="token method function property-access">forEach</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">bucket</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token function">emit</span><span class="token punctuation">(</span>bucket<span class="token punctuation">.</span><span class="token method function property-access">toLowerCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>If you don’t use the key field in the map function, you are probably doing it wrong.</p>
+<p>CouchDB is smart enough to run a map function only once for every document, even on subsequent queries on a view. Only changes to documents or new documents need to be processed anew.</p>
+<p>Map functions can't modify the document and they can't have side-effects.</p>
+<ul>
+<li>this is why CouchDB can guarantee correct results without having to recalculate a complete result when only one document gets changed.</li>
+</ul>
+<h3 id="reduce-function">Reduce function<a aria-hidden="true" class="anchor-heading icon-link" href="#reduce-function"></a></h3>
+<p>Reduce functions operate on the sorted rows emitted by a map function</p>
+<p>A reduce function takes in 2 args: a key, and a list (which is the result of the related map function)</p>
+<ul>
+<li>it can also take an optional 3rd arg, which is to indicate whether <em>rereduce</em> mode is active or not.</li>
+</ul>
+<p>While the map function will <code>emit</code> values, <code>reduce</code> will simply <code>return</code> the reduced value.</p>
+<p>A reduce function should return a scalar value (ie. not an array or object)</p>
+<ul>
+<li>reduce is not for generating complex aggregate values</li>
+<li>it is ok to return an array if it is small and fixed size (ie. more of a tuple)</li>
+</ul>
+<p>CouchDB has a number of built-in reduce functions which run inside the DB and are much faster than the equivalent implementation in a custom reduce function (in Javascript)</p>
+<ul>
+<li><code>_sum</code> - returns total number of rows between startkey and endkey</li>
+<li><code>_count</code></li>
+<li><code>_stats</code></li>
+</ul>
+<p>Because of the way B-trees are structured, we can cache the intermediate reduce results in the non-leaf nodes of the tree, so reduce queries can be computed along arbitrary key ranges in logarithmic time.</p>
+<p>CouchDB’s reduce functionality takes advantage of one of the fundamental properties of B-tree indexes: for every leaf node (a sorted row), there is a chain of internal nodes reaching back to the root. Each leaf node in the B-tree carries a few rows (on the order of tens, depending on row size), and each internal node may link to a few leaf nodes or other internal nodes.</p>
+<p>The reduce function is run on every node in the tree in order to calculate the final reduce value. The end result is a reduce function that can be incrementally updated upon changes to the map function, while recalculating the reduction values for a minimum number of nodes. The initial reduction is calculated once per each node (inner and leaf) in the tree.</p>
+<p>You can access a view without enabling the reduce function by disabling reduction (<code>reduce=false</code>) when the view is accessed.</p>
+<h4 id="rereduce">Rereduce<a aria-hidden="true" class="anchor-heading icon-link" href="#rereduce"></a></h4>
+<p>The existence and use of the rereduce parameter is tightly coupled to how the B-tree index works.</p>
+<p>When run on leaf nodes (which contain actual map rows), <code>rereduce</code> is false.</p>
+<p>When the reduce function is run on inner nodes, <code>rereduce</code> is true. This allows the function to account for the fact that it will be receiving its own prior output. When rereduce is true, the values passed to the function are intermediate reduction values as cached from previous calculations. When the tree is more than two levels deep, the rereduce phase is repeated, consuming chunks of the previous level’s output until the final reduce value is calculated at the root node.</p>
+<h2 id="view-result">View result<a aria-hidden="true" class="anchor-heading icon-link" href="#view-result"></a></h2>
+<p>Whenever you query a view, this is how CouchDB operates:</p>
+<ol>
+<li>Starts reading at the top (of the B-tree), or at the position that <code>startkey</code> specifies, if present.</li>
+<li>Returns one row at a time until the end or until it hits <code>endkey</code>, if present.</li>
+</ol>
+<ul>
+<li>If you specify <code>descending=true</code>, the reading direction is reversed; the sort order of rows in the view doesn't change.</li>
+</ul>
+<p>There is no unique constraint on the keys of a view result.</p>
+<ul>
+<li>ex. we can have a view result of K-V pairs <code>author</code>-<code>book</code> where the same author is listed multiple times.</li>
+</ul>
+<p>You always need to give a range of keys, because filtering is done on map's results, not on reduce.</p>
+<p>Each view result is stored in a B-tree (index structure) in its own file</p>
+<ul>
+<li>since view results are in their own file, they can be stored on a separate disk from other database objects to increase performance.</li>
+<li>The B-tree provides very fast lookups of rows by key, as well as efficient streaming of rows in a key range</li>
+<li>The B-tree is created only once when the view is first queried. 
+<ul>
+<li>All subsequent queries will just read the B-tree instead of executing the map function for all documents again.</li>
+<li>When we create, update or delete a document, the database engine finds the corresponding rows in the view result and marks them <em>invalid</em> so they no longer show up in the view result.
+<ul>
+<li>if the document got updated, it gets run through the map function again and the result is inserted into the B-tree at the correct spot.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>The results of a view are generated via the <code>emit()</code> function.</p>
+<p>It is not recommended to emit the document itself in the view. </p>
+<ul>
+<li>Instead, to include the bodies of the documents when requesting the view, request the view with <code>?include_docs=true</code>.</li>
+</ul>
+<p>View results are sorted by <em>key</em></p>
+<ul>
+<li>the key can be any data type, including arrays and objects.
+<ul>
+<li>You can use JSON arrays as keys for fine-grained control over sorting and grouping.</li>
+</ul>
+</li>
+</ul>
+<p>For instance, here we get back customers, then orders in the same view result (due to the <code>0</code> and <code>1</code>, serving as secondary sorts)</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">doc</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span>doc<span class="token punctuation">.</span><span class="token property-access"><span class="token maybe-class-name">Type</span></span> <span class="token operator">==</span> <span class="token string">"customer"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">emit</span><span class="token punctuation">(</span><span class="token punctuation">[</span>doc<span class="token punctuation">.</span><span class="token property-access">_id</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword null nil">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span> <span class="token keyword control-flow">else</span> <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span>doc<span class="token punctuation">.</span><span class="token property-access"><span class="token maybe-class-name">Type</span></span> <span class="token operator">==</span> <span class="token string">"order"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">emit</span><span class="token punctuation">(</span><span class="token punctuation">[</span>doc<span class="token punctuation">.</span><span class="token property-access">customer_id</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword null nil">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Aside from the data itself, the view result also contains metadata like <code>total_rows</code> and <code>offset</code>.</p>
+<h2 id="collating-views">Collating Views<a aria-hidden="true" class="anchor-heading icon-link" href="#collating-views"></a></h2>
+<p>Imagine our querying client needs 2 different related objects in a single query. In SQL, we'd do a <a href="/notes/74d0c3a8-73ff-4964-bc57-7ceb6f8b8cb5">JOIN</a>, but there are a few different approaches in CouchDB:</p>
+<h3 id="embed-related-data-in-one-document">Embed related data in one document<a aria-hidden="true" class="anchor-heading icon-link" href="#embed-related-data-in-one-document"></a></h3>
+<p>We could embed the related data like so:</p>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"_id"</span><span class="token operator">:</span> <span class="token string">"ABCDEF"</span><span class="token punctuation">,</span>
+  <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"my_nugget"</span><span class="token punctuation">,</span>
+  <span class="token property">"media_items"</span><span class="token operator">:</span> <span class="token string">"…"</span><span class="token punctuation">,</span>
+  <span class="token property">"buckets"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">{</span><span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"psychology"</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">{</span><span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"humor"</span><span class="token punctuation">}</span>
+  <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>However, a drawback is that to add a bucket, we need to</p>
+<ol>
+<li>fetch the document (the nugget)</li>
+<li>add the bucket to the <code>buckets</code> field</li>
+<li>send the updated document to the server</li>
+</ol>
+<p>To boot, if we get multiple clients adding buckets to the same nugget, we are bound to get <em>HTTP 409 Conflict</em> (optimistic concurrency in action)</p>
+<h3 id="keep-nuggets-and-buckets-separate">Keep nuggets and buckets separate<a aria-hidden="true" class="anchor-heading icon-link" href="#keep-nuggets-and-buckets-separate"></a></h3>
+<p>We could add a <code>type</code> field to separate nuggets and buckets:</p>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"_id"</span><span class="token operator">:</span> <span class="token string">"ABCDEF"</span><span class="token punctuation">,</span>
+  <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"nugget"</span><span class="token punctuation">,</span>
+  <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"my_nugget"</span><span class="token punctuation">,</span>
+  <span class="token property">"media_items"</span><span class="token operator">:</span> <span class="token string">"…"</span><span class="token punctuation">,</span>
+  <span class="token property">"buckets"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"123456"</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"_id"</span><span class="token operator">:</span> <span class="token string">"123456"</span><span class="token punctuation">,</span>
+  <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"bucket"</span><span class="token punctuation">,</span>
+  <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"my_bucket"</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>The problem with this approach is that if we want to get both the nugget and the associated buckets, we have to make 2 GET requests.</p>
+<h3 id="using-view-collation">Using view collation<a aria-hidden="true" class="anchor-heading icon-link" href="#using-view-collation"></a></h3>
+<p>Thankfully, we just have to write a view that leverages the fact that keys are automatically sorted, and can be complex:</p>
+<ul>
+<li>note: the <code>0</code> and <code>1</code> are needed so that the nugget comes first, then the buckets.</li>
+<li>note: this view is not totally tested</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">doc</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span>type <span class="token operator">===</span> <span class="token string">"nugget"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">emit</span><span class="token punctuation">(</span><span class="token punctuation">[</span>doc<span class="token punctuation">.</span><span class="token property-access">bucket</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword null nil">null</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span> <span class="token keyword control-flow">else</span> <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span>type <span class="token operator">===</span> <span class="token string">"bucket"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">emit</span><span class="token punctuation">(</span><span class="token punctuation">[</span>doc<span class="token punctuation">.</span><span class="token property-access">_id</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword null nil">null</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>With this view, we get back rows where the first one (with <code>key=[id, 0]</code>) is the nugget, and the rest are associated buckets. </p>
+<p>Now, to get back a specific nugget with all the associated nuggets, we add the query param to the query:</p>
+<ul>
+<li><code>?startkey=["my_nugget"]&#x26;endkey=["my_nugget", 2]&#x26;include_docs=true</code></li>
+</ul>
+<p>To query by some specific value(s) in CouchDB, we just need to figure out how to get that searchterm in the key so we can use a query param on it.</p>
+<ul>
+<li>ex. imagine our document had a <code>$doctype</code> field and we wanted to return documents where that type is <code>nugget</code>:</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">doc</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token function">emit</span><span class="token punctuation">(</span>doc<span class="token punctuation">.</span><span class="token property-access">$doctype</span><span class="token punctuation">,</span> <span class="token keyword null nil">null</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>and then we just add a query param <code>?key="nugget"</code></p>
+<hr>
+<h2 id="performance">Performance<a aria-hidden="true" class="anchor-heading icon-link" href="#performance"></a></h2>
+<p>The database engine only runs through all documents once, when you first query your view. </p>
+<ul>
+<li>If a document is changed, the map function is only run once, to recompute the keys and values for that single document.</li>
+</ul>
+<h2 id="resources">Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#resources"></a></h2>
+<ul>
+<li><a href="https://docs.couchdb.org/en/3.2.0/ddocs/views/nosql.html">Cookbook for SQL developers</a></li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/7d6bs3y6aqp6r7d7h97a284">API</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/g7ulqi8no93ezeocbesc3ll">CouchDB</a></li>
+</ul>

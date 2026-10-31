@@ -1,0 +1,52 @@
+<h1 id="cook">Cook<a aria-hidden="true" class="anchor-heading icon-link" href="#cook"></a></h1>
+<h3 id="delete-item-from-cache-after-usemutation-update-function">Delete item from cache after useMutation <code>update</code> function<a aria-hidden="true" class="anchor-heading icon-link" href="#delete-item-from-cache-after-usemutation-update-function"></a></h3>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">const</span> <span class="token function-variable function">handleDeleteBook</span> <span class="token operator">=</span> <span class="token punctuation">(</span>bookId<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+  <span class="token function">deleteBookMutation</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    variables<span class="token operator">:</span> <span class="token punctuation">{</span>
+      bookId<span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token function-variable function">update</span><span class="token operator">:</span> <span class="token punctuation">(</span>cache<span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+      <span class="token keyword">const</span> normalizedId <span class="token operator">=</span> cache<span class="token punctuation">.</span><span class="token method function property-access">identify</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+        id<span class="token operator">:</span> bookId<span class="token punctuation">,</span>
+        __typename<span class="token operator">:</span> <span class="token string">'Book'</span><span class="token punctuation">,</span>
+      <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+      cache<span class="token punctuation">.</span><span class="token method function property-access">evict</span><span class="token punctuation">(</span><span class="token punctuation">{</span> id<span class="token operator">:</span> normalizedId <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      cache<span class="token punctuation">.</span><span class="token method function property-access">gc</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre>
+<h2 id="functions">Functions<a aria-hidden="true" class="anchor-heading icon-link" href="#functions"></a></h2>
+<h3 id="delete-from-cache">Delete from cache<a aria-hidden="true" class="anchor-heading icon-link" href="#delete-from-cache"></a></h3>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword module">export</span> <span class="token keyword">function</span> <span class="token function">deleteFromCache</span><span class="token punctuation">(</span>
+  thisCache<span class="token operator">:</span> <span class="token maybe-class-name">ApolloCache</span><span class="token operator">&#x3C;</span><span class="token maybe-class-name">DeleteBookMutation</span><span class="token operator">></span><span class="token punctuation">,</span>
+  thisId<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span><span class="token operator">:</span> <span class="token keyword">void</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> normalizedId <span class="token operator">=</span> thisCache<span class="token punctuation">.</span><span class="token method function property-access">identify</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    id<span class="token operator">:</span> thisId<span class="token punctuation">,</span>
+    __typename<span class="token operator">:</span> <span class="token string">'Book'</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span>
+  thisCache<span class="token punctuation">.</span><span class="token method function property-access">evict</span><span class="token punctuation">(</span><span class="token punctuation">{</span> id<span class="token operator">:</span> normalizedId <span class="token punctuation">}</span><span class="token punctuation">)</span>
+  thisCache<span class="token punctuation">.</span><span class="token method function property-access">gc</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="update-cache">Update cache<a aria-hidden="true" class="anchor-heading icon-link" href="#update-cache"></a></h3>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword module">export</span> <span class="token keyword">function</span> <span class="token function">updateFromCache</span><span class="token punctuation">(</span>
+  thisCache<span class="token operator">:</span> <span class="token maybe-class-name">ApolloCache</span><span class="token operator">&#x3C;</span><span class="token maybe-class-name">UpdateBookMutation</span><span class="token operator">></span><span class="token punctuation">,</span>
+  book<span class="token operator">:</span> <span class="token maybe-class-name">Book</span><span class="token punctuation">,</span>
+  bookInput<span class="token operator">:</span> <span class="token maybe-class-name">BookInput</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span><span class="token operator">:</span> <span class="token keyword">void</span> <span class="token punctuation">{</span>
+  thisCache<span class="token punctuation">.</span><span class="token method function property-access">writeFragment</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    id<span class="token operator">:</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Book:</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>book<span class="token punctuation">.</span><span class="token property-access">id</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">,</span>
+    fragment<span class="token operator">:</span> gql<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token graphql language-graphql">
+      <span class="token keyword">fragment</span> <span class="token fragment function">MyBook</span> <span class="token keyword">on</span> <span class="token class-name">Book</span> <span class="token punctuation">{</span>
+        <span class="token property">title</span>
+      <span class="token punctuation">}</span>
+    </span><span class="token template-punctuation string">`</span></span><span class="token punctuation">,</span>
+    data<span class="token operator">:</span> <span class="token punctuation">{</span>
+      title<span class="token operator">:</span> bookInput<span class="token punctuation">.</span><span class="token property-access">title</span> <span class="token operator">?</span> bookInput<span class="token punctuation">.</span><span class="token property-access">title</span> <span class="token operator">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>

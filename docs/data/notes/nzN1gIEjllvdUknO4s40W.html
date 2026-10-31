@@ -1,0 +1,62 @@
+<h1 id="character-class">Character Class<a aria-hidden="true" class="anchor-heading icon-link" href="#character-class"></a></h1>
+<p>A Character Class (CC) is how we tell the regex engine that we want to accept only a subset of all characters</p>
+<ul>
+<li>ex. I want all letters from a-d, and f-z</li>
+<li>ex. I want all alphanumeric characters</li>
+</ul>
+<p>A CC stands in for a single character. We can use <a href="/notes/midPuyHDHxnZW01AbRXde">quantifiers</a> to match the CC multiple times.</p>
+<h3 id="built-in-character-classes">Built-in Character Classes<a aria-hidden="true" class="anchor-heading icon-link" href="#built-in-character-classes"></a></h3>
+<p>whitespace char: <code>\s</code></p>
+<ul>
+<li>identical to <code>[ \t\r\n\f]</code></li>
+<li>e.g. tab, space, newline, carriage return, form feed
+digit: <code>\d</code></li>
+<li>identical to <code>[0-9]</code>
+hex-digit: <code>\x</code>
+word character (alphanumeric + underscore): <code>\w</code></li>
+<li>identical to <code>[A-Za-z0-9_]</code>
+alphabetic char: <code>\a</code>
+lowercase char: <code>\l</code>
+uppercase char: <code>\u</code>
+tab char: <code>\t</code>
+carriage return: <code>\r</code>
+new line: <code>\n</code>
+vertical/horizontal whitespace: <code>\v</code>/<code>\h</code></li>
+<li>only available in Perl Regex; if available, these are preferable to <code>\s</code></li>
+</ul>
+<h4 id="inverse">Inverse<a aria-hidden="true" class="anchor-heading icon-link" href="#inverse"></a></h4>
+<p>To <a title="Private" href="https://wiki.dendron.so/notes/hfyvYGJZQiUwQaaxQO27q.html" target="_blank" class="private">inverse (Private)</a> the match, we just need to uppercase the character</p>
+<ul>
+<li>ex. <code>\s</code> matches a whitespace character, <code>\S</code> matches a non-whitespace char.</li>
+</ul>
+<h3 id="custom-character-classes">Custom Character Classes<a aria-hidden="true" class="anchor-heading icon-link" href="#custom-character-classes"></a></h3>
+<p>Letter from a-d, and f-z</p>
+<ul>
+<li><code>[a-df-z]</code></li>
+</ul>
+<h4 id="inverse-1">Inverse<a aria-hidden="true" class="anchor-heading icon-link" href="#inverse-1"></a></h4>
+<p>To <a title="Private" href="https://wiki.dendron.so/notes/hfyvYGJZQiUwQaaxQO27q.html" target="_blank" class="private">inverse (Private)</a> the whole character class, we just need to put <code>^</code> in front</p>
+<ul>
+<li>ex. <code>[^0-9a-z]</code> matches any character that isn't numeric or lowercase</li>
+</ul>
+<p>note: <code>[\D\S]</code> is not the same as <code>[^\d\s]</code></p>
+<ul>
+<li>the first matches any character that is either not a digit, or is not whitespace. Therefore, matches any character; since all digits are non-whitespace, and all whitespace characters are not digits</li>
+<li>the second matches any character that is neither a digit nor whitespace. It matches <code>x</code>, but not <code>8</code></li>
+</ul>
+<hr>
+<h3 id="modifications">Modifications<a aria-hidden="true" class="anchor-heading icon-link" href="#modifications"></a></h3>
+<h4 id="inverse-2">Inverse<a aria-hidden="true" class="anchor-heading icon-link" href="#inverse-2"></a></h4>
+<p>To <a title="Private" href="https://wiki.dendron.so/notes/hfyvYGJZQiUwQaaxQO27q.html" target="_blank" class="private">inverse (Private)</a> the match, we just need to uppercase the character</p>
+<ul>
+<li>ex. <code>\s</code> matches a whitespace character, <code>\S</code> matches a non-whitespace char.</li>
+<li>ex. <code>[^0-9a-z]</code> matches any character that isn't numeric or lowercase</li>
+</ul>
+<h5 id="match-a-word-surrounded-by-whitespace">Match a word surrounded by whitespace<a aria-hidden="true" class="anchor-heading icon-link" href="#match-a-word-surrounded-by-whitespace"></a></h5>
+<p><code>\sthe\s</code></p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/w2VA5YkzLJzSw1JaxaFXL">Anchors</a></li>
+<li><a href="/notes/bVQ4RQYN9p4GVYz9rmdtw">Special Characters</a></li>
+</ul>

@@ -1,0 +1,60 @@
+<h1 id="styled-components-api">Styled Components API<a aria-hidden="true" class="anchor-heading icon-link" href="#styled-components-api"></a></h1>
+<p>A styled component can take any prop. It passes it on to the HTML node if it's a valid attribute, otherwise it only passes it into interpolated functions.</p>
+<h3 id="attrs"><code>attrs</code><a aria-hidden="true" class="anchor-heading icon-link" href="#attrs"></a></h3>
+<p>A chainable method called on a styled component, with the purpose of attaching some props to the styled component.</p>
+<ul>
+<li>The fact that it's chainable shows that calling <code>.attrs</code> on a styled component returns another styled component.</li>
+</ul>
+<p>The first and only argument is an object that will be merged into the rest of the component's props</p>
+<p>The <em>attributes</em> refer to those found on the component/HTML node in question.</p>
+<h4 id="purpose">Purpose<a aria-hidden="true" class="anchor-heading icon-link" href="#purpose"></a></h4>
+<p><code>attrs</code> is useful for defining default attributes, and defining dynamic props</p>
+<ul>
+<li>ex. you want a <code>&#x3C;Button /></code> component with default attribute of <code>type="button"</code> (instead of the normal <code>type="submit"</code>)</li>
+<li>ex. also, if you want a default size of small, but to be able to override that.</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token maybe-class-name">Button</span> <span class="token operator">=</span> styled<span class="token punctuation">.</span><span class="token property-access">button</span><span class="token punctuation">.</span><span class="token method function property-access">attrs</span><span class="token punctuation">(</span><span class="token parameter">props</span> <span class="token arrow operator">=></span> <span class="token punctuation">(</span><span class="token punctuation">{</span>
+  <span class="token comment">// Every &#x3C;Button /> will now have type="button" as default</span>
+  <span class="token literal-property property">type</span><span class="token operator">:</span> props<span class="token punctuation">.</span><span class="token property-access">type</span> <span class="token operator">||</span> <span class="token string">'button'</span>
+  <span class="token comment">// small is the default size, but this can be overridden</span>
+  <span class="token literal-property property">size</span><span class="token operator">:</span> props<span class="token punctuation">.</span><span class="token property-access">size</span> <span class="token operator">||</span> <span class="token string">'small'</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">
+  display: block;
+  ...
+</span><span class="token template-punctuation string">`</span></span>
+</code></pre>
+<h4 id="example">Example<a aria-hidden="true" class="anchor-heading icon-link" href="#example"></a></h4>
+<p>Instead of:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token function-variable function"><span class="token maybe-class-name">PitchSlider</span></span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter"><span class="token punctuation">{</span> className <span class="token punctuation">}</span></span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token operator">&#x3C;</span><span class="token maybe-class-name">PitchSliderContainer</span>
+    type<span class="token operator">=</span><span class="token string">"range"</span>
+    min<span class="token operator">=</span><span class="token string">"0.9"</span>
+    max<span class="token operator">=</span><span class="token string">"1.1"</span>
+    step<span class="token operator">=</span><span class="token string">"any"</span>
+    onChange<span class="token operator">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">props</span><span class="token punctuation">.</span><span class="token property-access">onChange</span><span class="token punctuation">}</span>
+    className<span class="token operator">=</span><span class="token punctuation">{</span>className<span class="token punctuation">}</span>
+<span class="token operator">/</span><span class="token operator">></span>
+
+<span class="token keyword module">export</span> <span class="token keyword module">default</span> <span class="token function">styled</span><span class="token punctuation">(</span><span class="token maybe-class-name">PitchSlider</span><span class="token punctuation">)</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token css language-css">
+  <span class="token property">text-align</span><span class="token punctuation">:</span> right<span class="token punctuation">;</span>
+  <span class="token property">float</span><span class="token punctuation">:</span> right<span class="token punctuation">;</span>
+</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
+</code></pre>
+<p>We can do:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token maybe-class-name">PitchSlider</span> <span class="token operator">=</span> styled<span class="token punctuation">.</span><span class="token property-access">input</span><span class="token punctuation">.</span><span class="token method function property-access">attrs</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  <span class="token literal-property property">type</span><span class="token operator">:</span> <span class="token string">'range'</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">min</span><span class="token operator">:</span> <span class="token string">'0.9'</span>
+  <span class="token literal-property property">max</span><span class="token operator">:</span> <span class="token string">'1.1'</span>
+  <span class="token literal-property property">step</span><span class="token operator">:</span> <span class="token string">'any'</span>
+  <span class="token literal-property property">onChange</span><span class="token operator">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">props</span><span class="token punctuation">.</span><span class="token property-access">onChange</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token css language-css">
+  <span class="token property">text-align</span><span class="token punctuation">:</span> right<span class="token punctuation">;</span>
+  <span class="token property">float</span><span class="token punctuation">:</span> right<span class="token punctuation">;</span>
+</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
+</code></pre>
+<h3 id="as"><code>as</code><a aria-hidden="true" class="anchor-heading icon-link" href="#as"></a></h3>
+<p>keep all the styling you've applied to a component but just switch out what's being ultimately rendered</p>
+<ul>
+<li>ex. Keep all the stylings of your <code>Button</code> styled component, but actually render it as a <code>&#x3C;input /></code> instead of a <code>&#x3C;button /></code></li>
+</ul>
+<p>This is done at runtime.</p>
+<p>This is known as a "polymorphic prop"</p>

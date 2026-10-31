@@ -1,0 +1,31 @@
+<h1 id="integration-testing">Integration Testing<a aria-hidden="true" class="anchor-heading icon-link" href="#integration-testing"></a></h1>
+<p>With integration tests, we are testing relationships between services</p>
+<ul>
+<li>A naive approach might be to get all of the dependent services up and running for the testing environment. But this is unnecessary, and creates a lot of potential failure points from services that our outside of our control.
+<ul>
+<li>Instead, we could narrow it down by writing a few service integration tests using mocks and stubs.</li>
+</ul>
+</li>
+</ul>
+<p>Integration tests use live deployed applications.</p>
+<p>In integration testing, the rules are different from unit tests. Here, you should only test the implementation and functionality that you have the control to edit. Mocks and stubs could be used for this purpose.</p>
+<p>In integration or <a href="/notes/zgyZCjFFGMfA84NxbOqQN">E2E</a> testing, the first step to uncovering what tests to write is to understand what could go wrong.</p>
+<p>Imagine we were making a banking app with the following 5 modules:
+<img src="/assets/images/2021-12-06-12-39-40.png"></p>
+<p>Even if we had all modules done except for the 5th, we could still test the integration. We would do this by stubbing the 5th service.</p>
+<p>Integration tests are notoriously more difficult to write when using a <a href="/notes/BX7Yh5IwYZCsV2BSxvunp">Service-oriented architecture</a></p>
+<h3 id="downsides">Downsides<a aria-hidden="true" class="anchor-heading icon-link" href="#downsides"></a></h3>
+<p>Integration tests give us confidence to release, but...</p>
+<ul>
+<li>introduce dependencies</li>
+<li>give slow feedback</li>
+<li>break easily</li>
+<li>require lots of maintenance</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/LUrfhDWo8wuwZu7CN9TV8">Testing</a></li>
+<li><a href="/notes/NfY3pvmOMzpQg8TKrUMGd">Contract Testing</a></li>
+<li><a href="/notes/Jhamjiy0mDIq6zImBiDTj">Pact</a></li>
+</ul>

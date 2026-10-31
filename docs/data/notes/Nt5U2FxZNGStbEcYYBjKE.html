@@ -1,0 +1,45 @@
+<h1 id="resource">Resource<a aria-hidden="true" class="anchor-heading icon-link" href="#resource"></a></h1>
+<h2 id="summary">Summary<a aria-hidden="true" class="anchor-heading icon-link" href="#summary"></a></h2>
+<p>A resource represents a piece of real world infrastructure </p>
+<p>Examples:</p>
+<ul>
+<li>an S3 bucket</li>
+<li>an EKS (Elastic Kubernetes) cluster</li>
+<li>a Postgres <a href="/notes/WRqfLQI6kPDa2M8aIurYo">role</a></li>
+</ul>
+<h3 id="example-declaring-an-s3-bucket">Example: Declaring an S3 bucket<a aria-hidden="true" class="anchor-heading icon-link" href="#example-declaring-an-s3-bucket"></a></h3>
+<p>This is how we might declare an <a href="/notes/2Rtof8yGX9K2Tq6tLljBb">S3 bucket</a>. You can reference this in different components, and then everything will deploy together when running <code>terraform apply</code>.</p>
+<pre class="language-tf"><code class="language-tf">resource "aws_s3_bucket" "my_bucket" {
+    bucket = "my-test-bucket"
+    acl = "private"
+    tags = {
+        Name = "My bucket"
+        Environment = "Dev"
+    }
+}
+</code></pre>
+<h2 id="null-resource">Null Resource<a aria-hidden="true" class="anchor-heading icon-link" href="#null-resource"></a></h2>
+<p>A <code>null_resource</code> is similar to a regular resource, in that it adheres to the resource lifecycle model. </p>
+<ul>
+<li>However, it merely serves as a placeholder for executing arbitrary actions within Terraform configurations, but without actually provisioning any physical resources.</li>
+<li>It does not perform any further actions beyond initialization</li>
+<li>The default behavior of a <code>null_resource</code> is that it will execute <em>only once</em> during the <strong>first</strong> run of the terraform apply command, but this can be overridden with the <code>triggers</code> field.</li>
+</ul>
+<p>Below is the sample code:</p>
+<pre class="language-tf"><code class="language-tf">resource "null_resource" "example" {
+  provisioner "local-exec" {
+    command = "echo This command will execute only once during apply"
+  }
+}
+</code></pre>
+<p>If we run <code>terraform apply</code> on this module, we will see the <code>echo</code> command in the console. However, if we run it again, that same <code>echo</code> command will not be run.</p>
+<p>If we want the block to run every time, we can add:</p>
+<pre class="language-ts"><code class="language-ts">triggers <span class="token operator">=</span> <span class="token punctuation">{</span>
+    always_run <span class="token operator">=</span> <span class="token function">timestamp</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/Ku1OgHMhELajzo61Gx7ye">Terraform</a></li>
+</ul>

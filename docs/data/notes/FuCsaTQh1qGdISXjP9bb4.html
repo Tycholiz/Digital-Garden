@@ -1,0 +1,51 @@
+<h1 id="debugger">Debugger<a aria-hidden="true" class="anchor-heading icon-link" href="#debugger"></a></h1>
+<h2 id="setup">Setup<a aria-hidden="true" class="anchor-heading icon-link" href="#setup"></a></h2>
+<ol>
+<li>Create a Javascript Debug Terminal (from command palette)</li>
+<li>Run command to start servers (ie. <code>yarn start</code>)
+<ul>
+<li>command will take longer than normal to run, because vscode is attaching debuggers to all the processes that are about to run.</li>
+</ul>
+</li>
+<li>Set some breakpoints of where we want the code to stop</li>
+<li>Manually cause the code to be executed
+<ul>
+<li>ex. by visiting a url, clicking a button in UI etc.</li>
+</ul>
+</li>
+</ol>
+<h2 id="analysis">Analysis<a aria-hidden="true" class="anchor-heading icon-link" href="#analysis"></a></h2>
+<ul>
+<li>We can see what each variable evaluates to in the main window</li>
+</ul>
+<h3 id="debug-panel">Debug panel<a aria-hidden="true" class="anchor-heading icon-link" href="#debug-panel"></a></h3>
+<ul>
+<li>In the debugger left panel, we can see the variables</li>
+</ul>
+<h3 id="debug-console">Debug Console<a aria-hidden="true" class="anchor-heading icon-link" href="#debug-console"></a></h3>
+<ul>
+<li>We can open the Debug Console to get a Debug Console REPL (cmd+shift+y)</li>
+</ul>
+<hr>
+<p>the debugger will not work for client-side code, since this code is executed in a browser. We would need to use the browser debugging tool to accomplish this.</p>
+<ul>
+<li>alternatively, we can have a <code>launch.json</code> file to allow us to debug</li>
+</ul>
+<h1 id="chrome-debugger">Chrome Debugger<a aria-hidden="true" class="anchor-heading icon-link" href="#chrome-debugger"></a></h1>
+<ul>
+<li>The vscode debugger can connect to Chrome via its Chrome Debugger protocol. Doing this allows us to map files loaded in the browser to the files open in Visual Studio Code.
+<ul>
+<li>This enables developers to debug in vscode, by...
+<ul>
+<li>setting breakpoints directly in their source code.</li>
+<li>setting up variables to watch and see the full call stack when debugging</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/wE3B7Zel9NjVyM6NQ4W7Y">Debugger Actions</a></li>
+</ol>

@@ -1,0 +1,25 @@
+<h1 id="idempotency">Idempotency<a aria-hidden="true" class="anchor-heading icon-link" href="#idempotency"></a></h1>
+<p>In mathematics, the an idempotent function is one that will yield the same output, even as its output feeds back as input indefinitely, such as:
+<code>Math.abs(Math.abs(Math.abs(Math.abs(-2))))</code>
+<code>String( String( x ) )</code>
+a way to test mathematical idempotency is to check if the output of a single function is equal to multiple calls of that function:</p>
+<pre class="language-js"><code class="language-js"><span class="token function">currency</span><span class="token punctuation">(</span> <span class="token operator">-</span><span class="token number">3.1</span> <span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token function">currency</span><span class="token punctuation">(</span> <span class="token function">currency</span><span class="token punctuation">(</span> <span class="token operator">-</span><span class="token number">3.1</span> <span class="token punctuation">)</span> <span class="token punctuation">)</span>
+<span class="token comment">// true</span>
+</code></pre>
+<p>Wherever possible, restricting side effects to idempotent operations is much better than unrestricted updates.</p>
+<p>The programming-oriented definition for idempotence is similar, but less formal. Instead of requiring <code>f(x) === f(f(x))</code>, this view of idempotence is just that <code>f(x);</code> results in the same program behavior (in other words, not just the output. <em>All</em> impacts of the function) as <code>f(x);</code> <code>f(x);</code>. In other words, the result of calling <code>f(x)</code> subsequent times after the first call doesn't change anything.</p>
+<ul>
+<li>Pure functions are idempotent in the programming sense</li>
+</ul>
+<p>If you need to do side-effects, try to make it idempotent</p>
+<p>Pure functions can reference <code>free variables</code> (ie. those that are not defined within the function scope), as long as those variables are sure to not change during the execution of the program (ie. they are constant)</p>
+<p>An example of idempotency is in Postgres, when we say <code>delete function if exists</code>, rather than just <code>delete function</code></p>
+<ul>
+<li>It is idempotent because running the command more than once has no additional effect than simply running it once.</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/mn5VHtlB66IBGAFXPXgvq">HTTP Methods</a></li>
+<li><a href="/notes/59dedd99-adb7-430f-a849-b303425e3209">Hooks</a></li>
+</ul>

@@ -1,0 +1,9 @@
+<h1 id="bitwise">Bitwise<a aria-hidden="true" class="anchor-heading icon-link" href="#bitwise"></a></h1>
+<h3 id="not-operator-">NOT operator (<code>~</code>)<a aria-hidden="true" class="anchor-heading icon-link" href="#not-operator-"></a></h3>
+<p>the tilde <code>~</code> Bitwise NOT operator is commonly used right before an indexOf() to do a boolean check (truthy/falsy) on a string.</p>
+<pre class="language-js"><code class="language-js"><span class="token comment">// prior to ES7</span>
+<span class="token operator">~</span>foo<span class="token punctuation">.</span><span class="token method function property-access">indexOf</span><span class="token punctuation">(</span><span class="token string">"w"</span><span class="token punctuation">)</span>
+
+<span class="token comment">// As of ES7</span>
+foo<span class="token punctuation">.</span><span class="token method function property-access">includes</span><span class="token punctuation">(</span><span class="token string">"w"</span><span class="token punctuation">)</span>
+</code></pre>

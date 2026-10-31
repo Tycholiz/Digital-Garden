@@ -1,0 +1,36 @@
+<h1 id="namespace">Namespace<a aria-hidden="true" class="anchor-heading icon-link" href="#namespace"></a></h1>
+<p>Namespaces provide a mechanism for organizing code and declarations in hierarchies of named containers.</p>
+<p>Namespaces have named members that each denote a value, a type, or a namespace, or some combination thereof, and those members may be local or exported.</p>
+<p>The body of a namespace corresponds to a function that is executed once, thereby providing a mechanism for maintaining local state with assured isolation. </p>
+<ul>
+<li>Namespaces can be thought of as a formalization of an <a href="/notes/DsZDJNeN5czEgtcwlUrwX">IIFE</a></li>
+</ul>
+<p>Namespaces are either instantiated or non-instantiated. </p>
+<ul>
+<li>A non-instantiated namespace is a namespace containing only interface types, type aliases, and other non-instantiated namespace. </li>
+<li>An instantiated namespace is a namespace that doesn't meet this definition. 
+<ul>
+<li>In intuitive terms, an instantiated namespace is one for which a namespace instance is created, whereas a non-instantiated namespace is one for which no code is generated.</li>
+</ul>
+</li>
+</ul>
+<p>A namespace identifier can be referenced in one of two ways:</p>
+<ul>
+<li>as a NamespaceName, in which it denotes a container of namespace and type names</li>
+<li>as a PrimaryExpression, in which it denotes the singleton namespace instance</li>
+</ul>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">namespace</span> <span class="token constant">M</span> <span class="token punctuation">{</span>  
+  <span class="token keyword module">export</span> <span class="token keyword">interface</span> <span class="token class-name"><span class="token constant">P</span></span> <span class="token punctuation">{</span> x<span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">;</span> y<span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>  
+  <span class="token keyword module">export</span> <span class="token keyword">var</span> a <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>  
+<span class="token punctuation">}</span>
+
+<span class="token keyword">var</span> p<span class="token operator">:</span> <span class="token constant">M</span><span class="token punctuation">.</span><span class="token constant">P</span><span class="token punctuation">;</span>             <span class="token comment">// M used as NamespaceName  </span>
+<span class="token keyword">var</span> m <span class="token operator">=</span> <span class="token constant">M</span><span class="token punctuation">;</span>              <span class="token comment">// M used as PrimaryExpression  </span>
+<span class="token keyword">var</span> x1 <span class="token operator">=</span> <span class="token constant">M</span><span class="token punctuation">.</span><span class="token property-access">a</span><span class="token punctuation">;</span>           <span class="token comment">// M used as PrimaryExpression  </span>
+<span class="token keyword">var</span> x2 <span class="token operator">=</span> m<span class="token punctuation">.</span><span class="token property-access">a</span><span class="token punctuation">;</span>           <span class="token comment">// Same as M.a  </span>
+<span class="token keyword">var</span> q<span class="token operator">:</span> m<span class="token punctuation">.</span><span class="token constant">P</span><span class="token punctuation">;</span>             <span class="token comment">// Error</span>
+</code></pre>
+<p>Above, when <code>M</code> is used as a PrimaryExpression it denotes an object instance with a single member <code>a</code> and when <code>M</code> is used as a NamespaceName it denotes a container with a single type member <code>P</code>. The final line in the example is an error because <code>m</code> is a variable which cannot be referenced in a type name.</p>
+<ul>
+<li>If the declaration of <code>M</code> above had excluded the exported variable <code>a</code>, <code>M</code> would be a non-instantiated namespace and it would be an error to reference <code>M</code> as a PrimaryExpression.</li>
+</ul>

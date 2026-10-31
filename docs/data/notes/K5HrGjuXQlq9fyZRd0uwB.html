@@ -1,0 +1,55 @@
+<h1 id="date">Date<a aria-hidden="true" class="anchor-heading icon-link" href="#date"></a></h1>
+<p>Date objects are represented internally by a timestamp, which is milliseconds passed since the epoch (ie. midnight 01 January, 1970 UTC)</p>
+<p>There are always two ways to interpret a timestamp: </p>
+<ol>
+<li>as a local time 
+<ul>
+<li>The local timezone is not stored in the date object, but is determined by the host environment.</li>
+</ul>
+</li>
+<li>as a Coordinated Universal Time (UTC)</li>
+</ol>
+<h3 id="string-format">String format<a aria-hidden="true" class="anchor-heading icon-link" href="#string-format"></a></h3>
+<p>The JavaScript specification only specifies one string format to be universally supported: <code>YYYY-MM-DDTHH:mm:ss.sssZ</code> </p>
+<ul>
+<li><code>T</code> is a literal character, which indicates the beginning of the time part of the string</li>
+<li><code>Z</code> is the timezone offset, which can either be the literal character <code>Z</code> (indicating UTC), or + or - followed by HH:mm, the offset in hours and minutes from UTC.
+<ul>
+<li>When the time zone offset is absent, date-only forms are interpreted as a UTC time and date-time forms are interpreted as local time (see below for date-only and date-time form explanation)</li>
+</ul>
+</li>
+</ul>
+<p>Various components can be omitted, so the following are all valid:</p>
+<ul>
+<li><em>Date-only form</em>: <code>YYYY</code>, <code>YYYY-MM</code>, <code>YYYY-MM-DD</code></li>
+<li><em>Date-time form</em>: one of the above date-only forms, followed by <code>T</code>, followed by <code>HH:mm</code>, <code>HH:mm:ss</code>, or <code>HH:mm:ss.sss</code>. Each combination can be followed by a time zone offset.</li>
+</ul>
+<h4 id="converting-a-date-object-to-string">Converting a Date object to string<a aria-hidden="true" class="anchor-heading icon-link" href="#converting-a-date-object-to-string"></a></h4>
+<ul>
+<li><code>Date.toISOString()</code> will return a string in the format: <code>1970-01-01T00:00:00.000Z</code> 
+<ul>
+<li>note: this is the same string format that the Date object accepts as input</li>
+</ul>
+</li>
+<li><code>Date.toString()</code> will return a string in the format <code>Thu Jan 01 1970 00:00:00 GMT+0000</code></li>
+<li><code>Date.toDateString()</code> and <code>Date.toTimeString()</code> return the date and time parts of the string, respectively.</li>
+<li><code>Date.toLocaleDateString()</code>, <code>Date.toLocaleTimeString()</code>, and <code>Date.toLocaleString()</code> use locale-specific date and time formats, usually provided by the Intl API.</li>
+</ul>
+<hr>
+<p>months are zero-based, so December is 11</p>
+<h3 id="datenow-vs-new-date"><code>Date.now()</code> vs <code>new Date()</code><a aria-hidden="true" class="anchor-heading icon-link" href="#datenow-vs-new-date"></a></h3>
+<p><code>new Date()</code> - creates a Date object representing the current (or passed) date/time
+<code>Date.now()</code> - returns the number of milliseconds since the epoch </p>
+<ul>
+<li>we also get this with <code>new Date().valueOf()</code> and <code>new Date().getTime()</code></li>
+</ul>
+<p>As a general rule of thumb, use... </p>
+<ul>
+<li><code>Date.now()</code> in code that deals with intervals (usually subtracting an earlier date from a later date to calculate the time elapsed) </li>
+<li><code>new Date()</code> for timestamps, e.g. those written to a database.</li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/cNdaAvQYNbt5UoZQbd8et">Cook</a></li>
+</ol>

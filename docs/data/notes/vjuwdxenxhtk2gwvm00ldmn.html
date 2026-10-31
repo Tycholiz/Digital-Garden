@@ -1,0 +1,54 @@
+<h1 id="resource-management">Resource Management<a aria-hidden="true" class="anchor-heading icon-link" href="#resource-management"></a></h1>
+<p><code>requests</code> and <code>limits</code> are the mechanisms Kubernetes uses to control resources such as CPU and memory. </p>
+<ul>
+<li><code>requests</code> are what the container is guaranteed to get. If a container requests a resource, Kubernetes will only schedule it on a node that can give it that resource. </li>
+<li><code>limits</code>, on the other hand, make sure a container never goes above a specific value.
+<ul>
+<li>as a general best practice, never set CPU limit</li>
+<li>also as a general best practice, always set memory limit == request</li>
+</ul>
+</li>
+</ul>
+<p>The most common resources to specify are <em>memory</em> and <em>CPU</em>, which are collectively referred to as <em>compute resources</em></p>
+<ul>
+<li>Memory resources are considered non-compressible resources– if a container exceeds its limit, it will get terminated.</li>
+<li>CPU resources are considered compressible resources– if a container exceeds its limit, it will get throttled. This means the CPU will be artificially restricted, giving your app potentially worse performance.</li>
+</ul>
+<h4 id="example-config">Example config:<a aria-hidden="true" class="anchor-heading icon-link" href="#example-config"></a></h4>
+<pre class="language-yml"><code class="language-yml"><span class="token key atrule">resources</span><span class="token punctuation">:</span>
+  <span class="token key atrule">limits</span><span class="token punctuation">:</span>
+    <span class="token key atrule">memory</span><span class="token punctuation">:</span> <span class="token string">"400Mi"</span>
+    <span class="token key atrule">cpu</span><span class="token punctuation">:</span> <span class="token string">"1"</span>
+  <span class="token key atrule">requests</span><span class="token punctuation">:</span>
+    <span class="token key atrule">memory</span><span class="token punctuation">:</span> <span class="token string">"200Mi"</span>
+    <span class="token key atrule">cpu</span><span class="token punctuation">:</span> <span class="token string">"500m"</span>
+</code></pre>
+<h3 id="custom-resource-definition-crd">Custom Resource Definition (CRD)<a aria-hidden="true" class="anchor-heading icon-link" href="#custom-resource-definition-crd"></a></h3>
+<p>CRD is somewhat of an alternative to ConfigMap: <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/">https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/</a></p>
+<p>CRD is an extension mechanism that enables users to define custom resources and their behavior in a Kubernetes cluster. </p>
+<p>With CRDs, we can introduce and manage our own custom resources, which may not be part of the core Kubernetes API.</p>
+<hr>
+<h3 id="cpu">CPU<a aria-hidden="true" class="anchor-heading icon-link" href="#cpu"></a></h3>
+<p>CPU resources are defined in millicores or “thousandth of a core.” </p>
+<ul>
+<li>ex. In the above example, the container process needs 500/1000 (50%) of a core and is allowed to use at most 1000/1000 (100%) of a core.</li>
+</ul>
+<p>By default, the kubelet uses <a href="https://en.wikipedia.org/wiki/Completely_Fair_Scheduler">CFS</a> quota to enforce pod CPU limits, and uses two configuration options:</p>
+<ol>
+<li><code>cpu_period_us</code> - (100ms default) The CPU interval the scheduler uses to reset the used quota for a process.</li>
+<li><code>cpu_quota_us</code> - The runtime for which the process can use the CPU in a given period before being reset</li>
+</ol>
+<ul>
+<li>If your application is multi-threaded, then <code>cpu_quota_us</code> is calculated across all the threads.
+<ul>
+<li>ex. in the case of the NodeJS application, which runs 4 threads (libuv) by default for system tasks like networking, the quota per thread will be 25ms (=100/4). So, in a given <code>cpu_period_us</code> (100ms), if your application spends more than 25ms processing, it will be throttled for 75ms of that <code>cpu_period_us</code> cycle (see below)</li>
+</ul>
+</li>
+</ul>
+<p><img src="/assets/images/2022-08-25-09-18-22.png"></p>
+<p>If a request takes 100ms to complete, in the above scenario, it will take at least 3 times cpu_period_us to complete, which will end up being ~325ms. This happens because, during the throttled period, the application is essentially "paused" even though CPU capacity might be available.</p>
+<h2 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h2>
+<ul>
+<li><a href="https://home.robusta.dev/blog/stop-using-cpu-limits/">https://home.robusta.dev/blog/stop-using-cpu-limits/</a></li>
+<li><a href="https://www.netdata.cloud/blog/kubernetes-throttling-doesnt-have-to-suck-let-us-help/">https://www.netdata.cloud/blog/kubernetes-throttling-doesnt-have-to-suck-let-us-help/</a></li>
+</ul>

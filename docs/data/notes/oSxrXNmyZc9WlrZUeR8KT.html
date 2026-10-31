@@ -1,0 +1,50 @@
+<h1 id="reset">Reset<a aria-hidden="true" class="anchor-heading icon-link" href="#reset"></a></h1>
+<p>In general, git reset is used to move branch tips around (likely to another commit)</p>
+<ul>
+<li><code>reset</code> is the opposite of <code>add</code></li>
+</ul>
+<p>If we pass a filename to <code>git reset</code>, then the staging area will be updated to match the given commit instead of the working directory (the branch pointer does not move).</p>
+<ul>
+<li>ex. if we have 3 files staged, we can remove one of them with <code>git reset HEAD index.js</code>, making <code>index.js</code> match the version found in HEAD. The working directory and current branch are left alone. The result is a staging area that matches the most recent commit and a working directory that contains the modified <code>index.js</code> file.
+<ul>
+<li>Put another way, we are unstaging the file.</li>
+</ul>
+</li>
+</ul>
+<p><img src="/:/78999c9edf5c4f129b389d40acc423cc" alt="8f6b8c503feeeceab0f2175850b7acbd.png"></p>
+<h2 id="soft">Soft<a aria-hidden="true" class="anchor-heading icon-link" href="#soft"></a></h2>
+<ul>
+<li>moves the HEAD to the provided <code>&#x3C;SHA></code>, while keeping working tree and staging area intact.</li>
+<li><em>soft</em> means the commit is canceled and moved before the <code>HEAD</code></li>
+<li><code>git reset --soft HEAD^</code> - undo last commit</li>
+</ul>
+<h2 id="mixed">Mixed<a aria-hidden="true" class="anchor-heading icon-link" href="#mixed"></a></h2>
+<ul>
+<li>moves the HEAD to the provided <code>&#x3C;SHA></code>, while keeping working tree intact.
+<ul>
+<li>Move the HEAD backward <code>&#x3C;n></code> commits, but don’t change the working directory.</li>
+</ul>
+</li>
+<li>reset the staging area</li>
+<li><code>git reset &#x3C;file></code> is the opposite of <code>git add &#x3C;file></code></li>
+<li>ex. if we are on c3 and do <code>git reset c1</code>, we will go back to c1, and the working directory and index will remain unchanged
+<ul>
+<li>This is the default type of reset</li>
+</ul>
+</li>
+</ul>
+<h2 id="hard">Hard<a aria-hidden="true" class="anchor-heading icon-link" href="#hard"></a></h2>
+<ul>
+<li>moves the HEAD to the provided <code>&#x3C;SHA></code>, keeping neither the working tree nor staging area intact.
+<ul>
+<li>Move the HEAD backward <code>&#x3C;n></code> commits, and change the working directory to match</li>
+</ul>
+</li>
+<li>the only version of <code>reset</code> that actually results in a changed working directory file.</li>
+<li>ex. if we are on c3 and do <code>git reset --HARD c1</code>, we will go back to c1 (i.e. our head will point to c1) and c2 and c3 will be "destroyed", and working directory wiped.</li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/Z5aHxejVYS7hRlSrT5ljx">Cook</a></li>
+</ol>

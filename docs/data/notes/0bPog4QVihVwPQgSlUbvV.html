@@ -1,0 +1,25 @@
+<h1 id="ftp">FTP<a aria-hidden="true" class="anchor-heading icon-link" href="#ftp"></a></h1>
+<p>The user interacts with FTP via an FTP user agent.</p>
+<ul>
+<li>once the hostname is provided by the client, the FTP client process establishes a TCP connection with the FTP server.
+<ul>
+<li>after this, the user provides username/password to establish the connection.</li>
+</ul>
+</li>
+</ul>
+<p>One key difference between HTTP and FTP is that FTP uses two parallel TCP connections to transfer a file: a control connection, and a data connection.</p>
+<ul>
+<li><em>control connection</em> is for passing control information between the 2 hosts, such as username, password, commands to change remote directory, commands to get/put files etc.</li>
+<li><em>data connection</em> is for actually sending files back and forth.</li>
+</ul>
+<p>Unlike HTTP, FTP is stateful; the server maintains state about the FTP client, most importantly associating the connection with a particular user.</p>
+<ul>
+<li>also it must maintain state about the user's present working directory of the server.</li>
+<li>keeping this state significantly limits the total number of sessions that an FTP server can handle.</li>
+</ul>
+<p>FTP connections happen on port <code>21</code></p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/mytCOts26Pidush65tdRW">DNS</a></li>
+</ul>

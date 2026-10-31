@@ -1,0 +1,53 @@
+<h1 id="event-emitter">Event Emitter<a aria-hidden="true" class="anchor-heading icon-link" href="#event-emitter"></a></h1>
+<h1 id="overview">Overview<a aria-hidden="true" class="anchor-heading icon-link" href="#overview"></a></h1>
+<p>Event emitters are objects that trigger an event by sending a message when an action occurs (therefore, this is <a href="/notes/NpY4iv9TwpGJODbVesQYe">pub/sub</a>).</p>
+<ul>
+<li>we can write code that listens to events from event emitters and execute some code in response.</li>
+</ul>
+<p>The typical modern way in Javascript to perform some action after completion of another is with <a href="/notes/FVbSefFiCJPpdtkRRsogA">promises</a>.</p>
+<ul>
+<li>a downside of promises is that they tightly couple the triggering action to the resulting action, making it difficult to modify the resulting action in the future. This is a general benefit that is offered by Pub-Sub patterns over more traditional call-and-response approaches.
+<ul>
+<li>expl: If we wanted to change the behavior of our application, we could adjust how the subscribers react to the events without having to change the publisher.</li>
+</ul>
+</li>
+</ul>
+<p>the <code>emit()</code> function returns <code>true</code> if there are listeners for the event. If there are no listeners for an event, it returns <code>false</code>.</p>
+<p>Sometimes we’re only interested in listening to the first time an event was fired, as opposed to all the times it’s emitted. Node.js provides an alternative to <code>on()</code> for this case with the <code>once()</code> function.</p>
+<ul>
+<li>when the event is emitted and received by a listener that uses <code>once()</code>, Node.js automatically removes the listener and then executes the code in the callback function.</li>
+</ul>
+<h2 id="creating-event-emitters">Creating Event Emitters<a aria-hidden="true" class="anchor-heading icon-link" href="#creating-event-emitters"></a></h2>
+<p>There are two common ways to create an event emitter in Node.js. </p>
+<ol>
+<li>use an event emitter object directly
+<ul>
+<li>Do this if the events you want to emit are independent of your business objects or are a result of actions from many business objects</li>
+</ul>
+</li>
+<li>create an object that extends the event emitter object
+<ul>
+<li>Do this if the events you want to emit are an effect of an object's actions, in order to have access to its functions for convenience.
+<ul>
+<li>ex. if we are making a <code>TicketManager</code> class, we could have a method <code>buy</code> which performs some database interaction, but then emits the <code>buy</code> event. This is a good use-case for extending the <code>EventEmitter</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token maybe-class-name">EventEmitter</span> <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"events"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">class</span> <span class="token class-name">TicketManager</span> <span class="token keyword">extends</span> <span class="token class-name">EventEmitter</span> <span class="token punctuation">{</span>
+    <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token parameter">supply</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">supply</span> <span class="token operator">=</span> supply<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    
+    <span class="token function">buy</span><span class="token punctuation">(</span><span class="token parameter">email<span class="token punctuation">,</span> price</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">supply</span><span class="token operator">--</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token method function property-access">emit</span><span class="token punctuation">(</span><span class="token string">"buy"</span><span class="token punctuation">,</span> email<span class="token punctuation">,</span> price<span class="token punctuation">,</span> <span class="token known-class-name class-name">Date</span><span class="token punctuation">.</span><span class="token method function property-access">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h1 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h1>
+<p><a href="https://www.digitalocean.com/community/tutorials/using-event-emitters-in-node-js">Event-emitters</a></p>

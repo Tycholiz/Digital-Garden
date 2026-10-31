@@ -1,0 +1,41 @@
+<h1 id="go-syntax">Go Syntax<a aria-hidden="true" class="anchor-heading icon-link" href="#go-syntax"></a></h1>
+<h3 id="declaring-variables">Declaring variables<a aria-hidden="true" class="anchor-heading icon-link" href="#declaring-variables"></a></h3>
+<pre class="language-go"><code class="language-go"><span class="token keyword">var</span> x <span class="token builtin">int</span> <span class="token operator">=</span> <span class="token number">7</span>
+<span class="token comment">// or the equivalent short-form</span>
+x <span class="token operator">:=</span> <span class="token number">7</span>
+</code></pre>
+<h3 id="if-statements">If statements<a aria-hidden="true" class="anchor-heading icon-link" href="#if-statements"></a></h3>
+<pre class="language-go"><code class="language-go"><span class="token keyword">if</span> x <span class="token operator">></span> <span class="token number">6</span> <span class="token punctuation">{</span>
+  fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"yup, bigger than 6"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> x <span class="token operator">&#x3C;</span> <span class="token number">2</span> <span class="token punctuation">{</span>
+  fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"nope, smaller than 2"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="defer"><code>defer</code><a aria-hidden="true" class="anchor-heading icon-link" href="#defer"></a></h3>
+<p>A <code>defer</code> statement defers the execution of a function until the surrounding function returns.</p>
+<p>The deferred call's arguments are evaluated immediately, but the function call is not executed until the surrounding function returns.</p>
+<p>Deferred function calls are pushed onto a stack. When a function returns, its deferred calls are executed in last-in-first-out order.</p>
+<h3 id="type-assertions">Type assertions<a aria-hidden="true" class="anchor-heading icon-link" href="#type-assertions"></a></h3>
+<pre class="language-go"><code class="language-go"><span class="token keyword">var</span> i <span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token string">"hello"</span>
+
+s<span class="token punctuation">,</span> ok <span class="token operator">:=</span> i<span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token builtin">string</span><span class="token punctuation">)</span>
+<span class="token comment">// If i holds a string, then `s` will be the underlying value and `ok` will be true. Otherwise `ok` will be false</span>
+</code></pre>
+<p>This statement asserts that the interface value i holds the concrete type T and assigns the underlying T value to the variable t.</p>
+<ul>
+<li>If i does not hold a T, the statement will trigger a panic.</li>
+</ul>
+<h3 id="error-handling">Error handling<a aria-hidden="true" class="anchor-heading icon-link" href="#error-handling"></a></h3>
+<p>Go doesn't have exceptions. This absense is relieved by the fact that functions can return multiple values. To get the error, we set one of our return values to the error and check for its existence after running the function.</p>
+<pre class="language-go"><code class="language-go">result<span class="token punctuation">,</span> <span class="token builtin">error</span> <span class="token operator">:=</span> <span class="token function">getSomeData</span><span class="token punctuation">(</span><span class="token punctuation">)</span> 
+<span class="token keyword">if</span> <span class="token builtin">error</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> fmt<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">"no data available"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/vf8lbk3d8u1lprl9orugkcw">Functions</a></li>
+<li><a href="/notes/iwwhu1aydmc7knvujf1ohhb">Loops</a></li>
+<li><a href="/notes/g3imh89bn22g1cddsry0a90">Pointer</a></li>
+</ol>
