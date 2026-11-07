@@ -1,0 +1,12 @@
+<h1 id="cook">Cook<a aria-hidden="true" class="anchor-heading icon-link" href="#cook"></a></h1>
+<h5 id="see-commits-that-exist-on-a-given-branch">See commits that exist on a given branch<a aria-hidden="true" class="anchor-heading icon-link" href="#see-commits-that-exist-on-a-given-branch"></a></h5>
+<p><code>git log feature-branch</code></p>
+<h5 id="see-commits-that-exist-on-a-branch-while-excluding-ones-that-live-on-another">See commits that exist on a branch, while excluding ones that live on another<a aria-hidden="true" class="anchor-heading icon-link" href="#see-commits-that-exist-on-a-branch-while-excluding-ones-that-live-on-another"></a></h5>
+<p><code>git log feature-branch ^main</code></p>
+<ul>
+<li>equivalent to <code>git log main..feature-branch</code></li>
+</ul>
+<h5 id="see-the-history-of-a-file-across-this-rename">See the history of a file across this rename<a aria-hidden="true" class="anchor-heading icon-link" href="#see-the-history-of-a-file-across-this-rename"></a></h5>
+<p><code>git log --follow -- /path/to/file</code></p>
+<h5 id="see-only-commits-where-files-were-deleted">See only commits where files were deleted<a aria-hidden="true" class="anchor-heading icon-link" href="#see-only-commits-where-files-were-deleted"></a></h5>
+<p><code>git log --diff-filter=D --summary</code></p>

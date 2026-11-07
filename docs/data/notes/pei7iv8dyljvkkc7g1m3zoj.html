@@ -1,0 +1,18 @@
+<h1 id="reactive">Reactive<a aria-hidden="true" class="anchor-heading icon-link" href="#reactive"></a></h1>
+<p>a declarative programming paradigm concerned with <a href="/notes/vtLtsv3Vsdt6pTTASCq4u">data streams</a> and the propagation of change.</p>
+<p>Reactive programming is well-suited for implementing interactive user interfaces and real-time system animation.</p>
+<ul>
+<li>It's really no coincidence that modern front-end frameworks like React, Svelte, Vue etc. all implement this reactive type of paradigm.
+<ul>
+<li>ex. in React, if a piece of state changes, the React engine internally understands the dependency tree of that value. Because of this, it knows when to re-render components, because its dependencies have changed.</li>
+</ul>
+</li>
+<li>Microsoft Excel is another program that implements the reactive paradigm. Consider that a calculation in a single cell has dependencies. When the value of those dependencies change, it must propogate to the cell to do a recalculation.</li>
+</ul>
+<p>Any component of a system that exists beyond a network call (e.g. a backend database) cannot effectively be a part of this reactive loop, since we can't realistically keep queries updated in real-time.</p>
+<ul>
+<li>instead database interactions are modeled as side-effects which must interact with the reactive system.</li>
+</ul>
+<h3 id="example">Example<a aria-hidden="true" class="anchor-heading icon-link" href="#example"></a></h3>
+<p>In most programming languages, <code>a = b + c</code> will result a value being assigned to <code>a</code>. Later on if <code>b</code> or <code>c</code> changes, it has no impact on the value of <code>a</code>, since that value has already been declared.</p>
+<p>In reactive programming, this is not the case. Any future changes to <code>b</code> or <code>c</code> will cause <code>a</code> to "react" and update. Therefore, <code>a</code> has dependencies of <code>b</code> and <code>c</code>, and this is registered somewhere. As a result, the language runtime knows based on this dependency graph when recalculations should be made.</p>

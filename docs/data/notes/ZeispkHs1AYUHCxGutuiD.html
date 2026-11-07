@@ -1,0 +1,72 @@
+<h1 id="marks">Marks<a aria-hidden="true" class="anchor-heading icon-link" href="#marks"></a></h1>
+<p><code>m[a-zA-Z]</code> marks the current cursor location with the designated letter</p>
+<ul>
+<li>
+<p>lowercase marks are local to the buffer, while uppercase are globally accessible</p>
+<ul>
+<li>therefore, if we have 5 buffers open, each buffer can have mark "a", but only one can have mark "A"</li>
+</ul>
+</li>
+<li>
+<p><strong>`a</strong> will jump to the exact spot of <em>mark "a"</em></p>
+<ul>
+<li><em>mn.</em> - more precise, just like js template literals (which use back ticks)</li>
+</ul>
+</li>
+<li>
+<p><strong>'a</strong> will jump to the <strong>line</strong> of <em>mark "a"</em></p>
+<ul>
+<li>more useful in the context of an <em>ex command</em></li>
+</ul>
+</li>
+<li>
+<p><strong>`</strong> and <strong>'</strong> will both jump to marks. <strong>'</strong> will take you to the line, and <strong>`</strong> will shoot you to the extact spot.</p>
+</li>
+</ul>
+<h2 id="automatic-marks">Automatic marks<a aria-hidden="true" class="anchor-heading icon-link" href="#automatic-marks"></a></h2>
+<ul>
+<li>vim automatically sets up some marks for us:</li>
+</ul>
+<div class="table-responsive">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Keystroke</th><th>Buffer Contents</th></tr></thead><tbody><tr><td>"</td><td>Position before last jump within current file</td></tr><tr><td>0</td><td>Position of cursor when the file was last closed</td></tr><tr><td>[</td><td>Start of last change/yank</td></tr><tr><td>]</td><td>End of last change/yank</td></tr><tr><td>&#x3C;</td><td>Start of last visual selection</td></tr><tr><td>></td><td>End of last visual selection</td></tr><tr><td>1, 2..</td><td>latest position of cursor in last file opened</td></tr></tbody></table></div>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/PPWbP2CLFPMV0r1eEPDcc">Cook</a></li>
+</ol>

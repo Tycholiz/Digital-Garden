@@ -1,0 +1,23 @@
+<h1 id="push">Push<a aria-hidden="true" class="anchor-heading icon-link" href="#push"></a></h1>
+<ul>
+<li><code>git push origin master</code> moves the HEAD of the central repo:
+<pre><code>- This has the exact same result as if we went on the central repo and ran a fetch and fast-forward merge.
+</code></pre>
+<img src="/:/1f2474a7a067490f91335052cb37b7cf" alt="cbbedd3aff8b9bae62000af2a996468e.png"></li>
+</ul>
+<h2 id="avoiding-race-conditions-with-force-push">Avoiding race conditions with force push<a aria-hidden="true" class="anchor-heading icon-link" href="#avoiding-race-conditions-with-force-push"></a></h2>
+<p>What if we want to force push, but don't want to run into problems if someone else has pushed to that branch in the meantime?
+To get a warning when trying to force push to a branch that has been committed to in the meantime, run:
+<code>git push --force-with-lease</code></p>
+<h2 id="force-push">Force push<a aria-hidden="true" class="anchor-heading icon-link" href="#force-push"></a></h2>
+<ul>
+<li>Force pushing to feature branches is a fact of life. Force pushing to a <code>master</code> branch should be considered with extreme care.
+<ul>
+<li>Force pushing to feature branches allows us to have a clean history of commits on that feature branch. If we embrace <code>rebase</code>-<code>merge</code> instead of just <code>merge</code>, then we will encounter lots of scenarios where we must force push to that feature branch.
+<ul>
+<li>Note: this strategy should NOT be taken if multiple developers are working on the same branch. Rebase is not a good candidate for shared branches.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>

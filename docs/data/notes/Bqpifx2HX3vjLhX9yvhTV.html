@@ -1,0 +1,63 @@
+<h1 id="architecture">Architecture<a aria-hidden="true" class="anchor-heading icon-link" href="#architecture"></a></h1>
+<h2 id="rendering">Rendering<a aria-hidden="true" class="anchor-heading icon-link" href="#rendering"></a></h2>
+<p>To "render a component" is to run the function that defines the component.</p>
+<ul>
+<li>The JSX you return from that function is like a snapshot of the UI in time. Its props, event handlers, and local variables were all calculated using its state at the time of the render.</li>
+<li>therefore, since state persists between renders, state actually lives in React itself— not within the function (ie. the component).
+<ul>
+<li><code>useState</code> is still called on each render. This helps to illustrate the fact that <code>useState</code> is not creating the state, but is instead accessing it. When you call <code>useState</code>, React gives you a snapshot of the state for that render.</li>
+</ul>
+</li>
+</ul>
+<p>When React re-renders a component:</p>
+<ul>
+<li>React defines variables and calls your function again (unless cached with <a href="/notes/f4aqrnklfcugvo4ufw4yyql">useMemo</a> or <a href="/notes/hEG7YxFDbOJ2PM8cVy66M">useCallback</a>, respectively)</li>
+<li>Your function returns a new JSX snapshot.</li>
+<li>React then updates the screen to match the snapshot your function returned.</li>
+</ul>
+<p>A client-side rendered React app starts out as a simple html file with virtually nothing but <code>&#x3C;script></code> tags in its <code>&#x3C;body></code>. When the browser downloads the base HTML, it runs the scripts (ie. the bundle/chunks), and builds up the rest of the HTML content (ie. the <code>&#x3C;body></code>, and everything between).</p>
+<ul>
+<li>Once the browser downloads and parses those scripts, React will build up a picture of what the page should look like, and inject a bunch of DOM nodes to make it so.</li>
+<li>therefore, a browser must be Javascript-enabled for client-side rendering to work. If we are using <a href="/notes/bCKsv4grNlc941yUVO6Xj">SSR (Server Side Rendering)</a>, like <a href="/notes/Q70g7SusFZBQXzkuQifv4">Nextjs</a> does, we can load the pages (but not interact with them) without being Javascript-enabled.</li>
+</ul>
+<h3 id="virtual-dom">Virtual DOM<a aria-hidden="true" class="anchor-heading icon-link" href="#virtual-dom"></a></h3>
+<ul>
+<li>note: the virtual DOM in React in distinct from the <a href="/notes/T3YYiRsDjypEukBCSvScv">Shadow DOM</a>, which is a browser technology for scoping variables and CSS.</li>
+</ul>
+<p>The virtual DOM is an object that keeps an ideal version of the UI in memory. It is then synced with the real <a href="/notes/OVODP7MLQgGI0WohlQEk3">DOM</a> by a library, such as ReactDOM.</p>
+<ul>
+<li>this process of synchronization is called <em>reconciliation</em> (the reconciliation engine of React 16+ is called <em>Fiber</em>)</li>
+<li>this idea of a virtual DOM is what makes React declarative. We no longer have to imperatively manipulate an attribute of a DOM node, or handle events. Instead we use a virtual DOM to update values that represent these actual DOM nodes, and when the process of reconciliation happens (ie. on re-renders), the DOM is updated for us.</li>
+</ul>
+<p>Virtual DOM is more of a pattern, than a specific technology.</p>
+<ul>
+<li>usually, Virtual DOM refers to React Elements, since they are the objects representing the user interface.
+<ul>
+<li>recall: a React Element is simply an object that describes a UI element. An HTML node can be generated from a React Element.</li>
+</ul>
+</li>
+<li>internally, React also uses objects called <em>fibers</em> that are used to hold additional information about the component tree.</li>
+</ul>
+<p>When we talk about "re-rendering" in react, we are talking about</p>
+<p>React splits all work into the "render phase" and the "commit phase".</p>
+<ul>
+<li>Render phase is when React calls your components and performs reconciliation.</li>
+<li>Commit phase is when React touches the host tree. It is always synchronous.</li>
+</ul>
+<hr>
+<p>In React, anything other than updating the page is considered a side-effect. If you’re not using React to update state or render HTML, that’s a side effect. It’s any non-React thing.</p>
+<p>Images that you are going to import inside of components should be in your <code>src/</code> directory, not <code>public/</code></p>
+<h1 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h1>
+<ul>
+<li><a href="https://www.pluralsight.com/guides/how-to-communicate-between-independent-components-in-reactjs">Implementing Pub/Sub in React</a>
+<ul>
+<li><a href="/notes/NpY4iv9TwpGJODbVesQYe">pubsub Dendron node</a></li>
+</ul>
+</li>
+<li><a href="https://github.com/acdlite/react-fiber-architecture">React Fiber (reconciliation engine) Architecture</a></li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/g87cbzb8hef8hl0ltwtgfhp">Stat</a></li>
+</ul>

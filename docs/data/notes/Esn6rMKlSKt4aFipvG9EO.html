@@ -1,0 +1,29 @@
+<h1 id="class">Class<a aria-hidden="true" class="anchor-heading icon-link" href="#class"></a></h1>
+<h4 id="define-a-class">Define a class<a aria-hidden="true" class="anchor-heading icon-link" href="#define-a-class"></a></h4>
+<pre class="language-rb"><code class="language-rb"><span class="token keyword">class</span> <span class="token class-name">Greeter</span>
+	<span class="token keyword">def</span> <span class="token method-definition"><span class="token function">initialize</span></span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string-literal"><span class="token string">"world"</span></span><span class="token punctuation">)</span>
+		<span class="token variable">@name</span> <span class="token operator">=</span> name
+	<span class="token keyword">end</span>
+
+	<span class="token keyword">def</span> <span class="token method-definition"><span class="token function">say_hi</span></span>
+		puts <span class="token string-literal"><span class="token string">"hello </span><span class="token interpolation"><span class="token delimiter punctuation">#{</span><span class="token content"><span class="token variable">@name</span></span><span class="token delimiter punctuation">}</span></span><span class="token string">"</span></span>
+	<span class="token keyword">end</span>
+<span class="token keyword">end</span>
+
+myGreeter <span class="token operator">=</span> <span class="token class-name">Greeter</span><span class="token punctuation">.</span><span class="token keyword">new</span><span class="token punctuation">(</span><span class="token string-literal"><span class="token string">"Kyle"</span></span><span class="token punctuation">)</span>
+myGreeter<span class="token punctuation">.</span>say_hi
+</code></pre>
+<h4 id="get-instance-methods-of-a-class">Get instance methods of a class<a aria-hidden="true" class="anchor-heading icon-link" href="#get-instance-methods-of-a-class"></a></h4>
+<pre class="language-rb"><code class="language-rb"><span class="token comment"># See all</span>
+Greeter<span class="token punctuation">.</span>instance_methods
+<span class="token comment"># See non-inherited</span>
+Greeter<span class="token punctuation">.</span>instance_methods<span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span>
+</code></pre>
+<h4 id="check-if-an-object-has-a-particular-method-on-it">Check if an object has a particular method on it<a aria-hidden="true" class="anchor-heading icon-link" href="#check-if-an-object-has-a-particular-method-on-it"></a></h4>
+<pre class="language-rb"><code class="language-rb">myGreeter<span class="token punctuation">.</span>respond_to<span class="token operator">?</span><span class="token punctuation">(</span><span class="token string-literal"><span class="token string">'say_hi'</span></span><span class="token punctuation">)</span>
+</code></pre>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/8jrU7Rg1Dx1H0CQHnGJFA">Attribute Accessors</a></li>
+</ol>

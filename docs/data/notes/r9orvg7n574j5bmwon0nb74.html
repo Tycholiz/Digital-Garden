@@ -1,0 +1,18 @@
+<h1 id="multi-version-concurrency-control-mvcc">Multi-version Concurrency Control (MVCC)<a aria-hidden="true" class="anchor-heading icon-link" href="#multi-version-concurrency-control-mvcc"></a></h1>
+<p>MVCC aims to solve the problem of concurrency by keeping multiple copies of each data item.</p>
+<ul>
+<li>therefore, each user connected to the database sees a snapshot of the database at a particular instant in time, and any changes made by a single writer will not be seen by anyone else until the transaction has been committed.</li>
+</ul>
+<p>An MVCC database doesn't actually overwrite database records when it updates them. Instead, it creates a newer version of the item.</p>
+<ul>
+<li>therefore, it is inherent in MVCC that multiple versions of a single item are stored.</li>
+<li>this introduces a new problem: when do we delete objects that are <em>definitely</em> obsolete?</li>
+</ul>
+<p>An MVCC database also allows each transaction's read operations to read objects of a previous revision</p>
+<p>When a <a href="/notes/4xb9cg487yio88c5b2j2bid">transaction</a> reads from a consistent <a href="/notes/SBhnwv59C8Y0Gb9nRztZU#snapshot-isolation1">snapshot</a> in an MVCC database, it ignores writes that were made by any other transactions that hadn’t yet committed at the time when the snapshot was taken.</p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/ULkfbL9WpktbVYnzhl6Jw">Postgres</a></li>
+<li><a href="/notes/kx2pz7bcwpswtpjcsmjlzlj">Race Conditions</a></li>
+</ul>

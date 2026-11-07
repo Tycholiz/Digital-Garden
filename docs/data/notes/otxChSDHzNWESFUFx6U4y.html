@@ -1,0 +1,36 @@
+<h1 id="dummy">Dummy<a aria-hidden="true" class="anchor-heading icon-link" href="#dummy"></a></h1>
+<p>We pass a dummy object to something when we don't care how the dummy is used</p>
+<p>Dummy objects are passed around but never actually used. Usually they are just used to fill parameter lists.</p>
+<ul>
+<li>We use dummies when we don't actually care about the parameters that are passed to the SUT.</li>
+</ul>
+<h3 id="example-system-class">Example: System Class<a aria-hidden="true" class="anchor-heading icon-link" href="#example-system-class"></a></h3>
+<p>imagine we are testing a <code>System</code> object. When we create an instance of <code>System</code>, we must specify who the authorizer is. However, for the particular test we are writing, maybe we don't even care about the authorizer, and that parameter is immaterial to the test. A case such as this would be a test where there is not even a user logging in. In this case we would pass the argument, but it would never even get used. In this case we would just use a dummy authorizer, and move on with our day:</p>
+<pre class="language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">System</span> <span class="token punctuation">{</span>
+	<span class="token keyword">public</span> <span class="token class-name">System</span><span class="token punctuation">(</span><span class="token class-name">Authorizer</span> authorizer<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">this</span><span class="token punctuation">.</span>authorizer <span class="token operator">=</span> authorizer<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+
+	<span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">loginCount</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token comment">//returns number of logged in users.</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">DummyAuthorizer</span> <span class="token keyword">implements</span> <span class="token class-name">Authorizer</span> <span class="token punctuation">{</span>
+  <span class="token keyword">public</span> <span class="token class-name">Boolean</span> <span class="token function">authorize</span><span class="token punctuation">(</span><span class="token class-name">String</span> username<span class="token punctuation">,</span> <span class="token class-name">String</span> password<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token annotation punctuation">@Test</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">newlyCreatedSystem_hasNoLoggedInUsers</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token class-name">System</span> system <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">System</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">DummyAuthorizer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token function">assertThat</span><span class="token punctuation">(</span>system<span class="token punctuation">.</span><span class="token function">loginCount</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">is</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/965AqO8bdqbS0Et9bKsUO">Test Double</a></li>
+<li><a href="/notes/m0KzcQACLje5KS1v61t7v">Stub</a></li>
+</ul>

@@ -1,0 +1,36 @@
+<h1 id="array">Array<a aria-hidden="true" class="anchor-heading icon-link" href="#array"></a></h1>
+<p>In C, arrays can be thought of as pointers to consecutive areas of memory</p>
+<ul>
+<li>elements in an array are stored in physically adjacent blocks of memory 
+<ul>
+<li>spec: This is why a pointer pointing to an array only points to the first element— because we can essentially keep checking "is the next memory block part of that array?"</li>
+</ul>
+</li>
+<li>the name of an array is a synonym for the memory location of the first element of that array. 
+<ul>
+<li>therefore, the assignment <code>p = &#x26;x[0]</code> is identical to <code>p = x</code></li>
+<li>also, what follows from this is that a reference to <code>x[i]</code> can also be written as <code>*(x+i)</code>
+<ul>
+<li>We can understand this as "<code>x[5]</code> is the address of the 5th element beyond <code>x</code>".</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>When an array name is passed to a function, what is passed is the location of the initial element. Within the called function, the argument is a local variable, and so an array name parameter is a pointer (a variable containing an address)</li>
+<li>the syntax for accessing arrays is identical for that which can be used to dereference pointers</li>
+<li><code>array[i]</code> is equivalent to <code>*(array + i)</code>. 
+<ul>
+<li>this fact shows that arrays are pointers to consecutive blocks of memory</li>
+</ul>
+</li>
+<li>An array can be initialized with values like so: <code>int days[] = { 1, 2, 3 }</code> 
+<ul>
+<li>If the size of the array is omitted in initialization, the compiler will count the number of elements </li>
+</ul>
+</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/X9TyB7Fn9NNAUyakav5Pz">Value Object</a></li>
+</ul>

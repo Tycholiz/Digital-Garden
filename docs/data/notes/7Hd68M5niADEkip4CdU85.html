@@ -1,0 +1,37 @@
+<h1 id="iac-infrastructure-as-code">IaC (Infrastructure-as-Code)<a aria-hidden="true" class="anchor-heading icon-link" href="#iac-infrastructure-as-code"></a></h1>
+<p>Infrastructure as code (IaC) is the practice of keeping all infrastructure configuration stored as code.</p>
+<ul>
+<li>The actual desired state may or may not be not stored as code (e.g., number of replicas or pods).</li>
+</ul>
+<p>IaC encourages and promotes declarative system administration tools over custom imperative solutions, over the primitive way of doing it using loose imperative scripts that were hard to keep track of and difficult to understand.</p>
+<ul>
+<li>This led to the emergence of technologies like Docker Containers, Ansible, Terraform, and Kubernetes, which utilize static declarative configuration files.</li>
+</ul>
+<p>IaC is the opposite of click ops.</p>
+<p>IaC allows developers to test infra changes very early on in the development cycle, instead of waiting until the last step to deploy to prod, hoping everything works, we just deploy to staging, which should be as close as possible to production (staging should essentially be prod without the users)</p>
+<h3 id="examples">Examples<a aria-hidden="true" class="anchor-heading icon-link" href="#examples"></a></h3>
+<ul>
+<li>AWS Cloudformation</li>
+<li>Azure Resource Manager</li>
+</ul>
+<p>Cloud Agnostic:</p>
+<ul>
+<li>Chef</li>
+<li>Puppet</li>
+<li><a href="/notes/Ku1OgHMhELajzo61Gx7ye">Terraform</a></li>
+<li>Serverless</li>
+<li>Pulumi</li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/lBasXzi1eHzGwL2pEuOv8">GitOps</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/RgE0mZLaUjPftFPZsiAoe">DevOps</a></li>
+<li><a href="/notes/nRb6Im4Kcmc2ZWE7K1jZ1">Serverless Framework</a></li>
+<li><a href="/notes/KutlqQVGLBAdLTslz3D9A">CDK</a></li>
+<li><a href="/notes/lBasXzi1eHzGwL2pEuOv8">GitOps</a></li>
+</ul>

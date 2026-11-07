@@ -1,0 +1,100 @@
+<h1 id="kustomize">Kustomize<a aria-hidden="true" class="anchor-heading icon-link" href="#kustomize"></a></h1>
+<h3 id="what-is-it">What is it?<a aria-hidden="true" class="anchor-heading icon-link" href="#what-is-it"></a></h3>
+<p>Kustomize is a tool that allows us to manage K8S objects via a <a href="/notes/RCPPXSakm5TvKka8kOmVp">YML</a> configuration file.</p>
+<p>It allows you to create an entire Kubernetes application out of individual pieces — without touching the YAML configuration files for the individual components.</p>
+<h3 id="what-does-it-do">What does it do?<a aria-hidden="true" class="anchor-heading icon-link" href="#what-does-it-do"></a></h3>
+<p>It allows us to...</p>
+<ul>
+<li>generate resources from other sources</li>
+<li>set cross-cutting fields for resources</li>
+<li>compose and customizing collections of resources</li>
+</ul>
+<p>It does this via layering to preserve the base settings of your applications and components by overlaying declarative yaml artifacts (called <em>overlays</em> or <em>patches</em>) that selectively override default settings without actually changing the original files.</p>
+<ul>
+<li>this approach is powerful because it allows us to combine common off-the-shelf applications (<a href="https://kubectl.docs.kubernetes.io/references/kustomize/glossary/#off-the-shelf-configuration">COTS</a>) with ones that are internally created (<a href="https://kubectl.docs.kubernetes.io/references/kustomize/glossary/#bespoke-configuration">bespoke</a>).</li>
+</ul>
+<h3 id="why-use-it">Why use it?<a aria-hidden="true" class="anchor-heading icon-link" href="#why-use-it"></a></h3>
+<p>Benefits of Using Kustomize:</p>
+<ol>
+<li>
+<p>Reusability</p>
+<ul>
+<li>Kustomize allows you to reuse one base file across all of your environments (development, staging, production) and then overlay unique specifications for each.</li>
+</ul>
+</li>
+<li>
+<p>Fast Generation</p>
+<ul>
+<li>Since Kustomize has no templating language, you can use standard YAML to quickly declare your configurations.</li>
+</ul>
+</li>
+<li>
+<p>Easier to Debug</p>
+<ul>
+<li>YAML itself is easy to understand and debug when things go wrong. Pair that with the fact that your configurations are isolated in patches, and you’ll be able to triangulate the root cause of performance issues in no time. Simply compare performance to your base configuration and any other variations that are running.</li>
+</ul>
+</li>
+</ol>
+<p>Another benefit of utilizing patches is that they add dimensionality to your configuration settings, which can be isolated for troubleshooting misconfigurations or layered to create a framework of most-broad to most-specific configuration specifications.</p>
+<p>Imagine we found a third-party <a href="/notes/ei6fj7h4u5o03ldxxj4392h#chart">chart</a> that we want to use as a basis for our cluster. It is 98% what we want, but requires some slight modifications to fit our use-case, so we fork the Chart, make the modifications, and apply it to our cluster. Some time later a new version of the Chart is released, so we have to fork it again and apply the same modifications.</p>
+<ul>
+<li>this approach is of course untenable, so we use Kustomize to have our custom patches overlayed on top of the base Chart.</li>
+<li>In our <a href="/notes/dF2CVtOaqyE04VZqR8opg">CI/CD</a> pipeline, we can imagine that we are fetching the yaml files (the Chart) from <a href="/notes/ei6fj7h4u5o03ldxxj4392h">helm</a>, and then our Kustomize yaml files are being patched over. These patches can be environment-specific values based on the events.
+<ul>
+<li>ex. if branch is <code>master</code> and we are deploying to production, then Kustomize will apply the yaml files in <code>k8s/overlays/production</code>.</li>
+</ul>
+</li>
+</ul>
+<h3 id="bases-and-overlays">Bases and Overlays<a aria-hidden="true" class="anchor-heading icon-link" href="#bases-and-overlays"></a></h3>
+<h4 id="bases-directory">Bases directory<a aria-hidden="true" class="anchor-heading icon-link" href="#bases-directory"></a></h4>
+<ul>
+<li>A base is a directory with a <code>kustomization.yaml</code>, which contains a set of resources and associated customization. </li>
+<li>A base could be either a local directory or a directory from a remote repo, as long as a <code>kustomization.yaml</code> is present inside. </li>
+<li>A base has no knowledge of an overlay and can be used in multiple overlays. </li>
+<li>The <code>kustmization.yaml</code> file is the most important file in the base folder and it describes what resources you use.</li>
+</ul>
+<h4 id="overlay-directory">Overlay directory<a aria-hidden="true" class="anchor-heading icon-link" href="#overlay-directory"></a></h4>
+<ul>
+<li>The overlays folder houses environment-specific overlays. It has 3 sub-folders (one for each environment).
+<ul>
+<li>ex. imagine we want to use different <a href="/notes/9YspU1V7eJ9rz91kiTrUN">Service types</a> for each environment: ClusterIP for dev, NodePort for staging, and LoadBalance for production.</li>
+</ul>
+</li>
+<li>An overlay is a directory with a <code>kustomization.yaml</code> that refers to other kustomization directories as its bases. </li>
+<li>An overlay may have multiple bases and it composes all resources from bases and may also have customization on top of them.</li>
+</ul>
+<h4 id="example">Example<a aria-hidden="true" class="anchor-heading icon-link" href="#example"></a></h4>
+<p>This is an example of a Kustomize configuration.</p>
+<ul>
+<li>each environment has different HPA (Horizontal Pod Autoscaling) settings </li>
+</ul>
+<pre><code>├── base
+│   ├── deployment.yaml
+│   ├── hpa.yaml
+│   ├── kustomization.yaml
+│   └── service.yaml
+└── overlays
+    ├── dev
+    │   ├── hpa.yaml
+    │   └── kustomization.yaml
+    ├── production
+    │   ├── hpa.yaml
+    │   ├── kustomization.yaml
+    │   ├── rollout-replica.yaml
+    │   └── service-loadbalancer.yaml
+    └── staging
+        ├── hpa.yaml
+        ├── kustomization.yaml
+        └── service-nodeport.yaml
+</code></pre>
+<h1 id="resources">Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#resources"></a></h1>
+<ul>
+<li><a href="https://www.mirantis.com/blog/introduction-to-kustomize-part-1-creating-a-kubernetes-app-out-of-multiple-pieces/">Hello world example</a>
+<a href="https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/">https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/</a></li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/nhxmrkFjzHtZZmOBkWfhh">Kubectl</a></li>
+<li><a href="/notes/mHVMjAHm9xjTEnRdsGi96">Lambda Layer</a></li>
+</ul>

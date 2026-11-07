@@ -1,0 +1,11 @@
+<h1 id="information-schema">Information Schema<a aria-hidden="true" class="anchor-heading icon-link" href="#information-schema"></a></h1>
+<p>The information_schema is a schema that contains a set of views that contain information about the objects defined in the database.</p>
+<p>The information_schema is part of the SQL standard, unlike the <a href="/notes/uF6gTMfLEHMGfCkOMJj0t">system catalog</a></p>
+<ul>
+<li>As a consequence of this, you will not find information on Postgres-specific features in the information schema. An example of this is the fact that we can get all user-defined types on <code>information_schema.user_defined_types</code>, but we cannot get enums. Enums aren't part of the SQL spec, and therefore are not findable through the information_schema.</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/uF6gTMfLEHMGfCkOMJj0t">System Catalog</a></li>
+</ul>

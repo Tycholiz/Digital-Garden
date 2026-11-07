@@ -1,0 +1,59 @@
+<h1 id="vpn-virtual-private-network">VPN (Virtual Private Network)<a aria-hidden="true" class="anchor-heading icon-link" href="#vpn-virtual-private-network"></a></h1>
+<h2 id="what-is-it">What is it?<a aria-hidden="true" class="anchor-heading icon-link" href="#what-is-it"></a></h2>
+<p>A VPN connects your PC, smartphone, or tablet to another computer (called a server) somewhere on the internet, and allows you to browse the internet using that computer’s internet connection.</p>
+<ul>
+<li>So, instead of connecting to the internet directly via your ISP, you connect first to your VPN provider, which forwards your request on via the internet.
+<ul>
+<li>therefore, from the perspective of any node between the VPN and the origin server, the VPN is the client make the request.</li>
+</ul>
+</li>
+<li>so is it basically a network with a dedicated server that executes the web searches, and delivers that content to the client</li>
+<li>the VPN is the thing on the server than enables the network to exist</li>
+</ul>
+<p>A VPN is similar to a proxy server, but where a proxy server can only redirect web requests, a VPN connection is capable of routing and anonymizing all of your network traffic.</p>
+<ul>
+<li>also, a VPN works on the operating system level, meaning that it redirects all your traffic, whether it’s coming from your browser or a background app.</li>
+</ul>
+<p>ex. If a company were to have 2 branches, they would not be able to communicate with one another with only their private IP addresses. They could choose to connect through the internet, but that would not be preferable, since traffic should be limited to those in the company. Instead, the company can use a VPN to bridge the two private networks. </p>
+<ul>
+<li>alternatively, an IP tunnel can be used.</li>
+<li>with either method, the result is that we are encapsulating the packets within a protocol layer during trasmission across the public network.</li>
+</ul>
+<h2 id="why-use-one">Why use one?<a aria-hidden="true" class="anchor-heading icon-link" href="#why-use-one"></a></h2>
+<p>A VPN allows you to privately access online activities no matter where you are by encrypting your connection to the Internet</p>
+<h2 id="split-vpn">Split VPN<a aria-hidden="true" class="anchor-heading icon-link" href="#split-vpn"></a></h2>
+<p>You define some subnets (say 192.168.0.0/24) that should use the VPN, and the rest won't.</p>
+<ul>
+<li>ex. if we have a Plex server in our local network and we only want to expose access via VPN, we can opt to only route traffic over the VPN for the one subnet with the Plex server in it. Otherwise, users attempting to access the Plex server would have to toggle the VPN on/off each time they wanted to use it.</li>
+</ul>
+<hr>
+<h2 id="protocols">Protocols<a aria-hidden="true" class="anchor-heading icon-link" href="#protocols"></a></h2>
+<ul>
+<li>ex. WireGuard, OpenVPN</li>
+</ul>
+<p>WireGuard is the newest protocol which is 20-60% faster than OpenVPN, with state-of-the-art cryptography</p>
+<h3 id="wireguard-vs-openvpn">Wireguard vs OpenVPN<a aria-hidden="true" class="anchor-heading icon-link" href="#wireguard-vs-openvpn"></a></h3>
+<p>Traditionally, VPNs are connection servers that sit between a client and a server.</p>
+<p>Because of the fact that the VPN server handles the work of making the connections between client and server, it is known as a type of <em>hub-and-spoke network</em>.</p>
+<ul>
+<li>a benefit of this type of network is that each node does not have to establish a connection with all of the other nodes 
+<ul>
+<li>(If you wanted to fully connect 10 nodes, then that would be 9 peer nodes that each node has to know about, or 90 separate tunnel endpoints.)</li>
+</ul>
+</li>
+<li>The hub node usually has a static IP address and a hole poked in its firewall so it’s easy for everyone to find.</li>
+</ul>
+<p><img src="/assets/images/2024-03-26-21-11-33.png"></p>
+<p>a critical downside of traditional VPNs is that they are at the mercy of the vpn server. If it is located far away, the client will have to incur a potentially large latency cost.</p>
+<p>Unlike traditional VPNs, Wireguard is optimized to be able to create a large amount of encrypted tunnels. As a result, it's not subject to the limitations resulting from having a single centralized vpn.</p>
+<ul>
+<li>this ability to create lightweight encrypted tunnels makes Wireguard exceptional at establishing <em>mesh networks</em>, </li>
+<li>however, this presents a new problem: how do we manage the distribution of keys to the vpn servers when a new user is authenticated? how about when a new vpn server gets added? How do we distribute its key to all of the users? Futhermore, a 10-node network would require 10 x 9 = 90 WireGuard tunnel endpoint configurations; every node would need to know its own key plus 9 more. Worse yet, each node would have to find the others somehow— a tough task given that user devices do not typically have static IP addresses</li>
+</ul>
+<p><img src="/assets/images/2024-03-26-21-30-21.png"></p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/2UZZGnoMlDKmvo3kgJ6ym">VPC (Virtual Private Cloud)</a></li>
+<li><a href="/notes/V3PYC4CioHjvRkfghpGpk">Port Forwarding</a></li>
+</ul>

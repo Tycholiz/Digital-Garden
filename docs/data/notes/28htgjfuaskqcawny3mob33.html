@@ -1,0 +1,78 @@
+<h1 id="java-environment">Java Environment<a aria-hidden="true" class="anchor-heading icon-link" href="#java-environment"></a></h1>
+<h2 id="java-development-kit-jdk">Java Development Kit (JDK)<a aria-hidden="true" class="anchor-heading icon-link" href="#java-development-kit-jdk"></a></h2>
+<ul>
+<li>implements the Java Language Specification (JLS) </li>
+<li>implements the the Java Virtual Machine Specification (JVMS)</li>
+<li>provides the Standard Edition (SE) of the Java API</li>
+</ul>
+<p>It provides software for working with Java applications. Examples of included software are:</p>
+<ul>
+<li>the virtual machine</li>
+<li>a compiler</li>
+<li>performance monitoring tools</li>
+<li>a debugger</li>
+</ul>
+<p>run the binary <code>/usr/libexec/java_home</code> to know where in the system Java is installed</p>
+<p>check version:</p>
+<pre class="language-sh"><code class="language-sh">$ javac -version
+</code></pre>
+<h3 id="javac">javac<a aria-hidden="true" class="anchor-heading icon-link" href="#javac"></a></h3>
+<ul>
+<li>the main compiler included within the JDK</li>
+<li>converts source code into Java bytecode</li>
+</ul>
+<p>Due to <em>dynamic binding</em>, the compiler will not catch <code>ClassCastExceptions</code></p>
+<ul>
+<li>dynamic binding is the Java feature of being able to include new objects that weren't even known to the original programmer</li>
+</ul>
+<h3 id="classpath">Classpath<a aria-hidden="true" class="anchor-heading icon-link" href="#classpath"></a></h3>
+<p>Classpath is a parameter in the JVM or the Java compiler that specifies the location of user-defined classes and packages.</p>
+<ul>
+<li>it is a set of paths where the java compiler and the JVM will find needed classes to compile or execute other classes.</li>
+<li>classes that the JVM needs for compilation and/or executing other classes can be found at these paths.</li>
+<li>naturally, we wouldn't expect the JVM to search through every folder on our computer (and nor would we even want that), so we provide a classlist so it knows where to search.</li>
+<li>A given Java program isn't in a single file, it has access to everything in the classpath</li>
+</ul>
+<p>In Java, we make other classes available to our classes by <code>import</code>ing them at the top of our source file:</p>
+<pre class="language-java"><code class="language-java"><span class="token comment">// single class import</span>
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>javaguy<span class="token punctuation">.</span>coolframework<span class="token punctuation">.</span></span><span class="token class-name">MyClass</span><span class="token punctuation">;</span>
+<span class="token comment">// bulk import</span>
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>javaguy<span class="token punctuation">.</span>coolframework<span class="token punctuation">.</span></span><span class="token operator">*</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Because of this <code>import</code> declaration, the JVM will know where to find the compiled class (ie. <code>.class</code> file).</p>
+<ul>
+<li>ex. if our project has a <code>output/</code> directory, and our class is located at <code>output/org/javaguy/coolframework/MyClass.class</code>, then <code>output/</code> is as deep as we need to go when specifying the path in the classpath. The rest of the directory path is obtained from the actual <code>import</code> statement.</li>
+</ul>
+<p>The classpath can also contain <code>.jar</code> files</p>
+<h2 id="java-runtime-environment-jre">Java Runtime Environment (JRE)<a aria-hidden="true" class="anchor-heading icon-link" href="#java-runtime-environment-jre"></a></h2>
+<p>The JRE is included in the JDK, though is can also be installed independently of the JDK</p>
+<ul>
+<li>end-users need to install the JRE to run the Java program, while the whole JDK is for developers</li>
+</ul>
+<p>The JRE consists of:</p>
+<ul>
+<li>a Java Virtual Machine (called HotSpot) </li>
+<li>all of the class libraries present in the production environment, </li>
+<li>additional libraries only useful to developers, such as the internationalization libraries and the IDL libraries.</li>
+</ul>
+<p>check version:</p>
+<pre class="language-sh"><code class="language-sh">$ java -version
+</code></pre>
+<hr>
+<h2 id="files">Files<a aria-hidden="true" class="anchor-heading icon-link" href="#files"></a></h2>
+<h3 id="jar-java-archive-file">JAR (Java Archive) file<a aria-hidden="true" class="anchor-heading icon-link" href="#jar-java-archive-file"></a></h3>
+<p>JAR files exist so that we don't have to send an end-user all 100 different classes of our application and tell them to run the app with <code>gradle</code> or <code>maven</code>. </p>
+<ul>
+<li>Instead, we can bundle them into a JAR (basically just a zip format) and just get them to run it as an executable</li>
+<li>in the JAR file, we include a <em>manifest</em> which defines which class in that JAR holds the <code>main()</code> method</li>
+</ul>
+<h3 id="war-web-application-resource-or-web-application-archive-file">WAR (Web Application Resource, or Web Application Archive) file<a aria-hidden="true" class="anchor-heading icon-link" href="#war-web-application-resource-or-web-application-archive-file"></a></h3>
+<p>a file used to distribute a collection of JAR-files, JavaServer Pages, Java Servlets, Java classes, XML files, tag libraries, static web pages (HTML and related files) and other resources that together constitute a web application.</p>
+<h2 id="other">Other<a aria-hidden="true" class="anchor-heading icon-link" href="#other"></a></h2>
+<h3 id="javabeans-aka-beans">JavaBeans (a.k.a Beans)<a aria-hidden="true" class="anchor-heading icon-link" href="#javabeans-aka-beans"></a></h3>
+<p>Beans are classes that encapsulate one or more objects into a single standardized object (the bean)</p>
+<ul>
+<li>This standardization allows the beans to be handled in a more generic fashion, allowing easier code reuse and introspection.</li>
+<li>Essentially, beans are just data objects with getters/setters with little to no logic in them. </li>
+<li>Your typical <code>Car</code> class can be considered a Java bean. Java beans are typically more or less 1:1 mapped to database tables.</li>
+</ul>

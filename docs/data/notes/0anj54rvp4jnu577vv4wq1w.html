@@ -1,0 +1,36 @@
+<h1 id="pixel">Pixel<a aria-hidden="true" class="anchor-heading icon-link" href="#pixel"></a></h1>
+<p>A tracking pixel is also known as a <em>web beacon</em></p>
+<p>It is a lightweight piece of HTML that is included in a third-party website in order to grant us more visibility into how users interact with the site.</p>
+<h2 id="how-does-it-work">How does it work?<a aria-hidden="true" class="anchor-heading icon-link" href="#how-does-it-work"></a></h2>
+<p>The pixel itself is a 1 x 1 (ie. 1-pixel) image.</p>
+<ul>
+<li>the fact that the pixel is an <code>&#x3C;img></code> is vital. When a webpage loads and an <code>&#x3C;img></code> tag is encountered, it will send a GET request to the host company's web server (known as the <em>beacon web server</em>) to get the image. In that request is included varying identifying information about the requester, allowing the host to keep track of them.</li>
+</ul>
+<p>The identifying information provided by the user's computer typically includes:</p>
+<ul>
+<li>IP address</li>
+<li>the time the request was made</li>
+<li>the type of web browser or email reader that made the request</li>
+<li>the existence of cookies previously sent by the host server</li>
+</ul>
+<p>The host server can store all of this information, and associate it with a session identifier or tracking token that uniquely marks the interaction.</p>
+<ul>
+<li>Instead of using a Javascript-based API call, the information is sent in the parameters of the image GET request and in the HTTP headers themselves.
+<ul>
+<li>as a result, we can include the pixel in any component that supports HTML.</li>
+</ul>
+</li>
+</ul>
+<pre class="language-html"><code class="language-html">&#x3C;img src="https://myCompany.com/trackingpixel?userid=aws_user&#x26;thirdpartyname=example.hightrafficwebsite.com”>
+</code></pre>
+<h3 id="components">Components<a aria-hidden="true" class="anchor-heading icon-link" href="#components"></a></h3>
+<ul>
+<li>A beacon web server to receive tracking information (or a <a href="/notes/OSdV9FvBG3wDbRNLllg0V">lambda</a>)</li>
+<li>A streaming engine to ingest incoming information (e.g. Aws Kinesis Data Firehose)</li>
+<li>A storage layer to store information retrieved from the pixel (e.g. <a href="/notes/2Rtof8yGX9K2Tq6tLljBb">S3</a>)</li>
+</ul>
+<h2 id="e-resources">E Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#e-resources"></a></h2>
+<ul>
+<li><a href="https://aws.amazon.com/blogs/big-data/building-a-serverless-tracking-pixel-solution-in-aws/">Building a serverless tracking pixel in AWS</a></li>
+</ul>
+<p>{ state: State; dispatch: Dispatch }</p>

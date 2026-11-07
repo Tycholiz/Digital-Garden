@@ -1,0 +1,111 @@
+<h1 id="dynamo-streams">Dynamo Streams<a aria-hidden="true" class="anchor-heading icon-link" href="#dynamo-streams"></a></h1>
+<p>A DynamoDB Stream is a time-ordered sequence of modifications made to items in a single DynamoDB table.</p>
+<ul>
+<li>each stream record provides information about the item-level modification that was made.</li>
+<li>When you enable a stream on a table, DynamoDB captures information about every modification to data items in the table.
+<ul>
+<li>disabled by default</li>
+</ul>
+</li>
+<li>DynamoDB Streams are near realtime.</li>
+</ul>
+<p>A Dynamo Stream is basically Dynamo's way of exposing its table-level <a href="/notes/mH9p012Girn7AC2S2mhAp">change logs</a>.</p>
+<p>Data is durably stored for up to 24 hours.</p>
+<p>DynamoDB streams are a bit like a direct messaging queue integration (Kinesis/Kafka) with a table that contains all the events that are happening in the table.</p>
+<ul>
+<li>This differs from usual streaming where data can be a complete business object. In a DynamoDB stream, users are limited to the table that triggered the stream events.</li>
+</ul>
+<p>DynamoDB streams can be processed with <a href="/notes/OSdV9FvBG3wDbRNLllg0V">AWS Lambdas</a>.</p>
+<ul>
+<li>To achieve best separation of concerns, use one Lambda function per DynamoDB Stream. It will help you keep IAM permissions minimal and code as simple as possible</li>
+</ul>
+<h3 id="endpoints">Endpoints<a aria-hidden="true" class="anchor-heading icon-link" href="#endpoints"></a></h3>
+<p>DynamoDB and DynamoDB Streams are accessed via different endpoints.</p>
+<ul>
+<li>the DynamoDB endpoint lets us work with database tables and indexes</li>
+<li>the DynamoDB Streams endpoint lets us work with records</li>
+</ul>
+<p>The naming convention for DynamoDB Streams endpoints is <code>streams.dynamodb.&#x3C;region>.amazonaws.com</code>.</p>
+<ul>
+<li>ex. if you use the endpoint <code>dynamodb.us-west-2.amazonaws.com</code> to access DynamoDB, you would use the endpoint <code>streams.dynamodb.us-west-2.amazonaws.com</code> to access DynamoDB Streams.</li>
+</ul>
+<h2 id="problem-sets-solved-by-dynamodb-streams">Problem sets solved by DynamoDB Streams<a aria-hidden="true" class="anchor-heading icon-link" href="#problem-sets-solved-by-dynamodb-streams"></a></h2>
+<p>DynamoDB Streams are great if you want to decouple your application core business logic from effects that should happen afterward.</p>
+<ul>
+<li>
+<p>Your base code can be minimal while you can still "plug-in" more Lambda functions reacting to changes as your software evolves.</p>
+</li>
+<li>
+<p>How do you set up a relationship across multiple tables in which, based on the value of an item from one table, you update the item in a second table?</p>
+</li>
+<li>
+<p>How do you trigger an event based on a particular item change?</p>
+</li>
+<li>
+<p>How do you audit or archive data?</p>
+</li>
+<li>
+<p>How do you replicate data across multiple tables (similar to that of <a href="/notes/3OMg1deJDuVeA3uR0oSsY">materialized views</a>/streams/replication in relational data stores)?</p>
+</li>
+</ul>
+<p>DynamoDB Streams works particularly well with AWS Lambda due to its event-driven nature.</p>
+<h2 id="components-of-a-dynamodb-stream">Components of a DynamoDB Stream<a aria-hidden="true" class="anchor-heading icon-link" href="#components-of-a-dynamodb-stream"></a></h2>
+<p>The following diagram shows the relationship between a stream, shards in the stream, and stream records in the shard.</p>
+<p><img src="/assets/images/2021-12-13-14-37-18.png"></p>
+<h3 id="shard">Shard<a aria-hidden="true" class="anchor-heading icon-link" href="#shard"></a></h3>
+<p>Stream records from a single stream are organized into uniquely identifiable groups called <em>shards</em>.</p>
+<ul>
+<li>Each shard acts as a container for multiple stream records, and contains information required for accessing and iterating through these records.</li>
+</ul>
+<p>Shards are ephemeral: They are created and deleted automatically, as needed. Any shard can also split into multiple new shards; this also occurs automatically.</p>
+<p>Shards are distributed by nature.</p>
+<p>We know ahead of time how many shards there will be. Even if new records are added to the stream after the fact, this number of shards doesn't change.</p>
+<h4 id="sharditerator">ShardIterator<a aria-hidden="true" class="anchor-heading icon-link" href="#sharditerator"></a></h4>
+<p>A shard <a href="/notes/uyc7zM5lyRzHIsmnsSkFT">iterator</a> provides information about how to retrieve the stream records from within a shard. Use the shard iterator in a subsequent <code>GetRecords</code> request to read the stream records from the shard.</p>
+<p>Each ShardIterator has a ShardIteratorType which determines how the shard iterator is used to start reading stream records from the shard.</p>
+<ul>
+<li><a href="https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_streams_GetShardIterator.html">(docs)</a></li>
+</ul>
+<p>a ShardIterator specifies a location within a shard, but that location could be either the oldest/newest/etc so NextShardIterator allows you to determine where the next set of records are to then iterate through</p>
+<h3 id="stream-record">(Stream) Record<a aria-hidden="true" class="anchor-heading icon-link" href="#stream-record"></a></h3>
+<p>A record is a description of a unique event within a stream.</p>
+<p>A record contains information about a data modification to a single item in a DynamoDB table.</p>
+<ul>
+<li>You can configure the stream so that the stream records capture additional information, such as the "before" and "after" images of modified items.</li>
+</ul>
+<h4 id="sequence-number">Sequence Number<a aria-hidden="true" class="anchor-heading icon-link" href="#sequence-number"></a></h4>
+<p>Each record has a sequence number that locates it in chronological order within a given shard.</p>
+<ul>
+<li>it is unique per partition-key within its shard.
+<ul>
+<li>in the same partition-key, sequence numbers generally increase over time— The longer the time period between write requests, the larger the sequence numbers become.
+<ul>
+<li>however, there is no guarantee the sequence number will increase by 1.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>The sequence number reflects the order in which the record was published to the stream.</p>
+<ul>
+<li>Therefore, the sequence number will stay sequential so long as it is in the same partition.</li>
+</ul>
+<h2 id="how-to-access-individual-stream-records">How to access individual stream records<a aria-hidden="true" class="anchor-heading icon-link" href="#how-to-access-individual-stream-records"></a></h2>
+<p>To access a stream and process the stream records within, you must do the following:</p>
+<ol>
+<li>Determine the unique ARN of the stream that you want to access.</li>
+<li>Determine which shards in the stream contain the stream records that you are interested in.</li>
+<li>Access the shards and retrieve the stream records that you want.</li>
+</ol>
+<h2 id="streams-api">Streams API<a aria-hidden="true" class="anchor-heading icon-link" href="#streams-api"></a></h2>
+<p>The DynamoDB Streams API provides the following actions for use by application programs:</p>
+<ul>
+<li><code>ListStreams</code> — Returns a list of stream descriptors for the current account and endpoint. You can optionally request just the stream descriptors for a particular table name.</li>
+<li><code>DescribeStream</code> — Returns detailed information about a given stream. The output includes a list of shards associated with the stream, including the shard IDs.</li>
+<li><code>GetShardIterator</code> — Returns a shard iterator, which describes a location within a shard. You can request that the iterator provide access to the oldest point, the newest point, or a particular point in the stream.</li>
+<li><code>GetRecords</code> — Returns the stream records from within a given shard. You must provide the shard iterator returned from a GetShardIterator request.</li>
+</ul>
+<h1 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h1>
+<ul>
+<li><a href="https://www.macrometa.com/event-stream-processing/dynamodb-streams">https://www.macrometa.com/event-stream-processing/dynamodb-streams</a></li>
+</ul>

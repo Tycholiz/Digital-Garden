@@ -1,0 +1,69 @@
+<h1 id="cicd">CI/CD<a aria-hidden="true" class="anchor-heading icon-link" href="#cicd"></a></h1>
+<h2 id="continuous-integration-ci">Continuous Integration (CI)<a aria-hidden="true" class="anchor-heading icon-link" href="#continuous-integration-ci"></a></h2>
+<p>a CI system will automatically build code, run linters, run tests etc., and provide immediate feedback on the result of those actions.</p>
+<ul>
+<li>a CI can also automate other parts of your development process by managing deployments and notifications.</li>
+<li>"continuous" means that it happens with each "checkin" of the code (updating code on the host)</li>
+</ul>
+<p>When you instruct a build to be made, the CI runner clones the github repo into a brand-new virtual environment, then runs the tests and creates the build.</p>
+<ul>
+<li>if any of those tasks fail, the build is considered broken</li>
+<li>if all tasks succeed, the build passes and Travis CI can deploy the code</li>
+</ul>
+<h3 id="examples">Examples<a aria-hidden="true" class="anchor-heading icon-link" href="#examples"></a></h3>
+<ul>
+<li><a href="/notes/NCTzcxTOAYdeXWxx1WIgK">Github Actions</a></li>
+<li>Travis CI</li>
+<li>Jenkins</li>
+<li>Circle CI</li>
+</ul>
+<h2 id="continuous-deployment">Continuous Deployment<a aria-hidden="true" class="anchor-heading icon-link" href="#continuous-deployment"></a></h2>
+<p>This process is about taking all of the commits we make during the development process, and deploying them to the live (production) application automatically.</p>
+<ul>
+<li>As part of this process, we subject our code to a multitude of tests (unit, e2e etc.), which is CI.</li>
+</ul>
+<h2 id="continuous-delivery">Continuous Delivery<a aria-hidden="true" class="anchor-heading icon-link" href="#continuous-delivery"></a></h2>
+<p>One step past, whereby we end up in a state where a deployment can be triggered, albeit manually.</p>
+<ul>
+<li>more realistically might be called "continuous deliverables".</li>
+<li>the idea here is that it empowers the decision makers to be able to control deployments. The code then becomes something like a deliverable to a boss' desk, rather than you just going ahead and deploying it whenever you merge into main</li>
+</ul>
+<p>Continuous Delivery is about making sure that every change a developer makes can make it through the pipeline that includes subjecting our code to a series of tests </p>
+<ul>
+<li>does it compile? does it pass unit tests? does it pass E2E? etc</li>
+</ul>
+<p>It is slightly broader than Continuous Deployment, in the sense that not all changes that go through the pipeline need to necessarily make it into production.</p>
+<ul>
+<li>In this way, you could think of Continuous Delivery as baking in the business-level ability to trigger deployments. Putting code into production is a business-decision, not a technical one. The executives of a company may decide "we only want to deploy new releases every 2 weeks, so that the amount of change that user's experience isn't so jarring". The point is that from a technical standpoint, we can do this— we just decide not to for business reasons.
+<ul>
+<li>This above explanation shows that in order to do Continuous Delivery, we have to already be doing Continuous Deployment</li>
+</ul>
+</li>
+</ul>
+<h3 id="why-use-cd-both-forms">Why use CD (both forms)?<a aria-hidden="true" class="anchor-heading icon-link" href="#why-use-cd-both-forms"></a></h3>
+<ul>
+<li>reduced deployment risk
+<ul>
+<li>with smaller deployments, it's easier to spot when/where something goes wrong
+<ul>
+<li>anal: same reason why smaller commits are preferable</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>user feedback
+<ul>
+<li>with incremental and automated change, it's easier to get more reliable feedback from users, rather than having to depend on what they tell you they want.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/z8ie0xjogb6ht7gzowav5xr">K6</a></li>
+<li><a href="/notes/qxSOd6SPN8qf9ZUojVFDX">K8s</a></li>
+<li><a href="/notes/3zgkhycofrlbgv7e956dqvz">Code Suite</a></li>
+<li><a href="/notes/gm1gdfaxur1ve8fd35w1pv4">Deployment Process</a></li>
+<li><a href="/notes/lBasXzi1eHzGwL2pEuOv8">GitOps</a></li>
+<li><a href="/notes/zirmu2JLi2lSneEH562Wp">Kustomize</a></li>
+</ul>

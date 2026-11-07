@@ -1,0 +1,36 @@
+<h1 id="api-gateway">API Gateway<a aria-hidden="true" class="anchor-heading icon-link" href="#api-gateway"></a></h1>
+<p>An API gateway acts as a <a href="/notes/Bq12ho7Zt17YjqtfhD7Gi">reverse proxy</a> to accept all API calls, aggregate the various services required to fulfill them, and return the appropriate result.</p>
+<p>API gateways can be used to unify access control across all the APIs that sit behind</p>
+<ul>
+<li>ex. authentication, rate limiting, and analytics</li>
+</ul>
+<p>Applications that are built using <a href="/notes/4JrFhUJpywlucgow6EX7j">microservices</a> most likely use an API gateway, since a single API call could result in dozens of calls to distinct APIs</p>
+<p>Having an API gateway allows querying users to continue to access the API in the same fashion indefinitely, even if APIs behind the gateway are modified.</p>
+<p>An API Gateway will use a <a href="https://microservices.io/patterns/reliability/circuit-breaker.html">Circuit Breaker</a> to invoke services</p>
+<p>In implementing an API gateway, an event-driven/reactive approach is best if it must scale to scale to handle high loads.</p>
+<ul>
+<li>AWS offers <a href="/notes/o1Bu4i5kWHRsosQdOI2fR">AWS API Gateway</a></li>
+</ul>
+<h3 id="downsides">Downsides<a aria-hidden="true" class="anchor-heading icon-link" href="#downsides"></a></h3>
+<ul>
+<li>Increased complexity - the API gateway is yet another moving part that must be developed, deployed and managed</li>
+<li>Increased response time due to the additional network hop through the API gateway - however, for most applications the cost of an extra roundtrip is insignificant.</li>
+</ul>
+<hr>
+<h3 id="backends-for-frontends">Backends for Frontends<a aria-hidden="true" class="anchor-heading icon-link" href="#backends-for-frontends"></a></h3>
+<p>The <em>Backends for frontends</em> pattern is a variation on the API gateway pattern</p>
+<p>This pattern defines a separate API gateway for each kind of client</p>
+<ul>
+<li>ex. API gateways for web application, mobile application etc.</li>
+</ul>
+<p><img src="/assets/images/2023-02-06-12-10-18.png"></p>
+<h3 id="api-composition">API Composition<a aria-hidden="true" class="anchor-heading icon-link" href="#api-composition"></a></h3>
+<p>In systems that apply both the Microservices pattern and the <em>Database per service</em> pattern, it is no longer straightforward to implement queries that join data from multiple services.</p>
+<ul>
+<li>this is the role of an <em>API Composer</em>, which invokes the services that own the data and performs an in-memory join of the results.</li>
+<li><a href="/notes/vaDhC8WlLYfKrpBgU4D9g">Command-Query-Responsibility-Segregation</a> is an alternative approach to this problem</li>
+</ul>
+<h2 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h2>
+<ul>
+<li><a href="https://netflixtechblog.com/optimizing-the-netflix-api-5c9ac715cf19">Netflix API gateway</a></li>
+</ul>

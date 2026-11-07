@@ -1,0 +1,16 @@
+<h1 id="cli">CLI<a aria-hidden="true" class="anchor-heading icon-link" href="#cli"></a></h1>
+<h3 id="run-the-go-program">Run the Go program<a aria-hidden="true" class="anchor-heading icon-link" href="#run-the-go-program"></a></h3>
+<p><code>go run main.go</code></p>
+<h3 id="initialize-a-go-module">Initialize a Go module<a aria-hidden="true" class="anchor-heading icon-link" href="#initialize-a-go-module"></a></h3>
+<p><code>go mod init &#x3C;URL_of_repo></code></p>
+<ul>
+<li>URL of repo is the convention, but not a requirement as long as it's unique</li>
+</ul>
+<h3 id="compile-the-code-into-an-executable">Compile the code into an executable<a aria-hidden="true" class="anchor-heading icon-link" href="#compile-the-code-into-an-executable"></a></h3>
+<p>run <code>go build</code> in the project's directory</p>
+<h3 id="compile-code-into-an-executable-and-put-into-bin-directory">Compile code into an executable and put into <code>bin/</code> directory<a aria-hidden="true" class="anchor-heading icon-link" href="#compile-code-into-an-executable-and-put-into-bin-directory"></a></h3>
+<p><code>go install</code></p>
+<ul>
+<li>note: if our project uses 3rd party dependencies (ie. not from standard lib), then it would compile and cache those dependencies into a package directory.</li>
+<li>note: the <code>bin/</code> directory here is a sibling directory to the project's <code>src/</code> directory</li>
+</ul>

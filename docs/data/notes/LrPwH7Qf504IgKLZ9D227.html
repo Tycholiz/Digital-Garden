@@ -1,0 +1,61 @@
+<h1 id="c-compiler">C Compiler<a aria-hidden="true" class="anchor-heading icon-link" href="#c-compiler"></a></h1>
+<p>Unlike other languages, the C compiler does not look ahead to hoist definitions. It doesn't look backward or forward, nor does it scan the file multiple times to understand relationships. The compiler only scans forward in the file exactly once. Connecting function calls to function declarations is part of the linker's job, and is only done after the file is compiled down to raw assembly instructions.</p>
+<pre><code>- This means that as the compiler scans forward through the file, the very first time the compiler encounters the name of a function, one of two things have to be the case: It either is seeing the function declaration itself, in which case the compiler knows exactly what the function is and what types it takes as arguments and what types it returns — or it's a call to the function, and the compiler has to guess how the function will eventually be declared.
+</code></pre>
+<h4 id="compilation-process">Compilation process<a aria-hidden="true" class="anchor-heading icon-link" href="#compilation-process"></a></h4>
+<p>we can get all intermediate files with <code>clang -Wall -save-temps filename.c -o filename</code></p>
+<ol>
+<li>Pre-processing
+<ul>
+<li>takes the source file and handles...
+<ul>
+<li>Removal of Comments</li>
+<li>Expansion of Macros</li>
+<li>Expansion of the included files</li>
+<li>Conditional compilation</li>
+</ul>
+</li>
+<li>creates <code>filename.i</code></li>
+<li>At the end of the file, our source code is preserved</li>
+</ul>
+</li>
+<li>Compilation
+<ul>
+<li>takes the <code>filename.i</code> file and compiles it, creating assembly level instructions that assembler can understand</li>
+<li>creates <code>filename.s</code></li>
+<li>compilation phase is useful because it provides a common output language for different compilers for different high-level languages
+<ul>
+<li>ex. compilers of C and Fortran produce the same assembly language.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Assembly
+<ul>
+<li>converts assembly language to machine level instructions</li>
+<li>creates <code>filename.o</code>
+<ul>
+<li>produces a <em>relocatable object file</em></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Linking
+<ul>
+<li>all the linking of function calls with their definitions are done</li>
+<li>at this phase, we take code that has already been compiled (like <code>printf</code>, which comes from the <code>printf.o</code> file), and merge it with our own <code>.o</code> file.
+<ul>
+<li>We can see the effect of this phase by running <code>size filename.o</code> and comparing it to <code>size filename</code>. We see that <code>filename</code> is much larger</li>
+<li>produces a <em>executable object file</em>, which can be loaded into memory and executed by the system.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="different-compilers">Different compilers<a aria-hidden="true" class="anchor-heading icon-link" href="#different-compilers"></a></h4>
+<p>In C, it's possible that one compiler fails while another succeeds.</p>
+<ul>
+<li>In the gcc compiler, <code>main()</code> cannot return <code>void</code>, but Turbo C compiler allows this.</li>
+<li>To ensure we are writing proper C code, we have to look at the C Standard.</li>
+<li>Therefore, just because C code compiles doesn't mean it is up to C standard.  </li>
+</ul>

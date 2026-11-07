@@ -1,0 +1,16 @@
+<h1 id="perform">Perform<a aria-hidden="true" class="anchor-heading icon-link" href="#perform"></a></h1>
+<p>allows us to do the work of a SELECT statement, but then immediately discard the result</p>
+<ul>
+<li>useful for when we are doing side-effects with no useful result.</li>
+</ul>
+<pre class="language-sql"><code class="language-sql">PERFORM create_mv<span class="token punctuation">(</span><span class="token string">'cs_session_page_requests_mv'</span><span class="token punctuation">,</span> my_query<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<pre class="language-sql"><code class="language-sql">PERFORM graphile_worker<span class="token punctuation">.</span>add_job<span class="token punctuation">(</span>
+	<span class="token string">'user__audit'</span><span class="token punctuation">,</span>
+	json_build_object<span class="token punctuation">(</span>
+		<span class="token string">'type'</span><span class="token punctuation">,</span> <span class="token string">'reset_password'</span><span class="token punctuation">,</span>
+		<span class="token string">'user_id'</span><span class="token punctuation">,</span> v_user<span class="token punctuation">.</span>id<span class="token punctuation">,</span>
+		<span class="token string">'current_user_id'</span><span class="token punctuation">,</span> app_public<span class="token punctuation">.</span>current_user_id<span class="token punctuation">(</span><span class="token punctuation">)</span>
+	<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>role</p>

@@ -1,0 +1,12 @@
+
+### Create enum
+```sql
+create type mood as enum ('SAD', 'OK', 'HAPPY');
+```
+
+### Add value to enum
+
+### Check type of value
+```sql
+select pg_typeof('{"title", "media_items"}');
+```

@@ -1,0 +1,20 @@
+<h1 id="opaque">Opaque<a aria-hidden="true" class="anchor-heading icon-link" href="#opaque"></a></h1>
+<p>An opaque type is a type that "wraps" lower-level types, and is often used when either the underlying implementation is complex, or the user simply does not need to know about the inner workings</p>
+<ul>
+<li>ex. there is a type in Swift called <code>CFString</code>. It is an opaque type that provides a series of methods that allow for string manipulation and string conversion. For example, we have a <code>.length</code> and <code>.indexOf</code> methods. The implementation details of these methods is unimportant to the user of this type, so they have been hidden. 
+<ul>
+<li>This is the essence of an opaque type, in that a native type has had some extra functionality added to it by being "wrapped".</li>
+</ul>
+</li>
+</ul>
+<p>An "opaque type" is a type where you don't have a full definition for the struct (or class in the case of C++)</p>
+<ul>
+<li>In C, you can tell the compiler that a type will be defined later by using a forward declaration:</li>
+</ul>
+<pre class="language-c"><code class="language-c"><span class="token comment">// forward declaration of struct in C and C++ </span>
+<span class="token keyword">struct</span> <span class="token class-name">Foo</span><span class="token punctuation">;</span>
+</code></pre>
+<p>here, the compiler only has enough info to be able to declare pointers to <code>Foo</code>, which is sometimes all we need to do</p>
+<ul>
+<li>Allows library and framework creators to hide implementation details, allowing the users of that library to call helper functions to create, change or destroy instances of a forward declared <code>struct</code> (also <code>class</code> in C++) </li>
+</ul>

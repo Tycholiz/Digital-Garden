@@ -1,0 +1,35 @@
+<h1 id="network-tab">Network Tab<a aria-hidden="true" class="anchor-heading icon-link" href="#network-tab"></a></h1>
+<p>We should probably have the "disable cache" checkbox enabled. This will give us a more realistic view of the actual user experience.</p>
+<p>When looking at the load amounts, there is two numbers. </p>
+<ul>
+<li><em>DOMContentLoaded</em> - how much data is in the browser
+<ul>
+<li>the time it takes for the initial HTML document to be completely loaded and parsed, and for the browser to have constructed the DOM for the page.</li>
+<li>doesn't including time taken for external resources like images to finish loading.</li>
+</ul>
+</li>
+<li><em>Load</em> - considers when all resources on the page, including images, stylesheets, scripts, and other assets, have been fully loaded and rendered by the browser.
+<ul>
+<li>this is more significant in terms of debugging performance</li>
+<li>This is typically used to determine when it's safe to interact with or manipulate the fully loaded DOM. </li>
+</ul>
+</li>
+</ul>
+<h2 id="unofficial-apis">Unofficial APIs<a aria-hidden="true" class="anchor-heading icon-link" href="#unofficial-apis"></a></h2>
+<p>Often companies don't offer open APIs. We can "open it up" to ourselves by mimicking the request as if it's coming from us interacting with the webpage.</p>
+<ol>
+<li>In the website's UI, do the interaction that will trigger a network request (eg. clicking a button)</li>
+<li>In the network tab, find the request and gather the API endpoint that was hit.</li>
+<li>Right-click and <em>copy as</em> fetch/cURL. We now have a fully formatted request that has all of the headers needed to make a successful request.</li>
+</ol>
+<h2 id="image-caching-status">Image caching status<a aria-hidden="true" class="anchor-heading icon-link" href="#image-caching-status"></a></h2>
+<p>We can check to see if image caching is working or not (eg. if we are using Cloudflare image caching worker)</p>
+<ol>
+<li>In Network tab, filter for images, and find the image in question</li>
+<li>Check response headers for an indicator (in this example, <code>cf-cache-status=hit</code>) that the image came from a cached location.</li>
+</ol>
+<hr>
+<p>When right-clicking a request, we get the option to <code>Copy As...</code>. If we <code>copy as Node.js fetch</code>, we also get anything that came along with the request (inc. all of the cookies, session Ids, headers etc).</p>
+<ul>
+<li>a normal fetch request doesn't include these, because it assumes we are firing off the request from the browser. However, if we are making a fetch request from a server, then we would manually need to send those cookies/headers etc along.</li>
+</ul>

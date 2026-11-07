@@ -1,0 +1,20 @@
+<h1 id="authentication">Authentication<a aria-hidden="true" class="anchor-heading icon-link" href="#authentication"></a></h1>
+<p>to connect to a PG databse, there are a few different ways to have users authenticate themselves</p>
+<ul>
+<li>the default authentication method can be found in the <code>pg_hba.conf</code> file.
+<ul>
+<li>therefore, if we want to change the default method from peer authentication to md5 (password), we change it here (remember to restart the service)</li>
+</ul>
+</li>
+</ul>
+<h2 id="peer-authentication">Peer Authentication<a aria-hidden="true" class="anchor-heading icon-link" href="#peer-authentication"></a></h2>
+<ul>
+<li>by default, <code>psql</code> tries to connect to the postgres database over UNIX sockets. The default authentication method is <em>peer authentication</em>, which requires the current UNIX user to have the same username as <code>psql</code>
+<ul>
+<li>spec: Therefore, to connect with peer authentication, we need to be logged in on UNIX as the same username as the postgres username we are trying to connect with</li>
+<li>ex. if on UNIX we are logged in as user <code>kyletycholiz</code>, then simply executing <code>psql</code> without arguments will try and log us in as the postgres user <code>kyletycholiz</code>. If this user doesn't exist in postgres, then we will get a peer authentication error.</li>
+</ul>
+</li>
+<li>works by obtaining the client's OS username from the kernel, and using it as the allowed database username.</li>
+<li>Only supported for local connections.</li>
+</ul>

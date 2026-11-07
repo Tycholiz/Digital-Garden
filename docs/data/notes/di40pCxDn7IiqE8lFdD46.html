@@ -1,0 +1,143 @@
+<h1 id="postgraphile">Postgraphile<a aria-hidden="true" class="anchor-heading icon-link" href="#postgraphile"></a></h1>
+<p>PostGraphile automatically detects tables, columns, indexes, relationships, views, types, functions, comments and more. It builds a GraphQL server that is highly intelligent about your data, and that automatically updates itself without restarting when you modify your database.</p>
+<p>PostGraphile provisions, sets up and tears down a PostgreSQL client automatically for each GraphQL query</p>
+<ul>
+<li>Setup involves beginning a transaction and setting the relevant session variables, e.g. using your JWT or the pgSettings function</li>
+</ul>
+<h3 id="smart-comments">Smart Comments<a aria-hidden="true" class="anchor-heading icon-link" href="#smart-comments"></a></h3>
+<ul>
+<li>in postgres, we can make user-friendly remarks on a table called <code>comments</code> by using the COMMENT statement</li>
+<li>Postgraphile leverages this feature to be able to alter functionalities by adding smart comments as comments on a table</li>
+</ul>
+<h2 id="function">Function<a aria-hidden="true" class="anchor-heading icon-link" href="#function"></a></h2>
+<p><strong>Computed Column vs. Custom Query</strong></p>
+<ul>
+<li>We can differentiate between computed columns and custom queries by observing that computed columns must accept the table they belong to as a first arg. Of course, to be able to create a computed column we need a table to attach it to.</li>
+<li>Consider the expansive nature of computed columns. They allow us to augment our existing tables with data that doesn't normally belong there.</li>
+</ul>
+<h3 id="computed-column">Computed column<a aria-hidden="true" class="anchor-heading icon-link" href="#computed-column"></a></h3>
+<ul>
+<li>def - a psuedo column that we can attach to a table that will automatically be reflected in the graphql schema</li>
+<li>in a function, running <code>setof nugget</code> will return a connection</li>
+</ul>
+<h3 id="custom-queries">Custom Queries<a aria-hidden="true" class="anchor-heading icon-link" href="#custom-queries"></a></h3>
+<ul>
+<li>similar to computed columns, but instead of the function being callable as a node's field (ex. the <code>buckets</code> field on <code>nugget</code>), the function is callable from the root-level</li>
+<li>ex. <code>all_nuggets_with_bucket_id</code> function</li>
+</ul>
+<h2 id="auth">Auth<a aria-hidden="true" class="anchor-heading icon-link" href="#auth"></a></h2>
+<ul>
+<li>Postgraphile can generate JWTs easily from inside your PostgreSQL schema.
+<ul>
+<li>to do this, we define a <code>jwtToken</code> composite type and we pass it to <code>jwtPgTypeIdentifier</code>, and now every time that type is returned from a postgres function, it will be signed with the jwtSecret, and return it as a jwt token as part of the graphql response.</li>
+</ul>
+</li>
+<li>when the server receives a jwtToken from the request's authorization headers, like so:</li>
+</ul>
+<pre><code>{
+  "aud": "postgraphile",
+  "role": "app_user",
+  "user_id": 27
+}
+</code></pre>
+<p>it will automatically run this code:</p>
+<pre><code>set local role app_user;
+set local jwt.claims.role to 'user_login';
+set local jwt.claims.user_id to '27';
+</code></pre>
+<h2 id="exposing-http-requests-to-postgres">Exposing HTTP requests to Postgres<a aria-hidden="true" class="anchor-heading icon-link" href="#exposing-http-requests-to-postgres"></a></h2>
+<ul>
+<li><code>pgSettings</code> lets us set the jwt within postgres' <code>current_setting</code> while having access to the request
+<ul>
+<li>this function fires on each request, and everything returned by it will be applied to <code>current_setting</code> (with <code>set_config</code>)</li>
+<li>ex. we can get the userId from the request and update the value of <code>user_id</code> within <code>current_setting(...)</code></li>
+<li><code>pgSettings</code> is a function that can be async</li>
+</ul>
+</li>
+<li>instead of passing an object, we can pass <code>pgSettings</code> function that will get executed on each request.</li>
+<li>Everything returned by <code>pgSettings</code> is applied to the current session with <code>set_config($key, $value, true)</code></li>
+<li>You can use <code>pgSettings</code> to define variables that your Postgres functions/policies depend on
+<ul>
+<li>When adding variables for your own usage, the keys must contain either one or two periods (<code>.</code>)
+<ul>
+<li>Variables without periods will be interpreted as internal Postgres settings, such as role, and will be applied by Postgres</li>
+<li>All settings are automatically reset when the transaction completes</li>
+</ul>
+</li>
+<li>Here's an example of switching the user into the Postgres 'visitor' role, and applying the application setting jwt.claims.user_id:</li>
+</ul>
+<pre><code>pgSettings: async req => ({
+    'role': 'visitor',
+    'jwt.claims.user_id': req.user ? req.user.id : undefined,
+    //...
+}),
+</code></pre>
+</li>
+<li>role is overridden after pgSettings is applied
+<ul>
+<li>But only if <code>pgDefaultRole</code> is set or there's a role property in the claim of the JWT</li>
+</ul>
+</li>
+</ul>
+<h2 id="exposing-http-requests-to-resolvers">Exposing HTTP requests to resolvers<a aria-hidden="true" class="anchor-heading icon-link" href="#exposing-http-requests-to-resolvers"></a></h2>
+<ul>
+<li><code>additionalGraphQLContextFromRequest</code> is an optionally asynchronous function that has access to the req and res objects from your HTTP library (Express)
+<ul>
+<li>The result returned from the function is merged into the GraphQL context object which is passed as the third argument to every GraphQL resolver</li>
+<li><code>additionalGraphQLContextFromRequest</code> let us perform asynchronous actions if we need to, for example looking up the current user in the database with Passport. Once all that is done, we can return an object from this function that will merge with the existing <code>context</code> object so the resolvers can access it.</li>
+</ul>
+</li>
+</ul>
+<h2 id="graphile-workers">Graphile Workers<a aria-hidden="true" class="anchor-heading icon-link" href="#graphile-workers"></a></h2>
+<ul>
+<li>allows you to run jobs (e.g. sending emails, performing calculations, generating PDFs, etc) "in the background" so that your HTTP response/application code is not held up
+<a href="https://github.com/graphile/worker">repo</a></li>
+</ul>
+<h2 id="extending-graphql-schema-makeextendschemaplugin">Extending Graphql Schema (makeExtendSchemaPlugin)<a aria-hidden="true" class="anchor-heading icon-link" href="#extending-graphql-schema-makeextendschemaplugin"></a></h2>
+<ul>
+<li>when we use <code>makeExtendSchemaPlugin</code>, we can define types and resolvers that will get merged into the existing ones generated by Postgraphile</li>
+<li>the callback returns an object with 2 keys:
+<ol>
+<li><code>typeDefs</code></li>
+<li><code>resolvers</code>
+<ul>
+<li>an object whose keys are graphql types, which resolve to an object with <code>key</code>-<code>value</code> pair of <code>field</code>-<code>resolver function</code></li>
+</ul>
+</li>
+</ol>
+</li>
+<li>the <code>build</code> argument is supplied to the <code>makeExtendSchemaPlugin</code> callback, and it contains lots of information and helpers defined by various plugins
+<ul>
+<li>includes the introspection results, inflection functions, and SQL helper (<code>build.pgSql</code>, an instance of <code>pg-sql2</code>, a query builder)</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="custom-mutationsqueries">Custom mutations/queries<a aria-hidden="true" class="anchor-heading icon-link" href="#custom-mutationsqueries"></a></h3>
+<ul>
+<li>By default Postgres assumes all functions will mutate the database. Therefore, if we want the postgres function to show up as a query, we need to mark it <code>stable</code></li>
+<li>when naming custom functions that get back the user some data, we need to name it as if it were a simple property on an object. We don't want to name is something like <code>getUsers</code>. Instead, we want to simply call it <code>users</code>. This makes more sense when viewing it from the graphiql perspective and querying via graphql.</li>
+</ul>
+<hr>
+<h3 id="pooling">Pooling<a aria-hidden="true" class="anchor-heading icon-link" href="#pooling"></a></h3>
+<ul>
+<li>if we are using postgraphile, <code>rootPgPool</code> Postgraphile doesn't know about it, as we don't pass it to the postgraphile engine. Instead, it is used in the <code>additionalGraphQLContextFromRequest</code> callback.</li>
+</ul>
+<hr>
+<h3 id="scalar-types">Scalar Types<a aria-hidden="true" class="anchor-heading icon-link" href="#scalar-types"></a></h3>
+<p>PostGraphile generates the following scalar types:</p>
+<ul>
+<li>BigFloat, BigInt, BitString, Boolean, CidrAddress, Date, Datetime, Float, Int, InternetAddress, Interval, JSON, KeyValueHash, MacAddress, MacAddress8, String, Time, UUID</li>
+</ul>
+<h2 id="resources">Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#resources"></a></h2>
+<h3 id="quality-repos">Quality Repos<a aria-hidden="true" class="anchor-heading icon-link" href="#quality-repos"></a></h3>
+<p><a href="https://github.com/graphile/starter">graphile/starter - lots of really quality code. check out how some of the lower level db config functions work</a></p>
+<h3 id="quality-docs">Quality Docs<a aria-hidden="true" class="anchor-heading icon-link" href="#quality-docs"></a></h3>
+<p><a href="https://github.com/graphile/postgraphile/blob/v4/examples/forum/TUTORIAL.md">lots of overall good info, inc high level setting up the SQL</a></p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/3ZpSyPwkhZQ4PCqhjMnyQ">Pubsub</a></li>
+<li><a href="/notes/JDWnIwuN5GoIgnfD4mDbu">Schema</a></li>
+<li><a href="/notes/3e0dad08-376c-45b9-a08e-5062aa683e7c">Utils</a></li>
+</ol>

@@ -1,0 +1,45 @@
+<h1 id="docker">Docker<a aria-hidden="true" class="anchor-heading icon-link" href="#docker"></a></h1>
+<p>Using Docker, we can abstract away the software, OS, and hardware configuration from our application, turning each service into a building block that we can run anywhere</p>
+<ul>
+<li>when using containers you have to always think of dynamic vs. static parts of your application. You can use your host's file system to store your data and files. A more scalable and efficient way of thinking about this is to store your data to amazon rds and your files to amazon s3. This way you can spin up as many containers of your app/site as you want and have them all point to a single place where they store your dynamic stuff; namely, your data and files.</li>
+</ul>
+<h2 id="dockerignore">.dockerignore<a aria-hidden="true" class="anchor-heading icon-link" href="#dockerignore"></a></h2>
+<ul>
+<li>Because being lean is a design principle of Docker, it is important to cut out the stuff from the image that is not necessary to running the code.
+<ul>
+<li>This includes git files, travis.yml, .vscode etc. To ensure these files do not become a part of the image, we put these in a .dockerignore file.</li>
+</ul>
+</li>
+</ul>
+<pre class="language-txt"><code class="language-txt"># Ignore everything
+**
+
+# Allow some
+!/src/**
+!/jest.config.js
+!/.jest/
+!/.eslintrc.json
+!/tsconfig.json
+!/package*.json
+!/.prettier*
+!/.npmrc
+</code></pre>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/vplR9A8q8H8zXH6W3BmLF">Docker Compose</a></li>
+<li><a href="/notes/a9w8WlKMHZZRdHc8EPBsD">Docker Containers</a></li>
+<li><a href="/notes/eZSIPet7y6fmFAr3OhK2n">Docker Engine</a></li>
+<li><a href="/notes/SQwuv6ixxiQtYGEQnoSZo">Docker Image</a></li>
+<li><a href="/notes/5oTLEz27MfKw1SVHDcxy4">Docker Machine</a></li>
+<li><a href="/notes/tUBvqQK65JnrN4Xc8XvqG">Docker Orchestrators</a></li>
+<li><a href="/notes/V0DRly0sBmCHBua6Lokbf">Docker Registry</a></li>
+<li><a href="/notes/wGvOG89rYaZEoBMc61mQf">Docker Tools</a></li>
+<li><a href="/notes/ayzp9d3fqchhgdir5cbk8h5">Dockerfile</a></li>
+<li><a href="/notes/wx21p7lkwm9u713wh0y8swz">Tag</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/qxSOd6SPN8qf9ZUojVFDX">K8s</a></li>
+</ul>

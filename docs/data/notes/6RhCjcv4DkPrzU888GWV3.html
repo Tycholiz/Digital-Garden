@@ -1,0 +1,160 @@
+<h1 id="apollo-client-cache">Apollo Client Cache<a aria-hidden="true" class="anchor-heading icon-link" href="#apollo-client-cache"></a></h1>
+<p>Apollo caches the result of every graphql query in a normalized <a href="/notes/8swgk5qh3sy2b9kkfuwx3uu">cache</a>.</p>
+<ul>
+<li>The cache normalizes query response objects before it saves them to its internal data store.</li>
+<li>though like the result of a graphql query, the object can be arbitrarily deep. However, references are used, so that the same object is never stored twice.</li>
+</ul>
+<h3 id="normalization">Normalization<a aria-hidden="true" class="anchor-heading icon-link" href="#normalization"></a></h3>
+<p>Normalization happens in the following steps:</p>
+<ol>
+<li>The cache generates a CacheId for every identifiable object included in the response. 
+<ul>
+<li>The CacheId will be in format: <code>&#x3C;__typename>:&#x3C;id></code> (ex. <code>Bucket:232</code>)</li>
+</ul>
+</li>
+<li>All the objects are stored by that generated ID in a flat lookup table.</li>
+<li>Whenever an incoming object is stored with the same CacheId as an existing object, the fields of those objects are merged.
+<ul>
+<li>this means that the only time anything is overwritten is when the field names are the same. If the incoming object has different fieldnames than the existing one, they will be preserved </li>
+<li>ex. this has the further implication that if we had one query that returned a list of books (but only the title and author), then we subsequently clicked on a book and another query was made to get all the metadata data (description, page count, reviews etc.), that single book would not have been overwritten. The additional fields from the second query would have simply been merged.</li>
+</ul>
+</li>
+</ol>
+<p>The apollo cache takes the following shape:</p>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"__typename"</span><span class="token operator">:</span> <span class="token string">"Person"</span><span class="token punctuation">,</span>
+  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"cGVvcGxlOjE="</span><span class="token punctuation">,</span>
+  <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Luke Skywalker"</span><span class="token punctuation">,</span>
+  <span class="token property">"homeworld"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"__ref"</span><span class="token operator">:</span> <span class="token string">"Planet:cGxhbmV0czox"</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="interacting-directly-with-the-cache">Interacting directly with the Cache<a aria-hidden="true" class="anchor-heading icon-link" href="#interacting-directly-with-the-cache"></a></h2>
+<p>We can read/write to the Apollo cache without interacting with our Graphql server.</p>
+<p>We can do this in a few different ways:</p>
+<ul>
+<li>using regular Graphql queries to manage both remote and local data
+<ul>
+<li><code>readQuery</code> / <code>writeQuery</code> / <code>updateQuery</code></li>
+</ul>
+</li>
+<li>using Graphql fragments to access the fields of a cached object without having to compose an entire query to reach that object.
+<ul>
+<li><code>readFragment</code> / <code>writeFragment</code> / <code>updateFragment</code></li>
+</ul>
+</li>
+<li>modify the cache directly without using Graphql at all
+<ul>
+<li><code>cache.modify</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="manually-updating-the-cache">Manually updating the cache<a aria-hidden="true" class="anchor-heading icon-link" href="#manually-updating-the-cache"></a></h3>
+<p>When a single resource is updated with a mutation, Apollo handles caching for us (as long as we return the <code>id</code> and fields that were updated). </p>
+<ul>
+<li>creating, deleting, or updating many at once will require us to manually update the cache.</li>
+</ul>
+<p></p><p></p><div class="portal-container">
+<div class="portal-head">
+<div class="portal-backlink">
+<div class="portal-title">From <span class="portal-text-title">API</span></div>
+<a href="/notes/v2my8qqcjc7zzy2zzw6iod1" class="portal-arrow">Go to text <span class="right-arrow">→</span></a>
+</div>
+</div>
+<div id="portal-parent-anchor" class="portal-parent" markdown="1">
+<div class="portal-parent-fader-top"></div>
+<div class="portal-parent-fader-bottom"></div><p><code>useMutation</code> has an <code>update</code> function, whose purpose is to modify your cached data to match the modifications that a mutation makes to your back-end data</p>
+<ul>
+<li>this method allows us to interact with the cache as if we were interacting with a graphql API. 
+<ul>
+<li>ex. we can make general queries, as well as use fragments to help</li>
+</ul>
+</li>
+<li>we can interact directly with the cache with <code>readQuery, writeQuery, readFragment, writeFragment</code>, which are methods on the <code>ApolloClient</code> class</li>
+<li>we can get the cached version of an entity with <code>cache.identify</code>
+<ul>
+<li>an input <code>{ id: 1, title: '', mediaItems: [{...}] }</code> gives us <code>Nugget:1</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="apollo-cache-object">Apollo <code>cache</code> object<a aria-hidden="true" class="anchor-heading icon-link" href="#apollo-cache-object"></a></h2>
+<ul>
+<li>Here, queries mirror what our gql queries would look like to target the same data from a Graphql server. Therefore, it must be a complete and valid query.</li>
+<li>fragments on the other hand provide more <em>random access</em> (as opposed to <em>sequential access</em>) to our cached data.
+<ul>
+<li>therefore, we need to provide the cacheId as an argument to the fragment methods.</li>
+</ul>
+</li>
+</ul>
+<h3 id="readquery"><code>readQuery</code><a aria-hidden="true" class="anchor-heading icon-link" href="#readquery"></a></h3>
+<ul>
+<li>like a regular graphql query, only it is performed on the cache, rather than the GraphQL API</li>
+</ul>
+<h3 id="writequery"><code>writeQuery</code><a aria-hidden="true" class="anchor-heading icon-link" href="#writequery"></a></h3>
+<ul>
+<li>uses the same shape as <code>readQuery</code>, but requires us to include a <code>data</code> option with the modifications we wish to make</li>
+<li>the shape of our query is not enforced, and we can write fields that aren't present in our Graphql schema.</li>
+<li><a href="https://www.apollographql.com/docs/react/caching/cache-interaction/#writequery">docs</a></li>
+</ul>
+<h3 id="readfragment"><code>readFragment</code><a aria-hidden="true" class="anchor-heading icon-link" href="#readfragment"></a></h3>
+<p>If the object in the cache is missing fields that exist on the fragment, then we will be returned <code>null</code>.</p>
+<h3 id="writefragment"><code>writeFragment</code><a aria-hidden="true" class="anchor-heading icon-link" href="#writefragment"></a></h3>
+<p>Just like <code>readFragment</code>, but like <code>writeQuery</code>, it requires a <code>data</code> object with the fields that we are writing.</p>
+<h3 id="updatequery--updatefragment"><code>updateQuery</code> / <code>updateFragment</code><a aria-hidden="true" class="anchor-heading icon-link" href="#updatequery--updatefragment"></a></h3>
+<p>Allows us to read and write cached data in a single method call.</p>
+<ul>
+<li>ApolloClient 3.5 and later</li>
+<li><a href="https://www.apollographql.com/docs/react/caching/cache-interaction/#using-updatequery-and-updatefragment">docs</a></li>
+</ul>
+<h3 id="cachemodify"><code>cache.modify</code><a aria-hidden="true" class="anchor-heading icon-link" href="#cachemodify"></a></h3>
+<ul>
+<li><a href="https://www.apollographql.com/docs/react/caching/cache-interaction/#using-cachemodify">docs</a></li>
+</ul>
+<p><code>modify</code> is a method we can execute on our cache that lets us modify individual fields directly </p>
+<ul>
+<li>differs from <code>writeQuery</code> and <code>writeFragment</code> in that it will circumvent any <code>merge</code> function we have defined, meaning that fields are always overwritten with exactly the values you specify.</li>
+<li>cannot write fields that do not already exist on the object in the cache.</li>
+</ul>
+<h3 id="cacheidentify"><code>cache.identify</code><a aria-hidden="true" class="anchor-heading icon-link" href="#cacheidentify"></a></h3>
+<p>Returns the cacheId for the specified object</p>
+</div></div><p></p><p></p>
+<h3 id="local-only-fields">Local-only fields<a aria-hidden="true" class="anchor-heading icon-link" href="#local-only-fields"></a></h3>
+<p>We can store and retrieve fields that only exist in the cache by using the <code>@client</code> decorator on our graphql query.</p>
+<pre class="language-gql"><code class="language-gql">query ProductDetails($productId: ID!) {
+  product(id: $productId) {
+    name
+    price
+    isInCart @client # This is a local-only field
+  }
+}
+</code></pre>
+<hr>
+<h3 id="type-policies">Type Policies<a aria-hidden="true" class="anchor-heading icon-link" href="#type-policies"></a></h3>
+<p>By defining type policies, we can determine how the cache interacts with specific types in the schema</p>
+<ul>
+<li>done by mapping a <code>__typename</code> to the whole <code>TypePolicy</code> object.</li>
+<li>in other words, the <code>typePolicies</code> object has <code>key</code>-<code>values</code> of <code>__typename</code>-<code>TypePolicy Object</code></li>
+</ul>
+<p>each field in a <code>typePolicies</code> object is a type's <code>__typename</code></p>
+<p>we can customize how a particular field within our Apollo cache is written to and read. For this, we have 2 methods: <code>merge</code> and <code>read</code>.</p>
+<ul>
+<li>with <code>read</code>, the cache calls that function whenever your client queries for the field. In the query response, the field is populated with the read function’s return value, instead of the field’s cached value.
+<ul>
+<li>Read is useful for manipulating values when they’re read from the cache, for example, things like formatting strings, dates, etc.</li>
+</ul>
+</li>
+<li>with <code>merge</code>, the cache calls that function whenever the field is about to be written with an incoming value. When the write occurs, the field’s new value is set to the merge function’s return value, instead of the original incoming value.
+<ul>
+<li>Merge can take incoming data and manipulate it before merging it with existing data. Suppose you want to merge arrays or non-normalized objects.</li>
+</ul>
+</li>
+<li>to define the policy for a single field, we need to first know which TypePolicy object the field corresponds to.</li>
+</ul>
+<p><code>FieldPolicy</code> lets us customize how individual fields in the Apollo Client cache are read and written.</p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/v2my8qqcjc7zzy2zzw6iod1">API</a></li>
+<li><a href="/notes/z9s37a2gqp8ru7ufjp0apm5">Cook</a></li>
+</ol>

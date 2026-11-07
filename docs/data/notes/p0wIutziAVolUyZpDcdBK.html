@@ -1,0 +1,3 @@
+<h1 id="ternary-operator">Ternary Operator<a aria-hidden="true" class="anchor-heading icon-link" href="#ternary-operator"></a></h1>
+<pre class="language-sh"><code class="language-sh">(test -d publishable/.next) &#x26;&#x26; (echo 'updating dendron next...' &#x26;&#x26; cd publishable/.next &#x26;&#x26; git reset --hard &#x26;&#x26; git clean -f &#x26;&#x26; git pull) || (echo 'init dendron next' &#x26;&#x26; npx @dendronhq/dendron-cli publish init --wsRoot publishable)
+</code></pre>

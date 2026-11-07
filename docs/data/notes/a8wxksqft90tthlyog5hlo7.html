@@ -1,0 +1,9 @@
+<h1 id="weak-consistency">Weak Consistency<a aria-hidden="true" class="anchor-heading icon-link" href="#weak-consistency"></a></h1>
+<p>With weak consistency, the data will be lost if the cache crashes before propagating the data to the database</p>
+<h3 id="how-does-it-work">How does it work?<a aria-hidden="true" class="anchor-heading icon-link" href="#how-does-it-work"></a></h3>
+<ol>
+<li>the client executes a write operation against the cache server</li>
+<li>the cache writes the received data to the message queue</li>
+<li>the cache sends an acknowledgment signal to the client</li>
+<li>the event processor asynchronously writes the data to the database</li>
+</ol>

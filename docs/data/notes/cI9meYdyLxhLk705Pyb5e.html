@@ -1,0 +1,12 @@
+<h1 id="cook">Cook<a aria-hidden="true" class="anchor-heading icon-link" href="#cook"></a></h1>
+<h3 id="run-a-typescript-file">Run a typescript file<a aria-hidden="true" class="anchor-heading icon-link" href="#run-a-typescript-file"></a></h3>
+<pre class="language-sh"><code class="language-sh"># the respawn flag will cause the file to be recompiled upon making changes
+node-dev file.ts --respawn
+</code></pre>
+<h3 id="destructure-objarray-with-types">Destructure obj/array with types<a aria-hidden="true" class="anchor-heading icon-link" href="#destructure-objarray-with-types"></a></h3>
+<p>Intuitively, we might try and do:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">const</span> <span class="token punctuation">{</span> name<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">,</span> age<span class="token operator">:</span> <span class="token builtin">number</span> <span class="token punctuation">}</span> <span class="token operator">=</span> body<span class="token punctuation">.</span><span class="token property-access">value</span>
+</code></pre>
+<p>But in reality we are renaming the destructed values. The correct way is like this:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">const</span> <span class="token punctuation">{</span> name<span class="token punctuation">,</span> age <span class="token punctuation">}</span><span class="token operator">:</span> <span class="token punctuation">{</span> name<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span> age<span class="token operator">:</span> <span class="token builtin">number</span> <span class="token punctuation">}</span> <span class="token operator">=</span> body<span class="token punctuation">.</span><span class="token property-access">value</span>
+</code></pre>

@@ -1,0 +1,97 @@
+<h1 id="regex">Regex<a aria-hidden="true" class="anchor-heading icon-link" href="#regex"></a></h1>
+<p>Regex is the art of defining a string format. This format could be as simple as a literal string (e.g. the word "email"), or it could be as complex as the pattern that an email address follows.</p>
+<h3 id="the-eager-regex-engine">The Eager Regex engine<a aria-hidden="true" class="anchor-heading icon-link" href="#the-eager-regex-engine"></a></h3>
+<p>Regex is eager, meaning it will always return the leftmost match even if there is a better match to be found later.</p>
+<ul>
+<li>put another way, the engine is “eager” to report a match.</li>
+<li>ex. if we were looking for the word <code>cat</code> in the sentence "He captured a catfish for his cat.", it would match the substring "cat" of the whole word "catfish", even though there is a single word "cat" at the end of the sentence. This shows how the regex engine returns the leftmost match; not the best match.</li>
+</ul>
+<p>Imagine we used an alternation to match one of multiple strings: <code>Get|GetValue|Set|SetValue</code>. Because</p>
+<ol>
+<li>The engine walks through the regex, attempting to match the next token (ie. character or character class) in the regex to the next character.</li>
+<li>If a match is found, the engine advances through the regex and the subject string.</li>
+<li>If a token fails to match, the engine backtracks to a previous position in the regex and the subject string where it can try a different path through the regex.</li>
+</ol>
+<p>A regex engine always returns the leftmost match, even if a “better” match could be found later:</p>
+<ol>
+<li>When applying a regex to a string, the engine starts at the first character of the string.</li>
+<li>It tries all possible permutations of the regular expression at the first character.</li>
+<li>Only if all possibilities have been tried and found to fail, does the engine continue with the second character in the text.</li>
+<li>Again, it tries all possible permutations of the regex, in exactly the same order. The result is that the regex engine returns the leftmost match.</li>
+</ol>
+<p><a href="https://www.regular-expressions.info/engine.html">source</a></p>
+<h3 id="implementing-business-logic-in-regex">Implementing Business Logic in Regex<a aria-hidden="true" class="anchor-heading icon-link" href="#implementing-business-logic-in-regex"></a></h3>
+<p>Consider that Regex can be used to implement business logic. For instance, consider the following Regex:</p>
+<pre><code>[0-9]{1,2}(\.\d+)? MB
+</code></pre>
+<p>This Regex will match <code>25 MB</code>, <code>3 MB</code>, <code>7.45 MB</code>, but not <code>100 MB</code>. By using <code>{1,2}</code>, we've limited our search to matches that are less than 100 MB.</p>
+<hr>
+<h3 id="match-vs-pattern">Match vs pattern<a aria-hidden="true" class="anchor-heading icon-link" href="#match-vs-pattern"></a></h3>
+<ul>
+<li><code>pattern</code> - the regex text that we type into the search field</li>
+<li><code>match</code> - any text in the document that is highlighted as a result of the search</li>
+</ul>
+<hr>
+<p>While there are many implementations of regex that differ sometimes slightly, there are basically only two kinds of regular expression engines: text-directed engines, and regex-directed engines, with nearly all modern regex flavors are based on regex-directed engines</p>
+<ul>
+<li>certain very useful features, such as lazy quantifiers, backreferences, atomic grouping, possessive quantifiers etc., can only be implemented in regex-directed engines.</li>
+</ul>
+<h2 id="different-flavors-of-regex">Different flavors of Regex<a aria-hidden="true" class="anchor-heading icon-link" href="#different-flavors-of-regex"></a></h2>
+<p>The "normal" regex is Perl-Compatible Regex (PCRE)</p>
+<ul>
+<li>may be contrasted with Basic Regular Expressions (BRE)</li>
+<li>Vim Regex largely follows BRE</li>
+</ul>
+<p>The main difference between the two is that BRE tends to treat more characters as literals - an "a" is an "a", but also a "(" is a "(", not a special character - and so involves more backslashes to give them "special" meaning.</p>
+<h4 id="bre">BRE<a aria-hidden="true" class="anchor-heading icon-link" href="#bre"></a></h4>
+<ul>
+<li>
+<p><code>\V</code> Verbatim Switch - only <code>\</code> has special meaning (ie. very nomagic)</p>
+<ul>
+<li>prevent regex symbols from taking over - <code>/\Va.k.a</code> (equivalent to <code>/a\.k\.a\.</code>)</li>
+<li>in regex, <code>.</code> means "match any character". making a verbatim search removes that functionality</li>
+<li>when we use <code>\V</code>, it means for the following search, only <code>\</code> will have a special meaning</li>
+</ul>
+</li>
+<li>
+<p><code>\v</code> Literal Switch - all characters (except word characters (<strong>[a-zA-Z_]</strong>)) have special meaning (ie. very magic)</p>
+</li>
+<li>
+<p>delimit words - since the word "the" appears in "these", if we wanted to just search for the word "the", we can use delimiters: <code>/\v&#x3C;the></code></p>
+</li>
+<li>
+<p>ignore case - <code>/search\c</code></p>
+</li>
+<li>
+<p>enforce case - <code>/search\C</code></p>
+</li>
+</ul>
+<h2 id="terms">Terms<a aria-hidden="true" class="anchor-heading icon-link" href="#terms"></a></h2>
+<ul>
+<li><strong>magic</strong> means we don't have to escape a character for it to take on its special meaning. </li>
+<li><strong>nomagic</strong> means we have to escape, because otherwise the character will be taken literally
+<ul>
+<li><em>ex.</em> with magic, <code>.</code> will mean "stand in for any character". with nomagic, it will literally mean "match the <code>.</code> character"</li>
+<li>this verbiage makes sense, because with magic, a lot of cool stuff is happening, but we have no idea how it's being done. Without magic, it's just looking for a character</li>
+</ul>
+</li>
+</ul>
+<h1 id="useful-regex-patterns">Useful Regex Patterns<a aria-hidden="true" class="anchor-heading icon-link" href="#useful-regex-patterns"></a></h1>
+<p><code>'\{\s.*ListView.*from\s.react-native.'</code> - search for a non-default exported module from a specific module</p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/w2VA5YkzLJzSw1JaxaFXL">Anchors</a></li>
+<li><a href="/notes/GDfm3P5Bmk2UIW7VXqOtQ">Backreferences</a></li>
+<li><a href="/notes/nzN1gIEjllvdUknO4s40W">Character Class</a></li>
+<li><a href="/notes/qGTAOUjURzlaW48DPjCLB">Cook</a></li>
+<li><a href="/notes/5fsrbU0bsjDTgusUDdDqa">Lookarounds</a></li>
+<li><a href="/notes/midPuyHDHxnZW01AbRXde">Quantifiers</a></li>
+<li><a href="/notes/bVQ4RQYN9p4GVYz9rmdtw">Special Characters</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/g7ulqi8no93ezeocbesc3ll">CouchDB</a></li>
+<li><a href="/notes/wnckFHaTMFPsvfloWlhQp">Pact API</a></li>
+</ul>

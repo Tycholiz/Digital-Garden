@@ -1,0 +1,10 @@
+<h1 id="cook">Cook<a aria-hidden="true" class="anchor-heading icon-link" href="#cook"></a></h1>
+<h4 id="check-if-a-variable-is-iterable">Check if a variable is iterable<a aria-hidden="true" class="anchor-heading icon-link" href="#check-if-a-variable-is-iterable"></a></h4>
+<p>Here, we basically check if there is an <code>each</code> method on the <code>@names</code> instance variable</p>
+<pre class="language-rb"><code class="language-rb"><span class="token keyword">if</span> <span class="token variable">@names</span><span class="token punctuation">.</span>respond_to<span class="token operator">?</span><span class="token punctuation">(</span><span class="token string-literal"><span class="token string">"each"</span></span><span class="token punctuation">)</span>
+</code></pre>
+<h4 id="access-shell-variables">Access shell variables<a aria-hidden="true" class="anchor-heading icon-link" href="#access-shell-variables"></a></h4>
+<pre class="language-rb"><code class="language-rb"><span class="token keyword">require</span> <span class="token string-literal"><span class="token string">'pathname'</span></span>
+
+<span class="token class-name">Pathname</span><span class="token punctuation">.</span><span class="token keyword">new</span><span class="token punctuation">(</span><span class="token constant">ENV</span><span class="token punctuation">[</span><span class="token string-literal"><span class="token string">'HOME'</span></span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+</code></pre>

@@ -1,0 +1,127 @@
+<h1 id="api">API<a aria-hidden="true" class="anchor-heading icon-link" href="#api"></a></h1>
+<h3 id="map"><code>map</code><a aria-hidden="true" class="anchor-heading icon-link" href="#map"></a></h3>
+<p>analogous to <code>Array.map</code> in that it applies a given <em>project function</em> on each value of a collection. </p>
+<ul>
+<li>while <code>Array.map</code> accepts an array and returns an array, <code>Observable.map</code> accepts an observable and returns an observable.</li>
+</ul>
+<h3 id="pipe"><code>pipe</code><a aria-hidden="true" class="anchor-heading icon-link" href="#pipe"></a></h3>
+<p>Takes in observable(s) as input and returns another observable</p>
+<ul>
+<li><code>pipe</code> is immutable, so previous observables remain unmodified.</li>
+</ul>
+<p>By using <code>pipe</code> we decouple the streaming operations (map, filter, reduce...) from the core functionality (subscribing, piping).</p>
+<p>Even if there is only one observable, we should still use <code>pipe</code></p>
+<p><a href="/notes/fc9b08ppx50dc55dj8wixsc#pipeable-operators1">see: pipeable operators</a></p>
+<h3 id="from"><code>from</code><a aria-hidden="true" class="anchor-heading icon-link" href="#from"></a></h3>
+<p>Turn an array, promise, or iterable into an observable.</p>
+<p>Similar to <code>of()</code>, except <code>from()</code> emits the items that are inside the argument it receives, while <code>of()</code> emits the argument as a whole.</p>
+<h3 id="fromevent"><code>fromEvent</code><a aria-hidden="true" class="anchor-heading icon-link" href="#fromevent"></a></h3>
+<p>Creates an observable that emits certain events (e.g. click events) coming from a given event target.</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> source <span class="token operator">=</span> <span class="token function">fromEvent</span><span class="token punctuation">(</span>button<span class="token punctuation">,</span> <span class="token string">"click"</span><span class="token punctuation">)</span>
+<span class="token keyword">const</span> subscribe <span class="token operator">=</span> source<span class="token punctuation">.</span><span class="token method function property-access">subscribe</span><span class="token punctuation">(</span><span class="token parameter">val</span> <span class="token arrow operator">=></span> <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span>val<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre>
+<h3 id="of"><code>of</code><a aria-hidden="true" class="anchor-heading icon-link" href="#of"></a></h3>
+<p><code>of()</code> returns an Observable which immediately emits whatever values are supplied to <code>of()</code> as parameters, then completes.</p>
+<ul>
+<li>This is better than returning static values, as it allows you to write subscribers that can handle the Observable type (which works both synchronously and asynchronously), even before implementing your async process.</li>
+</ul>
+<p>Emit variable amount of values in a sequence and then emits a complete notification.</p>
+<p><code>of</code> is useful for maintaining the Observable data type before implementing an asynchronous interaction </p>
+<ul>
+<li>ex. an http request to an API</li>
+</ul>
+<p>Contrary to what the docs might suggest, <code>of()</code> is not deprecated. Calling <code>.of()</code> on an observable is deprecated, so we must change the way we use it:</p>
+<pre class="language-js"><code class="language-js"><span class="token comment">// before</span>
+<span class="token maybe-class-name">Observable</span><span class="token punctuation">.</span><span class="token method function property-access">of</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token method function property-access">map</span><span class="token punctuation">(</span><span class="token parameter">x</span> <span class="token arrow operator">=></span> <span class="token number">2</span> <span class="token operator">*</span> x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// after</span>
+<span class="token keyword">of</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token method function property-access">pipe</span><span class="token punctuation">(</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token parameter">x</span> <span class="token arrow operator">=></span> <span class="token number">2</span> <span class="token operator">*</span> x<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h3 id="pluck"><code>pluck</code><a aria-hidden="true" class="anchor-heading icon-link" href="#pluck"></a></h3>
+<p><code>pluck</code> is used when we just need to pass single field value to the subscription instead of sending entire JSON object.</p>
+<h3 id="tap"><code>tap</code><a aria-hidden="true" class="anchor-heading icon-link" href="#tap"></a></h3>
+<p><code>tap</code> is a place to perform side-effects. </p>
+<ul>
+<li>Typically we use it with <code>map</code> or <code>mergeMap</code>, so the question becomes "why don't we just perform our side-effects in those methods?"
+<ul>
+<li>Performing side-effects here makes those <code>map</code> methods impure, limiting ourselves. For instance, it would prevent us from being able to memoize.</li>
+</ul>
+</li>
+</ul>
+<p><code>tap</code> returns an observable that is identical to the source with the only difference being that if there was an error, it will be emitted from the returned observable.</p>
+<p>Conveniently, we can also use <code>tap</code> for debugging</p>
+<ul>
+<li>can place a <code>tap(console.log)</code> anywhere in your observable pipe, log out the notifications as they are emitted by the source returned by the previous operation.</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token keyword">of</span><span class="token punctuation">(</span><span class="token known-class-name class-name">Math</span><span class="token punctuation">.</span><span class="token method function property-access">random</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token method function property-access">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">tap</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">value</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">map</span><span class="token punctuation">(</span><span class="token parameter">n</span> <span class="token arrow operator">=></span> n <span class="token operator">></span> <span class="token number">0.5</span> <span class="token operator">?</span> <span class="token string">'big'</span> <span class="token operator">:</span> <span class="token string">'small'</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token method function property-access">subscribe</span><span class="token punctuation">(</span><span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token property-access">log</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h3 id="combinelatest"><code>combineLatest</code><a aria-hidden="true" class="anchor-heading icon-link" href="#combinelatest"></a></h3>
+<p>This operator combines multiple Observables to create an Observable whose values are calculated from the latest values of each of its input Observables.</p>
+<ul>
+<li>Whenever any input Observable emits a value, it computes a formula using the latest values from all the inputs, then emits the output of that formula</li>
+</ul>
+<h2 id="higher-order-observables">Higher-order observables<a aria-hidden="true" class="anchor-heading icon-link" href="#higher-order-observables"></a></h2>
+<ul>
+<li><strong><em>flatten</em></strong> - subscribing inside a subscribe</li>
+<li>All work mostly in same manner
+<ul>
+<li>They map some value to an observable (you are the one in charge of returning an observable value from them, they just map it)</li>
+<li>They flatten the observable you return ( they just subscribe to it)</li>
+<li>They decide about what to do before / after they flatten (“Flattening Strategy”)</li>
+</ul>
+</li>
+</ul>
+<h3 id="concatall"><code>concatAll</code><a aria-hidden="true" class="anchor-heading icon-link" href="#concatall"></a></h3>
+<p>subscribes to each "inner" Observable that comes out of the "outer" Observable, and copies all the emitted values until that Observable completes, and goes on to the next one. </p>
+<ul>
+<li>All of the values are in that way concatenated</li>
+</ul>
+<h3 id="mergemap-map--mergeall---the-slacker-operator"><code>mergeMap</code> (<code>map</code> + <code>mergeAll</code>) - the slacker operator<a aria-hidden="true" class="anchor-heading icon-link" href="#mergemap-map--mergeall---the-slacker-operator"></a></h3>
+<ul>
+<li>simply keep subscribing to every new observable that we return from the map</li>
+<li>Other than mapping + flattening the observable, it does nothing else.</li>
+<li>ex. Imagine Netflix shows up-to-date ratings for each movie, retrieved from IMDB's API. We can <code>mergeMap</code> the movie into an http request to IMDB to get this data and enhance our UI.</li>
+<li>Maps each value to an Observable, then flattens all of these inner Observables using <code>mergeAll</code>.</li>
+</ul>
+<h3 id="switchmap-map--switch---the-latest-and-greatest-operator"><code>switchMap</code> (<code>map</code> + <code>switch</code>) - the "latest and greatest" operator<a aria-hidden="true" class="anchor-heading icon-link" href="#switchmap-map--switch---the-latest-and-greatest-operator"></a></h3>
+<ul>
+<li>unsubscribe from the last mapped observable</li>
+<li>ex. Imagine we are typing in Google and the autocomplete box shows up. Of course, these suggestions change with each key press. If we use <code>switchMap</code>, each previous request will be cancelled if a new one happens. If we'd used <code>mergeMap</code>, a request for each keystroke would be made</li>
+<li><code>switchMap</code> projects each source value to an Observable which is merged in the output Observable, emitting values only from the most recently projected Observable</li>
+<li>ie. it maps each value to an Observable, then flattens all of these Observables in the only output Observable.</li>
+</ul>
+<h3 id="concatmap-map--concatall---the-wait-in-line-operator"><code>concatMap</code> (<code>map</code> + <code>concatAll</code>) - the "wait in line" operator<a aria-hidden="true" class="anchor-heading icon-link" href="#concatmap-map--concatall---the-wait-in-line-operator"></a></h3>
+<ul>
+<li>queue up the observables one after the other, and play their events in that order (i.e. subscribe to the next Observable in the queue only when the previous one is completed).</li>
+<li>Similar to <code>mergeMap</code>, except order matters
+<ul>
+<li><code>concatMap</code> is <code>mergeMap</code> with a concurrency of 1.</li>
+</ul>
+</li>
+<li>ex. top 10 list</li>
+</ul>
+<h3 id="exhaustmap---the-do-not-disturb-operator"><code>exhaustMap</code> - the "do not disturb" operator<a aria-hidden="true" class="anchor-heading icon-link" href="#exhaustmap---the-do-not-disturb-operator"></a></h3>
+<ul>
+<li>
+<p>waits for the current inner observable to complete (exhaust) so that the next item would be turned into an inner observable (items emmitted while inner observable is running are ignored). ExhaustMap is very similar to concatMap, but drops some values:</p>
+</li>
+<li>
+<p><code>concatMap</code> - will take everything, inner observable n has to finish before n+1 will start</p>
+</li>
+<li>
+<p><code>exhaustMap</code> - will ignore all items which <em>would</em> produce new inner observables, if there is an inner observable running</p>
+</li>
+<li>
+<p>ex. login button - since we don't want multiple clicks to be registered, we want want to disable mapping while the first http request is on the go, ensuring that we never call the server while the current request is running.</p>
+</li>
+</ul>
+<h2 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h2>
+<p><a href="https://betterprogramming.pub/how-to-create-observables-in-rxjs-aa3bf79b05e0">https://betterprogramming.pub/how-to-create-observables-in-rxjs-aa3bf79b05e0</a></p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/PwvObIRuk7dy0GXweZT0c">Observable</a></li>
+</ul>

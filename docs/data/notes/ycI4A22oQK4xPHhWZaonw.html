@@ -1,0 +1,52 @@
+<h1 id="functions">Functions<a aria-hidden="true" class="anchor-heading icon-link" href="#functions"></a></h1>
+<p>In JavaScript, functions are not only blocks of code but also objects with associated context (the <a href="/notes/TNGo4AE63BetApHCGbQIE">this</a> value)</p>
+<ul>
+<li>By using <code>.bind</code>, you effectively create a new function that, when invoked, will maintain the specified context regardless of where it's called. This is especially useful when dealing with asynchronous functions that may be called at different times and contexts.</li>
+</ul>
+<p>When you pass an object (or array) as a parameter, if the function changes the object's properties (or array's elements), that change is visible outside the function</p>
+<h2 id="arrow-function">Arrow Function<a aria-hidden="true" class="anchor-heading icon-link" href="#arrow-function"></a></h2>
+<ul>
+<li>Arrow functions do not have their own <a href="/notes/TNGo4AE63BetApHCGbQIE">this</a>, <code>arguments</code>, or <code>super</code>. </li>
+<li>Arrow functions are always anonymous.</li>
+</ul>
+<h2 id="tagged-template-literals">Tagged Template Literals<a aria-hidden="true" class="anchor-heading icon-link" href="#tagged-template-literals"></a></h2>
+<pre class="language-js"><code class="language-js"><span class="token comment">// These are equivalent:</span>
+fn<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">some string here</span><span class="token template-punctuation string">`</span></span>
+<span class="token function">fn</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'some string here'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+</code></pre>
+<hr>
+<p>The rest of the arguments will be the interpolations, in order.</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> aVar <span class="token operator">=</span> <span class="token string">'good'</span>
+
+<span class="token comment">// These are equivalent:</span>
+fn<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">this is a </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>aVar<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> day</span><span class="token template-punctuation string">`</span></span>
+<span class="token function">fn</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'this is a '</span><span class="token punctuation">,</span> <span class="token string">' day'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> aVar<span class="token punctuation">)</span>
+</code></pre>
+<h2 id="identity-function">Identity function<a aria-hidden="true" class="anchor-heading icon-link" href="#identity-function"></a></h2>
+<pre><code>fetchBook()
+  .then((book) => formatBook(book))
+  .then((postscript) => print(postscript))
+</code></pre>
+<p>is equivalent to (verify this)</p>
+<pre><code>fetchBook()
+  .then(formatBook)
+  .then(print);
+</code></pre>
+<h3 id="passing-in-a-named-function-vs-passing-in-a-function-that-calls-the-named-function">Passing in a named function vs Passing in a function that calls the named function<a aria-hidden="true" class="anchor-heading icon-link" href="#passing-in-a-named-function-vs-passing-in-a-function-that-calls-the-named-function"></a></h3>
+<p><code>setTimeout</code> will call the passed in function after X milliseconds.</p>
+<ul>
+<li>in the first case, <code>resolve</code> gets called, which resolves the promise</li>
+<li>in the second case, a function which calls <code>resolve</code> gets called. The act of calling this function results in <code>resolve</code> being called</li>
+</ul>
+<p>Therefore, these are not the same thing, but they attain the same result</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token function-variable function">sleep</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">ms</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span><span class="token parameter">resolve</span> <span class="token arrow operator">=></span> <span class="token function">setTimeout</span><span class="token punctuation">(</span>resolve<span class="token punctuation">,</span> ms<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment">// vs</span>
+<span class="token keyword">const</span> <span class="token function-variable function">sleep</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">ms</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span><span class="token parameter">resolve</span> <span class="token arrow operator">=></span> <span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token function">resolve</span><span class="token punctuation">(</span><span class="token string">'foo'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> ms<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/GwpfAU7h2KfT3Ld9v8c2B">Generator Functions</a></li>
+<li><a href="/notes/DsZDJNeN5czEgtcwlUrwX">IIFE</a></li>
+<li><a href="/notes/oEhmsVtjrXZomySs0QFij">Tagged Template Literals</a></li>
+</ol>

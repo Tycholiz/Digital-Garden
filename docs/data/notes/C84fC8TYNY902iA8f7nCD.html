@@ -1,0 +1,50 @@
+<h1 id="terragrunt">Terragrunt<a aria-hidden="true" class="anchor-heading icon-link" href="#terragrunt"></a></h1>
+<p>Terragrunt is a tool on top of <a href="/notes/Ku1OgHMhELajzo61Gx7ye">Terraform</a> for orchestrating multiple <a href="/notes/zSuIFLNNKKEtLtwhe8nez">modules</a> at a time</p>
+<ul>
+<li>
+<p>Terragrunt helps organize <a href="/notes/NsY5hHUmyMhwB61BfihyD">state files</a>, help reduce code duplication, manage different AWS accounts gracefully.</p>
+</li>
+<li>
+<p>ex. We have an <a href="/notes/hUvXun5sLRxKOZXIZFuV1">IAM Role</a> for a Lambda function to run, but also have an S3 bucket for code to be deployed into. These 2 things aren't really related to each other, so we can put them into their own modules and then use Terragrunt to orchestrate all those modules and then deploy them all at once. </p>
+<ul>
+<li>Terragrunt sees all the modules it has to deploy (the terraform code) and figures out how to deploy it.</li>
+</ul>
+</li>
+</ul>
+<p>This is how we would implement the same <code>example_bucket</code> in both Terraform and Terragrunt.</p>
+<p>Terraform:</p>
+<pre class="language-tf"><code class="language-tf">resource "aws_s3_bucket" "example_bucket" {
+    bucket = "my-test-bucket"
+    acl = "private"
+    tags = {
+        Name = "My bucket"
+        Environment = "Dev"
+    }
+}
+</code></pre>
+<p>Terragrunt:</p>
+<pre class="language-hcl"><code class="language-hcl"><span class="token keyword">locals</span> <span class="token punctuation">{</span>
+    <span class="token property">env</span> <span class="token punctuation">=</span> <span class="token string">"development"</span>
+    <span class="token property">short_env</span> <span class="token punctuation">=</span> <span class="token string">"dev"</span>
+    <span class="token property">region</span> <span class="token punctuation">=</span> <span class="token string">"us-east-1"</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">terraform</span> <span class="token punctuation">{</span>
+    <span class="token comment"># This references a predefined S3 module. In this case, it is a repo called</span>
+    <span class="token comment"># S3 in the terraform-modules project group. The benefit is that there is a</span>
+    <span class="token comment"># lot of S3 code that would be the same across different S3 buckets. We can</span>
+    <span class="token comment"># define it once here, then reference it each time we create a new bucket.</span>
+    <span class="token property">source</span> <span class="token punctuation">=</span> <span class="token string">"git::https://gitlab.com/tycholiz/infra/terraform-modules/s3.git//?ref=0.3.0"</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment"># These are inputs that are used by the source S3 bucket referenced above</span>
+<span class="token comment"># (terraform-modules/s3)</span>
+<span class="token property">inputs</span> <span class="token punctuation">=</span> <span class="token punctuation">{</span>
+    <span class="token property">bucket_name</span> <span class="token punctuation">=</span> <span class="token string">"my-test-bucket-<span class="token interpolation"><span class="token punctuation">$</span><span class="token punctuation">{</span>locals<span class="token punctuation">.</span>short_env<span class="token punctuation">}</span></span>-<span class="token interpolation"><span class="token punctuation">$</span><span class="token punctuation">{</span>locals<span class="token punctuation">.</span>region<span class="token punctuation">}</span></span>-serverless"</span>
+    <span class="token property">environment</span> <span class="token punctuation">=</span> locals.env
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h2>
+<ul>
+<li><a href="https://transcend.io/blog/why-we-use-terragrunt/">https://transcend.io/blog/why-we-use-terragrunt/</a></li>
+</ul>

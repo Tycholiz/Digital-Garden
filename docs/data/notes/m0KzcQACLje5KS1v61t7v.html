@@ -1,0 +1,23 @@
+<h1 id="stub">Stub<a aria-hidden="true" class="anchor-heading icon-link" href="#stub"></a></h1>
+<p>Stubs provide canned answers to calls made during the test, usually not responding at all to anything outside what's programmed in for the test.</p>
+<p>Stubs are a kind of <a href="/notes/otxChSDHzNWESFUFx6U4y">dummy</a></p>
+<p>Imagine you were testing a part of your system that required you to be logged in. You could simply log in to carry out actions in the test, but why test that functionality again, when we have (presumably) already tested it elsewhere?</p>
+<p>Instead, let's just extend the regular <code>Authorizer</code> class to override <code>login</code> to just be a method that returns <code>true</code>.</p>
+<ul>
+<li>then, when we want to test the part of the system that expects an unauthorized user, we can just return <code>false</code> from the stub.</li>
+</ul>
+<pre class="language-java"><code class="language-java"><span class="token annotation punctuation">@Test</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">newlyCreatedSystem_hasNoLoggedInUsers</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token class-name">System</span> system <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">System</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">AcceptingAuthorizerStub</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	system<span class="token punctuation">.</span>authorizer<span class="token punctuation">.</span><span class="token function">login</span><span class="token punctuation">(</span>'dude<span class="token annotation punctuation">@dude.com</span><span class="token char">', '</span>securePassword'<span class="token punctuation">)</span>
+	<span class="token function">assertThat</span><span class="token punctuation">(</span>system<span class="token punctuation">.</span><span class="token function">loginCount</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">is</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<hr>
+<p>Example: Your test class depends on a method <code>Calculate()</code> taking 5 minutes to complete. Rather than wait for 5 minutes you can replace its real implementation with a stub that returns hard-coded values; taking only a small fraction of the time.</p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/965AqO8bdqbS0Et9bKsUO">Test Double</a></li>
+<li><a href="/notes/4gVYCsW8AJjv9DGE8TJdr">Spy</a></li>
+</ul>

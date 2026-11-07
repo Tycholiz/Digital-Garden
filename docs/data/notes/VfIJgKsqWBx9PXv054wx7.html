@@ -1,0 +1,17 @@
+<h1 id="root-nameserver">Root Nameserver<a aria-hidden="true" class="anchor-heading icon-link" href="#root-nameserver"></a></h1>
+<p>The root nameservers know where the <a href="/notes/vuSZhKeQU8JmAXynHqZvf">authoritative nameservers</a> for each of the top-level <a href="/notes/rKwvAx3SP99In467imzlg">zones</a> are. </p>
+<p>There are 13 sets of root nameservers strategically distributed across the globe, each managed by different organizations. </p>
+<ul>
+<li>These servers are responsible for providing the starting point in the DNS resolution process, which is kicked off when the <a href="/notes/uQ1OlrkssyoguJ6mCM7hj">resolver</a> queries the root nameserver for the given TLD.</li>
+<li>When queried, the root nameserver accepts the domain name and returns the names and addresses of the nameservers that are authoritative for the top-level zone the domain name ends in (e.g. <code>com</code>)</li>
+<li>The word "root" in the term is with reference to a root in a filesystem. It is the set that contains all TLDs. This is why we call them <em>root nameservers</em>. They live at the root, and provide preliminary information about specific TLDs.</li>
+</ul>
+<p>note: while there are only 13 sets of root nameservers, they are replicated and distributed across multiple physical locations worldwide to ensure redundancy and resilience of the DNS system.</p>
+<ul>
+<li>ex. <strong>F-Root Server</strong> --></li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/O6qGBZUWwgsnOyTDdvSAK">DNS Nameservers</a></li>
+</ul>
