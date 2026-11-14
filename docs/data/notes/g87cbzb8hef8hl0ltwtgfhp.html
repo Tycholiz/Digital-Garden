@@ -1,0 +1,49 @@
+<h1 id="stat">Stat<a aria-hidden="true" class="anchor-heading icon-link" href="#stat"></a></h1>
+<p>Setting state only changes it for the <em>next</em> <a href="/notes/Bqpifx2HX3vjLhX9yvhTV#rendering">render</a></p>
+<ul>
+<li>ex. if we have a button that sets the state multiple times, using the existing state as a dependency, we would get unexpected behaviour, and the <code>number</code> state would only increment once per click. If the initial state of <code>number</code> is <code>0</code>, then that is the value that is used each time <code>setNumber</code> is called:</li>
+</ul>
+<pre class="language-jsx"><code class="language-jsx"><span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span>button</span> <span class="token attr-name">onClick</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+    <span class="token function">setNumber</span><span class="token punctuation">(</span>number <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">setNumber</span><span class="token punctuation">(</span>number <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">setNumber</span><span class="token punctuation">(</span>number <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">}</span></span><span class="token punctuation">></span></span><span class="token plain-text">
+    +3
+</span><span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;/</span>button</span><span class="token punctuation">></span></span>
+</code></pre>
+<p>Phrased another way, on any given render, the state (and props) are <em>always</em> the same.</p>
+<p>If you would like to update the same state variable multiple times before the next render, instead of passing the next state value like <code>setNumber(number + 1)</code>, you can pass a function that calculates the next state based on the previous one in the queue, like <code>setNumber(n => n + 1)</code></p>
+<ul>
+<li>this is a way to tell React to “do something with the state value” instead of just replacing it.</li>
+<li>this is called an <strong>updater function</strong>, and when you pass it to a state setter:
+<ol>
+<li>React queues this function to be processed after all the other code in the event handler has run.</li>
+<li>During the next render, React goes through the queue and gives you the final updated state.</li>
+</ol>
+</li>
+<li>technically, <code>setNumber(6)</code> is identical to <code>setNumber(x => 6)</code></li>
+</ul>
+<p>When something can be calculated from the existing props or state, don’t put it in state. Instead, calculate it during rendering.</p>
+<h3 id="avoiding-state-paradoxes">Avoiding State Paradoxes<a aria-hidden="true" class="anchor-heading icon-link" href="#avoiding-state-paradoxes"></a></h3>
+<p>ex. <code>isTyping</code> and <code>isSubmitting</code> can’t both be true, so instead of having these as distinct states, replace with with a <code>status</code> state that can be <code>typing</code>, <code>submitting</code>, or <code>success</code>.</p>
+<h3 id="batching">Batching<a aria-hidden="true" class="anchor-heading icon-link" href="#batching"></a></h3>
+<p>As of React 18, React will wait until all code in the event handlers have run before processing your state updates.</p>
+<ul>
+<li>therefore, re-rendering doesn't occur until the event handler has finished execution</li>
+<li>anal: a waiter doesn't return to the kitchen with an order after each guest gives their order— Instead, they let you finish your order, let you make changes to it, and even take orders from other people at the table, before notifying the kitchen.</li>
+</ul>
+<p>The problem is that when we update multiple pieces of state in sequence, React will re-render the component. We need a way to tell React "hey, don't bother re-rendering until I've completed my whole sequence of state updates."</p>
+<p>When we implement a click handler, we are implementing the same benefits that batching gives us. Only a single re-render would be triggered from the following click handler:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">handleClick</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token function">setIsFetching</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">setError</span><span class="token punctuation">(</span><span class="token keyword null nil">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">setFormStatus</span><span class="token punctuation">(</span><span class="token string">'success'</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>However, what if we wanted to change the 3 pieces of state <em>not</em> in response to an event handler? Imagine we want the state to be updated when a fetch resolves?</p>
+<h3 id="forcing-a-re-render">Forcing a Re-render<a aria-hidden="true" class="anchor-heading icon-link" href="#forcing-a-re-render"></a></h3>
+<p>Imagine we had a chat application with 2 components: <code>&#x3C;ContactList /></code> and <code>&#x3C;Chat /></code>. The <code>&#x3C;Chat /></code> component takes <code>contact</code> as a prop, which is an object with the shape: <code>{ name: 'Taylor', email: 'taylor@mail.com' }</code>.</p>
+<ul>
+<li>by default, the <code>&#x3C;Chat /></code> component won't re-render, even if the object changes. We can however, force the component to re-render by passing it the <code>key</code> prop like this: <code>&#x3C;Chat key={to.email} contact={to} /></code>. That way, when the <code>to.email</code> value changes, the component will be re-rendered.</li>
+<li><a href="https://react.dev/learn/managing-state#preserving-and-resetting-state">original example</a></li>
+</ul>

@@ -1,0 +1,20 @@
+<h1 id="replica-set">Replica Set<a aria-hidden="true" class="anchor-heading icon-link" href="#replica-set"></a></h1>
+<p>A replica set is a group of <code>mongod</code> processes that maintain the same dataset.</p>
+<p>Replica sets provide redundancy and high availability.</p>
+<p>A replica set contains several data bearing nodes and optionally one arbiter node. </p>
+<h3 id="primary-and-secondary-nodes">Primary and Secondary nodes<a aria-hidden="true" class="anchor-heading icon-link" href="#primary-and-secondary-nodes"></a></h3>
+<p>Of the data bearing nodes, one and only one member is deemed the primary node, while the other nodes are deemed secondary nodes.</p>
+<ul>
+<li>The primary node receives all write operations and records all changes to its data sets in its operation log (ie. <code>oplog</code>).</li>
+<li>The secondaries replicate the primary's oplog and apply the operations to their data sets (asynchronously) so they are brought in sync with the primary node.</li>
+<li>If the primary is unavailable, an eligible secondary will hold an election to elect itself the new primary. </li>
+</ul>
+<h3 id="arbiter">Arbiter<a aria-hidden="true" class="anchor-heading icon-link" href="#arbiter"></a></h3>
+<p>In some circumstances (such as you have a primary and a secondary but cost constraints prohibit adding another secondary), you may choose to add a
+mongod instance to a replica set as an arbiter. An arbiter participates in elections but does not hold data</p>
+<h3 id="failover">Failover<a aria-hidden="true" class="anchor-heading icon-link" href="#failover"></a></h3>
+<p>When a primary does not communicate with the other members of the set for more than the configured <code>electionTimeoutMillis</code> period (10 seconds by default), an eligible secondary calls for an election to nominate itself as the new primary. The cluster attempts to complete the election of a new primary and resume normal operations.</p>
+<ul>
+<li>until the election is complete, the replica set cannot process write operations.</li>
+<li>The median time before a cluster elects a new primary should not typically exceed 12 seconds</li>
+</ul>

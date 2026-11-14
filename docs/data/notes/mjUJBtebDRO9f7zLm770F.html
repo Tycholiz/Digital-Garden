@@ -1,0 +1,8 @@
+<h1 id="lag">Lag<a aria-hidden="true" class="anchor-heading icon-link" href="#lag"></a></h1>
+<p><code>lag</code> allows us to access access rows that appeared before the current row that we are accessing. We give <code>lag</code> an offset and we get back the row that appeared <code>x</code> spots before the current one.</p>
+<ul>
+<li>Naturally, this makes <code>lag</code> useful in being able to compare the values of the current and previous rows.</li>
+</ul>
+<p>The following gives us the previous row.</p>
+<pre class="language-sql"><code class="language-sql">lag<span class="token punctuation">(</span>invoice<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+</code></pre>

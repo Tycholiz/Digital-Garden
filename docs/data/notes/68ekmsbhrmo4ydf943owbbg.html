@@ -1,0 +1,6 @@
+<h1 id="event-aggregator">Event Aggregator<a aria-hidden="true" class="anchor-heading icon-link" href="#event-aggregator"></a></h1>
+<h2 id="what-is-it">What is it?<a aria-hidden="true" class="anchor-heading icon-link" href="#what-is-it"></a></h2>
+<p>A system with lots of objects can lead to complexities when a client wants to subscribe to events. The client has to find and register for each object individually, if each object has multiple events then each event requires a separate subscription.</p>
+<p>To get around this, we can add a layer in between called an Event Aggregator which does the work of registering to the events of many different objects, combining them, then allowing clients to register with the aggregator itself.</p>
+<p>An Event Aggregator is a simple element of <a href="/notes/EZVRwWWSn1VScuwfHnVVi">indirection</a></p>
+<p>a Event Aggregator also simplifies the memory management issues in using <a href="/notes/8WM25UUb7awuEzLyycLpN">observers</a>.</p>

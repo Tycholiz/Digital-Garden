@@ -1,0 +1,30 @@
+<h1 id="insert">Insert<a aria-hidden="true" class="anchor-heading icon-link" href="#insert"></a></h1>
+<p>There are generally three methods in PostgreSQL with which you can fill a table with data:</p>
+<ol>
+<li>Use the <code>INSERT INTO</code> command with a grouped set of data to insert new values.</li>
+<li>Use the <code>INSERT INTO</code> command in conjunction with a <code>SELECT</code> statement to insert existing values from another table.</li>
+<li>Use the <code>COPY</code> (or <code>\copy</code>) command to insert values from a system file.</li>
+</ol>
+<p><code>insert...on conflict</code> can be used to implement upsert</p>
+<h3 id="returning">RETURNING<a aria-hidden="true" class="anchor-heading icon-link" href="#returning"></a></h3>
+<ul>
+<li>allows us to get back the columns that were successfully inserted into the table
+<ul>
+<li>ex. INSERT INTO</li>
+</ul>
+</li>
+<li>Using this method, we can get back default values (like id or timestamps)</li>
+<li>This method is also useful to insert rows into a variable, which we can then simply return from the whole function</li>
+</ul>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">declare</span>
+  v_person forum_example<span class="token punctuation">.</span>person<span class="token punctuation">;</span>
+<span class="token keyword">begin</span>
+	<span class="token keyword">insert</span> <span class="token keyword">into</span> forum_example<span class="token punctuation">.</span>person <span class="token punctuation">(</span>first_name<span class="token punctuation">,</span> last_name<span class="token punctuation">)</span> <span class="token keyword">values</span>
+		<span class="token punctuation">(</span>first_name<span class="token punctuation">,</span> last_name<span class="token punctuation">)</span>
+		<span class="token keyword">returning</span> <span class="token operator">*</span> <span class="token keyword">into</span> v_person<span class="token punctuation">;</span>
+</code></pre>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/VyQn26UW9452NjBGyUmMe">Cook</a></li>
+</ol>

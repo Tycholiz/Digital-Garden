@@ -1,0 +1,15 @@
+<h1 id="docker-machine">Docker Machine<a aria-hidden="true" class="anchor-heading icon-link" href="#docker-machine"></a></h1>
+<p>Docker engine is a tool that lets us install Docker Engine on virtual hosts and manage those hosts</p>
+<pre><code>- Therefore, it is something we install on our own computer.
+- with the **driver** concept, we can deploy to 3rd party cloud services, like AWS, DigitalOcean, or even VirtualBox on your local machine
+</code></pre>
+<ul>
+<li><em>docker-machine</em> commands let us start, inspect, stop, and restart hosts, as well as configure a docker client to talk to the hosts.</li>
+<li>it allows us to control the docker engine of a VM created using docker-machine</li>
+<li>The main reason you would use docker-machine is when you want to create a deployment environment for your application and manage all the micro-services running on it</li>
+<li>To setup, all we need to do is point our <code>docker-machine</code> CLI at our managed host, which enables us to run docker commands directly on that host.</li>
+</ul>
+<h3 id="connecting-to-docker-machine">Connecting to Docker Machine<a aria-hidden="true" class="anchor-heading icon-link" href="#connecting-to-docker-machine"></a></h3>
+<p>The connection to a docker machine is made available through env variables. By default, they are unset, giving us our default connection
+<code>docker-machine env -u</code> will show us how to unset all variables to return to our default connection
+If we wanted to connect to minikube, we could run `eval $(minikube docker-env)</p>

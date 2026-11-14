@@ -1,0 +1,43 @@
+<h1 id="makefile">Makefile<a aria-hidden="true" class="anchor-heading icon-link" href="#makefile"></a></h1>
+<h3 id="purpose">Purpose<a aria-hidden="true" class="anchor-heading icon-link" href="#purpose"></a></h3>
+<ul>
+<li>to help decide which parts of a program need to be recompiled.</li>
+<li>Makefiles allow us to give a series of instructions to run depending on what files have changed.</li>
+<li>similar to the sript section of the <code>package.json</code></li>
+</ul>
+<h3 id="structure">Structure<a aria-hidden="true" class="anchor-heading icon-link" href="#structure"></a></h3>
+<ul>
+<li>a Makefile consists of a set of rules, which take the form:</li>
+</ul>
+<pre><code>targets: prerequisites
+   command
+   command
+   command
+</code></pre>
+<ul>
+<li><code>targets</code> are filenames.</li>
+<li><code>commands</code> are a series of steps, normally used to make the target(s)</li>
+<li><code>prerequisites</code> are dependencies that are needed before the commands can be run.</li>
+</ul>
+<h1 id="-running-make-command">## Running "make" command<a aria-hidden="true" class="anchor-heading icon-link" href="#-running-make-command"></a></h1>
+<ul>
+<li>when we run <code>make</code> without arguments, the first target that doesn't begin with <code>.</code> is processed. This is known as the <em>default goal</em>.
+<ul>
+<li>To do this, it may have to process other targets, specifically ones that the first target depends on.</li>
+</ul>
+</li>
+<li>Often the <em>default goal</em> is called <code>all</code>, though this is just a convention.</li>
+</ul>
+<h4 id="building-from-source-with-make">Building from source with <code>make</code><a aria-hidden="true" class="anchor-heading icon-link" href="#building-from-source-with-make"></a></h4>
+<ol>
+<li>run <code>make</code></li>
+<li>run <code>sudo make install</code></li>
+</ol>
+<h3 id="syntax">Syntax<a aria-hidden="true" class="anchor-heading icon-link" href="#syntax"></a></h3>
+<ul>
+<li><code>PG_CONFIG ?= pg_config</code> - set PG_CONFIG variable only if it isn't already set</li>
+</ul>
+<h2 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h2>
+<ul>
+<li><a href="https://makefiletutorial.com/">Makefile Tutorial</a></li>
+</ul>

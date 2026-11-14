@@ -1,0 +1,76 @@
+<h1 id="quantifiers">Quantifiers<a aria-hidden="true" class="anchor-heading icon-link" href="#quantifiers"></a></h1>
+<p>Quantifiers help us achieve repetition</p>
+<ul>
+<li>they will match the whole character class; not just the character that was actually matched
+<ul>
+<li>ex. The regex <code>[0-9]+</code> can match 837 as well as 222.</li>
+<li>If you want to repeat the matched character, rather than the class, you need to use <a href="/notes/GDfm3P5Bmk2UIW7VXqOtQ">backreferences</a>
+<ul>
+<li>ex. <code>([0-9])\1+</code> matches 222 but not 837</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Quantifiers can be applied to an entire group of character classes with <code>()</code></p>
+<ul>
+<li>ex. <code>Nov(ember)?</code> matches Nov and November.</li>
+</ul>
+<p>Match zero or 1 time: <code>?</code></p>
+<ul>
+<li>identical to <code>{0,1}</code></li>
+</ul>
+<p>Match zero or more times: <code>*</code></p>
+<ul>
+<li>identical to <code>{0,}</code></li>
+<li>ex. match an HTML tag without any attributes: <code>&#x3C;[A-Za-z][A-Za-z0-9]*> </code></li>
+</ul>
+<p>Match one or more times: <code>+</code></p>
+<ul>
+<li>identical to <code>{1,}</code></li>
+</ul>
+<h3 id="limiting-repetition">Limiting repetition<a aria-hidden="true" class="anchor-heading icon-link" href="#limiting-repetition"></a></h3>
+<p>Repeat the previous character class once (for a total of 2)
+<code>hel{1}o</code> matches hello.</p>
+<p>Repeat the previous character class between 0 and 3 times
+<code>hel{0, 3}o</code> matches helo, hello, helllo...</p>
+<p>Repeat the previous character class at most 3 times
+<code>hel{,1}o</code> matches helo, hello</p>
+<p>Repeat the previous character class at least 1 time
+<code>hel{1,}o</code> matches hello, helllo...</p>
+<h3 id="all-repetition-operators-are-greedy">All repetition operators are greedy<a aria-hidden="true" class="anchor-heading icon-link" href="#all-repetition-operators-are-greedy"></a></h3>
+<p>Imagine we had the regex <code>Get(Value)?|Set(Value)?</code>. If we had a string "SetValue", we would match the whole string and not just Set, due to the fact that quantifiers are greedy.</p>
+<p>Because repetition operators are greedy, they (may) have to backtrack to complete the full regex.</p>
+<ul>
+<li>Backtracking slows down the regex engine. This isn't noticeable if doing a simple text search in a file, but we start to notice a drain on CPU if we have a regex that we need to backtrack through on each iteration of a loop.</li>
+</ul>
+<p>Most people new to regular expressions will attempt to use <code>&#x3C;.+></code>. They will be surprised when they test it on a string like: This is a <code>&#x3C;EM>first&#x3C;/EM></code> test. You might expect the regex to match <code>&#x3C;EM></code> and when continuing after that match, <code>&#x3C;/EM></code>.</p>
+<p>But it does not. The regex will match <code>&#x3C;EM>first&#x3C;/EM></code>. Obviously not what we wanted. The reason is that the plus is greedy. That is, the plus causes the regex engine to repeat the preceding token as often as possible. Only if that causes the entire regex to fail, will the regex engine backtrack. That is, it will go back to the plus, make it give up the last iteration, and proceed with the remainder of the regex.</p>
+<p>Imagine we had a string <code>This is a &#x3C;EM>first&#x3C;/EM> test.</code>. Not taking into account the greedy nature of repetition operators, a naive approach to match any HTML tag with regex <code>&#x3C;.+></code>. However, this matches the whole substring <code>&#x3C;EM>first&#x3C;/EM></code>.</p>
+<ol>
+<li>we match the <code>&#x3C;</code> literal</li>
+<li>then we match any character 1+ times</li>
+<li>when we arrive at the first <code>></code> character, we are still evaluating for the <code>.</code>. Since <code>></code> is a part of the <code>.</code> set (ie every character), it gets interpreted as such</li>
+<li>by virtue of the <code>.</code>, we arrive at the end of the sentence, so we have <code>&#x3C;EM>first&#x3C;/EM> test.</code></li>
+<li>now the engine realizes that it is at the end of the string, and it still have more things to match (ie. the <code>></code> character), so it backtracks until it reaches that character in <code>&#x3C;/EM></code>.</li>
+<li><code>&#x3C;EM>first&#x3C;/EM></code> is matched
+<ul>
+<li>because of the eagerness, the regex engine is eager to return a match. Therefore, it will not backtrack more than it has to. Once it has found a full match, it will return it. Because of the greediness, this is the leftmost longest match.</li>
+</ul>
+</li>
+</ol>
+<h4 id="turning-greediness-off">Turning greediness off<a aria-hidden="true" class="anchor-heading icon-link" href="#turning-greediness-off"></a></h4>
+<p>The operator can be turned lazy (ie. turn greediness off) with <code>?</code>.</p>
+<ul>
+<li>e.g. <code>+?</code>, <code>??</code>, <code>*?</code>
+<ul>
+<li>ex. in the string "Today is Feb 23rd, 2003", the regex <code>Feb 23(rd)?</code> will match "Feb 23rd", and the regex <code>Feb 23(rd)??</code> will match "Feb 23".</li>
+</ul>
+</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/nzN1gIEjllvdUknO4s40W">Character Class</a></li>
+<li><a href="/notes/5fsrbU0bsjDTgusUDdDqa">Lookarounds</a></li>
+</ul>

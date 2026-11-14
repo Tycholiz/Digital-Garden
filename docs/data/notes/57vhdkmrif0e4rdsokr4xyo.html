@@ -1,0 +1,40 @@
+<h1 id="design-document">Design Document<a aria-hidden="true" class="anchor-heading icon-link" href="#design-document"></a></h1>
+<p>Design documents are used to build <a href="/notes/jiITIvU42MBAYcbXheWwI">indexes</a>, validate document updates, format query results, and filter replications</p>
+<p>Design documents contain functions such as view and update functions. These functions are executed when requested.</p>
+<p>Design documents are denoted with an <code>_id</code> with the format <code>_design/my-design-document</code></p>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"_id"</span><span class="token operator">:</span> <span class="token string">"_design/example"</span><span class="token punctuation">,</span>
+  <span class="token property">"views"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"view-number-one"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token property">"map"</span><span class="token operator">:</span> <span class="token string">"function (doc) {/* function code here - see below */}"</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">"view-number-two"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token property">"map"</span><span class="token operator">:</span> <span class="token string">"function (doc) {/* function code here - see below */}"</span><span class="token punctuation">,</span>
+      <span class="token property">"reduce"</span><span class="token operator">:</span> <span class="token string">"function (keys, values, rereduce) {/* function code here - see below */}"</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">"updates"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"updatefun1"</span><span class="token operator">:</span> <span class="token string">"function(doc,req) {/* function code here - see below */}"</span><span class="token punctuation">,</span>
+    <span class="token property">"updatefun2"</span><span class="token operator">:</span> <span class="token string">"function(doc,req) {/* function code here - see below */}"</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">"filters"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"filterfunction1"</span><span class="token operator">:</span> <span class="token string">"function(doc, req){ /* function code here - see below */ }"</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">"validate_doc_update"</span><span class="token operator">:</span> <span class="token string">"function(newDoc, oldDoc, userCtx, secObj) { /* function code here - see below */ }"</span><span class="token punctuation">,</span>
+  <span class="token property">"language"</span><span class="token operator">:</span> <span class="token string">"javascript"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>each separate design document will spawn another (set of) couchjs processes to generate the view, one per shard. </p>
+<ul>
+<li>Depending on the number of cores on your server(s), this may be efficient (using all of the idle cores you have) or inefficient (overloading the CPU on your servers).</li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/vhyhna89umrxkmonh18di4y">View</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/uqt3os6g23wtrptms9xcyul">API</a></li>
+</ul>

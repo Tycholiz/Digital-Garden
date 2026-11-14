@@ -1,0 +1,12 @@
+<h1 id="flatmap">flatMap<a aria-hidden="true" class="anchor-heading icon-link" href="#flatmap"></a></h1>
+<p>Use <code>flatMap</code> any time you have a <a href="/notes/qgq4kp75ihjoe9rairqn9pz">Map</a>-type problem, and think "on certain (or all) iterations, I need to map one element to multiple elements".</p>
+<ul>
+<li>thought of another way, any time our map-type problem has us desiring to output an array that is of greater length than the input array.</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> arr1 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> result <span class="token operator">=</span> arr1<span class="token punctuation">.</span><span class="token method function property-access">flatMap</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">num</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">(</span>num <span class="token operator">===</span> <span class="token number">2</span> <span class="token operator">?</span> <span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span> <span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// Expected output: Array [1, 2, 2, 1]</span>
+</code></pre>

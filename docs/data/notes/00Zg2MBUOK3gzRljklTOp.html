@@ -1,0 +1,99 @@
+<h1 id="jobs">Jobs<a aria-hidden="true" class="anchor-heading icon-link" href="#jobs"></a></h1>
+<h3 id="what-is-a-job">What is a Job?<a aria-hidden="true" class="anchor-heading icon-link" href="#what-is-a-job"></a></h3>
+<p>A job is an atomic unit that is picked up by the runner.</p>
+<ul>
+<li>If we were acting as the runner, we would simply run a script, like <code>npm run test</code> or <code>npm run lint</code>. These are 2 different jobs, and they are picked up by the runner.</li>
+<li>jobs are executed in the environment of the runner.</li>
+</ul>
+<p>Multiple jobs in the same stage are executed in parallel</p>
+<p>Jobs are defined at the top-level of the <code>gitlab-ci.yml</code> file.</p>
+<ul>
+<li>you might have jobs called Lint, Test, Deploy Preview, etc</li>
+</ul>
+<p>What is important is that each job is run independently from each other.</p>
+<p>with rules, we can modify the order that jobs within a stage will be run.</p>
+<p>Gitlab loads everything from top to bottom, allowing us to override any job, just by changing the sequential order.</p>
+<p>The <code>rules</code> or <code>only/except</code> keywords are what determine whether or not a job is added to a pipeline.</p>
+<ul>
+<li>if a job is not added to the pipeline, the issue is probably related to this.</li>
+<li><code>only/except</code> is the older way to do it</li>
+</ul>
+<h3 id="non-zero-exit-codes">Non-zero exit codes<a aria-hidden="true" class="anchor-heading icon-link" href="#non-zero-exit-codes"></a></h3>
+<p>When script commands return an exit code other than zero, the job fails and further commands do not execute.</p>
+<p>Store the exit code in a variable to avoid this behavior:</p>
+<pre class="language-yml"><code class="language-yml"><span class="token key atrule">job</span><span class="token punctuation">:</span>
+  <span class="token key atrule">script</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> false <span class="token punctuation">|</span><span class="token punctuation">|</span> exit_code=$<span class="token punctuation">?</span>
+    <span class="token punctuation">-</span> if <span class="token punctuation">[</span> $exit_code <span class="token punctuation">-</span>ne 0 <span class="token punctuation">]</span>; then echo "Previous command failed"; fi;
+</code></pre>
+<h3 id="job-templates">Job Templates<a aria-hidden="true" class="anchor-heading icon-link" href="#job-templates"></a></h3>
+<p>Jobs prepended with a <code>.</code> will be hidden, and will not be processed by Gitlab CI/CD.</p>
+<ul>
+<li>You can use hidden jobs as templates for reusable configuration with <code>extends</code> keyword or YAML anchors.</li>
+</ul>
+<h3 id="running-jobs-conditionally-rules">Running jobs conditionally (<code>rules</code>)<a aria-hidden="true" class="anchor-heading icon-link" href="#running-jobs-conditionally-rules"></a></h3>
+<pre class="language-yml"><code class="language-yml"><span class="token key atrule">default-job</span><span class="token punctuation">:</span>
+  <span class="token key atrule">script</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> yarn test
+  <span class="token key atrule">rules</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> <span class="token key atrule">if</span><span class="token punctuation">:</span> $CI_COMMIT_BRANCH
+</code></pre>
+<h3 id="groups-of-jobs">Groups of jobs<a aria-hidden="true" class="anchor-heading icon-link" href="#groups-of-jobs"></a></h3>
+<pre class="language-yml"><code class="language-yml"><span class="token key atrule">build ruby 1/3</span><span class="token punctuation">:</span>
+  <span class="token key atrule">stage</span><span class="token punctuation">:</span> build
+  <span class="token key atrule">script</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> echo "ruby1"
+
+<span class="token key atrule">build ruby 2/3</span><span class="token punctuation">:</span>
+  <span class="token key atrule">stage</span><span class="token punctuation">:</span> build
+  <span class="token key atrule">script</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> echo "ruby2"
+
+<span class="token key atrule">build ruby 3/3</span><span class="token punctuation">:</span>
+  <span class="token key atrule">stage</span><span class="token punctuation">:</span> build
+  <span class="token key atrule">script</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> echo "ruby3"
+</code></pre>
+<p>Each job can run in a separate isolated <a href="/notes/a9w8WlKMHZZRdHc8EPBsD">Docker container</a></p>
+<ul>
+<li><a href="https://docs.gitlab.com/ee/ci/docker/using_docker_images.html">docs</a></li>
+</ul>
+<h3 id="resource-group">Resource Group<a aria-hidden="true" class="anchor-heading icon-link" href="#resource-group"></a></h3>
+<p>Allows us to make sure only one job per resource group is working at a time</p>
+<ul>
+<li>ex. consider 2 different pipelines of the same repo that both deploy to the same place. Of course, deployments should happen sequentially, so we put both of those jobs in the same resource_group, guaranteeing that they will run one after the other.</li>
+</ul>
+<p>A job can be specified as part of a <code>resource_group</code> which ensures a job is mutually exclusive across different pipelines for the same project.</p>
+<ul>
+<li>if multiple jobs that belong to the same resource group are queued simultaneously, only one of the jobs starts. The other jobs wait until the resource_group is free.</li>
+<li>ex. <code>resource_group=prod</code> puts a limitation that only one job in the <code>prod</code> resource group may run at a time.</li>
+<li>Resource groups behave similar to semaphores in other programming languages.</li>
+</ul>
+<h3 id="service">Service<a aria-hidden="true" class="anchor-heading icon-link" href="#service"></a></h3>
+<p>When we use services, we specify 2 keywords:</p>
+<ul>
+<li>services</li>
+<li>images</li>
+</ul>
+<p>A job can define a Docker image</p>
+<hr>
+<p>You can’t use these keywords as job names:</p>
+<ul>
+<li>image</li>
+<li>services</li>
+<li>stages</li>
+<li>types</li>
+<li>before_script</li>
+<li>after_script</li>
+<li>variables</li>
+<li>cache</li>
+<li>include</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/SL4aNCgB1VUFCemqEumoQ">Gitlab CI-CD</a></li>
+<li><a href="/notes/jqIxYA4fpGL6wIKJNkovK">Artifact</a></li>
+<li><a href="/notes/ltM0gjy87NV4go37RWkbd">Cache</a></li>
+<li><a href="/notes/YJG6pZqJMUiqZfcWrcFtB">Pipelines</a></li>
+</ul>

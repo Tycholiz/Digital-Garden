@@ -1,0 +1,18 @@
+<h1 id="locks">Locks<a aria-hidden="true" class="anchor-heading icon-link" href="#locks"></a></h1>
+<p>A <em>distributed lock manager</em> (DLM) runs in every machine in a cluster</p>
+<h2 id="purpose">Purpose<a aria-hidden="true" class="anchor-heading icon-link" href="#purpose"></a></h2>
+<ul>
+<li><a href="https://martin.kleppmann.com/2016/02/08/how-to-do-distributed-locking.html">source</a></li>
+</ul>
+<p>The purpose of a lock is to ensure that 2+ nodes in a distributed system are not doing the same work. That work might be to write some data to a shared storage system, to perform some computation, to call some external API etc.</p>
+<p>At a high level, there are 2 reasons you might want a lock: efficiency, or ensure correctness.</p>
+<ul>
+<li>the efficiency problem is less worrysome, and usually results in nothing more than a nuisance. For instance, a user might get 2 password reset emails, or we might make 2 database reads for the same data.</li>
+<li>the correctness problem is the one to be concerned about. If 2 nodes concurrently work on the same piece of data, we may very well result in a corrupted file, data loss, or permanent inconsistency.</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/HZSth7yP1s7aPaPPZRJPm">Scaling</a></li>
+<li><a href="/notes/W5etsXYnFDHBWHEHSZKjp">Concurrency</a></li>
+</ul>

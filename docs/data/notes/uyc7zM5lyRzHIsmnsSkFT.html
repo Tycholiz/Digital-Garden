@@ -1,0 +1,36 @@
+<h1 id="iterator">Iterator<a aria-hidden="true" class="anchor-heading icon-link" href="#iterator"></a></h1>
+<p>An iterator gives us the ability to say "get me the next item in the list", without us having to know anything about the underlying implementation (ie. whether it's a list, stack, tree etc.). </p>
+<ul>
+<li>Therefore, the type of list is immaterial (ie. could be an array, linked list, object etc.)</li>
+</ul>
+<p>The iterator is what hands us the next item in the sequence.</p>
+<p>The iterator manages the state of which element of the list we are currently on (known as the <code>Head</code>). Because of this <code>Head</code>, an iterator is fully aware of its location.</p>
+<ul>
+<li>More complex iterators may let us move forwards and backwards, but they all must satisfy this simple requirement of knowing where it is.</li>
+</ul>
+<p>Since a container is dumb, we need a way to traverse over elements of a collection without going over the same ones over and over.</p>
+<ul>
+<li>if our collection was based on a list, this might be a simple solution, but this problem gets more complex as we use more complex data structures
+<ul>
+<li>ex. imagine we had a tree and by default we used depth-first traversal. To traverse this, our class implements a <code>next()</code> function which gets the next item. Now imagine that something then required us to use breadth-first. Our implementation details of the <code>next()</code> function would have to change, and we would wind up muddying up our class with different traversal algorithms. Since different types of collections have different ways of accessing their elements, our only choice would be to couple our code to the specific collection class.</li>
+</ul>
+</li>
+</ul>
+<p>The purpose of an iterator is to extract the logic of how to traverse a collection into a separate object.</p>
+<ul>
+<li>We do this by defining different <em>iterators</em> (e.g. <code>DepthFirstIterator</code>, <code>BreadthFirstIterator</code>) which each implement their own methods (e.g. <code>next()</code>), with all iterators providing the same interface.</li>
+<li>this way, if we need to change the way that our collection is traversed, we just need to use a different iterator. No other areas of the code need to be touched.</li>
+</ul>
+<p>An <em>iterable</em> is a collection that we can use an <em>iterator</em> on.</p>
+<p>Iterators implement the <em>open/closed principle</em> since using them enables us to change how we traverse our collections / change the collections themselves, without having to change any other consuming code.</p>
+<h2 id="resources">Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#resources"></a></h2>
+<ul>
+<li><a href="https://refactoring.guru/design-patterns/iterator/typescript/example">Iterator in Typescript</a></li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/zlEdxEGVFpeN3FoYf3Npz">Cursors</a></li>
+<li><a href="/notes/5uuohllUAxCmbMFJb8Pj9">Dynamo Streams</a></li>
+<li><a href="/notes/WPpFrk4iwauCzKf88i6f0">Async Iterator</a></li>
+</ul>

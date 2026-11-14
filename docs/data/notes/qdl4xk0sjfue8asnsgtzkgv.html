@@ -1,0 +1,24 @@
+<h1 id="cook">Cook<a aria-hidden="true" class="anchor-heading icon-link" href="#cook"></a></h1>
+<p>Note: you should never need to run any of these commands directly. Their use should be restricted to learning only.</p>
+<h4 id="cat-file-display-contents-of-an-object"><code>cat-file</code>: display contents of an object<a aria-hidden="true" class="anchor-heading icon-link" href="#cat-file-display-contents-of-an-object"></a></h4>
+<pre class="language-sh"><code class="language-sh"># show object type
+git cat-file -t &#x3C;SHA>
+
+# show object content
+git cat-file -p &#x3C;SHA>
+
+# show the tree object associated with a revision
+git cat-file -p main^{tree}
+</code></pre>
+<h4 id="hash-object"><code>hash-object</code><a aria-hidden="true" class="anchor-heading icon-link" href="#hash-object"></a></h4>
+<pre class="language-sh"><code class="language-sh"># -w to write to object database
+echo 'hello' | git hash-object -w --stdin
+</code></pre>
+<h4 id="ls-tree-list-the-tree-contents-for-any-given-revision"><code>ls-tree</code>: list the tree contents for any given revision<a aria-hidden="true" class="anchor-heading icon-link" href="#ls-tree-list-the-tree-contents-for-any-given-revision"></a></h4>
+<pre class="language-sh"><code class="language-sh">git ls-tree &#x3C;SHA> .
+</code></pre>
+<h4 id="rev-parse-see-which-sha-1-a-branch-points-to"><code>rev-parse</code>: see which SHA-1 a branch points to<a aria-hidden="true" class="anchor-heading icon-link" href="#rev-parse-see-which-sha-1-a-branch-points-to"></a></h4>
+<h4 id="write-tree-write-the-contents-of-the-index-to-a-tree-object"><code>write-tree</code>: write the contents of the index to a tree object<a aria-hidden="true" class="anchor-heading icon-link" href="#write-tree-write-the-contents-of-the-index-to-a-tree-object"></a></h4>
+<h4 id="commit-tree-create-a-commit-object-from-a-specified-tree-and-a-parent"><code>commit-tree</code>: create a commit object from a specified tree and a parent<a aria-hidden="true" class="anchor-heading icon-link" href="#commit-tree-create-a-commit-object-from-a-specified-tree-and-a-parent"></a></h4>
+<pre class="language-sh"><code class="language-sh">git commit-tree 
+</code></pre>

@@ -1,0 +1,24 @@
+<h1 id="cli">CLI<a aria-hidden="true" class="anchor-heading icon-link" href="#cli"></a></h1>
+<h3 id="listen"><code>listen</code><a aria-hidden="true" class="anchor-heading icon-link" href="#listen"></a></h3>
+<ul>
+<li>from the CLI, we can listen for events that happen on the stripe API, and have those events forwarded to us.</li>
+<li>by default, <code>listen</code> will listen to the events happening on our live configuration (endpoint), found in Stripe dashboard. If we want to test, then we can listen for events happening at a different endpoint, with <code>stripe listen --forward-to localhost:5000/webhook</code></li>
+</ul>
+<h3 id="trigger"><code>trigger</code><a aria-hidden="true" class="anchor-heading icon-link" href="#trigger"></a></h3>
+<ul>
+<li>from the CLI, we can fake an event happening (ie. fake a call to Stripe's API)</li>
+<li>if we are listening in another terminal, then we should see the fakes command being listened to.</li>
+</ul>
+<h1 id="api">API<a aria-hidden="true" class="anchor-heading icon-link" href="#api"></a></h1>
+<h2 id="payment-intents">Payment Intents<a aria-hidden="true" class="anchor-heading icon-link" href="#payment-intents"></a></h2>
+<h3 id="create"><code>create</code><a aria-hidden="true" class="anchor-heading icon-link" href="#create"></a></h3>
+<pre class="language-sh"><code class="language-sh">stripe payment_intents create \
+  --amount=2000 \
+  --currency=cad \
+  -d "payment_method_types[]"=card
+</code></pre>
+<p><a href="https://stripe.com/docs/api/payment_intents/create">ref</a></p>
+<h2 id="session">Session<a aria-hidden="true" class="anchor-heading icon-link" href="#session"></a></h2>
+<h3 id="expire"><code>expire</code><a aria-hidden="true" class="anchor-heading icon-link" href="#expire"></a></h3>
+<pre class="language-sh"><code class="language-sh">stripe checkout sessions expire cs_test_b1VhbrZ4XXYEutfgMFgbMEUsQ9Spo27C9dZyjfup51C6IEwRSAIAoaWTzg
+</code></pre>

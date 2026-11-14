@@ -1,0 +1,43 @@
+<h1 id="lambda-function">Lambda Function<a aria-hidden="true" class="anchor-heading icon-link" href="#lambda-function"></a></h1>
+<p>A function is a resource that you can invoke to run your code in Lambda. A function has code to process the events that you pass into the function or that other AWS services send to the function.</p>
+<p>Functions can be invoked directly with...</p>
+<ul>
+<li>the Lambda console</li>
+<li>the Lambda API</li>
+<li>AWS SDK</li>
+<li>AWS CLI</li>
+<li>AWS toolkits</li>
+</ul>
+<p>Functions can also be invoked <em>indirectly</em>...</p>
+<ul>
+<li>by configuring other AWS services to invoke it
+<ul>
+<li>ex. invoke your function when an object is created in <a href="/notes/2Rtof8yGX9K2Tq6tLljBb">S3</a></li>
+</ul>
+</li>
+<li>configuring Lambda to read from a stream or queue and invoke it.</li>
+</ul>
+<h3 id="sync-vs-async-invocation">Sync vs Async Invocation<a aria-hidden="true" class="anchor-heading icon-link" href="#sync-vs-async-invocation"></a></h3>
+<ul>
+<li>With synchronous invocation, you wait for the function to process the event and return a response.</li>
+<li>With asynchronous invocation, Lambda queues the event for processing and returns a response immediately.
+<ul>
+<li>Therefore, in <a href="/notes/5iC7cpurvsTcO6WDflzOZ">Node</a> it returns a <a href="/notes/FVbSefFiCJPpdtkRRsogA">Promise</a></li>
+</ul>
+</li>
+</ul>
+<p>When you invoke a function synchronously, you receive errors in the response and can retry. When you invoke asynchronously, use an event source mapping, or configure another service to invoke your function, the retry requirements and the way that your function scales to handle large numbers of events can vary.</p>
+<p>When you invoke a function asynchronously, you don't wait for a response from the function code. You hand off the event to Lambda and Lambda handles the rest. You can configure how Lambda handles errors, and can send invocation records to a downstream resource to chain together components of your application.</p>
+<p>You can also configure Lambda to send an invocation record to another service. Lambda supports the following destinations for asynchronous invocation.</p>
+<ul>
+<li>an <a href="/notes/Ha1umcNRHS8mEarVSMy5v">SQS</a> queue</li>
+<li>an <a href="/notes/3E2oC3PsnDWowLW9hK0eZ">SNS (Simple Notification Service)</a> topic</li>
+<li>a <a href="/notes/OSdV9FvBG3wDbRNLllg0V">Lambda</a> function</li>
+<li>Amazon EventBridge – An EventBridge event bus.</li>
+</ul>
+<p>Several AWS services, such as <a href="/notes/2Rtof8yGX9K2Tq6tLljBb">S3</a> and <a href="/notes/3E2oC3PsnDWowLW9hK0eZ">SNS</a> invoke functions asynchronously to process events.</p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/OSdV9FvBG3wDbRNLllg0V">AWS Lambda</a></li>
+</ul>

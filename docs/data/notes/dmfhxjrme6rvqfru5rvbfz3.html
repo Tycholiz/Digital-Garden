@@ -1,0 +1,220 @@
+<h1 id="concurrency-in-go">Concurrency in Go<a aria-hidden="true" class="anchor-heading icon-link" href="#concurrency-in-go"></a></h1>
+<h3 id="goroutine">Goroutine<a aria-hidden="true" class="anchor-heading icon-link" href="#goroutine"></a></h3>
+<p>Each execution path of our Go program is a <em>goroutine</em>. </p>
+<ul>
+<li>Therefore, we always have at least 1 (the <code>main</code> goroutine).</li>
+</ul>
+<p>If we prepend a function invocation with the keyword <code>go</code>, that function won't wait to finish executing before moving on to the next line.</p>
+<p>The following will run <code>count("sheep")</code> in the background, then immediately execute <code>count("fish")</code>, thereby creating a <em>goroutine</em>, which runs concurrently.</p>
+<pre class="language-go"><code class="language-go"><span class="token keyword">go</span> <span class="token function">count</span><span class="token punctuation">(</span><span class="token string">"sheep"</span><span class="token punctuation">)</span>
+<span class="token function">count</span><span class="token punctuation">(</span><span class="token string">"fish"</span><span class="token punctuation">)</span>
+
+<span class="token comment">// 1 sheep</span>
+<span class="token comment">// 1 fish</span>
+<span class="token comment">// 2 sheep</span>
+<span class="token comment">// 2 fish</span>
+<span class="token comment">// etc.</span>
+</code></pre>
+<p>imagine both of our <code>count()</code> functions are called in a background goroutine:</p>
+<pre class="language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">go</span> <span class="token function">count</span><span class="token punctuation">(</span><span class="token string">"sheep"</span><span class="token punctuation">)</span>
+  <span class="token keyword">go</span> <span class="token function">count</span><span class="token punctuation">(</span><span class="token string">"fish"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<ul>
+<li>in this case, we would not see any logs in the console, since the <code>go</code> keyword tells the <code>count()</code> function to run in the background and move to the next line. Since that was the last line, the <code>main()</code> function finishes and our program exits.
+<ul>
+<li>if we added <code>time.Sleep(time.Second * 2)</code> as the last line in our <code>main()</code> function, then we would see logs for 2 seconds before the program exits.</li>
+</ul>
+</li>
+<li>a better solution here is to use a <em>WaitGroup</em> (which is basically just a counter):</li>
+</ul>
+<pre class="language-go"><code class="language-go"><span class="token keyword">import</span> <span class="token string">"sync"</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">var</span> wg sync<span class="token punctuation">.</span>WaitGroup
+  <span class="token comment">// increment the WG by 1 to incicate that we have 1 goroutine </span>
+  <span class="token comment">// to wait for before `main()` finishes executing</span>
+  wg<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+
+  <span class="token keyword">go</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">count</span><span class="token punctuation">(</span><span class="token string">"sheep"</span><span class="token punctuation">)</span>
+    <span class="token comment">// decrement the WG when the goroutine finishes.</span>
+    wg<span class="token punctuation">.</span><span class="token function">Done</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token comment">// wait until the counter is 0 (ie. wait until all goroutines have finished)</span>
+  wg<span class="token punctuation">.</span><span class="token function">Wait</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Goroutines are very efficient</p>
+<ul>
+<li>we can make 1000s of simultaneously running goroutines.</li>
+<li>however, ultimately we are constrained by how many cores our <a href="/notes/XkJ62K1L604NfWaUdxZi7">CPU</a> has.</li>
+</ul>
+<h3 id="channel">Channel<a aria-hidden="true" class="anchor-heading icon-link" href="#channel"></a></h3>
+<p>A <em>channel</em> is a means for goroutines to communicate with each other.</p>
+<ul>
+<li>ex. we have a value in one goroutine that we want to pass to the <code>main</code> goroutine.
+<ul>
+<li>to do this, we can modify our <code>count()</code> function to accept a channel as an argument:</li>
+</ul>
+</li>
+</ul>
+<pre class="language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// make the channel</span>
+  c <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">chan</span> <span class="token builtin">string</span><span class="token punctuation">)</span>
+  <span class="token keyword">go</span> <span class="token function">count</span><span class="token punctuation">(</span><span class="token string">"sheep"</span><span class="token punctuation">,</span> c<span class="token punctuation">)</span>
+
+  <span class="token comment">// iterate over the range (spec: length, as if it were an array) of a channel</span>
+  <span class="token keyword">for</span> msg <span class="token operator">:=</span> <span class="token keyword">range</span> c <span class="token punctuation">{</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>msg<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token comment">/* The above for-loop is syntactic sugar for the long-form: 
+  * for msg := range c {
+  *   // receive the message from the channel and set it to `msg`
+  *   msg, open := &#x3C;- c
+  *
+  *   // if channel is not open, break out of for loop (stop receiving messages)
+  *   if !open {
+  *     break
+  *   }
+  *
+  *   fmt.Println(msg)
+  * }
+  */</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">func</span> <span class="token function">count</span><span class="token punctuation">(</span>animalType <span class="token builtin">string</span><span class="token punctuation">,</span> c <span class="token keyword">chan</span> <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">for</span> i<span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&#x3C;=</span> <span class="token number">5</span><span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">{</span>
+    <span class="token comment">// send the value of `animalType` over the channel</span>
+    c <span class="token operator">&#x3C;-</span> animalType
+    time<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span>time<span class="token punctuation">.</span>Millisecond <span class="token operator">*</span> <span class="token number">500</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token comment">// close the channel once the for loop has finished</span>
+  <span class="token function">close</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<ul>
+<li>note: sending and receiving messages through channels are blocking operations; code execution will stop until a value is sent/received through the channel.</li>
+<li>note: channels have a type (here, <code>string</code>), meaning the only messages we can pass through those channels are strings.
+<ul>
+<li>we can even type channels as channels (ie. channels that only accept messages with the type <code>channel</code>)
+<ul>
+<li>spec: <code>c chan chan</code>, or <code>c chan channel</code> maybe?</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>note: naturally, only senders of messages should close channels, since they are the ones that know whether or not the data flow has finished.</li>
+</ul>
+<p>We can use channels to synchronize goroutines.</p>
+<ul>
+<li>ex. Imagine we have 2 goroutines, and gr1 depends on gr2 (gr1 receives a message from gr2 via a channel)
+<img src="/assets/images/2022-12-20-11-25-19.png">
+<ul>
+<li>here, execution of gr1 will pause at line 7 as it waits for gr2 to reach its line 4, where it will send a message through the channel.</li>
+</ul>
+</li>
+</ul>
+<p>Channels must have a goroutine ready to receive a message from them <em>before</em> anything can be sent through them.</p>
+<ul>
+<li>in other words, if we are within the <code>main</code> goroutine and our code executes <code>c &#x3C;- "hello"</code> before it executes <code>msg := &#x3C;- c</code>, our program will exit in error, since we are trying to send something to the <code>c</code> channel <em>before</em> anything is set up to listen to it (recall: sending/receiving from a channel is a blocking operation until it can be completed)</li>
+</ul>
+<p>Channel references can be specified to restrict us from only ever receiving/sending messages:</p>
+<ul>
+<li>ex. we make a function that takes 2 channels:
+<ul>
+<li>
+<ol>
+<li>a channel of jobs to do (from which we will only ever receive messages; <code>&#x3C;-chan</code>)</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>a channel to send results to (to which we will only ever send messages; <code>chan&#x3C;-</code>)</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<pre class="language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">worker</span><span class="token punctuation">(</span>jobs <span class="token operator">&#x3C;-</span><span class="token keyword">chan</span> <span class="token builtin">int</span><span class="token punctuation">,</span> results <span class="token keyword">chan</span><span class="token operator">&#x3C;-</span> <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">for</span> n <span class="token operator">:=</span> <span class="token keyword">range</span> jobs
+<span class="token punctuation">}</span>
+</code></pre>
+<ul>
+<li>if we try and send a message to the <code>jobs</code> channel, we will get a compile-time error</li>
+</ul>
+<h4 id="buffered-channel">Buffered Channel<a aria-hidden="true" class="anchor-heading icon-link" href="#buffered-channel"></a></h4>
+<p>A buffered channel can be filled without a corresponding receiver, and it will not block until that buffer is full.</p>
+<ul>
+<li>Buffered channels have a fixed capacity set when they are initialized.</li>
+</ul>
+<pre class="language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// make a buffered channel of strings with a capacity of 2</span>
+  c <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">chan</span> <span class="token builtin">string</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span>
+  c <span class="token operator">&#x3C;-</span> <span class="token string">"hello"</span>
+  c <span class="token operator">&#x3C;-</span> <span class="token string">"world"</span>
+
+  msg <span class="token operator">:=</span> <span class="token operator">&#x3C;-</span> c
+  fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>msg<span class="token punctuation">)</span> <span class="token comment">// hello</span>
+
+  msg <span class="token operator">=</span> <span class="token operator">&#x3C;-</span> c
+  fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>msg<span class="token punctuation">)</span> <span class="token comment">// world</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h4 id="select"><code>select</code><a aria-hidden="true" class="anchor-heading icon-link" href="#select"></a></h4>
+<p>the <code>select</code> keyword allows us to receive a message from whatever channel has one:</p>
+<p>ex. imagine we have 2 goroutines that each do some calculation then return it to the <code>main</code> function where it then gets logged to the console. We set up each function to do the calculation, then send the data through their own respective channel. Back in the <code>main</code> function, we create a loop to log to the console each time a new message arrives in the channel):</p>
+<pre class="language-go"><code class="language-go"><span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">for</span> <span class="token punctuation">{</span>
+    <span class="token keyword">select</span> <span class="token punctuation">{</span>
+      <span class="token keyword">case</span> msg1 <span class="token operator">:=</span> <span class="token operator">&#x3C;-</span> c1<span class="token punctuation">:</span>
+        fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>msg1<span class="token punctuation">)</span>
+      <span class="token keyword">case</span> msg2 <span class="token operator">:=</span> <span class="token operator">&#x3C;-</span> c2<span class="token punctuation">:</span>
+        fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>msg2<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="worker-pool">Worker Pool<a aria-hidden="true" class="anchor-heading icon-link" href="#worker-pool"></a></h3>
+<p>A worker pool is a queue of jobs to be done, from which multiple concurrent workers can pull jobs and perform them.</p>
+<pre class="language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// no real reason why we have a buffer of 100; it's just a nice round and large enough number</span>
+  jobs <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">chan</span> <span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span>
+  results <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">chan</span> <span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span>
+
+  <span class="token comment">// create a worker as a concurrent goroutine</span>
+  <span class="token keyword">go</span> <span class="token function">worker</span><span class="token punctuation">(</span>jobs<span class="token punctuation">,</span> results<span class="token punctuation">)</span>
+
+  <span class="token keyword">for</span> i <span class="token operator">:=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&#x3C;</span> <span class="token number">100</span><span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">{</span>
+    <span class="token comment">// fill up the jobs channel with numbers from 0-99</span>
+    <span class="token comment">// since it's a buffered channel, it's not going to block</span>
+    jobs <span class="token operator">&#x3C;-</span> i
+  <span class="token punctuation">}</span>
+  <span class="token function">close</span><span class="token punctuation">(</span>jobs<span class="token punctuation">)</span>
+
+  <span class="token keyword">for</span> j <span class="token operator">:=</span> <span class="token number">0</span><span class="token punctuation">;</span> j <span class="token operator">&#x3C;</span> <span class="token number">100</span><span class="token punctuation">;</span> j<span class="token operator">++</span> <span class="token punctuation">{</span>
+    <span class="token comment">// receive each fibonnaci number from the `results` channel and print to console</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token operator">&#x3C;-</span>results<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">worker</span><span class="token punctuation">(</span>jobs <span class="token operator">&#x3C;-</span><span class="token keyword">chan</span> <span class="token builtin">int</span><span class="token punctuation">,</span> results <span class="token keyword">chan</span><span class="token operator">&#x3C;-</span> <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// as long as there are jobs on the `jobs` channel, the calculation will continue to run</span>
+  <span class="token keyword">for</span> n <span class="token operator">:=</span> <span class="token keyword">range</span> jobs <span class="token punctuation">{</span>
+    results <span class="token operator">&#x3C;-</span> <span class="token function">fibonnaci</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">fibonacci</span><span class="token punctuation">(</span>n <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> n <span class="token operator">&#x3C;=</span> <span class="token number">1</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> n
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">return</span> <span class="token function">fibonacci</span><span class="token punctuation">(</span>n <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token function">fibonacci</span><span class="token punctuation">(</span>n <span class="token operator">-</span> <span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<hr>
+<p><a href="/notes/W5etsXYnFDHBWHEHSZKjp">see: Concurrency main article</a></p>

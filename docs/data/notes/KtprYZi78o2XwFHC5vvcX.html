@@ -1,0 +1,32 @@
+<h1 id="cpu-clock">CPU Clock<a aria-hidden="true" class="anchor-heading icon-link" href="#cpu-clock"></a></h1>
+<p>CPUs have electronic clocks in them, in fact it’s a fundamental part of how they operate as the electronics within a CPU have to operate in a synchronised way.</p>
+<p>The clock is a crystal that oscillates a predictable number of times each second when electricity is passed through it. Counting these oscillations allows the computer to measure the passing of time.</p>
+<ul>
+<li>these atomic clocks use the vibrations of atoms to keep time.</li>
+</ul>
+<p>Clocks are not perfectly accurate: it <em>drifts</em> (ie. runs faster or slower than it should). As a result, one machine may be faster or slower than another machine.</p>
+<ul>
+<li>This adds an interesting wrinkle to <a href="/notes/vutujFFWxQu6TshWVuMpI">distributed</a> systems, and is a reason we can't depend on the clock to determine the ordering of events.</li>
+<li>It is possible to synchronize clocks to some degree: the most commonly used mechanism is the Network Time Protocol (NTP), which allows the computer clock to be adjusted according to the time reported by a group of servers. The servers in turn get their time from a more accurate time source, such as a GPS receiver.</li>
+<li>Clock drift varies depending on the temperature of the machine.</li>
+</ul>
+<h2 id="why-use-them">Why use them?<a aria-hidden="true" class="anchor-heading icon-link" href="#why-use-them"></a></h2>
+<p>The accuracy of an atomic clock matters in computing because time synchronization is critical for many computing tasks, such as </p>
+<ul>
+<li>coordinating distributed systems, 
+<ul>
+<li>Without accurate timekeeping, distributed systems may not be able to coordinate their activities effectively, leading to issues such as data corruption, incorrect results, or system crashes.</li>
+</ul>
+</li>
+<li>scheduling tasks, </li>
+<li>maintaining data consistency. </li>
+</ul>
+<h2 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h2>
+<ul>
+<li><a href="https://onezero.medium.com/the-largely-untold-story-of-how-one-guy-in-california-keeps-the-worlds-computers-on-the-right-time-a97a5493bf73">https://onezero.medium.com/the-largely-untold-story-of-how-one-guy-in-california-keeps-the-worlds-computers-on-the-right-time-a97a5493bf73</a></li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/wbs6c9snnonnyzm8vk2t4b9">Strategies</a></li>
+</ul>

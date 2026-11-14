@@ -1,0 +1,10 @@
+<h1 id="revert">Revert<a aria-hidden="true" class="anchor-heading icon-link" href="#revert"></a></h1>
+<h2 id="merge-conflicts-with-git-revert">Merge conflicts with <code>git revert</code><a aria-hidden="true" class="anchor-heading icon-link" href="#merge-conflicts-with-git-revert"></a></h2>
+<p>Imagine we make CommitA, add CommitB and CommitC, then attempt to revert CommitA, and we have a merge conflict.</p>
+<p>In this circumstance, the terms "current changes" and "incoming changes" refer to conflicting changes between what is in your working directory (the current state of your files) and the changes that the git revert command is trying to apply (the changes from the commit you're reverting).</p>
+<h3 id="what-happened">What Happened:<a aria-hidden="true" class="anchor-heading icon-link" href="#what-happened"></a></h3>
+<p><em>Made Changes &#x26; Committed</em>: You modified a file, committed those changes, and then continued to make several more commits after that.
+<em>Reverting the Commit</em>: When you tried to revert that particular commit, Git attempted to apply the inverse of the changes made in that commit to your working directory. However, because you made further changes to the same file in subsequent commits, a conflict arose.</p>
+<h3 id="merge-conflict-reason">Merge Conflict Reason:<a aria-hidden="true" class="anchor-heading icon-link" href="#merge-conflict-reason"></a></h3>
+<p><em>Current Changes</em>: This refers to the state of the file in your working directory based on all the commits you've made since the commit you're trying to revert.
+<em>Incoming Changes</em>: These are the changes that git revert is attempting to apply, which are the inverse of the changes made in the commit you're reverting.</p>

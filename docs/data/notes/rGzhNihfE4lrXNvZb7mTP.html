@@ -1,0 +1,38 @@
+<h1 id="traceroute">Traceroute<a aria-hidden="true" class="anchor-heading icon-link" href="#traceroute"></a></h1>
+<p>See a list of all nodes (routers and end node) that your packets traveled through on their way to an origin server. Each step is a <em>hop</em></p>
+<pre><code>- Also tells us how long each jump took (the response time b/w nodes) (RTT; round trip time)
+</code></pre>
+<ul>
+<li>RTT tells us how long it took to get to that node (from the previous one) and return to your computer
+<ul>
+<li>There are three RTT columns because the traceroute sends three separate signal packets so that we may be able to spot inconsistencies in the route.</li>
+</ul>
+</li>
+<li>The final column has the router IP</li>
+<li><code>*</code> in the traceroute means that packets were lost</li>
+<li>consistency of RTTs between columns is what we are looking for when analyzing a traceroute.  </li>
+<li>when we use traceroute, the packet gets sent to the first router, which sends a packet back to the source. Then the packets continue on to the next router, which again sends a packet back to the source. This pattern continues until we reach the destination node.
+<ul>
+<li>ex. if there are 5 routers between a source node and destination node, then the source will send 6 packets into the network, which each packet addressed to the destination node.
+<ul>
+<li>The difference of course with traceroute over a regular packet, is that when an individual router along the chain receives the packet, it does not forward it along. Instead, it sends it back to the source. In this way, the source can determine the route that the packets took to reach the destination.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Issues:</p>
+<ul>
+<li>if the RTT from one hop to another greatly increases, and continues to increase until the destination, this indicates a problem with the node that first took a long time to respond. 
+<ul>
+<li>This often accompanies packet loss (<code>*</code>)</li>
+</ul>
+</li>
+<li>if the RTT spikes on only one node, then subsequent hops have lower RTT, that doesn't indicate an issue. It just means the slow router gave your packets a lower priority.</li>
+<li>if the RTT jumps then remains consisistent at that levels, this does not indicate an issue</li>
+<li>By default, traceroute uses high UDP ports for tracing hosts. Sometimes firewalls block these UDP ports. 
+<ul>
+<li>use <code>-P</code> flag to use different protocols: (<code>-P ICMP</code>, <code>-P TCP</code>, <code>-P UDP</code>)</li>
+</ul>
+</li>
+</ul>

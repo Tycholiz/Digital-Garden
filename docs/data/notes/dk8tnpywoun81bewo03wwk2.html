@@ -1,0 +1,25 @@
+<h1 id="broker">Broker<a aria-hidden="true" class="anchor-heading icon-link" href="#broker"></a></h1>
+<p>The broker is the main vehicle for the movement of data in Kafka.</p>
+<ul>
+<li>it handles <em>all</em> requests from <em>all</em> clients (both producers and consumers)</li>
+<li>It also manages replication of data across a cluster, as well as within topics and partitions.</li>
+</ul>
+<p><img src="/assets/images/2023-06-26-21-52-48.png"></p>
+<p>A Broker is a Kafka server that runs in a Kafka Cluster. Therefore, Kafka Brokers form a cluster. </p>
+<ul>
+<li>A Kafka cluster is made up of multiple Kafka Brokers that exist on multiple servers.</li>
+<li>Kafka Brokers contain topic log partitions. </li>
+</ul>
+<p>Connecting to one broker bootstraps a client to the entire Kafka cluster. </p>
+<ul>
+<li>For failover, you want to start with at least three to five brokers. A Kafka cluster can have, 10, 100, or 1,000 brokers in a cluster if needed.</li>
+</ul>
+<p>The default port for the broker is <code>9092</code></p>
+<h3 id="bootstrap-server">Bootstrap server<a aria-hidden="true" class="anchor-heading icon-link" href="#bootstrap-server"></a></h3>
+<p>We know that a kafka cluster can have 100s or 1000nds of brokers (kafka servers). But how do we tell clients (producers or consumers) to which to connect? Should we specify all 1000nds of kafka brokers in the configuration of clients? no, that would be troublesome and the list will be very lengthy. Instead what we can do is, take two to three brokers and consider them as bootstrap servers where a client initially connects. And then depending on alive or spacing, those brokers will point to a good kafka broker.</p>
+<ul>
+<li>these can be listed in <code>bootstrap.servers</code></li>
+</ul>
+<h3 id="replication-factor">Replication factor<a aria-hidden="true" class="anchor-heading icon-link" href="#replication-factor"></a></h3>
+<p>Replication factor must be equal to or less than the number of brokers you have</p>
+<p><a href="https://www.educba.com/kafka-replication-factor/">https://www.educba.com/kafka-replication-factor/</a></p>

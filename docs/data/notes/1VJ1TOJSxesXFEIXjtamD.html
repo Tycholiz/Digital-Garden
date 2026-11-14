@@ -1,0 +1,53 @@
+<h1 id="jwt-claim">JWT Claim<a aria-hidden="true" class="anchor-heading icon-link" href="#jwt-claim"></a></h1>
+<p>the core of a JWT, since they are the data contained in the JWT</p>
+<ul>
+<li>claims are pieces of information that are "claimed" about a subject (most often a user). In other words, they are just properties of an object.
+<ul>
+<li>ex. name, sub, admin</li>
+<li>ex. "the holder of this token is able to create/read/update/delete a specified resource"</li>
+</ul>
+</li>
+<li>the claim refers to the key, not the value</li>
+<li>usually not encrypted, meaning if we don't use https, this information is potentially compromised.</li>
+<li>anyone will be able to decode them and to read them, we cannot store any sensitive data in here
+<ul>
+<li>not an issue because of the secret</li>
+</ul>
+</li>
+</ul>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+	<span class="token property">"sub"</span><span class="token operator">:</span> <span class="token string">"1234567890"</span><span class="token punctuation">,</span>
+	<span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"John Doe"</span><span class="token punctuation">,</span>
+	<span class="token property">"admin"</span><span class="token operator">:</span> <span class="token boolean">true</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<ul>
+<li>when the server receives a JWT from an HTTP request's authorization header, like so:</li>
+</ul>
+<blockquote>
+<p>Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhIjoxLCJiIjoyLCJjIjozfQ.hxhGCCCmGV9nT1slief1WgEsOsfdnlVizNrODxfh1M8</p>
+</blockquote>
+<p>it will verify the token using the secret, and then will serialize the claims in that token to the database. </p>
+<ul>
+<li>If using Postgres, this would enable access to the data in <code>current_settings</code>, e.g. <code>current_setting('request.jwt.claim.email', true)</code></li>
+</ul>
+<p>Claims can be used as a means to differentiate users. Imagine we are building a postgres database and decide that all signed-in users will have the group role <code>user_login</code>. We can use the claims in the jwt to distinguish users</p>
+<p><em>Registered claim</em> - recommended pre-defined claims</p>
+<ul>
+<li><strong>iss</strong> (issuer)</li>
+<li><strong>exp</strong> (expiration time)</li>
+<li><strong>sub</strong> (subject)</li>
+<li><strong>aud</strong> (audience)</li>
+</ul>
+<h2 id="properties">Properties<a aria-hidden="true" class="anchor-heading icon-link" href="#properties"></a></h2>
+<ul>
+<li><code>iss</code> means the issuing entity, in this case, our authentication server</li>
+<li><code>iat</code> is the timestamp of creation of the JWT (in seconds since Epoch)</li>
+<li><code>sub</code> contains the technical identifier of the user</li>
+<li><code>exp</code> contains the token expiration timestamp</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/6s5Oh0DUcMsShcFrmDaBK">JWT</a></li>
+</ul>

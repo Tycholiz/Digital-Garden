@@ -1,0 +1,26 @@
+<h1 id="rules-engine">Rules Engine<a aria-hidden="true" class="anchor-heading icon-link" href="#rules-engine"></a></h1>
+<p>A rules engine can be visualized as a set of if-then-else statements to implement some business logic of our application.</p>
+<p>Example: determining car insurance premiums</p>
+<pre><code>if car.owner.hasCellPhone then premium += 100;
+if car.model.theftRating > 4 then premium += 200;
+if car.owner.livesInDodgyArea &#x26;&#x26; car.model.theftRating > 2 then premium += 300;
+</code></pre>
+<p>A rules engine is a tool that makes it easier to program using this computational model</p>
+<p>An important property of rule engines is chaining - where the action part of one rule changes the state of the system in such a way that it alters the value of the condition part of other rules.</p>
+<ul>
+<li>Chaining sounds appealing, since it supports more complex behaviors, but can easily end up being very hard to reason about and debug.
+<ul>
+<li>Often, it is easy to set up a rules system, but very hard to maintain it because nobody can understand this implicit program flow; a consequence of leaving the imperative computational model</li>
+</ul>
+</li>
+</ul>
+<h1 id="e-resources">E Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#e-resources"></a></h1>
+<ul>
+<li><a href="https://martinfowler.com/bliki/RulesEngine.html">Martin Fowler thoughts on why to avoid a rules engine</a></li>
+<li><a href="https://github.com/cachecontrol/json-rules-engine">JSON rules engine repo</a></li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/7n3tUhrwbvz8nNu0bTlWz">EventBridge</a></li>
+</ul>

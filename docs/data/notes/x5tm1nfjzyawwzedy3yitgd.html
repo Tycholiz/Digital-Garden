@@ -1,0 +1,46 @@
+<h1 id="spring">Spring<a aria-hidden="true" class="anchor-heading icon-link" href="#spring"></a></h1>
+<h2 id="overview">Overview<a aria-hidden="true" class="anchor-heading icon-link" href="#overview"></a></h2>
+<p>Central to the Spring Framework is its <a href="/notes/bXY3W37GW2ytFJOgbJiol">IoC</a> container, which provides a consistent means of configuring and managing Java objects using reflection.</p>
+<ul>
+<li>The container is responsible for managing object lifecycles of specific objects: creating these objects, calling their initialization methods, and configuring these objects by wiring them together.</li>
+</ul>
+<p>Spring beans are objects that are created, managed and destroyed by the Spring Container</p>
+<ul>
+<li>The container can be configured by loading XML files or detecting specific Java annotations on configuration classes. 
+<ul>
+<li>These data sources contain the bean definitions which provide the information required to create the beans.</li>
+</ul>
+</li>
+</ul>
+<h2 id="commands">Commands<a aria-hidden="true" class="anchor-heading icon-link" href="#commands"></a></h2>
+<h3 id="start-app">Start app<a aria-hidden="true" class="anchor-heading icon-link" href="#start-app"></a></h3>
+<pre class="language-sh"><code class="language-sh"># Gradle
+$ ./gradlew bootRun
+
+# Maven
+$ ./mvnw spring-boot:run
+</code></pre>
+<h3 id="controllers">Controllers<a aria-hidden="true" class="anchor-heading icon-link" href="#controllers"></a></h3>
+<p>A key difference between a traditional MVC controller and the RESTful web service controller from Springboot is the way that the HTTP response body is created. </p>
+<pre class="language-java"><code class="language-java"><span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"/greeting"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token class-name">Greeting</span> <span class="token function">greeting</span><span class="token punctuation">(</span><span class="token annotation punctuation">@RequestParam</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"name"</span><span class="token punctuation">,</span> defaultValue <span class="token operator">=</span> <span class="token string">"World"</span><span class="token punctuation">)</span> <span class="token class-name">String</span> name<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Greeting</span><span class="token punctuation">(</span>counter<span class="token punctuation">.</span><span class="token function">incrementAndGet</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token class-name">String</span><span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span>template<span class="token punctuation">,</span> name<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<ul>
+<li>Rather than relying on a View technology to perform server-side rendering of the greeting data to HTML, this RESTful web service controller populates and returns a <code>Greeting</code> object. The object data will be written directly to the HTTP response as JSON. To do this, the <code>Greeting</code> object must be converted to JSON
+<ul>
+<li>Spring’s out-of-the-box HTTP message converter support allows us to do this. This works out of the box because Jackson 2 (the Java JSON package) is in the classpath</li>
+</ul>
+</li>
+</ul>
+<h4 id="restcontroller"><code>@RestController</code><a aria-hidden="true" class="anchor-heading icon-link" href="#restcontroller"></a></h4>
+<p>The <code>@RestController</code> annotation marks the class as a controller where every method returns a domain object instead of a view.</p>
+<ul>
+<li>it is shorthand for including both <code>@Controller</code> and <code>@ResponseBody</code>.</li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/lk7u3m1qfy99ymvmqvz5akh">Repository</a></li>
+</ol>

@@ -1,0 +1,36 @@
+<h1 id="hexagonal">Hexagonal<a aria-hidden="true" class="anchor-heading icon-link" href="#hexagonal"></a></h1>
+<p>The goal of a hexagonal architecture is to have a loose coupling between components of a system. To connect these systems, we use thin layers which are manisfested as <a href="/notes/9xKdcGBAmZHfv1f9UOkF5">adapters</a> and ports.</p>
+<ul>
+<li>the port uses a particular protocol, and define an abstract API.
+<ul>
+<li>ex. ports for event sources (e.g. UIs), ports for notifications, ports for database etc.</li>
+</ul>
+</li>
+<li>the adapters serve as glue between the components (via the ports) and the outside world.
+<ul>
+<li>there may be several adapters for a single port. For instance, if data could be provided through various means, such via a GUI, via an automated data source, via a test script... This would necessitate multiple adapters for the single port.</li>
+</ul>
+</li>
+</ul>
+<p>The idea of Hexagonal Architecture is to put inputs and outputs at the edges of our design. </p>
+<ul>
+<li>Business logic should not depend on whether we expose a REST or a GraphQL API, and it should not depend on where we get data from — a database, a microservice API exposed via gRPC or REST, or just a simple CSV file.</li>
+<li>The pattern allows us to isolate the core logic of our application from outside concerns, meaning you can easily change data source details without a significant impact or major code rewrites to the codebase.</li>
+</ul>
+<p>With a traditional layered architecture, we would have all of our dependencies point in one direction, each layer above depending on the layer below. The transport layer would depend on the interactors, the interactors would depend on the persistence layer.
+In Hexagonal Architecture all dependencies point inward — our core business logic does not know anything about the transport layer or the data sources. Still, the transport layer knows how to use interactors, and the data sources know how to conform to the repository interface.</p>
+<p>The purpose is to have a highly modular system that allows us to swap out components (e.g. the database, the UI etc.), and only be required to make changes to the adapter.</p>
+<ul>
+<li>an added benefit is that we greatly simplify the testing strategy.</li>
+</ul>
+<p>The hexagonal architecture can be thought of as the precursor to the <a href="/notes/4JrFhUJpywlucgow6EX7j">microservice</a> architecture.</p>
+<h2 id="breaking-it-down">Breaking it down<a aria-hidden="true" class="anchor-heading icon-link" href="#breaking-it-down"></a></h2>
+<p><img src="/assets/images/2022-04-26-14-28-26.png"></p>
+<h3 id="inner-components">Inner components<a aria-hidden="true" class="anchor-heading icon-link" href="#inner-components"></a></h3>
+<p>The inner components do not reach into the outside world. They don't know how to talk to the database, nor the web. In other words, they have no technology concerns.</p>
+<p>A good practice is to use the principle of Dependency Inversion, with the internal rule that only outer ring components may depend on inner ring components, and never the contrary.</p>
+<h3 id="outer-components">Outer components<a aria-hidden="true" class="anchor-heading icon-link" href="#outer-components"></a></h3>
+<p>The outer components each serve a distinct purpose.</p>
+<ul>
+<li>ex. we can have a User Component which knows how to pass data to and from Users. The User component is connected to the Inner components via the port, and in this case we might decide we need 2 adapters: an HTTP adapter and a GUI adapter.</li>
+</ul>

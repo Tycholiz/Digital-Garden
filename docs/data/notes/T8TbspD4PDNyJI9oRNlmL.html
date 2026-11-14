@@ -1,0 +1,22 @@
+<h1 id="dbms-database-management-system">DBMS (Database Management System)<a aria-hidden="true" class="anchor-heading icon-link" href="#dbms-database-management-system"></a></h1>
+<p><em>"SQL tells the database what information you want, and the DBMS (Postgres, MySQL) determines the best way to provide it."</em></p>
+<ul>
+<li>its role in your software architecture is to handle concurrent access to live data that is manipulated by several applications, or several parts of an application.</li>
+</ul>
+<p>When a select query is made, The database translates the query into a "query plan" which may vary between executions, database versions and database software. This functionality is called the "query optimizer" as it is responsible for finding the best possible execution plan for the query, within applicable constraints.</p>
+<p>Goal of a DBMS is to handle concurrent access to live data that is manipulated by several applications, or several parts of an application</p>
+<ul>
+<li>at the core of this is the concept of a transaction (RDBMS)</li>
+</ul>
+<h3 id="objectrelational-impedance-mismatch">Object–relational Impedance Mismatch<a aria-hidden="true" class="anchor-heading icon-link" href="#objectrelational-impedance-mismatch"></a></h3>
+<p>The object–relational impedance mismatch is a set of conceptual and technical difficulties that are often encountered when a relational database management system (RDBMS) is being served by an application program (or multiple application programs) written in an object-oriented programming language or style, particularly because objects or class definitions must be mapped to database tables defined by a relational schema.</p>
+<h2 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h2>
+<ul>
+<li><a href="https://martinfowler.com/articles/evodb.html">Evolutionary database design</a></li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/ULkfbL9WpktbVYnzhl6Jw">Postgres</a></li>
+<li><a href="/notes/vtLtsv3Vsdt6pTTASCq4u">Streaming Architecture</a></li>
+</ul>

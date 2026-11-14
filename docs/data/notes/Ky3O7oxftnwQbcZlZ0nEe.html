@@ -1,0 +1,46 @@
+<h1 id="terraform-cli">Terraform CLI<a aria-hidden="true" class="anchor-heading icon-link" href="#terraform-cli"></a></h1>
+<h3 id="plan">Plan<a aria-hidden="true" class="anchor-heading icon-link" href="#plan"></a></h3>
+<p><code>plan</code> will read the terraform HCL file and determine the desired state of the infrastructure, and compare that to the current infra.</p>
+<ul>
+<li>Once this "diff" is determined, <code>terraform plan</code> presents a description of the changes necessary to achieve that desired state (it does <em>not</em> actually make any changes).</li>
+</ul>
+<p>If we want, we can save the plan as a runnable artifact that can be fed into the <code>terraform apply</code> command.</p>
+<p>The purpose of the plan is to validate configuration changes and confirm that the resulting actions are as expected.</p>
+<h4 id="flags">Flags<a aria-hidden="true" class="anchor-heading icon-link" href="#flags"></a></h4>
+<ul>
+<li><code>-out &#x3C;filename></code> - specify an output file for the diff</li>
+</ul>
+<h4 id="markers-in-the-plan-diff">Markers in the plan diff<a aria-hidden="true" class="anchor-heading icon-link" href="#markers-in-the-plan-diff"></a></h4>
+<ul>
+<li><code>+</code> parts that will be added</li>
+<li><code>-</code> parts that will be deleted</li>
+<li><code>~</code> parts that will be updated in place (ie. it won't delete and recreate)</li>
+<li><code>-/+</code> destroy-then-create
+<ul>
+<li>this erases the state and results in downtime. We can overcome this downtime by using a resource lifecycle</li>
+</ul>
+</li>
+</ul>
+<h3 id="apply">Apply<a aria-hidden="true" class="anchor-heading icon-link" href="#apply"></a></h3>
+<p><code>apply</code> will perform a plan just like <code>terraform plan</code> command, but then it will actually carry out the planned changes to each resource using the infrastructure provder's API (e.g. AWS API).</p>
+<ul>
+<li>therefore, it can be thought of as "committing" the plan.</li>
+</ul>
+<h3 id="destroy">Destroy<a aria-hidden="true" class="anchor-heading icon-link" href="#destroy"></a></h3>
+<p><code>destroy</code> behaves exactly like deleting every resource from the configuration and then running an apply, except that it doesn't require editing the configuration</p>
+<ul>
+<li>Therefore, this is more convenient if you intend to provision similar resources at a later date.</li>
+</ul>
+<hr>
+<h3 id="import"><code>import</code><a aria-hidden="true" class="anchor-heading icon-link" href="#import"></a></h3>
+<p>The <code>import</code> command is how we get Terraform to begin managing a resource that wasn't created in Terraform.</p>
+<ul>
+<li>What's happpening is that Terraform is fetching its data, then including it as part of its state.</li>
+</ul>
+<pre class="language-sh"><code class="language-sh">terraform import &#x3C;resource_type>.&#x3C;resource_identifier> &#x3C;value>
+</code></pre>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/Ku1OgHMhELajzo61Gx7ye">Terraform</a></li>
+</ul>

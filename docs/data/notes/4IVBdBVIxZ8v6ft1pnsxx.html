@@ -1,0 +1,13 @@
+<h1 id="mutations">Mutations<a aria-hidden="true" class="anchor-heading icon-link" href="#mutations"></a></h1>
+<p>While query fields are executed in parallel, mutation fields run in series, one after the other.</p>
+<ul>
+<li>This means that if we send two <code>updateNugget</code> mutations in one request, the first is guaranteed to finish before the second begins</li>
+</ul>
+<h3 id="input-types">Input types<a aria-hidden="true" class="anchor-heading icon-link" href="#input-types"></a></h3>
+<p>often we will be using the same inputs to different mutations (ex. createNugget, updateNugget). Input types offers us a way to decalare these inputs once, and alias it as a type. </p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/YrV9FViC2kjwO2LhRHFzT">Graphql Documents</a></li>
+<li><a href="/notes/GDD7xPlpQqrQnmwcDXUoa">Resolver</a></li>
+</ul>

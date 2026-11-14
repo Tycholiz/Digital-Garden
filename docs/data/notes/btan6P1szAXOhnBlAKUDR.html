@@ -1,0 +1,48 @@
+<h1 id="etcd">etcd<a aria-hidden="true" class="anchor-heading icon-link" href="#etcd"></a></h1>
+<p>Since Kubernetes is distributed, it needs a distributed database (running across multiple machines at a time) that is easy to store data across the cluster and watch for changes to that data. etcd is the database to handle this.</p>
+<p>etcd can be thought of as the heart of the Kubernetes cluster. The API server is a stateless REST/authentication endpoint in front of etcd, and then every other component works by talking to etcd through the API server.</p>
+<p>The name "etcd" originated from two ideas: </p>
+<ol>
+<li>the unix <code>/etc</code> folder and "d"istributed systems. The <code>/etc</code> folder is a place to store configuration data for a single system whereas etcd stores configuration information for large scale distributed systems. Hence, a "d"istributed <code>/etc</code> is "etcd".</li>
+</ol>
+<p>Etcd is not coupled to the Kubernetes platform</p>
+<p>Etcd solves the same problem as <a href="/notes/zxt3lhonfdhglvijd17ua8c">Zookeeper</a>: distributed system coordination and metadata storage.</p>
+<ul>
+<li>The improvements etcd made over Zookeeper include:
+<ul>
+<li>Dynamic cluster membership reconfiguration</li>
+<li>Stable read/write under high load</li>
+<li>A multi-version concurrency control data model</li>
+<li>Reliable key monitoring which never silently drop events</li>
+<li>Lease primitives decoupling connections from sessions</li>
+<li>APIs for safe distributed shared locks</li>
+</ul>
+</li>
+</ul>
+<p>etcd manages a lot of the tricky problems in running a distributed database – like race conditions and networking – and saves Kubernetes from worrying about it.</p>
+<p>Kubernetes uses etcd as a key-value database store. It stores the configuration of the Kubernetes cluster in etcd.</p>
+<ul>
+<li>It also stores the actual state of the system and the desired state of the system in etcd.</li>
+<li>It then uses etcd’s watch functionality to monitor changes to either of these two things. If they diverge, Kubernetes makes changes to reconcile the actual state and the desired state.</li>
+</ul>
+<p>Everything in K8s other than etcd is stateless. If etcd isn't running, you can't make any changes to your Kubernetes cluster (though existing services will continue running!).</p>
+<ul>
+<li>this means that if have the etcd data, we effectively have a snapshot of our entire cluster, meaning that in the event of a failure, we can simply restore it.</li>
+</ul>
+<p>If any of the K8s core components (e.g. API server, controller manager, scheduler etc.) have to restart, all they need to do to continue operating seamlessly is read the relevant state in etcd.</p>
+<p>Also...</p>
+<ul>
+<li>Anything you might read from a kubectl get xyz command is stored in etcd.</li>
+<li>Any change you make via kubectl create will cause an entry in etcd to be updated.</li>
+<li>Any node crashing or process dying causes values in etcd to be changed.</li>
+<li>The set of processes that make up Kubernetes use etcd to store data and notify each other of changes.</li>
+</ul>
+<p>If your Kubernetes cluster uses etcd as its backing store, make sure you have a back up plan for those data.</p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/qxSOd6SPN8qf9ZUojVFDX">K8s</a></li>
+<li><a href="/notes/zxt3lhonfdhglvijd17ua8c">Zookeeper</a></li>
+<li><a href="/notes/vutujFFWxQu6TshWVuMpI">Distributed Computing</a></li>
+<li><a href="/notes/bb6ox6r8y6r6f3ezmeo16ud">Master node Components</a></li>
+</ul>

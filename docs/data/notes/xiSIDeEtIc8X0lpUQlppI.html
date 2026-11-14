@@ -1,0 +1,229 @@
+<h1 id="elastic-search">Elastic Search<a aria-hidden="true" class="anchor-heading icon-link" href="#elastic-search"></a></h1>
+<h3 id="what-is-it">What is it?<a aria-hidden="true" class="anchor-heading icon-link" href="#what-is-it"></a></h3>
+<p>ElasticSearch is an open-source, RESTful, distributed search and analytics engine built on Apache Lucene</p>
+<ul>
+<li>You can send data in the form of JSON documents to Elasticsearch using the API. 
+<ul>
+<li>Elasticsearch automatically stores the original document and adds a searchable reference to the document in the cluster’s index. You can then search and retrieve the document using the Elasticsearch API</li>
+</ul>
+</li>
+<li>due to its distributed nature, documents are available on all nodes of the cluster.
+<ul>
+<li>Each document in an index belongs to one primary shard, but is replicated amongst the other shards.
+<ul>
+<li>ES selects the shards that the query should go to in a round-robin fashion</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>ES is NoSQL and is more powerful, flexible, and faster than SQL's LIKE</li>
+<li>ES Documents are heavily <a href="/notes/0o0K3Z7zerXCY3v3Hoz96">denormalized</a>, resulting in documents that do not reference one another.</li>
+</ul>
+<h4 id="example-reddit-post-as-elasticsearch-document">Example Reddit post as ElasticSearch document:<a aria-hidden="true" class="anchor-heading icon-link" href="#example-reddit-post-as-elasticsearch-document"></a></h4>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"abcdefg"</span><span class="token punctuation">,</span>
+  <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"Amazing subreddit for nature lovers!"</span><span class="token punctuation">,</span>
+  <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"Hey everyone!\n\nI just stumbled upon this incredible subreddit called NatureIsBeautiful and I can't stop scrolling through the posts."</span><span class="token punctuation">,</span>
+  <span class="token property">"author"</span><span class="token operator">:</span> <span class="token string">"nature_enthusiast23"</span><span class="token punctuation">,</span>
+  <span class="token property">"created_at"</span><span class="token operator">:</span> <span class="token string">"2023-06-05T14:30:00Z"</span><span class="token punctuation">,</span>
+  <span class="token property">"subreddit"</span><span class="token operator">:</span> <span class="token string">"NatureIsBeautiful"</span><span class="token punctuation">,</span>
+  <span class="token property">"upvotes"</span><span class="token operator">:</span> <span class="token number">1500</span><span class="token punctuation">,</span>
+  <span class="token property">"comments"</span><span class="token operator">:</span> <span class="token number">87</span><span class="token punctuation">,</span>
+  <span class="token property">"tags"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"nature"</span><span class="token punctuation">,</span> <span class="token string">"photography"</span><span class="token punctuation">,</span> <span class="token string">"community"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"https://www.reddit.com/r/NatureIsBeautiful/comments/abcdefg/amazing_subreddit_for_nature_lovers/"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="why-use-it">Why use it?<a aria-hidden="true" class="anchor-heading icon-link" href="#why-use-it"></a></h3>
+<p>ES is typically used when you have:</p>
+<ul>
+<li>high data volumes, and are likely to need multiple nodes to process the data</li>
+<li>unstructured or semi-structured data (log files, text, ...). You ingest the raw data in its original form.</li>
+<li>the data is treated as a blob, and thus never updated. It’s ingested once, queried, and then purged according to some bulk retention policy (e.g. older than 30 days)</li>
+<li>you need to access aggregate data more than individual records</li>
+<li>you need to index in real time, allowing you ingest high-throughput data streams and query that data quickly, making it well-suited for applications that require constant updates and querying of rapidly changing data</li>
+</ul>
+<p>When to use ElasticSearch?</p>
+<ul>
+<li>If your use case requires a full-text search, including features like fuzzy matching, stemming (e.g. having the word "run" also match "runs", "running" etc), and relevance scoring.</li>
+<li>If your use case involves chatbots where these bots resolve most of the queries, such as when a person types something there are high chances of spelling mistakes. You can make use of the in-built fuzzy matching practices of the ElasticSearch</li>
+<li>Also, ElasticSearch is useful in storing logs data and analyzing it</li>
+</ul>
+<p>Other use cases:</p>
+<ul>
+<li>Add a search box to an app or website</li>
+<li>Store and analyze logs, metrics, and security event data</li>
+<li>Use machine learning to automatically model the behavior of your data in real time</li>
+<li>Automate business workflows using Elasticsearch as a storage engine</li>
+<li>Manage, integrate, and analyze spatial information using Elasticsearch as a geographic information system (GIS)</li>
+<li>Store and process genetic data using Elasticsearch as a bioinformatics research tool</li>
+</ul>
+<p>Elastic search scales horizontally with your requirements.</p>
+<p>Forms part of the ELK stack (along with Logstash and Kibana), giving us log analysis, monitoring, and visualization in the context of application and server logs.</p>
+<h4 id="as-part-of-the-elasticstack-elk">As part of the ElasticStack (ELK)<a aria-hidden="true" class="anchor-heading icon-link" href="#as-part-of-the-elasticstack-elk"></a></h4>
+<p>ELK consists of ElasticSearch, Kibana, Beats and Logstash</p>
+<ul>
+<li><em>Logstash</em> and <em>Beats</em> facilitate collecting, aggregating, and enriching your data and storing it in Elasticsearch</li>
+<li><em>Kibana</em> enables you to interactively explore, visualize, and share insights into your data and manage and monitor the stack.</li>
+<li><em>Elasticsearch</em> is where the indexing, search, and analysis magic happens.</li>
+</ul>
+<h3 id="how-does-it-work">How does it work?<a aria-hidden="true" class="anchor-heading icon-link" href="#how-does-it-work"></a></h3>
+<p>When you're searching for text. ES ranks search results based on how close the phrase or words are. SQL doesn't do this nearly as well.</p>
+<ul>
+<li>ES starts to shine when you start to do a lot of filtering</li>
+</ul>
+<p>Elasticsearch chooses the best underlying data structure to use for a particular field type. </p>
+<ul>
+<li>Text is tokenized and stored in an inverted index, which supports very fast full-text searches.
+<ul>
+<li>an inverted index lists every unique word that appears in any document and identifies all of the documents each word occurs in.</li>
+<li>ex. if we search for the string <code>London</code>, it is the inverted index that allows us to quickly know that the string occurs in 6 different documents in the index.</li>
+</ul>
+</li>
+<li>Numeric and geolocational data is stored in BKD trees
+<ul>
+<li>this allows for fast-range searches and nearest-neighbor queries in large data sets</li>
+</ul>
+</li>
+</ul>
+<p>Secondary <a href="/notes/jiITIvU42MBAYcbXheWwI">indexes</a> are the raison d’être of search servers such as Elasticsearch.</p>
+<p>Mapping is the process by which ES determines how a document is stored and indexed.</p>
+<h4 id="how-data-is-retrieved">How data is retrieved<a aria-hidden="true" class="anchor-heading icon-link" href="#how-data-is-retrieved"></a></h4>
+<p>Based on the query terms passed, each document retrieved will be assigned a score. The documents are then returned to the client sorted by that score.</p>
+<ul>
+<li>this is <a href="https://www.elastic.co/blog/practical-bm25-part-2-the-bm25-algorithm-and-its-variables">the BM25 algorithm</a></li>
+<li>note: if I pass "prescription refill", then ES recognizes that there are 2 terms: <code>prescription</code> and <code>refill</code></li>
+</ul>
+<p>Some factors that determine the document's score:</p>
+<ul>
+<li><em>rarity</em> - queries that contain rarer terms (amongst <em>all</em> documents) have a higher multiplier, meaning they contribute more to the final score
+<ul>
+<li>ex. the word "the" is likely to be very common amongst all matching documents, while the word "elephant" likely to be rare. As a result, ES recognizes that the word "elephant" is more important, and makes its contribution to the final document's score higher.</li>
+<li>this is known as <em>Inverse Document Frequency (IDF)</em></li>
+</ul>
+</li>
+<li><em>density</em> - documents that are longer than average will have the score penalized. 
+<ul>
+<li>That is, the more terms in the document (ones that don't match the query), the lower the score for the document.</li>
+<li>expl: this makes intuitive sense: if a document is 300 pages long and mentions the word elephant once, the document is more likely to have said something like "elephant in the room", rather than it actually being a document about elephants. On the other hand, if the document is a tweet of 140 characters, then the word Elephant is much more likely to have actually been about Elephants.</li>
+<li>this is known as <em>Term Frequency (TF)</em></li>
+</ul>
+</li>
+</ul>
+<p>In the absense of replicas, a given query and set of documents will result in a more-or-less deterministic result</p>
+<ul>
+<li>this non-determinism resulting from replicas happens because ES determines which shard the query should go to in a round-robin fashion, so the same query run twice in a row will likely go to different copies of the same shard.</li>
+</ul>
+<h3 id="how-to-use-it">How to use it?<a aria-hidden="true" class="anchor-heading icon-link" href="#how-to-use-it"></a></h3>
+<h4 id="searching-data">Searching data<a aria-hidden="true" class="anchor-heading icon-link" href="#searching-data"></a></h4>
+<p>The Elasticsearch REST APIs support structured queries, full text queries, and complex queries that combine the two.</p>
+<ul>
+<li><em>Structured queries</em> are similar to the types of queries you can construct in SQL. 
+<ul>
+<li>ex. you could search the gender and age fields in your employee index and sort the matches by the hire_date field. </li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html">Query SDL</a>, <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/sql-overview.html">ElasticSearch SQL</a></li>
+</ul>
+</li>
+<li><em>Full-text queries</em> find all documents that match the query string and return them sorted by relevance—how good a match they are for your search terms.</li>
+</ul>
+<h4 id="performing-aggregations">Performing aggregations<a aria-hidden="true" class="anchor-heading icon-link" href="#performing-aggregations"></a></h4>
+<p>Aggregations enable you to build complex summaries of your data and gain insight into key metrics, patterns, and trends.</p>
+<p>Instead of just finding the proverbial “needle in a haystack”, aggregations enable you to answer questions like:</p>
+<ul>
+<li>How many needles are in the haystack?</li>
+<li>What is the average length of the needles?</li>
+<li>What is the median length of the needles, broken down by manufacturer?</li>
+<li>How many needles were added to the haystack in each of the last six months?</li>
+<li>What are your most popular needle manufacturers?</li>
+<li>Are there any unusual or anomalous clumps of needles?</li>
+</ul>
+<p>Because aggregations leverage the same data-structures used for search, they are also very fast.</p>
+<hr>
+<h2 id="elasticsearch-primitives">ElasticSearch Primitives<a aria-hidden="true" class="anchor-heading icon-link" href="#elasticsearch-primitives"></a></h2>
+<p>Comparison to RDBMS</p>
+<ul>
+<li>RDBMS => Databases => Tables => Columns/Rows</li>
+<li>Elasticsearch => Clusters => Indices => Shards => Documents</li>
+</ul>
+<h3 id="index">Index<a aria-hidden="true" class="anchor-heading icon-link" href="#index"></a></h3>
+<p>An Elasticsearch index is a logical namespace that holds a collection of documents</p>
+<ul>
+<li>That is, an ES Index has nothing to do with <a href="/notes/jiITIvU42MBAYcbXheWwI">database indexes</a>, and are more comparable to tables in SQL</li>
+<li>"indexing a document" means "inserting a document into the index"</li>
+</ul>
+<h3 id="index-mapping">Index Mapping<a aria-hidden="true" class="anchor-heading icon-link" href="#index-mapping"></a></h3>
+<p>essentially a schema for how data will be structured in the index</p>
+<p>Each field in a mapping has an analyzer associated with it</p>
+<h3 id="analyzer">Analyzer<a aria-hidden="true" class="anchor-heading icon-link" href="#analyzer"></a></h3>
+<p>Each analyzer contains:</p>
+<ul>
+<li>a tokenizer</li>
+<li>a normalizer</li>
+<li>filters</li>
+</ul>
+<p>ES has built-in analyzers, but we can define custom ones, where we define our own tokenizer</p>
+<h3 id="tokenizer">Tokenizer<a aria-hidden="true" class="anchor-heading icon-link" href="#tokenizer"></a></h3>
+<ul>
+<li>converts text into tokens
+<ul>
+<li>ex. converts "a quick brown fox jumps over the lazy dog" into terms <code>["a", "quick", "brown"]</code> etc.</li>
+</ul>
+</li>
+</ul>
+<p>Tokenizer types:</p>
+<ul>
+<li>word-oriented</li>
+<li>partial-word</li>
+<li>structured text</li>
+</ul>
+<h4 id="n-gram-tokenizer">N-gram tokenizer<a aria-hidden="true" class="anchor-heading icon-link" href="#n-gram-tokenizer"></a></h4>
+<p>can break a word up into a sliding window of continuous letters</p>
+<ul>
+<li>ex. "quick" -> ["qu", "ui", "ic", "ck"]</li>
+</ul>
+<h4 id="edge-n-gram-tokenizer">Edge N-gram tokenizer<a aria-hidden="true" class="anchor-heading icon-link" href="#edge-n-gram-tokenizer"></a></h4>
+<ul>
+<li>ex. "quick" -> ["q", "qu", "qui", "quic", "quick"]</li>
+</ul>
+<h3 id="filter">Filter<a aria-hidden="true" class="anchor-heading icon-link" href="#filter"></a></h3>
+<p>might do things like removing articles from the terms (e.g. <code>a</code>, <code>the</code>), or do things like include derivate words in the search (e.g. cleaner -> <code>["cleaning", "cleaned", "cleans"]</code>), or a synonym filter, which adds matches for synonyms that may appear.</p>
+<h3 id="normalizer">Normalizer<a aria-hidden="true" class="anchor-heading icon-link" href="#normalizer"></a></h3>
+<p>A special type of analyzer</p>
+<ul>
+<li>emits a single token for a given input, instead of an array of tokens</li>
+</ul>
+<hr>
+<h2 id="queries">Queries<a aria-hidden="true" class="anchor-heading icon-link" href="#queries"></a></h2>
+<p>Compound vs Leaf queries</p>
+<ul>
+<li>leaf query matches against a specific field</li>
+<li>compound query combine leaf queries in various ways </li>
+</ul>
+<p>Type of compound queries</p>
+<ul>
+<li>bool (ex. <code>should</code>, <code>must_and</code> etc.)</li>
+<li>boosting</li>
+<li>constant_score</li>
+<li>dis_max - only the highest score of any leaf query within a compound query will be considered</li>
+<li>Function_score - allow us to use more complex functions to determine the score</li>
+</ul>
+<p>Leaf queries can have their scores boosted with multipliers</p>
+<h3 id="full-text-query">Full-text Query<a aria-hidden="true" class="anchor-heading icon-link" href="#full-text-query"></a></h3>
+<p>A type of leaf query</p>
+<p>Matches against text in a specific field</p>
+<p><code>match</code> is the most common type of full-text query</p>
+<h1 id="tools">Tools<a aria-hidden="true" class="anchor-heading icon-link" href="#tools"></a></h1>
+<ul>
+<li><a href="https://www.elastic.co/kibana">Kibana: a data visualization platform for Elasticsearch</a></li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/ds088khexmfzxp8i9kkuwlb">Cook</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/ulicRRwo3lSFzh3tMfWH9">Apache Flink</a></li>
+<li><a href="/notes/ZF8xj8wwDUqKlrwTrCFZ1">Nosql</a></li>
+<li><a href="/notes/FuHcb7zDdczt8IDTtOH0b">Partitioning</a></li>
+</ul>
