@@ -1,0 +1,36 @@
+<h1 id="encoding">Encoding<a aria-hidden="true" class="anchor-heading icon-link" href="#encoding"></a></h1>
+<p>Programs usually work with data in (at least) two different representations:</p>
+<ol>
+<li>In memory, data is kept in objects, structs, lists, arrays, hash tables, trees, and so on. These data structures are optimized for efficient access and manipulation by the CPU (typically using pointers).</li>
+<li>When you want to send some data to another process with which you don't share memory (e.g. write data to a file or send it over the network), you have to encode it as some kind of self-contained sequence of bytes (for example, a JSON document). Since a pointer wouldn't make sense to any other process, this sequence-of-bytes representation looks quite different from the data structures that are normally used in memory.</li>
+</ol>
+<p>We need some kind of translation between the two representations. </p>
+<ul>
+<li>The translation from the in-memory representation to a byte sequence is called encoding (also known as serialization or marshalling)</li>
+<li>the reverse is called decoding (parsing, deserialization, unmarshalling).</li>
+</ul>
+<p>We use encoding to ensure that data can transport through protocols and mechanisms designed for ASCII without needing casual modification and without having to worry about things like newlines, brackets, etc.</p>
+<p>Some languages come with built-in support for encoding in-memory objects into byte sequences.</p>
+<ul>
+<li>ex. Pickle in Python, <a href="/notes/YRRB0Oo5HEt0gXrY4T17h">Buffer</a> in Node.</li>
+<li>these libraries allow in-memory objects to be saved and restored with minimal additional code</li>
+</ul>
+<p>However, these libraries bring drawbacks:</p>
+<ul>
+<li>The encoding is often tied to a particular programming language, and reading the data in another language is very difficult. If you store or transmit data in such an encoding, you are committing yourself to your current programming language for potentially a very long time</li>
+<li>In order to restore data in the same object types, the decoding process needs to be able to instantiate arbitrary classes. This is frequently a source of security problems</li>
+</ul>
+<p>For these reasons it's generally a bad idea to use your language's built-in encoding for anything other than very transient purposes.</p>
+<ul>
+<li>Instead, we should use standardized encodings that can be written and read by many programming languages, like JSON and XML.</li>
+</ul>
+<hr>
+<p>UTF-8 is a superset of ASCII</p>
+<ul>
+<li>ASCII can encode bytes with uppercase and lowercase English letters, the numbers 0-9, and a few other symbols like the exclamation mark (!) or the ampersand sign (&#x26;).</li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/YYt62mSW964cwb5nP0hva">Base64</a></li>
+</ol>

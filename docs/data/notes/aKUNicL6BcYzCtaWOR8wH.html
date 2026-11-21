@@ -1,0 +1,21 @@
+<h1 id="cli">CLI<a aria-hidden="true" class="anchor-heading icon-link" href="#cli"></a></h1>
+<h3 id="docker-images"><code>docker images</code><a aria-hidden="true" class="anchor-heading icon-link" href="#docker-images"></a></h3>
+<ul>
+<li>show all images</li>
+</ul>
+<h3 id="docker-build"><code>docker build</code><a aria-hidden="true" class="anchor-heading icon-link" href="#docker-build"></a></h3>
+<ul>
+<li>purpose is to build an image from a Dockerfile. The command will find the <code>Dockerfile</code> and will build an image based on it.</li>
+</ul>
+<h3 id="inject-env-variables-into-the-dockerfile-build-process">Inject env variables into the Dockerfile build process<a aria-hidden="true" class="anchor-heading icon-link" href="#inject-env-variables-into-the-dockerfile-build-process"></a></h3>
+<p><code>--build-arg NPM_TOKEN=$NPM_TOKEN</code></p>
+<h2 id="build-image">Build image<a aria-hidden="true" class="anchor-heading icon-link" href="#build-image"></a></h2>
+<ul>
+<li>from your application folder:
+<code>docker build -t &#x3C;APP NAME> .</code>
+<ul>
+<li>this causes each line of Dockerfile to be executed, building up the image as it goes</li>
+</ul>
+</li>
+<li>Images are static once they are created</li>
+</ul>

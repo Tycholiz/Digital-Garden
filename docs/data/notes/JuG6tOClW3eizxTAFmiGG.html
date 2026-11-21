@@ -1,0 +1,25 @@
+<h1 id="jest-with-typescript">Jest with TypeScript<a aria-hidden="true" class="anchor-heading icon-link" href="#jest-with-typescript"></a></h1>
+<h3 id="problem-with-jest-mocks-and-typescript">Problem with Jest mocks and Typescript<a aria-hidden="true" class="anchor-heading icon-link" href="#problem-with-jest-mocks-and-typescript"></a></h3>
+<p>Mocking functions happens at runtime. At compile-time however, the Typescript compiler doesn't know that you have mocked those functions. During compilation, the TSC will do a type-check and it will complain that <code>mockReturnValueOnce</code> does not exist on that function.</p>
+<ul>
+<li>To solve this, we have to extend our function so it both have the original types and the type of a Jest Mock function:</li>
+</ul>
+<pre class="language-ts"><code class="language-ts">jest<span class="token punctuation">.</span><span class="token method function property-access">mock</span><span class="token punctuation">(</span><span class="token string">"../models/events"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword module">import</span> <span class="token imports"><span class="token punctuation">{</span> getEvents <span class="token punctuation">}</span></span> <span class="token keyword module">from</span> <span class="token string">"../models/events"</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> mockedGetEvents <span class="token operator">=</span> getEvents <span class="token keyword module">as</span> jest<span class="token punctuation">.</span><span class="token property-access"><span class="token maybe-class-name">MockedFunction</span></span><span class="token operator">&#x3C;</span><span class="token keyword">typeof</span> getEvents<span class="token operator">></span>
+</code></pre>
+<h1 id="ts-jest">ts-jest<a aria-hidden="true" class="anchor-heading icon-link" href="#ts-jest"></a></h1>
+<p>ts-jest is a jest transformer so that we can transform our source Typescript code into Javascript code for the purposes of our test.</p>
+<h2 id="api">API<a aria-hidden="true" class="anchor-heading icon-link" href="#api"></a></h2>
+<h3 id="mockedmodule-deep"><code>mocked(module, deep)</code><a aria-hidden="true" class="anchor-heading icon-link" href="#mockedmodule-deep"></a></h3>
+<p>The purpose of this function is to resolve typing errors</p>
+<ul>
+<li>when we declare:</li>
+</ul>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">const</span> mockedFoo <span class="token operator">=</span> <span class="token function">mocked</span><span class="token punctuation">(</span>foo<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span>
+</code></pre>
+<p>all of the types within the <code>mockedFoo</code> module will be known to our jest test, and we will get no typing errors as a result.</p>
+<h2 id="resources">Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#resources"></a></h2>
+<ul>
+<li><a href="https://kulshekhar.github.io/ts-jest/docs/guides/mock-es6-class/">mocking classes</a></li>
+</ul>

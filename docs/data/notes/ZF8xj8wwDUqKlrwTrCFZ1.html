@@ -1,0 +1,398 @@
+<h1 id="nosql">Nosql<a aria-hidden="true" class="anchor-heading icon-link" href="#nosql"></a></h1>
+<p>Relational databases assume that the relationships are of similar importance, document databases assume that relationships form a hierarchical structure and relationships between documents are less important</p>
+<p>NoSQL-type DBs get their power from the developer spending a lot more time and care in thinking about exactly how to access data. Many NoSQL databases loosen the constraints on what you can store in a given record, but in return they are a great deal more fussy about how you access records. If you want to skip careful design of how you access records, you want the relational DB.</p>
+<p>If your data cannot be represented on literally a sheet of paper, NoSQL is the wrong data store for you. And I don't mean sheets of paper with references that say "now turn to page 64 for the diagram", no, I mean a sheet of paper per document. That is what a normalized record looks like in a document store.</p>
+<p>Horizontal scaling is a distinct benefit of NoSQL, which is why companies like Netflix and Spotify use document databases.</p>
+<ul>
+<li>RDBMSs more lend themselves to vertical scaling, which can get costly.</li>
+</ul>
+<p>NoSQL databases fit better into the whole paradigm of distributed computing, and NoSQL databases make the most of cloud computing and storage. Cloud-based storage is an excellent cost-saving solution but requires data to be easily spread across multiple servers to scale up. Using commodity (affordable, smaller) hardware on-site or in the cloud saves you the hassle of additional software, and NoSQL databases like Cassandra are designed to be scaled across multiple data centers out of the box, without a lot of headaches.</p>
+<p>Instead of reshaping data when a query is processed (as an RDBMS system does), a NoSQL database organizes data so that its shape in the database corresponds with what will be queried. </p>
+<ul>
+<li>This is a key factor in increasing speed and scalability.</li>
+</ul>
+<p>Generally, NoSQL databases sacrifice ACID compliance for scalability and processing speed</p>
+<p>Going from SQL to NoSQL is easier than from NoSQL to SQL</p>
+<p>When all the other components of our application are fast and seamless, NoSQL databases prevent data from being the bottleneck.</p>
+<ul>
+<li>Big data is contributing to a large success for NoSQL databases, mainly because it handles data differently than the traditional relational databases.</li>
+</ul>
+<h1 id="types-of-nosql-databases">Types of NoSQL Databases<a aria-hidden="true" class="anchor-heading icon-link" href="#types-of-nosql-databases"></a></h1>
+<h2 id="document-based-databases">Document-Based Databases<a aria-hidden="true" class="anchor-heading icon-link" href="#document-based-databases"></a></h2>
+<p>Document-based databases store the data in JSON objects. Each document has key-value pairs like structures:</p>
+<p>The document-based databases are easy for developers as the document directly maps to the objects as JSON is a very common data format used by web developers. They are very flexible and allow us to modify the structure at any time.</p>
+<p>Ex. Mongo, Couch, Couchbase, DocumentDB(?)</p>
+<h2 id="key-value-database">Key-Value Database<a aria-hidden="true" class="anchor-heading icon-link" href="#key-value-database"></a></h2>
+<p>Here, keys and values can be anything like strings, integers, or even complex objects. They are highly partitionable and are the best in horizontal scaling. They can be really useful in session oriented applications where we try to capture the behavior of the customer in a particular session.</p>
+<p>key-value stores, in general, always maintain a certain number of replicas to offer reliability.</p>
+<p>Ex. DynamoDB, Redis, Cassandra</p>
+<h2 id="wide-column-based-database">Wide Column-Based Database<a aria-hidden="true" class="anchor-heading icon-link" href="#wide-column-based-database"></a></h2>
+<p>This database stores the data in records similar to any relational database but it has the ability to store very large numbers of dynamic columns. It groups the columns logically into column families.</p>
+<ul>
+<li>For example, in a relational database, you have multiple tables but in a wide-column based database, instead of having multiple tables, we have multiple column families.
+Cassandra or key-value stores, in general, always maintain a certain number of replicas to offer reliability.</li>
+</ul>
+<p>Ex. Cassandra</p>
+<h1 id="implementations">Implementations<a aria-hidden="true" class="anchor-heading icon-link" href="#implementations"></a></h1>
+<h2 id="cassandra">Cassandra<a aria-hidden="true" class="anchor-heading icon-link" href="#cassandra"></a></h2>
+<p>A key-value store approach to NoSQL</p>
+<p>Cassandra's approach to data availability is as follows: Instead of having one master node, it utilizes multiple masters inside a cluster. With multiple masters present, there is no fear of any downtime. The redundant model ensures high availability at all times.</p>
+<p>Cassandra is designed to manipulate huge data arrays across multiple nodes. </p>
+<p>In contrast to the relational database organizing data records in rows, Cassandra’s data model is based on columns to provide faster data retrieval. The data is stored in the form of hash.</p>
+<p>designed to be scaled across multiple data centers out of the box, without a lot of headaches.</p>
+<h2 id="dynamodb-amazon">DynamoDB (Amazon)<a aria-hidden="true" class="anchor-heading icon-link" href="#dynamodb-amazon"></a></h2>
+<p></p><p></p><div class="portal-container">
+<div class="portal-head">
+<div class="portal-backlink">
+<div class="portal-title">From <span class="portal-text-title">DynamoDB</span></div>
+<a href="/notes/gEztUcJYazBs8J8k0gi7o" class="portal-arrow">Go to text <span class="right-arrow">→</span></a>
+</div>
+</div>
+<div id="portal-parent-anchor" class="portal-parent" markdown="1">
+<div class="portal-parent-fader-top"></div>
+<div class="portal-parent-fader-bottom"></div><p>Dynamo is a fully-managed, highly available schemaless NoSQL database.</p>
+<ul>
+<li>The DB engine can manage structured or semi-structured data, including JSON documents.</li>
+<li>supports key–value and document data structures</li>
+</ul>
+<p>Uses tables, though this concept is loosely related to how tables are used in SQL.</p>
+<ul>
+<li>essentially, we would include all domain primitives of a single domain in a Dynamo table, and use <a href="/notes/gEztUcJYazBs8J8k0gi7o#global-secondary-index-gsi1">GSIs</a> as our means of "JOINing" the domain primitives together.
+<ul>
+<li>each GSI should represent an access pattern (ie. how that data is accessed, such as "get all people by gender", "get all last names by country")</li>
+</ul>
+</li>
+<li>One of the biggest mistakes people make with dynamo is thinking that it's just a relational database with no relations. It's not.</li>
+</ul>
+<p>To get the full benefits of Dynamo, and it requires you often to design your data layer very well up-front. Dynamo is not recommended for a system that hasn't mostly stabilized in design.</p>
+<h3 id="when-to-use-dynamo">When to use Dynamo<a aria-hidden="true" class="anchor-heading icon-link" href="#when-to-use-dynamo"></a></h3>
+<p>Dynamo is really good for high read:write ratio (at least 4:1), meaning Dynamo is a good candidate for high-read applications.</p>
+<ul>
+<li>By default each DynamoDB table is allocated 40,000 read units and 40,000 write units of capacity per second. </li>
+</ul>
+<p>Dynamo may support large, complex schemas but it gets more difficult to maintain and understand. Dynamo is a better candidate for applications with simpler schemas.</p>
+<p>Dynamo offers effortless cross-region replication. Therefore, it is a good candidate for apps that distributed geographically.</p>
+<h2 id="data-is-stored-as-partitions">Data is stored as partitions<a aria-hidden="true" class="anchor-heading icon-link" href="#data-is-stored-as-partitions"></a></h2>
+<p>Data is stored as a partitioned <a href="/notes/UE8OS2s713jEk2CmjiAet">B-tree</a>.</p>
+<ul>
+<li>Items are distributed across 10-GB storage units, called partitions (physical storage internal to DynamoDB)</li>
+<li>Each table has one or more partitions</li>
+<li>DynamoDB uses the partition key’s value as an input to an internal hash function. The output from the hash function determines the partition in which the item is stored. Each item’s location is determined by the hash value of its partition key.</li>
+</ul>
+<p>Unlike <a href="/notes/gWAg15uBJgkS2B0wcpMAa">Redis</a>, in that it is immediately consistent and highly-durable, centered around that single data structure.</p>
+<ul>
+<li>If you put something into DynamoDB, you’ll be able to read it back immediately and, for all practical purposes, you can assume that what you have put will never get lost.</li>
+</ul>
+<h2 id="terms">Terms<a aria-hidden="true" class="anchor-heading icon-link" href="#terms"></a></h2>
+<h3 id="items">Items<a aria-hidden="true" class="anchor-heading icon-link" href="#items"></a></h3>
+<p>Analogous with row of a SQL table</p>
+<h3 id="attribute">Attribute<a aria-hidden="true" class="anchor-heading icon-link" href="#attribute"></a></h3>
+<p>Analogous with column name of a SQL table</p>
+<h3 id="marshalling">Marshalling<a aria-hidden="true" class="anchor-heading icon-link" href="#marshalling"></a></h3>
+<p>Before we can Create/Update a record in DynamoDB, a plain JS Object needs to be converted into a DynamoDB Record.</p>
+<ul>
+<li>Marshalling refers to our ability to convert a Javascript object into a DynamoDB Record.</li>
+</ul>
+<h4 id="example">Example<a aria-hidden="true" class="anchor-heading icon-link" href="#example"></a></h4>
+<pre class="language-js"><code class="language-js"><span class="token constant">AWS</span><span class="token punctuation">.</span><span class="token property-access"><span class="token maybe-class-name">DynamoDB</span></span><span class="token punctuation">.</span><span class="token property-access"><span class="token maybe-class-name">Converter</span></span><span class="token punctuation">.</span><span class="token method function property-access">unmarshall</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token string-property property">"updated_at"</span><span class="token operator">:</span><span class="token punctuation">{</span><span class="token string-property property">"N"</span><span class="token operator">:</span><span class="token string">"146548182"</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token string-property property">"uuid"</span><span class="token operator">:</span><span class="token punctuation">{</span><span class="token string-property property">"S"</span><span class="token operator">:</span><span class="token string">"foo"</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token string-property property">"status"</span><span class="token operator">:</span><span class="token punctuation">{</span><span class="token string-property property">"S"</span><span class="token operator">:</span><span class="token string">"new"</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+<span class="token comment">// { updated_at: 146548182, uuid: 'foo', status: 'new' }</span>
+</code></pre>
+<hr>
+<p>Dynamo provides seamless integration with services such as Redshift (large scale data analysis), Cognito (identity pools), Elastic Map Reduce (EMR), Data Pipeline, Kinesis, and S3. Also, has tight integration with AWS lambda via Streams and aligns with the server-less philosophy; automatic scaling according to your application load, pay-per-what-you-use pricing, easy to get started with, and no servers to manage.</p>
+<hr>
+<h2 id="expression">Expression<a aria-hidden="true" class="anchor-heading icon-link" href="#expression"></a></h2>
+<p><a href="/notes/ju2bxxwj4ma3dr4wbtesq21">Expression</a></p>
+<hr>
+<h2 id="dynamodb-in-practice">DynamoDB in practice<a aria-hidden="true" class="anchor-heading icon-link" href="#dynamodb-in-practice"></a></h2>
+<p>The general rule of thumb is to choose Dynamo for low throughput apps as writes are expensive and consistent reads are twice the cost of eventually consistent reads</p>
+<p>When to use DynamoDB?</p>
+<ul>
+<li>In case you are looking for a database that can handle simple key-value queries but those queries are very large in number</li>
+<li>In case you are working with OLTP workload like online ticket booking or banking where the data needs to be highly consistent</li>
+</ul>
+<p>When not use DynamoDB?</p>
+<ul>
+<li>In cases where you have to do computations on the data.
+<ul>
+<li>Relational databases run their queries close to the data, so if you’re trying to calculate the sum total value of orders per customer, then that rollup gets done while reading the data, and only the final summary (one row per customer) gets sent over the network. However, if you were to do this with DynamoDB, you’d have to get all the customer orders (one row per order), which involves a lot more data over the network, and then you have to do the rollup in your application, which is far away from the data.</li>
+</ul>
+</li>
+<li>If worried about high vendor lock-in.</li>
+</ul>
+<p>Pricing
+$256/TB/month</p>
+<p>By default, you should start with DynamoDB’s on-demand pricing and only consider the provisioned capacity as cost optimization. On-demand costs $1.25 per million writes, and $0.25 per million reads.</p>
+<ul>
+<li>Then, if your usage grows significantly, you will almost always want to consider moving to provisioned capacity (significant cost savings).</li>
+<li>if you believe that on-demand pricing is too expensive, then DynamoDB will very likely be too expensive, even with provisioned capacity. In that case, you might want to consider a relational database.</li>
+</ul>
+<h2 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h2>
+<ul>
+<li><a href="https://docs.aws.amazon.com/prescriptive-guidance/latest/dynamodb-data-modeling/steps.html">Determining your data model in Dynamo</a></li>
+<li><a href="https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf">Dynamo whitepaper</a></li>
+</ul></div></div><p></p><p></p>
+<h2 id="elasticsearch">Elasticsearch<a aria-hidden="true" class="anchor-heading icon-link" href="#elasticsearch"></a></h2>
+<p></p><p></p><div class="portal-container">
+<div class="portal-head">
+<div class="portal-backlink">
+<div class="portal-title">From <span class="portal-text-title">Elastic Search</span></div>
+<a href="/notes/xiSIDeEtIc8X0lpUQlppI" class="portal-arrow">Go to text <span class="right-arrow">→</span></a>
+</div>
+</div>
+<div id="portal-parent-anchor" class="portal-parent" markdown="1">
+<div class="portal-parent-fader-top"></div>
+<div class="portal-parent-fader-bottom"></div><h3 id="what-is-it">What is it?<a aria-hidden="true" class="anchor-heading icon-link" href="#what-is-it"></a></h3>
+<p>ElasticSearch is an open-source, RESTful, distributed search and analytics engine built on Apache Lucene</p>
+<ul>
+<li>You can send data in the form of JSON documents to Elasticsearch using the API. 
+<ul>
+<li>Elasticsearch automatically stores the original document and adds a searchable reference to the document in the cluster’s index. You can then search and retrieve the document using the Elasticsearch API</li>
+</ul>
+</li>
+<li>due to its distributed nature, documents are available on all nodes of the cluster.
+<ul>
+<li>Each document in an index belongs to one primary shard, but is replicated amongst the other shards.
+<ul>
+<li>ES selects the shards that the query should go to in a round-robin fashion</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>ES is NoSQL and is more powerful, flexible, and faster than SQL's LIKE</li>
+<li>ES Documents are heavily <a href="/notes/0o0K3Z7zerXCY3v3Hoz96">denormalized</a>, resulting in documents that do not reference one another.</li>
+</ul>
+<h4 id="example-reddit-post-as-elasticsearch-document">Example Reddit post as ElasticSearch document:<a aria-hidden="true" class="anchor-heading icon-link" href="#example-reddit-post-as-elasticsearch-document"></a></h4>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"abcdefg"</span><span class="token punctuation">,</span>
+  <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"Amazing subreddit for nature lovers!"</span><span class="token punctuation">,</span>
+  <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"Hey everyone!\n\nI just stumbled upon this incredible subreddit called NatureIsBeautiful and I can't stop scrolling through the posts."</span><span class="token punctuation">,</span>
+  <span class="token property">"author"</span><span class="token operator">:</span> <span class="token string">"nature_enthusiast23"</span><span class="token punctuation">,</span>
+  <span class="token property">"created_at"</span><span class="token operator">:</span> <span class="token string">"2023-06-05T14:30:00Z"</span><span class="token punctuation">,</span>
+  <span class="token property">"subreddit"</span><span class="token operator">:</span> <span class="token string">"NatureIsBeautiful"</span><span class="token punctuation">,</span>
+  <span class="token property">"upvotes"</span><span class="token operator">:</span> <span class="token number">1500</span><span class="token punctuation">,</span>
+  <span class="token property">"comments"</span><span class="token operator">:</span> <span class="token number">87</span><span class="token punctuation">,</span>
+  <span class="token property">"tags"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"nature"</span><span class="token punctuation">,</span> <span class="token string">"photography"</span><span class="token punctuation">,</span> <span class="token string">"community"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"https://www.reddit.com/r/NatureIsBeautiful/comments/abcdefg/amazing_subreddit_for_nature_lovers/"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="why-use-it">Why use it?<a aria-hidden="true" class="anchor-heading icon-link" href="#why-use-it"></a></h3>
+<p>ES is typically used when you have:</p>
+<ul>
+<li>high data volumes, and are likely to need multiple nodes to process the data</li>
+<li>unstructured or semi-structured data (log files, text, ...). You ingest the raw data in its original form.</li>
+<li>the data is treated as a blob, and thus never updated. It’s ingested once, queried, and then purged according to some bulk retention policy (e.g. older than 30 days)</li>
+<li>you need to access aggregate data more than individual records</li>
+<li>you need to index in real time, allowing you ingest high-throughput data streams and query that data quickly, making it well-suited for applications that require constant updates and querying of rapidly changing data</li>
+</ul>
+<p>When to use ElasticSearch?</p>
+<ul>
+<li>If your use case requires a full-text search, including features like fuzzy matching, stemming (e.g. having the word "run" also match "runs", "running" etc), and relevance scoring.</li>
+<li>If your use case involves chatbots where these bots resolve most of the queries, such as when a person types something there are high chances of spelling mistakes. You can make use of the in-built fuzzy matching practices of the ElasticSearch</li>
+<li>Also, ElasticSearch is useful in storing logs data and analyzing it</li>
+</ul>
+<p>Other use cases:</p>
+<ul>
+<li>Add a search box to an app or website</li>
+<li>Store and analyze logs, metrics, and security event data</li>
+<li>Use machine learning to automatically model the behavior of your data in real time</li>
+<li>Automate business workflows using Elasticsearch as a storage engine</li>
+<li>Manage, integrate, and analyze spatial information using Elasticsearch as a geographic information system (GIS)</li>
+<li>Store and process genetic data using Elasticsearch as a bioinformatics research tool</li>
+</ul>
+<p>Elastic search scales horizontally with your requirements.</p>
+<p>Forms part of the ELK stack (along with Logstash and Kibana), giving us log analysis, monitoring, and visualization in the context of application and server logs.</p>
+<h4 id="as-part-of-the-elasticstack-elk">As part of the ElasticStack (ELK)<a aria-hidden="true" class="anchor-heading icon-link" href="#as-part-of-the-elasticstack-elk"></a></h4>
+<p>ELK consists of ElasticSearch, Kibana, Beats and Logstash</p>
+<ul>
+<li><em>Logstash</em> and <em>Beats</em> facilitate collecting, aggregating, and enriching your data and storing it in Elasticsearch</li>
+<li><em>Kibana</em> enables you to interactively explore, visualize, and share insights into your data and manage and monitor the stack.</li>
+<li><em>Elasticsearch</em> is where the indexing, search, and analysis magic happens.</li>
+</ul>
+<h3 id="how-does-it-work">How does it work?<a aria-hidden="true" class="anchor-heading icon-link" href="#how-does-it-work"></a></h3>
+<p>When you're searching for text. ES ranks search results based on how close the phrase or words are. SQL doesn't do this nearly as well.</p>
+<ul>
+<li>ES starts to shine when you start to do a lot of filtering</li>
+</ul>
+<p>Elasticsearch chooses the best underlying data structure to use for a particular field type. </p>
+<ul>
+<li>Text is tokenized and stored in an inverted index, which supports very fast full-text searches.
+<ul>
+<li>an inverted index lists every unique word that appears in any document and identifies all of the documents each word occurs in.</li>
+<li>ex. if we search for the string <code>London</code>, it is the inverted index that allows us to quickly know that the string occurs in 6 different documents in the index.</li>
+</ul>
+</li>
+<li>Numeric and geolocational data is stored in BKD trees
+<ul>
+<li>this allows for fast-range searches and nearest-neighbor queries in large data sets</li>
+</ul>
+</li>
+</ul>
+<p>Secondary <a href="/notes/jiITIvU42MBAYcbXheWwI">indexes</a> are the raison d’être of search servers such as Elasticsearch.</p>
+<p>Mapping is the process by which ES determines how a document is stored and indexed.</p>
+<h4 id="how-data-is-retrieved">How data is retrieved<a aria-hidden="true" class="anchor-heading icon-link" href="#how-data-is-retrieved"></a></h4>
+<p>Based on the query terms passed, each document retrieved will be assigned a score. The documents are then returned to the client sorted by that score.</p>
+<ul>
+<li>this is <a href="https://www.elastic.co/blog/practical-bm25-part-2-the-bm25-algorithm-and-its-variables">the BM25 algorithm</a></li>
+<li>note: if I pass "prescription refill", then ES recognizes that there are 2 terms: <code>prescription</code> and <code>refill</code></li>
+</ul>
+<p>Some factors that determine the document's score:</p>
+<ul>
+<li><em>rarity</em> - queries that contain rarer terms (amongst <em>all</em> documents) have a higher multiplier, meaning they contribute more to the final score
+<ul>
+<li>ex. the word "the" is likely to be very common amongst all matching documents, while the word "elephant" likely to be rare. As a result, ES recognizes that the word "elephant" is more important, and makes its contribution to the final document's score higher.</li>
+<li>this is known as <em>Inverse Document Frequency (IDF)</em></li>
+</ul>
+</li>
+<li><em>density</em> - documents that are longer than average will have the score penalized. 
+<ul>
+<li>That is, the more terms in the document (ones that don't match the query), the lower the score for the document.</li>
+<li>expl: this makes intuitive sense: if a document is 300 pages long and mentions the word elephant once, the document is more likely to have said something like "elephant in the room", rather than it actually being a document about elephants. On the other hand, if the document is a tweet of 140 characters, then the word Elephant is much more likely to have actually been about Elephants.</li>
+<li>this is known as <em>Term Frequency (TF)</em></li>
+</ul>
+</li>
+</ul>
+<p>In the absense of replicas, a given query and set of documents will result in a more-or-less deterministic result</p>
+<ul>
+<li>this non-determinism resulting from replicas happens because ES determines which shard the query should go to in a round-robin fashion, so the same query run twice in a row will likely go to different copies of the same shard.</li>
+</ul>
+<h3 id="how-to-use-it">How to use it?<a aria-hidden="true" class="anchor-heading icon-link" href="#how-to-use-it"></a></h3>
+<h4 id="searching-data">Searching data<a aria-hidden="true" class="anchor-heading icon-link" href="#searching-data"></a></h4>
+<p>The Elasticsearch REST APIs support structured queries, full text queries, and complex queries that combine the two.</p>
+<ul>
+<li><em>Structured queries</em> are similar to the types of queries you can construct in SQL. 
+<ul>
+<li>ex. you could search the gender and age fields in your employee index and sort the matches by the hire_date field. </li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html">Query SDL</a>, <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/sql-overview.html">ElasticSearch SQL</a></li>
+</ul>
+</li>
+<li><em>Full-text queries</em> find all documents that match the query string and return them sorted by relevance—how good a match they are for your search terms.</li>
+</ul>
+<h4 id="performing-aggregations">Performing aggregations<a aria-hidden="true" class="anchor-heading icon-link" href="#performing-aggregations"></a></h4>
+<p>Aggregations enable you to build complex summaries of your data and gain insight into key metrics, patterns, and trends.</p>
+<p>Instead of just finding the proverbial “needle in a haystack”, aggregations enable you to answer questions like:</p>
+<ul>
+<li>How many needles are in the haystack?</li>
+<li>What is the average length of the needles?</li>
+<li>What is the median length of the needles, broken down by manufacturer?</li>
+<li>How many needles were added to the haystack in each of the last six months?</li>
+<li>What are your most popular needle manufacturers?</li>
+<li>Are there any unusual or anomalous clumps of needles?</li>
+</ul>
+<p>Because aggregations leverage the same data-structures used for search, they are also very fast.</p>
+<hr>
+<h2 id="elasticsearch-primitives">ElasticSearch Primitives<a aria-hidden="true" class="anchor-heading icon-link" href="#elasticsearch-primitives"></a></h2>
+<p>Comparison to RDBMS</p>
+<ul>
+<li>RDBMS => Databases => Tables => Columns/Rows</li>
+<li>Elasticsearch => Clusters => Indices => Shards => Documents</li>
+</ul>
+<h3 id="index">Index<a aria-hidden="true" class="anchor-heading icon-link" href="#index"></a></h3>
+<p>An Elasticsearch index is a logical namespace that holds a collection of documents</p>
+<ul>
+<li>That is, an ES Index has nothing to do with <a href="/notes/jiITIvU42MBAYcbXheWwI">database indexes</a>, and are more comparable to tables in SQL</li>
+<li>"indexing a document" means "inserting a document into the index"</li>
+</ul>
+<h3 id="index-mapping">Index Mapping<a aria-hidden="true" class="anchor-heading icon-link" href="#index-mapping"></a></h3>
+<p>essentially a schema for how data will be structured in the index</p>
+<p>Each field in a mapping has an analyzer associated with it</p>
+<h3 id="analyzer">Analyzer<a aria-hidden="true" class="anchor-heading icon-link" href="#analyzer"></a></h3>
+<p>Each analyzer contains:</p>
+<ul>
+<li>a tokenizer</li>
+<li>a normalizer</li>
+<li>filters</li>
+</ul>
+<p>ES has built-in analyzers, but we can define custom ones, where we define our own tokenizer</p>
+<h3 id="tokenizer">Tokenizer<a aria-hidden="true" class="anchor-heading icon-link" href="#tokenizer"></a></h3>
+<ul>
+<li>converts text into tokens
+<ul>
+<li>ex. converts "a quick brown fox jumps over the lazy dog" into terms <code>["a", "quick", "brown"]</code> etc.</li>
+</ul>
+</li>
+</ul>
+<p>Tokenizer types:</p>
+<ul>
+<li>word-oriented</li>
+<li>partial-word</li>
+<li>structured text</li>
+</ul>
+<h4 id="n-gram-tokenizer">N-gram tokenizer<a aria-hidden="true" class="anchor-heading icon-link" href="#n-gram-tokenizer"></a></h4>
+<p>can break a word up into a sliding window of continuous letters</p>
+<ul>
+<li>ex. "quick" -> ["qu", "ui", "ic", "ck"]</li>
+</ul>
+<h4 id="edge-n-gram-tokenizer">Edge N-gram tokenizer<a aria-hidden="true" class="anchor-heading icon-link" href="#edge-n-gram-tokenizer"></a></h4>
+<ul>
+<li>ex. "quick" -> ["q", "qu", "qui", "quic", "quick"]</li>
+</ul>
+<h3 id="filter">Filter<a aria-hidden="true" class="anchor-heading icon-link" href="#filter"></a></h3>
+<p>might do things like removing articles from the terms (e.g. <code>a</code>, <code>the</code>), or do things like include derivate words in the search (e.g. cleaner -> <code>["cleaning", "cleaned", "cleans"]</code>), or a synonym filter, which adds matches for synonyms that may appear.</p>
+<h3 id="normalizer">Normalizer<a aria-hidden="true" class="anchor-heading icon-link" href="#normalizer"></a></h3>
+<p>A special type of analyzer</p>
+<ul>
+<li>emits a single token for a given input, instead of an array of tokens</li>
+</ul>
+<hr>
+<h2 id="queries">Queries<a aria-hidden="true" class="anchor-heading icon-link" href="#queries"></a></h2>
+<p>Compound vs Leaf queries</p>
+<ul>
+<li>leaf query matches against a specific field</li>
+<li>compound query combine leaf queries in various ways </li>
+</ul>
+<p>Type of compound queries</p>
+<ul>
+<li>bool (ex. <code>should</code>, <code>must_and</code> etc.)</li>
+<li>boosting</li>
+<li>constant_score</li>
+<li>dis_max - only the highest score of any leaf query within a compound query will be considered</li>
+<li>Function_score - allow us to use more complex functions to determine the score</li>
+</ul>
+<p>Leaf queries can have their scores boosted with multipliers</p>
+<h3 id="full-text-query">Full-text Query<a aria-hidden="true" class="anchor-heading icon-link" href="#full-text-query"></a></h3>
+<p>A type of leaf query</p>
+<p>Matches against text in a specific field</p>
+<p><code>match</code> is the most common type of full-text query</p>
+<h1 id="tools">Tools<a aria-hidden="true" class="anchor-heading icon-link" href="#tools"></a></h1>
+<ul>
+<li><a href="https://www.elastic.co/kibana">Kibana: a data visualization platform for Elasticsearch</a></li>
+</ul></div></div><p></p><p></p>
+<h2 id="couchdb">CouchDB<a aria-hidden="true" class="anchor-heading icon-link" href="#couchdb"></a></h2>
+<p>Like MongoDB, Couch is a document-oriented NoSQL databases, but Mongo and Couch diverge significantly in their implementations. </p>
+<ul>
+<li>CouchDB uses the semi-structured JSON format for storing data. Queries to a CouchDB database are made via a RESTful HTTP API, using HTTP or JavaScript. </li>
+<li>MongoDB uses BSON, a JSON variant that stores data in a binary format. MongoDB uses its own query language that is distinct from SQL, although they have some similarities. </li>
+</ul>
+<p>Like Mongo, Couch is schemaless.</p>
+<p>CouchDB and MongoDB differ in their approach to the <a href="/notes/ilOPfgNyiPSHOb9tNB6yL">CAP theorem</a> </p>
+<ul>
+<li>CouchDB favors availability and partition tolerance
+<ul>
+<li>CouchDB uses eventual consistency. Clients can write to a single database node, and this information is guaranteed to eventually propagate to the rest of the database. </li>
+</ul>
+</li>
+<li>MongoDB prefers consistency and partition tolerance.
+<ul>
+<li>MongoDB uses strict consistency. The database uses a replica set to provide redundancy but at the cost of availability. </li>
+</ul>
+</li>
+</ul>
+<p>As of this writing, Google projects the cost of deploying CouchDB on GCP at $34.72 per month. This estimate is based on a 30 day, 24 hours per day usage in the Central US region, a VM instance with 2 vCPUs and 8 GB of memory, and 10GB of a standard persistent disk.</p>
+<h2 id="couchbase">Couchbase<a aria-hidden="true" class="anchor-heading icon-link" href="#couchbase"></a></h2>
+<p>Every Couchbase node consists of a data service, index service, query service, and cluster manager component. Starting with the 4.0 release, the three services can be distributed to run on separate nodes of the cluster if needed.</p>
+<p>In the parlance of CAP Theorem, Couchbase is typically run as a CP system (consistency &#x26; partition tolerant)</p>
+<p>Provides a SQL-like query language called <code>N1QL</code> for manipulating JSON data stored in Couchbase.</p>
+<h2 id="pouchdb">PouchDB<a aria-hidden="true" class="anchor-heading icon-link" href="#pouchdb"></a></h2>
+<p>PouchDB was created to help web developers build applications that work as well offline as they do online.
+It enables applications to store data locally while offline, then synchronize it with CouchDB and compatible servers when the application is back online, keeping the user's data in sync no matter where they next login.
+Inspired by Couch</p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/4xb9cg487yio88c5b2j2bid">Transaction</a></li>
+</ul>

@@ -1,0 +1,77 @@
+<h1 id="elastic-compute-cloud-ec2">Elastic Compute Cloud (EC2)<a aria-hidden="true" class="anchor-heading icon-link" href="#elastic-compute-cloud-ec2"></a></h1>
+<p>In a sense, an EC2 instance can be thought of as an atomic building block of AWS compute.</p>
+<ul>
+<li>An instance of EC2 is a VM on an AWS server
+<ul>
+<li>Therefore, you get an OS, a file system, access to the server’s hardware, etc.</li>
+</ul>
+</li>
+</ul>
+<p>The nice thing about EC2 is that the computer you get will be very similar to the computer you use to develop your software. If you can run your software on your computer, you can almost certainly run it on EC2 without any changes.</p>
+<ul>
+<li>This is one of EC2’s main advantages compared to other types of compute platforms (such as <a href="/notes/OSdV9FvBG3wDbRNLllg0V">Lambda</a> ): you don’t have to adapt your application to your host.</li>
+</ul>
+<p><em>Elastic</em> refers to the fact that it can scale up/down as needed automatically</p>
+<p>EC2 has dozens of options you will probably never need, and thus it comes with sensible defaults.</p>
+<ul>
+<li>This is the result of the highly varied workloads and use cases serviced by EC2</li>
+</ul>
+<p>Selecting an instance type will be the most consequential decision when provisioning an EC2 instance.</p>
+<ul>
+<li>There are 256+, and can be narrowed to a few categories, defined by what they're optimized for:
+<ul>
+<li>CPU</li>
+<li>Memory</li>
+<li>Network</li>
+<li>Storage</li>
+</ul>
+</li>
+</ul>
+<p>If you were building your own server, there would be an infinite number of ways to configure it, but with EC2 you get to pick an instance type from its catalog.</p>
+<ul>
+<li>This is the tradeoff you make as opposed to getting you build your own server, but most likely it shouldn't even be a concern.</li>
+</ul>
+<h3 id="instance-profile">Instance profile<a aria-hidden="true" class="anchor-heading icon-link" href="#instance-profile"></a></h3>
+<p>Just like an <a href="/notes/hUvXun5sLRxKOZXIZFuV1">IAM</a> user represents a person, an <em>instance profile</em> represents EC2 instances.</p>
+<ul>
+<li>however, the only permissions is provides is the power to assume a role.</li>
+<li>So the EC2 instance runs under the EC2 instance profile, defining "who" the instance is. It then "assumes" the IAM role, which ultimately gives it any real power.</li>
+</ul>
+<p>When you create an IAM Role for EC2 using the AWS Management Console, it creates both an EC2 instance profile as well as an IAM role.</p>
+<h3 id="security">Security<a aria-hidden="true" class="anchor-heading icon-link" href="#security"></a></h3>
+<p>the defaults are sensible, but we may have to modify:</p>
+<ul>
+<li>The security group
+<ul>
+<li>You can think of security groups as individual firewalls for your instances. With security groups, you can control what goes in and out of your instances.</li>
+</ul>
+</li>
+<li>The VPC ACL.
+<ul>
+<li>You can think of VPC ACL as a network firewall. With the VPC ACL, you can control what goes in and out of your network.</li>
+</ul>
+</li>
+</ul>
+<h3 id="scaling">Scaling<a aria-hidden="true" class="anchor-heading icon-link" href="#scaling"></a></h3>
+<p>The auto part of Auto Scaling allows us to automatically add/remove EC2 instances (therefore horizontal scaling). In theory it works, but is often impractical.
+The main premise of Auto Scaling is that once you decide how much headroom you want, you’ll be able to make that headroom a constant size</p>
+<p>Unless the following 2 are true, then it's probably not worth messing around with auto-scaling:</p>
+<ul>
+<li>Are your EC2 costs high enough that any reduction in usage will be materially significant?</li>
+<li>If your EC2 bill were to go down by 30%—would that be a big deal for your business?</li>
+</ul>
+<h4 id="how-many-ec2-instances-to-run">How many EC2 instances to run?<a aria-hidden="true" class="anchor-heading icon-link" href="#how-many-ec2-instances-to-run"></a></h4>
+<p>Capacity Headroom - we need to have a buffer between the expected peak demand and the maximum capacity that our system can handle.</p>
+<p>Pricing</p>
+<ul>
+<li>only pay for the number of seconds your instance is running.</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/3zgkhycofrlbgv7e956dqvz">Code Suite</a></li>
+<li><a href="/notes/Q533wL2e7qYwr3GbGN46x">AWS Cloud Terms</a></li>
+<li><a href="/notes/7n3tUhrwbvz8nNu0bTlWz">EventBridge</a></li>
+<li><a href="/notes/cmdTAwLkVkTxP7JsFC8jN">Route53</a></li>
+<li><a href="/notes/hUvXun5sLRxKOZXIZFuV1">IAM (Identity and Access Management)</a></li>
+</ul>

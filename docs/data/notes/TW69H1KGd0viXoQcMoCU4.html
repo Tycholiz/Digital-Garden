@@ -1,0 +1,37 @@
+<h1 id="stream">Stream<a aria-hidden="true" class="anchor-heading icon-link" href="#stream"></a></h1>
+<p>A stream is a way for us to incorporate buffering into the process of writing files</p>
+<ul>
+<li>We may add multiple avenues for this data to go in, releasing us from the restriction of only being able to insert one set of data in a single file
+<ul>
+<li>This gives the ability for a stream to be able to <code>pipe</code> its output to both stdout and a file</li>
+</ul>
+</li>
+</ul>
+<p>There are 4 types of streams in Node.js:</p>
+<ol>
+<li><strong>Writable</strong>: streams to which we can write data. For example, fs.createWriteStream() lets us write data to a file using streams.</li>
+<li><strong>Readable</strong>: streams from which data can be read. For example: fs.createReadStream() lets us read the contents of a file.</li>
+<li><strong>Duplex</strong>: streams that are both Readable and Writable. For example, net.Socket</li>
+<li><strong>Transform</strong>: streams that can modify or transform the data as it is written and read. For example, in the instance of file-compression, you can write compressed data and read decompressed data to and from a file.</li>
+</ol>
+<p>In a Node.js based HTTP server, <code>request</code> is a readable stream and <code>response</code> is a writable stream
+The fs module lets you work with both readable and writable file streams</p>
+<p>Whenever you’re using Express you are using streams to interact with the client, also, streams are being used in every database connection driver that you can work with, because of TCP sockets, TLS stack and other connections are all based on Node.js streams.</p>
+<h3 id="how-to-create-a-readable-stream">How to create a readable stream<a aria-hidden="true" class="anchor-heading icon-link" href="#how-to-create-a-readable-stream"></a></h3>
+<p>We first require the Readable stream, and we initialize it.</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token maybe-class-name">Stream</span> <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'stream'</span><span class="token punctuation">)</span>
+<span class="token keyword">const</span> readableStream <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Stream<span class="token punctuation">.</span>Readable</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre>
+<p>Now that the stream is initialized, we can send data to it:</p>
+<pre class="language-js"><code class="language-js">readableStream<span class="token punctuation">.</span><span class="token method function property-access">push</span><span class="token punctuation">(</span><span class="token string">'ping!'</span><span class="token punctuation">)</span>
+readableStream<span class="token punctuation">.</span><span class="token method function property-access">push</span><span class="token punctuation">(</span><span class="token string">'pong!'</span><span class="token punctuation">)</span>
+</code></pre>
+<h4 id="async-iterator-for-await">Async iterator (<code>for await</code>)<a aria-hidden="true" class="anchor-heading icon-link" href="#async-iterator-for-await"></a></h4>
+<p><a href="/notes/WPpFrk4iwauCzKf88i6f0">Async Iterator</a></p>
+<h4 id="pipe-vs-write">Pipe vs. Write<a aria-hidden="true" class="anchor-heading icon-link" href="#pipe-vs-write"></a></h4>
+<p><code>pipe</code> is like positioning the pipes that will change the flow of water, before anything has actually gone through those pipes. <code>write</code> is like turning on the water.</p>
+<h3 id="built-in-streams">Built-in streams<a aria-hidden="true" class="anchor-heading icon-link" href="#built-in-streams"></a></h3>
+<p>a request to an HTTP server and process.stdout are both stream instances.
+All streams are instances of EventEmitter.</p>
+<h1 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h1>
+<p><a href="https://nodesource.com/blog/understanding-streams-in-nodejs/">Async Iterator</a></p>

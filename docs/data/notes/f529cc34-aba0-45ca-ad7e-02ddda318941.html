@@ -1,0 +1,46 @@
+<h1 id="db">DB<a aria-hidden="true" class="anchor-heading icon-link" href="#db"></a></h1>
+<h3 id="a-simple-database">A simple database<a aria-hidden="true" class="anchor-heading icon-link" href="#a-simple-database"></a></h3>
+<p>The simplest database in the world consists of:</p>
+<ul>
+<li>an insertion method (<code>db_set</code>)
+<ul>
+<li><code>db_set 123456 '{"name":"London","attractions":["Big Ben","London Eye"]}'</code></li>
+</ul>
+</li>
+<li>a retrieval method (<code>db_get</code>)
+<ul>
+<li><code>db_get 42</code></li>
+</ul>
+</li>
+<li>a text file, as a log (meaning append-only) of key-value pairs</li>
+</ul>
+<p>The write speed of this database is very fast because data is simply appended, but the read speed is very slow, at <code>0(n)</code></p>
+<p>If we wanted to speed this up, we could use an <a href="/notes/jiITIvU42MBAYcbXheWwI">index</a></p>
+<p>many databases internally use a log, which is an append-only data file.</p>
+<h3 id="foward-and-backward-compatability-requirements-of-databases">Foward and Backward Compatability Requirements of Databases<a aria-hidden="true" class="anchor-heading icon-link" href="#foward-and-backward-compatability-requirements-of-databases"></a></h3>
+<p>in an environment where the application is changing, it is likely that some processes accessing the database will be running newer code and some will be running older code—for example because a new version is cur‐ rently being deployed in a rolling upgrade, so some instances have been updated while others haven’t yet.</p>
+<ul>
+<li>This means that a value in the database may be written by a newer version of the code, and subsequently read by an older version of the code that is still running. Thus, forward compatibility is also often required for databases.</li>
+</ul>
+<h3 id="the-living-nature-of-a-database">The living nature of a database<a aria-hidden="true" class="anchor-heading icon-link" href="#the-living-nature-of-a-database"></a></h3>
+<p>When you are designing a database with relations, you have to consider that the database is a living object. At any moment in time, you have definitions and purposes of each specific model. However, as the needs of the database change and grow with your business, you need to be flexible to change the definition of models that no longer makes sense, given that business logic</p>
+<ul>
+<li>For instance, we previously had the concept of a payment profile in the database, which was basically a credit card. Therefore, you might find a payment profile as "a way to pay". However, within corporations have coupons into the payment system, it became apparent that a coupon was really not to do similar from a credit card in the way that it would function. Therefore, it made sense to change the way that we thought of a payment profile. Incorporating coupons into this model meant reconsidering the name. Instead of payment profile, they would be called payment methods. Now the definition became something more like "some type of exchange good that you can pay with to receive a good in return". By allowing this definition to change, we were able to leverage existing functionality to incorporate new and unexpected designs into the database model.</li>
+</ul>
+<h2 id="access-pattern">Access Pattern<a aria-hidden="true" class="anchor-heading icon-link" href="#access-pattern"></a></h2>
+<p>Database should be designed around the way that you plan to access and use the data</p>
+<h3 id="analogy-lego">Analogy: Lego<a aria-hidden="true" class="anchor-heading icon-link" href="#analogy-lego"></a></h3>
+<p>Imagine having a big box of lego with 1000s of pieces mixed altogether. This would naturally be difficult to go through and pull out the pieces we need. Now, consider how we are using the lego. Maybe we are following the schematic of building a car, or maybe we are building something a little more ad hoc. In the first case, the color and shape of the piece matters, but maybe in the second case we only care about the shape. In the first case, we might benefit from first separating the pieces into separate piles based on their color. In the second case, maybe it makes more sense to separate the pieces into piles based upon their shape.</p>
+<p>This analogy helps us think about the importance of the data access pattern. Whether we are building from a schematic or in an ad hoc way, our priorities change and we think differently about how we want to organize the lego pieces so that we can find them easier.</p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/fCagNdVtAqMZw8CYsTZ7m">ACID</a></li>
+<li><a href="/notes/5G8SRbh8IQlgQwfQKbnQf">DB Cluster</a></li>
+<li><a href="/notes/T8TbspD4PDNyJI9oRNlmL">DBMS (Database Management System)</a></li>
+<li><a href="/notes/76NeRtkLcGCtiVYzyiuCA">Local Storage</a></li>
+<li><a href="/notes/plfkq18cl5fwq46id8bfgpd">OLAP/OLTP</a></li>
+<li><a href="/notes/kx2pz7bcwpswtpjcsmjlzlj">Race Conditions</a></li>
+<li><a href="/notes/DNdF8pLi53EjMklhKQ7WA">Strategies</a></li>
+<li><a href="/notes/DtiHuWo4W6GkaoL74yVHX">Testing</a></li>
+</ol>

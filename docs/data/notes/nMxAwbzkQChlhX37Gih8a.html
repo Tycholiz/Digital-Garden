@@ -1,0 +1,61 @@
+<h1 id="sharding">Sharding<a aria-hidden="true" class="anchor-heading icon-link" href="#sharding"></a></h1>
+<p>Sharding is a special type of <a href="/notes/FuHcb7zDdczt8IDTtOH0b#horizontal-partitioning-aka-range-based-partitioning">horizontal partitioning</a> where partitions spans across multiple <a href="/notes/gKVIPNGV7duiD0yRnld8J">database replicas</a>.</p>
+<p>Sharding is a method of splitting and storing a single logical dataset in multiple databases (running on different servers). By distributing the data among multiple machines, a cluster of database systems can store larger dataset and handle additional requests. Sharding is necessary if a dataset is too large to be stored in a single database</p>
+<ul>
+<li>instead of vertically scaling a database with progressively heftier instances, horizontally scale by partitioning data across multiple databases, enabling us to easily spin up additional hosts to accommodate growth</li>
+</ul>
+<p>Each shard is responsible for storing and managing one or more chunks of data.</p>
+<ul>
+<li>a chunk is a contiguous range or subset of data that is stored within a specific shard.</li>
+<li>purpose is to allow for more efficient data distribution and management across the shards in a sharded database.</li>
+<li>As the data changes or the sharding configuration is modified (e.g., adding new shards), chunk migration may occur to rebalance data distribution.</li>
+</ul>
+<p>With sharding, you would know in which shard the data lies based on the ID.</p>
+<ul>
+<li>illustration: imagine if there were 10 different shards, and the ID of the person was prefixed with a number from 0-9, signifying which shard the data could be found in. This is obviously not how it works, but a database object would have metadata about which shard it could be found in.</li>
+</ul>
+<p>Every sharded cluster needs to have some logic in how it will place each piece of data. For instance, you might implement a simple round-robin using modulus:</p>
+<ul>
+<li><code>photoId % 10</code> - This will spread the photos evenly around all 10 of the databases, so that where to retrieve them is predictable.</li>
+</ul>
+<h3 id="shard-key">Shard Key<a aria-hidden="true" class="anchor-heading icon-link" href="#shard-key"></a></h3>
+<p>The shard key is a column (in SQL) or field (in NoSQL) value that determines which shard a given row of data will exist in.</p>
+<p>What makes a good candidate for shard key?</p>
+<ul>
+<li>The resulting shards should hold about the same amount of data so we don't get hotspots</li>
+<li>Choose a shard key with high cardinality. A shard key with low cardinality reduces the effectiveness of horizontal scaling in the cluster.
+<ul>
+<li>imagine the column value being an enum. How many different values could it be?</li>
+<li>ex. imagine our data table had a field <code>continent</code>, and our strategy was to shard based on which continent the user lived on. This would mean our shard key has a cardinality of <code>7</code>, meaning there can be no more than <code>7</code> chunks within the sharded cluster</li>
+</ul>
+</li>
+<li>Consider the most common types of queries performed in your application and how the shard key impacts query performance. The shard key should ideally align with the most frequent query patterns to minimize cross-shard queries.
+<ul>
+<li>ex. if your application frequently performs range queries on a specific attribute, using that attribute as the shard key can improve performance.</li>
+</ul>
+</li>
+<li>Analyze the write and update patterns in your application. Consider how the shard key affects write and update operations.
+<ul>
+<li>ex. if you expect a high volume of writes for a specific set of data, distributing that data across multiple shards based on the shard key can improve write throughput.</li>
+</ul>
+</li>
+<li>A good shard key should be chosen based on the application's query patterns to isolate queries to specific shards. Queries that involve the shard key in the filter can be efficiently executed on a single shard, minimizing the need to search across all shards.</li>
+</ul>
+<h3 id="use-cases">Use-cases<a aria-hidden="true" class="anchor-heading icon-link" href="#use-cases"></a></h3>
+<p>An obvious use-case for sharding is how to store locale information in MMORPGs. Consider that the quest text for a quest in French does not have any benefit to being stored together with the English version of it. </p>
+<ul>
+<li>This is the nature of your sharding strategy: "let's increase lookup speed by removing the amount of rows in our database table. We can create a different table, and call it a shard of the first table. As long as the requester of the data knows which shard the data can be found in, then the result can be substantially faster queries."</li>
+</ul>
+<p>Another possibility is that you have a large user table which is accessed heavily. You could create 12 shards for the user data, and give each database server the responsibility over one of the twelve months.</p>
+<h2 id="e-resources">E Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#e-resources"></a></h2>
+<ul>
+<li><a href="https://www.notion.so/blog/sharding-postgres-at-notion">Sharding Postgres at Notion</a></li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/vutujFFWxQu6TshWVuMpI">Distributed Computing</a></li>
+<li><a href="/notes/HZSth7yP1s7aPaPPZRJPm">Scaling</a></li>
+<li><a href="/notes/FuHcb7zDdczt8IDTtOH0b">Partitioning</a></li>
+<li><a href="/notes/wbs6c9snnonnyzm8vk2t4b9">Strategies</a></li>
+</ul>

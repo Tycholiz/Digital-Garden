@@ -1,0 +1,17 @@
+<h1 id="strategies">Strategies<a aria-hidden="true" class="anchor-heading icon-link" href="#strategies"></a></h1>
+<h1 id="approaches-to-common-problems-arising-because-of-a-distributed-system">Approaches to common problems arising because of a distributed system<a aria-hidden="true" class="anchor-heading icon-link" href="#approaches-to-common-problems-arising-because-of-a-distributed-system"></a></h1>
+<h2 id="key-generation-system">Key Generation System<a aria-hidden="true" class="anchor-heading icon-link" href="#key-generation-system"></a></h2>
+<p>Imagine we were making a URL shortener like TinyURL. As a database solution, we opt for a NoSQL approach key-value store, where each key is the shortform URL, and the value is the longform URL.</p>
+<h3 id="naive-approach">Naive approach<a aria-hidden="true" class="anchor-heading icon-link" href="#naive-approach"></a></h3>
+<p>Each time a write request is made (ie. user creates a new shortform URL), the application server generates a new random 6 character string, and attempts to insert it into the DB. If that key exists already, then it tries again, until there is no failure. This is naive because it involves a lot of back and forth between application server and database, and results in an unpredictable time complexity.</p>
+<h3 id="smarter-approach">Smarter approach<a aria-hidden="true" class="anchor-heading icon-link" href="#smarter-approach"></a></h3>
+<p>Have a standalone Key Generation Service (KGS), which generates the random 6 character strings in advance and stores them in a separate database (the Key-DB). Whenever a user wants to generate a new TinyURL, we take a key from the Key-DB and use it. This takes out the worry of collision and duplications of keys.</p>
+<p>In our Key-DB, we can have 2 tables to store the keys, for:</p>
+<ol>
+<li><code>unused_keys</code></li>
+<li><code>used_keys</code></li>
+</ol>
+<p>The purpose of the 2 tables is to handle read concurrency issues. The problem we are trying to solve is to not give the same key to two servers (as we don’t want two URLs to have the same short key). Since there is only 1 KGS in the system at a time, there are inherently no write concurrency issues.</p>
+<p>The KGS can always keep some unused keys in memory, so that whenever a server needs them, it can provide them quickly. As soon as the KGS loads some keys in memory, it moves them from <code>unused_keys</code> to <code>used_keys</code>, so that we can ensure each server gets unique keys. It's true that if the KGS goes offline, all those keys will be lost (and will still exist in the <code>used_keys</code> table). This is ok, since there are such a large amount of keys anyway.</p>
+<p>Since the KGS would be a single point of failure, we can have a standby replica, and whenever the primary server dies it can take over to generate and provide keys.</p>
+<p><img src="/assets/images/2021-10-13-11-24-19.png"></p>

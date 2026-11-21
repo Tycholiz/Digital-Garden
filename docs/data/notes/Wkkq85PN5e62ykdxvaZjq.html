@@ -1,0 +1,15 @@
+<h1 id="search-path">Search Path<a aria-hidden="true" class="anchor-heading icon-link" href="#search-path"></a></h1>
+<p>Implicitly, every object in postgres gets operated on as a path. running <code>...into nuggets</code>, postgres runs under the hood <code>...into neverforget.public.nuggets</code>.</p>
+<ul>
+<li>We can run <code>SHOW search_path;</code> to get the path
+<ul>
+<li>the first element of the output <code>$user</code> indicates that a schema with the same name as current user (ex. a schema called <code>kyletycholiz</code>) should be searched first</li>
+<li>the first schema listed (default <code>public</code>) is the default location for creating new objects 
+<ul>
+<li>when objects are referenced without qualifying a schema (ex. <code>...into nuggets</code>), the search_path is traversed, starting with public, and onto the next one (by default only 1, so we need to specify more) </li>
+</ul>
+</li>
+</ul>
+</li>
+<li>to modify the <code>search_path</code>, we can run <code>SET search_path TO myschema,public;</code>, which will inform postgres that <code>myschema</code> should be searched first when there is no specified schema.</li>
+</ul>

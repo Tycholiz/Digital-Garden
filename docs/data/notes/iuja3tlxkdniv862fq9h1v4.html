@@ -1,0 +1,38 @@
+<h1 id="worker-node">Worker Node<a aria-hidden="true" class="anchor-heading icon-link" href="#worker-node"></a></h1>
+<p>Usually we just call these <em>nodes</em>, and refer to the <a href="/notes/7w1hne3hmzgbu69buj3hjgf">master node</a> as the <em>control plane</em>.</p>
+<p>The worker nodes contain the services necessary to run Pods.</p>
+<ul>
+<li>meaning that it hosts <a href="/notes/a9WtJDyCZ4NvEaAZ4p3bd">pods</a></li>
+</ul>
+<p>Multiple worker nodes could either be distinct machines, or could be VMs on the same machine.</p>
+<p>The worker nodes have the following characteristics:</p>
+<ul>
+<li>we should never need to interact with it directly</li>
+<li>should be easily replaceable</li>
+<li>multiple applicatons can run on the same node</li>
+<li>one application can have multiple replicas spread across many nodes</li>
+</ul>
+<p>A worker node runs the services necessary to support the containers that make up your cluster's workloads.</p>
+<ul>
+<li>this includes the container runtime, and the K8s node-agent <a href="/notes/bRPGb7XOb1TDfZqpnf201">Kubelet</a></li>
+</ul>
+<h3 id="components-running-in-a-node">Components running in a node<a aria-hidden="true" class="anchor-heading icon-link" href="#components-running-in-a-node"></a></h3>
+<ul>
+<li><a href="/notes/bRPGb7XOb1TDfZqpnf201">Kubelet</a></li>
+<li><a href="/notes/clSKUsYY2MnJsItlIXbTa">Kube Proxy</a></li>
+<li>Container runtime (the software the runs the <a href="/notes/a9w8WlKMHZZRdHc8EPBsD">Docker Containers</a>)</li>
+</ul>
+<h3 id="adding-nodes-to-the-api-server">Adding nodes to the API server<a aria-hidden="true" class="anchor-heading icon-link" href="#adding-nodes-to-the-api-server"></a></h3>
+<p>There are two main ways:</p>
+<ol>
+<li>The kubelet on a node self-registers to the control plane</li>
+<li>The developer manually adds a Node object</li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/qxSOd6SPN8qf9ZUojVFDX">K8s</a></li>
+<li><a href="/notes/39hv81n4dr40bwg1mlii3zp">Kubernetes Node</a></li>
+<li><a href="/notes/697fe32a-7fd3-40cb-aa25-9914c7dde11f">Kubernetes Objects</a></li>
+<li><a href="/notes/a9WtJDyCZ4NvEaAZ4p3bd">Kubernetes Pod</a></li>
+</ul>

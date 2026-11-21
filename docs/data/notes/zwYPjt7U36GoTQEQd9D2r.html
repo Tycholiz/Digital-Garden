@@ -1,0 +1,47 @@
+<h1 id="yarn-workspaces">Yarn Workspaces<a aria-hidden="true" class="anchor-heading icon-link" href="#yarn-workspaces"></a></h1>
+<p>Workspaces allow us to install dependencies from multiple package.json files at once.</p>
+<ul>
+<li>Yarn can also create symlinks between workspaces that depend on each other, ensuring directories are correct and consistent</li>
+<li>When there are repeated dependencies in the <code>node_modules</code> of sub-modules, yarn workspaces will pull up (hoist) the common dependencies to live in the root-level <code>node_modules</code>.
+<ul>
+<li>This is why we don't need to run <code>lerna bootstrap --hoist</code> when using yarn + lerna — yarn already hoists.</li>
+</ul>
+</li>
+<li>if package1 depends on package2, then a symlink to package2 will also be created in the root <code>node_modules</code>. This allows package2 to <code>require</code> in the package, and take advantage of node's recursive resolver to find the package.</li>
+<li>workspaces uses a single yarn.lock file at the root.</li>
+<li>any module (either your own code or the code of a dependency) that contains native code (ie. Swift, Java etc) must not be hoisted.</li>
+</ul>
+<h2 id="how-to-implement">How to implement<a aria-hidden="true" class="anchor-heading icon-link" href="#how-to-implement"></a></h2>
+<ol>
+<li>Add a <code>workspaces</code> key to the root <code>package.json</code>:</li>
+</ol>
+<ul>
+<li><code>@app</code> holds all the modules</li>
+</ul>
+<pre class="language-json"><code class="language-json"><span class="token property">"workspaces"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+	<span class="token property">"packages"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+		<span class="token string">"@app/*"</span>
+	<span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<ol start="2">
+<li>Change the name field of each module's <code>package.json</code> to follow a pattern so that they can be referenced easily</li>
+<li>Add module script shortcuts to root <code>package.json</code>, using the module names as changed in the previous step:</li>
+</ol>
+<pre class="language-json"><code class="language-json"><span class="token property">"scripts"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+	<span class="token property">"db"</span><span class="token operator">:</span> <span class="token string">"yarn workspace @tycholiz/db"</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<ol start="4">
+<li>Add <code>private: true</code> property to root <code>package.json</code>.</li>
+<li>Add script in root <code>package.json</code> that allows us to execute multiple commands at once (note: consider using <code>concurrently</code> package to run servers in parallel)</li>
+</ol>
+<pre class="language-json"><code class="language-json"><span class="token property">"scripts"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"dev"</span><span class="token operator">:</span> <span class="token string">"concurrently --kill-others-on-fail \"yarn sanity dev\"  \"yarn web dev\""</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/0kGAfUG4hTsdUFzH9NyVP">Cmds</a></li>
+</ol>

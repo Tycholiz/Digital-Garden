@@ -1,0 +1,15 @@
+<h1 id="cook">Cook<a aria-hidden="true" class="anchor-heading icon-link" href="#cook"></a></h1>
+<h5 id="inserting-a-composite-type-a-whole-row-at-once">Inserting a composite type (a whole row at once)<a aria-hidden="true" class="anchor-heading icon-link" href="#inserting-a-composite-type-a-whole-row-at-once"></a></h5>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">insert</span> <span class="token keyword">into</span> stats<span class="token punctuation">.</span>daily_registration_historical <span class="token punctuation">(</span>registration_date<span class="token punctuation">,</span> count_registrations<span class="token punctuation">)</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> app_private<span class="token punctuation">.</span>daily_registration<span class="token punctuation">;</span>
+</code></pre>
+<h5 id="insert-all-default-values">Insert all default values<a aria-hidden="true" class="anchor-heading icon-link" href="#insert-all-default-values"></a></h5>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">insert</span> <span class="token keyword">into</span> users <span class="token keyword">default</span> <span class="token keyword">values</span>
+</code></pre>
+<h5 id="insert-multiple-rows">Insert multiple rows<a aria-hidden="true" class="anchor-heading icon-link" href="#insert-multiple-rows"></a></h5>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">insert</span> <span class="token keyword">into</span> countries <span class="token punctuation">(</span>code<span class="token punctuation">)</span> <span class="token keyword">values</span> <span class="token punctuation">(</span><span class="token string">'CA'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">'US'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">'FR'</span><span class="token punctuation">)</span>
+</code></pre>
+<h5 id="bulk-insert">Bulk insert<a aria-hidden="true" class="anchor-heading icon-link" href="#bulk-insert"></a></h5>
+<p>Imagine you need to split a table in two, and move half of the rows from the first to the second:</p>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">insert</span> <span class="token keyword">into</span> second_table <span class="token punctuation">(</span>col1<span class="token punctuation">,</span> col2<span class="token punctuation">)</span> <span class="token keyword">select</span> a<span class="token punctuation">,</span> b <span class="token keyword">from</span> first_table<span class="token punctuation">;</span>
+</code></pre>

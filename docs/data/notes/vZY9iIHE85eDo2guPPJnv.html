@@ -1,0 +1,10 @@
+<h1 id="rank">Rank<a aria-hidden="true" class="anchor-heading icon-link" href="#rank"></a></h1>
+<p><code>RANK()</code> lets us assign a rank to every row according to a partition we define with PARTITION BY</p>
+<ul>
+<li>ex. imagine we had a result set of every person in a company along with their salaries. We want to rank the top earning employees by position (eg. top 3 salespeople; top 3 programmers etc). To get this result set, we can RANK, partitioning over the position_title</li>
+</ul>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">select</span> 
+    salary
+    rank<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">over</span> <span class="token punctuation">(</span><span class="token keyword">partition</span> <span class="token keyword">by</span> position_title <span class="token keyword">order</span> <span class="token keyword">by</span> salary<span class="token punctuation">)</span> <span class="token keyword">from</span> employees
+</code></pre>
+<p>The <code>RANK()</code> function can be useful for creating top-N and bottom-N reports</p>

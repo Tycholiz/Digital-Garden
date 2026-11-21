@@ -1,0 +1,26 @@
+<h1 id="javascript-bundler">Javascript Bundler<a aria-hidden="true" class="anchor-heading icon-link" href="#javascript-bundler"></a></h1>
+<p>Bundling is process of taking all of your Javascript code (including <code>node_modules</code>) and reducing it down to a single file.</p>
+<ul>
+<li>the remaining bundle is as small as possible.</li>
+</ul>
+<p>Bundling is normally a concept not found in <a href="/notes/5iC7cpurvsTcO6WDflzOZ">Node.js</a> code, since the size Node.js code on a server doesn't really matter.</p>
+<ul>
+<li>however, there are use-cases for bundling Node.js code. For instance, if we are building multiple Lambdas in a single project using <a href="/notes/nRb6Im4Kcmc2ZWE7K1jZ1">Serverless Framework</a>, there is a benefit to bundling, since smaller Lambdas are downloaded from <a href="/notes/2Rtof8yGX9K2Tq6tLljBb">S3 (Simple Storage Service)</a> faster, reducing cold start times.
+<ul>
+<li>in this case, use ESBuild</li>
+</ul>
+</li>
+</ul>
+<p>Think of bundling as a <a href="/notes/2k8qfv0q9ce2cai8hf5313m">MapReduce</a> operation that maps over all source files and "reduces" them into a bundle.</p>
+<p>Before ES modules were available in browsers, developers had no native mechanism for authoring JavaScript in a modularized fashion. This is why we are all familiar with the concept of "bundling": using tools that crawl, process and concatenate our source modules into files that can run in the browser.</p>
+<h3 id="tree-shaking">Tree-shaking<a aria-hidden="true" class="anchor-heading icon-link" href="#tree-shaking"></a></h3>
+<p>The bundler looks through the code and uses only the imported modules (third-party and your own), thereby elminimating all the modules that aren't a part of the project.</p>
+<h2 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h2>
+<ul>
+<li><a href="https://cpojer.net/posts/building-a-javascript-bundler">Building a JS bundler</a></li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/2flzVqaAbFHXGk0CzrvSb">Metro Bundler</a></li>
+</ul>

@@ -1,0 +1,39 @@
+<h1 id="gesture-handler">Gesture Handler<a aria-hidden="true" class="anchor-heading icon-link" href="#gesture-handler"></a></h1>
+<h2 id="state-flow">State flow<a aria-hidden="true" class="anchor-heading icon-link" href="#state-flow"></a></h2>
+<ul>
+<li><a href="https://docs.swmansion.com/react-native-gesture-handler/docs/fundamentals/states-events#state-flows">Interactive demo</a></li>
+</ul>
+<h2 id="state">State<a aria-hidden="true" class="anchor-heading icon-link" href="#state"></a></h2>
+<p>Every gesture can be treated as a <a href="/notes/FPzYyOund7l8onCiGxSn3">state machine</a>. That is, each handler instance has its own assigned state that can change when new touch events occur.</p>
+<p>A gesture can be in one of 6 possible states</p>
+<ol>
+<li><code>undetermined</code></li>
+<li><code>failed</code></li>
+<li><code>began</code></li>
+<li><code>cancelled</code></li>
+<li><code>active</code></li>
+<li><code>end</code></li>
+</ol>
+<h2 id="events">Events<a aria-hidden="true" class="anchor-heading icon-link" href="#events"></a></h2>
+<p>There are three types of events:</p>
+<ol>
+<li><code>StateChangeEvent</code> - sent every time a gesture moves to a different state</li>
+<li><code>GestureEvent</code> - sent every time a gesture is updated</li>
+<li><code>PointerEvent</code> - carries information about raw touch events, like touching the screen or moving the finger.</li>
+</ol>
+<h2 id="composing-gestures">Composing Gestures<a aria-hidden="true" class="anchor-heading icon-link" href="#composing-gestures"></a></h2>
+<ul>
+<li><a href="https://docs.swmansion.com/react-native-gesture-handler/docs/fundamentals/gesture-composition">docs</a></li>
+</ul>
+<p>Composing gestures means determining how multiple gestures interact with each other.</p>
+<p>The <code>Gesture</code> object provides 3 methods to do this:</p>
+<ol>
+<li><code>Race</code> - The first gesture to have an active state will cancel the rest of the gestures on deck</li>
+</ol>
+<ul>
+<li>ex. in Tinder, you can swipe left or right on a picture, but if you long press then you'll 'Heart' the profile.</li>
+</ul>
+<ol start="2">
+<li><code>Simultaneous</code> - All of the gestures can be active at the same time</li>
+<li><code>Exclusive</code> - Only one of the gestures can be active, with the first one having higher priority than the second.</li>
+</ol>

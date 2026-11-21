@@ -1,0 +1,44 @@
+<h1 id="zookeeper">Zookeeper<a aria-hidden="true" class="anchor-heading icon-link" href="#zookeeper"></a></h1>
+<p>Zookeeper is a fault-tolerant distributed coordination service</p>
+<p>Zookeeper and Kafka work in conjunction to form a Kafka Cluster.</p>
+<p>Note: Zookeeper is set to be deprecated and replaced by <a href="https://www.openlogic.com/blog/kafka-raft-mode">Kafka Raft</a></p>
+<h2 id="why-use-it">Why use it?<a aria-hidden="true" class="anchor-heading icon-link" href="#why-use-it"></a></h2>
+<p>In general, ZooKeeper provides an in-sync view of the Kafka cluster.  </p>
+<p>Zookeeper solves the same problem as <a href="/notes/btan6P1szAXOhnBlAKUDR">etcd</a>: distributed system coordination and metadata storage</p>
+<h3 id="metadata-management">Metadata management<a aria-hidden="true" class="anchor-heading icon-link" href="#metadata-management"></a></h3>
+<p>ZooKeeper stores metadata about the Kafka cluster, including information about brokers, topics, partitions, and consumer group coordination. It maintains a hierarchical namespace in a distributed and replicated manner, allowing Kafka to store and retrieve metadata efficiently.</p>
+<h3 id="leader-election">Leader election<a aria-hidden="true" class="anchor-heading icon-link" href="#leader-election"></a></h3>
+<p>ZooKeeper helps with leader election of brokers in Kafka. Each partition in Kafka is handled by a leader broker, and ZooKeeper is responsible for selecting and maintaining the leader for each partition. In case a leader fails, ZooKeeper facilitates the process of electing a new leader for the partition.</p>
+<h3 id="cluster-membership">Cluster Membership<a aria-hidden="true" class="anchor-heading icon-link" href="#cluster-membership"></a></h3>
+<p>ZooKeeper keeps track of the live brokers in the Kafka cluster. It allows brokers to register themselves and provides a mechanism for detecting when brokers join or leave the cluster. This information is crucial for maintaining the overall health and availability of the Kafka cluster.</p>
+<h3 id="topic-configuration-and-partition-assignment">Topic Configuration and Partition Assignment<a aria-hidden="true" class="anchor-heading icon-link" href="#topic-configuration-and-partition-assignment"></a></h3>
+<p>ZooKeeper helps with topic configuration and partition assignment. It stores the topic configurations, such as the number of partitions and replication factor, and ensures that the partitions are evenly distributed across the brokers in the cluster.</p>
+<h3 id="consumer-group-coordination">Consumer Group Coordination<a aria-hidden="true" class="anchor-heading icon-link" href="#consumer-group-coordination"></a></h3>
+<p>ZooKeeper is used to manage consumer group coordination in Kafka. It keeps track of the consumer groups, their assigned partitions, and the offsets consumed by each consumer group. This enables Kafka to ensure that each consumer group is processing messages consistently and allows for fault tolerance and load balancing.</p>
+<h3 id="watchers-and-notifications">Watchers and Notifications<a aria-hidden="true" class="anchor-heading icon-link" href="#watchers-and-notifications"></a></h3>
+<p>ZooKeeper provides a mechanism called watchers, which allows clients to receive notifications when certain events occur in the ZooKeeper cluster. Kafka leverages these watchers to be notified of changes to the cluster, such as broker failures or topic configuration updates.</p>
+<h2 id="how-does-it-work">How does it work?<a aria-hidden="true" class="anchor-heading icon-link" href="#how-does-it-work"></a></h2>
+<h3 id="znode">Znode<a aria-hidden="true" class="anchor-heading icon-link" href="#znode"></a></h3>
+<ul>
+<li>short for "Zookeeper Node"</li>
+</ul>
+<p>The znode is the fundamental data entity that represents a point in the ZooKeeper's distributed hierarchical namespace tree.</p>
+<ul>
+<li>Znodes can have data associated with them</li>
+<li>It can be created, modified, deleted, and queried by clients interacting with the ZooKeeper service.</li>
+</ul>
+<p>Znodes form the foundation for implementing distributed locking, leader election, configuration management, and other distributed coordination patterns.</p>
+<p>It is similar to a file or directory in a traditional file system, but it is stored in memory and allows for coordination and synchronization among distributed systems.</p>
+<ul>
+<li>similar to the path of a file or directory, each znode has a unique path within the namespace</li>
+</ul>
+<hr>
+<h2 id="other">Other<a aria-hidden="true" class="anchor-heading icon-link" href="#other"></a></h2>
+<p>Besides Kafka, Zookeeper is also utilized by services such as <a href="/notes/YxwqHEq2TsfL7ShAfW2Rw">Apache Hadoop</a>, HBase, SOLR, Spark, and NiFi among others.</p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/vutujFFWxQu6TshWVuMpI">Distributed Computing</a></li>
+<li><a href="/notes/wlnlhqzlvawfoguuchjv3v3">Broadcast</a></li>
+<li><a href="/notes/btan6P1szAXOhnBlAKUDR">etcd</a></li>
+</ul>

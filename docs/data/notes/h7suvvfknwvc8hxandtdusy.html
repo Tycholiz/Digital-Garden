@@ -1,0 +1,47 @@
+<h1 id="strong">Strong<a aria-hidden="true" class="anchor-heading icon-link" href="#strong"></a></h1>
+<p>Strong consistency means replication happens synchronously across data nodes</p>
+<ul>
+<li>This means subsequent read operations must all return the same latest data, no matter which replica was queried</li>
+</ul>
+<h3 id="how-does-it-happen">How does it happen?<a aria-hidden="true" class="anchor-heading icon-link" href="#how-does-it-happen"></a></h3>
+<ol>
+<li>the server (client) executes a write operation against the primary database instance</li>
+<li>the primary instance propagates the written data to the replica instance</li>
+<li>the replica instance sends an acknowledgment signal to the primary instance</li>
+<li>the primary instance sends an acknowledgment signal to the client</li>
+</ol>
+<p>The popular use cases of the strong consistency model are the following:</p>
+<ul>
+<li>File systems</li>
+<li>Relational databases</li>
+<li>Financial services such as banking</li>
+<li>Semi-distributed consensus protocols such as two-phase commit (2PC)</li>
+<li>Fully distributed consensus protocols such as Paxos</li>
+</ul>
+<p>Google Spanner and Google Bigtable both use strong consistency </p>
+<hr>
+<h3 id="linearizability">Linearizability<a aria-hidden="true" class="anchor-heading icon-link" href="#linearizability"></a></h3>
+<p>Linearizability is a variant of strong consistency and is also known as atomic consistency</p>
+<p>The following techniques can be used to implement linearizability:</p>
+<ul>
+<li>single leader to handle both read and write operations</li>
+<li>distributed consensus algorithm such as Paxos</li>
+<li>distributed quorum</li>
+</ul>
+<p>The advantages of linearizability are as follows:</p>
+<ul>
+<li>makes a distributed system behave as if the system were non-distributed</li>
+<li>simple for application to use</li>
+</ul>
+<p>The disadvantages of linearizability are the following:</p>
+<ul>
+<li>degraded performance</li>
+<li>limited scalability</li>
+<li>reduced availability</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/W5etsXYnFDHBWHEHSZKjp">Concurrency</a></li>
+<li><a href="/notes/ilOPfgNyiPSHOb9tNB6yL">CAP Theorem</a></li>
+</ul>

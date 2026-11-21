@@ -1,0 +1,37 @@
+<h1 id="pages">Pages<a aria-hidden="true" class="anchor-heading icon-link" href="#pages"></a></h1>
+<p>Pages typically generate HTML to display to the user (as well as any CSS and JavaScript needed for the page).
+By default, pages are rendered on both the client and server, though this behaviour is configurable.</p>
+<p>Since pages are Svelte components, they are of filetype <code>.svelte</code></p>
+<p>By default, when a user first visits the application, they will be served a server-rendered version of the page in question, plus some JavaScript that 'hydrates' the page and initialises a client-side router. From that point forward, navigating to other pages is handled entirely on the client for a fast, app-like feel where the common portions in the layout do not need to be rerendered.</p>
+<p>The filename determines the route. </p>
+<p>Dynamic parameters are encoded using <code>[brackets]</code>. For example, a blog post might be defined by <code>src/routes/blog/[slug].svelte</code></p>
+<ul>
+<li>that parameter can then be accessed in 2 ways: a load function, or the page store</li>
+</ul>
+<p>A good structure is to have minimal information in your page <code>.svelte</code> file, and import the entirety of the visual html from a hidden file (<code>_Editor.svelte</code>), like this:</p>
+<pre class="language-js"><code class="language-js"><span class="token operator">&#x3C;</span>script context<span class="token operator">=</span><span class="token string">"module"</span><span class="token operator">></span>
+	<span class="token keyword module">export</span> <span class="token keyword">function</span> <span class="token function">load</span><span class="token punctuation">(</span><span class="token parameter"><span class="token punctuation">{</span> session <span class="token punctuation">}</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword control-flow">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>session<span class="token punctuation">.</span><span class="token property-access">user</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token keyword control-flow">return</span> <span class="token punctuation">{</span>
+				<span class="token literal-property property">status</span><span class="token operator">:</span> <span class="token number">302</span><span class="token punctuation">,</span>
+				<span class="token literal-property property">redirect</span><span class="token operator">:</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">/login</span><span class="token template-punctuation string">`</span></span>
+			<span class="token punctuation">}</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+
+		<span class="token keyword control-flow">return</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token operator">&#x3C;</span><span class="token operator">/</span>script<span class="token operator">></span>
+
+<span class="token operator">&#x3C;</span>script<span class="token operator">></span>
+	<span class="token keyword module">import</span> <span class="token imports"><span class="token maybe-class-name">Editor</span></span> <span class="token keyword module">from</span> <span class="token string">'./_Editor.svelte'</span><span class="token punctuation">;</span>
+	<span class="token keyword">let</span> article <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token literal-property property">title</span><span class="token operator">:</span> <span class="token string">''</span><span class="token punctuation">,</span> <span class="token literal-property property">description</span><span class="token operator">:</span> <span class="token string">''</span><span class="token punctuation">,</span> <span class="token literal-property property">body</span><span class="token operator">:</span> <span class="token string">''</span><span class="token punctuation">,</span> <span class="token literal-property property">tagList</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token operator">&#x3C;</span><span class="token operator">/</span>script<span class="token operator">></span>
+
+<span class="token operator">&#x3C;</span><span class="token maybe-class-name">Editor</span> <span class="token punctuation">{</span>article<span class="token punctuation">}</span><span class="token operator">/</span><span class="token operator">></span>
+</code></pre>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/TT6gHOL3GkuzVdgBCbAaB">Layouts</a></li>
+<li><a href="/notes/X7zZJFN4GDXxU9R3IWC1u">load Function</a></li>
+</ol>

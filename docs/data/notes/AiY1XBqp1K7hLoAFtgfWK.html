@@ -1,0 +1,44 @@
+<h1 id="lambda">Lambda<a aria-hidden="true" class="anchor-heading icon-link" href="#lambda"></a></h1>
+<p>A lambda allows us to assign some functionality to a variable.</p>
+<p>In Javascript, if we wanted, we could extract out a callback (e.g. <code>double</code>) to be its own function:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token function-variable function">double</span> <span class="token operator">=</span> <span class="token parameter">num</span> <span class="token arrow operator">=></span> num <span class="token operator">*</span> <span class="token number">2</span>
+<span class="token keyword">const</span> doubled <span class="token operator">=</span> numbers<span class="token punctuation">.</span><span class="token method function property-access">map</span><span class="token punctuation">(</span>double<span class="token punctuation">)</span>
+</code></pre>
+<p>In Ruby, the same way we'd do this is with Lambdas or <a href="/notes/PYbjX7NgiqH0IaJoy0mAn">Procs</a></p>
+<pre class="language-rb"><code class="language-rb">double <span class="token operator">=</span> lambda <span class="token keyword">do</span> <span class="token operator">|</span>num<span class="token operator">|</span>
+  <span class="token keyword">return</span> num <span class="token operator">*</span> <span class="token number">2</span>
+<span class="token keyword">end</span>
+</code></pre>
+<p>Lambdas are essentially <a href="/notes/PYbjX7NgiqH0IaJoy0mAn">procs</a> with some distinguishing factors.</p>
+<ul>
+<li>They are more like “regular” methods in two ways:
+<ol>
+<li>they enforce the number of arguments (ie. strict arity) passed when they’re called.</li>
+<li>they treat the <code>return</code> keyword in the same way that a method does. They return as methods (instead of in their parent scope).</li>
+</ol>
+</li>
+</ul>
+<p>Here we encapsulate some logging to a variable:</p>
+<pre class="language-rb"><code class="language-rb">say_something <span class="token operator">=</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span> puts <span class="token string-literal"><span class="token string">"This is a lambda"</span></span> <span class="token punctuation">}</span>
+</code></pre>
+<p>For the code inside the lambda to actually run, we need to call it:</p>
+<pre class="language-rb"><code class="language-rb">say_something<span class="token punctuation">.</span>call
+</code></pre>
+<h3 id="proc-vs-lambda">Proc vs Lambda<a aria-hidden="true" class="anchor-heading icon-link" href="#proc-vs-lambda"></a></h3>
+<p>This function will yield control to the proc, so when it returns, the function returns. Calling the function in this example will never print the output and return 10:</p>
+<pre class="language-rb"><code class="language-rb"><span class="token keyword">def</span> <span class="token method-definition"><span class="token function">return_from_proc</span></span>
+  a <span class="token operator">=</span> <span class="token class-name">Proc</span><span class="token punctuation">.</span><span class="token keyword">new</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> <span class="token number">10</span> <span class="token punctuation">}</span><span class="token punctuation">.</span>call
+  puts <span class="token string-literal"><span class="token string">"This will never be printed."</span></span>
+<span class="token keyword">end</span>
+</code></pre>
+<p>When using a lambda, it will be printed. Calling return in the lambda will behave like calling return in a method, so the <code>a</code> variable is populated with 10 and the line is printed to the console.</p>
+<pre class="language-rb"><code class="language-rb"><span class="token keyword">def</span> <span class="token method-definition"><span class="token function">return_from_lambda</span></span>
+  a <span class="token operator">=</span> lambda <span class="token punctuation">{</span> <span class="token keyword">return</span> <span class="token number">10</span> <span class="token punctuation">}</span><span class="token punctuation">.</span>call
+  puts <span class="token string-literal"><span class="token string">"The lambda returned </span><span class="token interpolation"><span class="token delimiter punctuation">#{</span><span class="token content">a</span><span class="token delimiter punctuation">}</span></span><span class="token string">, and this will be printed."</span></span>
+<span class="token keyword">end</span>
+</code></pre>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/0gtg24Mj1a1bQFPRGQNlO">Ruby</a></li>
+</ul>

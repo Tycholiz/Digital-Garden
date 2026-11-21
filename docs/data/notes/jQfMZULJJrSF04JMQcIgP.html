@@ -1,0 +1,136 @@
+<h1 id="binary">Binary<a aria-hidden="true" class="anchor-heading icon-link" href="#binary"></a></h1>
+<p>Each node has at most 2 children (referred to ask <em>left child</em> and <em>right child</em>).</p>
+<p>We can break a binary tree down into the left subtree and the right subtree.</p>
+<h1 id="binary-search-tree-bst">Binary Search Tree (BST)<a aria-hidden="true" class="anchor-heading icon-link" href="#binary-search-tree-bst"></a></h1>
+<p>A binary tree is a BST if:</p>
+<ul>
+<li>the key of each node in the left subtree is <em>less than</em> all the nodes in the right subtree</li>
+<li>the root key is between the <em>largest</em> key in the left subtree and the <em>smallest</em> key in the right subtree
+<ul>
+<li>in other works, the root key serves as the dividing point.</li>
+</ul>
+</li>
+</ul>
+<p>The following binary tree <em>is</em> a BST, because there are no nodes in the left subtree that are greater than any node in the right subtree.
+<img src="/assets/images/2021-10-07-06-54-40.png"></p>
+<p>The following binary tree is <em>not</em> a BST, since there is a node with key 51 in the left subtree of 50 which breaks our invariant.
+<img src="/assets/images/2021-10-07-06-57-26.png"></p>
+<h2 id="implementing-a-bst-in-typescript">Implementing a BST in Typescript<a aria-hidden="true" class="anchor-heading icon-link" href="#implementing-a-bst-in-typescript"></a></h2>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">class</span> <span class="token class-name"><span class="token maybe-class-name">TreeNode</span><span class="token operator">&#x3C;</span><span class="token constant">T</span><span class="token operator">></span></span> <span class="token punctuation">{</span>
+  left<span class="token operator">:</span> <span class="token maybe-class-name">TreeNode</span><span class="token operator">&#x3C;</span><span class="token constant">T</span><span class="token operator">></span> <span class="token operator">|</span> <span class="token keyword null nil">null</span><span class="token punctuation">;</span>
+  right<span class="token operator">:</span> <span class="token maybe-class-name">TreeNode</span><span class="token operator">&#x3C;</span><span class="token constant">T</span><span class="token operator">></span> <span class="token operator">|</span> <span class="token keyword null nil">null</span><span class="token punctuation">;</span>
+  data<span class="token operator">:</span> <span class="token constant">T</span><span class="token punctuation">;</span>
+
+  <span class="token function">constructor</span><span class="token punctuation">(</span>data<span class="token operator">:</span> <span class="token constant">T</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">left</span> <span class="token operator">=</span> <span class="token keyword null nil">null</span><span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">right</span> <span class="token operator">=</span> <span class="token keyword null nil">null</span><span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">data</span> <span class="token operator">=</span> data<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name"><span class="token maybe-class-name">BinarySearchTree</span><span class="token operator">&#x3C;</span><span class="token constant">T</span><span class="token operator">></span></span> <span class="token punctuation">{</span>
+  root<span class="token operator">:</span> <span class="token maybe-class-name">TreeNode</span><span class="token operator">&#x3C;</span><span class="token constant">T</span><span class="token operator">></span> <span class="token operator">|</span> <span class="token keyword null nil">null</span><span class="token punctuation">;</span>
+
+  <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">root</span> <span class="token operator">=</span> <span class="token keyword null nil">null</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token function">insert</span><span class="token punctuation">(</span>data<span class="token operator">:</span> <span class="token constant">T</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> newNode <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name"><span class="token maybe-class-name">TreeNode</span></span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">root</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">root</span> <span class="token operator">=</span> newNode<span class="token punctuation">;</span>
+      <span class="token keyword control-flow">return</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">let</span> currentNode <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">root</span><span class="token punctuation">;</span>
+    <span class="token keyword control-flow">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span>data <span class="token operator">&#x3C;</span> currentNode<span class="token punctuation">.</span><span class="token property-access">data</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>currentNode<span class="token punctuation">.</span><span class="token property-access">left</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          currentNode<span class="token punctuation">.</span><span class="token property-access">left</span> <span class="token operator">=</span> newNode<span class="token punctuation">;</span>
+          <span class="token keyword control-flow">return</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        currentNode <span class="token operator">=</span> currentNode<span class="token punctuation">.</span><span class="token property-access">left</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span> <span class="token keyword control-flow">else</span> <span class="token punctuation">{</span>
+        <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>currentNode<span class="token punctuation">.</span><span class="token property-access">right</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          currentNode<span class="token punctuation">.</span><span class="token property-access">right</span> <span class="token operator">=</span> newNode<span class="token punctuation">;</span>
+          <span class="token keyword control-flow">return</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        currentNode <span class="token operator">=</span> currentNode<span class="token punctuation">.</span><span class="token property-access">right</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token function">search</span><span class="token punctuation">(</span>data<span class="token operator">:</span> <span class="token constant">T</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token maybe-class-name">TreeNode</span><span class="token operator">&#x3C;</span><span class="token constant">T</span><span class="token operator">></span> <span class="token operator">|</span> <span class="token keyword null nil">null</span> <span class="token punctuation">{</span>
+    <span class="token keyword">let</span> currentNode <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">root</span><span class="token punctuation">;</span>
+
+    <span class="token keyword control-flow">while</span> <span class="token punctuation">(</span>currentNode<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span>data <span class="token operator">===</span> currentNode<span class="token punctuation">.</span><span class="token property-access">data</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword control-flow">return</span> currentNode<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span> <span class="token keyword control-flow">else</span> <span class="token keyword control-flow">if</span> <span class="token punctuation">(</span>data <span class="token operator">&#x3C;</span> currentNode<span class="token punctuation">.</span><span class="token property-access">data</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        currentNode <span class="token operator">=</span> currentNode<span class="token punctuation">.</span><span class="token property-access">left</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span> <span class="token keyword control-flow">else</span> <span class="token punctuation">{</span>
+        currentNode <span class="token operator">=</span> currentNode<span class="token punctuation">.</span><span class="token property-access">right</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword control-flow">return</span> <span class="token keyword null nil">null</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">const</span> bst <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name"><span class="token maybe-class-name">BinarySearchTree</span><span class="token operator">&#x3C;</span><span class="token builtin">number</span><span class="token operator">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+bst<span class="token punctuation">.</span><span class="token method function property-access">insert</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+bst<span class="token punctuation">.</span><span class="token method function property-access">insert</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h3 id="finding-a-node-by-key">Finding a node by key<a aria-hidden="true" class="anchor-heading icon-link" href="#finding-a-node-by-key"></a></h3>
+<ol>
+<li>Compare current node's key with X. If it's equal, we've found the key. All done.</li>
+<li>If X is less than node's key, we start looking at node's left subtree. It's because we know that right subtree cannot contain anything greater than X.</li>
+<li>If X is greater than node's key, we start looking in the right subtree.</li>
+<li>We repeat this process until we find the key or we reach the leaf node. If we reach the leaf node and haven't found the key as yet, we return not found.</li>
+</ol>
+<h3 id="inserting-into-tree">Inserting into tree<a aria-hidden="true" class="anchor-heading icon-link" href="#inserting-into-tree"></a></h3>
+<p>New nodes are <em>always</em> leaf nodes. Following the logic of left children being smaller and right children being larger, we start searching a key from the root until we hit a leaf node. Once a leaf node is found, the new node is added as a child of the leaf node.</p>
+<ul>
+<li>Therefore, there is only one correct location for the node to be, which is dependent on the key.</li>
+</ul>
+<p>Assume we want to insert a node with key <code>K</code>. Starting at the root,</p>
+<ol>
+<li>Compare current node's key with <code>k</code>.</li>
+<li>If <code>k</code> is less than the current node,
+<ul>
+<li>If left child of current node is <code>null</code>, we insert <code>k</code> as the left child of current node and return.</li>
+<li>If the left child is not <code>null</code>, the left child becomes the new current node, and we repeat the process from step 1.</li>
+</ul>
+</li>
+<li>If <code>k</code> is greater than the current node,
+<ul>
+<li>If right child of current node is <code>null</code>, we insert <code>k</code> as the right child of the current node and return.</li>
+<li>If the right child is not <code>null</code>, the right child becomes the new current node, and we repeat the process from step 1.</li>
+</ul>
+</li>
+</ol>
+<h4 id="advantages">Advantages<a aria-hidden="true" class="anchor-heading icon-link" href="#advantages"></a></h4>
+<p>Binary trees are useful for accessing nodes based on their key or value. When labelled like this, we can implement a Binary Search Tree (for efficient searching/sorting/min/maxing).</p>
+<p>Binary search trees allow binary search for fast lookup, addition and removal of data items, and can be used to implement dynamic sets and lookup tables.</p>
+<ul>
+<li>with the way that the nodes of a BST are arranged, each comparison skips ~half the remaining tree.
+<ul>
+<li>this results in a <a href="/notes/kh4pnGNcrtlixB0ThQuBq">time complexity</a> that is logarithmic (<code>O(log n)</code>), making it much faster than the linear time required to find items in an unsorted array, but slower than finding items in a hash table.</li>
+</ul>
+</li>
+</ul>
+<h3 id="traversal-types">Traversal types<a aria-hidden="true" class="anchor-heading icon-link" href="#traversal-types"></a></h3>
+<ul>
+<li>In-order traversals are performed on each node by processing the left subtree, then the node itself, then the right subtree.</li>
+<li>Pre-order traversal</li>
+<li>Post-order traversal</li>
+</ul>
+<h3 id="storing-a-bst">"Storing" a BST<a aria-hidden="true" class="anchor-heading icon-link" href="#storing-a-bst"></a></h3>
+<p>store both Inorder and Preorder traversals. This solution requires space twice the size of Binary Tree.</p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/YZrw2KGw9jYZZLx3yn8qt">Heap</a></li>
+<li><a href="/notes/UE8OS2s713jEk2CmjiAet">B-tree</a></li>
+</ul>

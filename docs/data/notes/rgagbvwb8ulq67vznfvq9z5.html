@@ -1,0 +1,19 @@
+<h1 id="privileges">Privileges<a aria-hidden="true" class="anchor-heading icon-link" href="#privileges"></a></h1>
+<p>When an object is created, it is assigned an owner (normally the role that executed the creation statement).</p>
+<ul>
+<li>for most objects, the default state is that only the owner (or a superuser) can do anything with the object.</li>
+</ul>
+<p>The available privileges are: SELECT, INSERT, UPDATE, DELETE, TRUNCATE, REFERENCES, TRIGGER, CREATE, CONNECT, TEMPORARY, EXECUTE, USAGE, SET, ALTER SYSTEM, and MAINTAIN</p>
+<ul>
+<li>The privileges applicable to a particular object vary depending on the object's type (table, function, etc.).</li>
+</ul>
+<p>The owner is the user that has the right to modify or destroy an object</p>
+<p>An object can be assigned to a new owner with an ALTER command of the appropriate kind for the object</p>
+<ul>
+<li>ex. <code>ALTER TABLE table_name OWNER TO new_owner;</code></li>
+</ul>
+<p>To assign privileges, the GRANT command is used</p>
+<ul>
+<li>ex. <code>GRANT UPDATE ON accounts TO joe;</code></li>
+</ul>
+<p>Writing ALL in place of a specific privilege grants all privileges that are relevant for the object type.</p>

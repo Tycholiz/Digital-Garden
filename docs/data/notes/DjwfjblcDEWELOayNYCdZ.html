@@ -1,0 +1,59 @@
+<h1 id="factory-functions">Factory Functions<a aria-hidden="true" class="anchor-heading icon-link" href="#factory-functions"></a></h1>
+<p>Factory functions allow us to create objects without having to specify the exact class of the object that will be created.</p>
+<ul>
+<li>This is accomplished by calling a function, rather than calling a constructor.</li>
+</ul>
+<p>The idea is to define an interface for creating an object, but let subclasses decide which class to instantiate. The Factory method lets a class defer instantiation it uses to subclasses.</p>
+<p>In the absence of factory functions, we may have some added problems, and an object's creation...</p>
+<ul>
+<li>may lead to a significant duplication of code,</li>
+<li>may require information not accessible to the composing object,</li>
+<li>may not provide a sufficient level of abstraction,</li>
+<li>may otherwise not be part of the composing object's concerns.</li>
+</ul>
+<p>The factory method pattern relies on inheritance, as object creation is delegated to subclasses that implement the factory method to create objects.</p>
+<p>The problem with constructors is that they look just like regular functions, but do not behave like regular functions at all.</p>
+<p>The factory function pattern is similar to constructors, but instead of using new to create an object, factory functions simply set up and return the new object when you call the function.</p>
+<p>With a factory</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token function-variable function">personFactory</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">name<span class="token punctuation">,</span> age</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> <span class="token function-variable function">sayHello</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span><span class="token string">'hello!'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword control-flow">return</span> <span class="token punctuation">{</span> name<span class="token punctuation">,</span> age<span class="token punctuation">,</span> sayHello <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> jeff <span class="token operator">=</span> <span class="token function">personFactory</span><span class="token punctuation">(</span><span class="token string">'jeff'</span><span class="token punctuation">,</span> <span class="token number">27</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span>jeff<span class="token punctuation">.</span><span class="token property-access">name</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 'jeff'</span>
+
+jeff<span class="token punctuation">.</span><span class="token method function property-access">sayHello</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// calls the function and logs 'hello!'</span>
+</code></pre>
+<p>With a constructor</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token function-variable function"><span class="token maybe-class-name">Person</span></span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">name<span class="token punctuation">,</span> age</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token method-variable function-variable method function property-access">sayHello</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span><span class="token string">'hello!'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">name</span> <span class="token operator">=</span> name<span class="token punctuation">;</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token property-access">age</span> <span class="token operator">=</span> age<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> jeff <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token string">'jeff'</span><span class="token punctuation">,</span> <span class="token number">27</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>ES6 modules are actually very similar to factory functions. The main difference is how they’re created.</p>
+<ul>
+<li>The concepts are exactly the same as the factory function. The nuance is that instead of creating a factory that we can use over and over again to create multiple objects, the module pattern wraps the factory in an IIFE (Immediately Invoked Function Expression).</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> calculator <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> <span class="token function-variable function">add</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">a<span class="token punctuation">,</span> b</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> a <span class="token operator">+</span> b<span class="token punctuation">;</span>
+  <span class="token keyword">const</span> <span class="token function-variable function">sub</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">a<span class="token punctuation">,</span> b</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> a <span class="token operator">-</span> b<span class="token punctuation">;</span>
+  <span class="token keyword">const</span> <span class="token function-variable function">mul</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">a<span class="token punctuation">,</span> b</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> a <span class="token operator">*</span> b<span class="token punctuation">;</span>
+  <span class="token keyword">const</span> <span class="token function-variable function">div</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">a<span class="token punctuation">,</span> b</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> a <span class="token operator">/</span> b<span class="token punctuation">;</span>
+  <span class="token keyword control-flow">return</span> <span class="token punctuation">{</span>
+    add<span class="token punctuation">,</span>
+    sub<span class="token punctuation">,</span>
+    mul<span class="token punctuation">,</span>
+    div<span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+calculator<span class="token punctuation">.</span><span class="token method function property-access">add</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">)</span> <span class="token comment">// 8</span>
+calculator<span class="token punctuation">.</span><span class="token method function property-access">sub</span><span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token comment">// 4</span>
+calculator<span class="token punctuation">.</span><span class="token method function property-access">mul</span><span class="token punctuation">(</span><span class="token number">14</span><span class="token punctuation">,</span><span class="token number">5534</span><span class="token punctuation">)</span> <span class="token comment">// 77476</span>
+</code></pre>
+<p>above, the function inside the IIFE is a simple factory function, but we can just go ahead and assign the object to the variable calculator since we aren’t going to need to be making lots of calculators, we only need one.</p>

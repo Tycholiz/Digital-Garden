@@ -1,0 +1,10 @@
+<h1 id="proxy-object">Proxy Object<a aria-hidden="true" class="anchor-heading icon-link" href="#proxy-object"></a></h1>
+<p>A proxy object is an object that wraps another object. The proxy object intercepts the fundamental operations of the wrapped object, including property lookup, assignment, function invocations etc</p>
+<pre><code>- In other words, we can have a regular object that we interact with normally. We can also wrap that regular object with a proxy object, that will intercept those interactions that we have with the object.
+</code></pre>
+<ul>
+<li>Think of a proxy object like an enhanced (wrapped) component in React. It can do everything that the original can, but has some added functionality. This added functionality might be as simple as logging to the console every time a property is read (this would be implemented using a <strong>get trap</strong>. </li>
+<li>The wrapped object is called the <em>target</em></li>
+<li>The custom functionality that is added is called the <em>handler</em></li>
+<li><em>trap</em> - a method defined on the proxy that will intercept some interaction we have with the object (ie. read, write)</li>
+</ul>

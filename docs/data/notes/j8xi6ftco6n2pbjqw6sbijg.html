@@ -1,0 +1,32 @@
+<h1 id="decorator">Decorator<a aria-hidden="true" class="anchor-heading icon-link" href="#decorator"></a></h1>
+<p>A Javascript <a href="/notes/UxzKopcw8JCSnPc8HKbjX">decorator</a> is an expression which returns a function and can take a <code>target</code>, <code>name</code> and <code>property descriptor</code> as arguments. </p>
+<ul>
+<li>You apply it by prefixing the decorator with an <code>@</code> character and placing this at the very top of what you are trying to decorate. </li>
+<li>Decorators can be defined for either a class or property.</li>
+</ul>
+<p>Decorators get called first before classes are compiled.</p>
+<ul>
+<li>In Javascript when we define a new <code>class</code> with methods, we are really just installing a descriptor on the object's prototype.</li>
+</ul>
+<p>A decorator is just an expression that will be evaluated and has to return a function.</p>
+<h3 id="readonly-decorator">Readonly decorator<a aria-hidden="true" class="anchor-heading icon-link" href="#readonly-decorator"></a></h3>
+<pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">readonly</span><span class="token punctuation">(</span><span class="token parameter">target<span class="token punctuation">,</span> key<span class="token punctuation">,</span> descriptor</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  descriptor<span class="token punctuation">.</span><span class="token property-access">writable</span> <span class="token operator">=</span> <span class="token boolean">false</span>
+  <span class="token keyword control-flow">return</span> descriptor
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">Horse</span> <span class="token punctuation">{</span>
+  @readonly
+  <span class="token function">neigh</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span><span class="token string">'*neigh!*'</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="class-decorators">Class decorators<a aria-hidden="true" class="anchor-heading icon-link" href="#class-decorators"></a></h3>
+<p><code>@decorator</code> is a function that returns a decorator.</p>
+<ul>
+<li>a decorator itself is a function that takes in a class and returns that same class.</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/613syb18hb3v0u1ydvor7ru">Nestjs</a></li>
+</ul>

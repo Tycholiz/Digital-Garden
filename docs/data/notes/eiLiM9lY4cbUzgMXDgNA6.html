@@ -1,0 +1,77 @@
+<h1 id="expansion">Expansion<a aria-hidden="true" class="anchor-heading icon-link" href="#expansion"></a></h1>
+<h2 id="history-expansion">History Expansion<a aria-hidden="true" class="anchor-heading icon-link" href="#history-expansion"></a></h2>
+<p><a href="https://www.thegeekstuff.com/2011/08/bash-history-expansion/">source</a></p>
+<ul>
+<li>History expansion is performed immediately after a complete line is read, before the shell breaks it into words, and is performed on each line individually</li>
+</ul>
+<p>Designators:</p>
+<ul>
+<li>Event Designators - refer to a particular command in history
+<ul>
+<li>start with <code>!</code></li>
+</ul>
+</li>
+<li>Word Designators - refer to a particular word of a history entry
+<ul>
+<li>often gets combined with Event Designators, which are demarcated by <code>:</code></li>
+<li>ex. <code>!cp:^</code> finds the most recent <code>cp</code> command in history and grabs the 1st argument</li>
+</ul>
+</li>
+<li>Modifiers - modify result of the Event/Word Designator</li>
+</ul>
+<p>Commands:</p>
+<ul>
+<li><code>!ls</code> - execute most recent <code>ls</code> command
+<ul>
+<li>ex. if I ran <code>git log</code>, then <code>!git</code>, bash will say "oh ok, you want the last executed bash command", and will run <code>git log</code></li>
+</ul>
+</li>
+<li><code>!?apache</code> - execute most recent command that contains the keyword <code>apache</code>.
+<ul>
+<li><code>!%</code> will refer to the word that was matched by the previous <code>!?&#x3C;pattern></code> search</li>
+</ul>
+</li>
+<li><code>!-3</code> - execute 3rd most recent command
+<ul>
+<li><code>!!</code> === <code>!-1</code> (most recent command)</li>
+</ul>
+</li>
+<li><code>!$</code> - reuse last part of the most recent command
+<ul>
+<li>ex. <code>less ~/myfile</code> then <code>vim !$</code> will run <code>vim ~/myfile</code></li>
+</ul>
+</li>
+<li><code>!*</code> - reuse all parts of most recent command</li>
+<li><code>^ls^cat^</code> - modify the pattern <code>ls</code> with <code>cat</code> in the previous command</li>
+<li><code>!!:s/ls -l/cat/</code> - replace <code>ls -l</code> of previous command with <code>cat</code>
+<ul>
+<li><code>!!:gs/...</code> for global substitution</li>
+</ul>
+</li>
+<li><code>!cp:^</code> - get 1st arg of the most recent <code>cp</code> command</li>
+<li><code>!cp:$</code> - get last arg of the most recent <code>cp</code> command</li>
+<li><code>!cp:2</code> - get 2nd arg of the most recent <code>cp</code> command</li>
+<li><code>!cp:*</code> - get all args of the most recent <code>cp</code> command</li>
+</ul>
+<hr>
+<h2 id="tilde-expansion">Tilde Expansion<a aria-hidden="true" class="anchor-heading icon-link" href="#tilde-expansion"></a></h2>
+<h3 id="tilde-prefix">Tilde prefix<a aria-hidden="true" class="anchor-heading icon-link" href="#tilde-prefix"></a></h3>
+<p>The tilde prefix includes all of the characters before the first slash <code>/</code></p>
+<p><code>~</code>
+<code>$HOME</code></p>
+<ul>
+<li>in reality, this is shorthand for <code>~kyletycholiz</code> (the current user)</li>
+</ul>
+<p><code>~+</code>
+<code>$PWD</code></p>
+<p><code>~-</code>
+<code>$OLDPWD</code></p>
+<ul>
+<li>or, the directory we were in previous to our PWD</li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/MnVLhohcavyBGBG81xTA5">Brace Expansion</a></li>
+<li><a href="/notes/LpujidfNKZ60R2OXuQBn6">Variable (aka Parameter) Expansion</a></li>
+</ol>

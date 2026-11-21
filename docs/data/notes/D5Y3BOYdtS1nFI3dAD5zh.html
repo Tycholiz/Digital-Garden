@@ -1,0 +1,16 @@
+<h1 id="method">Method<a aria-hidden="true" class="anchor-heading icon-link" href="#method"></a></h1>
+<p>The array argument passed to callbackFn is most useful if you want to read another index during iteration, because you may not always have an existing variable that refers to the current array. You should generally not mutate the array during iteration (see mutating initial array in iterative methods), but you can also use this argument to do so. The array argument is not the array that is being built, in the case of methods like map(), filter(), and flatMap() — there is no way to access the array being built from the callback function.</p>
+<p>Operating on arrays offers <code>O(1)</code> search speed if the index is known, but adding/removing an element is slow since size of array cannot change once it's created</p>
+<ul>
+<li>note: is this relevant for Javascript?</li>
+</ul>
+<p><code>forEach</code> is almost always used for side-effects at the end of a chain</p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/qgq4kp75ihjoe9rairqn9pz">Map</a></li>
+<li><a href="/notes/bHTTs6TJg2jylm8E4RtHW">Reduce</a></li>
+<li><a href="/notes/TS6MwGjo2WrZ3J5ev2bg9">Slice</a></li>
+<li><a href="/notes/DKUqjnma8uK8Q9GUNikIv">Sort</a></li>
+<li><a href="/notes/hjgmupj671w9kvj39zbkfso">flatMap</a></li>
+</ol>

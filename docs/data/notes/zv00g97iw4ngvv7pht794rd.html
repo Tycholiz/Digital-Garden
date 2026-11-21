@@ -1,0 +1,60 @@
+<h1 id="inheritance">Inheritance<a aria-hidden="true" class="anchor-heading icon-link" href="#inheritance"></a></h1>
+<p>If <a href="/notes/giy9h69u75hkxmfwdqwfst6">composition</a> is about <em>using</em> another class/interface, inheritance is about <em>being</em> one.</p>
+<p>Inheritance is most useful for </p>
+<ul>
+<li>grouping related sets of concepts</li>
+<li>identifying families of classes</li>
+<li>organizing the names and concepts that describe the domain</li>
+</ul>
+<h2 id="how-to-use-inheritance">How to use inheritance<a aria-hidden="true" class="anchor-heading icon-link" href="#how-to-use-inheritance"></a></h2>
+<p>Inheritance is best suited for <em>differential programming</em>, whereby we are making something that could be considered a variation of something else. That is, the new thing has some tweaks and enhancements of the original thing.</p>
+<ul>
+<li>this is appropriate, since when we instantiate the new class, we still want to preserve the interface of the original class.</li>
+</ul>
+<p>Inheritance should only be used when:</p>
+<ul>
+<li>Both classes are in the same logical <a href="/notes/GDJoTJocO8OKbTtSjn2CW">domain</a></li>
+<li>The subclass is a proper subtype of the superclass</li>
+<li>The superclass’s implementation is necessary or appropriate for the subclass</li>
+<li>The enhancements made by the subclass are primarily additive.</li>
+</ul>
+<h2 id="how-to-misuse-inheritance">How to misuse inheritance<a aria-hidden="true" class="anchor-heading icon-link" href="#how-to-misuse-inheritance"></a></h2>
+<p>Inheritance is prone to misuse.</p>
+<h3 id="inheritance-gives-us-the-properties--methods-of-its-ancestors">Inheritance gives us the properties / methods of its ancestors<a aria-hidden="true" class="anchor-heading icon-link" href="#inheritance-gives-us-the-properties--methods-of-its-ancestors"></a></h3>
+<p>Consider the class</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">class</span> <span class="token class-name">Stack</span> <span class="token keyword">extends</span> <span class="token class-name">ArrayList</span> <span class="token punctuation">{</span>
+  <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">push</span><span class="token punctuation">(</span><span class="token parameter"><span class="token literal-property property">value</span><span class="token operator">:</span> <span class="token known-class-name class-name">Object</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span> … <span class="token punctuation">}</span>
+  <span class="token keyword">public</span> <span class="token function">pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token known-class-name class-name">Object</span> <span class="token punctuation">{</span> … <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>The interface of an instance of this class is bloated. It's reasonable to expect an interface of the class <code>Stack</code> to have only <code>push</code> and <code>pop</code>, but it also includes <code>get</code>, <code>set</code>, <code>add</code>, <code>remove</code>, <code>clear</code>, among others.</p>
+<p>In carrying out this pattern, we committed 3 mistakes:</p>
+<ul>
+<li>By inheriting, we implicitly acknowledged that "a Stack is an ArrayList". However, this is not true, since <code>Stack</code> is <a href="/notes/yllg4xdqnte0adsatwyw9ji">not a proper subtype</a> of <code>ArrayList</code>, because a <code>Stack</code> is supposed to enforce <em>last-in-first-out</em>. Yes, the <code>push</code> / <code>pop</code> interface supports that, but the fields exposed by <code>ArrayList</code> violate that.</li>
+<li>By inheriting, we are violating <a href="/notes/mkYg8t5iG0SCNIgj8cFnr">Encapsulation</a>, since we use <code>ArrayList</code> to hold the stack’s object collection. This is an implementation choice that should be hidden from consumers.</li>
+<li>By inheriting, we are creating a cross-domain relationship. There are 2 different concepts at play here: a randomly-accessible collection (ArrayList), and a <a href="/notes/nGXrix8LjrDiPD8sXA0xa">queue</a> (Stack)</li>
+</ul>
+<h3 id="mixing-domain-classes-and-implementation-classes">Mixing Domain classes and Implementation classes<a aria-hidden="true" class="anchor-heading icon-link" href="#mixing-domain-classes-and-implementation-classes"></a></h3>
+<p>Imagine we wanted to make a variable that represented a subset of customers. Our instinct might be to inherit from <code>ArrayList</code> like so:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">class</span> <span class="token class-name">CustomerList</span> <span class="token keyword">extends</span> <span class="token class-name">ArrayList</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+</code></pre>
+<p>The problem here is that <code>CustomerList</code> is a domain class, while <code>ArrayList</code> is an implementation class. Anything from the implementation layer should be invisible at the domain layer. Instead, domain classes should <em>use</em> implementation classes, not <em>inherit</em> from them.</p>
+<ul>
+<li><em>domain</em> - what our software does (some relation to business logic)</li>
+<li><em>implementation</em> - how our software works</li>
+</ul>
+<p>Instead, we should take an approach where we:</p>
+<ol>
+<li>create implementation classes (ie. our mechanical, non-domain structures) by inheriting from utility classes</li>
+<li>use these mechanical structures in our domain classes via <a href="/notes/giy9h69u75hkxmfwdqwfst6">composition</a>, rather than inheritance. In other words, we should not have our domain classes inherit from implementation classes.</li>
+</ol>
+<h2 id="e-resources">E Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#e-resources"></a></h2>
+<ul>
+<li><a href="https://www.thoughtworks.com/en-ca/insights/blog/composition-vs-inheritance-how-choose">Composition vs Inheritance</a></li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/giy9h69u75hkxmfwdqwfst6">Composition</a></li>
+<li><a href="/notes/UxzKopcw8JCSnPc8HKbjX">Decorator Pattern</a></li>
+</ul>

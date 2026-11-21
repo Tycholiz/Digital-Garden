@@ -1,0 +1,34 @@
+<h1 id="currying">Currying<a aria-hidden="true" class="anchor-heading icon-link" href="#currying"></a></h1>
+<p>Currying is the process of transforming a function of N arity (num of args) into N functions of 1 arity.</p>
+<ul>
+<li>ex. a function with 4 arguments -> 4 functions with 1 argument each</li>
+</ul>
+<h3 id="partial-application">Partial application<a aria-hidden="true" class="anchor-heading icon-link" href="#partial-application"></a></h3>
+<p>Applying a certain number of args toward completion of the function (when the last argument is called)</p>
+<p>Application === calling a function and applying it's return value</p>
+<p>JavaScript engine does its job in two phases: memory creation (declaring variables/functions and hoisting them), and execution (initializing variables and actually running through code)</p>
+<h2 id="why-use-these-techniques">Why use these techniques?<a aria-hidden="true" class="anchor-heading icon-link" href="#why-use-these-techniques"></a></h2>
+<p>The first and most obvious reason is that both currying and partial application allow you to separate in time/space (throughout your codebase) when and where separate arguments are specified, whereas traditional function calls require all the arguments to be present at the same time. If you have a place in your code where you'll know some of the arguments and another place where the other arguments are determined, currying or partial application are very useful.</p>
+<p>Another layer to this answer, specifically for currying, is that composition of functions is much easier when there's only one argument. So a function that ultimately needs three arguments, if curried, becomes a function that needs just one, three times over. That kind of unary function will be a lot easier to work with when we start composing them. But the most important layer is specialization of generalized functions, and how such abstraction improves readability of code.</p>
+<p>R.partial says "you give me a function and any number of arguments you want, then I'll just keep letting you add in as many arguments as you want either indefinitely or until all parameters of the function have been satisfied with arguments"
+<img src="/:/7548f55bd87c4c279f38a15ebac02ed5"></p>
+<h3 id="partial-application-of-composed-functions">Partial application of composed functions<a aria-hidden="true" class="anchor-heading icon-link" href="#partial-application-of-composed-functions"></a></h3>
+<p>allows us to compose multiple functions together, while returning a function that will accept more. This has the benefit of allowing us to compose more and more specific functions.
+expl. <code>unique</code> and <code>words</code> will get partially applied to <code>compose</code></p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> filterWords <span class="token operator">=</span> <span class="token function">partialRight</span><span class="token punctuation">(</span> compose<span class="token punctuation">,</span> unique<span class="token punctuation">,</span> words <span class="token punctuation">)</span>
+<span class="token keyword">const</span> biggerWords <span class="token operator">=</span> <span class="token function">filterWords</span><span class="token punctuation">(</span>skipShortWords<span class="token punctuation">)</span>
+</code></pre>
+<p><img src="/:/593b0123095a48c98e17db790864665f" alt="Untitled Diagram.jpg"></p>
+<h3 id="currying-composed-functions">Currying composed functions<a aria-hidden="true" class="anchor-heading icon-link" href="#currying-composed-functions"></a></h3>
+<p>since compose has right-to-left ordering, we normally <code>R.curry(R.reverseArgs(R.compose), ..)</code></p>
+<p><em>Using partials with <code>.pipe()</code></em>
+<code>var filterWords = partial( pipe, words, unique )</code></p>
+<h4 id="functor">Functor<a aria-hidden="true" class="anchor-heading icon-link" href="#functor"></a></h4>
+<p>something that can be mapped over
+ex. array, object</p>
+<ul>
+<li>a functor that holds values of type A, when mapped over with a function that takes a value of type A and returns a value of type B, the result must be a functor that holds values of type B</li>
+</ul>
+<h4 id="applicative">Applicative<a aria-hidden="true" class="anchor-heading icon-link" href="#applicative"></a></h4>
+<p>a subtype of functors for which additional functions are defined.
+<a href="https://medium.com/@JosephJnk/an-introduction-to-applicative-functors-aea966799b1d">more info</a></p>

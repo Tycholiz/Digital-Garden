@@ -1,0 +1,16 @@
+
+Cloudflare workers are serverless functions that allow us to intercept HTTP requests (and run code before the request hits the server, and before the response reaches the client).
+
+There are notable differences with serverless functions:
+- Workers run on the edge. This means that they are available on a number of Cloudflare servers around the world so your user will get the lowest possible latency. This is not how cloud functions usually work. For example in AWS you have Lambda and Lambda at Edge.
+- Since workers are running in Cloudflare's infrastructure they have access to some unique API to interact with the CDN and caching which is the main Cloudflare product. So you can receive a request to your worker and then decide "hey, put this image in the cache for next time".
+- Workers have access to a Key Value (KV) store which is storing data on the edge.
+
+Workers runs code on Cloudflare's edge. And each Worker is assigned to at least one HTTP endpoint. So these are scripts that live ~10ms away from most users and can be updated globally easily.
+
+Cloudflare workers run their own version of Javascript, not [[Node|js.node]]
+- The API is almost the same as the web workers API
+
+ex. Workers can be used to apply http headers if you use a serverless setup for hosting.
+ex. You can host every static website / react SPA on cloudfare workers
+ex. You can use workers to inject headers into responses without having to change Nginx configs
