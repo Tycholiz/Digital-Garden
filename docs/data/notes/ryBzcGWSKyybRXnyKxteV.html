@@ -1,0 +1,171 @@
+<h1 id="kubernetes-service">Kubernetes Service<a aria-hidden="true" class="anchor-heading icon-link" href="#kubernetes-service"></a></h1>
+<h2 id="what-is-it">What is it?<a aria-hidden="true" class="anchor-heading icon-link" href="#what-is-it"></a></h2>
+<p>A Service is an abstraction which defines a logical set of <a href="/notes/a9WtJDyCZ4NvEaAZ4p3bd">pods</a>, and the policy by which they can be accessed.</p>
+<ul>
+<li>this "set" is determined by a <em>selector</em></li>
+<li>a Service is what allows our consumer pods to not care about which provider pods they are getting data from. In other words, without Services, we'd have to know the IP addresses to connect to. With Services, we (as the consumer pod) get to just say "connect me to any pod within that Service".</li>
+</ul>
+<p>Services enable communication between pods</p>
+<ul>
+<li>Without services, the only communication available by default is between containers within a single pod (via localhost)
+<ul>
+<li>this is because pods by nature are ephemeral. While true that a pod could communicate to another pod by knowing its IP address, once that pod is destroyed and recreated it's given a new IP and thus no longer reachable by the previous means.</li>
+</ul>
+</li>
+</ul>
+<p>Services should not be used to enable external access to an application.</p>
+<p>While <a href="/notes/a9WtJDyCZ4NvEaAZ4p3bd">Pods</a> come and go, Services provide a stable endpoint to access them. </p>
+<ul>
+<li>therefore, we generally never send requests directly to a pod but always through a service.</li>
+<li>The link between services and pods happens through labels. Any pod that has the labels defined in the service’s selector can receive requests sent to that service.</li>
+</ul>
+<p>Services are based on resources.</p>
+<ul>
+<li>ex. we create a service based on Pods through a ReplicaSet. Put another way, a service is created by exposing the ReplicaSet. This is why we specify the resource type when we are running <code>kubectl expose</code></li>
+</ul>
+<p>A service is an abstract way to expose an application (running on a set of Pods) as a network service.</p>
+<ul>
+<li>this decouples work definitions from the pods</li>
+<li>can be thought of as a logical set of pods and a policy by which to access them
+<ul>
+<li>the front end shouldn't care which backend it uses. Services allow us to achieve this decoupling</li>
+</ul>
+</li>
+</ul>
+<p>A service sits in front of the <a href="/notes/a9WtJDyCZ4NvEaAZ4p3bd">pods</a> and takes care of receiving requests and delivering them to all the pods that are behind it.</p>
+<p>Without a service object,</p>
+<ul>
+<li>we'd need to use <code>port-forward</code> to redirect traffic from our local machine to a pod. Otherwise, a user that doesn’t have access to our Kubernetes cluster is not able to access this application</li>
+<li>pods can't communicate with each other, short of hard-coding their IP address (which resets whenever the pod is re-created)</li>
+<li>requests only set sent to a single pod</li>
+</ul>
+<p>A service provides access to pods from inside the cluster (<a href="/notes/clSKUsYY2MnJsItlIXbTa">Kube Proxy</a>) or from outside the cluster (<a href="/notes/7cJuYu1XU2jd1A4C0WS7v">Kube DNS</a>)</p>
+<p>A service tells the rest of the Kubernetes environment (including other pods and replication controllers) what services your application provides. While pods come and go, the service IP addresses and ports remain the same.  Other applications can find your service through Kurbernetes service discovery</p>
+<p>Since pods of a single service can exist on different machines, it makes sense for us to be able to interact with the service itself, so that we can orchestrate activities between all containers that are part of a service(?)</p>
+<p>When a service is created, it inherits all of the labels of the resource type (eg. ReplicaSet) that the service is based on.</p>
+<ul>
+<li>The service is not directly associated with any controller (eg. ReplicaSet), but rather it is associated with the underlying Pods via the matching labels.</li>
+</ul>
+<p>The problem with services is that each application can be reached through a different port, and we cannot expect users to know the port of each service in our cluster.</p>
+<ul>
+<li>it is a bad practice to publish fixed ports through Services, because it is likely to result in conflicts or, at the very least, create the additional burden of carefully keeping track of which port belongs to which Service.</li>
+</ul>
+<h2 id="service-type">Service Type<a aria-hidden="true" class="anchor-heading icon-link" href="#service-type"></a></h2>
+<p><a href="/notes/9YspU1V7eJ9rz91kiTrUN">Service Types</a></p>
+<h2 id="service-discovery">Service discovery<a aria-hidden="true" class="anchor-heading icon-link" href="#service-discovery"></a></h2>
+<p>Given that we have a few applications running in our cluster, each backed by a Kubernetes service providing a stable endpoint that we can use to reach them, we still need a way to actually find these services. That is, if <code>app-a</code> wants to talk to <code>app-b</code> using <code>service-b</code>, how does it know where it should send requests to?</p>
+<p>Services can be accessed by hard-coding the IP address, but preferably, they can be discovered through two principal modes:</p>
+<ul>
+<li>DNS (<a href="/notes/7cJuYu1XU2jd1A4C0WS7v">Kube DNS</a>)
+<ul>
+<li>ex. If you create a service called <code>service-a</code>, Kubernetes will add an entry for this service in its DNS, so any pod will be able to call, for example, <code>http://service-a:4567</code>. That will be correctly resolved to the service’s IP</li>
+<li>DNS is the easier approach</li>
+</ul>
+</li>
+<li>Injected environment variables
+<ul>
+<li>since the env variables are never updated, they aren't as reliable as the DNS approach</li>
+</ul>
+</li>
+</ul>
+<p>Kubernetes converts Service names into DNS's and adds them to the DNS server.</p>
+<ul>
+<li>This is a cluster add-on that is already set up by Minikube.</li>
+</ul>
+<h3 id="services-and-env-variables">Services and Env Variables<a aria-hidden="true" class="anchor-heading icon-link" href="#services-and-env-variables"></a></h3>
+<p>Every Pod gets environment variables for each of the active Services
+</p><p></p><div class="portal-container">
+<div class="portal-head">
+<div class="portal-backlink">
+<div class="portal-title">From <span class="portal-text-title">Kubectl CLI</span></div>
+<a href="/notes/HnABgT2HZRrecgV5YHg8X" class="portal-arrow">Go to text <span class="right-arrow">→</span></a>
+</div>
+</div>
+<div id="portal-parent-anchor" class="portal-parent" markdown="1">
+<div class="portal-parent-fader-top"></div>
+<div class="portal-parent-fader-bottom"></div><p>Start anchor list-env-variables-in-a-pod not found</p>
+</div></div><p></p><p></p>
+<p>Env provide a reference we can use to connect to a Service and, therefore to the related Pods.</p>
+<p>Through the service IP (<code>kubectl describe svc &#x3C;servicename></code>), we can access the service externally. This IP matches the values of the environment variables <code>GO_DEMO_2_DB_*</code> and <code>GO_DEMO_2_DB_SERVICE_HOST</code>.</p>
+<h3 id="service-discovery-breakdown">Service discovery breakdown<a aria-hidden="true" class="anchor-heading icon-link" href="#service-discovery-breakdown"></a></h3>
+<ol>
+<li>When the api container go-demo-2 tries to connect with the go-demo-2-db Service, it looks at the nameserver configured in /etc/resolv.conf.
+<ul>
+<li>kubelet configured the nameserver with the kube-dns Service IP (10.96.0.10) during the Pod scheduling process.</li>
+</ul>
+</li>
+<li>The container queries the DNS server listening to port 53. go-demo-2-db DNS gets resolved to the service IP 10.0.0.19.
+<ul>
+<li>This DNS record was added by kube-dns during the service creation process.</li>
+</ul>
+</li>
+<li>The container uses the service IP which forwards requests through the iptables rules.
+<ul>
+<li>They were added by kube-proxy during Service and Endpoint creation process.</li>
+</ul>
+</li>
+<li>Since we only have one replica of the go-demo-2-db Pod, iptables forwards requests to just one endpoint.
+<ul>
+<li>If we had multiple replicas, iptables would act as a load balancer and forward requests randomly among Endpoints of the Service</li>
+</ul>
+</li>
+</ol>
+<p><img src="/assets/images/2021-06-01-08-40-26.png"></p>
+<hr>
+<h3 id="motivation">Motivation<a aria-hidden="true" class="anchor-heading icon-link" href="#motivation"></a></h3>
+<p>Each Pod gets its own IP address, however in a Deployment, the set of Pods running in one moment in time could be different from the set of Pods running that application a moment later.</p>
+<p>This leads to a problem: if some set of Pods (call them “backends”) provides functionality to other Pods (call them “frontends”) inside your cluster, how do the frontends find out and keep track of which IP address to connect to, so that the frontend can use the backend part of the workload?</p>
+<h3 id="under-the-hood--adding-a-service">Under the hood — Adding a service<a aria-hidden="true" class="anchor-heading icon-link" href="#under-the-hood--adding-a-service"></a></h3>
+<ol>
+<li>In running <code>kubectl expose rs -f rs/go-demo-2.yml</code>, Kubernetes client (kubectl) sent a request to the API server requesting the creation of the Service based on Pods created through the go-demo-2 ReplicaSet.</li>
+<li>Endpoint controller is watching the API server for new service events. It detected that there is a new Service object.</li>
+<li>Endpoint controller created endpoint objects with the same name as the Service, and it used Service selector to identify endpoints (in this case the IP and the port of go-demo-2 Pods).</li>
+<li>kube-proxy is watching for service and endpoint objects. It detected that there is a new Service and a new endpoint object.</li>
+<li>kube-proxy added iptables rules which capture traffic to the Service port and redirect it to endpoints. For each endpoint object, it adds iptables rule which selects a Pod.</li>
+<li>The kube-dns add-on is watching for Service. It detected that there is a new service.</li>
+<li>The kube-dns added db's record to the dns server (skydns).
+<img src="/assets/images/2021-05-31-10-06-52.png">
+<img src="/assets/images/2021-05-31-21-38-25.png"></li>
+</ol>
+<hr>
+<h3 id="selector">Selector<a aria-hidden="true" class="anchor-heading icon-link" href="#selector"></a></h3>
+<p>A service contains selector labels which are used to establish communication with the Pods containing the matching labels. There is no relation between the service and the ReplicaSet; both reference Pods through labels.</p>
+<p>The selector is used by the Service to know which Pods should receive requests. It works in the same way as ReplicaSet selectors. In this case, we defined that the service should forward requests to Pods with labels type set to backend and service set to go-demo. Those two labels are set in the Pods spec of the ReplicaSet.</p>
+<pre class="language-yaml"><code class="language-yaml"><span class="token key atrule">selector</span><span class="token punctuation">:</span>
+  <span class="token key atrule">type</span><span class="token punctuation">:</span> backend
+  <span class="token key atrule">service</span><span class="token punctuation">:</span> go<span class="token punctuation">-</span>demo<span class="token punctuation">-</span><span class="token number">2</span>
+</code></pre>
+<h3 id="request-forwarding">Request forwarding<a aria-hidden="true" class="anchor-heading icon-link" href="#request-forwarding"></a></h3>
+<p>Each Pod has a unique IP. Incoming requests will be forwarded on to Pods in a round-robin style, that is similar to load balancing.</p>
+<h2 id="example">Example<a aria-hidden="true" class="anchor-heading icon-link" href="#example"></a></h2>
+<pre class="language-yml"><code class="language-yml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> Service
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> hellok8s<span class="token punctuation">-</span>svc
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">type</span><span class="token punctuation">:</span> NodePort
+  <span class="token key atrule">selector</span><span class="token punctuation">:</span>
+    <span class="token key atrule">app</span><span class="token punctuation">:</span> hellok8s
+  <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">port</span><span class="token punctuation">:</span> <span class="token number">4567</span>
+    <span class="token key atrule">nodePort</span><span class="token punctuation">:</span> <span class="token number">30001</span>
+</code></pre>
+<p>Of note here, we have:</p>
+<ul>
+<li><code>kind: Service</code></li>
+<li>give it a name with <code>name: kellok8s-svc</code></li>
+<li><code>spec</code> section</li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/9YspU1V7eJ9rz91kiTrUN">Service Types</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/yXKyirBsh45VQgOiWcuC4">Probes</a></li>
+<li><a href="/notes/jfPWYYm0N62ErYEgNJnLh">Endpoint Controller</a></li>
+<li><a href="/notes/ZK0P0va9kOJGsM9X7X2Td">Deployment</a></li>
+<li><a href="/notes/4b0Xz0VUtXbFaFl1Pri9E">Kubernetes Ingress</a></li>
+</ul>

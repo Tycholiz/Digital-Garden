@@ -1,0 +1,18 @@
+<h1 id="lexical-scope">Lexical Scope<a aria-hidden="true" class="anchor-heading icon-link" href="#lexical-scope"></a></h1>
+<p>A variable may belong to one of the following scopes:</p>
+<ul>
+<li>Global scope: The default scope for all code running in script mode.</li>
+<li>Module scope: The scope for code running in module mode.</li>
+<li>Function scope: The scope created with a function.</li>
+<li>Block scope: The scope created with a pair of curly braces (a block).
+<ul>
+<li>only applicable to variables initialized with <code>let</code> or <code>const</code></li>
+</ul>
+</li>
+</ul>
+<p>Lexical scope is scope that is determined by the JS engine before any code has even been executed (ie. it only looks at the source code— known as <a href="https://en.wikipedia.org/wiki/Lexical_analysis">lexing time</a>)</p>
+<ul>
+<li>when you see lexical, think "static"</li>
+<li>lexical scoping is analogous to prototypical inheritance, in a sense that the engine will walk up the chain to find a variable, if one is not found in the local scope.</li>
+</ul>
+<p>blocks within if statements, else statements, while statements, and so on should ideally be one line long. If that is unachievable, then it should be striven for to have all code at a single level of indentation.</p>

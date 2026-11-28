@@ -1,0 +1,24 @@
+<h1 id="elastic-beanstalk">Elastic Beanstalk<a aria-hidden="true" class="anchor-heading icon-link" href="#elastic-beanstalk"></a></h1>
+<p>ElasticBeanstalk is a PaaS that enables you to deploy and scale applications onto Amazon EC2. You retain ownership and full control over the underlying EC2 instances.</p>
+<p>Purpose is to deploy + scale web apps/services built with common web languages (Javascript, PHP etc) onto webservers like Nginx/Apache</p>
+<ul>
+<li>Elastic beanstalk hosts all the services needed for deployment/scaling</li>
+</ul>
+<p>ElasticBeanstalk uses <a href="/notes/NbGOJJpZuEbf0hXs2UvAB">CloudFormation</a> under the hood to manage and provision resources for your application.</p>
+<p>ElasticBeanstalk Handles things like:</p>
+<ul>
+<li>Provisioning EC2 instances and scaling up/down as necessary</li>
+<li>loadbalancing</li>
+<li>updating platform with latest patches</li>
+<li>app health monitoring</li>
+<li>Web server (Nginx)</li>
+</ul>
+<p>Also allows us to reimplement portions of the code as containerized services, allowing us to achieve a more <a href="/notes/vutujFFWxQu6TshWVuMpI">distributed</a> architectural design</p>
+<p>Allows to retain control over the resources powering your application, so you can decide on how much you want to manage.</p>
+<p>To get an app working through ElasticBeanstalk, we essentially...</p>
+<ol>
+<li>upload source code bundle to Elastic Beanstalk console</li>
+<li>Elastic Beanstalk returns a new URL for the webapp</li>
+</ol>
+<hr>
+<p>Alternatives: Azure App Service, Google Cloud App Engine, DigitalOcean App Platform</p>

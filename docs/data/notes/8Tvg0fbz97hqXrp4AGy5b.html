@@ -1,0 +1,17 @@
+<h1 id="cli">CLI<a aria-hidden="true" class="anchor-heading icon-link" href="#cli"></a></h1>
+<p>Open redis-cli shell - <code>redis-cli -h &#x3C;host></code></p>
+<ul>
+<li>Get all keys - <code>keys *</code>
+<ul>
+<li>consider KEYS as a command chiefly for development/debugging purposes. It is not performant. If you're looking for a way to find keys in a subset of your keyspace, consider using SCAN or sets.</li>
+</ul>
+</li>
+<li>Get all key's matching prefix pattern - <code>keys &#x3C;level1>:&#x3C;level2>:*</code> (e.g. <code>keys books:author:*</code>)</li>
+<li>Get key's value - <code>get &#x3C;key></code></li>
+<li>Set new key to hold string value - <code>set &#x3C;key> &#x3C;value></code></li>
+<li>Sets field in the hash stored at key to value - <code>set &#x3C;key> &#x3C;field> &#x3C;value></code></li>
+<li>Get the type of a particular key - <code>type &#x3C;key></code></li>
+<li>Delete key - <code>del &#x3C;key></code></li>
+<li>check how much TTL - <code>ttl &#x3C;key></code></li>
+<li>force expire a key - <code>expire &#x3C;key> 1</code></li>
+</ul>

@@ -1,0 +1,21 @@
+<h1 id="custom">Custom<a aria-hidden="true" class="anchor-heading icon-link" href="#custom"></a></h1>
+<h3 id="processors">Processors<a aria-hidden="true" class="anchor-heading icon-link" href="#processors"></a></h3>
+<p>Any time we want to make a lint rule for a non-<code>.js</code> file, we need to include a processor </p>
+<p>A processor is composed of a preprocessor and a postprocessor.</p>
+<h4 id="preprocessor">Preprocessor<a aria-hidden="true" class="anchor-heading icon-link" href="#preprocessor"></a></h4>
+<p>The preprocess method takes the file contents and filename as arguments, and returns an array of code blocks to lint
+A code block has two properties text and filename; </p>
+<ul>
+<li>the text property is the content of the block</li>
+<li>filename property is the name of the block.
+<pre><code>- Name of the block can be anything, but should include the file extension, that would tell the linter how to process the current block
+</code></pre>
+The linter will consult the <code>--ext</code> extensions list of the linting command as executed on the CLI.</li>
+</ul>
+<h4 id="postprocessor">Postprocessor<a aria-hidden="true" class="anchor-heading icon-link" href="#postprocessor"></a></h4>
+<hr>
+<h1 id="e-resources">E Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#e-resources"></a></h1>
+<p><a href="https://eslint.org/docs/developer-guide/working-with-rules">Eslint docs for custom rules</a>
+<a href="https://eslint.org/docs/developer-guide/working-with-plugins">Eslint docs for custom plugins</a>
+<a href="https://www.webiny.com/blog/create-custom-eslint-rules-in-2-minutes-e3d41cb6a9a0">Create custom eslint rules</a>
+<a href="https://medium.com/@bjrnt/creating-an-eslint-plugin-87f1cb42767f">creating an eslint plugin</a></p>

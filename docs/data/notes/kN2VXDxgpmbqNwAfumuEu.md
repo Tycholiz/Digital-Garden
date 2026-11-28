@@ -1,0 +1,179 @@
+
+nginx.conf building blocks 
+  - worker process    : should be equal to number cores of the server (or auto)
+  - worker connection : 1024 (per thread. nginx doesn't block) 
+
+  - rate limiting     : prevent brute force attacks.
+  - proxy buffers     : (when used as proxy server)limits how much data to store as cache
+                         gzip /brotil or compression
+  - upload file size  : it should match php max upload size and nginx client max body size.
+  - timeouts          : php to nginx communication time.
+  - log rotation      : error log useful to know the errors and monitor resources
+  - fastcgi cache     : very important to boost the performance for static sties.
+  - SSL Configuration : there are default setting available with nginx itself 
+                        (also see ssl performance tuning).
+
+Example nginx.conf: 
+```conf
+user www-data;                                   
+load_module modules/my_favourite_module.so;      
+pid /run/nginx.pid;
+    | Alternative global config for 
+    | [4 cores, 8 threads, 32GB RAM] 
+    | handling  50000request/sec
+    |
+worker_processes auto;                           | worker_processes 8;
+    | worker_priority -15;
+include /etc/nginx/modules-enabled/*.conf;       | 
+worker_rlimit_nofile 100000;                     | worker_rlimit_nofile 400000;                                  
+    | timer_resolution 10000ms;
+    |
+events {                                         | events {
+    worker_connections 1024;                       |     worker_connections 20000;                       
+    multi_accept on;                               |     use epoll;
+}                                                |     multi_accept on;
+| }
+
+http {               ←  global config            
+    index index.php index.html index.htm;          
+    # Basic Settings                               
+
+    sendfile on;                                   
+    tcp_nopush on;
+    tcp_nodelay on;
+    sendfile_max_chunk 512;
+    keepalive_timeout 300;
+    keepalive_requests 100000;
+    types_hash_max_size 2048;
+    server_tokens off;
+
+    server_names_hash_bucket_size 128;
+    # server_name_in_redirect off;
+
+    include /etc/nginx/mime.types;
+    default_type application/octet-stream;
+    ##
+    # SSL Settings
+    ##
+
+    #ssl_protocols TLSv1 TLSv1.1 TLSv1.2; # Dropping SSLv3, ref: POODLE
+    #ssl_prefer_server_ciphers on;
+    #rate limit zone
+
+    limit_req_zone $binary_remote_addr zone=one:10m rate=3r/m;
+    #buffers
+
+    client_body_buffer_size 128k;
+    client_max_body_size 10m;
+    client_header_buffer_size 32k;
+    large_client_header_buffers 16 256k;
+    output_buffers 1 32k;
+    postpone_output 1460;
+    #Porxy buffers
+    proxy_buffer_size 256k;
+    proxy_buffers 8 128k;
+    proxy_busy_buffers_size 256k;
+    proxy_max_temp_file_size 2048m;
+    proxy_temp_file_write_size 2048m;
+
+    ## fast cgi PHP
+    fastcgi_buffers 8 16k;
+    fastcgi_buffer_size 32k;
+    fastcgi_connect_timeout 300;
+    fastcgi_send_timeout 300;
+    fastcgi_read_timeout 300;
+    #static caching css/js/img
+
+    open_file_cache max=10000 inactive=5m;
+    open_file_cache_valid 2m;
+    open_file_cache_min_uses 1;
+    open_file_cache_errors on;
+    #timeouts
+
+    client_header_timeout 3m;
+    client_body_timeout 3m;
+    send_timeout 3m;
+
+    # Logging Settings
+
+    log_format main_ext ‘$remote_addr – $remote_user [$time_local] “$request” ‘
+    ‘$status $body_bytes_sent “$http_referer” ‘
+    ‘”$http_user_agent” “$http_x_forwarded_for” ‘
+    ‘”$host” sn=”$server_name” ‘
+    ‘rt=$request_time ‘
+    ‘ua=”$upstream_addr” us=”$upstream_status” ‘
+    ‘ut=”$upstream_response_time” ul=”$upstream_response_length” ‘
+    ‘cs=$upstream_cache_status’ ;
+
+    #access_log /var/log/nginx/access.log main_ext;
+    error_log /var/log/nginx/error.log warn;   Read more on nginx error log&common errors
+
+    ##
+    # Gzip Settings #brotil
+    ##
+
+    gzip on;
+    gzip_disable “msie6”;
+
+    gzip_vary on;
+    gzip_proxied any;
+    gzip_comp_level 6;
+    gzip_buffers 16 8k;
+    gzip_http_version 1.1;
+    gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript application/x-font-ttf font/opentype image/svg+xml image/x-icon;
+    ##
+    # Virtual Host Configs
+    ##
+
+    include /etc/nginx/conf.d/*.conf;
+    include /etc/nginx/sites-enabled/*;   
+}
+
+server {             ← Domain level 
+    listen 0.0.0.0:443 rcvbuf=64000 sndbuf=120000 backlog=20000 ssl http2;
+    server_name example.com www.example.com;
+    keepalive_timeout         60;
+    ssl                       on;
+    ssl_protocols             TLSv1.2 TLSv1.1 TLSv1;
+    ssl_ciphers               'ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:ECDH+3DES:DH+3DES:RSA+AESGCM:RSA+AES:RSA+3DES:!aNULL:!MD5:!DSS:!RC4';
+    ssl_prefer_server_ciphers on;
+    ssl_session_cache         shared:TLSSL:30m;
+    ssl_session_timeout       10m;
+    ssl_buffer_size           32k;
+    ssl_certificate           /etc/letsencrypt/live/example.com/fullchain.pem;
+    ssl_certificate_key       /etc/letsencrypt/live/example.com/privkey.pem;
+    ssl_dhparam           /etc/ssl/certs/dhparam.pem;
+    more_set_headers          "X-Secure-Connection: true";
+    add_header                Strict-Transport-Security max-age=315360000;
+    root       /var/www;
+
+    location {         ← Directory level 
+        root /var/www;
+        index index.php index.html;
+    }
+
+    location ~ .php$ {  
+    fastcgi_keep_conn on;
+    fastcgi_pass   unix:/run/php5.6-fpm.sock;
+    fastcgi_index  index.php;
+    fastcgi_param  SCRIPT_FILENAME /var/www$fastcgi_script_name;
+    include fastcgi_params;
+    fastcgi_intercept_errors off;
+    fastcgi_buffer_size 32k;
+    fastcgi_buffers 32 32k;
+    fastcgi_connect_timeout 5;
+    }
+
+    location ~* ^.+.(jpg|jpeg|gif|png|svg|ico|css|less|xml|html?|swf|js|ttf)$ { 
+        root /var/www;
+        expires 10y;
+    }
+
+}
+```
+
+- /etc/nginx/conf.d/*: user defined config files
+
+See also:
+https://github.com/trimstray/nginx-admins-handbook
+https://github.com/tldr-devops/nginx-common-configuration

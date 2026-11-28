@@ -1,0 +1,37 @@
+<h1 id="executor">Executor<a aria-hidden="true" class="anchor-heading icon-link" href="#executor"></a></h1>
+<p>An executor is essentially the environment where the job will be executed.</p>
+<p>Each <a href="/notes/rzgkKLxkWy3I7Coj8VSBy">runner</a> will define at least one executor. </p>
+<p>if you need Node.js to run a job, this needs to be installed on the machine where the runner is installed.</p>
+<ul>
+<li>Since everything needed is already available on runtime, the jobs are executed very fast.</li>
+</ul>
+<p>Gitlab allows us to use the following different executors:</p>
+<ul>
+<li>Shell
+<ul>
+<li>run the jobs directly on the machine where the runner has been installed.</li>
+<li>use this when you need a native-run environment (ex. you need to ensure that your software runs on a specific OS or hardware).</li>
+<li>since we are just running in a shell, there will be left-overs from previous jobs. This also means that it's harder to manage dependencies (e.g. if we need node 12 for one job and node 14 for another)</li>
+</ul>
+</li>
+<li>SSH</li>
+<li>VirtualBox</li>
+<li>Parallels</li>
+<li>Docker
+<ul>
+<li>gives us a clean environment for each job. Therefore, this should be the default executor we use.</li>
+<li>however, there is added overhead since we need to pull a Docker image for each job.</li>
+</ul>
+</li>
+<li>Docker Machine</li>
+<li>Kubernetes
+<ul>
+<li>use this if we already have kubernetes set up.</li>
+<li>the GitLab Runner will run the jobs on a Kubernetes cluster. Therefore, each job will have its own pod.</li>
+<li>this executor can help us scale our build infrastructure.</li>
+</ul>
+</li>
+</ul>
+<h1 id="resources">Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#resources"></a></h1>
+<p><a href="https://medium.com/devops-with-valentine/a-brief-guide-to-gitlab-ci-runners-and-executors-a81b9b8bf24e">https://medium.com/devops-with-valentine/a-brief-guide-to-gitlab-ci-runners-and-executors-a81b9b8bf24e</a>
+<a href="https://docs.gitlab.com/runner/executors/">https://docs.gitlab.com/runner/executors/</a></p>

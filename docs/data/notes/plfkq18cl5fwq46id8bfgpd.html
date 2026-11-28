@@ -1,0 +1,47 @@
+<h1 id="olapoltp">OLAP/OLTP<a aria-hidden="true" class="anchor-heading icon-link" href="#olapoltp"></a></h1>
+<p>Databases fall into 2 main categories: those fit for handling business logic, and those fit for handling business analytics.</p>
+<p>OLAP are used for business analysis, and feed into reports that help the management of a company make better decisions (ie. business intelligence)</p>
+<p>OLTP are used to handle business logic in the application.</p>
+<div class="table-responsive">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Property</th><th>Transaction processing systems (OLTP)</th><th>Analytic systems (OLAP)</th></tr></thead><tbody><tr><td>Main read pattern</td><td>Small number of records per query, fetched by key</td><td>Aggregate over large number of records</td></tr><tr><td>Main write pattern</td><td>Random-access, low-latency writes from user input</td><td>Bulk import (ETL) or event stream</td></tr><tr><td>Primarily used by</td><td>End user/customer, via web application</td><td>Internal analyst, for decision support</td></tr><tr><td>What data represents</td><td>Latest state of data (current point in time)</td><td>History of events that happened over time</td></tr><tr><td>Dataset size</td><td>Gigabytes to terabytes</td><td>Terabytes to petabytes</td></tr></tbody></table></div>
+<p>In the past, both OLTP and OLAP operations were done on the same SQL databases, but soon after it was realized that analytics data should be stored in its own database. This is what are known as <a href="/notes/3NfgHUUU25MfpnbtOJfr9">data warehouses</a> today.</p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/jiITIvU42MBAYcbXheWwI">Index</a></li>
+<li><a href="/notes/3OMg1deJDuVeA3uR0oSsY">Materialized View</a></li>
+</ul>

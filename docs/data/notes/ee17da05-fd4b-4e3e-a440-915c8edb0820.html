@@ -1,0 +1,28 @@
+<h1 id="config">Config<a aria-hidden="true" class="anchor-heading icon-link" href="#config"></a></h1>
+<h2 id="viminfo">Viminfo<a aria-hidden="true" class="anchor-heading icon-link" href="#viminfo"></a></h2>
+<pre><code>set viminfo=%,&#x3C;800,'10,/50,:100,h,f0,n~/.vim/cache/.viminfo
+"           | |    |   |   |    | |  + viminfo file path
+"           | |    |   |   |    | + file marks 0-9,A-Z 0=NOT stored
+"           | |    |   |   |    + disable 'hlsearch' loading viminfo
+"           | |    |   |   + command-line history saved
+"           | |    |   + search history saved
+"           | |    + files marks saved
+"           | + lines saved each register (old name for &#x3C;, vi6.2)
+"           + save/restore buffer list
+</code></pre>
+<p><code>set viminfo=xxx</code> should come after <code>set nocompatible</code></p>
+<p>if we set <code>'</code> parameter, then marks and other things set during the buffer editing will persist even after we close vim.</p>
+<h2 id="runtime-path">Runtime path<a aria-hidden="true" class="anchor-heading icon-link" href="#runtime-path"></a></h2>
+<ul>
+<li>vim looks for scripts in various directories. The directories that vim will look in is known as the <code>runtime path</code></li>
+<li>to see it, type <code>:set runtimepath?</code></li>
+</ul>
+<h2 id="runtime-directory">Runtime directory<a aria-hidden="true" class="anchor-heading icon-link" href="#runtime-directory"></a></h2>
+<p>Assuming that you're using some flavor of Unix, your personal runtime directory is ~/.vim. This is where you should put any plugin used only by you.
+You should not install any plugins into the $VIMRUNTIME directory. That directory is intended for plugins distributed with Vim.</p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/gZNNlVJ2LQqkek9rn0hNU">Autocmd</a></li>
+<li><a href="/notes/k6E57wM6MCQU36i5gF9Yb">Mapping</a></li>
+</ol>

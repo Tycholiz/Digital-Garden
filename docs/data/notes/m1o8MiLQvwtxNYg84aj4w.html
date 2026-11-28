@@ -1,0 +1,27 @@
+<h1 id="deployment-artifact">Deployment Artifact<a aria-hidden="true" class="anchor-heading icon-link" href="#deployment-artifact"></a></h1>
+<p>A deployment artifact is synonymous with a <em>build</em>: it is the application code as it runs in production (compiled, built, bundled, minified, and optimized)</p>
+<ul>
+<li>most often it's a single binary, or bunch of files compressed in an archive.
+<ul>
+<li>due to this nature, artifacts can be stored and versioned.</li>
+</ul>
+</li>
+</ul>
+<p>Ultimate goal of an artifact is for it to be downloaded as fast as possible on a server, and run immediately.</p>
+<p>An artifact should be configurable so it can be deployed on any environment. Only the configuration (ie. env variables) changes.</p>
+<ul>
+<li>ie. we need to be able to deploy the same artifact to both staging and production servers.
+<ul>
+<li>if you have to build the artifact 2 times for staging and production, you are doing it wrong.</li>
+</ul>
+</li>
+</ul>
+<p>Typically, an artifact is either stored in an S3 bucket or it is deployed to an external server.</p>
+<p>The artifact-based workflow gives us advantages:</p>
+<ul>
+<li>quick to deploy</li>
+<li>instant to rollback</li>
+<li>backups are readily available</li>
+<li>if a build works on staging, the only reason it wouldn't work on production is because of the configuration (or the environments aren't the same, which shouldn't be the case).</li>
+<li>feature flagging is easier, since we just need to check the env variables.</li>
+</ul>

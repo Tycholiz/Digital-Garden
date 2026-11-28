@@ -1,0 +1,19 @@
+<h1 id="threads">Threads<a aria-hidden="true" class="anchor-heading icon-link" href="#threads"></a></h1>
+<p>There are 2 main threads in a RN app: the main thread  and the javascript thread</p>
+<ul>
+<li>The main thread runs on native platforms and handles displaying the elements of the UI and processes user gestures.</li>
+<li>The JS thread executes JS code in a separate JS engine 
+<ul>
+<li>Therefore, it deals with the business logic of the app</li>
+<li>Also, it defines the structure and functionality of the UI</li>
+</ul>
+</li>
+<li>These 2 threads never communicate directly and never block each other</li>
+<li>Between these 2 threads is the bridge, which has 3 characteristics:
+<ol>
+<li>Asynchronous communication between the threads</li>
+<li>Batched communication between threads</li>
+<li>Serializable, meaning the threads never operate on the same data— instead exchanging serialized messages</li>
+</ol>
+</li>
+</ul>

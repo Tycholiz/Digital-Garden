@@ -1,0 +1,28 @@
+<h1 id="tablespaces">Tablespaces<a aria-hidden="true" class="anchor-heading icon-link" href="#tablespaces"></a></h1>
+<p>Tablespaces are where PostgreSQL stores the database objects. Therefore, it is an abstraction between the physical and logical layers (ie. what the data looks like on disk, and what the data looks like in sql-format.)</p>
+<ul>
+<li>Tablespaces allow you to move your data to different physical locations across drivers easily by using simple commands.
+<ul>
+<li>ex. 2 different objects in one schema might have 2 different underlying tablespaces.</li>
+</ul>
+</li>
+<li>By default, PostgreSQL provides you with two tablespaces:
+<ol>
+<li>The <code>pg_default</code> is for storing user data.</li>
+<li>The <code>pg_global</code> is for storing system data.</li>
+</ol>
+</li>
+<li>A common use of tablespaces is for performance
+<ul>
+<li>ex. an index that is used often can be tablespaced on a faster SSD. </li>
+<li>ex. a table with cold data that is rarely accessed can be tablespaced on a slower magnetic HDD.</li>
+</ul>
+</li>
+<li>At the file layer (of data storage), a single file can only correspond to a single tablespace.</li>
+<li>Using tablespaces, we can provision different locations for our data, based on the idea of classifying data as hot, warm or cold (determined by frequency that data will be needed)
+<ul>
+<li>This would involve us having a different tablespace in each storage group (ie. a different path to the physical localtion). This means that moving data from hot to warm involves changing the tablespace that data is associated with.</li>
+</ul>
+</li>
+</ul>
+<p><a href="https://techchannel.com/SMB/9/2012/storage-groups-hot-warm-cold#:~:text=The%20classifications%20are%20often%20referred,stored%20on%20even%20slower%20storage">https://techchannel.com/SMB/9/2012/storage-groups-hot-warm-cold#:~:text=The%20classifications%20are%20often%20referred,stored%20on%20even%20slower%20storage</a>.</p>

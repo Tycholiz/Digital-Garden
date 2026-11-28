@@ -1,0 +1,83 @@
+<h1 id="cache">Cache<a aria-hidden="true" class="anchor-heading icon-link" href="#cache"></a></h1>
+<p><a href="/notes/00Zg2MBUOK3gzRljklTOp">Jobs</a> can be configured to cache directories/files, which can be used by subsequent jobs and even subsequent pipelines.</p>
+<ul>
+<li>Subsequent jobs in the same pipeline can use the cache, if the dependencies are identical.</li>
+</ul>
+<p>Use cache for dependencies, like packages you download from the internet. Cache is stored where GitLab Runner is installed </p>
+<ul>
+<li>it is also uploaded to <a href="/notes/2Rtof8yGX9K2Tq6tLljBb">S3</a> if distributed cache is enabled.</li>
+</ul>
+<p>Caching happens after <code>after_script</code> has run.</p>
+<p>In the following pipeline, these things happen in order:</p>
+<ul>
+<li>the build-cache is checked for the <code>vendor</code> directory (perhaps jobA cached it)
+<ul>
+<li>If nothing is found, we move onto the next step and output "Hello world" to the console. Once all steps are done (ex. all before_script, script and after_script steps), the <code>vendor/</code> directory is zipped into cache.zip</li>
+<li>If the <code>build-cache</code> directory is found in the cache.zip, then the cache is extracted, and we move on to the subsequent steps.</li>
+</ul>
+</li>
+</ul>
+<p>This above flow shows how the cache is extracted at the start if it contains the key, and it is filled at the end if the data hasn't been cached yet.</p>
+<pre class="language-yml"><code class="language-yml"><span class="token key atrule">jobB</span><span class="token punctuation">:</span>
+  <span class="token key atrule">cache</span><span class="token punctuation">:</span>
+    <span class="token key atrule">key</span><span class="token punctuation">:</span> build<span class="token punctuation">-</span>cache
+    <span class="token key atrule">paths</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> vendor/
+  <span class="token key atrule">after_script</span><span class="token punctuation">:</span> 
+    <span class="token punctuation">-</span> <span class="token string">"echo Hello world"</span>
+</code></pre>
+<p>Jobs that have caches with the same key will share the cache.</p>
+<p>Tag your runners and use the tag on jobs that share the cache.</p>
+<p>All caches defined for a job are archived in a single cache.zip
+The runner configuration defines where the file is stored.</p>
+<ul>
+<li>By default, the cache is stored on the machine where GitLab Runner is installed.
+<ul>
+<li><a href="https://docs.gitlab.com/ee/ci/caching/#where-the-caches-are-stored">exact paths</a></li>
+</ul>
+</li>
+</ul>
+<p>For runners to work with caches efficiently, you must do one of the following:</p>
+<ul>
+<li>Use a single runner for all your jobs.</li>
+<li>Use multiple runners that have distributed caching, where the cache is stored in S3 buckets. Shared runners on GitLab.com behave this way. These runners can be in autoscale mode, but they don’t have to be.</li>
+<li>Use multiple runners with the same architecture and have these runners share a common network-mounted directory to store the cache. This directory should use NFS or something similar. These runners must be in autoscale mode.</li>
+</ul>
+<p>You can have a maximum of four caches:</p>
+<pre class="language-yml"><code class="language-yml"><span class="token key atrule">test-job</span><span class="token punctuation">:</span>
+  <span class="token key atrule">stage</span><span class="token punctuation">:</span> build
+  <span class="token key atrule">cache</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> <span class="token key atrule">key</span><span class="token punctuation">:</span>
+        <span class="token key atrule">files</span><span class="token punctuation">:</span>
+          <span class="token punctuation">-</span> Gemfile.lock
+      <span class="token key atrule">paths</span><span class="token punctuation">:</span>
+        <span class="token punctuation">-</span> vendor/ruby
+    <span class="token punctuation">-</span> <span class="token key atrule">key</span><span class="token punctuation">:</span>
+        <span class="token key atrule">files</span><span class="token punctuation">:</span>
+          <span class="token punctuation">-</span> yarn.lock
+      <span class="token key atrule">paths</span><span class="token punctuation">:</span>
+        <span class="token punctuation">-</span> .yarn<span class="token punctuation">-</span>cache/
+  <span class="token key atrule">script</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> bundle install <span class="token punctuation">-</span><span class="token punctuation">-</span>path=vendor
+    <span class="token punctuation">-</span> yarn install <span class="token punctuation">-</span><span class="token punctuation">-</span>cache<span class="token punctuation">-</span>folder .yarn<span class="token punctuation">-</span>cache
+    <span class="token punctuation">-</span> echo Run tests<span class="token punctuation">...</span>
+</code></pre>
+<p>To have jobs in each branch use the same cache, define a cache with the key: $CI_COMMIT_REF_SLUG:</p>
+<ul>
+<li>note: this pattern can be followed to define any business-logic surrounding which objects should share a cache.
+<ul>
+<li>per-job and per-branch caching: <code>"$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"</code></li>
+<li>per-stage and per-branch caching: <code>"$CI_JOB_STAGE-$CI_COMMIT_REF_SLUG"</code></li>
+</ul>
+</li>
+</ul>
+<pre class="language-yml"><code class="language-yml"><span class="token key atrule">cache</span><span class="token punctuation">:</span>
+  <span class="token key atrule">key</span><span class="token punctuation">:</span> $CI_COMMIT_REF_SLUG
+</code></pre>
+<h1 id="resources">Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#resources"></a></h1>
+<p><a href="https://docs.gitlab.com/ee/ci/caching/#cache-nodejs-dependencies">Special consideration to caching Node.js dependencies</a></p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/jqIxYA4fpGL6wIKJNkovK">Artifact</a></li>
+</ul>

@@ -1,0 +1,88 @@
+<h1 id="observable">Observable<a aria-hidden="true" class="anchor-heading icon-link" href="#observable"></a></h1>
+<ul>
+<li>An observable is a function that returns a stream</li>
+<li><code>$</code> is used to indicate that the variable in question is observable</li>
+<li>an observer is an object with <code>next</code>, <code>error</code> and <code>complete</code> methods</li>
+<li>Observables are inert (they just sit there until they are <em>subscribed</em> to), while observers stay active and listen for events from the producers</li>
+</ul>
+<p><strong>epic</strong> - a collection of observables</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword module">export</span> <span class="token keyword module">default</span> <span class="token keyword">function</span> <span class="token function">fetchTeams</span><span class="token punctuation">(</span><span class="token parameter">action$</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// epic</span>
+  <span class="token keyword control-flow">return</span> action$<span class="token punctuation">.</span><span class="token method function property-access">pipe</span><span class="token punctuation">(</span>
+    <span class="token function">ofType</span><span class="token punctuation">(</span><span class="token string">'FLASHCARDS_TEAMS_GET'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">switchMap</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span>
+      <span class="token function">queryGraphQL</span><span class="token punctuation">(</span><span class="token string">'flashcards__teams'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">map</span><span class="token punctuation">(</span><span class="token parameter">resp</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span> operator
+      <span class="token keyword">const</span> flattenedData <span class="token operator">=</span> <span class="token function">flattenGraphqlNode</span><span class="token punctuation">(</span>resp<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token property-access">data</span><span class="token punctuation">.</span><span class="token property-access">teams</span><span class="token punctuation">;</span>
+      <span class="token keyword control-flow">return</span> <span class="token function">getTeamsSuccess</span><span class="token punctuation">(</span>flattenedData<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">catchError</span><span class="token punctuation">(</span><span class="token parameter">err</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+      <span class="token function">getError</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="using-observables">Using observables<a aria-hidden="true" class="anchor-heading icon-link" href="#using-observables"></a></h2>
+<ul>
+<li>An <code>observable</code> is a function that takes in an <code>observer</code> (an object with <code>next</code>, <code>error</code>, and <code>complete</code>) and returns cancellation logic (i.e. unsubscribe).</li>
+<li><code>.next()</code> is called when the observable produces values</li>
+<li>When an observer subscribes to an observable, the observer will keep receiving values until one of 2 things happens:
+<ul>
+<li>there are no more values to be sent (in which case <code>.complete()</code> is called)</li>
+<li>the observer calls <code>.unsubscribe()</code> on the observer</li>
+</ul>
+</li>
+<li>fromEvent will turn an event into an observable
+<ul>
+<li><code>fromEvent(&#x3C;event to be listened to>, &#x3C;eventName>)</code></li>
+</ul>
+</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> input$ <span class="token operator">=</span> <span class="token maybe-class-name">Rx</span><span class="token punctuation">.</span><span class="token property-access"><span class="token maybe-class-name">Observable</span></span><span class="token punctuation">.</span><span class="token method function property-access">fromEvent</span><span class="token punctuation">(</span>node<span class="token punctuation">,</span> <span class="token string">'input'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token method function property-access">map</span><span class="token punctuation">(</span><span class="token parameter">event</span> <span class="token arrow operator">=></span> event<span class="token punctuation">.</span><span class="token property-access">target</span><span class="token punctuation">.</span><span class="token property-access">value</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token method function property-access">filter</span><span class="token punctuation">(</span><span class="token parameter">value</span> <span class="token arrow operator">=></span> value<span class="token punctuation">.</span><span class="token property-access">length</span> <span class="token operator">>=</span> <span class="token number">2</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token method function property-access">subscribe</span><span class="token punctuation">(</span><span class="token parameter">value</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+    <span class="token comment">// use the `value`</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Here are the steps of this sequence:</p>
+<ol>
+<li>Let’s assume the user types the letter "a" into our input (node is a variable that has query selected the html input element)</li>
+<li>The Observable then reacts to this event, passing the value to the next observer</li>
+<li>The value “a” is passed to <code>.map()</code>, which is subscribing to our initial observable</li>
+<li><code>.map()</code> returns a new Observable of event.target.value and calls <code>.next()</code> on it’s observer</li>
+<li>The <code>.next()</code> call will invoke <code>.filter()</code>, which is subscribing to <code>.map()</code>, with the resulting value of the .map() call</li>
+<li>.filter() will then return another Observable with the filtered results, calling <code>.next()</code> with the value if the length is 2 or above</li>
+<li>We get the final value through our <code>.subscribe()</code> block</li>
+</ol>
+<p>Each time a new Observable is returned, a new observer is hooked up to the previous Observable (allowing us to pass values along a stream of observers, which do something we've asked, then call <code>.next()</code>, then pass the result to the next observer.</p>
+<ul>
+<li>Basically, an operator returns a new Observable each time, allowing the stream to continue</li>
+</ul>
+<h2 id="higher-order-observables">Higher-order Observables<a aria-hidden="true" class="anchor-heading icon-link" href="#higher-order-observables"></a></h2>
+<ul>
+<li><a href="/notes/h1af8tson44dl8ke4vgz34s#higher-order-observables1">api</a></li>
+</ul>
+<p>Observables normally emit scalar values, but sometimes we must handle Observables of Observables (so-called higher-order observables)</p>
+<ul>
+<li>We work with these by flattening, which means to convert it from a higher-order observable into a regular observable.</li>
+</ul>
+<p>Higher-order observables have their own set of operators that can be used on them.</p>
+<p>Since higher-order observables have an outer observable and 1+ inner observables, it is helpful to think of them in that way.</p>
+<p>An output (e.g. from <code>tap(console.log)</code>) of <code>{_isScalar: false, _subscribe: ƒ}</code> would imply we are trying to work with a higher order observable as if it were a plain observable.</p>
+<ul>
+<li>this is similar to how when we forget to <code>await</code> a promise, we get <code>Promise&#x3C;pending></code>.</li>
+</ul>
+<h3 id="example-search-box">Example: Search box<a aria-hidden="true" class="anchor-heading icon-link" href="#example-search-box"></a></h3>
+<p>Imagine we have a search box, where each time the text changes, a request is sent to the server.</p>
+<ul>
+<li>the text changes are an observable (outer)</li>
+<li>each response is an observable (inner)</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/nqv4bkm2rp1nljndftgqxdx">Controllers</a></li>
+<li><a href="/notes/saert7xobzak9v2h5jt72b3">Interceptor</a></li>
+</ul>

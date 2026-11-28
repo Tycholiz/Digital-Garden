@@ -1,0 +1,43 @@
+<h1 id="graphile-migrate">Graphile Migrate<a aria-hidden="true" class="anchor-heading icon-link" href="#graphile-migrate"></a></h1>
+<h2 id="tracking-changes">Tracking Changes<a aria-hidden="true" class="anchor-heading icon-link" href="#tracking-changes"></a></h2>
+<ul>
+<li>GM has an .gmrc file, which allows us to define hooks. We can therefore define a hook that will run <code>pg_dump</code> on the shadow db after every migration. If we track this file in git, then we can see a clear history of what each migration has done.</li>
+</ul>
+<h2 id="development">Development<a aria-hidden="true" class="anchor-heading icon-link" href="#development"></a></h2>
+<ul>
+<li>In Development, aside from the main database, there is a shadow db which is used internally by graphile-migrate and is mainly for testing consistency of the migrations, among other minor tasks</li>
+<li>the shadow database gets reset frequently</li>
+<li><code>commit</code>, <code>uncommit</code>, <code>watch</code> and <code>reset</code> are development-only commands.</li>
+</ul>
+<h2 id="flow">Flow<a aria-hidden="true" class="anchor-heading icon-link" href="#flow"></a></h2>
+<ol>
+<li>We write our new idempotent migration in <code>current.sql</code>
+<ul>
+<li>any seed data we have can be placed at the bottom, to be removed prior to committing.</li>
+</ul>
+</li>
+<li>when ready, we run <code>commit</code>
+<ul>
+<li>this should only be done immediately before the branch is merged into master (see README###Collaboration). This it to ensure commits are linear.</li>
+<li>all sql in <code>current.sql</code> is removed and catalogued into <code>committed/</code></li>
+<li>the shadow database is dropped, and recreated by running all migrations. This is to ensure that the migration works without a hitch.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="pitfalls">Pitfalls<a aria-hidden="true" class="anchor-heading icon-link" href="#pitfalls"></a></h3>
+<ul>
+<li>when dropping tables, schemas, and functions, we should use CASCADE</li>
+<li>use idempotent commands whenever possible.
+<ul>
+<li>ex. DROP ____ IF EXISTS</li>
+<li>ex. CREATE OR REPLACE FUNCTION</li>
+<li>The initial migrations don't need to be idempotent if this migration starts off by dropping all schemas (which implicitly drops all tables attached to those schemas)</li>
+</ul>
+</li>
+</ul>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/ZK0P0va9kOJGsM9X7X2Td">Deployment</a></li>
+</ul>

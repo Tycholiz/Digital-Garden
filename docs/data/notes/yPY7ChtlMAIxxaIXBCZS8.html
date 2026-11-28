@@ -1,0 +1,21 @@
+<h1 id="cook">Cook<a aria-hidden="true" class="anchor-heading icon-link" href="#cook"></a></h1>
+<h4 id="attach-particle-to-another-gameobjects-action-eg-projectile-gameobject">Attach particle to another GameObject's action (e.g. Projectile GameObject)<a aria-hidden="true" class="anchor-heading icon-link" href="#attach-particle-to-another-gameobjects-action-eg-projectile-gameobject"></a></h4>
+<ol>
+<li>set the particle GameObject to be a child GameObject of the Projectile</li>
+<li>get the particle from within the Projectile's script: 
+<ul>
+<li><code>public ParticleSystem explosionParticle;</code></li>
+</ul>
+</li>
+<li>call <code>Play()</code> on the object: <code>explosionParticle.Play();</code> from within the condition that would trigger it. (e.g. on collision of projectile)</li>
+<li>attach the particle GameObject to the Projectile for the <code>Explosion Particle</code> param.</li>
+</ol>
+<pre class="language-cs"><code class="language-cs"><span class="token comment">// ...</span>
+<span class="token keyword">public</span> <span class="token class-name">ParticleSystem</span> explosionParticle<span class="token punctuation">;</span>
+<span class="token comment">// ...</span>
+<span class="token keyword">private</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">OnCollisionEnter</span><span class="token punctuation">(</span><span class="token class-name">Collision</span> collision<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>collision<span class="token punctuation">.</span>gameObject<span class="token punctuation">.</span><span class="token function">CompareTag</span><span class="token punctuation">(</span><span class="token string">"Ground"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        explosionParticle<span class="token punctuation">.</span><span class="token function">Play</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>

@@ -1,0 +1,15 @@
+<h1 id="sort">Sort<a aria-hidden="true" class="anchor-heading icon-link" href="#sort"></a></h1>
+<p>Remember, sort modifies the original array. If you need to sort a <code>readonly</code> array, you must first copy it</p>
+<p>The ES6 <code>sorted</code> method takes in a <code>comparator</code> callback.</p>
+<h3 id="comparator-callback">Comparator callback<a aria-hidden="true" class="anchor-heading icon-link" href="#comparator-callback"></a></h3>
+<p>each array element is sorted according to the return value of the callback.</p>
+<ul>
+<li><code>undefined</code> values are just popped onto the end</li>
+</ul>
+<p>If we omit the comparator callback, then the sort order is ascending/alphabetical (ie. as a string). Therefore, an array of numbers becomes an array of strings, then the strings are compared alphabetically, making <code>[1, 10, 100, 3, 5, 7, 9]</code> perfectly sorted.</p>
+<p>If possible, prefer to use Lodash's <code>sortBy</code>, as it provides more sensible defaults</p>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/uac0yitTONoroA12Cfxu1">Cook</a></li>
+</ol>

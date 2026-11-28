@@ -1,0 +1,18 @@
+<h1 id="interval">Interval<a aria-hidden="true" class="anchor-heading icon-link" href="#interval"></a></h1>
+<p>Allows us to store and manipulate a period of time.</p>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">interval</span> <span class="token string">'2 months ago'</span><span class="token punctuation">;</span>
+<span class="token keyword">interval</span> <span class="token string">'3 hours 20 minutes'</span><span class="token punctuation">;</span>
+<span class="token keyword">interval</span> <span class="token string">'2 month - 1 day'</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Internally, PostgreSQL stores interval values as months, days, and seconds. The months and days values are integers while the seconds can field can have fractions.</p>
+<p>The interval values are very useful when doing date or time arithmetic. For example, if you want to know the time of 3 hours 2 minutes ago at the current time of last year, you can use the following statement:</p>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">SELECT</span>
+	<span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+	<span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token keyword">INTERVAL</span> <span class="token string">'1 year 3 hours 20 minutes'</span>
+             <span class="token keyword">AS</span> <span class="token string">"3 hours 20 minutes ago of last year"</span><span class="token punctuation">;</span>
+</code></pre>
+<h3 id="proper-types-for-selected-columns">Proper types for selected columns<a aria-hidden="true" class="anchor-heading icon-link" href="#proper-types-for-selected-columns"></a></h3>
+<pre class="language-sql"><code class="language-sql"><span class="token keyword">select</span> album<span class="token punctuation">.</span>title <span class="token keyword">as</span> album<span class="token punctuation">,</span>
+	<span class="token function">sum</span><span class="token punctuation">(</span>milliseconds<span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token keyword">interval</span> <span class="token string">'1 ms'</span> <span class="token keyword">as</span> duration
+	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+</code></pre>

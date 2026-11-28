@@ -1,0 +1,44 @@
+<h1 id="strings">Strings<a aria-hidden="true" class="anchor-heading icon-link" href="#strings"></a></h1>
+<ul>
+<li>Single quotes <code>''</code> - preserves the literal value of each character within the quotes (don't allow anything to be interpolated inside). Take it exactly as it appears.
+<ul>
+<li>ex. if <code>$MYVARIABLE</code> is within the <code>''</code>, the string <code>$MYVARIABLE</code> will be interpreted.</li>
+</ul>
+</li>
+<li>Double quotes <code>""</code> - evalutate the functions within, interpolating into the string
+<ul>
+<li>ex. if <code>$MYVARIABLE</code> is within the <code>""</code>, the value that <code>$MYVARIABLE</code> stands for will be interpreted.</li>
+</ul>
+</li>
+</ul>
+<p>nm: double quotes are bigger, so they have more capabilities (the ability to interpret and expand variables)</p>
+<pre class="language-sh"><code class="language-sh"># NO STRING INTERPOLATION
+$ echo '$(echo "upg")'
+# $(echo "upg")
+
+# js equivalent:
+# console.log("$(echo "upg")")
+
+# STRING INTERPOLATION
+$ echo "$(echo "upg")"
+# upg
+
+# js equivalent
+# `${}`
+</code></pre>
+<ul>
+<li>The implication of this is that when we use double quotes, since the inerpolated functions are called when defined, the variable that gets set to the string will only be executed once.</li>
+<li>ex:</li>
+</ul>
+<pre class="language-sh"><code class="language-sh">PROMPT="$(git_status) $"
+# defining this variable will cause git_status to run, interpolating the return
+# value of that function. The only way to update this variable, is by sourcing .zshrc
+
+PROMPT='$(git_status) $'
+# here, we literally pass the string '$(git status)' to the shell (?),
+# and let it interpolate (?) on its own, each time it is displayed in the terminal
+</code></pre>
+<h2 id="globbing">Globbing<a aria-hidden="true" class="anchor-heading icon-link" href="#globbing"></a></h2>
+<ul>
+<li>quotes used in a globbing context do not behave as described above. Globs are not expanded when in either single or double quotes</li>
+</ul>

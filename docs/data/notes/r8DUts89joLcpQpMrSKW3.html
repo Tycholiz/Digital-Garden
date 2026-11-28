@@ -1,0 +1,13 @@
+<h1 id="any">Any<a aria-hidden="true" class="anchor-heading icon-link" href="#any"></a></h1>
+<p><code>any</code> compares a scalar value (ie. a base type, like <code>text</code> or <code>number</code>) to a set of values returned by a subquery.</p>
+<p>The form is:</p>
+<pre class="language-sql"><code class="language-sql">expression operator <span class="token keyword">ANY</span><span class="token punctuation">(</span>subquery<span class="token punctuation">)</span>
+</code></pre>
+<p>In this syntax:</p>
+<ul>
+<li>The subquery must return exactly one column.</li>
+<li>The <code>ANY</code> operator must be preceded by one of the following comparison operator =, &#x3C;=, >, &#x3C;, > and &#x3C;></li>
+<li>The <code>ANY</code> operator returns true if any value of the subquery meets the condition, otherwise, it returns false.</li>
+</ul>
+<p>Note: <code>SOME</code> is a synonym for <code>ANY</code>, meaning that you can substitute <code>SOME</code> for <code>ANY</code> in any SQL statement.
+Note: The <code>= ANY</code> is equivalent to IN operator.</p>

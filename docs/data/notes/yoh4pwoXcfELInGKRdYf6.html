@@ -1,0 +1,77 @@
+<h1 id="rxjs">Rxjs<a aria-hidden="true" class="anchor-heading icon-link" href="#rxjs"></a></h1>
+<h1 id="overview">Overview<a aria-hidden="true" class="anchor-heading icon-link" href="#overview"></a></h1>
+<p>The essential concepts in RxJS which solve async event management are:</p>
+<ul>
+<li>Observable: represents the idea of an invokable collection of future values or events.</li>
+<li>Observer</li>
+<li>Subscription: represents the execution of an Observable, is primarily useful for cancelling the execution.</li>
+<li>Operators: are pure functions that enable a functional programming style of dealing with collections with operations like map, filter, concat, flatMap, etc.</li>
+<li>Subject: is the equivalent to an EventEmitter, and the only way of multicasting a value or event to multiple Observers.</li>
+<li>Schedulers: are centralized dispatchers to control concurrency, allowing us to coordinate when computation happens on e.g. setTimeout or requestAnimationFrame or others.</li>
+</ul>
+<p>RxJS introduces Observables, a new Push system for JavaScript. An Observable is a Producer of multiple values, "pushing" them to Observers (Consumers).</p>
+<ul>
+<li>A Function is a lazily evaluated computation that synchronously returns a single value on invocation.</li>
+<li>A <a href="/notes/GwpfAU7h2KfT3Ld9v8c2B">generator</a> is a lazily evaluated computation that synchronously returns zero to (potentially) infinite values on iteration.</li>
+<li>A <a href="/notes/FVbSefFiCJPpdtkRRsogA">Promise</a> is a computation that may (or may not) eventually return a single value.</li>
+<li>An <a href="/notes/i0cxm46r54o0242vn13g38n">Observable</a> is a lazily evaluated computation that can synchronously or asynchronously return zero to (potentially) infinite values from the time it's invoked onwards.</li>
+</ul>
+<p><em>"Think of RxJS as Lodash for events."</em></p>
+<p>Because RxJS centers around this concept of function purity. Normally, we create impure functions which leave our state exposed, making it more prone to errors from other pieces of code.</p>
+<ul>
+<li>ex. if we have a variable <code>count</code> and increment it each time a button is clicked, there is nothing stopping some other piece of code mutating that value itself.
+<ul>
+<li>alternatively, with observables, we can just create an observable out of the event (<code>fromEvent</code>)</li>
+</ul>
+</li>
+</ul>
+<p>Marble diagram:
+<img src="/assets/images/2022-06-02-10-41-07.png"></p>
+<h3 id="observers">Observers<a aria-hidden="true" class="anchor-heading icon-link" href="#observers"></a></h3>
+<p>An observer is a collection of 3 callbacks that knows how to listen to values (ie. types of notification) delivered by the Observable.</p>
+<ul>
+<li>those types of notification are: 
+<ol>
+<li>the observer got the next value</li>
+<li>the observer got the last value</li>
+<li>the observer got an error</li>
+</ol>
+</li>
+</ul>
+<p>An observer may be <em>partial</em></p>
+<hr>
+<h3 id="example-event-listeners">Example: event listeners<a aria-hidden="true" class="anchor-heading icon-link" href="#example-event-listeners"></a></h3>
+<p>Normally we register event listeners by finding an HTML element and calling <code>addEventListener</code> on it. With RxJS, we can create an observable that represents a stream of events.</p>
+<ul>
+<li>ex. we can attach an observable to a <code>&#x3C;button /></code> element. We can then configure observers to <code>subscribe</code> to this observable, and will be notified any time the button is clicked:</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token keyword">var</span> button <span class="token operator">=</span> <span class="token dom variable">document</span><span class="token punctuation">.</span><span class="token method function property-access">querySelector</span><span class="token punctuation">(</span><span class="token string">'button'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token maybe-class-name">Rx</span><span class="token punctuation">.</span><span class="token property-access"><span class="token maybe-class-name">Observable</span></span><span class="token punctuation">.</span><span class="token method function property-access">fromEvent</span><span class="token punctuation">(</span>button<span class="token punctuation">,</span> <span class="token string">'click'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token method function property-access">subscribe</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span><span class="token string">'Clicked!'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h1 id="questions">Questions<a aria-hidden="true" class="anchor-heading icon-link" href="#questions"></a></h1>
+<ul>
+<li>what is meant by inner/outer observable
+<ul>
+<li><a href="https://academind.com/learn/javascript/callbacks-vs-promises-vs-rxjs-vs-async-awaits/">source</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="resources">Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#resources"></a></h1>
+<ul>
+<li><a href="http://reactivex.io/documentation/operators.html">Operators</a></li>
+<li><a href="https://rangle.io/blog/thinking-in-nested-streams-with-rxjs/">thinking in nested streams</a></li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/0rXfs38KlbsR9QX8z1fEh">Objects</a></li>
+<li><a href="/notes/fc9b08ppx50dc55dj8wixsc">Operators</a></li>
+<li><a href="/notes/yq2xgdq08wx1pmuy0s8vb8i">React</a></li>
+</ol>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/D8Z3rjXkSj2EOymXQXF4Z">Data</a></li>
+<li><a href="/notes/i0cxm46r54o0242vn13g38n">Observable</a></li>
+</ul>

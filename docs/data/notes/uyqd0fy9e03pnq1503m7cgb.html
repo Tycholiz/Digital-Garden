@@ -1,0 +1,136 @@
+<h1 id="modules">Modules<a aria-hidden="true" class="anchor-heading icon-link" href="#modules"></a></h1>
+<h2 id="module-resolution">Module resolution<a aria-hidden="true" class="anchor-heading icon-link" href="#module-resolution"></a></h2>
+<p>Typescript can be configured to resolve modules in 2 ways: classic or node.</p>
+<h3 id="node-resolution">Node resolution<a aria-hidden="true" class="anchor-heading icon-link" href="#node-resolution"></a></h3>
+<p>With the node-style of resolution, <a href="/notes/JzrVTFaVNPlOrsX4IRE6D#how-node-resolves-modules1">Node's module resolution process</a> is mimicked. Typescript will overlay the ts source-file extensions (ie. <code>.ts</code>, <code>.tsx</code>, <code>.d.ts</code>) over Node's resolution logic.</p>
+<ul>
+<li>TypeScript will also use a field in <code>package.json</code> named types to mirror the purpose of "main" - the compiler will use it to find the “main” definition file to consult.</li>
+</ul>
+<p>When we <code>import myFunction from 'moduleB'</code>, the <code>moduleB</code> module will be searched for in a <code>node_modules</code> directory at the current level. It will search:</p>
+<ol>
+<li><code>/root/src/node_modules/moduleB.ts</code></li>
+<li><code>/root/src/node_modules/moduleB.tsx</code></li>
+<li><code>/root/src/node_modules/moduleB.d.ts</code></li>
+<li><code>/root/src/node_modules/moduleB/package.json</code> (if the package.json specifies a <em>types</em> property)</li>
+<li><code>/root/src/node_modules/@types/moduleB.d.ts</code></li>
+<li><code>/root/src/node_modules/moduleB/index.ts</code></li>
+<li><code>/root/src/node_modules/moduleB/index.tsx</code></li>
+<li><code>/root/src/node_modules/moduleB/index.d.ts</code></li>
+</ol>
+<p>If not found, it will go up one level and repeat the process until the module is found or there are none left to check. </p>
+<h3 id="debugging-module-resolution">Debugging module resolution<a aria-hidden="true" class="anchor-heading icon-link" href="#debugging-module-resolution"></a></h3>
+<p>We can debug the module resolution process by compiling with the <code>traceResolution</code> flag:</p>
+<ul>
+<li><code>tsc --traceResolution</code>
+<ul>
+<li>tip: pipe the output into grep: <code>tsc --traceResolution | grep module-that-wont-resolve</code></li>
+</ul>
+</li>
+</ul>
+<p>Keep an eye out for:</p>
+<ul>
+<li>Name and location of the import
+<ul>
+<li><code>======== Resolving module ‘typescript' from ‘src/app.ts'. ========</code></li>
+</ul>
+</li>
+<li>The strategy the compiler is following
+<ul>
+<li><code>Module resolution kind is not specified, using ‘NodeJs'.</code></li>
+</ul>
+</li>
+<li>Loading of types from npm packages
+<ul>
+<li><code>'package.json' has 'types' field './lib/typescript.d.ts' that references 'node_modules/typescript/lib/typescript.d.ts'.</code></li>
+</ul>
+</li>
+<li>Final result
+<ul>
+<li><code>======== Module name ‘typescript' was successfully resolved to ‘node_modules/typescript/lib/typescript.d.ts'. ========</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="module-resolution-flags-tsconfig-settings">Module resolution flags (tsconfig settings)<a aria-hidden="true" class="anchor-heading icon-link" href="#module-resolution-flags-tsconfig-settings"></a></h3>
+<p>Sometimes the layout of the source files does not match the layout of the output. That is, the directory structure (which includes the names of files and where they are located) may differ before and after we compile the Typescript.</p>
+<ul>
+<li>for this reason, the Typescript compiler has a set of additional flags to inform the compiler of transformations that are expected to happen to the sources to generate the final output. That is, these fields will help guide the process of resolving a module import to its definition file.</li>
+</ul>
+<h4 id="baseurl"><code>baseUrl</code><a aria-hidden="true" class="anchor-heading icon-link" href="#baseurl"></a></h4>
+<p>Lets you set a base directory to resolve non-absolute module names. All module imports with non-relative names are assumed to be relative to the baseUrl.</p>
+<ul>
+<li>This negates our need to import with <code>./</code> and <code>../</code>, and instead we can just start from the baseUrl that we specify</li>
+</ul>
+<p>If we set <code>baseUrl: ./</code>, then with the following directory structure...</p>
+<pre><code>baseUrl
+├── ex.ts
+├── hello
+│   └── world.ts
+└── tsconfig.json
+</code></pre>
+<p>Here, we can just <code>import { helloWorld } from 'hello/world'</code></p>
+<p>Naturally, <code>baseUrl</code> only applies to non-relative imports.</p>
+<h4 id="paths-path-mapping"><code>paths</code> (path mapping)<a aria-hidden="true" class="anchor-heading icon-link" href="#paths-path-mapping"></a></h4>
+<p>When using third party modules, they are not directly located under <code>baseUrl</code>.</p>
+<ul>
+<li>using <code>import $ from 'jquery'</code> would be translated at runtime to <code>"node_modules/jquery/dist/jquery.slim.min.js"</code> 
+<ul>
+<li>note: this is able to be figured out because Loaders use a mapping configuration to map module names to files at run-time.</li>
+</ul>
+</li>
+</ul>
+<p>The Typescript compiler lets us declare mappings like this with the <code>paths</code> property.</p>
+<ul>
+<li>for instance, we can specify the above like this;</li>
+</ul>
+<pre class="language-json"><code class="language-json"><span class="token property">"paths"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"jquery"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"node_modules/jquery/dist/jquery"</span><span class="token punctuation">]</span> <span class="token comment">// This mapping is relative to "baseUrl"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Because the value is an array, we can specify multiple places for the Typescript compiler to look for those modules.</p>
+<ul>
+<li>imagine the following directory structure, where some modules are stored in <code>generated/</code>, and the rest in another directory. The build step would put them all in the same place.</li>
+</ul>
+<pre><code>projectRoot
+├── folder1
+│   ├── file1.ts (imports 'folder1/file2' and 'folder2/file3')
+│   └── file2.ts
+├── generated
+│   ├── folder1
+│   └── folder2
+│       └── file3.ts
+└── tsconfig.json
+</code></pre>
+<pre class="language-json"><code class="language-json"><span class="token property">"paths"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"*"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"*"</span><span class="token punctuation">,</span> <span class="token string">"generated/*"</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>This tells the compiler for any module import that matches the pattern "*" (i.e. all values), to look in two locations:</p>
+<ol>
+<li>"*": meaning the same name unchanged, so map <code>&#x3C;moduleName></code> => <code>&#x3C;baseUrl>/&#x3C;moduleName></code></li>
+<li>"generated/*" meaning the module name with an appended prefix <code>generated</code>, so map <code>&#x3C;moduleName></code> => <code>&#x3C;baseUrl>/generated/&#x3C;moduleName></code></li>
+</ol>
+<p>Following this logic, the compiler will attempt to resolve the two imports as such:</p>
+<p><code>import 'folder1/file2'</code>:</p>
+<ol>
+<li>pattern '*' is matched and wildcard captures the whole module name</li>
+<li>try first substitution in the list: '*' -> folder1/file2</li>
+<li>result of substitution is non-relative name - combine it with baseUrl -> projectRoot/folder1/file2.ts.</li>
+<li>File exists. Done.</li>
+</ol>
+<p><code>import 'folder2/file3'</code>:</p>
+<ol>
+<li>pattern '*' is matched and wildcard captures the whole module name</li>
+<li>try first substitution in the list: '*' -> folder2/file3</li>
+<li>result of substitution is non-relative name - combine it with baseUrl -> projectRoot/folder2/file3.ts.</li>
+<li>File does not exist, move to the second substitution</li>
+<li>second substitution 'generated/*' -> generated/folder2/file3</li>
+<li>result of substitution is non-relative name - combine it with baseUrl -> projectRoot/generated/folder2/file3.ts.</li>
+<li>File exists. Done.</li>
+</ol>
+<hr>
+<p>Often, in Typescript files we need to do this:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token operator">-</span> <span class="token keyword module">import</span> <span class="token imports">_</span> <span class="token keyword module">from</span> <span class="token string">'lodash'</span><span class="token punctuation">;</span>
+<span class="token operator">+</span> <span class="token keyword module">import</span> <span class="token imports"><span class="token operator">*</span> <span class="token keyword module">as</span> _</span> <span class="token keyword module">from</span> <span class="token string">'lodash'</span><span class="token punctuation">;</span>
+</code></pre>
+<p>This is due to the fact that there is no default export present in lodash definitions.</p>
+<p>To make imports do this by default and keep <code>import _ from 'lodash';</code> syntax in TypeScript, set "allowSyntheticDefaultImports" : true and "esModuleInterop" : true in your tsconfig.json file.</p>

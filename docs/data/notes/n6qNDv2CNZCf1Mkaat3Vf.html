@@ -1,0 +1,14 @@
+<h1 id="lambda-cli">Lambda CLI<a aria-hidden="true" class="anchor-heading icon-link" href="#lambda-cli"></a></h1>
+<h3 id="invoke-a-lambda">Invoke a Lambda<a aria-hidden="true" class="anchor-heading icon-link" href="#invoke-a-lambda"></a></h3>
+<pre class="language-sh"><code class="language-sh">aws lambda invoke \
+	--function-name &#x3C;name/arn> \
+	--payload '{ "name": "Bob" }' \
+	--cli-binary-format raw-in-base64-out \
+	# --invocation-type &#x3C;RequestResponse (sync) | Event (async)>
+	response.json
+</code></pre>
+<hr>
+<h2 id="flags">Flags<a aria-hidden="true" class="anchor-heading icon-link" href="#flags"></a></h2>
+<p>Get back base64 logs from command</p>
+<pre class="language-sh"><code class="language-sh">--log-type Tail \
+</code></pre>

@@ -1,0 +1,38 @@
+<h1 id="objects">Objects<a aria-hidden="true" class="anchor-heading icon-link" href="#objects"></a></h1>
+<p>The lineage of an object is irrelevant. What matters about an object is what it can do, not what it is descended from.</p>
+<p>JavaScript object keys are always coerced to a string, so obj[0] is always the same as obj["0"].</p>
+<p>As of ES6, objects have a predictable order, determined in one of 2 ways:</p>
+<ol>
+<li>If <em>keys are numbers</em>, The key-value pair being inserted will obey numerical order
+<ul>
+<li>ex. if we have existing keys <code>4</code>, <code>8</code>, and <code>33</code>, then inserting a key-value pair with the key as <code>1</code> will put it in first position of the object</li>
+</ul>
+</li>
+<li>If <em>keys are strings</em>, The key-value pair being inserted will be appended to the end of the object</li>
+</ol>
+<h3 id="polymorphism-with-objects">Polymorphism with objects<a aria-hidden="true" class="anchor-heading icon-link" href="#polymorphism-with-objects"></a></h3>
+<p>Imagine we had the idea of a session in our code. Instead of being one type however, we want it to either evaluate to an object, or the id of the object. Therefore, either object or string. This enables us to achieve polymorphism in functions, since we can take in a <code>session</code> argument, and depending on its type, we can act accordingly.</p>
+<pre class="language-js"><code class="language-js"><span class="token comment">// code from graphile/starter</span>
+<span class="token keyword module">export</span> <span class="token keyword">const</span> <span class="token function-variable function">becomeUser</span> <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span>
+  <span class="token parameter"><span class="token literal-property property">client</span><span class="token operator">:</span> <span class="token maybe-class-name">PoolClient</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">userOrUserId</span><span class="token operator">:</span> <span class="token maybe-class-name">User</span> <span class="token operator">|</span> string <span class="token operator">|</span> <span class="token keyword null nil">null</span><span class="token punctuation">,</span></span>
+<span class="token punctuation">)</span> <span class="token arrow operator">=></span> <span class="token punctuation">{</span>
+  <span class="token keyword control-flow">await</span> <span class="token function">becomeRoot</span><span class="token punctuation">(</span>client<span class="token punctuation">)</span>
+  <span class="token keyword">const</span> session <span class="token operator">=</span> userOrUserId
+    <span class="token operator">?</span> <span class="token keyword control-flow">await</span> <span class="token function">createSession</span><span class="token punctuation">(</span>
+        client<span class="token punctuation">,</span>
+        <span class="token keyword">typeof</span> userOrUserId <span class="token operator">===</span> <span class="token string">'object'</span> <span class="token operator">?</span> userOrUserId<span class="token punctuation">.</span><span class="token property-access">id</span> <span class="token operator">:</span> userOrUserId<span class="token punctuation">,</span>
+      <span class="token punctuation">)</span>
+    <span class="token operator">:</span> <span class="token keyword null nil">null</span>
+  <span class="token keyword control-flow">await</span> client<span class="token punctuation">.</span><span class="token method function property-access">query</span><span class="token punctuation">(</span>
+    <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">select set_config('role', $1::text, true), set_config('jwt.claims.session_id', $2::text, true)</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span>process<span class="token punctuation">.</span><span class="token property-access">env</span><span class="token punctuation">.</span><span class="token constant">DATABASE_VISITOR</span><span class="token punctuation">,</span> session <span class="token operator">?</span> session<span class="token punctuation">.</span><span class="token property-access">uuid</span> <span class="token operator">:</span> <span class="token string">''</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/K5HrGjuXQlq9fyZRd0uwB">Date</a></li>
+<li><a href="/notes/CUi3zbkRJIsklm925KS8D">Proxy Object</a></li>
+</ol>

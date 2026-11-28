@@ -1,0 +1,19 @@
+<h1 id="terminology">Terminology<a aria-hidden="true" class="anchor-heading icon-link" href="#terminology"></a></h1>
+<p><em>Project</em> - whole game you are building. Contains all scenes and all assets</p>
+<ul>
+<li>you never "save your project", the only thing you save is the currently open scene. Scenes are containers which can contain one level or many levels, it's up to you to decide how you want to break things up.
+<em>Scene</em> - a level in the project. A scene holds related assets. A scene may also be used for the welcome screen, a config screen, intro and other movies, and a credits.
+</li>
+</ul>
+<p>Game view - the view that a player sees as they are playing the game. This is determined by the Main Camera GameObject
+Scene view - the perspective of the developer building levels</p>
+<h3 id="renderer">Renderer<a aria-hidden="true" class="anchor-heading icon-link" href="#renderer"></a></h3>
+<ul>
+<li>A renderer is what makes an object appear on the screen.
+This class can be used to access the renderer of any object, mesh or Particle System.</li>
+</ul>
+<h3 id="layers">Layers<a aria-hidden="true" class="anchor-heading icon-link" href="#layers"></a></h3>
+<p>Layers allow us to define some functionality across different GameObjects</p>
+<p>A layer has no inherent functionality, and we must give it by specifying it on the affected GameObject (e.g. a camera)
+ex. we can specify an object to be ignored by the camera with the <code>Culling Mask</code> attribute on the Camera.</p>
+<p>Layer is set at the top of the Inspector of a GameObject</p>

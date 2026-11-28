@@ -1,0 +1,6 @@
+<h1 id="omit">Omit<a aria-hidden="true" class="anchor-heading icon-link" href="#omit"></a></h1>
+<h2 id="omittype-keys"><code>Omit&#x3C;Type, Keys></code><a aria-hidden="true" class="anchor-heading icon-link" href="#omittype-keys"></a></h2>
+<p><code>Omit</code> will construct a new type by taking the <code>Type</code> and removing the <code>Keys</code> (if multiple, represented as a union of string literals)</p>
+<h3 id="example">Example:<a aria-hidden="true" class="anchor-heading icon-link" href="#example"></a></h3>
+<p>Make a new type <code>QueryCommandInput</code>, which consists of the <code>__QueryCommandInput</code> without the <code>KeyConditions</code> or <code>QueryFilter</code> keys.</p>
+<p><code>type QueryCommandInput = Omit&#x3C;__QueryCommandInput, "KeyConditions" | "QueryFilter"></code></p>

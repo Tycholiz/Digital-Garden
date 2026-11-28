@@ -1,0 +1,52 @@
+<h1 id="tree">Tree<a aria-hidden="true" class="anchor-heading icon-link" href="#tree"></a></h1>
+<p>A tree is Git's representation of snapshots, meaning they store the state of a directory at a given point (without notion of time/author). </p>
+<ul>
+<li>To tie trees together into a coherent history, Git wraps each one in a commit object and specifies a parent commit. By following the parent of each commit, we can walk through the entire history of the project.</li>
+<li>Each commit refers to only one tree object.</li>
+</ul>
+<p>A tree can contain many trees and many blobs.</p>
+<p>Multiple trees may point to the same blob</p>
+<ul>
+<li>this happens when a file's contents (ie the blob) do not change between a commit.
+<ul>
+<li>therefore, most blobs are referenced by many trees.</li>
+</ul>
+</li>
+</ul>
+<p><img src="/assets/images/2022-04-08-22-01-55.png"></p>
+<p>The Tree holds pointers to filenames and other trees, effectively allowing us to group files together (which is essentially what a directory is)</p>
+<ul>
+<li>A tree object contains 1+ entries. Each of which is either a pointer to a blob or a pointer to a subtree.</li>
+</ul>
+<p><img src="/assets/images/2022-04-08-22-01-00.png"></p>
+<p>The tree object is what associates the filename (or directory name) with its content.</p>
+<ul>
+<li>We can confirm this by running <code>git cat-file</code> on the tree object. It will give us back a list of blobs and their associated filenames</li>
+<li>We can use a plumbing command <code>update-index</code>, which effectively allows us to associate an existing blob with a filename:
+<ul>
+<li><code>git update-index --add --cacheinfo 100644 83baae61804e65cc73a7201a7252750c76066a30 test.txt</code>
+<ul>
+<li>add a file to the index (<code>--add</code>), get it from the object database (<code>--cacheinfo</code>)</li>
+<li>upon executing this command, we have <code>test.txt</code> added to the staging area.</li>
+<li><code>100644</code> represents the file permissions on disk, showing that trees determine Unix file permissions for each blob
+<ul>
+<li>only cares about <code>100644</code> (normal file), <code>100755</code> (executable), <code>120000</code> (symbolic link)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>The tree is normally made by examining the state of the staging area</p>
+<p>The tree itself doesn’t know where it exists within the repository, that is the role of the objects pointing to the tree. The tree referenced by <code>&#x3C;ref>^{tree}</code> is a special tree: the root tree. This designation is based on a special link from your commits.</p>
+<p>The fact that git doesn't really about folder names is precicely the reason why you cannot commit an empty directory. Often on Github you will notice that people put a blank <code>.keep</code> file. This naming is meaningless to Git, but it is just a convention, as if to say "hey, I just put a placeholder here so we can still get the empty directory to be part of our tree."</p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/yMzID31DyN2cnh9PW7aY3">Commit</a></li>
+<li><a href="/notes/Y2LcIi5XmTxzs8jc3y1WK">Git Plumbing</a></li>
+<li><a href="/notes/x48F7MRbiIRRGRu4jJ5W3">Ref</a></li>
+<li><a href="/notes/ePOqLpbjFgrqSfyvWfPha">Blob</a></li>
+<li><a href="/notes/uI9Iy1aoh8oynk85Mzx5z">Commits</a></li>
+</ul>

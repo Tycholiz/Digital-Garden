@@ -1,0 +1,19 @@
+<h1 id="variables">Variables<a aria-hidden="true" class="anchor-heading icon-link" href="#variables"></a></h1>
+<h3 id="passing-variables-to-a-command">Passing variables to a command<a aria-hidden="true" class="anchor-heading icon-link" href="#passing-variables-to-a-command"></a></h3>
+<p>To pass a variable to a shell command, just set it before the command:</p>
+<ul>
+<li>ex. <code>MY_VAR=123 ./my-script.sh</code></li>
+<li>note: the variables only become available to the command that follows. For instance, the variables will not be available in the <code>my-second-script</code> file in this case:</li>
+</ul>
+<pre class="language-sh"><code class="language-sh">MY_VAR=123 ./my-script.sh &#x26;&#x26; ./my-second-script.sh
+</code></pre>
+<h3 id="conventions">Conventions<a aria-hidden="true" class="anchor-heading icon-link" href="#conventions"></a></h3>
+<p>variables should be <strong>snake_case</strong></p>
+<ul>
+<li>kebab-case does not work</li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/VSdcbbxI9l1Js2nw5GgM9">Internal</a></li>
+</ol>

@@ -1,0 +1,67 @@
+<h1 id="synchronization">Synchronization<a aria-hidden="true" class="anchor-heading icon-link" href="#synchronization"></a></h1>
+<h2 id="syncing-the-same-document">Syncing the same document<a aria-hidden="true" class="anchor-heading icon-link" href="#syncing-the-same-document"></a></h2>
+<p>The three most common approaches to synchronization of a single document are <em>locking</em>, <em>event passing</em> and <em>three-way merges</em>.</p>
+<h3 id="locking">Locking<a aria-hidden="true" class="anchor-heading icon-link" href="#locking"></a></h3>
+<p>The simplest technique, whereby a shared document may only be edited by one user at a time.</p>
+<ul>
+<li>ex. when opening Microsoft Word on a networked drive, the first user to open it has global access, but subsequent users have read-only access.</li>
+</ul>
+<p>A refinement on locking would be Subsection Locking, whereby we only lock the parts of the document that are being edited, but this still limits collaboration.</p>
+<p>Locking is not a suitable approach when connectivity is unreliable, since the lock or unlock signals can get lost, leaving no owner.</p>
+<ul>
+<li>ex. imagine being in the middle of editing a document, and then passing through a tunnel. With luck, the user will still be editing when they come out of the other side of that tunnel, and will be in connectivity when they finally save and close the document. But what if they save and close while in the tunnel and out of connectivity? Whoever manages the lock will not be aware that the client as finished accessing the document, and it will assume that it should still be locked, thereby preventing access to any other clients.</li>
+</ul>
+<h3 id="event-passing">Event passing<a aria-hidden="true" class="anchor-heading icon-link" href="#event-passing"></a></h3>
+<p>Event passing involves capturing all user actions and replaying them on other nodes of the network.</p>
+<p>Popular for implementing edit-based collaborative systems.</p>
+<p>Any failure in event passing results in a fork</p>
+<ul>
+<li>due to the best-effort nature of the web, this is potentially commonplace. </li>
+<li>ex. think of a SaaS like Jira, where you have many different users interacting with the same resources often (e.g. all members of engineering team editing the same sets of documentation). When there is a conflict, Jira just chooses one of the writes as the winner, and sends a "sorry, please try again" message to the losing client.
+<ul>
+<li>edit: not sure if this point belongs here. Not sure if this example actually demonstrates a fork. This point might belong elsewhere</li>
+</ul>
+</li>
+</ul>
+<h3 id="three-way-merge">Three-way merge<a aria-hidden="true" class="anchor-heading icon-link" href="#three-way-merge"></a></h3>
+<ol>
+<li>The client sends the contents of the document to the server.</li>
+<li>The server performs a three-way merge to extract the user's changes and merge them with changes from other users.</li>
+<li>The server sends a new copy of the document to the client.</li>
+</ol>
+<p>Three-way merges are not a good solution for real-time collaboration across a network with latency.</p>
+<h3 id="differential-synchronization">Differential Synchronization<a aria-hidden="true" class="anchor-heading icon-link" href="#differential-synchronization"></a></h3>
+<p>Differential synchronization is a symmetrical algorithm employing an unending cycle of background diffs and patch operations.</p>
+<ul>
+<li><a href="https://neil.fraser.name/writing/sync/">https://neil.fraser.name/writing/sync/</a></li>
+<li><a href="https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/35605.pdf">Google whitepaper</a></li>
+</ul>
+<hr>
+<h2 id="synchronization-strategies">Synchronization Strategies<a aria-hidden="true" class="anchor-heading icon-link" href="#synchronization-strategies"></a></h2>
+<h3 id="create-some-means-to-diff-the-the-most-recent">Create some means to "diff" the the most recent<a aria-hidden="true" class="anchor-heading icon-link" href="#create-some-means-to-diff-the-the-most-recent"></a></h3>
+<p>Mimic the schemas of the client-side database and server-side database as much as possible</p>
+<p>The key is for both the local database and remote database to track when each value was each of its fields were last changed. </p>
+<ul>
+<li>To implement this, we can consider the fields we are interested in for a particular model (e.g. <code>title</code>, <code>media_items</code>). That is, we want to know when these values have changed. We can store this value by adding N more columns, which are timestamps of when the row was last updated (e.g. <code>title__last_updated</code>, <code>media_items__last_updated</code>). The client and remote databases must each update their own version of this column when the value changes, allowing the other databases to know who has fresher data.
+<ul>
+<li>ex. when remote database updates its value in response to a change added by the client</li>
+<li>ex. when the client database receives a new value from the remote server.</li>
+<li>ex. when the the user updates a document via the app's UI</li>
+</ul>
+</li>
+</ul>
+<h3 id="log-of-changes">Log of Changes<a aria-hidden="true" class="anchor-heading icon-link" href="#log-of-changes"></a></h3>
+<p>Another approach is to collect a log of user interactions with the client database. We determine that there has been a change in state by the presence of a log indicating so. When this happens, we initiate a 2-way sync with the remote database.</p>
+<p>When the remote database receives the changes with the 2-way sync pulse, it compares the values to the ones it has stored. With each version's timestamp, we award legitimacy to the value using <em>last-write wins</em> and make that the new canonical value for the field. If the remote database has changes that don't yet exist on the client database, then it will return those back to the client. Finally, the client proceeds to update those values.</p>
+<p>Each client-side database should initiate a 2-way sync on 2 occasions:</p>
+<ul>
+<li>when there has been a change in state (e.g. creating a new document, deleting one, updating etc.)</li>
+<li>after 5 seconds of inactivity</li>
+</ul>
+<h3 id="push-and-pull">Push and Pull<a aria-hidden="true" class="anchor-heading icon-link" href="#push-and-pull"></a></h3>
+<p>The push function basically receives a set of data changes as a JSON object and writes them to the database, while the pull function receives the timestamp of the last sync and compiles a JSON object containing all changes the database has accumulated since this timestamps and returns it to the client.</p>
+<hr>
+<strong>Backlinks</strong>
+<ul>
+<li><a href="/notes/pFKPROeJ3nFTzivRYIL9W">Offline First</a></li>
+</ul>

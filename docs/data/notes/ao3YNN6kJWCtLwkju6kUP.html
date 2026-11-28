@@ -1,0 +1,30 @@
+<h1 id="ns-record">NS Record<a aria-hidden="true" class="anchor-heading icon-link" href="#ns-record"></a></h1>
+<p>A Nameserver Record indicates which <a href="/notes/vuSZhKeQU8JmAXynHqZvf">authoritative nameserver</a> contains the actual DNS records</p>
+<ul>
+<li>Basically, NS records tell the Internet where to go to find out a domain's IP address</li>
+<li>Each authoritative nameserver in our <a href="/notes/rKwvAx3SP99In467imzlg">DNS Zone</a> should have an NS record.
+<ul>
+<li>ex. if we have 2 nameservers, we should have 2 NS records.</li>
+</ul>
+</li>
+</ul>
+<p>A domain often has multiple NS records which can indicate primary and backup nameservers for that domain. </p>
+<ul>
+<li>if one nameserver goes down or is unavailable, DNS queries can go to another one</li>
+<li>Typically there is one primary nameserver and several secondary nameservers, which store exact copies of the DNS records in the primary server
+<ul>
+<li>Updating the primary nameserver will trigger an update of the secondary nameservers as well.</li>
+</ul>
+</li>
+</ul>
+<p>Without properly configured NS records, users will be unable to load a website or application.</p>
+<p>When multiple nameservers are used (as in most cases), NS records should list more than one server</p>
+<p>NS records must point to an A record</p>
+<ul>
+<li>ex. the resolver may have the NS records, but no A record, and it will still be able to query those nameservers directly, rather than having to go through the TLD server</li>
+</ul>
+<p>Updating NS records</p>
+<ul>
+<li>Domain administrators should update their NS records when they need to change their domain's nameservers</li>
+<li>update NS records if you want a subdomain to use different nameservers than the domain (ex. example.com and blog.example.com have 2 different nameservers)</li>
+</ul>

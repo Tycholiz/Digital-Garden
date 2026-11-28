@@ -1,0 +1,57 @@
+<h1 id="deep-learning">Deep Learning<a aria-hidden="true" class="anchor-heading icon-link" href="#deep-learning"></a></h1>
+<h2 id="what-is-it">What is it?<a aria-hidden="true" class="anchor-heading icon-link" href="#what-is-it"></a></h2>
+<p>Deep learning is a subset of machine learning that uses artificial neural networks to mimic the learning process of the human brain</p>
+<ul>
+<li><a href="/notes/k4ib1hhlkmzcrfx8vljz7sg">Neural networks</a> make up the backbone of deep learning algorithms</li>
+</ul>
+<p>The "deep" in deep learning is referring to the depth of layers in a neural network. A neural network that has at least 1 hidden layer can be considered a deep learning algorithm. This is generally represented using the following diagram:
+<img src="/assets/images/2023-07-07-21-58-46.png" alt="Deep neural network"></p>
+<ul>
+<li>Classical, or "non-deep", machine learning is more dependent on human intervention to learn.</li>
+</ul>
+<p>Deep learning is thought of as "scalable machine learning", since it automates a lot of the feature extraction process, and eliminates some need for human intervention whcih enables use for large datasets.</p>
+<p>"Deep" machine learning can leverage labeled datasets (ie. <a href="/notes/03o3n0hz9v9jtb7j889zpd4#supervised-learning">supervised learning</a>) to inform its algorithm, but it doesn’t necessarily require a labeled dataset.</p>
+<ul>
+<li>It can ingest unstructured data in its raw form (e.g. text, images), and it can automatically determine the set of features which distinguish "pizza", "burger", and "taco" from one another.</li>
+</ul>
+<p>By observing patterns in the data, a deep learning model can cluster inputs appropriately.</p>
+<ul>
+<li>we could group pictures of pizzas, burgers, and tacos into their respective categories based on the similarities or differences identified in the images.</li>
+<li>however, a deep learning model would require more data points to improve its accuracy, whereas a machine learning model relies on less data given the underlying data structure.</li>
+</ul>
+<p>Deep learning is primarily leveraged for more complex use cases, like virtual assistants or fraud detection.</p>
+<p>Most deep neural networks are feed-forward, meaning they flow in one direction only from input to output. </p>
+<ul>
+<li>you can also train your model through <em>backpropogation</em>, meaning it moves in opposite direction from output to input.
+<ul>
+<li>this allows us to calculate and attribute the error associated with each neuron, allowing us to adjust and fit the algorithm appropriately.</li>
+</ul>
+</li>
+</ul>
+<h2 id="why-use-deep-learning">Why use Deep learning?<a aria-hidden="true" class="anchor-heading icon-link" href="#why-use-deep-learning"></a></h2>
+<p>We use deep learning when we have a long set of rules that the program needs to adhere to</p>
+<ul>
+<li>ex. a program to cook a roast chicken is easy since the ruleset is small. a program to enable cars to drive autonomously is complicated, because the rules involved are enormous</li>
+<li>We want to discover insights within a large set of data</li>
+</ul>
+<p>Deep learning is a bit of a chainsaw solution to a problem. Sometimes all we need is a pair of scissors to solve in the problem, in which case deep learning is overkill. Traditional methods are lighter, easier to train, and require less training data.</p>
+<ul>
+<li>ex. XGBoost is still the state of the art for tabular data because those datasets are typically too small for deep learning.</li>
+</ul>
+<h3 id="why-not-use-it">Why not use it?<a aria-hidden="true" class="anchor-heading icon-link" href="#why-not-use-it"></a></h3>
+<ul>
+<li>machine learning doesn't offer us much in the way of explanation for the patterns that it finds</li>
+<li>machine learning isn't deterministic— the results are based on probability.</li>
+</ul>
+<h2 id="resources">Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#resources"></a></h2>
+<ul>
+<li><a href="https://huggingface.co/learn/nlp-course/chapter1/1">Hugging Face</a></li>
+<li><a href="https://course.fast.ai/">Practical Deep Learning for Coders</a></li>
+<li><a href="https://d2l.ai/">Dive into Deep Learning</a></li>
+<li><a href="http://neuralnetworksanddeeplearning.com/">Neural Networks and Deep Learning online book</a></li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/k4ib1hhlkmzcrfx8vljz7sg">Neural Network</a></li>
+</ol>

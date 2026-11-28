@@ -1,0 +1,14 @@
+<h1 id="map">Map<a aria-hidden="true" class="anchor-heading icon-link" href="#map"></a></h1>
+<p>Key-value storage, where:</p>
+<ul>
+<li>All key and value are of same type.</li>
+<li>provides fast lookup and values that can retrieve, update or delete with the help of keys.</li>
+<li>can iterate over keys (as long as they are indexed)</li>
+<li>Don’t need to know all the keys at compile time.</li>
+</ul>
+<pre class="language-go"><code class="language-go"><span class="token comment">// create a map with keys as strings and values as integers</span>
+<span class="token keyword">var</span> myMap <span class="token operator">=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">)</span>
+
+<span class="token comment">// set value of key</span>
+myMap<span class="token punctuation">[</span><span class="token string">"firstKey"</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">2</span>
+</code></pre>

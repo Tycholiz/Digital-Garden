@@ -1,0 +1,67 @@
+<h1 id="types">Types<a aria-hidden="true" class="anchor-heading icon-link" href="#types"></a></h1>
+<h2 id="data-types">Data Types<a aria-hidden="true" class="anchor-heading icon-link" href="#data-types"></a></h2>
+<h3 id="composite-type">Composite Type<a aria-hidden="true" class="anchor-heading icon-link" href="#composite-type"></a></h3>
+<ul>
+<li>a type defined by the "signature" of the row. In other words, the very combination of columns included in a row make up a <strong>composite type</strong>
+<ul>
+<li>therefore, every column in a given table is an example of a composite type. In fact, every time we create a table, a composite type representing that row's composition is made.</li>
+</ul>
+</li>
+<li>PostgreSQL allows composite types to be used in many of the same ways that simple types can be used.
+<ul>
+<li>ex. a column of a table can be declared to be of a composite type.
+<ul>
+<li>spec: for instance <code>first_name</code> and <code>last_name</code>?</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>In Postgres, columns can be of composite types, meaning that we can have a type defined as (email: string, username: string), and have a column in a table called <code>identity</code> and have a column with that type.</li>
+<li>When used in a function, composite types can be thought of as objects, as we would access the value of each subtype with <code>$1.key</code></li>
+</ul>
+<h3 id="text">Text<a aria-hidden="true" class="anchor-heading icon-link" href="#text"></a></h3>
+<ul>
+<li>don't use VARCHAR. just use TEXT, and add length limits</li>
+</ul>
+<h4 id="citext">Citext<a aria-hidden="true" class="anchor-heading icon-link" href="#citext"></a></h4>
+<ul>
+<li>Case insensitive text</li>
+<li>behaves like text, except that it lower-cases everything before comparing it
+<ul>
+<li>Therefore, we may want to store things like email or postal code in <code>citext</code> rather than <code>text</code>.</li>
+</ul>
+</li>
+</ul>
+<h3 id="serial">Serial<a aria-hidden="true" class="anchor-heading icon-link" href="#serial"></a></h3>
+<ul>
+<li>SERIAL is the postgres equivalent of autoincrement in other flavors of SQL
+<ul>
+<li>Consider using uuid's though.</li>
+</ul>
+</li>
+</ul>
+<h3 id="range">Range<a aria-hidden="true" class="anchor-heading icon-link" href="#range"></a></h3>
+<ul>
+<li>We can specify a range in a single column (ex. timestamps, price etc).</li>
+<li>The real benefit is that you can then have constraints
+<ul>
+<li>ex. certain time stamps can’t overlap</li>
+</ul>
+</li>
+<li>To work with ranges, use the <a href="https://www.postgresql.org/docs/9.3/functions-range.html">range operators</a>
+<a href="https://wiki.postgresql.org/images/7/73/Range-types-pgopen-2012.pdf">Demo</a></li>
+</ul>
+<hr>
+<strong>Children</strong>
+<ol>
+<li><a href="/notes/eDWy3uRZPM0yeWhhqupnD">Cook</a></li>
+<li><a href="/notes/oGTPh0WN4W0vvmDyE091k">Date</a></li>
+<li><a href="/notes/xGyn02pkM7g8hpAMd6xYO">Enum</a></li>
+<li><a href="/notes/lt9c42rKzOM9Q315DPIP4">Interval</a></li>
+<li><a href="/notes/hJfQn6taQ2TsczKAI5VOg">Json</a></li>
+<li><a href="/notes/pOg29iLACnd11OOueSbo7">Money</a></li>
+<li><a href="/notes/WC36z99JWDa2Sea5RA2u9">Numeric</a></li>
+<li><a href="/notes/kwIgxHpX6SYp3TmtB7QEB">Point</a></li>
+<li><a href="/notes/V7yjVqvmNaekLYs6jAs4s">Range</a></li>
+<li><a href="/notes/55SWXUPJchUKZxvscLpxV">Timestamp</a></li>
+</ol>

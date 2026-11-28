@@ -1,0 +1,30 @@
+<h1 id="cognit">Cognit<a aria-hidden="true" class="anchor-heading icon-link" href="#cognit"></a></h1>
+<p>Cognito is an identity platform for web and mobile apps. It is...</p>
+<ul>
+<li>a user directory </li>
+<li>an authentication server</li>
+<li>an authorization service for OAuth 2.0 access tokens and AWS credentials.</li>
+</ul>
+<p>Cognito supports MFA for users.</p>
+<p>For integrating Cognito with web/mobile apps, AWS recommends using <a href="/notes/rlavWlUhUf2gu7boO3hQh">Amplify</a></p>
+<p>The two main features of Cognito are User Pools and Identity Pools.</p>
+<h2 id="user-pools">User pools<a aria-hidden="true" class="anchor-heading icon-link" href="#user-pools"></a></h2>
+<p>A user pool is a user directory, allowing us to create, manage and authenticate users.</p>
+<p>Flow:</p>
+<ol>
+<li>User accesses web application and accesses sign-in page</li>
+<li>The request to sign in is sent to Cognito, who presents challenges to the user (e.g. email/password)</li>
+<li>The client sends back the challenge response to Cognito, who provides a token, thereby signing in the user.</li>
+</ol>
+<p><img src="/assets/images/2024-04-09-10-45-03.png"></p>
+<p>When a user on our platform signs up on our website, the client calls Cognito user pool API to create a new user. When that user later signs in, the client again calls the Cognito user pool API to authenticate and authorize them.</p>
+<h2 id="identity-pools">Identity pools<a aria-hidden="true" class="anchor-heading icon-link" href="#identity-pools"></a></h2>
+<p>Identity Pools provide credentials that authorize and monitor API requests to AWS services (e.g. Dynamo, S3), allowing us to authorize authenticated/anonymous users to access those AWS resources.</p>
+<ul>
+<li>the identity pool issues AWS credentials for our app to server resources to users.</li>
+<li>Identity pools use both role-based and attribute-based access control to manage your users’ authorization to access your AWS resources.</li>
+</ul>
+<hr>
+<ul>
+<li><a href="https://stackoverflow.com/questions/54238306/what-the-settings-mean-in-aws-cognito-user-pool-app-client">Auth Flow Configurations</a></li>
+</ul>

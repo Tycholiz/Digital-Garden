@@ -1,0 +1,22 @@
+<h1 id="layouts">Layouts<a aria-hidden="true" class="anchor-heading icon-link" href="#layouts"></a></h1>
+<p>Layouts are useful when there are elements that should be visible on every page, such as top-level navigation or a footer.</p>
+<ul>
+<li>The only requirement is that the component includes a <code>&#x3C;slot></code> for the page content.</li>
+</ul>
+<h3 id="nested-layouts">Nested Layouts<a aria-hidden="true" class="anchor-heading icon-link" href="#nested-layouts"></a></h3>
+<p>Suppose we don't just have a single /settings page, but instead have nested pages like /settings/profile and /settings/notifications with a shared submenu (for a real-life example, see <a href="/github.com/settings">github.com/settings</a>).</p>
+<p>We can create a layout that only applies to pages below /settings (while inheriting the root layout with the top-level nav):</p>
+<pre class="language-html"><code class="language-html"><span class="token comment">&#x3C;!-- src/routes/settings/__layout.svelte --></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span>h1</span><span class="token punctuation">></span></span>Settings<span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;/</span>h1</span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>submenu<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>/settings/profile<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Profile<span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;/</span>a</span><span class="token punctuation">></span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>/settings/notifications<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Notifications<span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;/</span>a</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;/</span>div</span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;</span>slot</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&#x3C;/</span>slot</span><span class="token punctuation">></span></span>
+</code></pre>
+<h4 id="resetting-the-layout-stack">Resetting the layout stack<a aria-hidden="true" class="anchor-heading icon-link" href="#resetting-the-layout-stack"></a></h4>
+<p>To reset the layout stack, create a <strong>layout.reset.svelte file instead of a </strong>layout.svelte file. For example, if you want your <code>/admin/*</code> pages to not inherit the root layout, create a file called <code>src/routes/admin/__layout.reset.svelte</code>.</p>
+<h3 id="error-pages">Error pages<a aria-hidden="true" class="anchor-heading icon-link" href="#error-pages"></a></h3>
+<p>Sveltekit renders a default error page, but if we supply a <code>__error.svelte</code> alongside the component, then that will be shown to the user.</p>

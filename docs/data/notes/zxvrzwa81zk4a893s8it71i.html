@@ -1,0 +1,111 @@
+<h1 id="prompt">Prompt<a aria-hidden="true" class="anchor-heading icon-link" href="#prompt"></a></h1>
+<p>Longer prompts (ie. more input tokens) take longer to process</p>
+<h3 id="chain-of-thought-prompting">Chain-of-Thought Prompting<a aria-hidden="true" class="anchor-heading icon-link" href="#chain-of-thought-prompting"></a></h3>
+<p>What it is: Getting the model to show its reasoning process step-by-step instead of jumping to conclusions.
+Basic example:
+Instead of: "What's 15% of 240?"
+Use: "What's 15% of 240? Think through this step by step."</p>
+<p>Advanced example:
+Analyze this business decision step by step:</p>
+<ol>
+<li>First, identify the key factors involved</li>
+<li>Then, consider the potential outcomes of each option</li>
+<li>Weigh the risks and benefits</li>
+<li>Finally, provide your recommendation with reasoning</li>
+</ol>
+<p>Why it works: Models often perform better when they "think out loud" - it prevents them from making logical leaps and helps catch errors.</p>
+<h3 id="negative-prompting">Negative Prompting<a aria-hidden="true" class="anchor-heading icon-link" href="#negative-prompting"></a></h3>
+<p>What it is: Explicitly telling the model what NOT to do or include.</p>
+<p>Examples:</p>
+<p>"Explain quantum physics. Do NOT use mathematical equations or jargon."
+"Write a professional email. Avoid being overly formal or using corporate buzzwords."
+"Summarize this article. Don't include your own opinions or speculation."</p>
+<p>Why it's powerful: Models sometimes default to unwanted behaviors. Negative prompting helps constrain the output to exactly what you want.</p>
+<h3 id="prompt-chaining">Prompt Chaining<a aria-hidden="true" class="anchor-heading icon-link" href="#prompt-chaining"></a></h3>
+<p>What it is: Breaking complex tasks into a sequence of smaller prompts, where each prompt builds on the previous output.</p>
+<p>Example sequence:</p>
+<p>"Analyze the main themes in this document"
+[Take that output] "Now identify which of these themes are most relevant to our marketing strategy"
+[Take that output] "Create three marketing campaign concepts based on these relevant themes"</p>
+<p>Why it works: Complex tasks often overwhelm models. Chaining lets you guide the process step-by-step and catch/correct errors along the way.</p>
+<h3 id="few-shot-learning">Few-Shot Learning<a aria-hidden="true" class="anchor-heading icon-link" href="#few-shot-learning"></a></h3>
+<p>What it is: Providing examples of the desired input-output pattern.</p>
+<p>A key use case for Few-Shot prompting is when you need the output to be structured in a specific way that is difficult to describe to the model. Instead of describing what we want it to do, we just provide some examples and let it infer the pattern.</p>
+<p>Example:
+Convert these informal messages to professional ones:</p>
+<p>Informal: "hey can u send me that report?"
+Professional: "Could you please send me the report when you have a moment?"</p>
+<p>Informal: "this meeting is boring"
+Professional: "I'd appreciate if we could focus the discussion on the key action items."</p>
+<p>Now convert: "ur late again"</p>
+<h3 id="role-based-prompting">Role-Based Prompting<a aria-hidden="true" class="anchor-heading icon-link" href="#role-based-prompting"></a></h3>
+<p>What it is: Having the model adopt a specific persona or expertise.</p>
+<p>Examples:</p>
+<p>"You are a senior software architect. Review this code design..."
+"Act as a 5-year-old and explain how airplanes fly..."
+"You're a skeptical journalist. Fact-check this press release..."</p>
+<h3 id="constitutional-ai--self-correction">Constitutional AI / Self-Correction<a aria-hidden="true" class="anchor-heading icon-link" href="#constitutional-ai--self-correction"></a></h3>
+<p>What it is: Having the model critique and improve its own output.</p>
+<p>Example:</p>
+<p>First, write a summary of this article.
+Then, review your summary and identify any potential biases or inaccuracies.
+Finally, provide a revised summary that addresses these issues.</p>
+<h3 id="system-message-engineering">System Message Engineering<a aria-hidden="true" class="anchor-heading icon-link" href="#system-message-engineering"></a></h3>
+<p>What it is: Using the system message (when available) to set persistent context and behavior.</p>
+<p>Example system message:</p>
+<p>You are a helpful coding assistant. Always:</p>
+<ul>
+<li>Explain your reasoning</li>
+<li>Include error handling in code examples</li>
+<li>Suggest best practices</li>
+<li>Ask clarifying questions when requirements are unclear</li>
+</ul>
+<h3 id="constraint-based-prompting">Constraint-Based Prompting<a aria-hidden="true" class="anchor-heading icon-link" href="#constraint-based-prompting"></a></h3>
+<p>What it is: Adding specific limitations to focus the output.
+Examples:</p>
+<p>"Explain this in exactly 3 sentences"
+"Use only words a 10-year-old would understand"
+"Respond only with bullet points"
+"Include exactly 5 examples"</p>
+<h3 id="meta-prompting">Meta-Prompting<a aria-hidden="true" class="anchor-heading icon-link" href="#meta-prompting"></a></h3>
+<p>What it is: Having the model help you improve your prompts.
+Example:
+"I want to get better results when asking you to write marketing copy. What information should I include in my prompts to get more targeted, effective copy?"</p>
+<h3 id="template-based-prompting">Template-Based Prompting<a aria-hidden="true" class="anchor-heading icon-link" href="#template-based-prompting"></a></h3>
+<p>What it is: Creating reusable prompt structures.</p>
+<p>Example template:</p>
+<p>Context: [Describe the situation]
+Goal: [What you want to achieve]
+Constraints: [Any limitations or requirements]
+Format: [How you want the output structured]
+Tone: [Desired communication style]</p>
+<h3 id="progressive-refinement">Progressive Refinement<a aria-hidden="true" class="anchor-heading icon-link" href="#progressive-refinement"></a></h3>
+<p>What it is: Starting broad and iteratively narrowing down.
+Example sequence:</p>
+<p>"Brainstorm marketing ideas for our app"
+"Focus on the social media ideas from that list"
+"Develop the Instagram strategy in detail"
+"Create specific post examples for that Instagram strategy"</p>
+<h3 id="priming">Priming<a aria-hidden="true" class="anchor-heading icon-link" href="#priming"></a></h3>
+<p>What it is: preparing the LLM for some type of future prompt</p>
+<ul>
+<li>ex. "I need you to monitor for offensive language. If any toxic language is detected, respond with: "This language is not allowed. Please rephrase your request."</li>
+<li>ex. "I would like you to act as my math tutor. When I give you a problem, give me advice on the next step I should try.  If I ever ask for the answer, say "Sorry, I can't give you an answer"."</li>
+</ul>
+<h3 id="combining-techniques">Combining Techniques<a aria-hidden="true" class="anchor-heading icon-link" href="#combining-techniques"></a></h3>
+<p>The real power comes from combining these approaches:</p>
+<pre><code>[Role] You are an expert business analyst.
+[Chain-of-thought] Think through this step by step:
+[Constraint] In exactly 4 bullet points,
+[Negative] without using jargon or speculation,
+[Few-shot] following this format:
+- Problem: [clear description]
+- Impact: [quantified effect]
+- Solution: [specific action]
+- Timeline: [realistic timeframe]
+</code></pre>
+<p>Pro tip: Start simple and add complexity gradually. A basic well-structured prompt often works better than an over-engineered one. The key is matching the technique to your specific use case and iterating based on results.</p>
+<h2 id="ue-resources">UE Resources<a aria-hidden="true" class="anchor-heading icon-link" href="#ue-resources"></a></h2>
+<ul>
+<li><a href="https://learnprompting.org/docs/introduction">https://learnprompting.org/docs/introduction</a></li>
+</ul>

@@ -1,0 +1,17 @@
+<h1 id="script">Script<a aria-hidden="true" class="anchor-heading icon-link" href="#script"></a></h1>
+<h3 id="set-animator-param-value">Set animator param value<a aria-hidden="true" class="anchor-heading icon-link" href="#set-animator-param-value"></a></h3>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">PlayerController</span> <span class="token punctuation">:</span> <span class="token type-list"><span class="token class-name">MonoBehaviour</span></span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token class-name">Rigidbody</span> playerRb<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token class-name">Animator</span> playerAnim<span class="token punctuation">;</span>
+
+    <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">Update</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>Input<span class="token punctuation">.</span><span class="token function">GetKeyDown</span><span class="token punctuation">(</span>KeyCode<span class="token punctuation">.</span>Space<span class="token punctuation">)</span> <span class="token operator">&#x26;&#x26;</span> isOnGround<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            playerRb<span class="token punctuation">.</span><span class="token function">AddForce</span><span class="token punctuation">(</span>Vector3<span class="token punctuation">.</span>up <span class="token operator">*</span> jumpForce<span class="token punctuation">,</span> ForceMode<span class="token punctuation">.</span>Impulse<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            isOnGround <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+            playerAnim<span class="token punctuation">.</span><span class="token function">SetTrigger</span><span class="token punctuation">(</span><span class="token string">"Jump_trig"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Also: <code>SetFloat</code>, <code>SetBool</code> etc.</p>

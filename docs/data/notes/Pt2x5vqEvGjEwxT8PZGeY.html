@@ -1,0 +1,10 @@
+<h1 id="cook">Cook<a aria-hidden="true" class="anchor-heading icon-link" href="#cook"></a></h1>
+<h5 id="remove-all-containers-built-from-image-7401323eb08e">Remove all containers built from Image 7401323eb08e<a aria-hidden="true" class="anchor-heading icon-link" href="#remove-all-containers-built-from-image-7401323eb08e"></a></h5>
+<pre><code>docker ps -a | awk '{ print $1,$2 }' | grep 7401323eb08e | awk '{print $1 }' | xargs -I {} docker rm {}
+</code></pre>
+<hr>
+<ul>
+<li><code>docker logs &#x3C;container name></code> - see what happened during container initialization</li>
+<li><code>docker inspect &#x3C;container-name></code> - get low-level info about a container, such as its IP, port mappings,  </li>
+<li>remove all containers based on one image (ex. monica) - <code>docker ps -a | awk '{ print $1,$2 }' | grep monica | awk '{print $1 }' | xargs -I {} docker rm {}</code></li>
+</ul>

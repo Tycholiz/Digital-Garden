@@ -1,0 +1,7 @@
+<h1 id="hoist">Hoist<a aria-hidden="true" class="anchor-heading icon-link" href="#hoist"></a></h1>
+<p>Only declarations are hoisted, not initializations</p>
+<ul>
+<li>ex. <code>const name</code> is hoisted, <code>name = "Kyle"</code> is not.</li>
+<li>therefore if you access a variable before it's declared, the value is always <code>undefined</code></li>
+</ul>
+<p><code>var</code>-declared variables are hoisted, meaning you can refer to the variable anywhere in its scope, even if its declaration isn't reached yet. You can see var declarations as being "lifted" to the top of its function or global scope.</p>

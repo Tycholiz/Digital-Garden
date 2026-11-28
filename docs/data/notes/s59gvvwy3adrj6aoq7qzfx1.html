@@ -1,0 +1,108 @@
+<h1 id="variables">Variables<a aria-hidden="true" class="anchor-heading icon-link" href="#variables"></a></h1>
+<p>Instance variables always get a default value.</p>
+<ul>
+<li>integers, chars - 0</li>
+<li>floating points - 0.0</li>
+<li>booleans - false</li>
+<li>references - null</li>
+</ul>
+<p><em>Local variables</em> exist within a method.</p>
+<ul>
+<li>they do not get default values</li>
+</ul>
+<h2 id="global-variables">"Global" variables<a aria-hidden="true" class="anchor-heading icon-link" href="#global-variables"></a></h2>
+<p>While there isn’t a concept of 'global' variables and methods in a Java, marking a method as <code>public</code> and <code>static</code> makes it behave much like a 'global'. </p>
+<ul>
+<li>Any code, in any class of your application, can access a <code>public static</code> method.  
+<ul>
+<li>this is exactly how the <code>Math.pi</code> property and <code>Math.random()</code> methods are declared.</li>
+</ul>
+</li>
+<li>And if you mark a variable as <code>public</code>, <code>static</code>, and <code>final</code>, you have essentially made a globally-available constant. </li>
+<li>these static (global-like) things are the exception rather than the rule in Java. They represent a very special case, where you don’t have multiple instances.</li>
+</ul>
+<h2 id="primitive-vs-object-reference-variables">Primitive vs Object Reference Variables<a aria-hidden="true" class="anchor-heading icon-link" href="#primitive-vs-object-reference-variables"></a></h2>
+<p>Variables can either be a <em>primitive</em> or a <em>reference</em></p>
+<h3 id="primitive">Primitive<a aria-hidden="true" class="anchor-heading icon-link" href="#primitive"></a></h3>
+<p>Primitive variables hold fundamental values (think: simple bit patterns) including integers, booleans, and floating point numbers. They are the most basic building blocks.</p>
+<ul>
+<li>int, long, float, double, boolean, char, byte, short</li>
+</ul>
+<h4 id="numbers">Numbers<a aria-hidden="true" class="anchor-heading icon-link" href="#numbers"></a></h4>
+<p>(all are signed)</p>
+<ul>
+<li>
+<p>Byte - 8 bits</p>
+</li>
+<li>
+<p>Short - 16 bits</p>
+</li>
+<li>
+<p>Int - 32 bits</p>
+</li>
+<li>
+<p>Long - 64 bits</p>
+</li>
+<li>
+<p>Float - 32 bits with decimal</p>
+</li>
+<li>
+<p>Double - 64 bits with decimal</p>
+</li>
+</ul>
+<h3 id="reference">Reference<a aria-hidden="true" class="anchor-heading icon-link" href="#reference"></a></h3>
+<p>Reference variables hold a reference to the object.</p>
+<ul>
+<li>that is, the object itself does not go into the variable; the variable only holds a pointer to it.</li>
+</ul>
+<p>They are based on a class made up of primitives</p>
+<ul>
+<li>String, Scanner, Random, Die, int[], String[]</li>
+</ul>
+<p>anal: think of a <em>reference</em> as a variable that holds a remote control. The remote control knows how to control the object that it refers to.</p>
+<ul>
+<li>Using the dot operator (<code>.</code>) on a reference variable is like pressing a button on the remote control to access a method or instance variable.</li>
+</ul>
+<p><img src="/assets/images/2023-01-18-19-59-12.png"></p>
+<p>Anything that is not a primitive is an object.</p>
+<p>the <code>==</code> operator is used only to compare the bits in two variables</p>
+<ul>
+<li>if we are using the <code>==</code> operator to compare 2 objects, what we are really doing is comparing the object references. If both variables reference the same object, then we will get <code>true</code></li>
+<li>therefore:</li>
+</ul>
+<pre class="language-java"><code class="language-java"><span class="token keyword">int</span> a <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">;</span>
+<span class="token keyword">byte</span> b <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">;</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>a <span class="token operator">==</span> b<span class="token punctuation">)</span> <span class="token comment">/* true */</span>
+</code></pre>
+<p>When an object is created, the following steps happen:</p>
+<ol>
+<li>The JVM allocates space for a reference variable, and gives it a name and a type</li>
+<li>The JVM allocates space for the new object on the heap</li>
+<li>The reference variable is linked to the object</li>
+</ol>
+<p>Because an object reference is simply a pointer, they are all the same size</p>
+<h4 id="null-pointer-exceptions">Null Pointer Exceptions<a aria-hidden="true" class="anchor-heading icon-link" href="#null-pointer-exceptions"></a></h4>
+<p>Reference variables can be set to <code>null</code>, which means "I am referencing nothing"</p>
+<ul>
+<li>If you try to dereference one of these variables (either explicitly by you or through Java automatically) you get a <code>NullPointerException</code></li>
+</ul>
+<p>The <code>NullPointerException</code> (NPE) typically occurs when you declare a variable but did not create an object and assign it to the variable before trying to use the contents of the variable.</p>
+<pre class="language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">doSomething</span><span class="token punctuation">(</span><span class="token class-name">SomeObject</span> obj<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   <span class="token comment">// Do something to obj, assumes obj is not null</span>
+   obj<span class="token punctuation">.</span><span class="token function">myMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// if the method gets called with a null value, we will get a NPE</span>
+<span class="token function">doSomething</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h2 id="garbage-collection">Garbage Collection<a aria-hidden="true" class="anchor-heading icon-link" href="#garbage-collection"></a></h2>
+<p>Each time an object is created, it goes into an area of memory known as The Heap.</p>
+<ul>
+<li>it’s not just any old memory heap; the Java heap is actually called the Garbage-Collectible Heap. </li>
+<li>When you create an object, Java allocates memory space on the heap according to how much that particular object needs. 
+<ul>
+<li>ex. An object with, say, 15 instance variables, will probably need more space than an object with only two instance variables. </li>
+</ul>
+</li>
+<li>When the JVM can see that an object is no longer referenced by a variable, that object becomes eligible for garbage collection</li>
+</ul>
